@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -85,11 +86,10 @@ namespace DotNetNuke.Modules.Groups
 			else
 			{
 				var groupInfo = new RoleGroupInfo();
-                    groupInfo.PortalID = PortalId;
-                    groupInfo.RoleGroupName = Constants.DefaultGroupName;
-                    groupInfo.Description = Constants.DefaultGroupName;
+                groupInfo.PortalID = PortalId;
+                groupInfo.RoleGroupName = Constants.DefaultGroupName;
+                groupInfo.Description = Constants.DefaultGroupName;
 				groupId = RoleController.AddRoleGroup(groupInfo);
-
 			}
             ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
 
@@ -98,44 +98,47 @@ namespace DotNetNuke.Modules.Groups
 
         private TabInfo CreatePage(TabInfo tab, int portalId, int parentTabId, string tabName, bool includeInMenu)
         {
-            int id = -1;
-            var newTab = new TabInfo();
-
-            if (tab != null)
+            var newTab = TabController.Instance.GetTabsByPortal(portalId).WithTabNameAndParentId(tabName, parentTabId);
+            if (newTab == null)
             {
-                foreach (TabPermissionInfo t in tab.TabPermissions)
+                int id = -1;
+                newTab = new TabInfo();
+
+                if (tab != null)
                 {
-                    var tNew = new TabPermissionInfo
-                                   {
-                                       AllowAccess = t.AllowAccess,
-                                       DisplayName = t.DisplayName,
-                                       ModuleDefID = t.ModuleDefID,
-                                       PermissionCode = t.PermissionCode,
-                                       PermissionID = t.PermissionID,
-                                       PermissionKey = t.PermissionKey,
-                                       PermissionName = t.PermissionName,
-                                       RoleID = t.RoleID,
-                                       RoleName = t.RoleName,
-                                       TabID = -1,
-                                       TabPermissionID = -1,
-                                       UserID = t.UserID,
-                                       Username = t.Username
-                                   };
-                    newTab.TabPermissions.Add(tNew);
+                    foreach (TabPermissionInfo t in tab.TabPermissions)
+                    {
+                        var tNew = new TabPermissionInfo
+                        {
+                            AllowAccess = t.AllowAccess,
+                            DisplayName = t.DisplayName,
+                            ModuleDefID = t.ModuleDefID,
+                            PermissionCode = t.PermissionCode,
+                            PermissionID = t.PermissionID,
+                            PermissionKey = t.PermissionKey,
+                            PermissionName = t.PermissionName,
+                            RoleID = t.RoleID,
+                            RoleName = t.RoleName,
+                            TabID = -1,
+                            TabPermissionID = -1,
+                            UserID = t.UserID,
+                            Username = t.Username
+                        };
+                        newTab.TabPermissions.Add(tNew);
+                    }
                 }
+
+                newTab.ParentId = parentTabId;
+                newTab.PortalID = portalId;
+                newTab.TabName = tabName;
+                newTab.Title = tabName;
+                newTab.IsVisible = includeInMenu;
+                newTab.SkinSrc = GetSkin();
+
+                id = TabController.Instance.AddTab(newTab);
+                newTab = TabController.Instance.GetTab(id, portalId, true);
             }
-
-            newTab.ParentId = parentTabId;
-            newTab.PortalID = portalId;
-            newTab.TabName = tabName;
-            newTab.Title = tabName;
-            newTab.IsVisible = includeInMenu;
-            newTab.SkinSrc = GetSkin();
-            
-            id = TabController.Instance.AddTab(newTab);
-            tab = TabController.Instance.GetTab(id, portalId, true);
-
-            return tab;
+            return newTab;
         }
 
         private string GetSkin()
@@ -164,38 +167,46 @@ namespace DotNetNuke.Modules.Groups
 
         private int AddModule(TabInfo tab, int portalId, string moduleName, string pane)
         {
+            var module = ModuleController.Instance.GetTabModules(tab.TabID).Values.SingleOrDefault(m => m.ModuleName == moduleName);
             int id = -1;
-            int desktopModuleId = GetDesktopModuleId(portalId, moduleName);
-            int moduleId = -1;
-            if (desktopModuleId > -1)
+            if (module == null)
             {
-                if (moduleId <= 0)
+                int desktopModuleId = GetDesktopModuleId(portalId, moduleName);
+                int moduleId = -1;
+                if (desktopModuleId > -1)
                 {
-                    moduleId = AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
+                    if (moduleId <= 0)
+                    {
+                        moduleId = AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
+                    }
+                    id = moduleId;
+                    ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
+                    if (moduleName == "Social Groups")
+                    {
+                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
+                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupListPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
+                    }
+                    if (moduleName == "Console")
+                    {
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "AllowSizeChange", "False");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "AllowViewChange", "False");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "IncludeParent", "True");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "Mode", "Group");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "DefaultSize", "IconNone");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "ParentTabID", tab.TabID.ToString(CultureInfo.InvariantCulture));
+                    }
+                    if (moduleName == "DotNetNuke.Modules.MemberDirectory")
+                    {
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterBy", "Group");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterPropertyValue", "");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterValue", "-1");
+                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, "DisplaySearch", "False");
+                    }
                 }
-                id = moduleId;
-                ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
-                if (moduleName == "Social Groups")
-                {
-                    ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
-                    ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupListPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
-                }
-                if (moduleName == "Console")
-                {
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "AllowSizeChange", "False");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "AllowViewChange", "False");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "IncludeParent", "True");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "Mode", "Group");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "DefaultSize", "IconNone");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "ParentTabID", tab.TabID.ToString(CultureInfo.InvariantCulture));
-                }
-                if (moduleName == "DotNetNuke.Modules.MemberDirectory")
-                {
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterBy", "Group");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterPropertyValue", "");
-                    ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterValue", "-1");
-                    ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, "DisplaySearch", "False");
-                }
+            }
+            else
+            {
+                id = module.ModuleID;
             }
 
             return id;
