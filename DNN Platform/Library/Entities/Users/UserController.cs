@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Users
                                                    {
                                                        FolderID = userFolder.FolderID,
                                                        UserID = user.UserID,
-                                                       RoleID = Null.NullInteger,
+                                                       RoleID = Int32.Parse(Globals.glbRoleNothing),
                                                        AllowAccess = true
                                                    };
 
