@@ -694,13 +694,13 @@ WHERE ScheduleHistoryID = @ScheduleHistoryID
 
 GO
 
-INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE', 1, 'm', 5, 'm', 60, '', 0, 1, 'UsersOnline')
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Entities.Users.PurgeUsersOnline, DOTNETNUKE', 1, 'm', 30, 's', 60, '', 0, 1, 'UsersOnline')
 GO
 INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.SiteLog.PurgeSiteLog, DOTNETNUKE', 1, 'd', 2, 'h', 10, '', 0, 1, 'SiteLog')
 GO
-INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE', 1, 'm', 5, 'm', 60, '', 0, 1, 'ScheduleHistory')
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Scheduling.PurgeScheduleHistory, DOTNETNUKE', 1, 'd', 2, 'h', 60, '', 0, 1, 'ScheduleHistory')
 GO
-INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE.XMLLOGGINGPROVIDER', 1, 'm', 5, 'm', 60, '', 0, 1, 'XMLLoggingProvider')
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.EventLog.PurgeLogBuffer, DOTNETNUKE.XMLLOGGINGPROVIDER', 1, 'm', 30, 's', 60, '', 0, 1, 'XMLLoggingProvider')
 GO
 INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Log.EventLog.SendLogNotifications, DOTNETNUKE.XMLLOGGINGPROVIDER', 5, 'm', 10, 'm', 60, '', 0, 1, 'XMLLoggingProvider')
 GO
