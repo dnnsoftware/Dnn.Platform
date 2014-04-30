@@ -28,6 +28,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -50,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
     public class FolderManager : ComponentBase<IFolderManager, FolderManager>, IFolderManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
-
+        private static readonly Dictionary<int, SyncFolderData> SyncFoldersData = new Dictionary<int, SyncFolderData>();
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
         
@@ -979,11 +980,13 @@ namespace DotNetNuke.Services.FileSystem
                 var mergedTree = GetMergedTree(portalId, relativePath, isRecursive);
 
                 // Step 1: Add Folders
+                InitialiseSyncFoldersData(portalId, relativePath);
                 for (var i = 0; i < mergedTree.Count; i++)
                 {
                     var item = mergedTree.Values[i];
                     ProcessMergedTreeItemInAddMode(item, portalId);
                 }
+                RemoveSyncFoldersData(relativePath);
 
                 // Step 2: Delete Files and Folders
                 for (var i = mergedTree.Count - 1; i >= 0; i--)
@@ -1009,7 +1012,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return 0;
         }
-
+        
         /// <summary>
         /// Updates metadata of the specified folder.
         /// </summary>
@@ -1075,7 +1078,7 @@ namespace DotNetNuke.Services.FileSystem
             var parentFolderPath = folder.FolderPath.Substring(0, folder.FolderPath.Substring(0, folder.FolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
 
             foreach (FolderPermissionInfo objPermission in
-                FolderPermissionController.GetFolderPermissionsCollectionByFolder(folder.PortalID, parentFolderPath))
+                GetFolderPermissionsFromSyncData(folder.PortalID, parentFolderPath))
             {
                 var folderPermission = new FolderPermissionInfo(objPermission)
                 {
@@ -1088,6 +1091,26 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
+        }
+
+        private FolderPermissionCollection GetFolderPermissionsFromSyncData(int portalId, string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            FolderPermissionCollection permissions = null;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                if (SyncFoldersData[threadId].FolderPath == relativePath)
+                {
+                    return SyncFoldersData[threadId].Permissions;
+                }                
+                permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+                SyncFoldersData[threadId] = new SyncFolderData {FolderPath = relativePath, Permissions = permissions};
+                return permissions;
+            }
+            permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+            SyncFoldersData.Add(threadId, new SyncFolderData{FolderPath = relativePath, Permissions = permissions});
+            
+            return permissions;
         }
 
         /// <summary>
@@ -1330,7 +1353,7 @@ namespace DotNetNuke.Services.FileSystem
                         break;
                 }
             }
-            var folder = new FolderInfo
+            var folder = new FolderInfo(true)
                                 {
                                     PortalID = portalId,
                                     FolderPath = folderPath,
@@ -1893,6 +1916,35 @@ namespace DotNetNuke.Services.FileSystem
                 }
             }
         }
+        private void InitialiseSyncFoldersData(int portalId, string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                if (SyncFoldersData[threadId].FolderPath == relativePath)
+                {
+                    SyncFoldersData[threadId].Permissions = permissions;
+                }
+                else
+                {
+                    SyncFoldersData[threadId] = new SyncFolderData { FolderPath = relativePath, Permissions = permissions };
+                }
+            }
+            else
+            {
+                SyncFoldersData.Add(threadId, new SyncFolderData{ FolderPath = relativePath, Permissions = permissions});                
+            }
+        }
+
+        private void RemoveSyncFoldersData(string relativePath)
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                SyncFoldersData.Remove(threadId);                
+            }
+        }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void ProcessMergedTreeItemInDeleteMode(MergedTreeItem item, int portalId)
@@ -2102,7 +2154,7 @@ namespace DotNetNuke.Services.FileSystem
             return IsStandardFolderProviderType(sourceFolderMapping) && IsStandardFolderProviderType(destinationFolderMapping);
         }
         #endregion
-
+        
         #region Internal Classes
 
         /// <summary>
@@ -2175,5 +2227,11 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         #endregion
+    }
+
+    class SyncFolderData
+    {
+        public string FolderPath { get; set; }
+        public FolderPermissionCollection Permissions { get; set; }
     }
 }

@@ -51,14 +51,21 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Constructors
 
-        public FolderInfo()
+        public FolderInfo(): this(false)
+        {            
+        }
+
+        internal FolderInfo(bool initialiseEmptyPermissions)
         {
             FolderID = Null.NullInteger;
             UniqueId = Guid.NewGuid();
             VersionGuid = Guid.NewGuid();
-            WorkflowID = Null.NullInteger;
+            WorkflowID = Null.NullInteger;            
+            if (initialiseEmptyPermissions)
+            {
+                _folderPermissions = new FolderPermissionCollection();   
+            }            
         }
-
         #endregion
 
         #region Public Properties

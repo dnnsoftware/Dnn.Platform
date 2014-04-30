@@ -517,8 +517,6 @@ namespace DotNetNuke.Security.Permissions
         {
             if ((folder.FolderPermissions != null))
             {
-                FolderPermissionCollection folderPermissions = GetFolderPermissionsCollectionByFolder(folder.PortalID, folder.FolderPath);
-
                 //Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
                 var permController = new PermissionController();
                 ArrayList permArray = permController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ");
@@ -569,20 +567,16 @@ namespace DotNetNuke.Security.Permissions
                     folder.FolderPermissions.Add(folderPermission, true);
                 }
 
-                if (!folderPermissions.CompareTo(folder.FolderPermissions))
+                dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
+                foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
-                    dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
-
-                    foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
-                    {
-                        dataProvider.AddFolderPermission(folder.FolderID,
-                                                         folderPermission.PermissionID,
-                                                         folderPermission.RoleID,
-                                                         folderPermission.AllowAccess,
-                                                         folderPermission.UserID,
-                                                         UserController.Instance.GetCurrentUserInfo().UserID);
-                    }
-                }
+                    dataProvider.AddFolderPermission(folder.FolderID,
+                                                        folderPermission.PermissionID,
+                                                        folderPermission.RoleID,
+                                                        folderPermission.AllowAccess,
+                                                        folderPermission.UserID,
+                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                }                
             }
         }
 

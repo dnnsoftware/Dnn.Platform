@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
 
 #endregion
 
@@ -328,6 +329,14 @@ namespace DotNetNuke.Services.Log.EventLog
                     log.LogProperties.Add(new LogDetailInfo("FriendlyName", desktopModule.FriendlyName));
                     log.LogProperties.Add(new LogDetailInfo("FolderName", desktopModule.FolderName));
                     log.LogProperties.Add(new LogDetailInfo("Description", desktopModule.Description));
+                    break;
+                case "DotNetNuke.Services.FileSystem.FolderInfo":
+                    var folderInfo = (FolderInfo) businessObject;
+                    log.LogProperties.Add(new LogDetailInfo("FolderID", folderInfo.FolderID.ToString(CultureInfo.InvariantCulture)));
+                    log.LogProperties.Add(new LogDetailInfo("PortalID", folderInfo.PortalID.ToString(CultureInfo.InvariantCulture)));
+                    log.LogProperties.Add(new LogDetailInfo("FolderName", folderInfo.FolderName));
+                    log.LogProperties.Add(new LogDetailInfo("FolderPath", folderInfo.FolderPath));
+                    log.LogProperties.Add(new LogDetailInfo("FolderMappingID", folderInfo.FolderMappingID.ToString(CultureInfo.InvariantCulture)));
                     break;
                 default: //Serialise using XmlSerializer
                     log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
