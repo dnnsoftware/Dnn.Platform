@@ -151,7 +151,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             var nextTool = leftButtons.eq(i + 1);
             var label = labels.eq(i);
             currentTool.is(':visible') ? label.show() : label.hide();
-            label.width(nextTool.position().left - currentTool.position().left);
+            if (nextTool.length > 0) {
+                label.width(nextTool.position().left - currentTool.position().left);
+            }
         }
     }
 
