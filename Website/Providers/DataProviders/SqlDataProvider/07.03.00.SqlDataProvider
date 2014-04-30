@@ -586,6 +586,17 @@ AS
 	END
 GO
 
+/********************************************************
+ * INDEX: Analytics_PageTime_TabId - issu #: DNN-5263
+ ********************************************************/
+IF NOT EXISTS (SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal]')
+				AND name = N'IX_{objectQualifier}Journal_ContentItemId')
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Journal_ContentItemId]
+		ON {databaseOwner}[{objectQualifier}Journal] ([ContentItemId])
+		INCLUDE ([GroupId])
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
