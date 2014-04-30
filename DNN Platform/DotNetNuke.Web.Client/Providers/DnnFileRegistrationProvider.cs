@@ -28,10 +28,6 @@ namespace DotNetNuke.Web.Client.Providers
         private int? _settingsVersion;
         public override int GetVersion()
         {
-            if (_settingsVersion.HasValue)
-            {
-                return _settingsVersion.Value;
-            }
             _settingsVersion = new ClientResourceSettings().GetVersion();
             if (_settingsVersion.HasValue)
             {
