@@ -35,10 +35,12 @@ namespace DotNetNuke.Framework
         public const string ReflectionPermission = "ReflectionPermission";
         public const string WebPermission = "WebPermission";
         public const string AspNetHostingPermission = "AspNetHostingPermission";
+        public const string UnManagedCodePermission = "UnManagedCodePermission";
         private static bool m_Initialized;
         private static bool m_ReflectionPermission;
         private static bool m_WebPermission;
         private static bool m_AspNetHostingPermission;
+        private static bool m_UnManagedCodePermission;
 
         public static string Permissions
         {
@@ -109,6 +111,18 @@ namespace DotNetNuke.Framework
                     m_AspNetHostingPermission = false;
                 }
                 m_Initialized = true;
+
+                //Test for Unmanaged Code permission
+                try
+                {
+                    securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
+                    securityTest.Demand();
+                    m_UnManagedCodePermission = true;
+                }
+                catch (Exception e)
+                {
+                    m_UnManagedCodePermission = false;
+                }
             }
         }
 
@@ -128,6 +142,12 @@ namespace DotNetNuke.Framework
         {
             GetPermissions();
             return m_WebPermission;
+        }
+
+        public static bool HasUnManagedCodePermission()
+        {
+            GetPermissions();
+            return m_UnManagedCodePermission;
         }
 
         public static bool HasPermissions(string permissions, ref string permission)
@@ -150,6 +170,12 @@ namespace DotNetNuke.Framework
                                 break;
                             case ReflectionPermission:
                                 if (HasReflectionPermission() == false)
+                                {
+                                    _HasPermission = false;
+                                }
+                                break;
+                            case UnManagedCodePermission:
+                                if (HasUnManagedCodePermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
