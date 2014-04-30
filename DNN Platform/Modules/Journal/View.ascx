@@ -101,13 +101,10 @@
 
 <script type="text/javascript">
     var InputFileNS = {};
-    InputFileNS.chooseFileText = '<%=LocalizeSafeJsString("ChooseFile.Text")%>';
     InputFileNS.initilizeInput = function() {
-        $('.fileUploadArea :file').dnnFileInput();
-        var fileUploadCtrl = $('.fileUploadArea').find('.dnnInputFileWrapper .dnnSecondaryAction');
-        if (fileUploadCtrl) {
-            fileUploadCtrl.html(InputFileNS.chooseFileText);
-        }
+        var $fileUpload = $('.fileUploadArea :file');
+        $fileUpload.data("text", '<%=LocalizeSafeJsString("ChooseFile.Text")%>');
+        $fileUpload.dnnFileInput();
     };
     $(document).ready(function () {
         InputFileNS.initilizeInput();

@@ -1875,4 +1875,7 @@
   <data name="PermissionUserHeader.Text" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="ChooseFile.Text" xml:space="preserve">
+    <value>Choose File</value>
+  </data>
 </root>
