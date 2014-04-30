@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
 
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -622,7 +623,7 @@ namespace DotNetNuke.Entities.Urls
                     DataCache.SetCache(cacheKey, cacheKey, expire);
                     //just store the cache key - it doesn't really matter
                     //create a log event
-                    string productVer = Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                    string productVer = DotNetNukeContext.Current.Application.Version.ToString();
                     var log = new LogInfo {LogTypeKey = "GENERAL_EXCEPTION"};
                     log.AddProperty("Url Rewriting Extension Url Provider Exception",
                                          "Exception in Url Rewriting Process");

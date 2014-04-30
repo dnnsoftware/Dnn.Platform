@@ -36,6 +36,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
@@ -754,7 +755,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 //format up the error message to show
                 const string debugMsg = "{0}, {1}, {2}, {3}, {4}, {5}, {6}";
-                string productVer = Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                string productVer = DotNetNukeContext.Current.Application.Version.ToString();
                 string portalSettings = "";
                 string browser = "Unknown";
                 //949 : don't rely on 'result' being non-null

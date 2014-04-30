@@ -29,20 +29,11 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Application
 {
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Application
-    /// Project:    DotNetNuke
-    /// Module:     Application
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Application class contains properties that describe the DotNetNuke Application.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	09/10/2009  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class Application
     {
         private static ReleaseMode _status = ReleaseMode.None;
@@ -221,7 +212,7 @@ namespace DotNetNuke.Application
         /// Gets the version of the DotNetNuke framework/application
         /// </summary>
         /// <value>The version as retreieved from the Executing assembly.</value>
-        public Version Version
+        public virtual Version Version
         {
             get
             {
