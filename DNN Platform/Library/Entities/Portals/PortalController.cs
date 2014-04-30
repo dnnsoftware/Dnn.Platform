@@ -2218,6 +2218,10 @@ namespace DotNetNuke.Entities.Portals
                     {
                         fallbackLanguage = userLocale.Fallback;
                     }
+                    if (String.IsNullOrEmpty(fallbackLanguage))
+                    {
+                        fallbackLanguage = Localization.SystemLocale;
+                    }
                     portal = GetPortalInternal(portalId, fallbackLanguage);
                     //if we cannot find any fallback, it mean's it's a non portal default langauge
                     if (portal == null)
