@@ -41,12 +41,11 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.EventQueue;
-
-using Assembly = System.Reflection.Assembly;
 
 #endregion
 
@@ -2268,7 +2267,10 @@ namespace DotNetNuke.Entities.Urls
                 || physicalPath.EndsWith("upgradewizard.aspx", true, CultureInfo.InvariantCulture)
                 || Globals.Status == Globals.UpgradeStatus.Install
                 || Globals.Status == Globals.UpgradeStatus.Upgrade)
+            {
                 return true;
+            }
+
             //954 : DNN 7.0 compatibility
             //check for /default.aspx which is default Url launched from the Upgrade/Install wizard page
             //961 : check domain as well as path for the referer
@@ -2285,12 +2287,38 @@ namespace DotNetNuke.Entities.Urls
             return false;
         }
 
+        private static bool IgnoreRequestForWebServer(string requestedPath)
+        {
+            if (requestedPath.EndsWith("synchronizecache.aspx", true, CultureInfo.InvariantCulture)
+                || requestedPath.EndsWith("keepalive.aspx", true, CultureInfo.InvariantCulture))
+            {
+                return true;
+            }
+
+            //Get the root
+            var rootPath = requestedPath.Substring(0, requestedPath.LastIndexOf("/", StringComparison.Ordinal));
+            rootPath = rootPath.Substring(rootPath.IndexOf("://", StringComparison.Ordinal) + 3);
+                
+            //Check if this is a WebServer and not a portalalias.
+            var alias = PortalAliasController.Instance.GetPortalAlias(rootPath);
+            if (alias != null)
+            {
+                return false;
+            }
+
+            //Check if this is a WebServer
+            var server = ServerController.GetEnabledServers().SingleOrDefault(s => s.Url == rootPath);
+            if (server != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static bool IgnoreRequestForInstall(HttpRequest request)
         {
             try
             {
-                //string physicalPath = request.PhysicalPath;
-                //return IgnoreRequestForInstall(physicalPath);
                 string physicalPath = request.PhysicalPath;
                 string requestedDomain = request.Url.Host;
                 string refererPath = null, refererDomain = null;
@@ -2315,7 +2343,7 @@ namespace DotNetNuke.Entities.Urls
             //check if we are upgrading/installing 
             //829 : use result physical path instead of requset physical path
             //875 : cater for the upgradewizard.aspx Url that is new to DNN 6.1
-            if (request != null && (IgnoreRequestForInstall(request)))
+            if (request != null && (IgnoreRequestForInstall(request) || IgnoreRequestForWebServer(requestedPath)))
             {
                 //ignore all install requests
                 retVal = true;
