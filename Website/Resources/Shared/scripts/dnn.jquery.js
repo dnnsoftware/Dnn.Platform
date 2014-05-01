@@ -102,6 +102,7 @@
                             $('.ui-dialog-buttonpane').find('button:contains("' + opts.noText + '")').addClass('dnnConfirmCancel');
                         },
                         position: 'center',
+                        draggable: false,
                         buttons: [
                         {
                             text: opts.yesText,

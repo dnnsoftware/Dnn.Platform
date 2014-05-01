@@ -23,6 +23,37 @@ else if (Sys.Browser.agent === Sys.Browser.InternetExplorer && Sys.Browser.versi
     }
 }
 
+//This is temp fix for jQuery UI issue: http://bugs.jqueryui.com/ticket/9315
+//this code can be safe removed after jQuery UI library upgrade to 1.11.
+if ($ && $.ui && $.ui.dialog) {
+    $.extend($.ui.dialog.prototype.options, {
+        open: function(event, ui) {
+            var htmlElement = $(document).find('html');
+            htmlElement.css('overflow', 'hidden');
+            var cacheScrollTop = htmlElement.scrollTop();
+            if (cacheScrollTop > 0) {
+                htmlElement.scrollTop(0);
+                var target = $(this);
+                target.data('cacheScrollTop', cacheScrollTop);
+                //move the dialog up
+                var position = target.closest('.ui-dialog').offset();
+                if (position.top + target.closest('.ui-dialog').height() > htmlElement[0].clientHeight) {
+                    target.dialog('option', 'position', 'center');
+                }
+            }
+        },
+        beforeClose: function(event, ui) {
+            var htmlElement = $(document).find('html');
+            htmlElement.css('overflow', '');
+            var cacheScrollTop = $(this).data('cacheScrollTop');
+            if (cacheScrollTop) {
+                htmlElement.scrollTop(cacheScrollTop);
+                $(this).data('cacheScrollTop', null);
+            }
+        }
+    });
+}
+
 var DNN_HIGHLIGHT_COLOR = '#9999FF';
 var COL_DELIMITER = String.fromCharCode(18);
 var ROW_DELIMITER = String.fromCharCode(17);
