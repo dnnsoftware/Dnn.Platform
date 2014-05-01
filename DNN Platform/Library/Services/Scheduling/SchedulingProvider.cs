@@ -28,6 +28,7 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using Microsoft.VisualBasic;
+using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -109,12 +110,26 @@ namespace DotNetNuke.Services.Scheduling
                 //{
                 //    value = 60;
                 //}
-                DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
+                if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
+                {
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60;
+                }
+                else
+                {
+                    DelayAtAppStart = 60;
+                }
             }
             else
             {
                 MaxThreads = 1;
-                DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
+                if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
+                {
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
+                }
+                else
+                {
+                    DelayAtAppStart = 60;
+                }
             }
         }
 
