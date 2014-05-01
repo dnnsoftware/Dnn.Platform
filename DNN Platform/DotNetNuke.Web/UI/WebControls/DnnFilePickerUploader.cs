@@ -49,6 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string _fileFilter;
         private string _folderPath = String.Empty;
+        private bool _folderPathSet = false;
 
 		#endregion
 
@@ -151,14 +152,18 @@ namespace DotNetNuke.Web.UI.WebControls
         public string FolderPath 
         { 
             get 
-            { 
-                return !String.IsNullOrEmpty(_folderPath ) 
+            {
+                return _folderPathSet
                             ? _folderPath 
                             : FoldersComboBox.SelectedFolder != null 
                                 ? FoldersComboBox.SelectedFolder.FolderPath 
                                 : string.Empty; 
             }
-            set { _folderPath = value; }
+            set 
+            {
+                _folderPath = value;
+                _folderPathSet = true;
+            }
         }
 
         public string FileFilter
