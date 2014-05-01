@@ -216,7 +216,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
             filters += "," + Localization.GetString("All");
             filters += "," + Localization.GetString("OnLine");
-            filters += "," + Localization.GetString("Unauthorized");
+            if (!IsSuperUser)
+            {
+                filters += "," + Localization.GetString("Unauthorized");
+            }
             filters += "," + Localization.GetString("Deleted");
             var strAlphabet = filters.Split(',');
             rptLetterSearch.DataSource = strAlphabet;
