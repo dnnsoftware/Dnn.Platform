@@ -907,18 +907,20 @@ namespace DotNetNuke.Common.Utilities
                 //check current .net version and if attribute has been added already
                 if ((IsNet45OrNewer()) && String.IsNullOrEmpty(GetFcnMode()))
                 {
-                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime");
+                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                                                xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
                 }
             }
             catch (Exception ex)
             {
+                //in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
-                strError += ex.Message;
+                //strError += ex.Message;
             }
 
             //save the web.config
-            strError += Save(xmlConfig);
+            Save(xmlConfig);
 
             return strError;  
 
