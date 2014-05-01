@@ -3256,12 +3256,15 @@ namespace DotNetNuke.Services.Upgrade
         public static void MakeModulePremium(string moduleName)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
-            desktopModule.IsAdmin = true;
-            desktopModule.IsPremium = true;
-            DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
+            if (desktopModule != null)
+            {
+                desktopModule.IsAdmin = true;
+                desktopModule.IsPremium = true;
+                DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
 
-            //Remove Portal/Module to PortalDesktopModules
-            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+                //Remove Portal/Module to PortalDesktopModules
+                DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+            }
         }
 
 
