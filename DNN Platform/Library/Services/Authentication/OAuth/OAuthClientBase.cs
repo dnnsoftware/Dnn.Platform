@@ -37,6 +37,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
@@ -44,16 +45,20 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Instrumentation;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using DotNetNuke.Data;
+
     public abstract class OAuthClientBase
     {
         #region Private Members
@@ -148,9 +153,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
         }
-        
-        //DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
-        protected string APIResource { get; set; }
 
         #endregion
 
@@ -158,6 +160,19 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public Uri CallbackUri { get; set; }
         public string Service { get; set; }
+        
+        //DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
+        protected string APIResource { get; set; }
+        protected virtual bool PrefixServiceToUserName
+        {
+            get { return true; }
+        }
+
+        protected virtual bool AutoMatchExistingUsers
+        {
+            get { return false; }
+        }
+
 
         #endregion
 
@@ -610,18 +625,38 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            string userName = Service + "-" + user.Id;
+            string userName = PrefixServiceToUserName ? Service + "-" + user.Email : user.Email;
+            string token = Service + "-" + user.Email + "-" + user.Id;
 
-            var objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
-                                                                Service, "",
+            UserInfo objUserInfo;
+
+            if (AutoMatchExistingUsers)
+            {
+                objUserInfo = MembershipProvider.Instance().GetUserByUserName(settings.PortalId, userName);
+
+                if (objUserInfo != null)
+                {
+                    //user already exists... lets check for a token next... 
+                    var dnnAuthToken = MembershipProvider.Instance().GetUserByAuthToken(settings.PortalId, token, Service);
+
+                    if (dnnAuthToken == null)
+                    {
+                        DataProvider.Instance().AddUserAuthentication(objUserInfo.UserID, Service, token, objUserInfo.UserID);
+                    }
+                }
+            }
+
+            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
+                                                                Service, token,
                                                                 settings.PortalName, IPAddress,
                                                                 ref loginStatus);
 
 
             //Raise UserAuthenticated Event
-            var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, userName, loginStatus, Service)
+            var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, Service)
                                             {
-                                                AutoRegister = true
+                                                AutoRegister = true,
+                                                UserName = userName
                                             };
 
             var profileProperties = new NameValueCollection();
@@ -652,14 +687,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
-                if (LocaleController.IsValidCultureName(user.Locale.Replace('_', '-')))
-                {
-                    profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
-                }
-                else
-                {
-                    profileProperties.Add("PreferredLocale", settings.CultureCode);
-                }
+                profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
             }
 
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))

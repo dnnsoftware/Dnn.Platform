@@ -93,6 +93,7 @@ namespace DotNetNuke.Security.Membership
         // Get Users
         public abstract UserInfo GetUser(int portalId, int userId);
         public abstract UserInfo GetUserByUserName(int portalId, string username);
+        public abstract UserInfo GetUserByAuthToken(int portalId, string userToken, string authType);
         public abstract ArrayList GetUnAuthorizedUsers(int portalId);
         public abstract ArrayList GetDeletedUsers(int portalId);
         public abstract ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords);                     
