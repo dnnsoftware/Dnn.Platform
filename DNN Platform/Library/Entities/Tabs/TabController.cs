@@ -211,6 +211,30 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        private static void DeserializeTabUrls(XmlNodeList nodeTabUrls, TabInfo objTab)
+        {
+            var lastValue = string.Empty;
+            try
+            {
+                foreach (XmlNode oTabUrlNode in nodeTabUrls)
+                {
+                    lastValue = oTabUrlNode.InnerXml;
+
+                    var tabUrlInfo = lastValue.FromJson<TabUrlInfo>();
+
+                    tabUrlInfo.TabId = objTab.TabID;
+
+                    TestableTabController.Instance.SaveTabUrl(tabUrlInfo, objTab.PortalID, false);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+                Exceptions.LogException(new Exception(lastValue));
+            }
+            
+        }
+
         private static void DeserializeTabSettings(XmlNodeList nodeTabSettings, TabInfo objTab)
         {
             foreach (XmlNode oTabSettingNode in nodeTabSettings)
@@ -1693,9 +1717,18 @@ namespace DotNetNuke.Entities.Tabs
                 if (tab.TabID == Null.NullInteger)
                 {
                     tab.TabID = tabController.AddTab(tab);
+
+                    var tabUrlList = tabNode.SelectNodes("taburls/taburl");
+                    if (tabUrlList.Count > 0)
+                    {
+                        DeserializeTabUrls(tabUrlList, tab);
+                        tabController.UpdateTab(tab);
+                    }
                 }
                 else
                 {
+                    DeserializeTabUrls(tabNode.SelectNodes("taburls/taburl"), tab);
+
                     tabController.UpdateTab(tab);
                 }
 
@@ -2077,6 +2110,22 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             
+            if (tab.TabUrls.Any())
+            {
+                XmlNode tabUrlsNode;
+                XmlNode tabUrlNode;
+
+                tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("taburls"));
+                foreach (var tabUrl in tab.TabUrls)
+                {
+                        //new pane found
+                    tabUrlNode = tabXml.CreateElement("taburl");
+                    tabUrlNode.InnerText = tabUrl.ToJson();
+
+                    tabUrlsNode.AppendChild(tabUrlNode);
+                }
+            }
+
             //serialize TabSettings
             XmlUtils.SerializeHashtable(tab.TabSettings, tabXml, tabNode, "tabsetting", "settingname", "settingvalue");
             if (portal != null)
