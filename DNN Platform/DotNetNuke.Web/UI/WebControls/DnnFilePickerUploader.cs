@@ -48,6 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
 	    private int? _portalId = null;
 
         private string _fileFilter;
+        private string _folderPath = String.Empty;
 
 		#endregion
 
@@ -149,7 +150,15 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string FolderPath 
         { 
-            get { return FoldersComboBox.SelectedFolder != null ? FoldersComboBox.SelectedFolder.FolderPath : string.Empty; }
+            get 
+            { 
+                return !String.IsNullOrEmpty(_folderPath ) 
+                            ? _folderPath 
+                            : FoldersComboBox.SelectedFolder != null 
+                                ? FoldersComboBox.SelectedFolder.FolderPath 
+                                : string.Empty; 
+            }
+            set { _folderPath = value; }
         }
 
         public string FileFilter
