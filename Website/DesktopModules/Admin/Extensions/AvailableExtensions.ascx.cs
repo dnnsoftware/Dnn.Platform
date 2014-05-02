@@ -234,19 +234,17 @@ namespace DotNetNuke.Modules.Admin.Extensions
             var package = dataItem as PackageInfo;
             switch (package.PackageType)
             {
-                case "Module":
-                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
                 case "Container":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
                 case "Skin":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
                 case "AuthenticationSystem":
                 case "Auth_System":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
                 case "Provider":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
                 default:
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
             }
         }
 
