@@ -45,6 +45,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Profile;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
@@ -946,6 +947,52 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
+        {
+            var providers = ExtensionUrlProviderController.GetProviders(portalId);
+            foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
+            {
+                var providerName = XmlUtils.GetNodeValue(providerNavigator, "name");
+                var provider = providers.SingleOrDefault(p => p.ProviderName.Equals(providerName, StringComparison.OrdinalIgnoreCase));
+                if (provider == null)
+                {
+                    continue;
+                }
+
+                var active = XmlUtils.GetNodeValueBoolean(providerNavigator, "active");
+                if (active)
+                {
+                    ExtensionUrlProviderController.EnableProvider(provider.ExtensionUrlProviderId, portalId);
+                }
+                else
+                {
+                    ExtensionUrlProviderController.DisableProvider(provider.ExtensionUrlProviderId, portalId);
+                }
+
+                var settingsNavigator = providerNavigator.SelectSingleNode("settings");
+                if (settingsNavigator != null)
+                {
+                    foreach (XPathNavigator settingNavigator in settingsNavigator.Select("setting"))
+                    {
+                        var name = XmlUtils.GetAttributeValue(settingNavigator, "name");
+                        var value = XmlUtils.GetAttributeValue(settingNavigator, "value");
+                        ExtensionUrlProviderController.SaveSetting(provider.ExtensionUrlProviderId, portalId, name, value);
+                    }
+                }
+
+                ////var tabIdsNavigator = providerNavigator.SelectSingleNode("tabIds");
+                ////if (tabIdsNavigator != null)
+                ////{
+                ////    foreach (XPathNavigator tabIdNavigator in tabIdsNavigator.Select("tabId"))
+                ////    {
+                ////        // TODO: figure out how to save a tab ID for a provider
+                ////        var tabId = XmlUtils.GetNodeValueInt(tabIdNavigator, ".");
+                ////        provider.TabIds.Add(tabId);
+                ////    }
+                ////}
+            }
+        }
+
         private static bool EnableBrowserLanguageInDefault(int portalId)
         {
             bool retValue = Null.NullBoolean;
@@ -1750,6 +1797,11 @@ namespace DotNetNuke.Entities.Portals
             if (node != null)
             {
                 ParseFolders(node, portalId);
+            }
+            node = xmlPortal.SelectSingleNode("//portal/extensionUrlProviders");
+            if (node != null)
+            {
+                ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
             }
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
