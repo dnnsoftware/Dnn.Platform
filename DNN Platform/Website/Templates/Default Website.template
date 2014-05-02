@@ -627,7 +627,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>1200</cachetime>
               <color />
               <containersrc />
@@ -664,7 +664,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>1200</cachetime>
               <color />
               <containersrc />
@@ -785,7 +785,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -838,7 +838,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -918,7 +918,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1062,7 +1062,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1133,7 +1133,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
@@ -1268,7 +1268,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1333,7 +1333,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1425,7 +1425,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1565,7 +1565,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1636,7 +1636,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
@@ -1772,7 +1772,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1837,7 +1837,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -1929,7 +1929,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2069,7 +2069,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2140,7 +2140,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
@@ -2276,7 +2276,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2341,7 +2341,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2405,7 +2405,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2545,7 +2545,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
@@ -2616,7 +2616,7 @@
               <alignment />
               <alltabs>false</alltabs>
               <border />
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>0</cachetime>
               <color />
               <containersrc>[G]Containers/Gravity/Title_h4.ascx</containersrc>
@@ -4820,7 +4820,7 @@
           <modules>
             <module>
               <alltabs>false</alltabs>
-              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachemethod>MemoryModuleCachingProvider</cachemethod>
               <cachetime>1200</cachetime>
               <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
