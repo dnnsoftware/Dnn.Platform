@@ -161,7 +161,7 @@ namespace DotNetNuke.Data
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
-                return PetaPocoHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {
