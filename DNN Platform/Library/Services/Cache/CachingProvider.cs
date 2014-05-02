@@ -282,6 +282,7 @@ namespace DotNetNuke.Services.Cache
             }
 
             RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, Null.NullString, portalId), clearRuntime);
+            RemoveCacheKey(string.Format(DataCache.TabSettingsCacheKey, portalId), clearRuntime);
         }
 
         private void RemoveCacheKey(string CacheKey, bool clearRuntime)

@@ -610,12 +610,42 @@ namespace DotNetNuke.Entities.Tabs
             return deleted;
         }
 
+        private void UpdateTabSettingInternal(int tabId, string settingName, string settingValue, bool clearCache)
+        {
+            IDataReader dr = Provider.GetTabSetting(tabId, settingName);
+            if (dr.Read())
+            {
+                if (dr.GetString(0) != settingValue)
+                {
+                    Provider.UpdateTabSetting(tabId, settingName, settingValue,
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
+                                                     "TabId", tabId, settingName, settingValue,
+                                                     UserController.Instance.GetCurrentUserInfo().UserID);
+                }
+            }
+            else
+            {
+                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
+                                                 "TabId", tabId, settingName, settingValue,
+                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+            }
+            dr.Close();
+
+            UpdateTabVersion(tabId);
+            if (clearCache)
+            {
+                ClearTabSettingsCache(tabId);
+            }
+        }
+
         private void UpdateTabSettings(ref TabInfo updatedTab)
         {
             foreach (string sKeyLoopVariable in updatedTab.TabSettings.Keys)
             {
                 string sKey = sKeyLoopVariable;
-                UpdateTabSetting(updatedTab.TabID, sKey, Convert.ToString(updatedTab.TabSettings[sKey]));
+                UpdateTabSettingInternal(updatedTab.TabID, sKey, Convert.ToString(updatedTab.TabSettings[sKey]), false);
             }
         }
 
@@ -1824,29 +1854,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </history>
         public void UpdateTabSetting(int tabId, string settingName, string settingValue)
         {
-            IDataReader dr = Provider.GetTabSetting(tabId, settingName);
-            if (dr.Read())
-            {
-                if (dr.GetString(0) != settingValue)
-                {
-                    Provider.UpdateTabSetting(tabId, settingName, settingValue,
-                                              UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_UPDATED,
-                                                     "TabId", tabId, settingName, settingValue,
-                                                     UserController.Instance.GetCurrentUserInfo().UserID);
-                }
-            }
-            else
-            {
-                Provider.AddTabSetting(tabId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.AddSettingLog(EventLogController.EventLogType.TAB_SETTING_CREATED,
-                                                 "TabId", tabId, settingName, settingValue,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
-            }
-            dr.Close();
-
-            UpdateTabVersion(tabId);
-            ClearTabSettingsCache(tabId);
+            UpdateTabSettingInternal(tabId, settingName, settingValue, true);
         }
 
         /// <summary>
