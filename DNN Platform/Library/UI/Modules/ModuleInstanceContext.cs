@@ -263,10 +263,10 @@ namespace DotNetNuke.UI.Modules
             {
                 if (_settings == null)
                 {
-                    _settings = Configuration.ModuleSettings;
+                    _settings = new ModuleController().GetModuleSettings(ModuleId, TabId);
 
                     //add the TabModuleSettings to the ModuleSettings
-                    Hashtable tabModuleSettings = Configuration.TabModuleSettings;
+                    Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleId, TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
                         _settings[strKey] = tabModuleSettings[strKey];
