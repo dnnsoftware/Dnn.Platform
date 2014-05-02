@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             switch (package.PackageType)
             {
                 case "Module":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
                 case "Container":
                     return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
                 case "Skin":
@@ -248,6 +248,16 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 default:
                     return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
             }
+        }
+
+        private bool IconExists(string imagePath)
+        {
+            bool exists = !String.IsNullOrEmpty(imagePath);
+            if (exists)
+            {
+                exists = File.Exists(Server.MapPath(imagePath));
+            }
+            return exists;
         }
 
         protected string GetPackageType(object dataItem)
