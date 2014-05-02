@@ -273,6 +273,13 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
+                    <xs:element name="taburls" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="taburl" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
                     <xs:element name="refreshinterval" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="permanentredirect" type="xs:boolean" minOccurs="0" maxOccurs="1" />
