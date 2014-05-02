@@ -35,7 +35,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
@@ -297,6 +297,177 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID));
                 }
+            }
+
+            writer.WriteEndElement();
+        }
+
+        private void SerializePortalSettings(XmlWriter writer, PortalInfo portal)
+        {
+            writer.WriteStartElement("settings");
+
+            writer.WriteElementString("logofile", portal.LogoFile);
+            writer.WriteElementString("footertext", portal.FooterText);
+            writer.WriteElementString("userregistration", portal.UserRegistration.ToString());
+            writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString());
+            writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
+
+            Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portal.PortalID);
+
+            string setting;
+            settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("skinsrc", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("skinsrcadmin", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("containersrc", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("containersrcadmin", setting);
+            }
+            settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enableskinwidgets", setting);
+            }
+            settingsDictionary.TryGetValue("portalaliasmapping", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("portalaliasmapping", setting);
+            }
+
+            writer.WriteElementString("contentlocalizationenabled", this.chkMultilanguage.Checked.ToString());
+
+            settingsDictionary.TryGetValue("TimeZone", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("timezone", setting);
+            }
+
+            settingsDictionary.TryGetValue("EnablePopups", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enablepopups", setting);
+            }
+
+            settingsDictionary.TryGetValue("InlineEditorEnabled", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("inlineeditorenabled", setting);
+            }
+
+            settingsDictionary.TryGetValue("HideFoldersEnabled", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("hidefoldersenabled", setting);
+            }
+
+            settingsDictionary.TryGetValue("ControlPanelMode", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("controlpanelmode", setting);
+            }
+
+            settingsDictionary.TryGetValue("ControlPanelSecurity", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("controlpanelsecurity", setting);
+            }
+
+            settingsDictionary.TryGetValue("ControlPanelVisibility", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("controlpanelvisibility", setting);
+            }
+
+            writer.WriteElementString("hostspace", portal.HostSpace.ToString());
+            writer.WriteElementString("userquota", portal.UserQuota.ToString());
+            writer.WriteElementString("pagequota", portal.PageQuota.ToString());
+
+            //End Portal Settings
+            writer.WriteEndElement();
+        }
+
+        private void SerializeEnabledLocales(XmlWriter writer, PortalInfo portal)
+        {
+            var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
+            if (enabledLocales.Count > 1)
+            {
+                writer.WriteStartElement("locales");
+                if (this.chkMultilanguage.Checked)
+                {
+                    foreach (ListItem item in this.chkLanguages.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            writer.WriteElementString("locale", item.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var enabledLocale in enabledLocales)
+                    {
+                        writer.WriteElementString("locale", enabledLocale.Value.Code);
+                    }
+                }
+
+                writer.WriteEndElement();
+            }
+        }
+
+        private static void SerializeExtensionUrlProviders(XmlWriter writer, int portalId)
+        {
+            var providers = ExtensionUrlProviderController.GetModuleProviders(portalId);
+            if (!providers.Any())
+            {
+                return;
+            }
+
+            writer.WriteStartElement("extensionUrlProviders");
+
+            foreach (var provider in providers)
+            {
+                writer.WriteStartElement("extensionUrlProvider");
+                writer.WriteElementString("name", provider.ProviderConfig.ProviderName);
+                writer.WriteElementString("active", provider.ProviderConfig.IsActive.ToString());
+                var settings = provider.ProviderConfig.Settings;
+                if (settings.Any())
+                {
+                    writer.WriteStartElement("settings");
+                    foreach (var setting in settings)
+                    {
+                        writer.WriteStartElement("setting");
+                        writer.WriteAttributeString("name", setting.Key);
+                        writer.WriteAttributeString("value", setting.Value);
+                        writer.WriteEndElement();
+                    }
+
+                    writer.WriteEndElement();
+                }
+
+                ////if (provider.ProviderConfig.TabIds.Any())
+                ////{
+                ////    writer.WriteStartElement("tabIds");
+                ////    foreach (var tabId in provider.ProviderConfig.TabIds)
+                ////    {
+                ////        // TODO: translate to tab path?
+                ////        writer.WriteElementString("tabId", tabId.ToString(CultureInfo.InvariantCulture));
+                ////    }
+                ////    writer.WriteEndElement();
+                ////}
+
+                writer.WriteEndElement();
             }
 
             writer.WriteEndElement();
@@ -734,125 +905,9 @@ namespace DotNetNuke.Modules.Admin.Portals
                 //Serialize portal settings
                 var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
-                writer.WriteStartElement("settings");
-
-                writer.WriteElementString("logofile", portal.LogoFile);
-                writer.WriteElementString("footertext", portal.FooterText);
-                writer.WriteElementString("userregistration", portal.UserRegistration.ToString());
-                writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString());
-                writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
-
-                Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portal.PortalID);
-
-                string setting = "";
-                settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("skinsrc", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("skinsrcadmin", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("containersrc", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("containersrcadmin", setting);
-                }
-                settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("enableskinwidgets", setting);
-                }
-                settingsDictionary.TryGetValue("portalaliasmapping", out setting);
-                if (!String.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("portalaliasmapping", setting);
-                }
-
-                writer.WriteElementString("contentlocalizationenabled", chkMultilanguage.Checked.ToString());
-
-                settingsDictionary.TryGetValue("TimeZone", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("timezone", setting);
-                }
-
-                settingsDictionary.TryGetValue("EnablePopups", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("enablepopups", setting);
-                }
-
-                settingsDictionary.TryGetValue("InlineEditorEnabled", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("inlineeditorenabled", setting);
-                }
-
-                settingsDictionary.TryGetValue("HideFoldersEnabled", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("hidefoldersenabled", setting);
-                }
-
-                settingsDictionary.TryGetValue("ControlPanelMode", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("controlpanelmode", setting);
-                }
-
-                settingsDictionary.TryGetValue("ControlPanelSecurity", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("controlpanelsecurity", setting);
-                }
-
-                settingsDictionary.TryGetValue("ControlPanelVisibility", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("controlpanelvisibility", setting);
-                }
-
-
-                writer.WriteElementString("hostspace", portal.HostSpace.ToString());
-                writer.WriteElementString("userquota", portal.UserQuota.ToString());
-                writer.WriteElementString("pagequota", portal.PageQuota.ToString());
-
-                //End Portal Settings
-                writer.WriteEndElement();
-
-                var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
-                if (enabledLocales.Count > 1)
-                {
-                    writer.WriteStartElement("locales");
-                    if (chkMultilanguage.Checked)
-                    {
-                        foreach (ListItem item in chkLanguages.Items)
-                        {
-                            if (item.Selected)
-                            {
-                                writer.WriteElementString("locale", item.Value);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var enabledLocale in enabledLocales)
-                        {
-                            writer.WriteElementString("locale", enabledLocale.Value.Code);
-                        }
-
-                    }
-                    writer.WriteEndElement();
-
-                }
+                this.SerializePortalSettings(writer, portal);
+                this.SerializeEnabledLocales(writer, portal);
+                SerializeExtensionUrlProviders(writer, portal.PortalID);
 
                 if (chkProfile.Checked)
                 {
