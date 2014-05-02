@@ -31,5 +31,10 @@ namespace DotNetNuke.Entities.Host
 
             return domainName;
         }
+
+        public string GetServerUniqueId()
+        {
+            return Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
+        }
     }
 }

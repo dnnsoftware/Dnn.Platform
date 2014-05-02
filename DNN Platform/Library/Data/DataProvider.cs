@@ -33,6 +33,7 @@ using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.Hosting;
 
 using DotNetNuke.Common;
@@ -467,9 +468,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetServers");
         }
 
-        public virtual void UpdateServer(int serverId, string url, bool enabled, string group)
+        public virtual void UpdateServer(int serverId, string url, string uniqueId, bool enabled, string group)
         {
-            ExecuteNonQuery("UpdateServer", serverId, url, enabled, group);
+            ExecuteNonQuery("UpdateServer", serverId, url, uniqueId, enabled, group);
         }
 
         public virtual int UpdateServerActivity(string serverName, string iisAppName, DateTime createdDate,

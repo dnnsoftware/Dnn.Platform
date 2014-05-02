@@ -21,8 +21,21 @@
 
 namespace DotNetNuke.Entities.Host
 {
+    /// <summary>
+    /// IServerUrlAdapter used to get server's info when new server added into server collections.
+    /// </summary>
     public interface IServerUrlAdapter
     {
+        /// <summary>
+        /// Get the server's endpoint which can access the server directly.
+        /// </summary>
+        /// <returns></returns>
         string GetServerUrl();
+
+        /// <summary>
+        /// Get the server's unique id when server is behind affinity tool.
+        /// </summary>
+        /// <returns></returns>
+        string GetServerUniqueId();
     }
 }

@@ -66,6 +66,8 @@ namespace DotNetNuke.Entities.Host
 
         public int PingFailureCount { get; set; }
 
+        public string UniqueId { get; set; }
+
         #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
@@ -97,6 +99,10 @@ namespace DotNetNuke.Entities.Host
                 if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
                 {
                     ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                }
+                if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
+                {
+                    UniqueId = Null.SetNullString(dr["UniqueId"]);
                 }
             }
         }

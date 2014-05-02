@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Caching;
 
 using DotNetNuke.Common;
@@ -118,7 +119,7 @@ namespace DotNetNuke.Entities.Host
 
         public static void UpdateServer(ServerInfo server)
         {
-            DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.Enabled, server.ServerGroup);
+            DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.UniqueId, server.Enabled, server.ServerGroup);
             ClearCachedServers();
             
             if (!string.IsNullOrEmpty(server.Url) 
@@ -137,14 +138,19 @@ namespace DotNetNuke.Entities.Host
         {
             var serverExists = GetServers().Any(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
             var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount);
-            if (!serverExists)
+            
+            server.ServerID = serverId;
+            if (string.IsNullOrEmpty(server.Url) || string.IsNullOrEmpty(server.UniqueId))
             {
-                server.ServerID = serverId;
                 //try to detect the server url from url adapter.
-                server.Url = GetServerUrl();
+                server.Url = string.IsNullOrEmpty(server.Url) ? GetServerUrl() : server.Url;
+                //try to detect the server unique id from url adapter.
+                server.UniqueId = string.IsNullOrEmpty(server.UniqueId) ? GetServerUniqueId() : server.UniqueId;
+
                 UpdateServer(server);
             }
 
+            
             //log the server info
             var log = new LogInfo();
             log.AddProperty(serverExists ? "Server Updated" : "Add New Server", server.ServerName);
@@ -164,11 +170,9 @@ namespace DotNetNuke.Entities.Host
 
         private static string GetServerUrl()
         {
-            var adapterConfig = HostController.Instance.GetString("WebServer_UrlAdapter", DefaultUrlAdapter);
             try
             {
-                var adapterType = Reflection.CreateType(adapterConfig);
-                var adpapter = Reflection.CreateInstance(adapterType) as IServerUrlAdapter;
+                var adpapter = GetServerUrlAdapter();
                 if (adpapter == null)
                 {
                     return string.Empty;
@@ -181,6 +185,32 @@ namespace DotNetNuke.Entities.Host
                 Logger.Error(ex);
                 return string.Empty;
             }
+        }
+
+        private static string GetServerUniqueId()
+        {
+            try
+            {
+                var adpapter = GetServerUrlAdapter();
+                if (adpapter == null)
+                {
+                    return string.Empty;
+                }
+
+                return adpapter.GetServerUniqueId();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return string.Empty;
+            }
+        }
+
+        private static IServerUrlAdapter GetServerUrlAdapter()
+        {
+            var adapterConfig = HostController.Instance.GetString("WebServer_UrlAdapter", DefaultUrlAdapter);
+            var adapterType = Reflection.CreateType(adapterConfig);
+            return Reflection.CreateInstance(adapterType) as IServerUrlAdapter;
         }
     }
 }
