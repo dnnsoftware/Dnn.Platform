@@ -91,11 +91,7 @@
         </div>
         <div class="dnnFormItem">
             <dnn:Label ID="plServers" runat="server" ControlName="txtServers" />
-            <asp:CheckBoxList ID="lstServers" runat="server" />
-        </div>
-        <div class="dnnFormItem">
-            <dnn:Label ID="plAdditionalServers" runat="server" ControlName="txtAdditionalServers" />
-            <asp:TextBox ID="txtAdditionalServers" runat="server" />
+            <asp:TextBox ID="txtServers" runat="server" />
         </div>
     </fieldset>
     <ul class="dnnActions dnnClear">

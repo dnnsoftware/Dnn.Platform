@@ -129,69 +129,13 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 }
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
-                BindServers(scheduleItem.Servers);
+                txtServers.Text = scheduleItem.Servers;
             }
             else
             {
                 cmdDelete.Visible = false;
                 cmdRun.Visible = false;
                 txtType.Enabled = true;
-                LoadServers();
-            }
-        }
-
-        private void LoadServers()
-        {
-            var servers = ServerController.GetServers();
-
-            foreach (var webServer in servers)
-            {
-                if (webServer.Enabled)
-                {
-                    var serverName = ServerController.GetServerName(webServer);
-                    var serverItem = new ListItem(serverName, serverName);
-                    lstServers.Items.Add(serverItem);
-                }
-            }
-        }
-        private void BindServers(string selectedServers)
-        {
-            var servers = ServerController.GetServers();
-
-            foreach (var webServer in servers)
-            {
-                if (webServer.Enabled)
-                {
-                    var serverName = ServerController.GetServerName(webServer);
-                    var serverItem = new ListItem(serverName, serverName);
-                    if (string.IsNullOrEmpty(selectedServers))
-                    {
-                        serverItem.Selected = true;
-                    }
-                    else
-                    {
-                        serverItem.Selected = Null.NullBoolean;
-                        foreach (var selectedServer in selectedServers.Split(','))
-                        {
-                            if (selectedServer == serverName)
-                            {
-                                
-                                serverItem.Selected = true;
-                                break;
-                            }
-                           
-                        }
-                    }
-                    lstServers.Items.Add(serverItem);
-
-                }
-                 foreach (var selectedServer in selectedServers.Split(','))
-                {
-                    if (lstServers.Items.FindByText(selectedServer)==null && !String.IsNullOrEmpty(selectedServer))
-                    {
-                        txtAdditionalServers.Text = selectedServer;
-                    }
-                }
             }
         }
 
@@ -216,30 +160,25 @@ namespace DotNetNuke.Modules.Admin.Scheduler
 
             //if servers are specified, the concatenated string needs to be prefixed and suffixed by commas ( ie. ",SERVER1,SERVER2," )
             var servers = Null.NullString;
-            var bAllSelected = true;
-            foreach (ListItem item in lstServers.Items)
+
+            if (!String.IsNullOrEmpty(txtServers.Text))
             {
-                if (item.Selected)
-                {
-                    servers += "," + item.Value;
-                }
-                else
-                {
-                    bAllSelected = Null.NullBoolean;
-                }
+                servers = txtServers.Text;
+                
             }
-            if (!String.IsNullOrEmpty(txtAdditionalServers.Text))
-            {
-                servers += "," + txtAdditionalServers.Text;
-            }
-            if (bAllSelected && String.IsNullOrEmpty(txtAdditionalServers.Text))
-            {
-                servers = Null.NullString;
-            }
+            
             if (!string.IsNullOrEmpty(servers))
             {
-                scheduleItem.Servers = servers + ",";
+                if (!servers.StartsWith(","))
+                {
+                    servers = "," +servers; 
+                }
+                if (!servers.EndsWith(","))
+                {
+                    servers = servers + ",";
+                }
             }
+            scheduleItem.Servers = servers;
             return scheduleItem;
         }
 
