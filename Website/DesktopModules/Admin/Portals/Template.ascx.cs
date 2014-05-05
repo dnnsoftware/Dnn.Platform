@@ -35,7 +35,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
@@ -741,88 +741,9 @@ namespace DotNetNuke.Modules.Admin.Portals
                 var objportals = new PortalController();
                 objportal = objportals.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
-                writer.WriteStartElement("settings");
-
-                writer.WriteElementString("logofile", objportal.LogoFile);
-                writer.WriteElementString("footertext", objportal.FooterText);
-                writer.WriteElementString("userregistration", objportal.UserRegistration.ToString());
-                writer.WriteElementString("banneradvertising", objportal.BannerAdvertising.ToString());
-                writer.WriteElementString("defaultlanguage", objportal.DefaultLanguage);
-
-                Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(objportal.PortalID);
-
-                string setting = "";
-                settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("skinsrc", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("skinsrcadmin", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("containersrc", setting);
-                }
-                settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("containersrcadmin", setting);
-                }
-                settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("enableskinwidgets", setting);
-                }
-                settingsDictionary.TryGetValue("portalaliasmapping", out setting);
-                if (!String.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("portalaliasmapping", setting);
-                }
-
-                writer.WriteElementString("contentlocalizationenabled", chkMultilanguage.Checked.ToString());
-
-                settingsDictionary.TryGetValue("TimeZone", out setting);
-                if (!string.IsNullOrEmpty(setting))
-                {
-                    writer.WriteElementString("timezone", setting);
-                }
-
-                writer.WriteElementString("hostspace", objportal.HostSpace.ToString());
-                writer.WriteElementString("userquota", objportal.UserQuota.ToString());
-                writer.WriteElementString("pagequota", objportal.PageQuota.ToString());
-
-                //End Portal Settings
-                writer.WriteEndElement();
-
-                var enabledLocales = LocaleController.Instance.GetLocales(objportal.PortalID);
-                if (enabledLocales.Count > 1)
-                {
-                    writer.WriteStartElement("locales");
-                    if (chkMultilanguage.Checked)
-                    {
-                        foreach (ListItem item in chkLanguages.Items)
-                        {
-                            if (item.Selected)
-                            {
-                                writer.WriteElementString("locale", item.Value);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (var enabledLocale in enabledLocales)
-                        {
-                            writer.WriteElementString("locale", enabledLocale.Value.Code);
-                        }
-
-                    }
-                    writer.WriteEndElement();
-
-                }
+                this.SerializePortalSettings(writer, objportal);
+                this.SerializeEnabledLocales(writer, objportal);
+                SerializeExtensionUrlProviders(writer, objportal.PortalID);
 
                 if (chkProfile.Checked)
                 {
@@ -868,6 +789,140 @@ namespace DotNetNuke.Modules.Admin.Portals
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void SerializePortalSettings(XmlWriter writer, PortalInfo objportal)
+        {
+            writer.WriteStartElement("settings");
+
+            writer.WriteElementString("logofile", objportal.LogoFile);
+            writer.WriteElementString("footertext", objportal.FooterText);
+            writer.WriteElementString("userregistration", objportal.UserRegistration.ToString());
+            writer.WriteElementString("banneradvertising", objportal.BannerAdvertising.ToString());
+            writer.WriteElementString("defaultlanguage", objportal.DefaultLanguage);
+
+            Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(objportal.PortalID);
+
+            string setting;
+            settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("skinsrc", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultAdminSkin", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("skinsrcadmin", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultPortalContainer", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("containersrc", setting);
+            }
+            settingsDictionary.TryGetValue("DefaultAdminContainer", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("containersrcadmin", setting);
+            }
+            settingsDictionary.TryGetValue("EnableSkinWidgets", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("enableskinwidgets", setting);
+            }
+            settingsDictionary.TryGetValue("portalaliasmapping", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("portalaliasmapping", setting);
+            }
+
+            writer.WriteElementString("contentlocalizationenabled", this.chkMultilanguage.Checked.ToString());
+
+            settingsDictionary.TryGetValue("TimeZone", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("timezone", setting);
+            }
+
+            writer.WriteElementString("hostspace", objportal.HostSpace.ToString());
+            writer.WriteElementString("userquota", objportal.UserQuota.ToString());
+            writer.WriteElementString("pagequota", objportal.PageQuota.ToString());
+
+            //End Portal Settings
+            writer.WriteEndElement();
+        }
+
+        private void SerializeEnabledLocales(XmlWriter writer, PortalInfo objportal)
+        {
+            var enabledLocales = LocaleController.Instance.GetLocales(objportal.PortalID);
+            if (enabledLocales.Count > 1)
+            {
+                writer.WriteStartElement("locales");
+                if (this.chkMultilanguage.Checked)
+                {
+                    foreach (ListItem item in this.chkLanguages.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            writer.WriteElementString("locale", item.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var enabledLocale in enabledLocales)
+                    {
+                        writer.WriteElementString("locale", enabledLocale.Value.Code);
+                    }
+                }
+                writer.WriteEndElement();
+            }
+        }
+
+        private static void SerializeExtensionUrlProviders(XmlWriter writer, int portalId)
+        {
+            var providers = ExtensionUrlProviderController.GetModuleProviders(portalId);
+            if (!providers.Any())
+            {
+                return;
+            }
+
+            writer.WriteStartElement("extensionUrlProviders");
+
+            foreach (var provider in providers)
+            {
+                writer.WriteStartElement("extensionUrlProvider");
+                writer.WriteElementString("name", provider.ProviderConfig.ProviderName);
+                writer.WriteElementString("active", provider.ProviderConfig.IsActive.ToString());
+                var settings = provider.ProviderConfig.Settings;
+                if (settings.Any())
+                {
+                    writer.WriteStartElement("settings");
+                    foreach (var setting in settings)
+                    {
+                        writer.WriteStartElement("setting");
+                        writer.WriteAttributeString("name", setting.Key);
+                        writer.WriteAttributeString("value", setting.Value);
+                        writer.WriteEndElement();
+                    }
+
+                    writer.WriteEndElement();
+                }
+
+                ////if (provider.ProviderConfig.TabIds.Any())
+                ////{
+                ////    writer.WriteStartElement("tabIds");
+                ////    foreach (var tabId in provider.ProviderConfig.TabIds)
+                ////    {
+                ////        writer.WriteElementString("tabId", tabId.ToString(CultureInfo.InvariantCulture));
+                ////    }
+
+                ////    writer.WriteEndElement();
+                ////}
+
+                writer.WriteEndElement();
+            }
+
+            writer.WriteEndElement();
         }
 
         private void cboPortals_SelectedIndexChanged(object sender, EventArgs e)

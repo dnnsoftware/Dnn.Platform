@@ -45,6 +45,32 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="extensionUrlProviders" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="extensionUrlProvider" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="active" type="xs:string" minOccurs="1" maxOccurs="1" />
+                      <xs:element name="settings" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                              <xs:sequence>
+                                  <xs:element name="setting" minOccurs="0" maxOccurs="unbounded">
+                                      <xs:complexType>
+                                          <xs:attribute name="name" type="xs:string"/>
+                                          <xs:attribute name="value" type="xs:string"/>
+                                      </xs:complexType>
+                                  </xs:element>
+                              </xs:sequence>
+                          </xs:complexType>
+                      </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="profiledefinitions" maxOccurs="1" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
@@ -244,6 +270,13 @@
                               </xs:all>
                             </xs:complexType>
                           </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="taburls" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="taburl" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
