@@ -1,6 +1,7 @@
-#region Copyright
+﻿#region Copyright
+
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,19 +18,28 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
+
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
-using DotNetNuke.Framework;
-
-namespace DotNetNuke.Entities.Modules.Internal
+namespace DotNetNuke.Entities.Users.Internal
 {
-     [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead")]
-    public class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Entities.Users instead")]
+    public interface IUserController
     {
-        protected override Func<IModuleController> GetFactory()
-        {
-            return () => new ModuleController();
-        }
+        UserInfo GetUserByDisplayname(int portalId, string displayName);
+
+        UserInfo GetUserById(int portalId, int userId);
+
+        IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
+                                                    bool isAdmin, int pageIndex, int pageSize, string sortColumn,
+                                                    bool sortAscending, string propertyNames, string propertyValues);
+
+        IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,
+                                                bool sortAscending, string propertyName, string propertyValue);
     }
 }

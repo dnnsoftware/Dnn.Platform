@@ -1,7 +1,6 @@
-﻿#region Copyright
-
+#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke� - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,25 +17,37 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
-
-#region Usings
-
 using System;
+using System.ComponentModel;
+using System.Reflection;
 
 using DotNetNuke.Framework;
 
-#endregion
-
-namespace DotNetNuke.Entities.Users.Internal
+namespace DotNetNuke.Entities.Modules.Internal
 {
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead")]
-    public class TestableUserController : ServiceLocator<IUserController, TestableUserController>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use ModuleController instead")]
+    public class TestableModuleController : ServiceLocator<IModuleController, TestableModuleController>, IModuleController
     {
-        protected override Func<IUserController> GetFactory()
+        protected override Func<IModuleController> GetFactory()
         {
-            return () => new UserController();
+            return () => new TestableModuleController();
         }
+
+         public ModuleInfo GetModule(int moduleId, int tabId)
+         {
+             return ModuleController.Instance.GetModule(moduleId, tabId, false);
+         }
+
+         public void UpdateModuleSetting(int moduleId, string settingName, string settingValue)
+         {
+             ModuleController.Instance.UpdateModuleSetting(moduleId, settingName, settingValue);
+         }
+
+         public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
+         {
+             ModuleController.Instance.UpdateTabModuleSetting(tabModuleId, settingName, settingValue);
+         }
     }
 }

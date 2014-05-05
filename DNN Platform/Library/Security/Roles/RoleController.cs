@@ -31,7 +31,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Localization;
@@ -50,11 +49,6 @@ namespace DotNetNuke.Security.Roles
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
         private static readonly string[] UserRoleActionsCaption = { "ASSIGNMENT", "UPDATE", "UNASSIGNMENT" };
         private static readonly RoleProvider provider = RoleProvider.Instance();
-
-        public RoleController()
-        {
-            
-        }
 
         private enum UserRoleActions
         {

@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Web.Api;
 using Moq;
 using NUnit.Framework;

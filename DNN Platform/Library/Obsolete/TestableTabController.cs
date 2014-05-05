@@ -1,6 +1,7 @@
-﻿#region Copyright
+#region Copyright
+
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke� - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -17,53 +18,55 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Services.Description;
 
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Entities.Portals.Internal
+namespace DotNetNuke.Entities.Tabs.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead")]
-    public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
+    [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead")]
+    public class TestableTabController : ServiceLocator<DotNetNuke.Entities.Tabs.Internal.ITabController, TestableTabController>, ITabController
     {
-        protected override Func<IPortalAliasController> GetFactory()
+        protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()
         {
-            return () => new TestablePortalAliasController();
+            return () => new TestableTabController();
         }
 
-        public int AddPortalAlias(PortalAliasInfo portalAlias)
+        public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
-            return PortalAliasController.Instance.AddPortalAlias(portalAlias);
+            TabController.Instance.DeleteTabUrl(tabUrl, portalId, clearCache);
         }
 
-        public void DeletePortalAlias(PortalAliasInfo portalAlias)
+        public TabInfo GetTab(int tabId, int portalId)
         {
-            PortalAliasController.Instance.DeletePortalAlias(portalAlias);
+            return TabController.Instance.GetTab(tabId, portalId);
         }
 
-        public PortalAliasInfo GetPortalAlias(string alias)
+        public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)
         {
-            return PortalAliasController.Instance.GetPortalAlias(alias);
+            return TabController.Instance.GetCustomAliases(tabId, portalId);
         }
 
-        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
+        public List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId)
         {
-            return PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            return TabController.Instance.GetAliasSkins(tabId, portalId);
         }
 
-        public IDictionary<string, PortalAliasInfo> GetPortalAliases()
+        public List<TabUrlInfo> GetTabUrls(int tabId, int portalId)
         {
-            return PortalAliasController.Instance.GetPortalAliases();
+            return TabController.Instance.GetTabUrls(tabId, portalId);
         }
 
-        public void UpdatePortalAlias(PortalAliasInfo portalAlias)
+        public void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
-            PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+            TabController.Instance.SaveTabUrl(tabUrl, portalId, clearCache);
         }
     }
 }

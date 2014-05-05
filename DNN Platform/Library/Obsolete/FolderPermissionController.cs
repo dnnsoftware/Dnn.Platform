@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -35,6 +36,7 @@ namespace DotNetNuke.Security.Permissions
 {
     public partial class FolderPermissionController
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1.")]
         public int AddFolderPermission(FolderPermissionInfo objFolderPermission)
         {
@@ -47,12 +49,14 @@ namespace DotNetNuke.Security.Permissions
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1.")]
         public void DeleteFolderPermission(int FolderPermissionID)
         {
             DataProvider.Instance().DeleteFolderPermission(FolderPermissionID);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1.")]
         public void DeleteFolderPermissionsByFolder(int PortalID, string FolderPath)
         {
@@ -60,6 +64,7 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(PortalID);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.0. Use DeleteFolderPermissionsByUser(UserInfo) ")]
         public void DeleteFolderPermissionsByUserID(UserInfo objUser)
         {
@@ -67,24 +72,28 @@ namespace DotNetNuke.Security.Permissions
             ClearPermissionCache(objUser.PortalID);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1.")]
         public FolderPermissionInfo GetFolderPermission(int FolderPermissionID)
         {
             return CBO.FillObject<FolderPermissionInfo>(DataProvider.Instance().GetFolderPermission(FolderPermissionID));
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolderPath(PortalId, Folder)")]
         public ArrayList GetFolderPermissionsByFolder(int PortalID, string Folder)
         {
             return CBO.FillCollection(DataProvider.Instance().GetFolderPermissionsByFolderPath(PortalID, Folder, -1), typeof(FolderPermissionInfo));
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolderPath(PortalId, Folder)")]
         public FolderPermissionCollection GetFolderPermissionsByFolder(ArrayList arrFolderPermissions, string FolderPath)
         {
             return new FolderPermissionCollection(arrFolderPermissions, FolderPath);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1. GetModulePermissions(ModulePermissionCollection, String) ")]
         public string GetFolderPermissionsByFolderPath(ArrayList arrFolderPermissions, string FolderPath, string PermissionKey)
         {
@@ -95,12 +104,14 @@ namespace DotNetNuke.Security.Permissions
             return folderPermissions.ToString(PermissionKey);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolder(PortalId, Folder)")]
         public FolderPermissionCollection GetFolderPermissionsCollectionByFolderPath(int PortalID, string Folder)
         {
             return GetFolderPermissionsCollectionByFolder(PortalID, Folder);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolder(PortalId, Folder)")]
         public FolderPermissionCollection GetFolderPermissionsCollectionByFolderPath(ArrayList arrFolderPermissions, string FolderPath)
         {
@@ -108,6 +119,7 @@ namespace DotNetNuke.Security.Permissions
             return objFolderPermissionCollection;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 5.1.")]
         public void UpdateFolderPermission(FolderPermissionInfo objFolderPermission)
         {

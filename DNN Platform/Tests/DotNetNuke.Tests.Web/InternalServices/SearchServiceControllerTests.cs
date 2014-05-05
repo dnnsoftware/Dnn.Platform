@@ -24,46 +24,26 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web.Http;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals.Data;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
-using Lucene.Net.Documents;
-using Lucene.Net.Search;
 using Moq;
 
 using NUnit.Framework;
 using Constants = DotNetNuke.Services.Search.Internals.Constants;
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Web.Api;
-using System.Web.Caching;
-using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Web.InternalServices;
-using System.Web.Http.Hosting;
 using DotNetNuke.Web.InternalServices.Views.Search;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Common;
-using System.Text;
-using Lucene.Net.Index;
-using Match = Moq.Match;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Membership;
 
 namespace DotNetNuke.Tests.Web.InternalServices
 {
