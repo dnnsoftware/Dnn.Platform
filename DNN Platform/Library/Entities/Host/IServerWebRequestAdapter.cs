@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <param name="request">The Http Request Object.</param>
         /// <param name="server">The Server Info Object.</param>
-        void PorcessRequest(HttpWebRequest request, ServerInfo server);
+        void ProcessRequest(HttpWebRequest request, ServerInfo server);
 
         /// <summary>
         /// Check whether response is return from correct server.

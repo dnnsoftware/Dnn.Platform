@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <param name="request">The Http Request Object.</param>
         /// <param name="server">The Server Info Object.</param>
-        public void PorcessRequest(HttpWebRequest request, ServerInfo server)
+        public void ProcessRequest(HttpWebRequest request, ServerInfo server)
         {
             if (!string.IsNullOrEmpty(server.UniqueId) && !string.IsNullOrEmpty(UniqueIdHeaderName))
             {
