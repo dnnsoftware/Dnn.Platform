@@ -19,12 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Net;
+using System.Web;
+
 namespace DotNetNuke.Entities.Host
 {
     /// <summary>
-    /// IServerUrlAdapter used to get server's info when new server added into server collections.
+    /// IServerWebRequestAdapter used to get server's info when new server added into server collections.
+    /// Also it can process the request when send to a server, like sync cache, detect server etc.
     /// </summary>
-    public interface IServerUrlAdapter
+    public interface IServerWebRequestAdapter
     {
         /// <summary>
         /// Get the server's endpoint which can access the server directly.
@@ -37,5 +41,19 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <returns></returns>
         string GetServerUniqueId();
+
+        /// <summary>
+        /// Process Request before the request send to server.
+        /// </summary>
+        /// <param name="request">The Http Request Object.</param>
+        /// <param name="server">The Server Info Object.</param>
+        void PorcessRequest(HttpWebRequest request, ServerInfo server);
+
+        /// <summary>
+        /// Check whether response is return from correct server.
+        /// </summary>
+        /// <param name="response">The Http Response Object.</param>
+        /// <param name="statusCode">Out status code if you think the status need change.</param>
+        void CheckResponse(HttpWebResponse response, ServerInfo server, ref HttpStatusCode statusCode);
     }
 }

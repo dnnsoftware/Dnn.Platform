@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Host
     public class ServerController
     {
 
-        public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerUrlAdapter, DotNetNuke";
+        public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerWebRequestAdapter, DotNetNuke";
 
         private const string cacheKey = "WebServers";
         private const int cacheTimeout = 20;
@@ -163,6 +163,13 @@ namespace DotNetNuke.Entities.Host
             ClearCachedServers();
         }
 
+        public static ServerWebRequestAdapter GetServerWebRequestAdapter()
+        {
+            var adapterConfig = HostController.Instance.GetString("WebServer_ServerRequestAdapter", DefaultUrlAdapter);
+            var adapterType = Reflection.CreateType(adapterConfig);
+            return Reflection.CreateInstance(adapterType) as ServerWebRequestAdapter;
+        }
+
         private static object GetServersCallBack(CacheItemArgs cacheItemArgs)
         {
             return CBO.FillCollection<ServerInfo>(dataProvider.GetServers());
@@ -172,7 +179,7 @@ namespace DotNetNuke.Entities.Host
         {
             try
             {
-                var adpapter = GetServerUrlAdapter();
+                var adpapter = GetServerWebRequestAdapter();
                 if (adpapter == null)
                 {
                     return string.Empty;
@@ -191,7 +198,7 @@ namespace DotNetNuke.Entities.Host
         {
             try
             {
-                var adpapter = GetServerUrlAdapter();
+                var adpapter = GetServerWebRequestAdapter();
                 if (adpapter == null)
                 {
                     return string.Empty;
@@ -204,13 +211,6 @@ namespace DotNetNuke.Entities.Host
                 Logger.Error(ex);
                 return string.Empty;
             }
-        }
-
-        private static IServerUrlAdapter GetServerUrlAdapter()
-        {
-            var adapterConfig = HostController.Instance.GetString("WebServer_UrlAdapter", DefaultUrlAdapter);
-            var adapterType = Reflection.CreateType(adapterConfig);
-            return Reflection.CreateInstance(adapterType) as IServerUrlAdapter;
         }
     }
 }
