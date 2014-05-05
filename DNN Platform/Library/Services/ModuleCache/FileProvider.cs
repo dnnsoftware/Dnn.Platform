@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.ModuleCache
 
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
-            string homeDirectoryMapPath = portalInfo.HomeDirectoryMapPath;
+            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
 
             if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))

@@ -176,6 +176,8 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
         public Guid GUID { get; set; }
         public string HomeDirectory { get; set; }
+        
+        public string HomeSystemDirectory { get; set; }
         public int HomeTabId { get; set; }
         public float HostFee { get; set; }
         public int HostSpace { get; set; }
@@ -494,6 +496,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         public string HomeDirectoryMapPath { get; private set; }
+
+        public string HomeSystemDirectoryMapPath { get; private set; }
 
         public bool IncludePortalCss
         {
@@ -1106,8 +1110,9 @@ namespace DotNetNuke.Entities.Portals
             ErrorPage404 = portal.Custom404TabId;
             ErrorPage500 = portal.Custom500TabId;
             DefaultLanguage = portal.DefaultLanguage;
-            HomeDirectory = portal.HomeDirectory;
+            //HomeDirectory = portal.HomeDirectory;            
             HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
+            HomeSystemDirectoryMapPath = portal.HomeSystemDirectoryMapPath;
             Pages = portal.Pages;
             Users = portal.Users;
             CultureCode = portal.CultureCode;
@@ -1122,6 +1127,7 @@ namespace DotNetNuke.Entities.Portals
                 DefaultLanguage = Localization.SystemLocale;
             }
             HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
+            HomeSystemDirectory = Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/";
 
             //verify tab for portal. This assigns the Active Tab based on the Tab Id/PortalId
             if (VerifyPortalTab(PortalId, tabID))

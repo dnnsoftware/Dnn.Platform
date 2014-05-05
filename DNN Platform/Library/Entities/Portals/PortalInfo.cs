@@ -286,6 +286,17 @@ namespace DotNetNuke.Entities.Portals
         public string HomeDirectory { get; set; }
 
         /// <summary>
+        /// Home System (local) directory of the portal (logical path)
+        /// </summary>
+        /// <value>Portal home system directory</value>
+        /// <returns>Portal home system directory in local filesystem</returns>
+        /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
+        [XmlElement("homesystemdirectory")]
+        public string HomeSystemDirectory {
+            get { return String.Format("{0}-System", HomeDirectory); }
+        }
+
+        /// <summary>
         /// TabdId of the Home page
         /// </summary>
         /// <value>TabId of the Home page</value>
@@ -692,6 +703,21 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeDirectory.Replace("/", "\\"));
+            }
+        }
+
+        /// <summary>
+        /// Fysical path on disk of the home directory of the portal
+        /// </summary>
+        /// <value></value>
+        /// <returns>Fully qualified path of the home system (local) directory</returns>
+        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
+        [XmlIgnore]
+        public string HomeSystemDirectoryMapPath
+        {
+            get
+            {
+                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeSystemDirectory.Replace("/", "\\"));
             }
         }
 
