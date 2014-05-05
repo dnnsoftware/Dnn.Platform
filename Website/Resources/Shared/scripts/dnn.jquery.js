@@ -2611,7 +2611,8 @@
                 var filesCombo = dnn[settings.filesComboId];
                 var selectedFileId = filesCombo.selectedItem() ? filesCombo.selectedItem().key : null;
                 url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
-                if (selectedFileId) {
+             	var fileId  = selectedFileId ? parseInt(selectedFileId) : 0;
+                if (fileId > 0) {
                     $.ajax({
                         url: url,
                         type: 'GET',
