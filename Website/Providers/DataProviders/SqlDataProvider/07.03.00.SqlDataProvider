@@ -611,6 +611,64 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes
 		INCLUDE ([GroupId])
 GO
 
+/***** Fix bug Content-2481: add workflow source table to store the workflow caller. *****/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}ContentWorkflowSources') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}ContentWorkflowSources
+			(
+				[SourceID] INT NOT NULL IDENTITY (1, 1),
+				[WorkflowID] INT NOT NULL,
+				[SourceName] NVARCHAR(20) NOT NULL,
+				[SourceType] NVARCHAR(250) NOT NULL
+				CONSTRAINT [PK_{objectQualifier}ContentWorkflowSources] PRIMARY KEY CLUSTERED (SourceID),
+				CONSTRAINT [IX_{objectQualifier}ContentWorkflowSources] UNIQUE NONCLUSTERED  (WorkflowID ASC, SourceName ASC),
+				CONSTRAINT [FK_{objectQualifier}ContentWorkflowSources_{objectQualifier}ContentWorkflows] FOREIGN KEY (WorkflowID) 
+					REFERENCES {databaseOwner}{objectQualifier}ContentWorkflows (WorkflowID) ON DELETE  CASCADE
+			) 
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentWorkflowSource]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowSource]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowSource]
+	@WorkflowID INT,
+    @SourceName NVARCHAR(20)
+AS
+    SELECT 
+		[SourceID],
+		[WorkflowID],
+		[SourceName],
+		[SourceType]
+	FROM {databaseOwner}{objectQualifier}ContentWorkflowSources
+    WHERE WorkflowID = @WorkflowID AND SourceName = @SourceName
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddContentWorkflowSource]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddContentWorkflowSource]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddContentWorkflowSource]
+	@WorkflowID INT,
+    @SourceName NVARCHAR(20),
+    @SourceType NVARCHAR(250)
+AS
+    INSERT INTO  {databaseOwner}{objectQualifier}ContentWorkflowSources(
+		[WorkflowID],
+		[SourceName],
+		[SourceType])
+    VALUES(
+        @WorkflowID,
+        @SourceName,
+        @SourceType
+    )
+
+    SELECT SCOPE_IDENTITY()
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

@@ -260,6 +260,8 @@
     <Compile Include="Entities\Content\Taxonomy\TermUsage.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowController.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowLogType.cs" />
+    <Compile Include="Entities\Content\Workflow\ContentWorkflowSource.cs" />
+    <Compile Include="Entities\Content\Workflow\IContentWorkflowAction.cs" />
     <Compile Include="Entities\Content\Workflow\IContentWorkflowController.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflow.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowLog.cs" />

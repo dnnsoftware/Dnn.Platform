@@ -4010,6 +4010,17 @@ namespace DotNetNuke.Data
         {
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
+
+        public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
+        {
+            return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
+        }
+
+        public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
+        {
+            return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
+        }
+
         #endregion
 
         #region Search Crawler

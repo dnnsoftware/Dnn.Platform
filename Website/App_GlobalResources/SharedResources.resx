@@ -1878,4 +1878,7 @@
   <data name="ChooseFile.Text" xml:space="preserve">
     <value>Choose File</value>
   </data>
+  <data name="Proceed.Text" xml:space="preserve">
+    <value>Proceed</value>
+  </data>
 </root>
