@@ -1613,7 +1613,7 @@ namespace DotNetNuke.Services.FileSystem
                                         ? String.Empty
                                         : (String.IsNullOrEmpty(baseMappedPath))
                                             ? mappedPath
-                                            : mappedPath.Replace(baseMappedPath, "");
+                                            : new Regex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
 
                 var folderPath = baseFolderPath + relativePath;
 
