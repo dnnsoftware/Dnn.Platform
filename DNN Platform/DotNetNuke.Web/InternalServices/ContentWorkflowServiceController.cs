@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage Proceed(NotificationDTO postData)
+        public HttpResponseMessage Review(NotificationDTO postData)
         {
             try
             {
