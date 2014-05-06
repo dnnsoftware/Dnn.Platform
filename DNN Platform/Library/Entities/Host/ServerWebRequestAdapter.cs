@@ -13,15 +13,6 @@ namespace DotNetNuke.Entities.Host
 {
     public class ServerWebRequestAdapter : IServerWebRequestAdapter
     {
-        #region Private Properties
-
-        private string UniqueIdHeaderName
-        {
-            get { return HostController.Instance.GetString("WebServer_UniqueIdHeaderName", string.Empty); }
-        }
-
-        #endregion
-
         /// <summary>
         /// Get the server's endpoint which can access the server directly.
         /// </summary>
@@ -53,7 +44,7 @@ namespace DotNetNuke.Entities.Host
         /// <returns></returns>
         public virtual string GetServerUniqueId()
         {
-            return Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
+            return string.Empty;
         }
 
         /// <summary>
@@ -61,17 +52,8 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <param name="request">The Http Request Object.</param>
         /// <param name="server">The Server Info Object.</param>
-        public void ProcessRequest(HttpWebRequest request, ServerInfo server)
+        public virtual void ProcessRequest(HttpWebRequest request, ServerInfo server)
         {
-            if (!string.IsNullOrEmpty(server.UniqueId) && !string.IsNullOrEmpty(UniqueIdHeaderName))
-            {
-                if (request.CookieContainer == null)
-                {
-                    request.CookieContainer = new CookieContainer();
-                }
-
-                request.CookieContainer.Add(new Cookie(UniqueIdHeaderName, server.UniqueId){Domain = request.Host});
-            }
         }
 
         /// <summary>
@@ -79,13 +61,8 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <param name="response">The Http Response Object.</param>
         /// <param name="statusCode">Out status code if you think the status need change.</param>
-        public void CheckResponse(HttpWebResponse response, ServerInfo server, ref HttpStatusCode statusCode)
+        public virtual void CheckResponse(HttpWebResponse response, ServerInfo server, ref HttpStatusCode statusCode)
         {
-            if ((response.Headers.AllKeys.Contains(UniqueIdHeaderName) && response.Headers[UniqueIdHeaderName] != server.UniqueId)
-                            || (response.Headers["Set-Cookie"].Contains(UniqueIdHeaderName) && !response.Headers["Set-Cookie"].Contains(UniqueIdHeaderName + "=" + server.UniqueId)))
-            {
-                statusCode = HttpStatusCode.ServiceUnavailable;
-            }
         }
     }
 }
