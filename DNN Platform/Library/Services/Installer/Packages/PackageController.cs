@@ -221,7 +221,19 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
-            return GetExtensionPackages(portalId).FirstOrDefault(predicate);
+            return GetExtensionPackage(portalId, predicate, false);
+        }
+
+        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
+        {
+            var package = GetExtensionPackages(portalId).FirstOrDefault(predicate);
+
+            if (package != null && useCopy)
+            {
+                return package.Clone();
+            }
+
+            return package;
         }
 
         public IList<PackageInfo> GetExtensionPackages(int portalId)
