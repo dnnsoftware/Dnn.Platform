@@ -160,6 +160,16 @@
 
 })(jQuery);
 
+(function($) {
+    if ($.dnnConfirm) return;
+
+    $.dnnConfirm = function (opts) {
+        var defaultAction = opts.actionUrl ? opts.actionUrl : 'javascript:void(0);';
+        var shadowLink = $('<a href="' + defaultAction + '" />');
+        shadowLink.dnnConfirm(opts).click();
+    };
+})(jQuery);
+
 (function ($) {
     $.dnnAlert = function (options) {
         var opts = $.extend({}, $.dnnAlert.defaultOptions, options),
