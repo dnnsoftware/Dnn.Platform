@@ -55,7 +55,7 @@
 				</div>    
 				<div class="dnnFormItem">
 					<dnn:Label ID="plParentTab" runat="server" ResourceKey="ParentTab" ControlName="cboParentTab" />
-                    <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" />
+                    <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" IncludeAllTabTypes="True" IncludeDisabledTabs="True" />
 				</div>    
 				<div id="insertPositionRow" class="dnnFormItem" runat="server" ViewStateMode="Disabled">
                     <div>
@@ -88,7 +88,7 @@
 				<div id="copyPanel" runat="server">
 					<div class="dnnFormItem">
 						<dnn:Label ID="plCopyPage" runat="server" ResourceKey="CopyModules" Suffix=":" HelpKey="CopyModulesHelp" ControlName="cboCopyPage" />
-                        <dnn:DnnPageDropDownList ID="cboCopyPage" runat="server" AutoPostBack="True" CausesValidation="False" IncludeAllTabTypes="True" />
+                        <dnn:DnnPageDropDownList ID="cboCopyPage" runat="server" AutoPostBack="True" CausesValidation="False" IncludeAllTabTypes="True" IncludeDisabledTabs="True" />
 					</div>    	
 					<div id="modulesRow" runat="server" class="dnnFormItem" ViewStateMode="Disabled">
 						<dnn:Label ID="plModules" runat="server" ResourceKey="CopyContent" Suffix=":" HelpKey="CopyContentHelp" ControlName="grdModules" />
