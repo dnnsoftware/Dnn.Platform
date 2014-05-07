@@ -444,7 +444,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 BindBeforeAfterTabControls();
                 insertPositionRow.Visible = cboPositionTab.Items.Count > 0;
                 cboParentTab.AutoPostBack = true;
-                cultureTypeList.SelectedValue = "Localized";
+                cultureTypeList.SelectedValue = PortalController.GetPortalSetting("CreateNewPageCultureType", PortalId, "Localized");
+
             }
             else
             {
@@ -800,6 +801,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         default:
                             Tab.CultureCode = Null.NullString;
                             break;
+                    }
+                    if (PortalController.GetPortalSetting("CreateNewPageCultureType", PortalId, "Localized") != cultureTypeList.SelectedValue)
+                    {
+                        PortalController.UpdatePortalSetting(PortalId, "CreateNewPageCultureType", cultureTypeList.SelectedValue, true);
                     }
 
                     var tabLocale = LocaleController.Instance.GetLocale(Tab.CultureCode) ?? LocaleController.Instance.GetDefaultLocale(PortalId);
