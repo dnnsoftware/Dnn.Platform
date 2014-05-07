@@ -182,6 +182,7 @@ namespace DotNetNuke.UI.ControlPanel
 
 				if ((!IsPostBack && Visible && Enabled))
 				{
+				    AddNewModule.Checked = true;
 					LoadAllLists();
 				}
 			}

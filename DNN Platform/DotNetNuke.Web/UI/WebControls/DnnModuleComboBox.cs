@@ -79,6 +79,17 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public override bool Enabled {
+            get
+            {
+                return _moduleCombo.Enabled;
+            }
+            set
+            {
+                _moduleCombo.Enabled = value;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -208,6 +219,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void BindAllPortalDesktopModules()
         {
+            _moduleCombo.SelectedValue = null;
             _moduleCombo.DataSource = GetPortalDesktopModules();
             _moduleCombo.DataBind();
             BindPortalDesktopModuleImages();
@@ -215,6 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void BindTabModulesByTabID(int tabID)
         {
+            _moduleCombo.SelectedValue = null;
             _moduleCombo.DataSource = GetTabModules(tabID);
             _moduleCombo.DataBind();
             BindTabModuleImages(tabID);
