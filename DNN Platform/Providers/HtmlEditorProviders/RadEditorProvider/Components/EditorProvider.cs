@@ -959,7 +959,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                 string styleOverrideScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/overrideCSS.js");
                 ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "OverrideCSS", styleOverrideScriptPath);
-                _editor.Skin = "Black";
+                //_editor.Skin = "Black";
 	            _editor.PreventDefaultStylesheet = true;
             }
             else
