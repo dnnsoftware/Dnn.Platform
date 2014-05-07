@@ -1607,8 +1607,13 @@ div.dnnTagsInput > div > input:focus {
     font-size: 12px;
     display: inline-block;
     vertical-align: top;
-    padding: 3px 0 3px 0;
+    height: 19px;
+    padding: 3px 0 3px 3px;
     margin-bottom: 5px;
+}
+
+div.dnnTagsInput > div > input::-ms-clear {
+  display: none;
 }
 
 div.dnnTagsInput div {
@@ -1712,7 +1717,6 @@ div.dnnTagsInput div.dnnTags_filter a.dnnSearchButton {
 div.dnnTagsInput > div > input.dnnTagsInvalid {
     display: block;
     float: left;
-    padding: 3px 0 3px 0;
     margin-right: 5px;
     border: none;
     outline: none;
