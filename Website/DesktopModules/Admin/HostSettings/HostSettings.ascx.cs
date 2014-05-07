@@ -182,11 +182,11 @@ namespace DotNetNuke.Modules.Admin.Host
         {
             jQueryVersion.Text = jQuery.Version;
             jQueryUIVersion.Text = jQuery.UIVersion;
-            chkJQueryDebugVersion.Checked = jQuery.UseDebugScript;
-            chkJQueryUseHosted.Checked = jQuery.UseHostedScript;
-            txtJQueryHostedUrl.Text = jQuery.HostedUrl;
-	        txtJQueryMigrateHostedUrl.Text = jQuery.HostedMigrateUrl;
-            txtJQueryUIHostedUrl.Text = jQuery.HostedUIUrl;
+            ////chkJQueryDebugVersion.Checked = jQuery.UseDebugScript;
+            ////chkJQueryUseHosted.Checked = jQuery.UseHostedScript;
+            ////txtJQueryHostedUrl.Text = jQuery.HostedUrl;
+            ////txtJQueryMigrateHostedUrl.Text = jQuery.HostedMigrateUrl;
+            ////txtJQueryUIHostedUrl.Text = jQuery.HostedUIUrl;
         }
 
 		private void BindCdnSettings()
@@ -890,11 +890,11 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("DefaultAdminSkin", editSkinCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultPortalContainer", hostContainerCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultAdminContainer", editContainerCombo.SelectedValue, false);
-                    HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
-                    HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
-                    HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
-					HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
-                    HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
+                    ////HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
+                    ////HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
