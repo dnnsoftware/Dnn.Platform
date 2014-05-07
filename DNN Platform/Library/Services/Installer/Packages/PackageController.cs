@@ -318,9 +318,9 @@ namespace DotNetNuke.Services.Installer.Packages
                         SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
                         string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
                                                                 ? Path.Combine(Globals.HostMapPath, strRootSkin)
-                                                                : Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                                                                : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
-                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
                         break;
                     case "Provider":
                         //Check if the provider is the default provider

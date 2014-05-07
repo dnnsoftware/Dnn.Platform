@@ -454,9 +454,8 @@ namespace DotNetNuke.Services.FileSystem
                 if (FolderProvider.Instance(parentFolderMapping.FolderProviderType).SupportsMappedPaths)
                 {
                     folderMapping = parentFolderMapping;
-                    mappedPath =
-                        PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath +
-                                                            folderPath.Replace(parentFolder.FolderPath, string.Empty));
+                    mappedPath = String.IsNullOrEmpty(parentFolder.FolderPath) ? PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath)
+                                                                            : PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath.Replace(parentFolder.FolderPath, string.Empty));
                 }
                 else if (!FolderProvider.Instance(folderMapping.FolderProviderType).SupportsMappedPaths)
                 {

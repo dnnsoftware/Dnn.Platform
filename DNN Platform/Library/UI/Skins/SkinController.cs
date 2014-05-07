@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.Skins
 
             if (portalInfo != null)
             {
-                string rootFolder = portalInfo.HomeDirectoryMapPath + skinRoot;
+                string rootFolder = portalInfo.HomeSystemDirectoryMapPath + skinRoot;
                 if (Directory.Exists(rootFolder))
                 {
                     foreach (string skinFolder in Directory.GetDirectories(rootFolder))
@@ -242,7 +242,7 @@ namespace DotNetNuke.UI.Skins
                         strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
                         break;
                     case "[l]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
+                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
                         break;
                 }
             }

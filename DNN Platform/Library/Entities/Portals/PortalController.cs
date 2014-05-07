@@ -1132,31 +1132,18 @@ namespace DotNetNuke.Entities.Portals
 
                     if (objInfo == null)
                     {
-                        isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
-
-                        if (isProtected)
+                        try
                         {
-                            //protected folders must use insecure storage
+                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(PortalId, folderPath) ??
+                                            GetFolderMappingFromStorageLocation(PortalId, node);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
                             folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
                         }
-                        else
-                        {
-                            try
-                            {
-                                folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(PortalId, folderPath); 
-                                if (folderMapping == null)
-                                {
-                                    folderMapping = GetFolderMappingFromStorageLocation(PortalId, node);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Logger.Error(ex);
-                                folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                            }
+                        isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
 
-                            isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
-                        }
                         try
                         {
                             //Save new folder
