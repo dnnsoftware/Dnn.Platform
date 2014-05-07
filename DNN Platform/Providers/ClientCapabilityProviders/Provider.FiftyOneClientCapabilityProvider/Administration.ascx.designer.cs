@@ -13,6 +13,24 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
     public partial class Administration {
         
         /// <summary>
+        /// cbDetectionEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbDetectionEnabled;
+        
+        /// <summary>
+        /// cbAutoUpdatesEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAutoUpdatesEnabled;
+        
+        /// <summary>
         /// Activate control.
         /// </summary>
         /// <remarks>
@@ -38,6 +56,15 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl purchaseBox;
+        
+        /// <summary>
+        /// cbDetectionEnabledPremium control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbDetectionEnabledPremium;
         
         /// <summary>
         /// PremiumStats control.
@@ -74,6 +101,15 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::FiftyOne.Foundation.UI.Web.Upload PremiumUpload;
+        
+        /// <summary>
+        /// cbAutoUpdatesEnabledPremium control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbAutoUpdatesEnabledPremium;
         
         /// <summary>
         /// NoResultsMessage control.

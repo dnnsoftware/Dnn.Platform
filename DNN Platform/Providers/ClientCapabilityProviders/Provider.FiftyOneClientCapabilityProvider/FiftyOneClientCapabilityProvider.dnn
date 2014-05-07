@@ -145,7 +145,7 @@
               <configuration>
                 <nodes>
                   <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="overwrite">
-                    <detection binaryFilePath="~/App_Data/51Degrees-Lite.dat"
+                    <detection enabled="true" autoUpdate="true" binaryFilePath="~/App_Data/51Degrees-Lite.dat"
                         bandwidthMonitoringEnabled="false"
                         featureDetectionEnabled="false"
                         memoryMode="false"

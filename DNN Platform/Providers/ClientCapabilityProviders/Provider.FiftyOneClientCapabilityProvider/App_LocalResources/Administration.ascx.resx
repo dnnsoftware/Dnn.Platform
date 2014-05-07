@@ -340,4 +340,19 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Device Detection</value>
   </data>
+  <data name="AutoUpdatesEnabled.Text" xml:space="preserve">
+    <value>Auto Updates Enabled?</value>
+  </data>
+  <data name="DeviceDetectionEnabled.Text" xml:space="preserve">
+    <value>Device Detection Enabled?</value>
+  </data>
+  <data name="AutoUpdatesEnabled.Help" xml:space="preserve">
+    <value>Enable/disable update data file automatically.</value>
+  </data>
+  <data name="DeviceDetectionEnabled.Help" xml:space="preserve">
+    <value>Enable/disable device detection.</value>
+  </data>
+  <data name="ManualUpdates.Text" xml:space="preserve">
+    <value>Manual Updates:</value>
+  </data>
 </root>

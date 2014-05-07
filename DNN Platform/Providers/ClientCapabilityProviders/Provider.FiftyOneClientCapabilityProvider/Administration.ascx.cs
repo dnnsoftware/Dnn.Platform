@@ -19,9 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Configuration;
+using System.Diagnostics;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
-
+using FiftyOne.Foundation.Mobile.Configuration;
 using FiftyOne.Foundation.Mobile.Detection.Entities;
 
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
@@ -33,6 +36,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     using FiftyOne.Foundation.Mobile.Detection;
     using FiftyOne.Foundation.UI;
     using FiftyOne.Foundation.UI.Web;
+    using System.Xml;
 /// <summary>
     /// Administration control is used as the main control off the hosts
     /// page to activate 51Degrees.mobi.
@@ -55,6 +59,10 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             SearchButton.Click += SearchButtonClick;
             HardwareList.ItemDataBound += ListItemDataBound;
             PremiumUpload.UploadComplete += UploadComplete;
+            cbDetectionEnabled.CheckedChanged += DetectionEnabledChanged;
+            cbAutoUpdatesEnabled.CheckedChanged += AutoUpdatesEnabledChanged;
+            cbDetectionEnabledPremium.CheckedChanged += DetectionEnabledChanged;
+            cbAutoUpdatesEnabledPremium.CheckedChanged += AutoUpdatesEnabledChanged;
             
             NoResultsMessage.Visible = false;
             PremiumUploadSuccess.Visible = false;
@@ -140,7 +148,18 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             NoResultsMessage.Visible = hasSearchQuery && !hasDeviceId && !hasModel && !hasVendor;
         }
 
-        protected override void OnPreRender(EventArgs e)
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        if (!IsPostBack)
+        {
+            cbDetectionEnabled.Checked = cbDetectionEnabledPremium.Checked = GetDetectionConfig("enabled", true);
+            cbAutoUpdatesEnabled.Checked = cbAutoUpdatesEnabledPremium.Checked = GetDetectionConfig("autoUpdate", true);
+        }
+    }
+
+    protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             PremiumUpload.Visible = DataProvider.IsPremium;
@@ -209,5 +228,48 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 				: (DataProvider.IsCms ? LocalizeString("LicenseType_CMS.Text") : LocalizeString("LicenseType_Lite.Text"));
 			return string.Format(content, licenseType);
 		}
+
+        private void DetectionEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("enabled", (sender as CheckBox).Checked);
+        }
+
+        private void AutoUpdatesEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("autoUpdate", (sender as CheckBox).Checked);
+        }
+
+        private void UpdateDetectionConfig(string attrName, bool enabled)
+        {
+            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
+            if (section != null)
+            {
+                var document = new XmlDocument();
+                document.LoadXml(section.SectionInformation.GetRawXml());
+                document.DocumentElement.SetAttribute(attrName, enabled.ToString().ToLowerInvariant());
+
+                section.SectionInformation.SetRawXml(document.InnerXml);
+
+                section.CurrentConfiguration.Save(ConfigurationSaveMode.Modified);
+
+                Config.Touch();
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+
+        private bool GetDetectionConfig(string attrName, bool defaultValue)
+        {
+            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
+            if (section != null)
+            {
+                var property = section.ElementInformation.Properties[attrName];
+                if (property != null)
+                {
+                    return bool.Parse(property.Value.ToString());
+                }
+            }
+
+            return defaultValue;
+        }
     }
 }
