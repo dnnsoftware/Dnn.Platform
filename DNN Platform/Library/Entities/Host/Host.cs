@@ -1680,6 +1680,7 @@ namespace DotNetNuke.Entities.Host
         /// <history>
         ///   [jbrinkman]    09/30/2008    Created
         /// </history>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryDebug
         {
             get
@@ -1697,6 +1698,7 @@ namespace DotNetNuke.Entities.Host
         /// <history>
         ///   [jbrinkman]    09/30/2008    Created
         /// </history>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryHosted
         {
             get
@@ -1712,6 +1714,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string jQueryUrl
         {
             get
@@ -1734,6 +1737,7 @@ namespace DotNetNuke.Entities.Host
 		///   Defaults to the DefaultHostedUrl constant in the jQuery class.
 		///   The framework will default to the latest released 1.x version hosted on Google.
 		/// </remarks>
+		[Obsolete("This is managed through the JavaScript Library package")]
 		public static string jQueryMigrateUrl
 		{
 			get
@@ -1756,6 +1760,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string jQueryUIUrl
         {
             get
