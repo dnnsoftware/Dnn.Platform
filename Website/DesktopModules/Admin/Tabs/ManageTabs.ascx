@@ -55,7 +55,7 @@
 				</div>    
 				<div class="dnnFormItem">
 					<dnn:Label ID="plParentTab" runat="server" ResourceKey="ParentTab" ControlName="cboParentTab" />
-                    <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" IncludeAllTabTypes="True" IncludeDisabledTabs="True" />
+                    <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" IncludeAllTabTypes="True" IncludeDisabledTabs="True" IncludeActiveTab="true"/>
 				</div>    
 				<div id="insertPositionRow" class="dnnFormItem" runat="server" ViewStateMode="Disabled">
                     <div>
