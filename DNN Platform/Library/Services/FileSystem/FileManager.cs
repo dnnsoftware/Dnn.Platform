@@ -351,7 +351,7 @@ namespace DotNetNuke.Services.FileSystem
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            bool fileExists = FileExists(folder, fileName);
+            bool fileExists = folderProvider.FileExists(folder, fileName);
             bool needToWriteFile = fileContent != null && (overwrite || !fileExists);
             bool usingSeekableStream = false;
 
@@ -431,7 +431,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     //Publish Period
-                    if (fileExists && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
+                    if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
                     {
                         throw new FileLockedException(
                                         Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
@@ -441,7 +441,7 @@ namespace DotNetNuke.Services.FileSystem
                     folderWorkflow = ContentWorkflowController.Instance.GetWorkflowByID(folder.WorkflowID);
                     if (folderWorkflow != null)
                     {
-                        file.FileId = fileExists ? oldFile.FileId : Null.NullInteger; // If workflow exists, then the file already exists
+                        file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger; // If workflow exists, then the file already exists
 
                         // Create Content Item if does not exists
                         if (file.ContentItemID == Null.NullInteger)
@@ -459,7 +459,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                     // Versioning
-                    else if (fileExists && FileVersionController.Instance.IsFolderVersioned(folder) && oldFile.SHA1Hash != file.SHA1Hash)
+                    else if (oldFile != null && FileVersionController.Instance.IsFolderVersioned(folder) && oldFile.SHA1Hash != file.SHA1Hash)
                     {
                         contentFileName = FileVersionController.Instance.AddFileVersion(oldFile, createdByUserID);
                     }
