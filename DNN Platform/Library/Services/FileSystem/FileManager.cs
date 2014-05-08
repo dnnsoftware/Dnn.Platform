@@ -351,7 +351,7 @@ namespace DotNetNuke.Services.FileSystem
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            bool fileExists = folderProvider.FileExists(folder, fileName);
+            bool fileExists = FileExists(folder, fileName);
             bool needToWriteFile = fileContent != null && (overwrite || !fileExists);
             bool usingSeekableStream = false;
 
