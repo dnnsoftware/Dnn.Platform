@@ -362,7 +362,7 @@
                     <dnn:label id="plJQueryUIVersion" controlname="jQueryUIVersion" runat="server" />
                     <asp:Label ID="jQueryUIVersion" runat="server"></asp:Label>
                 </div>
-                <div class="dnnFormItem">
+                <%-- <div class="dnnFormItem">
                     <dnn:label id="plJQueryDebugVersion" controlname="chkJQueryDebugVersion" runat="server" />
                     <asp:CheckBox ID="chkJQueryDebugVersion" runat="server" />
                 </div>
@@ -381,7 +381,7 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plJQueryUIHostUrl" controlname="txtJQueryUIHostedUrl" runat="server" />
                     <asp:TextBox ID="txtJQueryUIHostedUrl" runat="server" MaxLength="256" />
-                </div>
+                </div> --%>
             </fieldset>
             <h2 id="Panel-CdnSettings" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("CdnSettings")%></a></h2>
             <fieldset>
