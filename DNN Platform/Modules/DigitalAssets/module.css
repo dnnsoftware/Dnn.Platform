@@ -718,17 +718,17 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     width: 200px;   
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtPlus, .dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtMinus {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtPlus, .dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtMinus {
     background-image: url("images/tree.png");
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtHover .rtIn, .dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtSelected .rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtHover .rtIn, .dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtSelected .rtIn {
     border: 1px solid transparent;
     background-color: transparent;
     background-image: none;
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtSelected .rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtSelected .rtIn {
     background-color: transparent;
     background-image: none;
     font-weight: bold;
@@ -1141,7 +1141,7 @@ div.dnnModuleDigitalAssetsDragClue, .dnnModuleDigitalAssetsGrid.GridDraggedRows,
     padding-left: 0;
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista.rtDragClue>ul>div>span.rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default.rtDragClue>ul>div>span.rtIn {
     color: inherit;
 }
 

@@ -25,7 +25,7 @@
             <asp:Panel runat="server" ID="LeftPaneContents" CssClass="dnnModuleDigitalAssetsLeftPaneContents">
                 <div class="dnnModuleDigitalAssetsFilesView" id="dnnModuleDigitalAssetsLeftPaneFilesTabContent">
                     <div id="dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll">
-                        <dnnweb:DnnTreeView ID="FolderTreeView" runat="server" Skin="Vista" CssClass="dnnModuledigitalAssetsTreeView" 
+                        <dnnweb:DnnTreeView ID="FolderTreeView" runat="server" CssClass="dnnModuledigitalAssetsTreeView" 
                             OnClientNodeExpanding="dnnModule.digitalAssets.treeViewOnNodeExpanding" 
                             OnClientNodeCollapsing="dnnModule.digitalAssets.treeViewOnNodeCollapsing"
                             OnClientNodeClicking="dnnModule.digitalAssets.treeViewOnNodeClicking" 
@@ -215,7 +215,7 @@
     </div>
     <div id="dnnModuleDigitalAssetsSelectDestinationFolderModal" style="display: none;">
         <div id="dnnModuleDigitalAssetsDestinationFolderScroll" class="dnnScroll">
-            <dnnweb:DnnTreeView ID="DestinationTreeView" runat="server" Skin="Vista" CssClass="dnnModuleDigitalAssetsDestinationTreeView dnnModuledigitalAssetsTreeView"
+            <dnnweb:DnnTreeView ID="DestinationTreeView" runat="server" CssClass="dnnModuleDigitalAssetsDestinationTreeView dnnModuledigitalAssetsTreeView"
                                 OnClientNodeExpanding="dnnModule.digitalAssets.destinationTreeViewOnNodeExpanding"
                                 OnClientNodeAnimationEnd="dnnModule.digitalAssets.destinationTreeViewRefreshScrollbars"
                                 OnClientNodeCollapsed="dnnModule.digitalAssets.destinationTreeViewRefreshScrollbars"
