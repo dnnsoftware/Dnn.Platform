@@ -116,6 +116,12 @@ namespace DotNetNuke.Services.FileSystem
                 return _contentTypes;
             }
         }
+
+        private bool IgnoreWhiteList
+        {
+            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
+        }
+
         #endregion
 
         #region Constants
@@ -336,12 +342,12 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser) && !(HostController.Instance.GetBoolean("IgnoreWhiteList", false)))
+            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !IgnoreWhiteList))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
             //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && (UserController.Instance.GetCurrentUserInfo().IsSuperUser) && HostController.Instance.GetBoolean("IgnoreWhiteList", false))
+            if (!IsAllowedExtension(fileName) && UserController.Instance.GetCurrentUserInfo().IsSuperUser && IgnoreWhiteList)
              {
                  var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
                  log.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
@@ -1106,6 +1112,20 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
         {
+            UnzipFile(file, destinationFolder, null);
+        }
+
+        /// <summary>
+        /// Extracts the files and folders contained in the specified zip file to the specified folder.
+        /// </summary>
+        /// <param name="file">The file to unzip.</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <param name="invalidFiles">Files which can't exact.</param>
+        /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
+
+        public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
+        {
 
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
@@ -1115,7 +1135,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
-            ExtractFiles(file, destinationFolder);
+            ExtractFiles(file, destinationFolder, invalidFiles);
         }
 
         /// <summary>
@@ -1413,11 +1433,16 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual void ExtractFiles(IFileInfo file, IFolderInfo destinationFolder)
+        internal virtual void ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
 
             ZipInputStream zipInputStream = null;
+
+            if (invalidFiles == null)
+            {
+                invalidFiles = new List<string>();
+            }
 
             try
             {
@@ -1460,6 +1485,7 @@ namespace DotNetNuke.Services.FileSystem
                             }
                             catch (InvalidFileExtensionException exc)
                             {
+                                invalidFiles.Add(zipEntry.Name);
                                 Logger.Warn(exc);
                             }
                             catch (Exception exc)

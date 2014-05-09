@@ -260,11 +260,39 @@
                 message = this.options.resources.fileAlreadyExists;
             }
             else {
-                message = state.message;
+                if (state.message[0] == '{') {
+
+                } else {
+                    message = state.message;
+                }
             }
             $statusMessage.text(message);
 
             $fileUploadStatus.find(".fu-fileupload-progressbar-container").attr("title", message);
+        },
+
+        _showPrompt: function(prompt) {
+            prompt = JSON.parse(prompt);
+            if (prompt.invalidFiles) {
+                var title = this.options.resources.invalidFilePromptTitle;
+                var body = this.options.resources.invalidFilePromptBody;
+                body = body.replace('[COUNT]', prompt.invalidFiles.length)
+                    .replace('[FILELIST]', this._generateFileList(prompt.invalidFiles));
+                $.dnnAlert({
+                    title: title,
+                    text: body,
+                    maxHeight: 400
+                });
+            }
+        },
+
+        _generateFileList: function(files) {
+            var list = '<ul>';
+            for (var i = 0; i < files.length; i++) {
+                list += '<li>' + files[i] + '</li>';
+            }
+            list += '</ul>';
+            return list;
         },
 
         _add: function (e, data) {
@@ -388,6 +416,10 @@
                 }
                 return;
             }
+
+            if (result.prompt) {
+                this._showPrompt(result.prompt);
+            }
             this._showThumbnail($fileUploadStatus, result);
             $fileUploadStatus.data("status").overwrite = false;
             this._setProgress($fileUploadStatus, 100);
@@ -411,7 +443,7 @@
         },
 
         _showError: function ($fileUploadStatus, errorMessage) {
-            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
+            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });          
             $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
             var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
             $img.removeClass().addClass("pt");

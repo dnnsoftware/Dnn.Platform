@@ -397,6 +397,9 @@ namespace DotNetNuke.Web.InternalServices
 
             [DataMember(Name = "fileName")]
             public string FileName { get; set; }
+
+            [DataMember(Name = "prompt")]
+            public string Prompt { get; set; }
         }
 
         public static string GetUrl(int fileId)
@@ -476,7 +479,14 @@ namespace DotNetNuke.Web.InternalServices
                                                         userInfo.UserID);
                     if (extract && extension.ToLower() == "zip")
                     {
-                        FileManager.Instance.UnzipFile(file);
+                        var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
+                        var invalidFiles = new List<string>();
+                        FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
+
+                        if (invalidFiles.Count > 0)
+                        {
+                            result.Prompt = string.Format("{{\"invalidFiles\":[\"{0}\"]}}", string.Join("\",\"", invalidFiles));
+                        }
                     }
                     result.FileId = file.FileId;
                 }

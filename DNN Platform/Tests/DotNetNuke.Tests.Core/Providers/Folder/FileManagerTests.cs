@@ -1004,7 +1004,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             _fileInfo.Setup(fi => fi.Extension).Returns("zip");
 
-            _mockFileManager.Setup(mfm => mfm.ExtractFiles(_fileInfo.Object, _folderInfo.Object)).Verifiable();
+            _mockFileManager.Setup(mfm => mfm.ExtractFiles(_fileInfo.Object, _folderInfo.Object, null)).Verifiable();
 
             _mockFileManager.Object.UnzipFile(_fileInfo.Object, _folderInfo.Object);
 
