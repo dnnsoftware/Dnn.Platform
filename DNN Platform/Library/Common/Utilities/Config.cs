@@ -24,6 +24,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Web.Configuration;
+using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -620,7 +621,9 @@ namespace DotNetNuke.Common.Utilities
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
                 //save the config file
-                var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
+                var settings = new XmlWriterSettings {CloseOutput = true, Indent = true};
+                //var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
+                var writer = XmlWriter.Create(strFilePath, settings);        
                 xmlDoc.WriteTo(writer);
                 writer.Flush();
                 writer.Close();
