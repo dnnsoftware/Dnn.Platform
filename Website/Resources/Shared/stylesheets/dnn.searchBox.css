@@ -82,6 +82,7 @@
         vertical-align: top;
         margin: 10px 0 0 0;
         z-index: 15;
+        top: 4px;
     }
 
     .dnnSearchBox > a.dnnSearchBoxClearAdvanced.dnnShow {
