@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -84,12 +85,13 @@ namespace DotNetNuke.UI.Skins
 
         private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, bool isPortal)
         {
+            var isSystemFolder = skinFolder.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) >= 0;
             foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
             {
                 string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
 
                 string key = ((isPortal) ? "Site: " : "Host: ") + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string prefix = (isPortal) ? "[L]" : "[G]";
+                string prefix = (isPortal) ? ((isSystemFolder) ? "[S]" : "[L]") : "[G]"; //to be compliant with all versions
                 string value = prefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
                 skins.Add(new KeyValuePair<string, string>(key, value)); 
             }
@@ -118,17 +120,22 @@ namespace DotNetNuke.UI.Skins
             var skins = new List<KeyValuePair<string, string>>();
 
             if (portalInfo != null)
-            {
-                string rootFolder = portalInfo.HomeSystemDirectoryMapPath + skinRoot;
-                if (Directory.Exists(rootFolder))
-                {
-                    foreach (string skinFolder in Directory.GetDirectories(rootFolder))
-                    {
-                        AddSkinFiles(skins, skinRoot, skinFolder, true);
-                    }
-                }
+            {                
+                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot);
+                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot); //to be compliant with all versions
             }
             return skins;
+        }
+
+        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot)
+        {            
+            if (Directory.Exists(skinsFolder))
+            {
+                foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
+                {
+                    AddSkinFiles(skins, skinRoot, skinFolder, true);
+                }
+            }
         }
 
 
@@ -148,12 +155,17 @@ namespace DotNetNuke.UI.Skins
             string skinType;
             string skinFolder;
             bool canDelete = true;
-            if (folderPath.ToLower().IndexOf(Globals.HostMapPath.ToLower()) != -1)
+            if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
                 skinFolder = folderPath.ToLower().Replace(Globals.HostMapPath.ToLower(), "").Replace("\\", "/");
             }
-            else
+            else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
+            {
+                skinType = "S";
+                skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
+            }
+            else //to be compliant with all versions
             {
                 skinType = "L";
                 skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
@@ -241,8 +253,11 @@ namespace DotNetNuke.UI.Skins
                     case "[g]":
                         strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
                         break;
-                    case "[l]":
-                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                    case "[s]":
+                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[s]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                        break;
+                    case "[l]": //to be compliant with all versions
+                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
                         break;
                 }
             }

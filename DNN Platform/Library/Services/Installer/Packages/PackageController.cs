@@ -321,6 +321,12 @@ namespace DotNetNuke.Services.Installer.Packages
                                                                 : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
+                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
+                        {
+                            //To be compliant with all versions
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);    
+                        }                        
                         break;
                     case "Provider":
                         //Check if the provider is the default provider
