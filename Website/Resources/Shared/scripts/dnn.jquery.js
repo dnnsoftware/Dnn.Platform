@@ -1790,6 +1790,7 @@
             if (tagslist[0] == '') {
                 tagslist = new Array();
             }
+			value = value.replace(/<.*?>/g, '');
             value = jQuery.trim(value);
             var skipTag;
             if (options.unique) {
