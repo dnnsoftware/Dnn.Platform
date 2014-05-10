@@ -285,7 +285,6 @@
             advancedTextClear.addClass('dnnShow');
             var htmlAdvancedTerm = advancedTerm.replace(/\[/g, '[&nbsp;').replace(/\]/g, '&nbsp;]')
                 .replace(/after:/g, '<b>after: </b>').replace(/type:/g, '<b>type: </b>');
-            for (var i = 0; i < 5; i++) htmlAdvancedTerm += htmlAdvancedTerm;
             var w = advancedTextCtrl.html(htmlAdvancedTerm).width();
             $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
                 left: w + 40,
