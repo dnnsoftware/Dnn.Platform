@@ -808,14 +808,19 @@ namespace DotNetNuke.Framework
 		{
 			if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
 			{
+			    var editClass = "dnnEditState";
+			    if (!PortalSettings.EnableModuleEffect)
+			    {
+			        editClass += " dnnOpacityDisabled";
+			    }
 				var bodyClass = Body.Attributes["class"];
 				if (!string.IsNullOrEmpty(bodyClass))
 				{
-					Body.Attributes["class"] = string.Format("{0} dnnEditState", bodyClass);
+                    Body.Attributes["class"] = string.Format("{0} {1}", bodyClass, editClass);
 				}
 				else
 				{
-					Body.Attributes["class"] = "dnnEditState";
+                    Body.Attributes["class"] = editClass;
 				}
 			}
 

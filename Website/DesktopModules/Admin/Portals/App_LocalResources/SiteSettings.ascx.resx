@@ -1232,4 +1232,10 @@ The host-level settings are currently set as follows:
   <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
     <value>Numbers from 1 to 2147483647 only!</value>
   </data>
+  <data name="enableModuleEffectLabel.Text" xml:space="preserve">
+    <value>Enable Module Effect?</value>
+  </data>
+  <data name="enableModuleEffectLabel.Help" xml:space="preserve">
+    <value>Check this box to enable highlight current edit module in edit mode.</value>
+  </data>
 </root>

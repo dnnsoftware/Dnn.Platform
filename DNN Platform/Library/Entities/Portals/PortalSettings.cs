@@ -430,6 +430,20 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether to use the module effect in edit mode.
+        /// </summary>
+        /// <remarks>Defaults to True</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool EnableModuleEffect
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("EnableModuleEffect", PortalId, true);
+            }
+        }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// Gets whether hide the login link.

@@ -238,6 +238,10 @@
                         <asp:CheckBox ID="enablePopUpsCheckBox" runat="server" />
                     </div>
                     <div class="dnnFormItem">
+                        <dnn:label id="enableModuleEffectLabel" runat="server" controlname="enableModuleEffectCheckBox" />
+                        <asp:CheckBox ID="enableModuleEffectCheckBox" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
                         <dnn:label id="plInlineEditor" runat="server" controlname="chkInlineEditor" />
                         <asp:CheckBox ID="chkInlineEditor" runat="server" />
                     </div>
