@@ -163,11 +163,11 @@ namespace DotNetNuke.Entities.Host
             ClearCachedServers();
         }
 
-        public static ServerWebRequestAdapter GetServerWebRequestAdapter()
+        public static IServerWebRequestAdapter GetServerWebRequestAdapter()
         {
             var adapterConfig = HostController.Instance.GetString("WebServer_ServerRequestAdapter", DefaultUrlAdapter);
             var adapterType = Reflection.CreateType(adapterConfig);
-            return Reflection.CreateInstance(adapterType) as ServerWebRequestAdapter;
+            return Reflection.CreateInstance(adapterType) as IServerWebRequestAdapter;
         }
 
         private static object GetServersCallBack(CacheItemArgs cacheItemArgs)
