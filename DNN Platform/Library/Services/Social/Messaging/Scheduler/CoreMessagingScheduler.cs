@@ -352,19 +352,19 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var author = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
             var portalSettings = new PortalSettings(messageDetails.PortalID);
             var fromAddress = portalSettings.Email;
-
             var toAddress = toUser.Email;
 
-            var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
-            var senderAddress = GetSenderAddress(senderName, fromAddress);
+            if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
+            {
+                var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
+                var senderAddress = GetSenderAddress(senderName, fromAddress);
+                var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
+                var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+                var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
+                
+                Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);            
+            }
 
-            var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
-
-            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
-            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);          
-  
             InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
         }
 
