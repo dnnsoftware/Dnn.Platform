@@ -34,6 +34,7 @@ using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
 
 #endregion
@@ -91,7 +92,7 @@ namespace DesktopModules.Admin.Console
         private void SwitchMode()
         {
             int parentTabId = -1;
-            if (Settings.ContainsKey("ParentTabID"))
+            if (Settings.ContainsKey("ParentTabID") && !string.IsNullOrEmpty(Convert.ToString(Settings["ParentTabID"])))
             {
                 parentTabId = Convert.ToInt32(Settings["ParentTabID"]);
             }
@@ -115,7 +116,7 @@ namespace DesktopModules.Admin.Console
                    break;
             }
 
-            SelectDropDownListItem(ref ParentTab, parentTabId.ToString(CultureInfo.InvariantCulture));
+            ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, PortalId);
             BindTabs(parentTabId, IncludeParent.Checked);
         }
 
@@ -125,26 +126,12 @@ namespace DesktopModules.Admin.Console
             {
                 if (Page.IsPostBack == false)
                 {
-                    var portalTabs = TabController.GetPortalTabs(PortalId, Null.NullInteger, false, true);
+                    if (Settings.ContainsKey("ParentTabId") && !string.IsNullOrEmpty(Convert.ToString(Settings["ParentTabId"])))
+                    {
+                        var tabId = Convert.ToInt32(Settings["ParentTabId"]);
+                        ParentTab.SelectedPage = TabController.Instance.GetTab(tabId, PortalId);
+                    }
 
-					//Add host tabs
-                    if (UserInfo != null && UserInfo.IsSuperUser)
-                    {
-                        var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-                        portalTabs.AddRange(hostTabs.Values);
-                    }
-                    ParentTab.Items.Clear();
-                    foreach (var t in portalTabs)
-                    {
-                        if ((TabPermissionController.CanViewPage(t)))
-                        {
-                            ParentTab.AddItem(t.IndentedTabName, t.TabID.ToString(CultureInfo.InvariantCulture));
-                            //ParentTab.Items.Add(new ListItem(t.IndentedTabName, t.TabID.ToString(CultureInfo.InvariantCulture)));
-                        }
-                    }
-                    //ParentTab.Items.Insert(0, "");
-                    ParentTab.InsertItem(0, "", "");
-                    SelectDropDownListItem(ref ParentTab, "ParentTabID");
                     foreach (string val in ConsoleController.GetSizeValues())
                     {
                         //DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
@@ -214,14 +201,15 @@ namespace DesktopModules.Admin.Console
                         throw new Exception("ConsoleWidth value is invalid. Value must be numeric.");
                     }
                 }
-                if ((ParentTab.SelectedValue == string.Empty))
+                if (ParentTab.SelectedItemValueAsInt == Null.NullInteger)
                 {
                     ModuleController.Instance.DeleteModuleSetting(ModuleId, "ParentTabID");
                 }
                 else
                 {
-                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedValue);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedItem.Value);
                 }
+
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "Mode", modeList.SelectedValue);
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "DefaultSize", DefaultSize.SelectedValue);
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowSizeChange", AllowResize.Checked.ToString(CultureInfo.InvariantCulture));
@@ -255,8 +243,9 @@ namespace DesktopModules.Admin.Console
             base.OnInit(e);
 
             tabs.ItemDataBound +=  tabs_ItemDataBound;
-            ParentTab.SelectedIndexChanged += parentTab_SelectedIndexChanged;
             modeList.SelectedIndexChanged += modeList_SelectedIndexChanged;
+
+            ParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
         }
 
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)
@@ -267,7 +256,7 @@ namespace DesktopModules.Admin.Console
 
         protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindTabs(Int32.Parse(ParentTab.SelectedValue), IncludeParent.Checked);
+            BindTabs(ParentTab.SelectedItemValueAsInt, IncludeParent.Checked);
         }
 
         void tabs_ItemDataBound(Object Sender, RepeaterItemEventArgs e)

@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
@@ -40,6 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			Services.Parameters.Add("includeDisabled", IncludeDisabledTabs.ToString().ToLowerInvariant());
 			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
             Services.Parameters.Add("includeActive", IncludeActiveTab.ToString().ToLowerInvariant());
+            Services.Parameters.Add("includeHostPages", (IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
 
             base.OnPreRender(e);
 
@@ -73,6 +75,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// Whether include pages which tab type is not normal.
 		/// </summary>
 		public bool IncludeAllTabTypes { get; set; }
+
+        /// <summary>
+        /// Whether include Host Pages
+        /// </summary>
+        public bool IncludeHostPages { get; set; }
 
         public int PortalId
         {
