@@ -1879,8 +1879,8 @@ ul.footerConnect {
 
     .content_team  ul li {
 	    display: inline-block;
-	    width: 110px;
-        margin:0 12px 40px;	
+        width: 14%;
+        margin:0 0 40px 2%;	
 	    text-align: center;
 	    list-style-type: none;
 	}
@@ -1888,16 +1888,11 @@ ul.footerConnect {
     /*.content_team  ul li.last { margin-right: 0; }*/
 
     .content_team  ul li .teampic {
-	    width: 110px;
-	    height: 147px;
-	    margin-bottom: 15px;
 	    background-color: #bfbfbf;
     }
 
     .content_team  ul li img {
-	    width: 110px;
-	    max-width: 110px;
-	    max-height: 147px;
+        width: 100%;
     }
 
     .content_team  ul li span {
@@ -1940,7 +1935,7 @@ ul.footerConnect {
 	    vertical-align: top;
 	    list-style-type: none;
     }
-
+    .content_products ul li p{ min-height: 72px;}
     /*.content_products ul li.last { margin-right: 0; }*/
     .content_products ul li img { margin-bottom: 25px; max-width:100%; width:100%;}
 
@@ -2111,8 +2106,6 @@ ul.footerConnect {
 /* Large desktop */
 @media (min-width: 1200px) {
     select.status-options{display:none;}
-    .content_team  ul{ margin: 0 -19px;}
-    .content_team  ul li { margin:0 19px 40px;}
     .ControlContainer{width:1170px!important;}
 }
 /* Portrait tablet to landscape and larger */
