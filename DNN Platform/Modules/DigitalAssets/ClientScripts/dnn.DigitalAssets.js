@@ -3330,12 +3330,37 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             type: "POST",
             beforeSend: servicesFramework.setModuleHeaders
         }).done(function (data) {
+            //show prompt
+            if (data.InvalidFiles) {
+                var title = resources.unzipFilePromptTitle;
+                var body = data.InvalidFiles.length > 0 ?
+                            resources.unzipFileFailedPromptBody
+                            : resources.unzipFileSuccessPromptBody;
+                body = body.replace('[COUNT]', data.InvalidFiles.length)
+                            .replace('[TOTAL]', data.TotalCount)
+                            .replace('[TOTAL]', data.TotalCount) //replace twice
+                            .replace('[FILELIST]', _generateFileList(data.InvalidFiles));
+                $.dnnAlert({
+                    title: title,
+                    text: body,
+                    maxHeight: 400
+                });
+            }
             refreshFolder();
         }).fail(function (xhr) {
             handledXhrError(xhr, resources.unzipFileErrorTitle);
         }).always(function () {
             enableLoadingPanel(false);
         });
+    }
+
+    function _generateFileList(files) {
+        var list = '<ul>';
+        for (var i = 0; i < files.length; i++) {
+            list += '<li>' + files[i] + '</li>';
+        }
+        list += '</ul>';
+        return list;
     }
 
     $(function () {

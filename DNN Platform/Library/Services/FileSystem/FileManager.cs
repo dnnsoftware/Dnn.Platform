@@ -1091,28 +1091,30 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
+        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual void UnzipFile(IFileInfo file)
+        public virtual int UnzipFile(IFileInfo file)
         {
 
             Requires.NotNull("file", file);
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            UnzipFile(file, destinationFolder);
+            return UnzipFile(file, destinationFolder);
         }
 
         /// <summary>
         /// Extracts the files and folders contained in the specified zip file to the specified folder.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <param name="destinationFolder">The folder to unzip too</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
+        public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
         {
-            UnzipFile(file, destinationFolder, null);
+            return UnzipFile(file, destinationFolder, null);
         }
 
         /// <summary>
@@ -1121,10 +1123,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
         /// <param name="invalidFiles">Files which can't exact.</param>
+        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
 
-        public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
+        public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
 
             Requires.NotNull("file", file);
@@ -1135,7 +1138,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
-            ExtractFiles(file, destinationFolder, invalidFiles);
+            return ExtractFiles(file, destinationFolder, invalidFiles);
         }
 
         /// <summary>
@@ -1433,7 +1436,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual void ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
+        internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
 
@@ -1443,6 +1446,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 invalidFiles = new List<string>();
             }
+            var exactFilesCount = 0;
 
             try
             {
@@ -1456,6 +1460,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!zipEntry.IsDirectory)
                         {
+                            exactFilesCount++;
                             var fileName = Path.GetFileName(zipEntry.Name);
 
                             EnsureZipFolder(zipEntry.Name, destinationFolder);
@@ -1506,6 +1511,8 @@ namespace DotNetNuke.Services.FileSystem
                     zipInputStream.Dispose();
                 }
             }
+
+            return exactFilesCount;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

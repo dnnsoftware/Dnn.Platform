@@ -927,8 +927,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public ZipExtractViewModel UnzipFile(int fileId, bool overwrite)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
-            FileManager.Instance.UnzipFile(file);
-            return null;
+            var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
+            var invalidFiles = new List<string>();
+            var filesCount = FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
+            return new ZipExtractViewModel() { Ok = true, InvalidFiles = invalidFiles, TotalCount = filesCount};
         }
 
         public virtual int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState)

@@ -217,14 +217,16 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        void UnzipFile(IFileInfo file);
+        /// <returns>Total files count in the zip file.</returns>
+        int UnzipFile(IFileInfo file);
 
         /// <summary>
         /// Extracts the files and folders contained in the specified zip file to the specified folder.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
-        void UnzipFile(IFileInfo file, IFolderInfo destinationFolder);
+        /// <returns>Total files count in the zip file.</returns>
+        int UnzipFile(IFileInfo file, IFolderInfo destinationFolder);
 
         /// <summary>
         /// Extracts the files and folders contained in the specified zip file to the specified folder.
@@ -232,7 +234,8 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
         /// <param name="invalidFiles">Files which can't exact.</param>
-        void UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles);
+        /// <returns>Total files count in the zip file.</returns>
+        int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles);
 
         /// <summary>
         /// Updates the metadata of the specified file.

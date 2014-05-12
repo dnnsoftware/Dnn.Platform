@@ -75,11 +75,14 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "invalidFileExtensions")]
         public string InvalidFileExtensions;
 
-        [DataMember(Name = "invalidFilePromptTitle")]
-        public string InvalidFilePromptTitle;
+        [DataMember(Name = "unzipFilePromptTitle")]
+        public string UnzipFilePromptTitle;
 
-        [DataMember(Name = "invalidFilePromptBody")]
-        public string InvalidFilePromptBody;
+        [DataMember(Name = "unzipFileFailedPromptBody")]
+        public string UnzipFileFailedPromptBody;
+
+        [DataMember(Name = "unzipFileSuccessPromptBody")]
+        public string UnzipFileSuccessPromptBody;
 
         [DataMember(Name = "errorDialogTitle")]
         public string ErrorDialogTitle;
@@ -169,9 +172,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 UrlTooltip = Utilities.GetLocalizedString("FileUpload.UrlTooltip.Text"),
                 KeepButtonText = Utilities.GetLocalizedString("FileUpload.KeepButton.Text"),
                 ReplaceButtonText = Utilities.GetLocalizedString("FileUpload.ReplaceButton.Text"),
-                InvalidFilePromptTitle = Utilities.GetLocalizedString("FileUpload.InvalidFilepromptTitle.Text"),
-                InvalidFilePromptBody = Utilities.GetLocalizedString("FileUpload.InvalidFilepromptBody.Text")
-
+                UnzipFilePromptTitle = Utilities.GetLocalizedString("FileUpload.UnzipFilePromptTitle.Text"),
+                UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
+                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text")
             };
         }
     }

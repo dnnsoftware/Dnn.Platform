@@ -347,7 +347,11 @@
             unzipFileErrorTitle: '<%= Localization.GetSafeJSString(LocalizeString("UnzipFileErrorTitle.Text")) %>',
             uploadingExtracting: '<%= Localization.GetSafeJSString(LocalizeString("UploadingExtracting.Text")) %>',
             noItemsText: '<%= Localization.GetSafeJSString("NoItems", LocalResourceFile) %>',
-            noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>'
+            noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>',
+            unzipFilePromptTitle: '<%= Localization.GetSafeJSString("FileUpload.UnzipFilePromptTitle.Text", Localization.SharedResourceFile) %>',
+            unzipFileFailedPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileFailedPromptBody.Text", Localization.SharedResourceFile) %>',
+            unzipFileSuccessPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileSuccessPromptBody.Text", Localization.SharedResourceFile) %>'
+
         },
         new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {}, {userId: '<%= UserId %>'})
     );

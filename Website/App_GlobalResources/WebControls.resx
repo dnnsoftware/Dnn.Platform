@@ -246,12 +246,6 @@
   <data name="FileUpload.ReplaceButton.Text" xml:space="preserve">
     <value>Replace</value>
   </data>
-  <data name="FileUpload.InvalidFilepromptTitle.Text" xml:space="preserve">
-    <value>Unzip Information</value>
-  </data>
-  <data name="FileUpload.InvalidFilepromptBody.Text" xml:space="preserve">
-    <value>&lt;div class="invalidFiles"&gt;&lt;p&gt;[COUNT] file(s) were not extracted because their file types are not supported:&lt;/p&gt;[FILELIST]&lt;/div&gt;</value>
-  </data>
   <data name="AllItemsCheckedString.Text" xml:space="preserve">
     <value>All items checked</value>
   </data>

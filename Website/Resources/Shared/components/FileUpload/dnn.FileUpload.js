@@ -274,10 +274,14 @@
         _showPrompt: function(prompt) {
             prompt = JSON.parse(prompt);
             if (prompt.invalidFiles) {
-                var title = this.options.resources.invalidFilePromptTitle;
-                var body = this.options.resources.invalidFilePromptBody;
+                var title = this.options.resources.unzipFilePromptTitle;
+                var body = prompt.invalidFiles.length > 0 ?
+                            this.options.resources.unzipFileFailedPromptBody
+                            : this.options.resources.unzipFileSuccessPromptBody;
                 body = body.replace('[COUNT]', prompt.invalidFiles.length)
-                    .replace('[FILELIST]', this._generateFileList(prompt.invalidFiles));
+                            .replace('[TOTAL]', prompt.totalCount)
+                            .replace('[TOTAL]', prompt.totalCount) //replace twice
+                            .replace('[FILELIST]', this._generateFileList(prompt.invalidFiles));
                 $.dnnAlert({
                     title: title,
                     text: body,
