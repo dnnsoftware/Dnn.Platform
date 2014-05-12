@@ -2652,6 +2652,10 @@ table.dnnASPGrid {
         color: #777;
         width: 25%;
     }
+    .dnnPermissionsGrid > .dnnFormItem ul.token-input-list-facebook {
+        display: inline-block;
+        vertical-align: top;
+    }
 
     .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
         margin-right: 35px;

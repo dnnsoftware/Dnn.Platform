@@ -75,6 +75,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private Label lblErrorMessage;
         private Panel pnlPermissions;        
         private TextBox txtUser;
+        private HiddenField hiddenUserIds;
 
         public PermissionsGrid()
         {
@@ -798,8 +799,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 txtUser = new TextBox { ID = "txtUser" };
                 lblErrorMessage.AssociatedControlID = txtUser.ID;
 
+                hiddenUserIds = new HiddenField { ID = "hiddenUserIds" };
+
                 divAddUser.Controls.Add(lblErrorMessage);
                 divAddUser.Controls.Add(txtUser);
+                divAddUser.Controls.Add(hiddenUserIds);
 
                 cmdUser = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
                 divAddUser.Controls.Add(cmdUser);
@@ -1028,12 +1032,33 @@ namespace DotNetNuke.Security.Permissions.Controls
             return false;
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            ClientResourceManager.RegisterScript(Page, "~/js/dnn.permissiongrid.js");
+
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+        }
+
         /// <summary>
         /// Overrides the base OnPreRender method to Bind the Grid to the Permissions
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {
             BindData();
+
+            var script = "var pgm = new dnn.permissionGridManager('" + ClientID + "');";
+            if (ScriptManager.GetCurrent(Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(Page, GetType(), ClientID + "PermissionGridManager", script, true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), ClientID + "PermissionGridManager", script, true);
+            }
         }
 
         
@@ -1222,20 +1247,20 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected virtual void AddUser(object sender, EventArgs e)
         {
             UpdatePermissions();
-            if (!String.IsNullOrEmpty(txtUser.Text))
+            if (!string.IsNullOrEmpty(hiddenUserIds.Value))
             {
-                //verify username
-                UserInfo objUser = UserController.GetCachedUser(PortalId, txtUser.Text);
-                if (objUser != null)
+                foreach (var id in hiddenUserIds.Value.Split(','))
                 {
-                    AddPermission(_permissions, objUser);
-                    BindData();
+                    var userId = Convert.ToInt32(id);
+                    var user = UserController.GetUserById(PortalId, userId);
+                    if (user != null)
+                    {
+                        AddPermission(_permissions, user);
+                        BindData();
+                    }
                 }
-                else
-                {
-                    //user does not exist
-                    SetErrorMessage("InvalidUserName");
-                }
+
+                txtUser.Text = hiddenUserIds.Value = string.Empty;
             }
         }
 

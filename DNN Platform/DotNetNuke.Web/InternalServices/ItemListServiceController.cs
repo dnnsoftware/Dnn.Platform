@@ -29,21 +29,28 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.DataStructures;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
+using DotNetNuke.Common;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
     public class ItemListServiceController : DnnApiController
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
+
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
 
@@ -1217,6 +1224,53 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
+        }
+
+        #endregion
+
+        #region Users List
+
+        /// <summary>
+        /// This class stores a single search result needed by jQuery Tokeninput
+        /// </summary>
+        private class SearchResult
+        {
+            // ReSharper disable InconsistentNaming
+            // ReSharper disable NotAccessedField.Local
+            public int id;
+            public string name;
+            public string iconfile;
+            // ReSharper restore NotAccessedField.Local
+            // ReSharper restore InconsistentNaming
+        }
+
+        [HttpGet]
+        public HttpResponseMessage SearchUser(string q)
+        {
+            try
+            {
+                var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
+                const int numResults = 5;
+
+                // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
+                q = q.Replace(",", "").Replace("'", "");
+                if (q.Length == 0) return Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+
+                var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
+                    .Select(user => new SearchResult
+                    {
+                        id = user.UserID,
+                        name = user.DisplayName,
+                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
+                    }).ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
         #endregion
