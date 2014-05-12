@@ -302,6 +302,7 @@ namespace DotNetNuke.Entities.Urls
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                         response.AddHeader("Location", result.FinalUrl);
                         finished = true;
+                        response.End();
                     }
                     if (!finished)
                     {
@@ -419,6 +420,7 @@ namespace DotNetNuke.Entities.Urls
                                 response.Status = "301 Moved Permanently";
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                 response.AddHeader("Location", result.FinalUrl);
+                                response.End();
                             }
                         }
                     }
@@ -474,6 +476,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.Status = "301 Moved Permanently";
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
+                                    response.End();
                                     break;
                                 case ActionType.Redirect302:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
@@ -585,6 +588,7 @@ namespace DotNetNuke.Entities.Urls
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                             response.AddHeader("Location", result.FinalUrl);
                                             finished = true;
+                                            response.End();
                                         }
                                         else if (result.Action == ActionType.Redirect302)
                                         {
@@ -1307,7 +1311,10 @@ namespace DotNetNuke.Entities.Urls
             {
                 request = context.Request;
             }
-            //check for external forwarding or a permanent redirect request
+
+            try
+            {
+                            //check for external forwarding or a permanent redirect request
             //592 : check for permanent redirect (823 : moved location from 'checkForRedirects')
             if (result.TabId > -1 && result.PortalId > -1 &&
                 (settings.ForwardExternalUrlsType != DNNPageForwardType.NoForward ||
@@ -1406,7 +1413,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         result.Action = ActionType.Redirect301;
                                         result.Reason = RedirectReason.Tab_Permanent_Redirect;
-                                            //should be already set, anyway
+                                        //should be already set, anyway
                                         result.RewritePath = cleanPath;
                                     }
                                     else
@@ -1457,6 +1464,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.AppendHeader("X-Redirect-Reason",
                                                           result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
+                                    response.End();
                                 }
                             }
                             else
@@ -1476,6 +1484,13 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+            }
+
+            }
+            catch (ThreadAbortException)
+            {
+                //do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
+                //level try/catch block, so we handle it here.
             }
             return finished;
         }
