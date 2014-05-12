@@ -22,9 +22,9 @@
 using System;
 using System.Reflection;
 
-namespace DotNetNuke.Framework.Internal.Reflection
+namespace DotNetNuke.Framework.Reflections
 {
-    internal class AssemblyWrapper : IAssembly
+    public class AssemblyWrapper : IAssembly
     {
         private readonly Assembly _assembly;
 

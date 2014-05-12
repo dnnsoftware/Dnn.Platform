@@ -20,12 +20,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
-namespace DotNetNuke.Framework.Internal.Reflection
+namespace DotNetNuke.Framework.Reflections
 {
-    internal interface ITypeLocator
+    //interface to allowing mocking of System.Reflection.Assembly
+    public interface IAssembly
     {
-        IEnumerable<Type> GetAllMatchingTypes(Predicate<Type> predicate);
+        Type[] GetTypes();
     }
 }

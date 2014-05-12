@@ -434,11 +434,11 @@
     <Compile Include="Framework\JavaScriptLibraries\CommonJS.cs" />
     <Compile Include="Framework\JavaScriptLibraries\SpecificVersion.cs" />
     <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
-    <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
-    <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />
-    <Compile Include="Framework\Internal\Reflection\IAssemblyLocator.cs" />
-    <Compile Include="Framework\Internal\Reflection\ITypeLocator.cs" />
-    <Compile Include="Framework\Internal\Reflection\TypeLocator.cs" />
+    <Compile Include="Framework\Reflections\AssemblyWrapper.cs" />
+    <Compile Include="Framework\Reflections\IAssembly.cs" />
+    <Compile Include="Framework\Reflections\IAssemblyLocator.cs" />
+    <Compile Include="Framework\Reflections\ITypeLocator.cs" />
+    <Compile Include="Framework\Reflections\TypeLocator.cs" />
     <Compile Include="Framework\IServiceFrameworkInternals.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />

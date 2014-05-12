@@ -23,9 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace DotNetNuke.Framework.Internal.Reflection
+namespace DotNetNuke.Framework.Reflections
 {
-    internal class TypeLocator : ITypeLocator, IAssemblyLocator
+    public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
         private IAssemblyLocator _assemblyLocator;
 

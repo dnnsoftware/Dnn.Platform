@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.Internal.Reflection;
+using DotNetNuke.Framework.Reflections;
 
 using Moq;
 using NUnit.Framework;

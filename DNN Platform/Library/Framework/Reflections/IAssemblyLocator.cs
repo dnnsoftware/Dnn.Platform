@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 
-namespace DotNetNuke.Framework.Internal.Reflection
+namespace DotNetNuke.Framework.Reflections
 {
     public interface IAssemblyLocator
     {
