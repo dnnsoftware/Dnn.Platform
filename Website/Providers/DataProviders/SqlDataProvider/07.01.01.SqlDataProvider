@@ -337,7 +337,7 @@ WHERE LastContentModifiedOnDate = CreatedOnDate
 GO
 
 /* Run Site Crawler faster (given above optimization) */
-UPDATE {databaseOwner}{objectQualifier}Schedule SET TimeLapse = 1, RetryTimeLapse = 5 WHERE FriendlyName = 'Search: Site Crawler' 
+UPDATE {databaseOwner}{objectQualifier}Schedule SET TimeLapse = 1, RetryTimeLapse = 30, RetryTimeLapseMeasurement = 's' WHERE FriendlyName = 'Search: Site Crawler' 
 GO
 
 
