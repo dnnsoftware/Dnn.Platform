@@ -53,6 +53,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
@@ -2936,6 +2937,28 @@ namespace DotNetNuke.Services.Upgrade
             MakeModulePremium(@"ProfessionalPreview");
         }
 
+        private static void UpgradeToVersion730()
+        {
+#pragma warning disable 612,618
+            if (jQuery.UseHostedScript)
+            {
+                HostController.Instance.Update("CDNEnabled","true");
+
+                var jquery = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQuery);
+                jquery.CDNPath = jQuery.HostedUrl;
+                JavaScriptLibraryController.Instance.SaveLibrary(jquery);
+
+                var jqueryui = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQueryUI);
+                jqueryui.CDNPath = jQuery.HostedUIUrl;
+                JavaScriptLibraryController.Instance.SaveLibrary(jqueryui);
+
+                var jquerymigrate = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQueryMigrate);
+                jquerymigrate.CDNPath = jQuery.HostedMigrateUrl;
+                JavaScriptLibraryController.Instance.SaveLibrary(jquerymigrate);
+            }
+#pragma warning restore 612,618
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -5075,6 +5098,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.2.2":
                         UpgradeToVersion722();
+                        break;
+                    case "7.3.0":
+                        UpgradeToVersion730();
                         break;
                 }
             }
