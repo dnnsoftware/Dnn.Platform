@@ -308,11 +308,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             StateControl.Value = ""; // for state persistence (stateControl)
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             RegisterClientScript(Page, Skin);
 
             this.AddCssClass("dnnDropDownList");
