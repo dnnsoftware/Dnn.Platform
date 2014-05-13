@@ -362,26 +362,6 @@
                     <dnn:label id="plJQueryUIVersion" controlname="jQueryUIVersion" runat="server" />
                     <asp:Label ID="jQueryUIVersion" runat="server"></asp:Label>
                 </div>
-                <%-- <div class="dnnFormItem">
-                    <dnn:label id="plJQueryDebugVersion" controlname="chkJQueryDebugVersion" runat="server" />
-                    <asp:CheckBox ID="chkJQueryDebugVersion" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryUseHosted" controlname="chkJQueryUseHosted" runat="server" />
-                    <asp:CheckBox ID="chkJQueryUseHosted" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryHostUrl" controlname="txtJQueryHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryHostedUrl" runat="server" MaxLength="256" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryMigrateHostUrl" controlname="txtJQueryMigrateHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryMigrateHostedUrl" runat="server" MaxLength="256" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryUIHostUrl" controlname="txtJQueryUIHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryUIHostedUrl" runat="server" MaxLength="256" />
-                </div> --%>
             </fieldset>
             <h2 id="Panel-CdnSettings" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("CdnSettings")%></a></h2>
             <fieldset>
