@@ -35,6 +35,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.ControlPanels;
@@ -357,7 +358,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             GetRoles();
 
-            //UpdateRolePermissions();
+            UpdateRolePermissions();
             for (int i = 0; i <= Roles.Count - 1; i++)
             {
                 var role = (RoleInfo)Roles[i];
@@ -456,7 +457,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                             }
                         }
                         dtUserPermissions.Rows.Add(row);
-                    }
+                    }                    
                     userPermissionsGrid.DataSource = dtUserPermissions;
                     userPermissionsGrid.DataBind();
                 }
@@ -1156,7 +1157,9 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected void UpdatePermissions()
         {
             EnsureChildControls();
+            GetRoles();
             UpdateRolePermissions();
+            _users = GetUsers();
             UpdateUserPermissions();
         }
 
@@ -1167,10 +1170,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             if (rolePermissionsGrid != null && !RefreshGrid)
             {
+                var rolesList = Roles.Cast<RoleInfo>().ToList();
                 foreach (DataGridItem dgi in rolePermissionsGrid.Items)
                 {
-                    int i;
-                    for (i = 2; i <= dgi.Cells.Count - 2; i++) //
+                    var roleId = int.Parse(dgi.Cells[1].Text);
+                    if (rolesList.All(r => r.RoleID != roleId))
+                    {
+                        continue;
+                    }
+                    for (int i = 2; i <= dgi.Cells.Count - 2; i++) 
                     {
                         //all except first two cells which is role names and role ids and last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
@@ -1179,11 +1187,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
                             if (SupportsDenyPermissions(permissionInfo))
                             {
-                                UpdatePermission(permissionInfo, int.Parse(dgi.Cells[1].Text), dgi.Cells[0].Text, triState.Value);
+                                UpdatePermission(permissionInfo, roleId, dgi.Cells[0].Text, triState.Value);
                             }
                             else
                             {
-                                UpdatePermission(permissionInfo, int.Parse(dgi.Cells[1].Text), dgi.Cells[0].Text, triState.Value == PermissionTypeGrant);
+                                UpdatePermission(permissionInfo, roleId, dgi.Cells[0].Text, triState.Value == PermissionTypeGrant);
                             }
                         }
                     }
@@ -1198,10 +1206,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             if (userPermissionsGrid != null && !RefreshGrid)
             {
+                var usersList = _users.Cast<UserInfo>().ToList();
                 foreach (DataGridItem dgi in userPermissionsGrid.Items)
-                {
-                    int i;
-                    for (i = 2; i <= dgi.Cells.Count - 2; i++)
+                {                    
+                    var userId = int.Parse(dgi.Cells[1].Text);
+                    if (usersList.All(u => u.UserID != userId))
+                    {
+                        continue;
+                    }
+                    for (int i = 2; i <= dgi.Cells.Count - 2; i++)
                     {
                         //all except first two cells which is displayname and userid and Last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
@@ -1210,11 +1223,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                             var triState = (PermissionTriState)dgi.Cells[i].Controls[0];
                             if (SupportsDenyPermissions(permissionInfo))
                             {
-                                UpdatePermission(permissionInfo, dgi.Cells[0].Text, int.Parse(dgi.Cells[1].Text), triState.Value);
+                                UpdatePermission(permissionInfo, dgi.Cells[0].Text, userId, triState.Value);
                             }
                             else
                             {
-                                UpdatePermission(permissionInfo, dgi.Cells[0].Text, int.Parse(dgi.Cells[1].Text), triState.Value == PermissionTypeGrant);
+                                UpdatePermission(permissionInfo, dgi.Cells[0].Text, userId, triState.Value == PermissionTypeGrant);
                             }
                         }
                     }
