@@ -175,13 +175,13 @@ namespace DotNetNuke.Services.Social.Notifications
             }
 
             //Cannot exceed RecipientLimit
-            var recipientCount = 0;
-            if (users != null) recipientCount += users.Count;
-            if (roles != null) recipientCount += roles.Count;
-            if (recipientCount > InternalMessagingController.Instance.RecipientLimit(pid))
-            {
-                throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));
-            }
+            //var recipientCount = 0;
+            //if (users != null) recipientCount += users.Count;
+            //if (roles != null) recipientCount += roles.Count;
+            //if (recipientCount > InternalMessagingController.Instance.RecipientLimit(pid))
+            //{
+            //    throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));
+            //}
 
             //Profanity Filter
             //var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", pid, "NO");
