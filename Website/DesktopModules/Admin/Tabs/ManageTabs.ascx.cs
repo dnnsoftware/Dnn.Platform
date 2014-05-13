@@ -697,7 +697,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             cboTemplate.FindItemByText("Default").Selected = true;
                         }
                     }
-                    cboTemplate.InsertItem(0, Localization.GetString("None_Specified"), "-1");
+                    cboTemplate.InsertItem(0, Localization.GetString("None_Specified"), "");
                     if (cboTemplate.SelectedIndex == -1)
                     {
                         cboTemplate.SelectedIndex = 0;
