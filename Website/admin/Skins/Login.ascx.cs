@@ -159,10 +159,15 @@ namespace DotNetNuke.UI.Skins.Controls
 				        loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
 				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
 
+                        //avoid issues caused by multiple clicks of login link
+                        var oneclick = "this.disabled=true;";
+                        loginLink.Attributes.Add("onclick", oneclick);
+                        enhancedLoginLink.Attributes.Add("onclick", oneclick);
+
 				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !HasSocialAuthenticationEnabled())
 				        {
 					        //To avoid duplicated encodes of URL
-					        var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
+                            var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
 					        loginLink.Attributes.Add("onclick", clickEvent);
 					        enhancedLoginLink.Attributes.Add("onclick", clickEvent);
 				        }
