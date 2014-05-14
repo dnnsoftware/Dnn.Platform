@@ -854,6 +854,13 @@ namespace DotNetNuke.Services.FileSystem
                 MoveFolderBetweenProviders(folder, newFolderPath);
             }
 
+            //log the server info
+            var log = new LogInfo();
+            log.AddProperty("Old Folder Path", currentFolderPath);
+            log.AddProperty("New Folder Path", newFolderPath);
+            log.LogTypeKey = EventLogController.EventLogType.FOLDER_MOVED.ToString();
+            LogController.Instance.AddLog(log);
+
             //Files in cache are obsolete because their physical path is not correct after moving
             DeleteFilesFromCache(folder.PortalID, newFolderPath);
             var movedFolder = GetFolder(folder.FolderID);

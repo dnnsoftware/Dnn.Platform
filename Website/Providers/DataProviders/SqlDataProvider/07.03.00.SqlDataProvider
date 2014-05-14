@@ -667,6 +667,10 @@ AS
     SELECT SCOPE_IDENTITY()
 GO
 
+/***** Fix bug Content-2390: Add log type WEBSERVER_CREATED, WEBSERVER_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'FOLDER_MOVED', N'Folder Moved', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'FOLDER_MOVED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
 
 
 /************************************************************/
