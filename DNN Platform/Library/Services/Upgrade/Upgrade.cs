@@ -80,6 +80,7 @@ using DotNetNuke.UI.Internals;
 
 using ICSharpCode.SharpZipLib.Zip;
 
+using Assembly = System.Reflection.Assembly;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
 using Util = DotNetNuke.Entities.Content.Common.Util;
@@ -5325,7 +5326,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     url = url.Replace("http://", "https://");
                 }
-                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
@@ -5379,7 +5380,7 @@ namespace DotNetNuke.Services.Upgrade
             else
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/redirect.aspx";
-                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
