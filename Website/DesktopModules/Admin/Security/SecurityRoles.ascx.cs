@@ -572,9 +572,16 @@ namespace DotNetNuke.Modules.Admin.Security
             CurrentPage = 1;
             if (Request.QueryString["CurrentPage"] != null)
             {
-                CurrentPage = Convert.ToInt32(Request.QueryString["CurrentPage"]);
-                if (CurrentPage <= 0)
+                var currentPage = 0;
+                if (int.TryParse(Request.QueryString["CurrentPage"], out currentPage)
+                    && currentPage > 0)
+                {
+                    CurrentPage = currentPage;
+                }
+                else
+                {
                     CurrentPage = 1;
+                }
             }
 
             cboRoles.SelectedIndexChanged += cboRoles_SelectedIndexChanged;
