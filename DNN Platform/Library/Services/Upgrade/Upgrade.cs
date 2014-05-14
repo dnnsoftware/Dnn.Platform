@@ -2942,7 +2942,7 @@ namespace DotNetNuke.Services.Upgrade
 #pragma warning disable 612,618
             if (jQuery.UseHostedScript)
             {
-                HostController.Instance.Update("CDNEnabled","true");
+                HostController.Instance.Update("CDNEnabled","True",true);
 
                 var jquery = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == CommonJs.jQuery);
                 jquery.CDNPath = jQuery.HostedUrl;
