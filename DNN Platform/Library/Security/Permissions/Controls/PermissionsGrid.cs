@@ -822,7 +822,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {                
                 var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (roleID == PortalSettings.Current.AdministratorRoleId)
+                if (roleID == PortalSettings.Current.AdministratorRoleId || roleID == AllUsersRoleId || roleID == PortalSettings.Current.RegisteredRoleId)
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
                     if (actionImage != null)
