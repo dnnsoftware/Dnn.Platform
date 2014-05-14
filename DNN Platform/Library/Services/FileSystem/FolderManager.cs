@@ -854,7 +854,7 @@ namespace DotNetNuke.Services.FileSystem
                 MoveFolderBetweenProviders(folder, newFolderPath);
             }
 
-            //log the server info
+            //log the folder moved event.
             var log = new LogInfo();
             log.AddProperty("Old Folder Path", currentFolderPath);
             log.AddProperty("New Folder Path", newFolderPath);
