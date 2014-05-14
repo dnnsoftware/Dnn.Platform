@@ -215,10 +215,10 @@ namespace DotNetNuke.Security.Roles
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by GetUserRolesByRole")]
+        [Obsolete("Deprecated in DotNetNuke 7.3. This method has been replaced by RoleController.Instance.GetUsersByRole(portalId, roleName)")]
         public ArrayList GetUsersByRoleName(int portalId, string roleName)
         {
-            return provider.GetUsersByRoleName(portalId, roleName);
+            return new ArrayList(Instance.GetUsersByRole(portalId, roleName).ToList());
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
