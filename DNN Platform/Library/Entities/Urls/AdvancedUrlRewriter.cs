@@ -424,30 +424,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                     }
-                    //look for a 404 result from the rewrite, because of a deleted page or rule
-                    if (!finished && result.Action == ActionType.Output404)
-                    {
-                        if (result.DomainName == result.HttpAlias && result.PortalAlias != null
-								&& result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
-                        {
-                            //Request for domain with no page identified (and no home page set in Site Settings)
-                            result.Action = ActionType.Continue;
-                        }
-                        else
-                        {
-                            finished = true;
-                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
-
-                            if (showDebug)
-                            {
-                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
-                            }
-                            //show the 404 page if configured
-                            result.Reason = RedirectReason.Requested_404;
-                            Handle404OrException(settings, context, null, result, true, showDebug);
-                        }
-                    }
-
+                    
                     if (!finished)
                     {
                         //check to see if this tab has an external url that should be forwared or not
@@ -489,6 +466,31 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                         finished = true;
+                    }
+
+                    //shifted until after the 301 redirect code to allow redirects to be checked for pages which have no rewrite value
+                    //look for a 404 result from the rewrite, because of a deleted page or rule
+                    if (!finished && result.Action == ActionType.Output404)
+                    {
+                        if (result.DomainName == result.HttpAlias && result.PortalAlias != null
+                                && result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
+                        {
+                            //Request for domain with no page identified (and no home page set in Site Settings)
+                            result.Action = ActionType.Continue;
+                        }
+                        else
+                        {
+                            finished = true;
+                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+
+                            if (showDebug)
+                            {
+                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
+                            }
+                            //show the 404 page if configured
+                            result.Reason = RedirectReason.Requested_404;
+                            Handle404OrException(settings, context, null, result, true, showDebug);
+                        }
                     }
 
                     if (!finished)
