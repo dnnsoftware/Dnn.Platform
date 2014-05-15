@@ -154,12 +154,12 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             }
             // The useragent has not already been processed. Therefore process it now
             // and then set the properties.
-            var deviceInfo = DataProvider.GetDevice(userAgent);
-            if (deviceInfo != null)
+            var match = WebProvider.ActiveProvider.Match(userAgent);
+            if (match != null)
             {
-                return new FiftyOneClientCapability(deviceInfo);
+                return new FiftyOneClientCapability(match);
             }
-            return new FiftyOneClientCapability(null as SortedList<string, List<string>>);
+            return new FiftyOneClientCapability(null as SortedList<string, string[]>);
         }
 
         /// <summary>
