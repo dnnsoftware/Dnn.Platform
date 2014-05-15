@@ -664,9 +664,10 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void LoadQueueFromEvent(EventName eventName)
             {
-                List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), ServerController.GetExecutingServerName());
+                var executingServer = ServerController.GetExecutingServerName();
+                List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
 
-                var thisServer = ServerController.GetServers().Single(s => s.ServerName == DotNetNuke.Common.Globals.ServerName && s.IISAppName == DotNetNuke.Common.Globals.IISAppName);
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -693,10 +694,10 @@ namespace DotNetNuke.Services.Scheduling
             public static void LoadQueueFromTimer()
             {
                 _forceReloadSchedule = false;
+                var executingServer = ServerController.GetExecutingServerName();
+                List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
 
-                List<ScheduleItem> schedule = SchedulingController.GetSchedule(ServerController.GetExecutingServerName());
-
-                var thisServer = ServerController.GetServers().Single(s => s.ServerName == DotNetNuke.Common.Globals.ServerName && s.IISAppName == DotNetNuke.Common.Globals.IISAppName);
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
                 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -731,17 +732,9 @@ namespace DotNetNuke.Services.Scheduling
 
             private static string ServerGroupServers(ServerInfo thisServer)
             {
-//Get the servers
-                var servers = ServerController.GetEnabledServers().Where(s => s.ServerName != thisServer.ServerName
-                                                                              && s.IISAppName != thisServer.IISAppName
-                                                                              && s.ServerGroup == thisServer.ServerGroup
-                                                                              && !String.IsNullOrEmpty(s.Url));
-                string serverGroupServers = string.Empty;
-                foreach (var serverInfo in servers)
-                {
-                    serverGroupServers = serverGroupServers + serverInfo.ServerName + ",";
-                }
-                return serverGroupServers;
+                //Get the servers
+                var servers = ServerController.GetEnabledServers().Where(s =>  s.ServerGroup == thisServer.ServerGroup);
+                return servers.Aggregate(string.Empty, (current, serverInfo) => current + serverInfo.ServerName + ",");
             }
 
             public static void PurgeScheduleHistory()
