@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -44,6 +45,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
+using System.Globalization;
 
 namespace DotNetNuke.Entities.Users
 {
@@ -1474,17 +1476,34 @@ namespace DotNetNuke.Entities.Users
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
-#pragma warning disable 618
-                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
-#pragma warning restore 618
-                var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+                var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
                 var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);
+                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
                 if (userFolder != null)
                 {
-                    FolderManager.Instance.Synchronize(folderPortalId, folderPath, true, true);
+                    FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
                     var notDeletedSubfolders = new List<IFolderInfo>();
                     FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
+                    if (notDeletedSubfolders.Count == 0)
+                    {
+                        //try to remove the sub folder if there is no other users use this folder.
+                        var subFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                        if(subFolder != null && !FolderManager.Instance.GetFolders(subFolder).Any())
+                        {
+                            FolderManager.Instance.DeleteFolder(subFolder, notDeletedSubfolders);
+
+                            if (notDeletedSubfolders.Count == 0)
+                            {
+                                //try to remove the root folder if there is no other users use this folder.
+                                var rootFolder = FolderManager.Instance.GetFolder(subFolder.ParentID);
+                                if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
+                                {
+                                    FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 DataCache.ClearPortalCache(portalId, false);
