@@ -142,12 +142,12 @@ namespace DotNetNuke.Entities.Host
             server.ServerID = serverId;
             if (existServer == null
                 || string.IsNullOrEmpty(existServer.Url)
-                || (string.IsNullOrEmpty(existServer.UniqueId) && HostController.Instance.GetString("WebServer_ServerRequestAdapter", DefaultUrlAdapter) != DefaultUrlAdapter))
+                || (string.IsNullOrEmpty(existServer.UniqueId) && !string.IsNullOrEmpty(GetServerUniqueId())))
             {
                 //try to detect the server url from url adapter.
-                server.Url = string.IsNullOrEmpty(server.Url) ? GetServerUrl() : server.Url;
+                server.Url = existServer == null || string.IsNullOrEmpty(existServer.Url) ? GetServerUrl() : existServer.Url;
                 //try to detect the server unique id from url adapter.
-                server.UniqueId = string.IsNullOrEmpty(server.UniqueId) ? GetServerUniqueId() : server.UniqueId;
+                server.UniqueId = existServer == null || string.IsNullOrEmpty(existServer.UniqueId) ? GetServerUniqueId() : existServer.UniqueId;
 
                 UpdateServer(server);
             }
