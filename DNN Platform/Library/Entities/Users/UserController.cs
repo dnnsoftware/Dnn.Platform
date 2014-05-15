@@ -1487,16 +1487,16 @@ namespace DotNetNuke.Entities.Users
 
                     if (notDeletedSubfolders.Count == 0)
                     {
-                        //try to remove the sub folder if there is no other users use this folder.
-                        var subFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
-                        if(subFolder != null && !FolderManager.Instance.GetFolders(subFolder).Any())
+                        //try to remove the parent folder if there is no other users use this folder.
+                        var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                        if(parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
                         {
-                            FolderManager.Instance.DeleteFolder(subFolder, notDeletedSubfolders);
+                            FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
 
                             if (notDeletedSubfolders.Count == 0)
                             {
                                 //try to remove the root folder if there is no other users use this folder.
-                                var rootFolder = FolderManager.Instance.GetFolder(subFolder.ParentID);
+                                var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
                                 if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
                                 {
                                     FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
