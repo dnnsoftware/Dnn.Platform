@@ -472,7 +472,7 @@ namespace DotNetNuke.Entities.Urls
                     //look for a 404 result from the rewrite, because of a deleted page or rule
                     if (!finished && result.Action == ActionType.Output404)
                     {
-                        if (result.DomainName == result.HttpAlias && result.PortalAlias != null
+                        if (result.OriginalPath == result.HttpAlias && result.PortalAlias != null
                                 && result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
                         {
                             //Request for domain with no page identified (and no home page set in Site Settings)

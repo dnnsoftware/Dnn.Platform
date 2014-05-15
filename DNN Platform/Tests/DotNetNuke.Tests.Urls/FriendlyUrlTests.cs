@@ -71,6 +71,11 @@ namespace DotNetNuke.Tests.Urls
             base.TestFixtureSetUp();
 
             var tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+            if (tab == null)
+            {
+                CreateTab(_aboutUsPageName);
+                tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+            }
             _tabId = tab.TabID;
 
             //Add Portal Aliases

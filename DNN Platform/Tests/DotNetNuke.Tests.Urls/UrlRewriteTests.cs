@@ -236,13 +236,6 @@ namespace DotNetNuke.Tests.Urls
 
         #region Private Methods
 
-        private void CreateTab(string tabName)
-        {
-            var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
-
-            TabController.Instance.AddTab(tab);
-        }
-
         private void DeleteTab(string tabName)
         {
             var tab = TabController.Instance.GetTabByName(tabName, PortalId);
@@ -596,26 +589,32 @@ namespace DotNetNuke.Tests.Urls
                 testFields["Final Url"] = testFields["Final Url"].Replace("{useAlias}", defaultAlias);
             }
 
-            if (!(String.IsNullOrEmpty(language) && String.IsNullOrEmpty(skin)))
+            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", "REDIRECT");
+            var alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, PortalId);
+            if (alias == null)
             {
-                //add new primary alias
-                _primaryAlias = new PortalAliasInfo
-                                    {
-                                        PortalID = PortalId,
-                                        HTTPAlias = defaultAlias,
-                                        CultureCode = language,
-                                        Skin = skin,
-                                        IsPrimary = true
-                                    };
-                _primaryAlias.PortalAliasID = PortalAliasController.Instance.AddPortalAlias(_primaryAlias);
-                ExecuteTest(settings, testFields, true);
+                alias = new PortalAliasInfo
+                {
+                    HTTPAlias = defaultAlias,
+                    PortalID = PortalId,
+                    IsPrimary = true
+                };
+                if (!(String.IsNullOrEmpty(language) && String.IsNullOrEmpty(skin)))
+                {
+                    alias.CultureCode = language;
+                    alias.Skin = skin;
+                }
+               PortalAliasController.Instance.AddPortalAlias(alias);
             }
-            else
-            {
-                SetDefaultAlias(defaultAlias);
-                ExecuteTest(settings, testFields, false);
-            }
+            SetDefaultAlias(defaultAlias);
+            ExecuteTest(settings, testFields, false);
 
+
+            alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, PortalId);
+            if (alias != null)
+            {
+                PortalAliasController.Instance.DeletePortalAlias(alias);
+            }
         }
 
         [Test]
@@ -677,7 +676,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_JiraTests")]
         public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
-            var testName = testFields.GetValue("Test", String.Empty);
+            var testName = testFields.GetValue("Test File", String.Empty);
 
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testName + ".csv");
             var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testName + "_dic.csv");

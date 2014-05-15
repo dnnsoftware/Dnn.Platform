@@ -25,6 +25,7 @@ using System.Data;
 
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
@@ -64,6 +65,13 @@ namespace DotNetNuke.Tests.Urls
         }
 
         #endregion
+
+        protected void CreateTab(string tabName)
+        {
+            var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
+
+            TabController.Instance.AddTab(tab);
+        }
 
         private void ExecuteScriptFile(string fileName)
         {
