@@ -141,8 +141,8 @@ namespace DotNetNuke.Entities.Host
             
             server.ServerID = serverId;
             if (existServer == null
-                || string.IsNullOrEmpty(existServer.Url) 
-                || string.IsNullOrEmpty(existServer.UniqueId))
+                || string.IsNullOrEmpty(existServer.Url)
+                || (string.IsNullOrEmpty(existServer.UniqueId) && HostController.Instance.GetString("WebServer_ServerRequestAdapter", DefaultUrlAdapter) != DefaultUrlAdapter))
             {
                 //try to detect the server url from url adapter.
                 server.Url = string.IsNullOrEmpty(server.Url) ? GetServerUrl() : server.Url;
