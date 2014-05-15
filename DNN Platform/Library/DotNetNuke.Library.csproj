@@ -529,6 +529,7 @@
     <Compile Include="Services\FileSystem\FileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileSizeFormatProvider.cs" />
+    <Compile Include="Services\FileSystem\FileUrlHelper.cs" />
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\FolderMappingsConfigController.cs" />
