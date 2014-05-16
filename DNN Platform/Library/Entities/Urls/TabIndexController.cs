@@ -135,30 +135,27 @@ namespace DotNetNuke.Entities.Urls
                 }
                 //check the culture of the redirect to see if it either doesn't match the alias or needs to specify
                 //the language when requested
-                if (redirect.CultureCode != null)
+                if (!String.IsNullOrEmpty(redirect.CultureCode) && redirect.CultureCode != "Default")
                 {
-                    if (redirect.CultureCode != "" && redirect.CultureCode != "Default")
+                    //806 : specify duplicates where the alias culture doesn't match the redirect culture
+                    //so that redirect to the best match between alias culture and redirect culture
+                    //compare the supplied alias culture with the redirect culture
+                    //856 : if alias culture == "" and a custom 301 redirect then redirects are forced
+                    if (!string.IsNullOrEmpty(aliasCulture) && aliasCulture != redirect.CultureCode)
                     {
-                        //806 : specify duplicates where the alias culture doesn't match the redirect culture
-                        //so that redirect to the best match between alias culture and redirect culture
-                        //compare the supplied alias culture with the redirect culture
-                        //856 : if alias culture == "" and a custom 301 redirect then redirects are forced
-                        if (!string.IsNullOrEmpty(aliasCulture) && aliasCulture != redirect.CultureCode)
-                        {
-                            //the culture code and the specific culture alias don't match
-                            //set 301 check status and set to delete if a duplicate is found
-                            redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
-                                                                                redirectedRewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.Custom_Redirect);
-                            newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(newRewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.Custom_Redirect);
-                            duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
-                        }
-                        //add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
-                        RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
+                        //the culture code and the specific culture alias don't match
+                        //set 301 check status and set to delete if a duplicate is found
+                        redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
+                                                                            redirectedRewritePath,
+                                                                            ActionType.CheckFor301,
+                                                                            RedirectReason.Custom_Redirect);
+                        newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(newRewritePath,
+                                                                            ActionType.CheckFor301,
+                                                                            RedirectReason.Custom_Redirect);
+                        duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
                     }
+                    //add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
+                    RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
                 }
                 //now add the custom redirect to the tab dictionary
                 if (String.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)

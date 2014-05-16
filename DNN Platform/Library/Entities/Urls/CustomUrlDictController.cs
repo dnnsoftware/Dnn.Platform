@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -102,37 +103,18 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                         string cultureKey = redirect.CultureCode.ToLower();
-                        int tabid = tab.TabID;
-                        using (existingTabs.GetWriteLock())
+                        var locales = LocaleController.Instance.GetLocales(portalId).Values;
+                        if (String.IsNullOrEmpty(cultureKey))
                         {
-                            if (existingTabs.ContainsKey(tabid) == false)
+                            //Add entry for each culture
+                            foreach (Locale locale in locales)
                             {
-                                var entry = new SharedDictionary<string, string>();
-                                using (entry.GetWriteLock())
-                                {
-                                    entry.Add(cultureKey, url);
-                                }
-                                //871 : use lower case culture code as key
-                                existingTabs.Add(tab.TabID, entry);
+                                AddEntryToDictionary(existingTabs, portalId, tab, locale.Code.ToLower(), url);
                             }
-                            else
-                            {
-                                SharedDictionary<string, string> entry = existingTabs[tabid];
-                                //replace tab if existing but was retreieved from tabs call
-                                if (tab.PortalID == portalId || portalId == -1)
-                                {
-                                    using (entry.GetWriteLock())
-                                    {
-                                        if (entry.ContainsKey(cultureKey) == false)
-                                        {
-                                            //add the culture and set in parent dictionary
-                                            //871 : use lower case culture code as key
-                                            entry.Add(cultureKey, url);
-                                            existingTabs[tabid] = entry;
-                                        }
-                                    }
-                                }
-                            }
+                        }
+                        else
+                        {
+                            AddEntryToDictionary(existingTabs, portalId, tab, cultureKey, url);
                         }
                     }
                 }
@@ -141,6 +123,42 @@ namespace DotNetNuke.Entities.Urls
         }
 
         #endregion
+
+        private static void AddEntryToDictionary(SharedDictionary<int, SharedDictionary<string, string>> existingTabs, int portalId, TabInfo tab, string cultureKey, string url)
+        {
+            int tabid = tab.TabID;
+            using (existingTabs.GetWriteLock())
+            {
+                if (existingTabs.ContainsKey(tabid) == false)
+                {
+                    var entry = new SharedDictionary<string, string>();
+                    using (entry.GetWriteLock())
+                    {
+                        entry.Add(cultureKey, url);
+                    }
+                    //871 : use lower case culture code as key
+                    existingTabs.Add(tab.TabID, entry);
+                }
+                else
+                {
+                    SharedDictionary<string, string> entry = existingTabs[tabid];
+                    //replace tab if existing but was retreieved from tabs call
+                    if (tab.PortalID == portalId || portalId == -1)
+                    {
+                        using (entry.GetWriteLock())
+                        {
+                            if (entry.ContainsKey(cultureKey) == false)
+                            {
+                                //add the culture and set in parent dictionary
+                                //871 : use lower case culture code as key
+                                entry.Add(cultureKey, url);
+                                existingTabs[tabid] = entry;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         #region Internal Methods
 
