@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public static bool IsLinkClickURLFormat(string requestPath, NameValueCollection requestQueryString, out IFileInfo fileRequested)
         {
-            if (requestPath.Equals(@"/LinkClick.aspx", StringComparison.OrdinalIgnoreCase) && requestQueryString["fileticket"] != null)
+            if (requestPath.EndsWith(@"/LinkClick.aspx", StringComparison.OrdinalIgnoreCase) && requestQueryString["fileticket"] != null)
             {
                 int fileId = FileLinkClickController.Instance.GetFileIdFromLinkClick(requestQueryString);
                 fileRequested = FileManager.Instance.GetFile(fileId);
