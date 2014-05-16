@@ -176,7 +176,14 @@
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />
                         <dnn:DnnComboBox ID="cboSearchTabId" runat="server" DataTextField="IndentedTabName" DataValueField="TabId" />
                     </div>
-                    <dnnext:UserControlExtensionControl runat="server" ID="pagesExtensionPoint" Module="SiteSettings" Group="Pages"/>
+                    <div class="dnnFormItem">
+                        <dnn:label id="pl404TabId" runat="server" controlname="cbo404TabId" />
+                        <dnn:DnnPageDropDownList ID="cbo404TabId" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:label id="pl500TabId" runat="server" controlname="cbo500TabId" />
+                        <dnn:DnnPageDropDownList ID="cbo500TabId" runat="server" />
+                    </div>
                 </fieldset>
                 <h2 id="dnnSitePanel-SecuritySettings" class="dnnFormSectionHead">
                     <a href=""><%=LocalizeString("SecuritySettings")%></a>

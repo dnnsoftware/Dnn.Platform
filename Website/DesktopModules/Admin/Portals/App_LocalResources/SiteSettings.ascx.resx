@@ -1238,4 +1238,16 @@ The host-level settings are currently set as follows:
   <data name="enableModuleEffectLabel.Help" xml:space="preserve">
     <value>Check this box to enable highlight current edit module in edit mode.</value>
   </data>
+  <data name="pl404TabId.Help" xml:space="preserve">
+    <value>The 404 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in a "Page Not Found" error.</value>
+  </data>
+  <data name="pl404TabId.Text" xml:space="preserve">
+    <value>404 Error Page</value>
+  </data>
+  <data name="pl500TabId.Help" xml:space="preserve">
+    <value>The 500 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in an unexpected error.</value>
+  </data>
+  <data name="pl500TabId.Text" xml:space="preserve">
+    <value>500 Error Page</value>
+  </data>
 </root>

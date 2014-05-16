@@ -289,8 +289,6 @@ namespace DesktopModules.Admin.Portals
             cboSearchTabId.DataSource = listTabs.Where(t => (t.TabID > 0 && Globals.ValidateModuleInTab(t.TabID, "Search Results")) || t.TabID == Null.NullInteger).ToList();
             cboSearchTabId.DataBind(portal.SearchTabId.ToString(CultureInfo.InvariantCulture));
 
-            pagesExtensionPoint.BindAction(portal.PortalID, -1, -1);
-
             if (portal.UserTabId > 0)
             {
                 listTabs = TabController.GetPortalTabs(portal.PortalID, Null.NullInteger, false, true);
@@ -366,6 +364,8 @@ namespace DesktopModules.Admin.Portals
 
                 BindMessaging(portal);
 
+                BindCustomSettings(portal);
+
                 var objSMTPmode = PortalController.GetPortalSetting("SMTPmode", portal.PortalID, string.Empty);
 
                 if (objSMTPmode.Length == 0)
@@ -432,6 +432,41 @@ namespace DesktopModules.Admin.Portals
             }
 
             BindUserAccountSettings(portal, activeLanguage);
+        }
+
+        private void BindCustomSettings(PortalInfo portal)
+        {
+            var portalId = portal.PortalID;
+            var noneSpecifiedText = "<" + Localization.GetString("None_Specified") + ">";
+            var undefinedItem = new ListItem(noneSpecifiedText, string.Empty);
+
+            //Set up special page lists
+            var listTabs = TabController.GetPortalTabs(TabController.GetTabsBySortOrder(portalId, LocaleController.Instance.GetCurrentLocale(portalId).Code, true),
+                                                                 Null.NullInteger,
+                                                                 true,
+                                                                 noneSpecifiedText,
+                                                                 true,
+                                                                 false,
+                                                                 false,
+                                                                 false,
+                                                                 false);
+           
+            cbo404TabId.UndefinedItem = undefinedItem;
+            
+            if (portal.Custom404TabId > 0)
+            {
+                cbo404TabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.Custom404TabId);
+            }
+
+            cbo404TabId.PortalId = portalId;
+
+            cbo500TabId.UndefinedItem = undefinedItem;
+            if (portal.Custom500TabId > 0)
+            {
+                cbo500TabId.SelectedPage = listTabs.SingleOrDefault(t => t.TabID == portal.Custom500TabId); ;
+            }
+
+            cbo500TabId.PortalId = portalId;
         }
 
         private void BindSmtpSettings(int portalId)
@@ -1317,7 +1352,11 @@ namespace DesktopModules.Admin.Portals
                                                 SearchTabId = intSearchTabId,
                                                 DefaultLanguage = existingPortal.DefaultLanguage,
                                                 HomeDirectory = lblHomeDirectory.Text,
-                                                CultureCode = SelectedCultureCode
+                                                CultureCode = SelectedCultureCode,
+                                                Custom404TabId = cbo404TabId.SelectedItem != null ? cbo404TabId.SelectedItemValueAsInt
+                                                                                                    : Null.NullInteger,
+                                                Custom500TabId = cbo500TabId.SelectedItem != null ? cbo500TabId.SelectedItemValueAsInt
+                                                                                                    : Null.NullInteger
                                             };
                     //portalController.UpdatePortalInfo(portal);
                     PortalController.Instance.UpdatePortalInfo(portal);
@@ -1369,8 +1408,6 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "SMTPUsername", txtSMTPUsername.Text);
                     PortalController.UpdateEncryptedString(_portalId, "SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
                     PortalController.UpdatePortalSetting(_portalId, "SMTPEnableSSL", chkSMTPEnableSSL.Checked ? "Y" : "N");
-
-                    pagesExtensionPoint.SaveAction(_portalId, -1, -1);
 
                     SiteSettingAdvancedSettingExtensionControl.SaveAction(_portalId, TabId, ModuleId);
                     SiteSettingsTabExtensionControl.SaveAction(_portalId, TabId, ModuleId);
