@@ -858,6 +858,7 @@ namespace DotNetNuke.Services.FileSystem
             var log = new LogInfo();
             log.AddProperty("Old Folder Path", currentFolderPath);
             log.AddProperty("New Folder Path", newFolderPath);
+            log.AddProperty("Home Directory", folder.PortalID == Null.NullInteger ? Globals.HostPath : PortalSettings.Current.HomeDirectory);
             log.LogTypeKey = EventLogController.EventLogType.FOLDER_MOVED.ToString();
             LogController.Instance.AddLog(log);
 
