@@ -3267,7 +3267,26 @@ namespace DotNetNuke.Data
         {
             return ExecuteScalar<int>("UnRegisterAssembly", packageID, assemblyName) == 1;
         }
-
+        /// <summary>
+        /// Update the packages table for an existing extension
+        /// </summary>
+        /// <param name="portalID"></param>
+        /// <param name="name"></param>
+        /// <param name="friendlyName"></param>
+        /// <param name="description"></param>
+        /// <param name="type"></param>
+        /// <param name="version"></param>
+        /// <param name="license"></param>
+        /// <param name="manifest"></param>
+        /// <param name="owner"></param>
+        /// <param name="organization"></param>
+        /// <param name="url"></param>
+        /// <param name="email"></param>
+        /// <param name="releaseNotes"></param>
+        /// <param name="isSystemPackage"></param>
+        /// <param name="lastModifiedByUserID"></param>
+        /// <param name="folderName"></param>
+        /// <param name="iconFile"></param>
         public virtual void UpdatePackage(int portalID, string name, string friendlyName, string description,
                                           string type, string version, string license, string manifest, string owner,
                                           string organization, string url, string email, string releaseNotes,
