@@ -53,6 +53,7 @@ namespace DotNetNuke.Entities.Portals
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// PortalSettings Class
+    /// checking out local commit to send it to github
     ///
     /// This class encapsulates all of the settings for the Portal, as well
     /// as the configuration settings required to execute the current tab
