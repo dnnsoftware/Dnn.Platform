@@ -102,6 +102,12 @@ dnn.controls.triStateManager = function (images, toolTips) {
                 updateImage($fullControl, fullControl.value);
             }
         }
+
+        if (dnn.controls.triStateManager.updateAdvancedState && typeof dnn.controls.triStateManager.updateAdvancedState == "function") {
+            dnn.controls.triStateManager.updateAdvancedState.call($hdn, state, function(h, s) {
+                updateImage(h, s);
+            });
+        }
     }
     
     function updateImage($hdn, state) {
