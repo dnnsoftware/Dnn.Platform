@@ -139,7 +139,10 @@ namespace DotNetNuke.Services.Installer.Packages
                                                                             DataCache.PackagesCachePriority),
                                                 c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
         }
-
+        /// <summary>
+        /// Update an existing package and possibly it's dependancies and log the result in the eventlog
+        /// </summary>
+        /// <param name="package"></param>
         private static void UpdatePackageInternal(PackageInfo package)
         {
             provider.UpdatePackage(package.PortalID,
@@ -237,7 +240,10 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             return GetExtensionPackages(portalId).Where(predicate).ToList();
         }
-
+        /// <summary>
+        /// Save or update the package
+        /// </summary>
+        /// <param name="package"></param>
         public void SaveExtensionPackage(PackageInfo package)
         {
             if (package.PackageID == Null.NullInteger)
