@@ -6,11 +6,11 @@
         var inputBox = $('#' + scopeId + '_txtUser');
         var userIdsField = $('#' + scopeId + '_hiddenUserIds');
         var init = function () {
-            var serviceUrl = $.ServicesFramework(-1).getServiceRoot('InternalServices') + 'ItemListService/SearchUser'
+            var serviceUrl = $.ServicesFramework(-1).getServiceRoot('InternalServices') + 'ItemListService/SearchUser';
             inputBox.tokenInput(serviceUrl, {
 				theme: "facebook",
 				resultsFormatter: function (item) {
-				    return "<li class='user'><img src='" + item.iconfile + "' title='" + item.name + "' height='25px' width='25px' /><span>" + item.name + "</span></li>";
+				    return "<li class='user'><img src='" + item.iconfile + "' title='" + item.name + "' style='width:25px;height:25px;' /><span>" + item.name + "</span></li>";
 				},
 				minChars: 2,
 				preventDuplicates: true,

@@ -1037,6 +1037,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             base.OnInit(e);
 
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
             ClientResourceManager.RegisterScript(Page, "~/js/dnn.permissiongrid.js");
 

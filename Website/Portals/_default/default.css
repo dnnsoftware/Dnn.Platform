@@ -2601,8 +2601,6 @@ table.dnnASPGrid {
 
     table.dnnPermissionsGrid {
         color: #777;
-        float: left;
-        clear: both;
     }
 
     table.dnnPermissionsGrid tr.dnnGridHeader td {
@@ -2660,14 +2658,10 @@ table.dnnASPGrid {
     .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
         margin-right: 35px;
         float:left;
-        margin-top: -15px;
-        margin-bottom: 15px;
     }
 
     .dnnPermissionsGrid > .dnnFormItem >  .rightGroup {
-        margin-top: -15px;
         float: left;
-        margin-bottom: 15px;
     }
 
     .dnnPermissionsGrid > .dnnFormItem >  .rightGroup  > .dnnSecondaryAction {
@@ -2675,7 +2669,8 @@ table.dnnASPGrid {
     }
 
     .dnnPermissionsGrid > .dnnFormItem {
-        margin-bottom: 18px;        
+        margin-bottom: 18px;
+        overflow: auto;     
     }
 
 .dnnGridHeader td, thead.dnnGridHeader th,  tr.dnnGridHeader th{
