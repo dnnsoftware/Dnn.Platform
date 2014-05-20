@@ -35,6 +35,8 @@ namespace DotNetNuke.Services.FileSystem
 
         void FileOverwritten(object sender, FileChangedEventArgs args);
 
+        void FileMetadataChanged(object sender, FileChangedEventArgs args);
+
         void FolderAdded(object sender, FolderChangedEventArgs args);
 
         void FolderMoved(object sender, FolderMovedEventArgs args);

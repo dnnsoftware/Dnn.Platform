@@ -27,7 +27,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
@@ -37,12 +36,13 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.Services.Log.EventLog;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace DotNetNuke.Services.FileSystem
@@ -59,7 +59,8 @@ namespace DotNetNuke.Services.FileSystem
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
-        private event EventHandler<FileAddedEventArgs> FileAdded; 
+        private event EventHandler<FileAddedEventArgs> FileAdded;
+        private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
         #endregion
 
         #region Properties
@@ -175,6 +176,7 @@ namespace DotNetNuke.Services.FileSystem
                 FileMoved += value.FileMoved;
                 FileAdded += value.FileAdded;
                 FileOverwritten += value.FileOverwritten;
+                FileMetadataChanged += value.FileMetadataChanged;
             }
         }
 
@@ -223,6 +225,18 @@ namespace DotNetNuke.Services.FileSystem
             if (FileOverwritten != null)
             {
                 FileOverwritten(this, new FileChangedEventArgs
+                {
+                    FileInfo = fileInfo,
+                    UserId = userId
+                });
+            }
+        }
+
+        private void OnFileMetadataChanged(IFileInfo fileInfo, int userId)
+        {
+            if (FileMetadataChanged != null)
+            {
+                FileMetadataChanged(this, new FileChangedEventArgs
                 {
                     FileInfo = fileInfo,
                     UserId = userId
@@ -320,10 +334,19 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName))
+            if (!IsAllowedExtension(fileName) && !(UserController.GetCurrentUserInfo().IsSuperUser) && !(HostController.Instance.GetBoolean("IgnoreWhiteList", false)))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
+            //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
+            if (!IsAllowedExtension(fileName) && (UserController.GetCurrentUserInfo().IsSuperUser) && HostController.Instance.GetBoolean("IgnoreWhiteList", false))
+             {
+                 var eventLogController = new EventLogController();
+                 var logInfo = new LogInfo();
+                 logInfo.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                 logInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
+                 eventLogController.AddLog(logInfo);
+             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
@@ -1099,6 +1122,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">The file to update.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.InvalidMetadataValuesException">Thrown when the file metadata are not valid.</exception>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as the updated file.</returns>
         public virtual IFileInfo UpdateFile(IFileInfo file)
         {
@@ -1699,6 +1723,8 @@ namespace DotNetNuke.Services.FileSystem
                                                file.EnablePublishPeriod,
                                                file.ContentItemID);
 
+            OnFileMetadataChanged(file, GetCurrentUserID());
+
             DataCache.RemoveCache("GetFileById" + file.FileId);
 
             return file;
@@ -1723,7 +1749,8 @@ namespace DotNetNuke.Services.FileSystem
                 return false;
             }
 
-            if (file.StartDate < file.CreatedOnDate.Date)
+            var savedFile = FileManager.Instance.GetFile(file.FileId);
+            if (file.StartDate < file.CreatedOnDate.Date && file.StartDate != savedFile.StartDate)
             {
                 exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
                 return false;

@@ -63,7 +63,7 @@ namespace DotNetNuke.Security.Membership
     /// <remarks>
     /// </remarks>
     /// <history>
-    /// [skydnn] DNN4016 & DNN4133
+    /// [skydnn] DNN4016 and DNN4133
     /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider
@@ -851,7 +851,7 @@ namespace DotNetNuke.Security.Membership
         {
             UserCreateStatus createStatus = ValidateForProfanity(user);
             EventLogController aLog = new EventLogController();
-            string service = HttpContext.Current.Request.Params["state"];
+            string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
             //DNN-4016
             //the username exists, first we check to see if this is an OAUTH user
@@ -1627,7 +1627,7 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            string vanityUrl = HttpUtility.HtmlEncode(user.VanityUrl);
+            
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1647,7 +1647,7 @@ namespace DotNetNuke.Security.Membership
                                      user.IsSuperUser,
                                      email,
                                      displayName,
-                                     vanityUrl,
+                                     user.VanityUrl,
                                      updatePassword,
                                      isApproved,
                                      false,

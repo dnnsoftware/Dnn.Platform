@@ -1,8 +1,8 @@
 ﻿#region Copyright
 
 // 
-// Copyright (c) [YEAR]
-// by [OWNER]
+// Copyright (c) _YEAR_
+// by _OWNER_
 // 
 
 #endregion
@@ -14,58 +14,58 @@ using DotNetNuke.Data;
 
 #endregion
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
-    public class [CONTROL]Controller
+    public class _CONTROL_Controller
     {
-        public void Add[CONTROL]([CONTROL]Info [CONTROL])
+        public void Add_CONTROL_(_CONTROL_Info _CONTROL_)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<[CONTROL]Info>();
-                rep.Insert([CONTROL]);
+                var rep = ctx.GetRepository<_CONTROL_Info>();
+                rep.Insert(_CONTROL_);
             }
         }
 
-        public void Delete[CONTROL]([CONTROL]Info [CONTROL])
+        public void Delete_CONTROL_(_CONTROL_Info _CONTROL_)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<[CONTROL]Info>();
-                rep.Delete([CONTROL]);
+                var rep = ctx.GetRepository<_CONTROL_Info>();
+                rep.Delete(_CONTROL_);
             }
         }
 
-        public IEnumerable<[CONTROL]Info> Get[CONTROL]s(int moduleId)
+        public IEnumerable<_CONTROL_Info> Get_CONTROL_s(int moduleId)
         {
-            IEnumerable<[CONTROL]Info> [CONTROL]s;
+            IEnumerable<_CONTROL_Info> _CONTROL_s;
 
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<[CONTROL]Info>();
-                [CONTROL]s = rep.Get(moduleId);
+                var rep = ctx.GetRepository<_CONTROL_Info>();
+                _CONTROL_s = rep.Get(moduleId);
             }
-            return [CONTROL]s;
+            return _CONTROL_s;
         }
 
-        public [CONTROL]Info Get[CONTROL](int [CONTROL]Id, int moduleId)
+        public _CONTROL_Info Get_CONTROL_(int _CONTROL_Id, int moduleId)
         {
-            [CONTROL]Info [CONTROL];
+            _CONTROL_Info _CONTROL_;
 
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<[CONTROL]Info>();
-                [CONTROL] = rep.GetById([CONTROL]Id, moduleId);
+                var rep = ctx.GetRepository<_CONTROL_Info>();
+                _CONTROL_ = rep.GetById(_CONTROL_Id, moduleId);
             }
-            return [CONTROL];
+            return _CONTROL_;
         }
 
-        public void Update[CONTROL]([CONTROL]Info [CONTROL])
+        public void Update_CONTROL_(_CONTROL_Info _CONTROL_)
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<[CONTROL]Info>();
-                rep.Update([CONTROL]);
+                var rep = ctx.GetRepository<_CONTROL_Info>();
+                rep.Update(_CONTROL_);
             }
         }
     }

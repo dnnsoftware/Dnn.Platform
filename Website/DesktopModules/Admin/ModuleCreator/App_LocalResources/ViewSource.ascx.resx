@@ -216,4 +216,7 @@
   <data name="DeleteSnippet.Text" xml:space="preserve">
     <value>Delete Snippet?</value>
   </data>
+  <data name="View.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>

@@ -11,7 +11,7 @@
     associated with the data types.
     
     Example:
-    
+    m
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -645,18 +645,6 @@
   <data name="plUserQuota.Text" xml:space="preserve">
     <value>User Quota:</value>
   </data>
-  <data name="Deflate.Text" xml:space="preserve">
-    <value>Deflate Compression</value>
-  </data>
-  <data name="NoCompression.Text" xml:space="preserve">
-    <value>No Compression</value>
-  </data>
-  <data name="plCompression.Help" xml:space="preserve">
-    <value>Select the type of Http Compression to use.</value>
-  </data>
-  <data name="plCompression.Text" xml:space="preserve">
-    <value>Compression Setting:</value>
-  </data>
   <data name="Performance.Text" xml:space="preserve">
     <value>Performance Settings</value>
   </data>
@@ -674,9 +662,6 @@
   </data>
   <data name="plWhitespace.Text" xml:space="preserve">
     <value>Use Whitespace Filter:</value>
-  </data>
-  <data name="Compression.Text" xml:space="preserve">
-    <value>Compression Settings</value>
   </data>
   <data name="plExcludedPaths.Text" xml:space="preserve">
     <value>Excluded Paths:</value>
@@ -811,7 +796,7 @@
     <value>The application you are running</value>
   </data>
   <data name="FrameworkDownLevel.Text" xml:space="preserve">
-    <value>Note: You are running on an old version of the .NET Framework.  Future upgrades of the DotNetNuke platform will require .NET 3.5 SP1 or later. If you believe you are running .NET 3.5 SP1 already, please check your web.config file and ensure that the 3.5 or above versions of both System.Core and System.Data.Linq are referenced in the assemblies node.</value>
+    <value>Note: You are running on an old version of the .NET Framework.  Future upgrades of the DotNetNuke platform will require .NET 4.0 or later. If you believe you are running .NET 3.5 SP1 already, please check your web.config file and ensure that the 3.5 or above versions of both System.Core and System.Data.Linq are referenced in the assemblies node.</value>
   </data>
   <data name="plBetaNotice.Help" xml:space="preserve">
     <value>Check this box to display a message indicating that the running version is a Beta release.</value>
@@ -878,9 +863,6 @@
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
     <value>Please select a skin and/or container to preview.</value>
-  </data>
-  <data name="DeprecateGzip.Text" xml:space="preserve">
-    <value>DotNetNuke's GZip compression is getting deprecated and removed in 6.2.0. We recommend using IIS compression to increase performance on your server.</value>
   </data>
   <data name="ClientResourceManagement.Text" xml:space="preserve">
     <value>Client Resource Management</value>
@@ -1115,7 +1097,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
     <value>Cancel</value>
   </data>
   <data name="CompactIndexConfirmationMessage.Text" xml:space="preserve">
-    <value>Compacting Index can be CPU consuming and may require twice the space of the current Index Store for processing. Compacting is done by site search crawler and depends on it's scheduling frequency. Are you sure you want to continue?</value>
+    <value>Compacting Index can be CPU consuming and may require twice the space of the current Index Store for processing. Compacting is done by site search crawler and depends on its scheduling frequency. Are you sure you want to continue?</value>
   </data>
   <data name="CompactIndexConfirmationTitle.Text" xml:space="preserve">
     <value>Confirm Compacting</value>
@@ -1198,4 +1180,22 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plShowCriticalErrors.Text" xml:space="preserve">
     <value>Show Critical Errors on screen?</value>
   </data>
+  <data name="lblCustomAnalyzer.Help" xml:space="preserve">
+    <value>&lt;p&gt;If this is empty, system will use standard analyzer to index content. if you want to use custom analyzer, please type the full name of analyzer class in this field.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note: &lt;/b&gt;If you want exist content to index with new analyzer, you need visit "Admin &gt; Search Admin" in each site which you want re-index and click the "Re-Index Content" button.&lt;/p&gt;</value>
+  </data>
+  <data name="lblCustomAnalyzer.Text" xml:space="preserve">
+    <value>Custom Analyzer Type:</value>
+  </data>
+  <data name="Mb.Text" xml:space="preserve">
+    <value>Mb</value>
+  </data>
+  <data name="plMaxUploadSize.Help" xml:space="preserve">
+    <value>Maximum size of file that can be uploaded to the site. The minimum is 12 Mb.</value>
+  </data>
+  <data name="plMaxUploadSize.Text" xml:space="preserve">
+  <value>Max Upload Size</value>
+</data>
+  <data name="maxUploadSize.Error" xml:space="preserve">
+  <value>Maximum Upload Size must be between 12 and {0}</value>
+</data>
 </root>

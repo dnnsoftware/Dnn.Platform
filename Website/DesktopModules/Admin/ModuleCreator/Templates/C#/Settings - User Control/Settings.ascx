@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="[OWNER].[MODULE].Settings" CodeFile="Settings.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="_OWNER_._MODULE_.Settings" CodeFile="Settings.ascx.cs" %>
 
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 

@@ -4,7 +4,7 @@
 [>NODE]
 	<li class="[?NODE]dropdown [/?][?SELECTED]active[/?]">
 	[?ENABLED]
-		<a target="[=TARGET]" href="[=URL]" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
+		<a href="[=URL]" target="[=TARGET]" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
 	[?ELSE]
 		<a href="#" [?NODE] [/?]>[=TEXT] [?NODE]<b class="caret hidden-desktop pull-right icon-chevron-down icon-white"></b>[/?]</a>
 	[/?]
@@ -15,3 +15,15 @@
 	[/?]
 	</li>
 [/>]
+
+<script type="text/javascript">
+(function($){
+	$(document).ready(function(){
+		$(".nav-pills > li a").on("mouseover", function(event){
+            var $this = $(this).parent().find(">ul");
+            if($this.length == 0) return;
+            dnn.addIframeMask($this[0]);
+		});
+	});
+})(jQuery);
+</script>

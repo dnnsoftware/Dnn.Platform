@@ -15,7 +15,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         setupDnnTabs();
         setupDnnMainMenuButtons();
 
-        fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
+        //fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
     }
 
     var fileUpload;
@@ -105,6 +105,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             .dnnTabs(options)
             .bind("tabsactivate", function (event, ui) {
                 currentTab = ui.newTab.index();
+                controller.leftPaneTabActivated(ui.newPanel[0].id);
                 if (currentTab == 0) {
                     treeViewRefreshScrollbars();
                 }
@@ -1353,27 +1354,31 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         for (var i = 0; i < permissions.length; i++) {
             //Select all menu items that must check the current permission            
             var itemsSelector = selectorPattern + " .permission_" + permissions[i].Key;
+            $(itemsSelector).each(function() {
+                var $item = changeParent ? $(this).parent() : $(this);
 
-            var $item = changeParent ? $(itemsSelector).parent() : $(itemsSelector);
-
-            if (permissions[i].Value) {
-                $item.addClass("permission_granted");
-            } else {
-                if (!$item.hasClass("permission_granted")) {
-                    $item.addClass("permission_denied");
+                if (permissions[i].Value) {
+                    $item.addClass("permission_granted");
+                    if (reset) {
+                        $item.removeClass("permission_denied");
+                    }
+                } else {
+                    if (!$item.hasClass("permission_granted")) {
+                        $item.addClass("permission_denied");
+                    }
                 }
-            }
+            });
         }
         $(selectorPattern + " .permission_granted").removeClass("permission_granted");       
     }
 
-    function checkPermissionsWhenItemSelectionChanged(items, selectorPattern) {
+    function checkPermissionsWhenItemSelectionChanged(items, selectorPattern, changeParent) {
         //Permission keys are an OR clausure: If any permission has granted an item, then no one more should deny it
-        $(selectorPattern + " .permission_denied", "#" + controls.scopeWrapperId).removeClass("permission_denied");
+        $(selectorPattern + " .permission_denied").removeClass("permission_denied");
         for (var j = 0; j < items.length; j++) {
             var item = items[j].get_dataItem();
             if (item) {
-                checkPermissions(selectorPattern, item.Permissions, false, false);
+                checkPermissions(selectorPattern, item.Permissions, false, changeParent);
             }
         }
     }
@@ -1764,8 +1769,16 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             controller.onLoadFolder();
             clearSearchPattern();
             loadFolderFirstPage(dataItem.ItemID);
-        } else {            
-            self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
+        } else {
+            $.each(dataItem.Permissions, function(index, p)
+            {
+                if (p.Key == "READ" && p.Value == true) {
+                    self.window.open(setTimeStamp(getUrlAsync(dataItem.ItemID)));
+                    return false;
+                }
+                return true;
+            });
+                        
         }
     }
 
@@ -1935,6 +1948,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         var menuSelector = "#" + controls.gridMenuId + "_detached";
         $(menuSelector + " li.rmItem").css("display", "");
+        
+        checkPermissionsWhenItemSelectionChanged(grid.get_selectedItems(), menuSelector, true);
 
         if (items.length > 1) {
             hideMenuOptions(menuSelector + " a.rmLink.singleItem");            
@@ -1963,9 +1978,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
 
         controller.setupGridContextMenuExtension(contextMenu, grid.get_selectedItems());
-
-        var permissions = gridItem.get_dataItem().Permissions;
-        checkPermissions(menuSelector, permissions, true, true);
         
         contextMenu.show(event);
     }
@@ -2369,8 +2381,30 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return settings.rootFolderPath + folderPath;
     }
 
+    function getFileUpload() {
+        if (typeof fileUpload === "undefined") {
+            fileUpload = dnn[controls.fileUploadId];
+            $(fileUpload).on("onfileuploadclose", function () { refreshFolder(); });
+        }
+        return fileUpload;
+    }
+
     function uploadFiles() {
-        fileUpload.uploadFiles();
+        var node = getCurrentNode();
+        var options = {
+            folderPath: getCurrentFolderPath(),
+            folderPicker: {
+                disabled: true,
+                initialState: {
+                    selectedItem: {
+                        key: node.get_value(),
+                        value: node.get_text()
+                    }
+                }
+            }
+        };
+        var instance = getFileUpload();
+        instance.show(options);
     }
 
     function deleteSelectedItems() {
@@ -2448,7 +2482,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                         }).fail(function (xhr) {
                             handledXhrError(xhr, resources.deleteItemsErrorTitle);
                         }).always(function () {
-                            enableLoadingPanel(false);                            
+                            enableLoadingPanel(false);
                         });
                     }
                 },
@@ -3048,7 +3082,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         if (dataItem) {
             var target = dataItem.get_element();
-            if (event.target.tagName == "INPUT" && event.target.type == "checkbox") {                
+            var eventTarget = event.target || event.srcElement; //Compliant with IE8
+            if (eventTarget.tagName == "INPUT" && eventTarget.type == "checkbox") {                
                 toggleGridItemSelection(dataItem);
             } else if (event.ctrlKey) {
                 triggerMouseClick(target, true, false, false);

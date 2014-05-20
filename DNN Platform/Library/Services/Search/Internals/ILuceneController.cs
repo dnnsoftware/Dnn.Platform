@@ -22,7 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-
+using DotNetNuke.Services.Search.Entities;
+using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Search;
 
@@ -35,10 +36,9 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Execute Search
         /// </summary>
-        /// <param name="luceneQuery">Search Parameters</param>
-        /// <paramref name="totalHits">Total Hits found in Lucene</paramref>
+        /// <param name="luceneSearchContext">Search Context</param>
         /// <returns>List of matching Documents</returns>
-        IEnumerable<LuceneResult> Search(LuceneQuery luceneQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null);
+        LuceneResults Search(LuceneSearchContext luceneSearchContext);
 
         /// <summary>
         /// Adds Lucene Document in Lucene Index
@@ -95,5 +95,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <returns><see cref="SearchStatistics"/> object or null if the information can not be retrieved.</returns>
         SearchStatistics GetSearchStatistics();
+
+        Analyzer GetCustomAnalyzer();
     }
 }

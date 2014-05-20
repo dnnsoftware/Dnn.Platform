@@ -76,6 +76,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\PrimaryKeyEventArgs.cs" />
     <Compile Include="Components\ProfileEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

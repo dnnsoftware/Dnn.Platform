@@ -29,31 +29,19 @@ using DotNetNuke.Application;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// associated with an assembly.  
 
 // Review the values of the assembly attributes
 
 [assembly: AssemblyTitle("DotNetNuke")]
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
-[assembly: AssemblyCompany("DotNetNuke Corporation")]
-[assembly: AssemblyProduct("http://www.dotnetnuke.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DotNetNuke Corporation. All Rights Reserved.")]
-[assembly: AssemblyTrademark("DotNetNuke")]
 [assembly: CLSCompliant(true)]
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-[assembly: AssemblyVersion("7.2.1.0")]
-[assembly: AssemblyFileVersion("7.2.1.0")]
+
 [assembly: AssemblyStatus(ReleaseMode.Stable)]
+
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]
+
 // This assembly is the default dynamic assembly generated Castle DynamicProxy, 
 // used by Moq. Paste in a single line.
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

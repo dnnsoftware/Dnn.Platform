@@ -1107,10 +1107,10 @@ namespace DotNetNuke.Web.InternalServices
         private bool IsPortalIdValid(int portalId)
         {
             if (UserInfo.IsSuperUser) return true;
+            if (PortalSettings.PortalId == portalId) return true;
+
             var isAdminUser = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
             if (!isAdminUser) return false;
-
-            if (PortalSettings.PortalId == portalId) return true;
 
             var mygroup = GetMyPortalGroup();
             return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));

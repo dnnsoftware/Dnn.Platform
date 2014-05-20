@@ -174,7 +174,8 @@ namespace DotNetNuke.Services.Log.EventLog
             TABURL_CREATED,
             TABURL_UPDATED,
             TABURL_DELETED,
-            SCRIPT_COLLISION
+            SCRIPT_COLLISION,
+            POTENTIAL_PAYPAL_PAYMENT_FRAUD
         }
 
         #endregion

@@ -22,12 +22,11 @@ using System;
 using System.Globalization;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Web.Mvp
 {
@@ -79,11 +78,11 @@ namespace DotNetNuke.Web.Mvp
 
             if (homeTabId > Null.NullInteger)
             {
-                redirectUrl = Globals.NavigateURL(homeTabId);
+                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
             }
             else
             {
-                redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) + "/" + Globals.glbDefaultPage;
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) + "/" + Globals.glbDefaultPage;
             }
 
             return redirectUrl;

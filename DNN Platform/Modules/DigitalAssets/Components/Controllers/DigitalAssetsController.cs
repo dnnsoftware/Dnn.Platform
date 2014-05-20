@@ -869,6 +869,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public string GetUrl(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
+            if (file != null)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                if (!HasPermission(folder, "READ"))
+                {
+                    throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToDownload.Error"));
+                }
+            }
             return FileManager.Instance.GetUrl(file);
         }
 
@@ -1032,15 +1040,17 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         protected string GetFolderIconUrl(int portalId, int folderMappingID)
         {
-            var imageUrl = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID).ImageUrl;
+            var imageUrl = IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
 
-            if (File.Exists(HttpContext.Current.Server.MapPath(imageUrl)))
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folderMappingID);
+            if (folderMapping != null && File.Exists(HttpContext.Current.Server.MapPath(folderMapping.ImageUrl)))
             {
-                return imageUrl;
+                imageUrl = folderMapping.ImageUrl;
             }
 
-            return IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
+            return imageUrl;
         }
+
         #endregion
         
         public string UpgradeModule(string version)

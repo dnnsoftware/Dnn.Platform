@@ -1,6 +1,6 @@
 @Imports DotNetNuke.Common
 
-@*Copyright (c) [YEAR] by [OWNER] *@
+@*Copyright (c) _YEAR_ by _OWNER_ *@
 
 <div class="dnnForm dnnEdit dnnClear" id="dnnEdit">
 

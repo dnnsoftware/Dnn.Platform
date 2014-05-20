@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -328,27 +329,27 @@ namespace DotNetNuke.Services.Authentication
 					//redirect to current page (or home page if current page is a profile page to reduce redirects)
 		            if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
 		            {
-			            _RedirectURL = Globals.NavigateURL(settings.HomeTabId);
+                        _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
 		            }
 		            else
 		            {
-			            _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : Globals.NavigateURL(settings.ActiveTab.TabID);
+                        _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
 		            }
 
                 }
                 else if (settings.HomeTabId != -1)
                 {
 					//redirect to portal home page specified
-                    _RedirectURL = Globals.NavigateURL(settings.HomeTabId);
+                    _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
                 else //redirect to default portal root
                 {
-                    _RedirectURL = Globals.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
+                    _RedirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
             else //redirect to after logout page
             {
-                _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                _RedirectURL = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(setting));
             }
             return _RedirectURL;
         }

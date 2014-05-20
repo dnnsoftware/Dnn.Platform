@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// Copyright (c) [YEAR]
-// by [OWNER]
+// Copyright (c) _YEAR_
+// by _OWNER_
 // 
 
 #endregion
@@ -10,13 +10,13 @@
 using System;
 using DotNetNuke;
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
 
-    public class [MODULE]Job : DotNetNuke.Services.Scheduling.SchedulerClient
+    public class _MODULE_Job : DotNetNuke.Services.Scheduling.SchedulerClient
     {
 
-        public [MODULE]Job(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
+        public _MODULE_Job(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
@@ -27,10 +27,10 @@ namespace [OWNER].[MODULE]
                 this.Progressing();
                 string strMessage = Processing();
                 this.ScheduleHistoryItem.Succeeded = true;
-                this.ScheduleHistoryItem.AddLogNote("[MODULE] Succeeded");
+                this.ScheduleHistoryItem.AddLogNote("_MODULE_ Succeeded");
             } catch (Exception exc) {
                 this.ScheduleHistoryItem.Succeeded = false;
-                this.ScheduleHistoryItem.AddLogNote("[MODULE] Failed");
+                this.ScheduleHistoryItem.AddLogNote("_MODULE_ Failed");
                 this.Errored(ref exc);
             }
         }

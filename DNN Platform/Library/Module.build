@@ -51,6 +51,7 @@
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll" DestinationFolder="$(WebsiteBinPath)" />
 

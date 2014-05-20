@@ -236,6 +236,11 @@ namespace DotNetNuke.Entities.Urls
             return (raw != null) ? (List<string>)raw : null;
         }
 
+        internal static void ClearCustomAliasesCache()
+        {
+            DataCache.ClearCache(CustomPortalAliasesKey);
+        }
+
         /// <summary>
         /// Retrieve the Url Dictionary for the installation.
         /// </summary>

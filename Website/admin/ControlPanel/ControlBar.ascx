@@ -94,9 +94,9 @@
                         <dl>
                             <dd>
                                 <ul>
-                                    <li><a href='<%= BuildToolUrl("UploadFile", false, "File Manager", "Edit", "", true) %>'
-                                        class="ControlBar_PopupLink">
-                                        <%= GetString("Tool.UploadFile.Text") %></a></li>
+                                    <li>
+                                        <a href="javascript: openFileUploader();"><%= GetString("Tool.UploadFile.Text") %></a>
+                                    </li>
                                    <% if (UserController.GetCurrentUserInfo().IsSuperUser)
                                       {%>
                                     <li><a href='javascript:void(0)' id="controlBar_ClearCache">
@@ -405,6 +405,11 @@
             <%=PreviewPopup() %>;
         });
     });
+
+    function openFileUploader() {
+        var instance = dnn['<%= FileUploader.ClientID %>'];
+        instance && instance.show();
+    };
 
 </script>
 <!--END SEO-->

@@ -25,25 +25,24 @@
         };
     })();
 
-    var FileUpload = this.FileUpload = function (options) {
+    var FileUploadPanel = this.FileUploadPanel = function (options) {
         this.options = options;
         this.init();
     };
 
-    FileUpload.prototype = {
+    FileUploadPanel.prototype = {
 
-        constructor: FileUpload,
+        constructor: FileUploadPanel,
 
         init: function () {
-            this.options = $.extend({}, FileUpload.defaults(), this.options);
+            this.options = $.extend({}, FileUploadPanel.defaults(), this.options);
 
             this.$this = $(this);
 
             this._uploadMethods = new dnn.Enum([{ key: 0, value: "undefined" }, { key: 1, value: "local" }, { key: 2, value: "web" }]);
             this._uploadMethod = this._uploadMethods.local;
 
-            this.show();
-
+            this._initPanel();
         },
 
         _selectUpload: function (uploadMethod, eventObject) {
@@ -85,7 +84,7 @@
                         ),
                         $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
                             $element("label").text(this.options.resources.uploadToFolderLabel),
-                            this._folderPicker.$element.addClass("dnnLeftComboBox")
+                            !(this.options.folderPicker.disabled) ? this._folderPicker.$element.addClass("dnnLeftComboBox") : $element("span").append(this.options.folderPicker.initialState.selectedItem.value)
                         )
                     ),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
@@ -131,8 +130,8 @@
             }
         },
 
-        _getFileExtension: function(filename) {
-            var parts = filename.split(".");
+        _getFileExtension: function(fileName) {
+            var parts = fileName.split(".");
             if (parts.length === 1 || (parts[0] === "" && parts.length === 2)) {
                 // If a.length is one, it's a visible file with no extension;
                 // If a[0] === "" and a.length === 2 it's a hidden file with no extension ie. .htaccess;
@@ -176,14 +175,15 @@
         _submitUrl: function (status) {
             var serviceUrl = $.dnnSF().getServiceRoot("InternalServices");
             var serviceSettings = {
-                beforeSend: $.dnnSF().setModuleHeaders,
+                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 url: serviceUrl + "FileUpload/UploadFromUrl",
                 type: "POST",
                 async: true,
                 success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
                 error: $.onAjaxError
             };
-            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "", IsHostMenu: false };
+            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "" };
+            $.extend(serviceSettings.data, this.options.parameters);
             $.ajax(serviceSettings);
         },
 
@@ -193,7 +193,9 @@
 
         _createFileUploadStatusElement: function (status) {
             status.overwrite = false;
+            status.path = this._selectedPath();
             var fileName = status.fileName;
+            var path = status.path;
             var cancelUpload = status.data ? function () {
                 var xhr = status.data.jqXHR;
                 if (xhr && xhr.readyState !== 4) {
@@ -203,11 +205,11 @@
             var $status = $element("li").append(
                 $element("a", { href: "javascript:void(0);", "class": "fu-fileupload-thumbnail" }).append(
                     $element("div").append(
-                        $element("img", { "class": "pt", src: "/Icons/Sigma/ExtFile_32X32_Standard.png" })
+                        $element("img", { "class": "pt", src: "/Images/dnnanim.gif" })
                     )
                 ),
                 $element("div", { "class": "fu-fileupload-filename-container" }).append(
-                    $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(fileName)
+                    $element("span", { "class": "fu-fileupload-filename", title: fileName }).text(path + fileName)
                 ),
                 $element("div", { "class": "fu-fileupload-progressbar-container" }).append(
                     $element("div", { "class": "fu-fileupload-progressbar ui-progressbar" }).append(
@@ -304,8 +306,7 @@
             var $fileUploadStatus = this._getInitializedStatusElement(statusData);
 
             if (message) {
-                this._showFileUploadStatus($fileUploadStatus, { message: message });
-                $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+                this._showError($fileUploadStatus, message);
                 return;
             }
 
@@ -347,6 +348,7 @@
                 extract: this._extract(),
                 overwrite: statusData.overwrite
             };
+            $.extend(data.formData, this.options.parameters);
             return true;
         },
 
@@ -373,10 +375,12 @@
             var $fileUploadStatus = this._getFileUploadStatusElement(fileName);
             var result = this._getFileUploadResult(response);
             if (result.message) {
-                if (!result.alreadyExists) {
-                    $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
+                if (result.alreadyExists) {
+                    this._showFileUploadStatus($fileUploadStatus, result);
                 }
-                this._showFileUploadStatus($fileUploadStatus, result);
+                else {
+                    this._showError($fileUploadStatus, result.message);
+                }
                 return;
             }
             this._showThumbnail($fileUploadStatus, result);
@@ -387,17 +391,43 @@
         },
 
         _showThumbnail: function ($fileUploadStatus, result) {
-            if (this._isValidExtension(result.path, [".bmp", ".gif", ".png", ".jpg", ".jpeg", ".tiff"])) {
-                var img = $fileUploadStatus[0].firstChild.firstChild.firstChild;
-                $(img).prop("src", result.path).removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
+            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
+            $img.removeClass().addClass(result.orientation === 1 ? "pt" : "ls");
+            var path = result.path;
+            if (this._isValidExtension(result.fileName, [".bmp", ".gif", ".png", ".jpg", ".jpeg"])) {
+                $img.prop("src", path);
             }
+            else {
+                $img.prop("src", result.fileIconUrl);
+            }
+            var $link = $($fileUploadStatus[0].firstChild);
+            path ? $link.attr({ target: path, href: path }).removeClass("fu-fileupload-thumbnail-inactive") :
+                $link.attr("href", "javascript:void(0);").removeAttr("target").addClass("fu-fileupload-thumbnail-inactive");
         },
 
-        _fail: function(e, data) {
-            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+        _showError: function ($fileUploadStatus, errorMessage) {
+            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
             $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
-            var message = data.errorThrown === "abort" ? this.options.resources.fileUploadCancelled : this.options.resources.fileUploadFailed;
-            this._showFileUploadStatus($fileUploadStatus, { message: message });
+            var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
+            $img.removeClass().addClass("pt");
+            $img.prop("src", "/Images/no-content.png");
+            var $link = $($fileUploadStatus[0].firstChild);
+            $link.attr("href", "javascript:void(0);").removeAttr("target").addClass("fu-fileupload-thumbnail-inactive");
+        },
+
+        _fail: function (e, data) {
+            var $fileUploadStatus = this._getFileUploadStatusElement(data.files[0].name);
+            var message;
+            if (data.errorThrown === "abort") {
+                message = this.options.resources.fileUploadCancelled;
+            }
+            else if (data.errorThrown === "Unauthorized") {
+                message = "Unauthorized (401)";
+            }
+            else {
+                message = this.options.resources.fileUploadFailed;
+            }
+            this._showError($fileUploadStatus, message);
         },
 
         _dragover: function (e, data) {
@@ -409,10 +439,9 @@
         },
 
         _initFileUploadFromLocal: function () {
-
             this._$inputFileControl.fileupload({
                 url: this._uploadFromLocalUrl(),
-                beforeSend: $.dnnSF().setModuleHeaders,
+                beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,
                 dropZone: this._$dragAndDropArea,
                 sequentialUpload: true,
                 progressInterval: 20,
@@ -431,8 +460,11 @@
             return this._$extract.is(':checked');
         },
 
-        _selectedPath: function() {
+        _selectedPath: function () {
             var selectedPathArray = this._folderPicker.selectedPath();
+            if (selectedPathArray.length === 0 && this.options.folderPath) {
+                return this.options.folderPath;
+            }
             var selectedPath = "";
             if (selectedPathArray.length > 1) {
                 for (var i = 1, size = selectedPathArray.length; i < size; i++) {
@@ -459,7 +491,10 @@
         },
 
         _getFileUploadStatusElement: function (fileName) {
-            return this._$fileUploadStatuses.children().filter(function (index) { return $(this).data("status").fileName == fileName; });
+            var path = this._selectedPath();
+            return this._$fileUploadStatuses.children().filter(function(index) {
+                return $(this).data("status").fileName == fileName && $(this).data("status").path == path;
+            });
         },
 
         _setProgress: function ($fileUploadStatus, percent) {
@@ -476,15 +511,7 @@
             }
         },
 
-        _onCloseDialog: function () {
-            this._isShown = false;
-        },
-
-        _ensureDialog: function () {
-            if (this.$element) {
-                return;
-            }
-
+        _initPanel: function () {
             this.$element = this._createLayout();
 
             if (this._isValidExtension(".zip", this.options.extensions)) {
@@ -494,11 +521,13 @@
                 this._$decompressOption.hide();
             }
 
+            var isMultiple = typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0 || this.options.maxFiles > 1;
+
             this._$buttonGroup = this.$element.find(".fu-dialog-content-header ul.dnnButtonGroup");
             this._$fileUploadStatusesContainer = this.$element.find('.fu-fileupload-statuses-container').hide().jScrollbar();
             this._$fileUploadStatuses = this._$fileUploadStatusesContainer.find('.fu-fileupload-statuses').empty();
             this._$dragAndDropArea = this.$element.find('.fu-dialog-drag-and-drop-area');
-            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: typeof this.options.maxFiles === "undefined" || this.options.maxFiles === 0 || this.options.maxFiles > 1, "data-text": this.options.resources.dragAndDropAreaTitle });
+            this._$inputFileControl = $element("input", { type: 'file', name: 'postfile', multiple: isMultiple, "data-text": this.options.resources.dragAndDropAreaTitle });
             this._$extract = this.$element.find("." + "fu-dialog-content-header").find("input");
 
             this._$inputFileControl.appendTo(this._$dragAndDropArea.find('.fu-dialog-drag-and-drop-area-message')).dnnFileInput(
@@ -519,17 +548,63 @@
                 webResource.parameters().set("__RequestVerificationToken", antiForgeryToken);
             }
             return webResource.toPathAndQuery();
+        }
+
+    };
+
+    FileUploadPanel._defaults = {
+        statusErrorCss: "fu-status-error",
+        statusUploadedCss: "fu-status-uploaded",
+        statusCancelledCss: "fu-status-cancelled",
+        serviceRoot: "InternalServices",
+        fileUploadMethod: "FileUpload/UploadFromLocal",
+        maxFiles: 1,
+        extensions: [".png", ".jpeg", ".jpg", ".bmp"]
+    };
+
+    FileUploadPanel.defaults = function (settings) {
+        if (typeof settings !== "undefined") {
+            $.extend(FileUploadPanel._defaults, settings);
+        }
+        return FileUploadPanel._defaults;
+    };
+
+    //var FileUploadDialog = this.FileUploadDialog = dnn.singletonify(FileUpload);
+
+    var FileUploadDialog = this.FileUploadDialog = function (options) {
+        this.options = options;
+        this.init();
+    };
+
+    FileUploadDialog.prototype = {
+        constructor: FileUploadDialog,
+
+        init: function () {
+            this.options = $.extend({}, FileUploadDialog.defaults(), this.options);
+            this.$this = $(this);
+            if (this.options.showOnStartup) {
+                this.show();
+            }
         },
 
-        show: function () {
+        _onCloseDialog: function () {
+            this._isShown = false;
+            this.$this.trigger($.Event("onfileuploadclose"), [this]);
+        },
+
+        show: function(options) {
             if (this._isShown) {
                 return;
             }
             this._isShown = true;
 
-            this._ensureDialog();
+            this.options = $.extend(this.options, options);
 
-            this.$element.dialog({
+            this._panel = new FileUploadPanel(this.options);
+
+            var self = this;
+            var $panel = this._panel.$element;
+            $panel.dialog({
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this.options.dialogCss,
@@ -537,47 +612,52 @@
                 resizable: false,
                 width: this.options.width,
                 height: this.options.height,
-                close: $.proxy(this._onCloseDialog, this),
-                buttons: [ {
-                    text: this.options.resources.closeButtonText,
-                    click: function () { $(this).dialog("close"); },
-                    "class": "dnnSecondaryAction"
+                close: $.proxy(function() {
+                    $panel.empty().remove();
+                    self._onCloseDialog();
+                }, this),
+                buttons: [{
+                        text: this.options.resources.closeButtonText,
+                        click: function() { $(this).dialog("close"); },
+                        "class": "dnnSecondaryAction"
                     }
                 ]
             });
-
         }
-
     };
 
-    FileUpload._defaults = {
+    FileUploadDialog._defaults = {
         dialogCss: "fu-dialog",
-        statusErrorCss: "fu-status-error",
-        statusUploadedCss: "fu-status-uploaded",
-        statusCancelledCss: "fu-status-cancelled",
         width: 780,
-        height: 630,
-        serviceRoot: "InternalServices",
-        fileUploadMethod: "FileUpload/UploadFromLocal",
-        maxFiles: 1,
-        extensions: [".png", ".jpeg", ".jpg", ".bmp"]
+        height: 630
     };
 
-    FileUpload.defaults = function (settings) {
+    FileUploadDialog.defaults = function (settings) {
         if (typeof settings !== "undefined") {
-            $.extend(FileUpload._defaults, settings);
+            $.extend(FileUploadDialog._defaults, settings);
         }
-        return FileUpload._defaults;
+        return FileUploadDialog._defaults;
     };
-
-    var FileUploadDialog = this.FileUploadDialog = dnn.singletonify(FileUpload);
 
 }).apply(dnn, [jQuery, window, document]);
 
 
 dnn.createFileUpload = function (options) {
     $(document).ready(function () {
-        var instance = dnn.FileUploadDialog.getInstance(options);
+        var instance;
+        if (options.parentClientId) {
+            instance = new dnn.FileUploadPanel(options);
+            var $parent = $("#" + options.parentClientId);
+            if ($parent.length !== 0) {
+                $parent.append(instance.$element);
+            }
+        }
+        else {
+            instance = new dnn.FileUploadDialog(options);
+        }
+        if (options.clientId) {
+            dnn[options.clientId] = instance;
+        }
     });
 };
 

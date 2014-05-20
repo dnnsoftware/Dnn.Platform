@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// Copyright (c) [YEAR]
-// by [OWNER]
+// Copyright (c) _YEAR_
+// by _OWNER_
 // 
 
 #endregion
@@ -17,10 +17,10 @@ using DotNetNuke.Web.Api;
 
 #endregion
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
     [AllowAnonymous]
-    public class [MODULE]APIController : DnnApiController
+    public class _MODULE_APIController : DnnApiController
     {
         [HttpGet]
         public HttpResponseMessage MyResponse()

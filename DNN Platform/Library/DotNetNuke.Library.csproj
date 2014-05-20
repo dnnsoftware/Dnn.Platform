@@ -140,6 +140,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
@@ -489,6 +492,7 @@
     <Compile Include="Services\Authentication\OAuth\QueryParameter.cs" />
     <Compile Include="Services\Authentication\OAuth\QueryParameterComparer.cs" />
     <Compile Include="Services\Authentication\OAuth\UserData.cs" />
+    <Compile Include="Services\ClientDependency\PurgeClientDependencyFiles.cs" />
     <Compile Include="Services\Cryptography\CoreCryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\CryptographyProvider.cs" />
     <Compile Include="Services\Cryptography\ICryptographyProvider.cs" />
@@ -541,6 +545,8 @@
     <Compile Include="Services\Search\Entities\SynonymsGroup.cs" />
     <Compile Include="Services\Search\Internals\Constants.cs" />
     <Compile Include="Services\Search\Internals\ISearchQueryStringParser.cs" />
+    <Compile Include="Services\Search\Internals\LuceneResults.cs" />
+    <Compile Include="Services\Search\Internals\LuceneSearchContext.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\ISearchHelper.cs" />
     <Compile Include="Services\Search\Internals\SearchContentSource.cs" />
@@ -550,6 +556,7 @@
     <Compile Include="Services\Search\Internals\LuceneQuery.cs" />
     <Compile Include="Services\Search\Internals\SearchQueryStringParser.cs" />
     <Compile Include="Services\Search\Internals\SearchSecurityTrimmer.cs" />
+    <Compile Include="Services\Search\Internals\SearchSecurityTrimmerContext.cs" />
     <Compile Include="Services\Search\Internals\SearchStatistics.cs" />
     <Compile Include="Services\Search\Internals\SynonymAnalyzer.cs" />
     <Compile Include="Services\Search\Internals\SynonymFilter.cs" />

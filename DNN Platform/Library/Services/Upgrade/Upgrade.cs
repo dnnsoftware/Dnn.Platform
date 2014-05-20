@@ -2905,6 +2905,92 @@ namespace DotNetNuke.Services.Upgrade
             AddManageUsersModulePermissions();
         }
 
+        private static void UpgradeToVersion722()
+        {
+            UninstallPackage("DotNetNuke.Messaging");
+
+            //add event log type:POTENTIAL_PAYPAL_PAYMENT_FRAUD
+            if (!DoesLogTypeExists(EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()))
+            {
+                var logController = new LogController();
+                var logTypeInfo = new LogTypeInfo
+                                      {
+                                          LogTypeKey =
+                                              EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
+                                          LogTypeFriendlyName = "Potential Paypal Payment Fraud",
+                                          LogTypeDescription = "",
+                                          LogTypeCSSClass = "OperationFailure",
+                                          LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                                      };
+                logController.AddLogType(logTypeInfo);
+            }
+
+            //AdvancedSettings module needs to be made a system package
+            var pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.AdvancedSettings");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Site Wizard module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteWizard");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Site Log module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.SiteLog");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Module Creator module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Module Creator");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Telerik.Web module needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Telerik.Web");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //jQuery needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "jQuery");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //jQuery-Migrate needs to be made a system package
+            pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "jQuery-Migrate");
+            if (pkg != null)
+            {
+                pkg.IsSystemPackage = true;
+                PackageController.Instance.SaveExtensionPackage(pkg);
+            }
+
+            //Make ConfigurationManager Premium
+            MakeModulePremium(@"ConfigurationManager");
+
+            //Make ConfigurationManager Premium
+            MakeModulePremium(@"Dashboard");
+
+            //Make ProfessionalPreview Premium
+            MakeModulePremium(@"ProfessionalPreview");
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -3226,6 +3312,18 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
+        public static void MakeModulePremium(string moduleName)
+        {
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
+            desktopModule.IsAdmin = true;
+            desktopModule.IsPremium = true;
+            DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
+
+            //Remove Portal/Module to PortalDesktopModules
+            DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+        }
+
+
         private static void MovePhotoProperty()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "MovePhotoProperty");
@@ -3332,6 +3430,19 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
             }
+        }
+
+        private static bool DoesLogTypeExists(string logTypeKey)
+        {
+            var logController = new LogController();
+            LogTypeInfo logType;
+            Dictionary<string, LogTypeInfo> logTypeDictionary = logController.GetLogTypeInfoDictionary();
+            logTypeDictionary.TryGetValue(logTypeKey, out logType);
+            if (logType == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion
@@ -5032,6 +5143,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.2.1":
                         UpgradeToVersion721();
+                        break;
+                    case "7.2.2":
+                        UpgradeToVersion722();
                         break;
                 }
             }

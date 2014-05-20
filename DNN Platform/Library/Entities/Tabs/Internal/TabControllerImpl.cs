@@ -24,6 +24,7 @@ using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
@@ -202,6 +203,7 @@ namespace DotNetNuke.Entities.Tabs.Internal
             if (clearCache)
             {
                 DataCache.RemoveCache(String.Format(DataCache.TabUrlCacheKey, portalId));
+                CacheController.ClearCustomAliasesCache();
                 var tab = GetTab(tabUrl.TabId, portalId);
                 tab.ClearTabUrls();
             }
@@ -302,6 +304,7 @@ namespace DotNetNuke.Entities.Tabs.Internal
             if (clearCache)
             {
                 DataCache.RemoveCache(String.Format(DataCache.TabUrlCacheKey, portalId));
+                CacheController.ClearCustomAliasesCache();
                 _legacyController.ClearCache(portalId);
                 var tab = GetTab(tabUrl.TabId, portalId);                
                 tab.ClearTabUrls();

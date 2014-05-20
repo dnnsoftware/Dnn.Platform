@@ -1865,15 +1865,20 @@
             minChars: 0,
             maxChars: 50,
             maxTags: 16,
-
+            lessThanMinCharsErrorText: 'A tag cannot be less than {0} characters long',
+            lessThanMinCharsErrorTitle: 'Tag Length Not Reached',
+            moreThanMaxCharsErrorText: 'A tag cannot be more than {0} characters long',
+            moreThanMaxCharsErrorTitle: 'Tag Length Exceeded',
+            moreThanMaxTagsErrorText: 'A maximum of {0} tags can be attached here',
+            moreThanMaxTagsErrorTitle: 'Tags limit exceeded',
             onErrorLessThanMinChars: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only input more than 0 chars per tag', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.lessThanMinCharsErrorText, settings.minChars), title: settings.lessThanMinCharsErrorTitle });
             },
             onErrorMoreThanMaxChars: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only input less than 50 chars per tag', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.moreThanMaxCharsErrorText, settings.maxChars), title: settings.moreThanMaxCharsErrorTitle });
             },
             onErrorMoreThanMaxTags: function () { // can be customised by module dev
-                $.dnnAlert({ text: 'You can only provide no more than 16 tags', title: 'Input Tag Error' });
+                $.dnnAlert({ text: String.format(settings.moreThanMaxTagsErrorText, settings.maxTags), title: settings.moreThanMaxTagsErrorTitle });
             },
 
             width: '45%',
@@ -2009,8 +2014,12 @@
                                     triggerOnError(event.data.onErrorMoreThanMaxTags);
                                 $(data.fake_input).val('');
                             }
-                            else
-                                $(event.data.real_input).dnnAddTag($(event.data.fake_input).val(), { focus: true, unique: (settings.unique) });
+                            else{
+								var tags = $(event.data.fake_input).val().split(delimiter[id]);
+								for(var i = 0; i < tags.length; i++){
+									$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
+								}
+							}
                         } else {
                             $(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
                             $(event.data.fake_input).css('color', settings.placeholderColor);
@@ -2042,8 +2051,12 @@
                                 triggerOnError(event.data.onErrorMoreThanMaxTags);
                             $(data.fake_input).val('');
                         }
-                        else
-                            $(event.data.real_input).dnnAddTag($(event.data.fake_input).val(), { focus: true, unique: (settings.unique) });
+                        else{
+							var tags = $(event.data.fake_input).val().split(delimiter[id]);
+							for(var i = 0; i < tags.length; i++){
+								$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
+							}
+						}
 
                         $(event.data.fake_input).dnnResetAutosize(settings);
                         return false;

@@ -13,7 +13,7 @@
 #DnnPages div.container
 {
     overflow-x: no-display;
-    margin-left: 212px;
+    margin-left: 242px;
     overflow-y: visible;
 }
 
@@ -81,7 +81,7 @@
 #DnnPages .headcol
 {
     position: absolute;
-    width: 200px!important;
+    width: 230px!important;
     left: -11px;
     top: auto;
     margin-left: 11px;
@@ -123,7 +123,7 @@
 
 #DnnPages .pageHeaderRow .headcol 
 {
-    width: 205px!important;
+    width: 235px!important;
     height: 24px!important;
     border: 1px solid rgb(201, 201, 201)!important;
     margin-top: -1px;
@@ -198,7 +198,7 @@
 
 #DnnPages .moduleHeaderRow .headcol {
     height: 32px!important;
-    width: 198px!important;
+    width: 228px!important;
     outline: none;
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 100%) ;
 }
@@ -296,7 +296,7 @@
 
 #DnnPages .moduleDeleted
 {
-    background-color: red;
-    background-color: rgba(255, 0, 0, 0.5);
-    color: white;
+    background-color: red !important;
+    background-color: rgba(255, 0, 0, 0.5) !important;
+    color: white !important;
 }

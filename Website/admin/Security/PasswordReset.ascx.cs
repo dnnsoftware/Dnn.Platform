@@ -68,7 +68,10 @@ namespace DotNetNuke.Modules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
+            if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
+            {
+                Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+            }
             cmdChangePassword.Click +=cmdChangePassword_Click;
             
             hlCancel.NavigateUrl = Globals.NavigateURL();
@@ -93,10 +96,36 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
+            if (UserController.ValidatePassword(txtPassword.Text)==false)
+            {
+                resetMessages.Visible = true;
+                var failed = Localization.GetString("PasswordResetFailed");
+                LogFailure(failed);
+                lblHelp.Text = failed;
+                return;    
+            }
+
+            //Check New Password is not same as username or banned
+            var settings = new MembershipPasswordSettings(User.PortalID);
+
+            if (settings.EnableBannedList)
+            {
+                var m = new MembershipPasswordController();
+                if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
+                {
+                    resetMessages.Visible = true;
+                    var failed = Localization.GetString("PasswordResetFailed");
+                    LogFailure(failed);
+                    lblHelp.Text = failed;
+                    return;  
+                }
+
+            }
+
             if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
-                var failed = Localization.GetString("FailedAttempt", LocalResourceFile);
+                var failed = Localization.GetString("PasswordResetFailed", LocalResourceFile);
                 LogFailure(failed);
                 lblHelp.Text = failed;
             }

@@ -98,6 +98,9 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\Constants.cs" />
     <Compile Include="Components\Content.cs" />
     <Compile Include="Components\GroupItemPropertyAccess.cs" />

@@ -24,12 +24,14 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.IO;
 using System.Web;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using System.IO;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization.Internal;
 
 #endregion
@@ -75,8 +77,8 @@ namespace DotNetNuke.Services.UserProfile
                 Exceptions.Exceptions.ProcessHttpException(context.Request);
             }
 
-            if (height > 64) {height = 64;}
-            if (width > 64) { width = 64; }
+            if (height > 128) { height = 128; }
+            if (width > 128) { width = 128; }
 
            
             CalculateSize(ref height, ref width, ref size);
@@ -84,72 +86,110 @@ namespace DotNetNuke.Services.UserProfile
             PortalSettings settings = PortalController.GetCurrentPortalSettings();
             var userController = new UserController();
             var user = userController.GetUser(settings.PortalId, userId);
-            
-            FileInfo fileInfo ;
-            string ext;
-            if (user == null)
-            {
-                fileInfo = new FileInfo(context.Request.MapPath("~/images/no_avatar.gif"));
-                ext = ".gif";
-            }
-            else
-            {              
-                fileInfo = new FileInfo(context.Request.MapPath(user.Profile.PhotoURLFile));
-               
-                if (fileInfo.Exists)
-                {
-                    ext = fileInfo.Extension;
-                }
-                else
-                {
-                    fileInfo = new FileInfo(context.Request.MapPath("~/images/no_avatar.gif"));
-                    ext = ".gif";
-                }
-            }
-           
-            string sizedPhoto = fileInfo.FullName.Replace(ext, "_" + size + ext);
 
-            if (IsImageExtension(ext) != true)
+            IFileInfo photoFile = null;
+            var photoLoaded = false;
+            if (user != null && TryGetPhotoFile(user, out photoFile))
             {
-                context.Response.End();
-            }
-
-            if (!File.Exists(sizedPhoto))
-            {
-                try
+                if (!IsImageExtension(photoFile.Extension))
                 {
-                    //need to create the photo
-                    File.Copy(fileInfo.FullName, sizedPhoto);
-                    sizedPhoto = ImageUtils.CreateImage(sizedPhoto, height, width);
+                    context.Response.End();
                 }
-                catch (Exception)
+
+                var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
+                var extension = "." + photoFile.Extension;
+                var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
+                if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    //do nothing - stops exception when 2 requests on one page compete to copy large file
+                    using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                    {
+                        var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
+                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                    }
                 }
-               
+
+                using (var content = FileManager.Instance.GetFileContent(FileManager.Instance.GetFile(folder, sizedPhoto)))
+                {
+                    switch (photoFile.Extension.ToLowerInvariant())
+                    {
+                        case "png":
+                            context.Response.ContentType = "image/png";
+                            break;
+                        case "jpeg":
+                        case "jpg":
+                            context.Response.ContentType = "image/jpeg";
+                            break;
+                        case "gif":
+                            context.Response.ContentType = "image/gif";
+                            break;
+
+                    }
+
+                    var memoryStream = new MemoryStream();
+                    content.CopyTo(memoryStream);
+                    memoryStream.WriteTo(context.Response.OutputStream);
+
+                    photoLoaded = true;
+                }
             }
 
-            switch (ext)
+            if (!photoLoaded)
             {
-                case ".png":
-                    context.Response.ContentType = "image/png";
-                    break;
-                case ".jpeg":
-                case ".jpg":
-                    context.Response.ContentType = "image/jpeg";
-                    break;
-                case ".gif":
-                    context.Response.ContentType = "image/gif";
-                    break;
-
+                context.Response.WriteFile(context.Request.MapPath("~/images/no_avatar.gif"));
             }
-            context.Response.WriteFile(sizedPhoto);
+
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(1));
             context.Response.Cache.SetMaxAge(new TimeSpan(0, 1, 0));
             context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
             context.Response.End();
+        }
 
+        //whether current user has permission to view target user's photo.
+        private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
+        {
+            bool isVisible = false;
+            photoFile = null;
+
+            UserInfo user = UserController.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            var photoProperty = targetUser.Profile.GetProperty("Photo");
+            if (photoProperty != null)
+            {
+                isVisible = (user.UserID == targetUser.UserID);
+                if (!isVisible)
+                {
+                    switch (photoProperty.ProfileVisibility.VisibilityMode)
+                    {
+                        case UserVisibilityMode.AllUsers:
+                        isVisible = true;
+                        break;
+                        case UserVisibilityMode.MembersOnly:
+                        isVisible = user.UserID > 0;
+                        break;
+                        case UserVisibilityMode.AdminOnly:
+                        isVisible = user.IsInRole(settings.AdministratorRoleName);
+                        break;
+                        case UserVisibilityMode.FriendsAndGroups:
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
+                {
+                    photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                    if (photoFile == null)
+                    {
+                        isVisible = false;
+                    }
+                }
+                else
+                {
+                    isVisible = false;
+                }
+            }
+
+            return isVisible;
         }
 
         private void CalculateSize(ref int height, ref int width, ref string size)
@@ -172,6 +212,12 @@ namespace DotNetNuke.Services.UserProfile
                 width = 64;
                 size = "l";
             }
+            else if (height > 64 && height <= 128)
+            {
+                height = 128;
+                width = 128;
+                size = "xl";
+            }
             //set a default if unprocessed
             if (String.IsNullOrEmpty(size))
             {
@@ -181,9 +227,13 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-
         private bool IsImageExtension(string extension)
         {
+            if (!extension.StartsWith("."))
+            {
+                extension = string.Format(".{0}", extension);
+            }
+
             List<string> imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
         }

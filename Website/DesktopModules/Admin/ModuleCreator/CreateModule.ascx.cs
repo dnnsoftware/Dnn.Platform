@@ -140,14 +140,15 @@ namespace DesktopModules.Admin.ModuleCreator
                 tr.Close();
 
                 //replace tokens
-                sourceCode = sourceCode.Replace("[OWNER]", GetOwner());
-                sourceCode = sourceCode.Replace("[MODULE]", GetModule());
-                sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
-                sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
+                sourceCode = sourceCode.Replace("_OWNER_", GetOwner());
+                sourceCode = sourceCode.Replace("_MODULE_", GetModule());
+                sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
+                sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
                 {

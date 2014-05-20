@@ -51,6 +51,8 @@
   <property name="TemplateFilters">
     <item>*.html</item>
     <item>*.htm</item>
+    <item>*.template</item>
+    <item>*.htmtemplate</item>
   </property>
   <property name="OnClientCommandExecuting">
   </property>

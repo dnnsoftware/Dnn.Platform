@@ -149,16 +149,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
             var isEnabled = true;
 
-            //if (MembershipProviderConfig.PasswordRetrievalEnabled)
-            //{
-            //    lblHelp.Text = Localization.GetString("SendPasswordHelp", LocalResourceFile);
-            //    cmdSendPassword.Text = Localization.GetString("SendPassword", LocalResourceFile);
-            //}
-            //else if (MembershipProviderConfig.PasswordResetEnabled)
-            //{
-            //    lblHelp.Text = Localization.GetString("ResetPasswordHelp", LocalResourceFile);
-            //    cmdSendPassword.Text = Localization.GetString("ResetPassword", LocalResourceFile);
-            //}
             //both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
@@ -171,6 +161,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
                 divPassword.Visible = false;
             }
+
+            if (MembershipProviderConfig.PasswordResetEnabled == false)
+            {
+                isEnabled = false;
+                lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
+                divPassword.Visible = false;
+            }
+
             if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
@@ -351,7 +349,8 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         LogFailure(message);
                     }
-
+                    //always hide panel so as to not reveal if username exists.
+                    pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
 
                     liLogin.Visible = true;

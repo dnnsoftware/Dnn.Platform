@@ -516,6 +516,26 @@ namespace DotNetNuke.Entities.Portals
         public int SearchTabId { get; set; }
 
         /// <summary>
+        ///   Tabid of the Custom 404 page
+        /// </summary>
+        /// <value>Tabid of the Custom 404 page</value>
+        /// <returns>Tabid of the Custom 404 page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("custom404tabid")]
+        public int Custom404TabId { get; set; }
+
+        /// <summary>
+        ///   Tabid of the Custom 500 error page
+        /// </summary>
+        /// <value>Tabid of the Custom 500 error page</value>
+        /// <returns>Tabid of the Custom 500 error page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("custom500tabid")]
+        public int Custom500TabId { get; set; }
+
+        /// <summary>
         /// # of days that Site log history should be kept. 0 means unlimited
         /// </summary>
         /// <value># of days sitelog history</value>
@@ -789,6 +809,8 @@ namespace DotNetNuke.Entities.Portals
             RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
             UserTabId = Null.SetNullInteger(dr["UserTabID"]);
             SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
+            Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
+            Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility
             TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);

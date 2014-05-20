@@ -117,10 +117,7 @@
                             runat="server" ControlToValidate="txtHostEmail" Display="Dynamic" ResourceKey="HostEmail.Error" />
                     </div>
                 </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plHostDefaultDocType" controlname="cboHostDefaultDocType" runat="server" />
-                    <dnn:dnncombobox id="docTypeCombo" runat="server" datatextfield="Value" datavaluefield="Key" />
-                </div>
+
                 <div class="dnnFormItem">
                     <dnn:label id="plRememberMe" controlname="chkRemember" runat="server" />
                     <asp:CheckBox ID="chkRemember" runat="server" />
@@ -167,6 +164,10 @@
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("EditSkinPreview")%></a>
                     </div>
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plHostDefaultDocType" controlname="cboHostDefaultDocType" runat="server" />
+                    <dnn:dnncombobox id="docTypeCombo" runat="server" datatextfield="Value" datavaluefield="Key" />
                 </div>
             </fieldset>
             <h2 id="Panel-Payment" class="dnnFormSectionHead">
@@ -486,6 +487,10 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="txtCustomAnalyzer" />
+                    <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
+                </div>
                 <div class="dnnTableHeader">
                     <div class="dnnFormItem">
                         <dnn:label id="plSearchIndexPath" runat="server" resourcekey="lblSearchIndexPath" />
@@ -622,6 +627,14 @@
                 <div class="dnnFormItem">
                     <dnn:label id="plShowCriticalErrors" controlname="chkCriticalErrors" runat="server" />
                     <asp:CheckBox ID="chkCriticalErrors" runat="server" />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plMaxUploadSize" controlname="txtMaxUploadSize" runat="server" />
+                    <asp:TextBox ID="txtMaxUploadSize" runat="server" />
+                    <asp:Label ID="Label1" runat="server" resourcekey="Mb" />
+                    <asp:RangeValidator runat="server" ID="rangeUploadSize" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" 
+        ControlToValidate="txtMaxUploadSize"  MinimumValue="1"
+        MaximumValue="99" Type="Integer" ></asp:RangeValidator>
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plAsyncTimeout" controlname="txtAsyncTimeout" runat="server" />

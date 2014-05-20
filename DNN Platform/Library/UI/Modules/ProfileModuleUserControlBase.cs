@@ -25,11 +25,10 @@ using System.Globalization;
 using System.Threading;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
@@ -80,11 +79,11 @@ namespace DotNetNuke.UI.Modules
 
             if (homeTabId > Null.NullInteger)
             {
-                redirectUrl = Globals.NavigateURL(homeTabId);
+                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
             }
             else
             {
-                redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) +
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) +
                               "/" + Globals.glbDefaultPage;
             }
 

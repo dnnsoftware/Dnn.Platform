@@ -206,22 +206,22 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
-
+            
             if (searchDocument.SearchTypeId == _moduleSearchTypeId)
             {
                 if(searchDocument.ModuleDefId <= 0)
-                    throw new ArgumentException("ModuleDefId must be greater than zero when SearchTypeId is for a module");
+                    throw new ArgumentException( Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero","ModuleDefId must be greater than zero when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId <= 0)
-                    throw new ArgumentException("ModuleId must be greater than zero when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero","ModuleId must be greater than zero when SearchTypeId is for a module"));
             }
             else
             {
                 if (searchDocument.ModuleDefId > 0)
-                    throw new ArgumentException("ModuleDefId is needed only when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdWhenSearchTypeForModule","ModuleDefId is needed only when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId > 0)
-                    throw new ArgumentException("ModuleId is needed only when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdWhenSearchTypeForModule","ModuleId is needed only when SearchTypeId is for a module"));
             }
 
             var doc = new Document();

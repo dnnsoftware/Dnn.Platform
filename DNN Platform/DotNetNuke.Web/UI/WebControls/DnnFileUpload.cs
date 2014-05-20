@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Web.Services.Description;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -18,8 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileUpload : Control, INamingContainer
     {
 
-        private readonly Lazy<DnnFileUploadOptions> _options =
-            new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
+        private readonly Lazy<DnnFileUploadOptions> _options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
         public DnnFileUploadOptions Options
         {
@@ -29,39 +29,53 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public int ModuleId
+        {
+            set
+            {
+                var moduleIdString = value.ToString(CultureInfo.InvariantCulture);
+                Options.ModuleId = moduleIdString;
+                Options.FolderPicker.Services.ModuleId = moduleIdString;
+            }
+        }
+
+        public string ParentClientId
+        {
+            set { Options.ParentClientId = value; }
+        }
+
+        public bool ShowOnStartup
+        {
+            set { Options.ShowOnStartup = value; }
+        }
+
         public string Skin { get; set; }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            if (DesignMode)
-            {
-                return;
-            }
-            if (GetCurrent(Page) != null)
-            {
-                throw new InvalidOperationException("Only one instance of the DnnFileUpload can be contained by the page.");
-            }
-            Page.Items[typeof(DnnFileUpload)] = this;
-        }
+        public bool SupportHost { get; set; }
 
         public static DnnFileUpload GetCurrent(Page page)
         {
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            jQuery.RegisterFileUpload(Page);
+        }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
             RegisterClientScript(Page, Skin);
             RegisterStartupScript();
         }
 
         private static void RegisterClientScript(Page page, string skin)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(page);
-
             DnnDropDownList.RegisterClientScript(page, skin);
 
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css");
@@ -72,16 +86,21 @@ namespace DotNetNuke.Web.UI.WebControls
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.fileupload.js", FileOrder.Js.DefaultPriority + 3);
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.js", FileOrder.Js.DefaultPriority + 4);
         }
 
         private void RegisterStartupScript()
         {
-            var folder = FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, string.Empty);
+            Options.ClientId = ClientID;
+
+            var portalSettings = PortalSettings.Current;
+
+            var folder = FolderManager.Instance.GetFolder(portalSettings.PortalId, string.Empty);
+            var rootFolder = (SupportHost && portalSettings.ActiveTab.IsSuperTab) ? SharedConstants.HostRootFolder : SharedConstants.RootFolder;
+
             Options.FolderPicker.InitialState = new DnnDropDownListState
             {
-                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), SharedConstants.RootFolder) : null
+                SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
             };
 
             if (Options.Extensions.Count > 0)
@@ -95,6 +114,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 Options.Resources.TooManyFiles = string.Format(Options.Resources.TooManyFiles, Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
             }
 
+            if (!SupportHost)
+            {
+                Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
+            }
             Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
             Options.FolderPicker.Services.SearchTreeMethod = "ItemListService/SearchFolders";

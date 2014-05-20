@@ -432,13 +432,17 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 var tabList = GetTabs(true, true, false, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.TabID);
-                cboParentTab.SelectedPage = selectedParentTab;
+                cboParentTab.SelectedPage = selectedParentTab;                   
             }
             else
             {
                 var tabList = GetTabs(true, true, true, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.ParentId);
-                cboParentTab.SelectedPage = selectedParentTab;
+
+                if (selectedParentTab != null && (selectedParentTab.TabPath.StartsWith("//Admin")==false && selectedParentTab.TabPath.StartsWith("//Host") == false))
+                {
+                    cboParentTab.SelectedPage = selectedParentTab;
+                }
             }
 
             if (string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy")
@@ -1673,36 +1677,42 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private bool IsPageUrlValid()
         {
-            if (_strAction != "edit")
+            var url = urlTextBox.Text;
+
+            if (string.IsNullOrEmpty(url))
             {
-                var url = urlTextBox.Text;
-
-                var urlPath = url.TrimStart('/');
-                bool modified;
-                //Clean Url
-                var options = UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId));
-                urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
-                if (modified)
-                {
-                    ShowWarningMessage(Localization.GetString("UrlPathCleaned.Error", LocalResourceFile));
-                    urlTextBox.Text = '/' + urlPath;
-                    return false;
-                }
-
-                //Validate for uniqueness
-                int tabIdToValidate = -1;
-                if (_strAction == "edit")
-                {
-                    tabIdToValidate = Tab.TabID;
-                }
-                urlPath = FriendlyUrlController.ValidateUrl(urlPath, tabIdToValidate, PortalSettings, out modified);
-                if (modified)
-                {
-                    ShowWarningMessage(Localization.GetString("UrlPathNotUnique.Error", LocalResourceFile));
-                    urlTextBox.Text = '/' + urlPath;
-                    return false;
-                }
+                return true;
             }
+
+            var urlPath = url.TrimStart('/');
+            bool modified;
+            //Clean Url
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new DotNetNuke.Entities.Urls.FriendlyUrlSettings(PortalSettings.PortalId)) );
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            if (modified)
+            {
+                ShowWarningMessage(Localization.GetString("UrlPathCleaned.Error", LocalResourceFile));
+                urlTextBox.Text = '/' + urlPath;
+                return false;
+            }
+
+            //Validate for uniqueness
+            int tabIdToValidate = -1;
+            if (_strAction == "edit")
+            {
+                tabIdToValidate = Tab.TabID;
+            }
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, tabIdToValidate, PortalSettings, out modified);
+            if (modified)
+            {
+                ShowWarningMessage(Localization.GetString("UrlPathNotUnique.Error", LocalResourceFile));
+                urlTextBox.Text = '/' + urlPath;
+                return false;
+            }
+
+            //update the text field with update value, because space char may replaced but the modified flag will not change to true.
+            //in this case we should update the value back so that it can create tab with new path.
+            urlTextBox.Text = '/' + urlPath;
 
             return true;
         }

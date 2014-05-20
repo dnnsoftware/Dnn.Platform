@@ -702,7 +702,7 @@ namespace DotNetNuke.Entities.Modules
 					if (module.AllTabs)
 					{
 						var existModule = moduleController.GetModule(templateModuleID);
-						if (existModule != null && !existModule.IsDeleted && existModule.AllTabs)
+						if (existModule != null && !existModule.IsDeleted && existModule.AllTabs && existModule.PortalID == portalId)
 						{
 							return;
 						}
@@ -1269,9 +1269,6 @@ namespace DotNetNuke.Entities.Modules
             //Log deletion
             var eventLogController = new EventLogController();
             eventLogController.AddLog("ModuleId", moduleId.ToString(), PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
-
-            //Delete Search Items for this Module
-            dataProvider.DeleteSearchItems(moduleId);
         }
 
         /// -----------------------------------------------------------------------------

@@ -104,10 +104,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                     MappingsGrid.Rebind();
                 }
             }
-            if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
-            {
-                NewMappingButton.Visible = false;
-            }
         }
 
         protected void MappingsGrid_OnItemCommand(object source, GridCommandEventArgs e)

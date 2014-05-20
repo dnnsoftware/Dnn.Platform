@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return string.Format(Globals.UserProfilePicFormattedUrl(), PortalSettings.UserId, 32, 32); 
+                return string.Format(Globals.UserProfilePicRelativeUrl(), PortalSettings.UserId, 32, 32); 
             }
         }
 

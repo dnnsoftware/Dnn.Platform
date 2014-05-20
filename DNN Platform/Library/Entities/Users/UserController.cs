@@ -19,27 +19,20 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-#region Usings
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
-using System.Web.Security;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -52,10 +45,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
-
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-
-#endregion
 
 namespace DotNetNuke.Entities.Users
 {
@@ -337,6 +327,10 @@ namespace DotNetNuke.Entities.Users
             if (settings["Security_CaptchaRegister"] == null)
             {
                 settings["Security_CaptchaRegister"] = false;
+            }
+            if (settings["Security_CaptchaChangePassword"] == null)
+            {
+                settings["Security_CaptchaChangePassword"] = false;
             }
             if (settings["Security_CaptchaRetrivePassword"] == null)
             {
@@ -620,63 +614,104 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Copys a user to a different portal.
+        /// Move a user to a different portal.
+        /// </summary>
+        /// <param name="user">The user to move</param>
+        /// <param name="portal">The destination portal</param>
+        /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
+        public static void MoveUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser)
+        {
+            CopyUserToPortal(user, portal, mergeUser);
+            RemoveUser(user);
+        }
+
+        /// <summary>
+        /// Copys a user to a different portal
         /// </summary>
         /// <param name="user">The user to copy</param>
         /// <param name="portal">The destination portal</param>
         /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
         /// <param name="deleteUser">A flag that indicates whether to delete the original user</param>
+        [Obsolete("Deprecated in DNN 7.2.2. This method has been replaced by UserController.MoveUserToPortal and UserControllar.CopyUserToPortal")]
         public static void CopyUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser, bool deleteUser)
         {
-            //Check if user already exists in target portal
-            UserInfo targetUser = GetUserById(portal.PortalID, user.UserID);
-
-            if (targetUser == null || !mergeUser)
+            if (deleteUser)
             {
-                //add user to new portal
-                AddUserPortal(portal.PortalID, user.UserID);
-
-                if (!user.IsSuperUser)
-                {
-                    AutoAssignUsersToRoles(user, portal.PortalID);
-                }
+                MoveUserToPortal(user, portal, mergeUser);
             }
             else
             {
-                //Set Portal ID to new Portal
-                targetUser.PortalID = portal.PortalID;
+                CopyUserToPortal(user, portal, mergeUser);
+            }
+        }
 
-                //Update Properties
-                targetUser.DisplayName = (String.IsNullOrEmpty(targetUser.DisplayName))
-                                             ? user.DisplayName
-                                             : targetUser.DisplayName;
-                targetUser.Email = (String.IsNullOrEmpty(targetUser.Email))
-                                             ? user.Email
-                                             : targetUser.Email;
-                targetUser.FirstName = (String.IsNullOrEmpty(targetUser.FirstName))
-                                             ? user.FirstName
-                                             : targetUser.FirstName;
-                targetUser.LastName = (String.IsNullOrEmpty(targetUser.LastName))
-                                             ? user.LastName
-                                             : targetUser.LastName;
+        /// <summary>
+        /// Copys a user to a different portal.
+        /// </summary>
+        /// <param name="user">The user to copy</param>
+        /// <param name="destinationPortal">The destination portal</param>
+        /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
+        public static void CopyUserToPortal(UserInfo user, PortalInfo destinationPortal, bool mergeUser)
+        {
+            var targetUser = GetUserById(destinationPortal.PortalID, user.UserID);
+            if (targetUser == null)
+            {
+                AddUserPortal(destinationPortal.PortalID, user.UserID);
 
-                //Update the profile
-                foreach (ProfilePropertyDefinition property in user.Profile.ProfileProperties)
+                if (!user.IsSuperUser)
                 {
-                    if (String.IsNullOrEmpty(targetUser.Profile.GetPropertyValue(property.PropertyName)))
-                    {
-                        targetUser.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
-                    }
+                    AutoAssignUsersToRoles(user, destinationPortal.PortalID);
                 }
 
-                //Update the user
-                UpdateUser(targetUser.PortalID, targetUser);
+                targetUser = GetUserById(destinationPortal.PortalID, user.UserID);
+                MergeUserProperties(user, targetUser);
+                MergeUserProfileProperties(user, targetUser);
+            }
+            else
+            {
+                targetUser.PortalID = destinationPortal.PortalID;
+
+                if (mergeUser)
+                {
+                    MergeUserProperties(user, targetUser);
+                    MergeUserProfileProperties(user, targetUser);
+                }
+            }
+            
+            UpdateUser(targetUser.PortalID, targetUser);
+        }
+
+        private static void MergeUserProfileProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            foreach (ProfilePropertyDefinition property in userMergeFrom.Profile.ProfileProperties)
+            {
+                if (string.IsNullOrEmpty(userMergeTo.Profile.GetPropertyValue(property.PropertyName)))
+                {
+                    userMergeTo.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
+                }
+            }
+        }
+
+        private static void MergeUserProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            if (string.IsNullOrEmpty(userMergeTo.DisplayName))
+            {
+                userMergeTo.DisplayName = userMergeFrom.DisplayName;
             }
 
-            //Delete original user
-            if (deleteUser)
+            if (string.IsNullOrEmpty(userMergeTo.Email))
             {
-                RemoveUser(user);
+                userMergeTo.Email = userMergeFrom.Email;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.FirstName))
+            {
+                userMergeTo.FirstName = userMergeFrom.FirstName;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.LastName))
+            {
+                userMergeTo.LastName = userMergeFrom.LastName;
             }
         }
 
@@ -1433,7 +1468,9 @@ namespace DotNetNuke.Entities.Users
                 objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
+#pragma warning disable 618
                 var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
+#pragma warning restore 618
                 var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
                 var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
                 var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);
@@ -1640,7 +1677,19 @@ namespace DotNetNuke.Entities.Users
 			if (loggedAction)
 			{
 				var objEventLog = new EventLogController();
-				objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+
+                //if the httpcontext is null, then get portal settings by portal id.
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null)
+                {
+                    portalSettings = PortalController.GetCurrentPortalSettings();
+                }
+                else if (portalId > Null.NullInteger)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                }
+
+			    objEventLog.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
 			//Remove the UserInfo from the Cache, as it has been modified
 			if (clearCache)

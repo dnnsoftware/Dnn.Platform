@@ -49,9 +49,9 @@
                 CssClass="dnnFormRequired" />
             <%--<dnn:DnnTextBox ID="txtMinPagePriority" runat="server" CssClass="dnnFormRequired" MaxLength="10"/>--%>
             <asp:TextBox ID="txtMinPagePriority" runat="server" MaxLength="10" />
-            <asp:CompareValidator ID="val1" runat="server" ControlToValidate="txtMinPagePriority"
+            <%--<asp:CompareValidator ID="val1" runat="server" ControlToValidate="txtMinPagePriority"
                 Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority"
-                Operator="DataTypeCheck" Type="Double" />
+                Operator="DataTypeCheck" Type="Double" />--%>
             <asp:RequiredFieldValidator ID="val2" runat="server" ControlToValidate="txtMinPagePriority"
                 Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
         </div>
@@ -76,9 +76,9 @@
                 CssClass="dnnFormRequired" />
             <%--<dnn:DnnTextBox ID="txtExcludePriority" runat="server" MaxLength="10" Text="0"  />--%>
             <asp:TextBox ID="txtExcludePriority" runat="server" MaxLength="10" Text="0" />
-            <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtExcludePriority"
+            <%--<asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtExcludePriority"
                 Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority"
-                Operator="DataTypeCheck" Type="Double" />
+                Operator="DataTypeCheck" Type="Double" />--%>
             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtExcludePriority"
                 Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
         </div>

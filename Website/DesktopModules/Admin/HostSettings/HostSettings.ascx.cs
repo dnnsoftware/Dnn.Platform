@@ -59,6 +59,7 @@ using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 #endregion
@@ -383,6 +384,7 @@ namespace DotNetNuke.Modules.Admin.Host
             chkDebugMode.Checked = Entities.Host.Host.DebugMode;
             chkCriticalErrors.Checked = Entities.Host.Host.ShowCriticalErrors;
             txtBatch.Text = Entities.Host.Host.MessageSchedulerBatchSize.ToString();
+            txtMaxUploadSize.Text = (Config.GetMaxUploadSize() / (1024 * 1024)).ToString();
 			txtAsyncTimeout.Text = Entities.Host.Host.AsyncTimeout.ToString();
 
             chkBannedList.Checked = Entities.Host.Host.EnableBannedList;
@@ -563,6 +565,10 @@ namespace DotNetNuke.Modules.Admin.Host
                 {
                     BindData();
                     BindSearchIndex();
+                   
+                    rangeUploadSize.MaximumValue = Config.GetRequestFilterSize().ToString();
+                    rangeUploadSize.Text = String.Format(Localization.GetString("maxUploadSize.Error", LocalResourceFile),rangeUploadSize.MaximumValue);
+                    rangeUploadSize.ErrorMessage = String.Format(Localization.GetString("maxUploadSize.Error", LocalResourceFile), rangeUploadSize.MaximumValue);
 
                     if(Request.QueryString["smtpwarning"] != null)
                     {
@@ -586,6 +592,44 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+
+            var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
+
+            cbCustomAnalyzer.DataSource = GetAvailableAnalyzers();
+            cbCustomAnalyzer.DataBind();
+            cbCustomAnalyzer.Items.Insert(0, new DnnComboBoxItem(noneSpecified, string.Empty));
+            cbCustomAnalyzer.Select(HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty), false);
+        }
+
+        private IList<string> GetAvailableAnalyzers()
+        {
+            var analyzers = new List<string>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try
+                {
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                }
+                catch (Exception)
+                {
+                    //do nothing but just ignore the error.
+                }
+                    
+            }
+
+
+            return analyzers;
+        }
+
+        private bool IsAnalyzerType(Type type)
+        {
+            return type != null && type.FullName != null && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || IsAnalyzerType(type.BaseType));
+        }
+
+        private bool IsAllowType(Type type)
+        {
+            return !type.FullName.Contains("Lucene.Net.Analysis.Analyzer") && !type.FullName.Contains("DotNetNuke");
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -879,6 +923,16 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("TelerikCDNBasicUrl", txtTelerikBasicUrl.Text, false);
 					HostController.Instance.Update("TelerikCDNSecureUrl", txtTelerikSecureUrl.Text, false);
+                    var maxUpload = 12;
+                    if (int.TryParse(txtMaxUploadSize.Text, out maxUpload))
+                    {
+                        var maxCurrentRequest = Config.GetMaxUploadSize();
+                        var maxUploadByMb = (maxUpload*1024*1024);
+                        if (maxCurrentRequest != maxUploadByMb)
+                        {
+                            Config.SetMaxUploadSize(maxUpload * 1024 * 1024);  
+                        }
+                    };
 					HostController.Instance.Update("AsyncTimeout", txtAsyncTimeout.Text, false);
                     HostController.Instance.Update(ClientResourceSettings.EnableCompositeFilesKey, chkCrmEnableCompositeFiles.Checked.ToString(CultureInfo.InvariantCulture));
                     HostController.Instance.Update(ClientResourceSettings.MinifyCssKey, chkCrmMinifyCss.Checked.ToString(CultureInfo.InvariantCulture));
@@ -961,6 +1015,15 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
 
+            var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+            var newAnalyzer = cbCustomAnalyzer.SelectedValue.Trim();
+            if (!oldAnalyzer.Equals(newAnalyzer))
+            {
+                HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);
+                
+                //force the app restart to use new analyzer.
+                Config.Touch();
+            }
         }
     }
 }

@@ -120,6 +120,12 @@
   <data name="DeleteItem.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Delete This Item?</value>
   </data>
+  <data name="DeletetUser.Text" xml:space="preserve">
+    <value>Are You Sure You Wish To Delete This User?</value>
+  </data>
+  <data name="UnregisterUser.Text" xml:space="preserve">
+    <value>Are you sure you want to unregister? This will delete your user account.</value>
+  </data>
   <data name="RemoveItem.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Remove This Item?</value>
   </data>

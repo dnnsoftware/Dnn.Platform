@@ -36,6 +36,7 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
@@ -527,7 +528,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                var key = string.Format("{0}_{1}", Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
+                var key = string.Format("{0}_{1}", TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
                                             Thread.CurrentThread.CurrentCulture);
 
                 string fullUrl;
@@ -544,15 +545,15 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             case TabType.Normal:
                                 //normal tab
-                                fullUrl = Globals.NavigateURL(TabID, IsSuperTab);
+                                fullUrl = TestableGlobals.Instance.NavigateURL(TabID, IsSuperTab);
                                 break;
                             case TabType.Tab:
                                 //alternate tab url
-                                fullUrl = Globals.NavigateURL(Convert.ToInt32(Url));
+                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(Url));
                                 break;
                             case TabType.File:
                                 //file url
-                                fullUrl = Globals.LinkClick(Url, TabID, Null.NullInteger);
+                                fullUrl = TestableGlobals.Instance.LinkClick(Url, TabID, Null.NullInteger);
                                 break;
                             case TabType.Url:
                                 //external url

@@ -33,13 +33,13 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Profile;
@@ -51,16 +51,12 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Client;
-
 using ICSharpCode.SharpZipLib.Zip;
-
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 #endregion
@@ -559,7 +555,7 @@ namespace DotNetNuke.Entities.Portals
 	            }
 				catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
 	            {
-		            Logger.Error(ex.Message);
+                    Logger.Error(ex.Message);
 	            }
             }
         }
@@ -635,61 +631,73 @@ namespace DotNetNuke.Entities.Portals
             var folderMappingController = FolderMappingController.Instance;
             FolderMappingInfo folderMapping = null;
 
-            foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
+            //DNN-2949 set ignorewhitelist to true to allow files with not allowed extensions to be added during portal creation
+            HostController.Instance.Update("IgnoreWhiteList", "Y", true);
+            try
             {
-                folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
-
-                //First check if the folder exists
-                objInfo = folderManager.GetFolder(PortalId, folderPath);
-
-                if (objInfo == null)
+                foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
                 {
-                    isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
+                    folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
 
-                    if (isProtected)
-                    {
-                        //protected folders must use insecure storage
-                        folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                    }
-                    else
-                    {
-                        storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(node, "storagelocation", "0"));
+                    //First check if the folder exists
+                    objInfo = folderManager.GetFolder(PortalId, folderPath);
 
-                        switch (storageLocation)
+                    if (objInfo == null)
+                    {
+                        isProtected = PathUtils.Instance.IsDefaultProtectedPath(folderPath);
+
+                        if (isProtected)
                         {
-                            case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                                folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
-                                break;
-                            case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                                folderMapping = folderMappingController.GetFolderMapping(PortalId, "Secure");
-                                break;
-                            case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                                folderMapping = folderMappingController.GetFolderMapping(PortalId, "Database");
-                                break;
-                            default:
-                                break;
+                            //protected folders must use insecure storage
+                            folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
                         }
+                        else
+                        {
+                            storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(node, "storagelocation", "0"));
 
-                        isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+                            switch (storageLocation)
+                            {
+                                case (int) FolderController.StorageLocationTypes.InsecureFileSystem:
+                                    folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
+                                    break;
+                                case (int) FolderController.StorageLocationTypes.SecureFileSystem:
+                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Secure");
+                                    break;
+                                case (int) FolderController.StorageLocationTypes.DatabaseSecure:
+                                    folderMapping = folderMappingController.GetFolderMapping(PortalId, "Database");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+                        }
+                        //Save new folder
+                        objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        objInfo.IsProtected = isProtected;
+
+                        folderManager.UpdateFolder(objInfo);
                     }
-                    //Save new folder
-                    objInfo = folderManager.AddFolder(folderMapping, folderPath);
-                    objInfo.IsProtected = isProtected;
 
-                    folderManager.UpdateFolder(objInfo);
+                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
+                    ParseFolderPermissions(nodeFolderPermissions, PortalId, (FolderInfo) objInfo);
+
+                    var nodeFiles = node.SelectNodes("files/file");
+
+                    if (!String.IsNullOrEmpty(folderPath))
+                    {
+                        folderPath += "/";
+                    }
+
+                    ParseFiles(nodeFiles, PortalId, (FolderInfo) objInfo);
                 }
-
-                var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
-                ParseFolderPermissions(nodeFolderPermissions, PortalId, (FolderInfo)objInfo);
-
-                var nodeFiles = node.SelectNodes("files/file");
-
-                if (!String.IsNullOrEmpty(folderPath))
-                {
-                    folderPath += "/";
-                }
-
-                ParseFiles(nodeFiles, PortalId, (FolderInfo)objInfo);
+                //DNN-2949 set ignorewhitelist to false right away after ParseFiles was executed on all folders in template nodes
+                HostController.Instance.Update("IgnoreWhiteList", "N", true);
+            }
+            catch(Exception)
+            {
+                //DNN-2949 ensure ignorewhitelist is set back to false in case of any exceptions during files parsing/adding
+                HostController.Instance.Update("IgnoreWhiteList", "N", true);
             }
         }
 
@@ -998,18 +1006,20 @@ namespace DotNetNuke.Entities.Portals
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
             //update portal setup
-            var objportal = GetPortal(portalID);
+            var portal = GetPortal(portalID);
             UpdatePortalSetup(portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
-                              objportal.SplashTabId,
-                              objportal.HomeTabId,
-                              objportal.LoginTabId,
-                              objportal.RegisterTabId,
-                              objportal.UserTabId,
-                              objportal.SearchTabId,
-                              objportal.AdminTabId,
+                              portal.SplashTabId,
+                              portal.HomeTabId,
+                              portal.LoginTabId,
+                              portal.RegisterTabId,
+                              portal.UserTabId,
+                              portal.SearchTabId,
+                              portal.Custom404TabId,
+                              portal.Custom500TabId,
+                              portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
 
@@ -1049,18 +1059,20 @@ namespace DotNetNuke.Entities.Portals
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
             //update portal setup
-            var objportal = GetPortal(portalID);
+            var portal = GetPortal(portalID);
             UpdatePortalSetup(portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
-                              objportal.SplashTabId,
-                              objportal.HomeTabId,
-                              objportal.LoginTabId,
-                              objportal.RegisterTabId,
-                              objportal.UserTabId,
-                              objportal.SearchTabId,
-                              objportal.AdminTabId,
+                              portal.SplashTabId,
+                              portal.HomeTabId,
+                              portal.LoginTabId,
+                              portal.RegisterTabId,
+                              portal.UserTabId,
+                              portal.SearchTabId,
+                              portal.Custom404TabId,
+                              portal.Custom500TabId,
+                              portal.AdminTabId,
                               GetActivePortalLanguage(portalID));
         }
 
@@ -1104,6 +1116,8 @@ namespace DotNetNuke.Entities.Portals
                                       portal.RegisterTabId,
                                       portal.UserTabId,
                                       portal.SearchTabId,
+                                      portal.Custom404TabId,
+                                      portal.Custom500TabId,
                                       portal.AdminTabId,
                                       GetActivePortalLanguage(PortalId));
                     eventLogController.AddLog("AdminTab",
@@ -1127,6 +1141,8 @@ namespace DotNetNuke.Entities.Portals
                                           portal.RegisterTabId,
                                           portal.UserTabId,
                                           portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
                         eventLogController.AddLog("SplashTab",
@@ -1147,6 +1163,8 @@ namespace DotNetNuke.Entities.Portals
                                           portal.RegisterTabId,
                                           portal.UserTabId,
                                           portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
                         eventLogController.AddLog("HomeTab",
@@ -1167,6 +1185,8 @@ namespace DotNetNuke.Entities.Portals
                                           portal.RegisterTabId,
                                           portal.UserTabId,
                                           portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
                         eventLogController.AddLog("LoginTab",
@@ -1187,6 +1207,8 @@ namespace DotNetNuke.Entities.Portals
                                           portal.RegisterTabId,
                                           portal.UserTabId,
                                           portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
                         eventLogController.AddLog("UserTab",
@@ -1207,6 +1229,8 @@ namespace DotNetNuke.Entities.Portals
                                           portal.RegisterTabId,
                                           portal.UserTabId,
                                           portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
                                           portal.AdminTabId,
                                           GetActivePortalLanguage(PortalId));
                         eventLogController.AddLog("SearchTab",
@@ -1219,10 +1243,48 @@ namespace DotNetNuke.Entities.Portals
                         UpdatePortalSetting(PortalId, "GettingStartedTabId", tab.TabID.ToString());
                         break;
                     case "404Tab":
-                        UpdatePortalSetting(PortalId, "AUM_ErrorPage404", tab.TabID.ToString());
+                        portal.Custom404TabId = tab.TabID;
+                        UpdatePortalSetup(PortalId,
+                                          portal.AdministratorId,
+                                          portal.AdministratorRoleId,
+                                          portal.RegisteredRoleId,
+                                          portal.SplashTabId,
+                                          portal.HomeTabId,
+                                          portal.LoginTabId,
+                                          portal.RegisterTabId,
+                                          portal.UserTabId,
+                                          portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
+                                          portal.AdminTabId,
+                                          GetActivePortalLanguage(PortalId));
+                        eventLogController.AddLog("Custom404Tab",
+                                           tab.TabID.ToString(),
+                                           GetCurrentPortalSettings(),
+                                           UserController.GetCurrentUserInfo().UserID,
+                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                         break;
                     case "500Tab":
-                        UpdatePortalSetting(PortalId, "AUM_ErrorPage500", tab.TabID.ToString());
+                        portal.Custom500TabId = tab.TabID;
+                        UpdatePortalSetup(PortalId,
+                                          portal.AdministratorId,
+                                          portal.AdministratorRoleId,
+                                          portal.RegisteredRoleId,
+                                          portal.SplashTabId,
+                                          portal.HomeTabId,
+                                          portal.LoginTabId,
+                                          portal.RegisterTabId,
+                                          portal.UserTabId,
+                                          portal.SearchTabId,
+                                          portal.Custom404TabId,
+                                          portal.Custom500TabId,
+                                          portal.AdminTabId,
+                                          GetActivePortalLanguage(PortalId));
+                        eventLogController.AddLog("Custom500Tab",
+                                           tab.TabID.ToString(),
+                                           GetCurrentPortalSettings(),
+                                           UserController.GetCurrentUserInfo().UserID,
+                                           EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
                         break;
                 }
             }
@@ -1311,23 +1373,25 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void UpdatePortalSetup(int PortalId, int AdministratorId, int AdministratorRoleId, int RegisteredRoleId, int SplashTabId, int HomeTabId, int LoginTabId, int RegisterTabId,
-                                       int UserTabId, int SearchTabId, int AdminTabId, string CultureCode)
+        private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
+                                       int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
         {
-            DataProvider.Instance().UpdatePortalSetup(PortalId,
-                                                      AdministratorId,
-                                                      AdministratorRoleId,
-                                                      RegisteredRoleId,
-                                                      SplashTabId,
-                                                      HomeTabId,
-                                                      LoginTabId,
-                                                      RegisterTabId,
-                                                      UserTabId,
-                                                      SearchTabId,
-                                                      AdminTabId,
-                                                      CultureCode);
+            DataProvider.Instance().UpdatePortalSetup(portalId,
+                                                      administratorId,
+                                                      administratorRoleId,
+                                                      registeredRoleId,
+                                                      splashTabId,
+                                                      homeTabId,
+                                                      loginTabId,
+                                                      registerTabId,
+                                                      userTabId,
+                                                      searchTabId,
+                                                      custom404TabId,
+                                                      custom500TabId,
+                                                      adminTabId,
+                                                      cultureCode);
             EventLogController objEventLog = new EventLogController();
-            objEventLog.AddLog("PortalId", PortalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
+            objEventLog.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
 		
@@ -2395,7 +2459,7 @@ namespace DotNetNuke.Entities.Portals
 
             Locale targetLocale = LocaleController.Instance.GetLocale(cultureCode);
             TabInfo tempTab;
-            if ((defaultPortal.HomeTabId != Null.NullInteger))
+            if (defaultPortal.HomeTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.HomeTabId, portalId, targetLocale);
                 if (tempTab != null)
@@ -2403,7 +2467,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.HomeTabId = tempTab.TabID;
                 }
             }
-            if ((defaultPortal.LoginTabId != Null.NullInteger))
+            if (defaultPortal.LoginTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.LoginTabId, portalId, targetLocale);
                 if (tempTab != null)
@@ -2411,7 +2475,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.LoginTabId = tempTab.TabID;
                 }
             }
-            if ((defaultPortal.RegisterTabId != Null.NullInteger))
+            if (defaultPortal.RegisterTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.RegisterTabId, portalId, targetLocale);
                 if (tempTab != null)
@@ -2419,7 +2483,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.RegisterTabId = tempTab.TabID;
                 }
             }
-            if ((defaultPortal.SplashTabId != Null.NullInteger))
+            if (defaultPortal.SplashTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.SplashTabId, portalId, targetLocale);
                 if (tempTab != null)
@@ -2427,7 +2491,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.SplashTabId = tempTab.TabID;
                 }
             }
-            if ((defaultPortal.UserTabId != Null.NullInteger))
+            if (defaultPortal.UserTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.UserTabId, portalId, targetLocale);
                 if (tempTab != null)
@@ -2435,12 +2499,28 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.UserTabId = tempTab.TabID;
                 }
             }
-            if ((defaultPortal.SearchTabId != Null.NullInteger))
+            if (defaultPortal.SearchTabId != Null.NullInteger)
             {
                 tempTab = tabCont.GetTabByCulture(defaultPortal.SearchTabId, portalId, targetLocale);
                 if (tempTab != null)
                 {
                     targetPortal.SearchTabId = tempTab.TabID;
+                }
+            }
+            if (defaultPortal.Custom404TabId != Null.NullInteger)
+            {
+                tempTab = tabCont.GetTabByCulture(defaultPortal.Custom404TabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.Custom404TabId = tempTab.TabID;
+                }
+            }
+            if (defaultPortal.Custom500TabId != Null.NullInteger)
+            {
+                tempTab = tabCont.GetTabByCulture(defaultPortal.Custom500TabId, portalId, targetLocale);
+                if (tempTab != null)
+                {
+                    targetPortal.Custom500TabId = tempTab.TabID;
                 }
             }
 
@@ -2766,6 +2846,8 @@ namespace DotNetNuke.Entities.Portals
                                             portal.RegisterTabId,
                                             portal.UserTabId,
                                             portal.SearchTabId,
+                                            portal.Custom404TabId,
+                                            portal.Custom500TabId,
                                             portal.DefaultLanguage,
                                             portal.HomeDirectory,
                                             UserController.GetCurrentUserInfo().UserID,

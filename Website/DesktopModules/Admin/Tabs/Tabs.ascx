@@ -28,6 +28,14 @@
 		$("#<%=cmdUpdate.ClientID%>").click(function() {
 			needReload = true;
 		});
+	    
+        $('input[id$=cmdDeleteModule]').dnnConfirm({
+            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+        	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+        	isButton: true
+        });
 	}
 
 	var searchPages = function(keyword) {

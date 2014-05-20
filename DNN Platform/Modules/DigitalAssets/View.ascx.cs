@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("RefreshFolder", LocalResourceFile),
                         Value = "RefreshFolder",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_BROWSE permission_READ",
                         ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
                     },    
                 new DnnMenuItem
@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
             });
@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("Download", LocalResourceFile),
                         Value = "Download",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
                     },    
                 new DnnMenuItem
@@ -420,21 +420,21 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("GetUrl", LocalResourceFile),
                         Value = "GetUrl",
-                        CssClass = "permission_READ permission_BROWSE singleItem onlyFiles",
+                        CssClass = "permission_READ singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
                     }, 
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("UnzipFile", LocalResourceFile),
                         Value = "UnzipFile",
-                        CssClass = "permission_READ permission_BROWSE singleItem onlyFiles",
+                        CssClass = "permission_MANAGE singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE singleItem",
+                        CssClass = "permission_READ singleItem",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },                        
                 });
@@ -481,7 +481,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
                         Value = "Properties",
-                        CssClass = "permission_READ permission_BROWSE",
+                        CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
             });
@@ -596,16 +596,17 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnInit(e);
 
+                fileUpload.ModuleId = ModuleId;
+                fileUpload.Options.Parameters.Add("isHostPortal", IsHostPortal ? "true" : "false");
+
                 ServicesFramework.Instance.RequestAjaxScriptSupport();
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
 
                 ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FileUpload.js", FileOrder.Js.DefaultPriority);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
 
-                int i = 1;
+                var i = 1;
                 foreach (var script in epm.GetScriptItemExtensionPoints("DigitalAssets"))
                 {
                     ClientResourceManager.RegisterScript(Page, script.ScriptName, FileOrder.Js.DefaultPriority + i++);
@@ -647,28 +648,27 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void GridOnItemCreated(object sender, GridItemEventArgs e)
         {
-            if (e.Item is GridPagerItem)
-            {
-                var items = new[]
-                    {
-                        new RadComboBoxItem { Text = "10", Value = "10" },
-                        new RadComboBoxItem { Text = "25", Value = "25" },
-                        new RadComboBoxItem { Text = "50", Value = "50" },
-                        new RadComboBoxItem { Text = "100", Value = "100" },
-                        new RadComboBoxItem 
-                        { 
-                            Text = Localization.GetString("All", LocalResourceFile), 
-                            Value = int.MaxValue.ToString(CultureInfo.InvariantCulture) 
-                        }
-                    };
+            if (!(e.Item is GridPagerItem)) return;
 
-                var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
-                dropDown.Items.Clear();
-                foreach (var item in items)
-                {
-                    item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
-                    dropDown.Items.Add(item);
-                }
+            var items = new[]
+            {
+                new RadComboBoxItem { Text = "10", Value = "10" },
+                new RadComboBoxItem { Text = "25", Value = "25" },
+                new RadComboBoxItem { Text = "50", Value = "50" },
+                new RadComboBoxItem { Text = "100", Value = "100" },
+                new RadComboBoxItem 
+                    { 
+                        Text = Localization.GetString("All", LocalResourceFile), 
+                        Value = int.MaxValue.ToString(CultureInfo.InvariantCulture) 
+                    }
+            };
+
+            var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");
+            dropDown.Items.Clear();
+            foreach (var item in items)
+            {
+                item.Attributes.Add("ownerTableViewId", e.Item.OwnerTableView.ClientID);
+                dropDown.Items.Add(item);
             }
         }
     }
