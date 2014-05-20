@@ -37,12 +37,6 @@ namespace DotNetNuke.Entities.Tabs
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
 
-        [Obsolete("Deprecated in DNN 7.3.0. Use SetTabPublishing(tabID, portalID, true)")]
-        public void PublishTab(int tabID, int portalID)
-        {
-            SetTabPublishing(tabID, portalID, true);
-        }
-
         public bool IsTabPublished(int tabID, int portalID)
         {
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);

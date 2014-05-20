@@ -26,14 +26,6 @@ namespace DotNetNuke.Entities.Tabs
     public interface ITabPublishingController
     {
         /// <summary>
-        /// Publish a page.
-        /// </summary>
-        /// <param name="tabID">Tab Id from the tab to be published</param>
-        /// <param name="portalID">Portal Id from the portal where the tab exists</param>        
-        [Obsolete("Deprecated in DNN 7.3.0.")]
-        void PublishTab(int tabID, int portalID);
-
-        /// <summary>
         /// Check if a page is published or not.
         /// </summary>
         /// <param name="tabID">Tha tab Id</param>
