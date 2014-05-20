@@ -274,24 +274,6 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>
-            /// add a log note to the schedule history
-            /// </summary>
-            /// <param name="scheduleHistoryItem">the schedule history item</param>
-            /// <param name="logNote">the additional log note for appending to any existing log note</param>
-            public static void AddLogNote(ScheduleHistoryItem scheduleHistoryItem,string logNote)
-            {
-                try
-                {
-                    scheduleHistoryItem.LogNotes = scheduleHistoryItem.LogNotes + logNote;
-                    SchedulingController.UpdateScheduleHistory(scheduleHistoryItem);
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.Exceptions.ProcessSchedulerException(exc);
-                }
-            }
-
-            /// <summary>
             /// Adds an item to the collection of schedule items in queue.
             /// </summary>
             /// <param name="scheduleHistoryItem"></param>
