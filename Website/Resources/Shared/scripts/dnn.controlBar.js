@@ -502,9 +502,11 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.publishPage = function () {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getPageServiceUrl(service);
+        var requestData = { Publish: settings.publishedPage != "true" };
         $.ajax({
             url: serviceUrl + 'PublishPage',
             type: 'POST',
+            data: requestData,
             beforeSend: service.setModuleHeaders,
             success: function () {
                 window.location.href = window.location.href.split('#')[0];
@@ -658,13 +660,7 @@ dnn.controlBar.init = function (settings) {
             dnn.controlBar.moveScrollingContainer("left", 1);
         }else if (keyCode == 39) {
             dnn.controlBar.moveScrollingContainer("right", 1);
-        }
-        //var xOffset = keyCode == 37 ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) : (keyCode == 39 ? dnn.controlBar.arrowScrollingButtonSpeed : 0);
-        //var scrollContainer = dnn.controlBar.arrowScrollingContainer.next();
-        //var jspapi = scrollContainer.data('jsp');        
-        //if (jspapi && xOffset != 0) {
-        //    jspapi.scrollByX(xOffset);
-        //}
+        }        
     };
 
     dnn.controlBar.moveMouseWheelScrollingContainer = function(delta) {
@@ -1567,13 +1563,14 @@ dnn.controlBar.init = function (settings) {
 
 
     $('a#ControlBar_PublishPage').dnnConfirm({
-        text: settings.publishText,
+        text: settings.publishConfirmText,
         yesText: settings.yesText,
         noText: settings.noText,
-        title: settings.titleText,
-        callbackTrue: function () {
+        title: settings.publishConfirmHeader,
+        callbackTrue: function() {
             dnn.controlBar.publishPage();
-        }
+        },
+        width: '500px'
     });
 
     $('a#shareableWarning_cmdConfirm').click(function () {

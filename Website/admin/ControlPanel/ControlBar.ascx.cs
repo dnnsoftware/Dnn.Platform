@@ -436,6 +436,31 @@ namespace DotNetNuke.UI.ControlPanels
             return string.Empty;
         }
 
+        protected string GetTabPublishing()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId) ? "true" : "false";
+        }
+
+        protected string GetPublishActionText()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetString("Tool.UnpublishPage.Text"))
+                    : ClientAPI.GetSafeJSString(GetString("Tool.PublishPage.Text"));
+        }
+
+        protected string GetPublishConfirmText()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetButtonConfirmMessage("UnpublishPage"))
+                    : ClientAPI.GetSafeJSString(GetButtonConfirmMessage("PublishPage"));
+        }
+
+        protected string GetPublishConfirmHeader()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetButtonConfirmHeader("UnpublishPage"))
+                    : ClientAPI.GetSafeJSString(GetButtonConfirmHeader("PublishPage"));
+        }
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
             if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
@@ -595,19 +620,13 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetButtonConfirmMessage(string toolName)
         {
-            switch (toolName)
-            {
-                case "DeletePage":
-                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
-                    break;
-                case "PublishPage":
-                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.PublishPage.Confirm", LocalResourceFile));
-                    break;
-                default:
-                    return string.Empty;
-                    break;
-            }
-        }    
+            return ClientAPI.GetSafeJSString(Localization.GetString("Tool."+toolName+".ConfirmText", LocalResourceFile));
+        }
+
+        protected string GetButtonConfirmHeader(string toolName)
+        {
+            return ClientAPI.GetSafeJSString(Localization.GetString("Tool." + toolName + ".ConfirmHeader", LocalResourceFile));
+        }
 
         protected IEnumerable<string[]> LoadPortalsList()
         {

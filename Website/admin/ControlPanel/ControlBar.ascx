@@ -282,10 +282,10 @@
                         <li><a href="<%= BuildToolUrl("DeletePage", false, "", "", "", true) %>" id="ControlBar_DeletePage">
                             <%= GetString("Tool.DeletePage.Text") %></a></li>
                         <% } %>
-                        <% if (TabPermissionController.CanAdminPage())
+                        <% if (TabPublishingController.Instance.CanPublishingBePerformed(TabController.CurrentPage.TabID, PortalSettings.PortalId))
                            {%>
                         <li><a href="<%= BuildToolUrl("PublishPage", false, "", "", "", true) %>" id="ControlBar_PublishPage">
-                            <%= GetString("Tool.PublishPage.Text") %></a></li>
+                            <%= GetPublishActionText()%></a></li>
                         <% } %>
                        
                     </ul>
@@ -410,7 +410,9 @@
         noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
         titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
         deleteText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("DeletePage") )%>',
-        publishText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("PublishPage") )%>',
+        publishConfirmHeader: '<%= GetPublishConfirmHeader()%>',
+        publishConfirmText: '<%= GetPublishConfirmText()%>',
+        publishedPage: '<%= GetTabPublishing()%>',
         copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
             
         dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',

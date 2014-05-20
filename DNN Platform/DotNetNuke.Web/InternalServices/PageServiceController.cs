@@ -20,7 +20,6 @@
 
 #endregion
 
-using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -57,10 +56,11 @@ namespace DotNetNuke.Web.InternalServices
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPagePermission]
-        public HttpResponseMessage PublishPage()
+        public HttpResponseMessage PublishPage(PublishPageDto dto)
         {
             var tabId = Request.FindTabId();
-            TabPublishingController.Instance.PublishTab(tabId, PortalId);
+            
+            TabPublishingController.Instance.SetTabPublishing(tabId, PortalId, dto.Publish);
             
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -168,5 +168,10 @@ namespace DotNetNuke.Web.InternalServices
 
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+    }
+
+    public class PublishPageDto
+    {
+        public bool Publish { get; set; }
     }
 }
