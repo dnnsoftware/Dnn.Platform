@@ -64,7 +64,6 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="FileSystem\StandardFileUrlModule.cs" />
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
