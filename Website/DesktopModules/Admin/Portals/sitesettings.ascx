@@ -140,6 +140,12 @@
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("EditSkinPreview")%></a>
                         </div>
                     </div>
+                    <div id="iconSetSettings">
+                        <div class="dnnFormItem">
+                            <dnn:label id="plIconSet" controlname="iconSetCombo" runat="server" />
+                            <asp:DropDownList ID="iconSetCombo" runat="server" Width="300px" CssClass="dnnFixedSizeComboBox" />
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div>

@@ -329,6 +329,14 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        public string DefaultIconLocation
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DefaultIconLocation", PortalId, "icons/sigma");
+            }
+        }
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Default Module Id
