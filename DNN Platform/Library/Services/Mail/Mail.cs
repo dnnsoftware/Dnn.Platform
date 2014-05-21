@@ -411,9 +411,9 @@ namespace DotNetNuke.Services.Mail
 		/// <param name="cc">CC-recipients, can be more then one separated by semi-colons</param>
 		/// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons</param>
 		/// <param name="replyTo">Reply-to email to be displayed for recipients</param>
-		/// <param name="priority">Enumeration MailPriority, there are 3 levels of priorities: Normal, Low or Hight</param>
+		/// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/></param>
 		/// <param name="subject">Subject of email</param>
-		/// <param name="bodyFormat">Enumeration MailFormat, Plain Text or Html</param>
+		/// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/></param>
 		/// <param name="bodyEncoding">Email Encoding from System.Text.Encoding</param>
 		/// <param name="body">Body of email</param>
 		/// <param name="attachments">List of filenames to attach to email</param>
