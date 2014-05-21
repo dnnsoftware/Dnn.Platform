@@ -403,6 +403,43 @@ namespace DotNetNuke.Services.Mail
                             smtpEnableSSL);
         }
 
+		/// <summary>
+		/// Sends an email based on params.
+		/// </summary>
+		/// <param name="mailFrom">Email sender</param>
+		/// <param name="mailTo">Recipients, can be more then one separated by semi-colons</param>
+		/// <param name="cc">CC-recipients, can be more then one separated by semi-colons</param>
+		/// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons</param>
+		/// <param name="replyTo">Reply-to email to be displayed for recipients</param>
+		/// <param name="priority">Enumeration MailPriority, there are 3 levels of priorities: Normal, Low or Hight</param>
+		/// <param name="subject">Subject of email</param>
+		/// <param name="bodyFormat">Enumeration MailFormat, Plain Text or Html</param>
+		/// <param name="bodyEncoding">Email Encoding from System.Text.Encoding</param>
+		/// <param name="body">Body of email</param>
+		/// <param name="attachments">List of filenames to attach to email</param>
+		/// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings</param>
+		/// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpEnableSSL">Enable or disable SSL.</param>
+		/// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
+		/// <example>SendMail(	"admin@email.com",
+		///						"user@email.com",
+		///						"user1@email.com;user2@email.com",
+		///						"user3@email.com",
+		///						"no-reply@email.com",
+		///						MailPriority.Low,
+		///						"This is test email",
+		///						MailFormat.Text,
+		///						Encoding.UTF8,
+		///						"Test body. Test body. Test body.",
+		///						new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
+		///						"mail.email.com",
+		///						"1",
+		///						"admin@email.com",
+		///						"AdminPassword",
+		///						false);
+		///	</example>
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
