@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Reflection;
 using System.Xml.XPath;
 
 using DotNetNuke.Application;
@@ -56,7 +57,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool _IsValid = true;
-                if (DotNetNukeContext.Current.Application.Version < minVersion)
+                if (Assembly.GetExecutingAssembly().GetName().Version < minVersion)
                 {
                     _IsValid = false;
                 }
