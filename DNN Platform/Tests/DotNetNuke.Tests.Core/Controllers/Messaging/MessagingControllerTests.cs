@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
@@ -64,6 +65,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<IPortalController> _portalController;
         private Mock<RoleProvider> _mockRoleProvider;
         private Mock<CachingProvider> _mockCacheProvider;
+        private Mock<ILocalizationProvider> _mockLocalizationProvider;
 
         private DataTable _dtMessages;
         private DataTable _dtMessageAttachment;
@@ -92,6 +94,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
+            _mockLocalizationProvider = MockComponentProvider.CreateLocalizationProvider();
+            _mockLocalizationProvider.Setup(l => l.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns("{0}_{1}");
+
             _messagingController = new MessagingController(_mockDataService.Object);
             _internalMessagingController = new InternalMessagingControllerImpl(_mockDataService.Object);
             _mockMessagingController = new Mock<MessagingController> { CallBase = true };
@@ -106,7 +111,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupRoleProvider();
             SetupDataTables();
             SetupUsers();
-            SetupPortalSettingsWrapper();
+            SetupPortalSettings();
             SetupCachingProvider();
         }
 
@@ -144,9 +149,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
         }
 
-        private void SetupPortalSettingsWrapper()
+        private void SetupPortalSettings()
         {
-            _portalController.Setup(pc => pc.GetCurrentPortalSettings().AdministratorRoleName).Returns(Constants.RoleName_Administrators);
+            var portalSettings = new PortalSettings
+                                    {
+                                        AdministratorRoleName = Constants.RoleName_Administrators
+                                    };
+
+            _portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
         private void SetupCachingProvider()
