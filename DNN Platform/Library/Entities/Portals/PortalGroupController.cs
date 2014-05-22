@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Portals
             if (portal != null)
             {
                 portal.PortalGroupID = portalGroup.PortalGroupId;
-                PortalController.Instance.UpdatePortalInfo(portal);
+                _portalController.UpdatePortalInfo(portal);
             }
 
             ClearCache();
