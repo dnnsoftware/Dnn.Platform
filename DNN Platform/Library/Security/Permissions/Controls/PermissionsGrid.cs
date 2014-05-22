@@ -796,7 +796,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 var divAddUser = new Panel { CssClass = "dnnFormItem" };
 
-                lblErrorMessage = new Label { Text = Localization.GetString("User") };
+                lblErrorMessage = new Label { Text = Localization.GetString("DisplayName") };
                 txtUser = new TextBox { ID = "txtUser" };
                 lblErrorMessage.AssociatedControlID = txtUser.ID;
 
