@@ -120,9 +120,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             TestableGlobals.ClearInstance();
             CBO.ClearInstance();
 
+            FolderPermissionController.ClearInstance();
             FileLockingController.ClearInstance();
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
+            PortalController.ClearInstance();
+
         }
 
         #endregion

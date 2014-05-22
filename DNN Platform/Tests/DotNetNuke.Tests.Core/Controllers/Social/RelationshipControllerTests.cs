@@ -93,6 +93,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             SetupDataTables();						
 		}
 
+        [TearDown]
+        public void TearDown()
+        {
+            ComponentFactory.Container = null;
+            PortalController.ClearInstance();
+            UserController.ClearInstance();
+        }
+
 		#endregion
 
         #region Constructor Tests

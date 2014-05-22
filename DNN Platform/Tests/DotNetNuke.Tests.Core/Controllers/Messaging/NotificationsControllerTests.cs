@@ -100,7 +100,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupDataProvider();
             SetupDataTables();
         }
-
+        
         private void SetupDataProvider()
         {
             //Standard DataProvider Path for Logging

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -160,7 +160,6 @@
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
-    <Compile Include="Services\Mail\MailTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />

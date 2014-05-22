@@ -52,6 +52,12 @@ namespace DotNetNuke.Tests.Web.Api
             PortalController.SetTestableInstance(_portalController);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+        }
+
         [Test]
         public void LocatesAllServiceRouteMappers()
         {

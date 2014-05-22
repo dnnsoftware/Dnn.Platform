@@ -24,6 +24,13 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
     {
         private const int UserId = 400;
 
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+            RoleController.ClearInstance();
+        }
+
         [Test]
         public void PortalSecurity_IsInRoles_Super_User_Is_Always_True()
         {

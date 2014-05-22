@@ -128,7 +128,8 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 
 		private void CreatePresenter()
 		{
-			UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "Default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
 
 			HttpContext.Current.Items.Add("PortalSettings", new PortalSettings());
 

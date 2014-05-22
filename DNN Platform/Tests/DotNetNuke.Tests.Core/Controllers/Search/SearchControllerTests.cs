@@ -177,6 +177,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             _luceneController.Dispose();
             DeleteIndexFolder();
+            InternalSearchController.ClearInstance();
+            UserController.ClearInstance();
         }
 
         #endregion

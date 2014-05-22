@@ -178,7 +178,11 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             _luceneController.Dispose();
             DeleteIndexFolder();
-
+            TabController.ClearInstance();
+            InternalSearchController.ClearInstance();
+            UserController.ClearInstance();
+            PortalController.ClearInstance();
+            ModuleController.ClearInstance();
         }
         #endregion
 

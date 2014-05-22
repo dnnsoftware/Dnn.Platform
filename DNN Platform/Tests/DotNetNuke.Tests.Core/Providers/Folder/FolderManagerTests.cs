@@ -101,6 +101,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             UserSecurityController.ClearInstance();
             FileLockingController.ClearInstance();
             MockComponentProvider.ResetContainer();
+            CBO.ClearInstance();
+            FileDeletionController.ClearInstance();
         }
 
         #endregion

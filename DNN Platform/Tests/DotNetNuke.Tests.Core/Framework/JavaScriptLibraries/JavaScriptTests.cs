@@ -62,6 +62,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void TearDown()
         {
             UnitTestHelper.ClearHttpContext();
+            JavaScriptLibraryController.ClearInstance();
         }
 
         [Test]

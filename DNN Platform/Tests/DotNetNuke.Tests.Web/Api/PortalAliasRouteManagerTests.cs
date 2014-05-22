@@ -36,6 +36,16 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class PortalAliasRouteManagerTests
     {
+
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+            PortalAliasController.ClearInstance();
+            TestableGlobals.ClearInstance();
+        }
+
+
         [Test]
         [TestCase("mfn", "url", 0, "DesktopModules/mfn/API/url")]
         [TestCase("mfn", "url", 1, "{prefix0}/DesktopModules/mfn/API/url")]

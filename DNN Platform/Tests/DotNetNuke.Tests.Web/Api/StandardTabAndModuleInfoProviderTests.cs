@@ -28,6 +28,13 @@ namespace DotNetNuke.Tests.Web.Api
             RegisterMock(TabController.SetTestableInstance, out _mockTabController, out _tabController);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            ModuleController.ClearInstance();
+            TabController.ClearInstance();
+        }
+
         private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance) where T : class
         {
             mock = new Mock<T>();

@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Urls
 
         private void CreateSimulatedRequest(Uri url)
         {
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator();
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", WebsitePhysicalAppPath);
             simulator.SimulateRequest(url);
 
             var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };

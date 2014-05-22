@@ -119,6 +119,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void TearDown()
         {
             ComponentFactory.Container = null;
+            PortalController.ClearInstance();
         }
 
         private void SetupDataProvider()

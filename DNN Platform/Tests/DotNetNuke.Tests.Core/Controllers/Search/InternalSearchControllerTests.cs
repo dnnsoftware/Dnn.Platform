@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 	    [TearDown]
         public void TearDown()
         {
-
+            SearchHelper.ClearInstance();
         }
 
 		#endregion
