@@ -1743,7 +1743,6 @@ namespace DotNetNuke.Services.FileSystem
                                                updateLazyload ? file.Width : Null.NullInteger,
                                                updateLazyload ? file.Height : Null.NullInteger,
                                                file.ContentType,
-                                               file.Folder,
                                                file.FolderId,
                                                GetCurrentUserID(),
                                                updateLazyload ? file.SHA1Hash : Null.NullString,
