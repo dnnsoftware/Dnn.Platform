@@ -187,7 +187,11 @@ namespace DotNetNuke.Security
         private string FormatDisableScripting(string strInput)
         {
             string TempInput = strInput;
-            TempInput = FilterStrings(TempInput);
+            if (strInput==" " || String.IsNullOrEmpty(strInput))
+            {
+                return TempInput; 
+            }
+            TempInput = FilterStrings(TempInput); 
             return TempInput;
         }
 
