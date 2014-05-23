@@ -332,7 +332,7 @@
 				</div>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblTags" runat="server" suffix=":" />
-					<dnnweb:TermsSelector ID="termsSelector" runat="server" />
+					<dnnweb:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>
 			</fieldset>
 		</div>
