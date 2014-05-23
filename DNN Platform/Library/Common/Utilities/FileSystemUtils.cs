@@ -468,7 +468,7 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by PathUtils.Instance.GetUserFolderPath(UserInfo user) ")]
         public static string GetUserFolderPath(int userID)
         {
-            var user = UserController.GetUserById(PortalController.GetCurrentPortalSettings().PortalId, userID);
+            var user = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, userID);
             return PathUtils.Instance.GetUserFolderPath(user);
         }
 
@@ -486,7 +486,6 @@ namespace DotNetNuke.Common.Utilities
             try
             {
 				//Open File Stream
-                var crc = new Crc32();
                 fs = File.OpenRead(filePath);
 				
 				//Read file into byte array buffer
@@ -499,9 +498,6 @@ namespace DotNetNuke.Common.Utilities
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
 
                 //Compress file and add to Zip file
                 ZipFile.PutNextEntry(entry);
@@ -618,7 +614,7 @@ namespace DotNetNuke.Common.Utilities
                 var fileManager = FileManager.Instance;
                 var folderManager = FolderManager.Instance;
 
-                var settings = PortalController.GetCurrentPortalSettings();
+                var settings = PortalController.Instance.GetCurrentPortalSettings();
                 var portalID = GetFolderPortalID(settings);
 
                 if (newFileName != Null.NullString)
@@ -1068,7 +1064,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var userFoldersArray = new ArrayList();
             
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
 
             //Create Home folder if it doesn't exist
             var userFolders = (!includeSecure && !includeDatabase) ? FolderManager.Instance.GetFileSystemFolders(user, permissions) : 
@@ -1431,7 +1427,7 @@ namespace DotNetNuke.Common.Utilities
             var fileManager = FileManager.Instance;
             var folderManager = FolderManager.Instance;
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var portalID = GetFolderPortalID(settings);
 
             var fileName = objHtmlInputFile.FileName;
@@ -1457,7 +1453,7 @@ namespace DotNetNuke.Common.Utilities
             var fileManager = FileManager.Instance;
             var folderManager = FolderManager.Instance;
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var portalID = GetFolderPortalID(settings);
 
             var fileName = objHtmlInputFile.FileName;

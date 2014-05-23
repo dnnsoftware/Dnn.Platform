@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             base.OnLoad(e);
 
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null && !String.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);

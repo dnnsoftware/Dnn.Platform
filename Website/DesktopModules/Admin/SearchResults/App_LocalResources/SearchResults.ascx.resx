@@ -285,4 +285,7 @@
   <data name="ResultsCount.Text" xml:space="preserve">
     <value>About {0} Results</value>
   </data>
+  <data name="DefaultText.Text" xml:space="preserve">
+    <value>Enter Search Term</value>
+  </data>
 </root>

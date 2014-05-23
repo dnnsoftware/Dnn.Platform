@@ -79,7 +79,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 				    FixAllowedExtensions();
 
-					int portalID = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings().PortalId;
+					int portalID = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId;
 					ArrayList folders = DotNetNuke.Common.Utilities.FileSystemUtils.GetFoldersByUser(portalID, true, true, "Add");
 
 					//filter out only folders below the editor's template path
@@ -138,7 +138,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			bool result = User.Identity.IsAuthenticated && int.TryParse(Request.QueryString["ModuleId"], out moduleId);
 	        if (result)
 	        {
-		        var module = new ModuleController().GetModule(moduleId);
+                var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 		        result = module != null && ModulePermissionController.CanEditModuleContent(module);
 	        }
 	        return result;

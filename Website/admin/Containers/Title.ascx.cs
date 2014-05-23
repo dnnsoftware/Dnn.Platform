@@ -106,11 +106,10 @@ namespace DotNetNuke.UI.Containers
         {
             if (CanEditModule())
             {
-                var moduleController = new ModuleController();
-                ModuleInfo moduleInfo = moduleController.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
+                ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
 
                 moduleInfo.ModuleTitle = e.Text;
-                moduleController.UpdateModule(moduleInfo);
+                ModuleController.Instance.UpdateModule(moduleInfo);
             }
         }
     }

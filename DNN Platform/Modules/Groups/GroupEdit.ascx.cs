@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using System.IO;
 using DotNetNuke.Common;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
 
 namespace DotNetNuke.Modules.Groups
 {
@@ -39,8 +31,7 @@ namespace DotNetNuke.Modules.Groups
             imgGroup.Src = Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
             if (!Page.IsPostBack && GroupId > 0)
             {
-                RoleController roleController = new RoleController();
-                var roleInfo = roleController.GetRole(GroupId, PortalId);
+                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
 
                 if (roleInfo != null)
                 {
@@ -86,15 +77,14 @@ namespace DotNetNuke.Modules.Groups
         {
             if (GroupId > 0)
             {
-                RoleController roleController = new RoleController();
                 Security.PortalSecurity ps = new Security.PortalSecurity();
 
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
                 txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
                 txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
                 txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-                
-                var roleInfo = roleController.GetRole(GroupId, PortalId);
+
+                var roleInfo = RoleController.Instance.GetRoleById(PortalId, GroupId);
                 if (roleInfo != null)
                 {
 
@@ -102,7 +92,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         if (txtGroupName.Text != roleInfo.RoleName)
                         {
-                            if (roleController.GetRoleByName(PortalId, txtGroupName.Text) != null)
+                            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
                             {
                                 lblInvalidGroupName.Visible = true;
                                 return;
@@ -122,9 +112,9 @@ namespace DotNetNuke.Modules.Groups
                         roleInfo.Settings["ReviewMembers"] = chkMemberApproved.Checked.ToString();
                     else
                         roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
-                    
-                    TestableRoleController.Instance.UpdateRoleSettings(roleInfo, true);
-                    roleController.UpdateRole(roleInfo);
+
+                    RoleController.Instance.UpdateRoleSettings(roleInfo, true);
+                    RoleController.Instance.UpdateRole(roleInfo);
 
                     if (inpFile.PostedFile.ContentLength > 0)
                     {
@@ -142,7 +132,7 @@ namespace DotNetNuke.Modules.Groups
                             var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                             var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
                             roleInfo.IconFile = "FileID=" + fileInfo.FileId;
-                            roleController.UpdateRole(roleInfo);
+                            RoleController.Instance.UpdateRole(roleInfo);
                         }
                     }
 

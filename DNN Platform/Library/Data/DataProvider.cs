@@ -33,6 +33,7 @@ using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.Hosting;
 
 using DotNetNuke.Common;
@@ -467,15 +468,15 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetServers");
         }
 
-        public virtual void UpdateServer(int ServerId, string Url, bool Enabled)
+        public virtual void UpdateServer(int serverId, string url, string uniqueId, bool enabled, string group)
         {
-            ExecuteNonQuery("UpdateServer", ServerId, Url, Enabled);
+            ExecuteNonQuery("UpdateServer", serverId, url, uniqueId, enabled, group);
         }
 
-        public virtual void UpdateServerActivity(string ServerName, string IISAppName, DateTime CreatedDate,
-                                                 DateTime LastActivityDate)
+        public virtual int UpdateServerActivity(string serverName, string iisAppName, DateTime createdDate,
+                                                 DateTime lastActivityDate, int pingFailureCount)
         {
-            ExecuteNonQuery("UpdateServerActivity", ServerName, IISAppName, CreatedDate, LastActivityDate);
+            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount);
         }
 
         #endregion
@@ -563,7 +564,7 @@ namespace DotNetNuke.Data
                                              string processorPassword, string description, string keyWords,
                                              string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId,
                                              int loginTabId,
-                                             int registerTabId, int userTabId, int searchTabId, string defaultLanguage,
+                                             int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, string defaultLanguage,
                                              string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalInfo",
@@ -594,36 +595,40 @@ namespace DotNetNuke.Data
                                       GetNull(registerTabId),
                                       GetNull(userTabId),
                                       GetNull(searchTabId),
+                                      GetNull(custom404TabId),
+                                      GetNull(custom500TabId),
                                       GetNull(defaultLanguage),
                                       homeDirectory,
                                       lastModifiedByUserID,
                                       cultureCode);
         }
 
-        public virtual void UpdatePortalSetting(int PortalId, string SettingName, string SettingValue, int UserID,
-                                                string CultureCode)
+        public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
+                                                string cultureCode)
         {
-            ExecuteNonQuery("UpdatePortalSetting", PortalId, SettingName, SettingValue, UserID, CultureCode);
+            ExecuteNonQuery("UpdatePortalSetting", portalId, settingName, settingValue, userId, cultureCode);
         }
 
-        public virtual void UpdatePortalSetup(int PortalId, int AdministratorId, int AdministratorRoleId,
-                                              int RegisteredRoleId, int SplashTabId, int HomeTabId, int LoginTabId,
-                                              int RegisterTabId,
-                                               int UserTabId, int SearchTabId, int AdminTabId, string CultureCode)
+        public virtual void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId,
+                                              int registeredRoleId, int splashTabId, int homeTabId, int loginTabId,
+                                              int registerTabId,
+                                               int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
         {
             ExecuteNonQuery("UpdatePortalSetup",
-                                      PortalId,
-                                      AdministratorId,
-                                      AdministratorRoleId,
-                                      RegisteredRoleId,
-                                      SplashTabId,
-                                      HomeTabId,
-                                      LoginTabId,
-                                      RegisterTabId,
-                                      UserTabId,
-                                      SearchTabId,
-                                      AdminTabId,
-                                      CultureCode);
+                                      portalId,
+                                      administratorId,
+                                      administratorRoleId,
+                                      registeredRoleId,
+                                      splashTabId,
+                                      homeTabId,
+                                      loginTabId,
+                                      registerTabId,
+                                      userTabId,
+                                      searchTabId,
+                                      custom404TabId,
+                                      custom500TabId,
+                                      adminTabId,
+                                      cultureCode);
         }
 
         #endregion
@@ -803,6 +808,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetTabsByModuleID", moduleID);
         }
 
+        public virtual IDataReader GetTabsByTabModuleID(int tabModuleID)
+        {
+            return ExecuteReader("GetTabsByTabModuleID", tabModuleID);
+        }
+
         public virtual IDataReader GetTabsByPackageID(int portalID, int packageID, bool forHost)
         {
             return ExecuteReader("GetTabsByPackageID", GetNull(portalID), packageID, forHost);
@@ -813,9 +823,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetTabSetting", TabID, SettingName);
         }
 
-        public virtual IDataReader GetTabSettings(int TabID)
+        public virtual IDataReader GetTabSettings(int portalId)
         {
-            return ExecuteReader("GetTabSettings", TabID);
+            return ExecuteReader("GetTabSettings", portalId);
         }
 
         public virtual IDataReader GetTabAliasSkins(int portalId)
@@ -1064,11 +1074,6 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetModules", portalId);
         }
 
-        public virtual IDataReader GetRecycleModules(int portalId)
-        {
-            return ExecuteReader("GetRecycleModules", portalId);
-        }
-
         public virtual IDataReader GetModuleSetting(int moduleId, string settingName)
         {
             return ExecuteReader("GetModuleSetting", moduleId, settingName);
@@ -1077,6 +1082,11 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetModuleSettings(int moduleId)
         {
             return ExecuteReader("GetModuleSettings", moduleId);
+        }
+
+        public virtual IDataReader GetModuleSettingsByTab(int tabId)
+        {
+            return ExecuteReader("GetModuleSettingsByTab", tabId);
         }
 
         public virtual IDataReader GetSearchModules(int portalId)
@@ -1107,6 +1117,11 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetTabModuleSettings(int tabModuleId)
         {
             return ExecuteReader("GetTabModuleSettings", tabModuleId);
+        }
+
+        public virtual IDataReader GetTabModuleSettingsByTab(int tabId)
+        {
+            return ExecuteReader("GetTabModuleSettingsByTab", tabId);
         }
 
         public virtual void MoveTabModule(int fromTabId, int moduleId, int toTabId, string toPaneName,
@@ -1640,12 +1655,9 @@ namespace DotNetNuke.Data
 
         #region Permission Methods
 
-        public virtual int AddPermission(string permissionCode, int moduleDefID, string permissionKey,
-                                         string permissionName,
-                                            int createdByUserID)
+        public virtual int AddPermission(string permissionCode, int moduleDefID, string permissionKey, string permissionName, int createdByUserID)
         {
-            return ExecuteScalar<int>("AddPermission", moduleDefID, permissionCode, permissionKey, permissionName,
-                                      createdByUserID);
+            return ExecuteScalar<int>("AddPermission", moduleDefID, permissionCode, permissionKey, permissionName, createdByUserID);
         }
 
         public virtual void DeletePermission(int permissionID)
@@ -1653,51 +1665,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeletePermission", permissionID);
         }
 
-        public virtual IDataReader GetPermission(int permissionID)
+        public virtual void UpdatePermission(int permissionID, string permissionCode, int moduleDefID, string permissionKey, string permissionName, int lastModifiedByUserID)
         {
-            return ExecuteReader("GetPermission", permissionID);
-        }
-
-        public virtual IDataReader GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
-        {
-            return ExecuteReader("GetPermissionByCodeAndKey", GetNull(permissionCode), GetNull(permissionKey));
-        }
-
-        public virtual IDataReader GetPermissionsByFolder()
-        {
-            return ExecuteReader("GetPermissionsByFolder");
-        }
-
-        public virtual IDataReader GetPermissionsByModuleDefID(int moduleDefId)
-        {
-            return ExecuteReader("GetPermissionsByModuleDefID", moduleDefId);
-        }
-
-        public virtual IDataReader GetPermissionsByModuleID(int moduleId)
-        {
-            return ExecuteReader("GetPermissionsByModuleID", moduleId);
-        }
-
-        public virtual IDataReader GetPermissionsByPortalDesktopModule()
-        {
-            return ExecuteReader("GetPermissionsByPortalDesktopModule");
-        }
-
-        public virtual IDataReader GetPermissionsByTab()
-        {
-            return ExecuteReader("GetPermissionsByTab");
-        }
-
-        public virtual void UpdatePermission(int permissionID, string permissionCode, int moduleDefID,
-                                             string permissionKey, string permissionName, int lastModifiedByUserID)
-        {
-            ExecuteNonQuery("UpdatePermission",
-                                      permissionID,
-                                      permissionCode,
-                                      moduleDefID,
-                                      permissionKey,
-                                      permissionName,
-                                      lastModifiedByUserID);
+            ExecuteNonQuery("UpdatePermission", permissionID, permissionCode, moduleDefID, permissionKey, permissionName, lastModifiedByUserID);
         }
 
         #endregion
@@ -2698,35 +2668,34 @@ namespace DotNetNuke.Data
 
         #region Affiliates
 
-        public virtual int AddAffiliate(int VendorId, DateTime StartDate, DateTime EndDate, double CPC, double CPA)
+        public virtual int AddAffiliate(int vendorId, DateTime startDate, DateTime endDate, double CPC, double CPA)
         {
-            return ExecuteScalar<int>("AddAffiliate", VendorId, GetNull(StartDate), GetNull(EndDate), CPC, CPA);
+            return ExecuteScalar<int>("AddAffiliate", vendorId, GetNull(startDate), GetNull(endDate), CPC, CPA);
         }
 
-        public virtual void DeleteAffiliate(int AffiliateId)
+        public virtual void DeleteAffiliate(int affiliateId)
         {
-            ExecuteNonQuery("DeleteAffiliate", AffiliateId);
+            ExecuteNonQuery("DeleteAffiliate", affiliateId);
         }
 
-        public virtual IDataReader GetAffiliate(int AffiliateId, int VendorId, int PortalId)
+        public virtual IDataReader GetAffiliate(int affiliateId)
         {
-            return ExecuteReader("GetAffiliate", AffiliateId, VendorId, GetNull(PortalId));
+            return ExecuteReader("GetAffiliate", affiliateId);
         }
 
-        public virtual IDataReader GetAffiliates(int VendorId)
+        public virtual IDataReader GetAffiliates(int vendorId)
         {
-            return ExecuteReader("GetAffiliates", VendorId);
+            return ExecuteReader("GetAffiliates", vendorId);
         }
 
-        public virtual void UpdateAffiliate(int AffiliateId, DateTime StartDate, DateTime EndDate, double CPC,
-                                            double CPA)
+        public virtual void UpdateAffiliate(int affiliateId, DateTime startDate, DateTime endDate, double CPC, double CPA)
         {
-            ExecuteNonQuery("UpdateAffiliate", AffiliateId, GetNull(StartDate), GetNull(EndDate), CPC, CPA);
+            ExecuteNonQuery("UpdateAffiliate", affiliateId, GetNull(startDate), GetNull(endDate), CPC, CPA);
         }
 
-        public virtual void UpdateAffiliateStats(int AffiliateId, int Clicks, int Acquisitions)
+        public virtual void UpdateAffiliateStats(int affiliateId, int clicks, int acquisitions)
         {
-            ExecuteNonQuery("UpdateAffiliateStats", AffiliateId, Clicks, Acquisitions);
+            ExecuteNonQuery("UpdateAffiliateStats", affiliateId, clicks, acquisitions);
         }
 
         #endregion
@@ -2871,51 +2840,7 @@ namespace DotNetNuke.Data
         #endregion
 
         #region Search
-
-        public virtual int AddSearchItem(string Title, string Description, int Author, DateTime PubDate, int ModuleId,
-                                         string Key, string Guid, int ImageFileId)
-        {
-            return ExecuteScalar<int>("AddSearchItem",
-                                        Title,
-                                        Description,
-                                        GetNull(Author),
-                                        GetNull(PubDate),
-                                        ModuleId,
-                                        Key,
-                                        Guid,
-                                        ImageFileId);
-        }
-
-        public virtual int AddSearchItemWord(int SearchItemId, int SearchWordsID, int Occurrences)
-        {
-            return ExecuteScalar<int>("AddSearchItemWord", SearchItemId, SearchWordsID, Occurrences);
-        }
-
-        public virtual void AddSearchItemWordPosition(int SearchItemWordID, string ContentPositions)
-        {
-            ExecuteNonQuery("AddSearchItemWordPosition", SearchItemWordID, ContentPositions);
-        }
-
-        public virtual int AddSearchWord(string Word)
-        {
-            return ExecuteScalar<int>("AddSearchWord", Word);
-        }
-
-        public virtual void DeleteSearchItem(int SearchItemId)
-        {
-            ExecuteNonQuery("DeleteSearchItem", SearchItemId);
-        }
-
-        public virtual void DeleteSearchItems(int ModuleID)
-        {
-            ExecuteNonQuery("DeleteSearchItems", ModuleID);
-        }
-
-        public virtual void DeleteSearchItemWords(int SearchItemId)
-        {
-            ExecuteNonQuery("DeleteSearchItemWords", SearchItemId);
-        }
-
+        
         public virtual IDataReader GetDefaultLanguageByModule(string ModuleList)
         {
             return ExecuteReader("GetDefaultLanguageByModule", ModuleList);
@@ -2931,58 +2856,16 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetSearchIndexers");
         }
 
-        public virtual IDataReader GetSearchItem(int ModuleID, string SearchKey)
-        {
-            return ExecuteReader("GetSearchItem", GetNull(ModuleID), SearchKey);
-        }
-
-        public virtual IDataReader GetSearchItems(int PortalID, int TabID, int ModuleID)
-        {
-            return ExecuteReader("GetSearchItems", GetNull(PortalID), GetNull(TabID), GetNull(ModuleID));
-        }
-
         public virtual IDataReader GetSearchResultModules(int PortalID)
         {
             return ExecuteReader("GetSearchResultModules", PortalID);
-        }
-
-        public virtual IDataReader GetSearchResults(int PortalID, int TabID, int ModuleID)
-        {
-            return ExecuteReader("GetSearchResults", GetNull(PortalID), GetNull(TabID), GetNull(ModuleID));
-        }
-
-        public virtual IDataReader GetSearchResults(int PortalID, string Word)
-        {
-            return ExecuteReader("GetSearchResultsByWord", PortalID, Word);
         }
 
         public virtual IDataReader GetSearchSettings(int ModuleId)
         {
             return ExecuteReader("GetSearchSettings", ModuleId);
         }
-
-        public virtual IDataReader GetSearchWords()
-        {
-            return ExecuteReader("GetSearchWords");
-        }
-
-        public virtual void UpdateSearchItem(int SearchItemId, string Title, string Description, int Author,
-                                             DateTime PubDate, int ModuleId, string Key, string Guid, int HitCount,
-                                             int ImageFileId)
-        {
-            ExecuteNonQuery("UpdateSearchItem",
-                                    SearchItemId,
-                                    Title,
-                                    Description,
-                                    GetNull(Author),
-                                    GetNull(PubDate),
-                                    ModuleId,
-                                    Key,
-                                    Guid,
-                                    HitCount,
-                                    ImageFileId);
-        }
-
+        
         #endregion
 
         #region Lists
@@ -3071,19 +2954,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeletePortalAlias", PortalAliasID);
         }
 
-        public virtual IDataReader GetPortalAlias(string PortalAlias, int PortalID)
+        public virtual IDataReader GetPortalAliases()
         {
-            return ExecuteReader("GetPortalAlias", PortalAlias, PortalID);
-        }
-
-        public virtual IDataReader GetPortalAliasByPortalAliasID(int PortalAliasID)
-        {
-            return ExecuteReader("GetPortalAliasByPortalAliasID", PortalAliasID);
-        }
-
-        public virtual IDataReader GetPortalAliasByPortalID(int PortalID)
-        {
-            return ExecuteReader("GetPortalAliasByPortalID", PortalID);
+            return ExecuteReader("GetPortalAliases");
         }
 
         public virtual IDataReader GetPortalByPortalAliasID(int PortalAliasId)
@@ -3734,7 +3607,7 @@ namespace DotNetNuke.Data
                                        int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                        string AttachToEvent, bool CatchUpEnabled, bool Enabled,
                                        string ObjectDependencies, string Servers, int CreatedByUserID,
-                                       string FriendlyName)
+                                       string FriendlyName, DateTime ScheduleStartDate)
         {
             return ExecuteScalar<int>("AddSchedule",
                                             TypeFullName,
@@ -3749,7 +3622,8 @@ namespace DotNetNuke.Data
                                             ObjectDependencies,
                                             GetNull(Servers),
                                             CreatedByUserID,
-                                            FriendlyName);
+                                            FriendlyName,
+                                            GetNull(ScheduleStartDate));
         }
 
         public virtual int AddScheduleHistory(int ScheduleID, DateTime StartDate, string Server)
@@ -3817,7 +3691,7 @@ namespace DotNetNuke.Data
                                            string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                            string AttachToEvent, bool CatchUpEnabled, bool Enabled,
                                            string ObjectDependencies, string Servers, int LastModifiedByUserID,
-                                           string FriendlyName)
+                                           string FriendlyName, DateTime ScheduleStartDate)
         {
             ExecuteNonQuery("UpdateSchedule",
                                       ScheduleID,
@@ -3833,7 +3707,8 @@ namespace DotNetNuke.Data
                                       ObjectDependencies,
                                       GetNull(Servers),
                                       LastModifiedByUserID,
-                                      FriendlyName);
+                                      FriendlyName,
+                                      GetNull(ScheduleStartDate));
         }
 
         public virtual void UpdateScheduleHistory(int ScheduleHistoryID, DateTime EndDate, bool Succeeded, string LogNotes, DateTime NextStart)
@@ -4157,6 +4032,17 @@ namespace DotNetNuke.Data
         {
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
+
+        public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
+        {
+            return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
+        }
+
+        public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
+        {
+            return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
+        }
+
         #endregion
 
         #region Search Crawler

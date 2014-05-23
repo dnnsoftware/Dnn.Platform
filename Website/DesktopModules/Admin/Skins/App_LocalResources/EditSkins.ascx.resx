@@ -216,4 +216,7 @@
   <data name="ParseOptions.Help" xml:space="preserve">
     <value>Portable requires relative graphical references this makes the skin more portable but require additional resources at runtime.</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Skin Editor</value>
+  </data>
 </root>

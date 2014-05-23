@@ -264,6 +264,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 nextNode.Expanded = false;
                 nextNode.Selected = true;
+                rootNode.Selected = false;
             }
 
             if (rootNode.Nodes.Count == 0)
@@ -556,6 +557,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
+                        //handle upgrades where FilterCondition didn't exist
+                        SettingsRepository.SetDefaultFilterCondition(ModuleId);
                         this.RootFolderViewModel = this.controller.GetRootFolder(ModuleId);
                         break;
                 }
@@ -616,6 +619,9 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 InitializeGrid();
                 FolderTypeComboBox.ItemDataBound += OnItemDataBoundFolderTypeComboBox;
+
+                MainToolBar.ModuleContext = ModuleContext;
+                SelectionToolBar.ModuleContext = ModuleContext;
             }
             catch (Exception exc) //Module failed to load
             {

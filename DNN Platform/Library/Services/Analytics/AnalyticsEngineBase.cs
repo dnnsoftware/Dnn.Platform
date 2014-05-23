@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Analytics
         public string ReplaceTokens(string s)
         {
             var tokenizer = new TokenReplace();
-            tokenizer.AccessingUser = UserController.GetCurrentUserInfo();
+            tokenizer.AccessingUser = UserController.Instance.GetCurrentUserInfo();
             tokenizer.DebugMessages = false;
             return (tokenizer.ReplaceEnvironmentTokens(s));
         }

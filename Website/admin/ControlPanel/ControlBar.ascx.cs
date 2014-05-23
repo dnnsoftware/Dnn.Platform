@@ -18,6 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Web.UI.HtmlControls;
+
+using DotNetNuke.Services.Personalization;
+using DotNetNuke.Web.Components.Controllers;
+using DotNetNuke.Web.Components.Controllers.Models;
+
 #region Usings
 
 using System;
@@ -66,6 +73,27 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string LoadTabModuleMessage { get; set; }
 
+        protected string BookmarkModuleCategory 
+        {
+            get
+            {
+                return ControlBarController.Instance.GetBookmarkCategory(PortalSettings.PortalId);
+            }
+        }
+
+        protected string BookmarkedModuleKeys
+        {
+            get
+            {
+                var bookmarkModules = Personalization.GetProfile("ControlBar", "module" + PortalSettings.PortalId);
+                if (bookmarkModules == null)
+                {
+                    return string.Empty;
+                }
+                return bookmarkModules.ToString();
+            }
+        }
+
         public override bool IsDockable { get; set; }
 
         public override bool IncludeInControlHierarchy
@@ -95,6 +123,8 @@ namespace DotNetNuke.UI.ControlPanels
                 }
                 FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
                 Page.Form.Controls.Add(FileUploader);
+
+                LoadCustomMenuItems();
             }
         }
 
@@ -127,6 +157,7 @@ namespace DotNetNuke.UI.ControlPanels
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             var multipleSite = false;
 
+            conrolbar_logo.ImageUrl = ControlBarController.Instance.GetControlBarLogoURL();
             if (!IsPostBack)
             {
                 LoadCategoryList();
@@ -146,29 +177,48 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected bool CheckPageQuota()
         {
-            UserInfo objUser = UserController.GetCurrentUserInfo();
+            UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
             return (objUser != null && objUser.IsSuperUser) || PortalSettings.PageQuota == 0 || PortalSettings.Pages < PortalSettings.PageQuota;
         }
 
         protected string GetUpgradeIndicator()
         {
-            UserInfo objUser = UserController.GetCurrentUserInfo();
+            UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
            
             if (objUser != null && objUser.IsSuperUser)
             {
-                var imageUrl = Upgrade.UpgradeIndicator(DotNetNukeContext.Current.Application.Version, Request.IsLocal, Request.IsSecureConnection);
-                if (!string.IsNullOrEmpty(imageUrl))
+                var upgradeIndicator = ControlBarController.Instance.GetUpgradeIndicator(DotNetNukeContext.Current.Application.Version,
+                    Request.IsLocal, Request.IsSecureConnection);
+                if (upgradeIndicator == null)
                 {
-                    var alt = Localization.GetString("Upgrade.Text", LocalResourceFile);
-                    var toolTip = Localization.GetString("Upgrade.ToolTip", LocalResourceFile);
-                    var navigateUrl = Upgrade.UpgradeRedirect();
-
-                    return string.Format("<a href='{0}' id='ServiceImg'><img src='{1}' alt='{2}' title='{3}'/></a>", 
-                        ResolveClientUrl(navigateUrl), ResolveClientUrl(imageUrl), alt, toolTip);
+                    return String.Empty;
                 }
+                return GetUpgradeIndicatorButton(upgradeIndicator);
             }
 
             return string.Empty;
+        }
+
+        private void LoadCustomMenuItems()
+        {
+            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
+            {
+                var liElement = new HtmlGenericControl("li");                
+                liElement.Attributes.Add("id", menuItem.ID + "_tab");
+
+                var control = Page.LoadControl(menuItem.Source);
+                control.ID = menuItem.ID;
+                            
+                liElement.Controls.Add(control);
+                
+                CustomMenuItems.Controls.Add(liElement);
+            }
+        }
+
+        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
+        {            
+            return string.Format("<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
+                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
 		protected string PreviewPopup()
@@ -240,7 +290,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected string BuildToolUrl(string toolName, bool isHostTool, string moduleFriendlyName, 
                                       string controlKey, string navigateUrl, bool showAsPopUp)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -307,6 +357,12 @@ namespace DotNetNuke.UI.ControlPanels
                         returnValue = Globals.NavigateURL("Tab", "activeTab=settingTab");
                     }
                     break;
+                case "PublishPage":
+                    if (TabPermissionController.CanAdminPage())
+                    {
+                        returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID);
+                    }
+                    break;
                 default:
                     if ((!string.IsNullOrEmpty(moduleFriendlyName)))
                     {
@@ -331,8 +387,7 @@ namespace DotNetNuke.UI.ControlPanels
                 additionalParams = new List<string>();
             }
 
-            var moduleCtrl = new ModuleController();
-            var moduleInfo = moduleCtrl.GetModuleByDefinition(portalId, moduleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, moduleFriendlyName);
 
             if (((moduleInfo != null)))
             {
@@ -360,7 +415,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetTabURL(string tabName, bool isHostTool, int? parentId)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -371,8 +426,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetTabURL(string tabName, int portalId, int? parentId)
         {
-            var tabController = new TabController();
-			var tab = parentId.HasValue ? tabController.GetTabByName(tabName, portalId, parentId.Value) : tabController.GetTabByName(tabName, portalId);
+            var tab = parentId.HasValue ? TabController.Instance.GetTabByName(tabName, portalId, parentId.Value) : TabController.Instance.GetTabByName(tabName, portalId);
 
             if (tab != null)
             {
@@ -382,9 +436,34 @@ namespace DotNetNuke.UI.ControlPanels
             return string.Empty;
         }
 
+        protected string GetTabPublishing()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId) ? "true" : "false";
+        }
+
+        protected string GetPublishActionText()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetString("Tool.UnpublishPage.Text"))
+                    : ClientAPI.GetSafeJSString(GetString("Tool.PublishPage.Text"));
+        }
+
+        protected string GetPublishConfirmText()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetButtonConfirmMessage("UnpublishPage"))
+                    : ClientAPI.GetSafeJSString(GetButtonConfirmMessage("PublishPage"));
+        }
+
+        protected string GetPublishConfirmHeader()
+        {
+            return TabPublishingController.Instance.IsTabPublished(TabController.CurrentPage.TabID, PortalSettings.PortalId)
+                    ? ClientAPI.GetSafeJSString(GetButtonConfirmHeader("UnpublishPage"))
+                    : ClientAPI.GetSafeJSString(GetButtonConfirmHeader("PublishPage"));
+        }
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return string.Empty;
             }
@@ -407,7 +486,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetMenuItem(string tabName, bool isHostTool, bool isRemoveBookmark, bool isHideBookmark = false)
         {
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return string.Empty;
             }
@@ -541,18 +620,17 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetButtonConfirmMessage(string toolName)
         {
-            if (toolName == "DeletePage")
-            {
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", LocalResourceFile));
-            }
+            return ClientAPI.GetSafeJSString(Localization.GetString("Tool."+toolName+".ConfirmText", LocalResourceFile));
+        }
 
-            return string.Empty;
-        }    
+        protected string GetButtonConfirmHeader(string toolName)
+        {
+            return ClientAPI.GetSafeJSString(Localization.GetString("Tool." + toolName + ".ConfirmHeader", LocalResourceFile));
+        }
 
         protected IEnumerable<string[]> LoadPortalsList()
         {
-            var portalCtrl = new PortalController();
-            ArrayList portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             List<string[]> result = new List<string[]>();
             foreach (var portal in portals)
@@ -711,7 +789,7 @@ namespace DotNetNuke.UI.ControlPanels
             CategoryList.DataBind();
             if (!IsPostBack)
             {
-                CategoryList.Select("All", false);
+                CategoryList.Select(!String.IsNullOrEmpty(BookmarkedModuleKeys) ? BookmarkModuleCategory : "All", false);
             }
         }
 
@@ -742,9 +820,6 @@ namespace DotNetNuke.UI.ControlPanels
             VisibilityLst.DataTextField = "value";
             VisibilityLst.DataSource = items;
             VisibilityLst.DataBind();
-
-            // Hide Getting Started Link if no Getting Started Page is present.
-            if (GetTabURL("Getting Started", false).Length < 1) gettingStartedLink.Visible = false;
         }
 
         private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
@@ -760,9 +835,7 @@ namespace DotNetNuke.UI.ControlPanels
             // Are we in a group of one?
             if (result == null || result.Length == 0)
             {
-                var portalController = new PortalController();
-
-                result = new[] { portalController.GetPortal(PortalSettings.Current.PortalId) };
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
 
             return result;
@@ -870,14 +943,11 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if (_adminBookmarkItems == null)
                 {
-                    var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
-                    var bookmarkItems = personalization.Profile["ControlBar:admin" + PortalSettings.PortalId];
-                    
-                    if (bookmarkItems != null)
-                        _adminBookmarkItems = bookmarkItems.ToString().Split(',').ToList();
-                    else
-                        _adminBookmarkItems = new List<string>();
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + PortalSettings.PortalId);
+
+                    _adminBookmarkItems = bookmarkItems != null 
+                                                ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                                : new List<string>();
                 }
 
                 return _adminBookmarkItems;
@@ -891,14 +961,11 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 if(_hostBookmarkItems == null)
                 {
-                    var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(UserController.GetCurrentUserInfo().UserID, PortalSettings.PortalId);
-                    var bookmarkItems = personalization.Profile["ControlBar:host" + PortalSettings.PortalId];
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + PortalSettings.PortalId);
 
-                    if (bookmarkItems != null)
-                        _hostBookmarkItems = bookmarkItems.ToString().Split(',').ToList();
-                    else
-                        _hostBookmarkItems = new List<string>();
+                    _hostBookmarkItems = bookmarkItems != null 
+                                            ? bookmarkItems.ToString().Split(new[] { ',', }, StringSplitOptions.RemoveEmptyEntries).ToList() 
+                                            : new List<string>();
                 }
 
                 return _hostBookmarkItems;
@@ -962,11 +1029,10 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void GetHostTabs()
         {
-            var tabController = new TabController();
             var hostTab = TabController.GetTabByTabPath(Null.NullInteger, "//Host", string.Empty);
             var hosts = TabController.GetTabsByParent(hostTab, -1);
 
-            var professionalTab = tabController.GetTabByName("Professional Features", -1);
+            var professionalTab = TabController.Instance.GetTabByName("Professional Features", -1);
             List<TabInfo> professionalTabs;
             if (professionalTab != null)
             {

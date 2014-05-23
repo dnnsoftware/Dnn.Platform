@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.FileSystem
         [Obsolete("Deprecated in DNN 6.0.")]
         public FileInfo GetFileByUniqueID(Guid uniqueId)
         {
-            return (FileInfo) CBO.FillObject(DataProvider.Instance().GetFileByUniqueID(uniqueId), typeof (FileInfo));
+            return CBO.FillObject<FileInfo>(DataProvider.Instance().GetFileByUniqueID(uniqueId));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

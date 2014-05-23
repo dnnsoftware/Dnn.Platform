@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -36,6 +37,9 @@ namespace DotNetNuke.Entities.Urls
     [Serializable]
     public class FriendlyUrlOptions
     {
+        private static readonly object _regexLookupLock = new object();
+        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
+
         public bool ConvertDiacriticChars;
         public string IllegalChars;
         public int MaxUrlPathLength;
@@ -69,6 +73,30 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 return result;
+            }
+        }
+
+        public Regex RegexMatchRegex
+        {
+            get { return GetRegex(this.RegexMatch); }
+        }
+
+        private static Regex GetRegex(string regexText)
+        {
+            Regex compiledRegex;
+            if (_regexLookup.TryGetValue(regexText, out compiledRegex))
+            {
+                return compiledRegex;
+            }
+
+            lock (_regexLookupLock)
+            {
+                if (_regexLookup.TryGetValue(regexText, out compiledRegex))
+                {
+                    return compiledRegex;
+                }
+
+                return _regexLookup[regexText] = new Regex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
             }
         }
 

@@ -29,8 +29,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.HttpModules.UrlRewrite;
@@ -63,7 +61,7 @@ namespace DotNetNuke.Tests.Urls
 
         private void CreateSimulatedRequest(Uri url)
         {
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator();
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", WebsitePhysicalAppPath);
             simulator.SimulateRequest(url);
 
             var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };
@@ -145,8 +143,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (!String.IsNullOrEmpty(_securePageName))
             {
-                var tc = new TabController();
-                var tab = tc.GetTabByName(_securePageName, PortalId);
+                var tab = TabController.Instance.GetTabByName(_securePageName, PortalId);
                 if (tab != null)
                 {
                     tab.IsSecure = false;
@@ -162,7 +159,7 @@ namespace DotNetNuke.Tests.Urls
             }
             if (_primaryAlias != null)
             {
-                TestablePortalAliasController.Instance.DeletePortalAlias(_primaryAlias);
+                PortalAliasController.Instance.DeletePortalAlias(_primaryAlias);
             }
 
             SetDefaultAlias(DefaultAlias);
@@ -172,7 +169,7 @@ namespace DotNetNuke.Tests.Urls
 
             foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(PortalId)))
             {
-                TestableTabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
+                TabController.Instance.DeleteTabUrl(tabUrl, PortalId, true);
             }
 
         }
@@ -182,12 +179,16 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureSetUp();
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_aboutUsPageName, PortalId);
+            var tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+            if (tab == null)
+            {
+                CreateTab(_aboutUsPageName);
+                tab = TabController.Instance.GetTabByName(_aboutUsPageName, PortalId);
+            }
             _tabId = tab.TabID;
 
             //Add Portal Aliases
-            var aliasController = new PortalAliasController();
+            var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                             {
                                 string[] fields = line.Split(',');
@@ -199,7 +200,7 @@ namespace DotNetNuke.Tests.Urls
                                         HTTPAlias = fields[0],
                                         PortalID = PortalId
                                     };
-                                    TestablePortalAliasController.Instance.AddPortalAlias(alias);
+                                    PortalAliasController.Instance.AddPortalAlias(alias);
                                 }
                             });
             TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
@@ -215,12 +216,12 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureTearDown();
 
-            var aliasController = new PortalAliasController();
+            var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                             {
                                 string[] fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], PortalId);
-                                TestablePortalAliasController.Instance.DeletePortalAlias(alias);
+                                PortalAliasController.Instance.DeletePortalAlias(alias);
                             });
             TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
                             {
@@ -235,24 +236,13 @@ namespace DotNetNuke.Tests.Urls
 
         #region Private Methods
 
-        private TabInfo CreateTab(string tabName)
-        {
-            var tc = new TabController();
-            var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
-
-            tc.AddTab(tab);
-
-            return tab;
-        }
-
         private void DeleteTab(string tabName)
         {
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
 
             if (tab != null)
             {
-                tc.DeleteTab(tab.TabID, PortalId);
+                TabController.Instance.DeleteTab(tab.TabID, PortalId);
             }
         }
 
@@ -313,8 +303,7 @@ namespace DotNetNuke.Tests.Urls
         private void ExecuteTest(FriendlyUrlSettings settings, Dictionary<string, string> testFields, bool setDefaultAlias)
         {
             var tabName = testFields["Page Name"];
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
 
             if (setDefaultAlias)
             {
@@ -326,28 +315,25 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTab(TabInfo tab)
         {
-            var tc = new TabController();
             if (tab != null)
             {
-                tc.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
             }
             
         }
 
         private void UpdateTabName(int tabId, string newName)
         {
-            var tc = new TabController();
-            var tab = tc.GetTab(tabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.TabName = newName;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         private void UpdateTabSkin(int tabId, string newSkin)
         {
-            var tc = new TabController();
-            var tab = tc.GetTab(tabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(tabId, PortalId, false);
             tab.SkinSrc = newSkin;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         #endregion
@@ -373,8 +359,7 @@ namespace DotNetNuke.Tests.Urls
 
             settings.PortalId = PortalId;
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_testPage, PortalId);
+            var tab = TabController.Instance.GetTabByName(_testPage, PortalId);
             if (Convert.ToBoolean(testFields["HardDeleted"]))
             {
                 DeleteTab(_testPage);
@@ -436,10 +421,9 @@ namespace DotNetNuke.Tests.Urls
 
             settings.PortalId = PortalId;
 
-            var tc = new TabController();
-            var tab = tc.GetTabByName(_testPage, PortalId);
+            var tab = TabController.Instance.GetTabByName(_testPage, PortalId);
             tab.Url = testFields["ExternalUrl"];
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
 
             ExecuteTest(settings, testFields, true);
         }
@@ -521,13 +505,12 @@ namespace DotNetNuke.Tests.Urls
             if (!String.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
-                var tc = new TabController();
-                tab = tc.GetTabByName(tabName, PortalId);
+                tab = TabController.Instance.GetTabByName(tabName, PortalId);
                 tab.TabName = testPageName;
-                tc.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
 
                 //Refetch tab from DB
-                tab = tc.GetTab(tab.TabID, tab.PortalID, false);
+                tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);
             }
 
             settings.PortalId = PortalId;
@@ -606,26 +589,32 @@ namespace DotNetNuke.Tests.Urls
                 testFields["Final Url"] = testFields["Final Url"].Replace("{useAlias}", defaultAlias);
             }
 
-            if (!(String.IsNullOrEmpty(language) && String.IsNullOrEmpty(skin)))
+            PortalController.UpdatePortalSetting(PortalId, "PortalAliasMapping", "REDIRECT");
+            var alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, PortalId);
+            if (alias == null)
             {
-                //add new primary alias
-                _primaryAlias = new PortalAliasInfo
-                                    {
-                                        PortalID = PortalId,
-                                        HTTPAlias = defaultAlias,
-                                        CultureCode = language,
-                                        Skin = skin,
-                                        IsPrimary = true
-                                    };
-                _primaryAlias.PortalAliasID = TestablePortalAliasController.Instance.AddPortalAlias(_primaryAlias);
-                ExecuteTest(settings, testFields, true);
+                alias = new PortalAliasInfo
+                {
+                    HTTPAlias = defaultAlias,
+                    PortalID = PortalId,
+                    IsPrimary = true
+                };
+                if (!(String.IsNullOrEmpty(language) && String.IsNullOrEmpty(skin)))
+                {
+                    alias.CultureCode = language;
+                    alias.Skin = skin;
+                }
+               PortalAliasController.Instance.AddPortalAlias(alias);
             }
-            else
-            {
-                SetDefaultAlias(defaultAlias);
-                ExecuteTest(settings, testFields, false);
-            }
+            SetDefaultAlias(defaultAlias);
+            ExecuteTest(settings, testFields, false);
 
+
+            alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, PortalId);
+            if (alias != null)
+            {
+                PortalAliasController.Instance.DeletePortalAlias(alias);
+            }
         }
 
         [Test]
@@ -672,8 +661,7 @@ namespace DotNetNuke.Tests.Urls
 
             if (isSecure)
             {
-                var tc = new TabController();
-                var tab = tc.GetTabByName(_securePageName, PortalId);
+                var tab = TabController.Instance.GetTabByName(_securePageName, PortalId);
                 tab.IsSecure = true;
 
                 UpdateTab(tab);
@@ -688,7 +676,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_JiraTests")]
         public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
-            var testName = testFields.GetValue("Test", String.Empty);
+            var testName = testFields.GetValue("Test File", String.Empty);
 
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testName + ".csv");
             var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testName + "_dic.csv");
@@ -717,8 +705,7 @@ namespace DotNetNuke.Tests.Urls
 
         private int UpdateHomeTab(int homeTabId)
         {
-            var portalController = new PortalController();
-            var portalInfo = portalController.GetPortal(PortalId);
+            var portalInfo = PortalController.Instance.GetPortal(PortalId);
             int oldHomeTabId = portalInfo.HomeTabId;
             portalInfo.HomeTabId = homeTabId;
 
@@ -727,10 +714,9 @@ namespace DotNetNuke.Tests.Urls
 
         private void UpdateTabSetting(string tabName, string settingName, string settingValue)
         {
-            var tc = new TabController();
-            var tab = tc.GetTabByName(tabName, PortalId);
+            var tab = TabController.Instance.GetTabByName(tabName, PortalId);
             tab.TabSettings[settingName] = settingValue;
-            tc.UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
 
         #endregion

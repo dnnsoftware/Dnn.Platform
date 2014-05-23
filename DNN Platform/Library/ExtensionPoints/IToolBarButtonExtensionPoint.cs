@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.UI.Modules;
+
 namespace DotNetNuke.ExtensionPoints
 {
     public interface IToolBarButtonExtensionPoint : IExtensionPoint
@@ -34,5 +36,9 @@ namespace DotNetNuke.ExtensionPoints
         bool ShowText { get; }
 
         bool ShowIcon { get; }
+
+        bool Enabled { get; }
+
+        ModuleInstanceContext ModuleContext { get; set; }
     }
 }

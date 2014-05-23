@@ -9,7 +9,7 @@
         $("#goButton").click(function() {
             $.ajax({
                 type: "GET",
-                url: sf.getServiceRoot('[OWNER].[MODULE]') + "[MODULE]API/MyResponse"
+                url: sf.getServiceRoot('_OWNER_._MODULE_') + "_MODULE_API/MyResponse"
             }).done(function(data) {
                 if (data != undefined && data != null) {
                     $("#content").text(data);

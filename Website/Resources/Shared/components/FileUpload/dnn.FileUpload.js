@@ -63,6 +63,7 @@
         _createLayout: function () {
             var checkBoxId = dnn.uid("fu_");
             this._folderPicker = new dnn.DropDownList(null, this.options.folderPicker);
+            dnn[this._folderPicker.id()] = this._folderPicker;
 
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
                 $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.resources.dialogHeader),
@@ -84,7 +85,7 @@
                         ),
                         $element("div", { 'class': 'fu-folder-picker-container dnnRight' }).append(
                             $element("label").text(this.options.resources.uploadToFolderLabel),
-                            this._folderPicker.$element.addClass("dnnLeftComboBox")
+                            !(this.options.folderPicker.disabled) ? this._folderPicker.$element.addClass("dnnLeftComboBox") : $element("span").append(this.options.folderPicker.initialState.selectedItem.value)
                         )
                     ),
                     $element("div", { 'class': 'fu-dialog-content-fileupload-local' }).append(
@@ -189,6 +190,8 @@
 
         _onUploadByUrl: function (url, data, textStatus, jqXhr) {
             this._processResponse(url[0], data);
+            
+            this.$element.trigger($.Event("onfileuploadcomplete"), [data]);
         },
 
         _createFileUploadStatusElement: function (status) {
@@ -257,11 +260,43 @@
                 message = this.options.resources.fileAlreadyExists;
             }
             else {
-                message = state.message;
+                if (state.message[0] == '{') {
+
+                } else {
+                    message = state.message;
+                }
             }
             $statusMessage.text(message);
 
             $fileUploadStatus.find(".fu-fileupload-progressbar-container").attr("title", message);
+        },
+
+        _showPrompt: function(prompt) {
+            prompt = JSON.parse(prompt);
+            if (prompt.invalidFiles) {
+                var title = this.options.resources.unzipFilePromptTitle;
+                var body = prompt.invalidFiles.length > 0 ?
+                            this.options.resources.unzipFileFailedPromptBody
+                            : this.options.resources.unzipFileSuccessPromptBody;
+                body = body.replace('[COUNT]', prompt.invalidFiles.length)
+                            .replace('[TOTAL]', prompt.totalCount)
+                            .replace('[TOTAL]', prompt.totalCount) //replace twice
+                            .replace('[FILELIST]', this._generateFileList(prompt.invalidFiles));
+                $.dnnAlert({
+                    title: title,
+                    text: body,
+                    maxHeight: 400
+                });
+            }
+        },
+
+        _generateFileList: function(files) {
+            var list = '<ul>';
+            for (var i = 0; i < files.length; i++) {
+                list += '<li>' + files[i] + '</li>';
+            }
+            list += '</ul>';
+            return list;
         },
 
         _add: function (e, data) {
@@ -369,6 +404,8 @@
 
         _done: function (e, data) {
             this._processResponse(data.files[0].name, data.result);
+            
+            this.$element.trigger($.Event("onfileuploadcomplete"), [data.result]);
         },
 
         _processResponse: function (fileName, response) {
@@ -382,6 +419,10 @@
                     this._showError($fileUploadStatus, result.message);
                 }
                 return;
+            }
+
+            if (result.prompt) {
+                this._showPrompt(result.prompt);
             }
             this._showThumbnail($fileUploadStatus, result);
             $fileUploadStatus.data("status").overwrite = false;
@@ -406,7 +447,7 @@
         },
 
         _showError: function ($fileUploadStatus, errorMessage) {
-            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });
+            this._showFileUploadStatus($fileUploadStatus, { message: errorMessage });          
             $fileUploadStatus.removeClass().addClass(this.options.statusErrorCss);
             var $img = $($fileUploadStatus[0].firstChild.firstChild.firstChild);
             $img.removeClass().addClass("pt");

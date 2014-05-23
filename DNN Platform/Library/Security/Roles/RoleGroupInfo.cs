@@ -261,6 +261,8 @@ namespace DotNetNuke.Security.Roles
                 {
                     switch (reader.Name.ToLowerInvariant())
                     {
+                        case "rolegroup":
+                            break;
                         case "roles":
                             if (!reader.IsEmptyElement)
                             {
@@ -272,6 +274,12 @@ namespace DotNetNuke.Security.Roles
                             break;
                         case "description":
                             Description = reader.ReadElementContentAsString();
+                            break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
                             break;
                     }
                 }
@@ -320,7 +328,7 @@ namespace DotNetNuke.Security.Roles
         private void GetRoles()
         {
             _Roles = new Dictionary<string, RoleInfo>();
-            foreach (var role in TestableRoleController.Instance.GetRoles(PortalID, r => r.RoleGroupID == RoleGroupID))
+            foreach (var role in RoleController.Instance.GetRoles(PortalID, r => r.RoleGroupID == RoleGroupID))
             {
                 _Roles[role.RoleName] = role;
             }

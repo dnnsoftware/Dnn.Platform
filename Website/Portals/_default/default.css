@@ -137,7 +137,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size: 38px;
     line-height: 54px;
-    letter-spacing: -0.03em;
+    letter-spacing: normal;
     margin-top: 8px;
     margin-bottom: 10px;
 }
@@ -145,7 +145,7 @@ h1 {
 h2 {
     font-size: 32px;
     line-height: 36px;
-    letter-spacing: -0.03em;
+    letter-spacing: normal;
     margin-top: 8px;
     margin-bottom: 10px;
 }
@@ -153,7 +153,7 @@ h2 {
 h3 {
     font-size: 28px;
     line-height: 36px;
-    letter-spacing: -1px;
+    letter-spacing: normal;
     margin-top: 8px;
     margin-bottom: 10px;
 }
@@ -161,17 +161,19 @@ h3 {
 h4 {
     font-size: 22px;
     line-height: 36px;
-    letter-spacing: -1px;
+    letter-spacing: normal;
 }
 
 h5 {
     font-size: 16px;
     line-height: 18px;
+    letter-spacing: normal;
 }
 
 h6 {
     font-size: 14px;
     line-height: 18px;
+    letter-spacing: normal;
 }
 
 /* Module titles */
@@ -837,7 +839,7 @@ span.dnnSecondaryAction > a.dnnSecondaryAction {
 /* Action Button behind input */
 .dnnFormItem input[type="text"] + a.dnnPrimaryAction,
 .dnnFormItem input[type="text"] + a.dnnSecondaryAction,
-.dnnFormItem input[type="text"] + a.dnnTerriaryAction {
+.dnnFormItem input[type="text"] + a.dnnTerriaryAction { 
     margin-left: 5px;
 }
 
@@ -1605,8 +1607,13 @@ div.dnnTagsInput > div > input:focus {
     font-size: 12px;
     display: inline-block;
     vertical-align: top;
-    padding: 3px 0 3px 0;
+    height: 19px;
+    padding: 3px 0 3px 3px;
     margin-bottom: 5px;
+}
+
+div.dnnTagsInput > div > input::-ms-clear {
+  display: none;
 }
 
 div.dnnTagsInput div {
@@ -1710,7 +1717,6 @@ div.dnnTagsInput div.dnnTags_filter a.dnnSearchButton {
 div.dnnTagsInput > div > input.dnnTagsInvalid {
     display: block;
     float: left;
-    padding: 3px 0 3px 0;
     margin-right: 5px;
     border: none;
     outline: none;
@@ -2434,7 +2440,6 @@ div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
 }
 
 .urlControlFileRow {
-    overflow: hidden;
     clear: both;
 }
 
@@ -2594,8 +2599,78 @@ table.dnnASPGrid {
     border: 1px solid #c9c9c9;
 }
 
-    table.dnnPermissionsGrid td {
-        padding: 4px;
+    table.dnnPermissionsGrid {
+        color: #777;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridHeader td {
+        padding: 4px 4px 4px 4px;
+        vertical-align: middle;
+        line-height: 120%;
+        text-align: center;    
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridItem td,
+    table.dnnPermissionsGrid tr.dnnGridAltItem td {
+        padding: 5px 4px 5px 4px;
+        border-top: 1px solid #c9c9c9;
+        border-bottom: 1px solid #c9c9c9;
+        width: 70px;
+        text-align: center;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridItem td.permissionHeader,
+    table.dnnPermissionsGrid tr.dnnGridAltItem td.permissionHeader {
+        border-right: 1px solid #c9c9c9;
+        text-align: left;
+        padding-left: 10px;
+        width: 150px;
+    }
+
+    table.dnnPermissionsGrid tr.dnnGridHeader td.permissionHeader {
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem label {
+        margin-right: 8px;        
+        color: #777;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem select {
+        width: 25%;
+        margin: 0 5px 5px 0;
+        min-width: 180px;
+        color: #777;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem input {        
+        margin-bottom: 0;
+        height: 17px;
+        color: #777;
+        width: 25%;
+    }
+    .dnnPermissionsGrid > .dnnFormItem ul.token-input-list-facebook {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem > .leftGroup {
+        margin-right: 35px;
+        float:left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup {
+        float: left;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem >  .rightGroup  > .dnnSecondaryAction {
+        position: absolute;
+    }
+
+    .dnnPermissionsGrid > .dnnFormItem {
+        margin-bottom: 18px;
+        overflow: auto;     
     }
 
 .dnnGridHeader td, thead.dnnGridHeader th,  tr.dnnGridHeader th{
@@ -2781,7 +2856,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
     margin-bottom: 10px;
     margin-right: 10px;
     padding: 0;
-    width: 450px;
+    width: 500px;
 }
 
     .dnnFileUploadScope .dnnLeft {
@@ -2793,7 +2868,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
             margin-bottom: 10px;
         }
 
-    .dnnFileUploadScope .dnnFormItem span {
+    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem>span {
         display: block;
         float: left;
         width: 40px;
@@ -2802,7 +2877,12 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
         text-align: left;
     }
 
-    .dnnFileUploadScope .dnnFormItem .RadComboBox_Default {
+    .dnnFileUploadScope .dnnFormItem .dnnDropDownList span {
+        margin: 0;
+        width: auto;
+    }
+
+    .dnnFileUploadScope .dnnFormItem .RadComboBox_Default,  .dnnFileUploadScope .dnnFormItem .dnnDropDownList{
         width: 180px;
         margin: 0;
         float: none;
@@ -3016,7 +3096,7 @@ h2.dnnFormSectionHead {
 }
 
 .jspVerticalBar .jspTrack {
-    width: 5px;
+    width: 10px;
     margin: 0 0 0 3px;
 }
 
@@ -3057,118 +3137,6 @@ h2.dnnFormSectionHead {
 /*-------------------------------------*/
 /* UPGRADE FIXES */
 /*-------------------------------------*/
-
-/* dark-knight skin fix in 7.0 */
-div.SearchContainer {
-    position: relative;
-    white-space: nowrap;
-}
-
-div.SearchBorder {
-    float: left;
-    position: relative;
-    width: 200px;
-    height: 20px;
-    margin-top: 2px;
-    background-color: White;
-    border: 1px solid #E0E0E0;
-    white-space: nowrap;
-}
-
-input.SearchTextBox {
-    float: left;
-    height: 18px;
-    width: 169px;
-    z-index: 10;
-    border: 0 none;
-}
-
-div.SearchContainer a {
-    display: inline-block;
-    position: relative;
-    padding: 0 5px;
-}
-
-div.SearchIcon {
-    float: left;
-    height: 20px;
-    width: 31px;
-    z-index: 11;
-    background: none no-repeat scroll 2px 2px transparent;
-    cursor: pointer;
-    text-align: right;
-}
-
-    div.SearchIcon img {
-        margin-top: 3px;
-    }
-
-#SearchChoices {
-    clear: both;
-    display: none;
-    position: absolute;
-    z-index: 2000;
-    left: 0;
-    top: 21px;
-    width: 160px;
-    margin: 0;
-    padding: 0;
-    background-color: #EEEEEE;
-    border: 1px solid #777777;
-    cursor: pointer;
-    text-align: left;
-}
-
-    #SearchChoices li {
-        display: block;
-        height: 20px;
-        margin: 2px;
-        padding: 2px 2px 2px 25px;
-        background: none no-repeat scroll 5px center #EEEEEE;
-        border: 1px solid #EEEEEE;
-        cursor: pointer;
-        list-style: none outside none;
-        text-align: left;
-    }
-
-        #SearchChoices li.searchHilite {
-            background-color: #DDDDFF;
-            border: 1px solid #AAAAFF;
-        }
-
-        #SearchChoices li.searchDefault {
-            background-color: #EEEEEE;
-            border: 1px solid #EEEEEE;
-        }
-/*
-    #dnn_dnnSEARCH_txtSearch,
-    #dnn_dnnSearch_txtSearch,
-    #dnn_dnnSEARCH_txtSearchNew,
-    #dnn_dnnSearch_txtSearchNew {
-        margin: 0;
-        padding: inherit;
-        font-size: inherit;
-        border: inherit;
-        border-radius: 0;
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        box-shadow: none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        border: 0 none;
-    }
-    */
-/* For Upgrade from DNN6 DarkKnight --------*/
-#DNN6 {
-    z-index: 0 !important;
-}
-
-    #DNN6 > #Header .SearchContainer .SearchTextBox {
-        width: 130px !important;
-        padding: 3px 0 0 0;
-        border: none;
-        box-shadow: none;
-    }
 
 /* Compatible with some old forge modules---*/
 div.ModDNNAnnouncementsC table.ucLinkTypeRadioButtons label {
@@ -3368,3 +3336,9 @@ div.ModDNNLinksC .urlControl span.dnnRadiobutton {
 	background-color: inherit;
 }
 div[id$=titleLabel_tb].visible ~ span{ margin-left: 32px;}
+
+/*Critical Error Popup*/
+div.errorWin p{ margin: 0 0 10px 0;}
+
+input[type="button"].rspCollapseBarSpacer
+{ min-width: 0; padding: 0 0; }

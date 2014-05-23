@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 
@@ -62,8 +63,6 @@ namespace DotNetNuke.Entities.Urls
 
         // Settings Keys
         public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
-        public const string ErrorPage404Setting = "AUM_ErrorPage404";
-        public const string ErrorPage500Setting = "AUM_ErrorPage500";
         public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
         public const string PageExtensionSetting = "AUM_PageExtension";
         public const string PageExtensionUsageSetting = "AUM_PageExtensionUsage";
@@ -96,7 +95,6 @@ namespace DotNetNuke.Entities.Urls
 
         #region Public Properties
 
-        internal bool AllowReporting { get; set; }
 
         public bool AllowDebugCode { get; set; }
 
@@ -240,8 +238,6 @@ namespace DotNetNuke.Entities.Urls
 
         public string UseBaseFriendlyUrls { get; set; }
 
-        public string UseMobileAlias { get; set; }
-
         public string UseSiteUrlsRegex { get; set; }
 
         public string ValidExtensionlessUrlsRegex { get; set; }
@@ -358,13 +354,18 @@ namespace DotNetNuke.Entities.Urls
             //793 : checkforDupUrls not being read
             CheckForDuplicateUrls = GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
 
-            /* 454 New 404 error handling */
             Regex404 = GetStringSetting("regex404", String.Empty);
-            TabId404 = PortalController.GetPortalSettingAsInteger(ErrorPage404Setting, PortalId, -1);
             Url404 = GetStringSetting("url404", String.Empty);
 
-            //get the 500 error values, if not supplied, use the 404 values
-            TabId500 = PortalController.GetPortalSettingAsInteger(ErrorPage500Setting, PortalId, -1);
+            TabId500 = Null.NullInteger;
+            TabId404 = Null.NullInteger;
+            if (portalId > -1)
+            {
+                var portal = PortalController.Instance.GetPortal(portalId);
+                TabId500 = portal.Custom404TabId;
+                TabId404 = portal.Custom404TabId;
+            }
+
             if (TabId500 == -1)
             {
                 TabId500 = TabId404;
@@ -383,12 +384,7 @@ namespace DotNetNuke.Entities.Urls
             NoFriendlyUrlRegex = GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx");
 
             //703 default debug code to false
-            AllowDebugCode = GetBooleanSetting(AllowDebugCodeSetting, false);
-            //allow reporting value for checking for updates and reporting usage data
-            AllowReporting = GetBooleanSetting("allowReporting", true);
-
-            //737 : integrate mobile alias
-            UseMobileAlias = GetStringSetting("useMobileAlias", null);
+            AllowDebugCode = Host.Host.DebugMode;
 
             VanityUrlPrefix = GetStringSetting(VanityUrlPrefixSetting, "users");
 

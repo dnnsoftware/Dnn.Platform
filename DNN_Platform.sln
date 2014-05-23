@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.CoreMess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DigitalAssets", "DNN Platform\Modules\DigitalAssets\DotNetNuke.Modules.DigitalAssets.csproj", "{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DDRMenu", "DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj", "{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Groups", "DNN Platform\Modules\Groups\DotNetNuke.Modules.Groups.csproj", "{839E7C68-1867-4B99-8507-FB50CE45EB10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Html", "DNN Platform\Modules\HTML\DotNetNuke.Modules.Html.csproj", "{CD8732D8-B4DD-435D-BF21-A90C2964ABA4}"
@@ -146,6 +148,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JavaScript Libraries", "Jav
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{6308FA00-5E1A-4924-98C1-4B4010AD2BEB}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt = DNN Platform\JavaScript Libraries\Knockout\02.02.01.txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt = DNN Platform\JavaScript Libraries\Knockout\Knockout (MIT).txt
 		DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn = DNN Platform\JavaScript Libraries\Knockout\Knockout.dnn
 		DNN Platform\JavaScript Libraries\Knockout\knockout.js = DNN Platform\JavaScript Libraries\Knockout\knockout.js
@@ -166,6 +169,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Authentica
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB54-3987-461C-85C5-9281AC49C72B}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQuery\01.09.01.txt = DNN Platform\JavaScript Libraries\jQuery\01.09.01.txt
 		DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQuery\jQuery (MIT).txt
 		DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn = DNN Platform\JavaScript Libraries\jQuery\jQuery.dnn
 		DNN Platform\JavaScript Libraries\jQuery\jquery.js = DNN Platform\JavaScript Libraries\jQuery\jquery.js
@@ -175,6 +179,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQuery", "jQuery", "{4E0EBB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{6040AAC4-8533-4EBF-8918-2173B5400415}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt = DNN Platform\JavaScript Libraries\jQueryUI\01.10.03.txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt = DNN Platform\JavaScript Libraries\jQueryUI\jQuery UI (MIT).txt
 		DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js = DNN Platform\JavaScript Libraries\jQueryUI\jquery-ui.js
 		DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn = DNN Platform\JavaScript Libraries\jQueryUI\jQueryUI.dnn
@@ -183,6 +188,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryUI", "jQueryUI", "{60
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigrate", "{2D3D39C2-142A-4382-9EF1-2AC14ACAAAE0}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\jQueryMigrate\01.02.01.txt = DNN Platform\JavaScript Libraries\jQueryMigrate\01.02.01.txt
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt = DNN Platform\JavaScript Libraries\jQueryMigrate\jQuery (MIT).txt
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js = DNN Platform\JavaScript Libraries\jQueryMigrate\jquery-migrate.js
 		DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn = DNN Platform\JavaScript Libraries\jQueryMigrate\jQueryMigrate.dnn
@@ -191,6 +197,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "jQueryMigrate", "jQueryMigr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnockoutMapping", "KnockoutMapping", "{96F739AA-D737-4A48-B423-326B4ED37425}"
 	ProjectSection(SolutionItems) = preProject
+		DNN Platform\JavaScript Libraries\KnockoutMapping\02.04.01.txt = DNN Platform\JavaScript Libraries\KnockoutMapping\02.04.01.txt
 		DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt = DNN Platform\JavaScript Libraries\KnockoutMapping\Knockout Mapping (MIT).txt
 		DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js = DNN Platform\JavaScript Libraries\KnockoutMapping\knockout.mapping.js
 		DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn = DNN Platform\JavaScript Libraries\KnockoutMapping\KnockoutMapping.dnn
@@ -287,6 +294,12 @@ Global
 		{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}.Release|x86.ActiveCfg = Release|x86
 		{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}.Release|x86.Build.0 = Release|x86
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}.Release|x86.ActiveCfg = Release|Any CPU
 		{839E7C68-1867-4B99-8507-FB50CE45EB10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{839E7C68-1867-4B99-8507-FB50CE45EB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{839E7C68-1867-4B99-8507-FB50CE45EB10}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -516,6 +529,7 @@ Global
 		{CA056730-5759-41F8-A6C1-420F9C0C63E7} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{5DEAB0D5-0F54-44C9-A167-F48264A04B3D} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{1A0646A3-CB4A-4E8E-A497-2C677DE320FF} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
+		{A86EBC44-2BC8-4C4A-997B-2708E4AAC345} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{839E7C68-1867-4B99-8507-FB50CE45EB10} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{CD8732D8-B4DD-435D-BF21-A90C2964ABA4} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{E242FA80-7523-4AE5-A804-809175D0E702} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}

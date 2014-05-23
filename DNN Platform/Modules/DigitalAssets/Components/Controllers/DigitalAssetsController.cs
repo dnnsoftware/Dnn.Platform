@@ -532,14 +532,13 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)
         {
-            var roleController = new RoleController();
-            var role = roleController.GetRole(groupId, portalSettings.PortalId);
+            var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, groupId);
             if (role == null || role.SecurityMode == SecurityMode.SecurityRole)
             {
                 return null;
             }
 
-            if (!role.IsPublic && roleController.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
+            if (!role.IsPublic && RoleController.Instance.GetUserRole(portalSettings.PortalId, portalSettings.UserId, role.RoleID) == null)
             {
                 return null;
             }
@@ -928,8 +927,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public ZipExtractViewModel UnzipFile(int fileId, bool overwrite)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
-            FileManager.Instance.UnzipFile(file);
-            return null;
+            var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
+            var invalidFiles = new List<string>();
+            var filesCount = FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
+            return new ZipExtractViewModel() { Ok = true, InvalidFiles = invalidFiles, TotalCount = filesCount};
         }
 
         public virtual int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState)

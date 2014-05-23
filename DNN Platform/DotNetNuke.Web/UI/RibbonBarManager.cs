@@ -61,7 +61,6 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            TabController tabCtrl = new TabController();
             if (((relativeToTab == null)))
             {
                 if (((PortalSettings.Current != null) && (PortalSettings.Current.ActiveTab != null)))
@@ -70,15 +69,17 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            TabInfo newTab = new TabInfo();
-            newTab.TabID = Null.NullInteger;
-            newTab.TabName = "";
-            newTab.Title = "";
-            newTab.IsVisible = false;
-            newTab.DisableLink = false;
-            newTab.IsDeleted = false;
-            newTab.IsSecure = false;
-            newTab.PermanentRedirect = false;
+            var newTab = new TabInfo
+            {
+                TabID = Null.NullInteger,
+                TabName = "",
+                Title = "",
+                IsVisible = false,
+                DisableLink = false,
+                IsDeleted = false,
+                IsSecure = false,
+                PermanentRedirect = false
+            };
 
             TabInfo parentTab = GetParentTab(relativeToTab, location);
 
@@ -133,7 +134,6 @@ namespace DotNetNuke.Web.UI
                 return null;
             }
 
-            TabController tabCtrl = new TabController();
             TabInfo parentTab = null;
             if ((location == TabRelativeLocation.CHILD))
             {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Web.UI
             }
             else if (((relativeToTab != null) && relativeToTab.ParentId != Null.NullInteger))
             {
-                parentTab = tabCtrl.GetTab(relativeToTab.ParentId, relativeToTab.PortalID, false);
+                parentTab = TabController.Instance.GetTab(relativeToTab.ParentId, relativeToTab.PortalID, false);
             }
 
             return parentTab;
@@ -150,13 +150,12 @@ namespace DotNetNuke.Web.UI
         public static IList<TabInfo> GetPagesList()
         {
             IList<TabInfo> portalTabs = null;
-            UserInfo userInfo = UserController.GetCurrentUserInfo();
+            UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
             if (((userInfo != null) && userInfo.UserID != Null.NullInteger))
             {
-                TabController tabCtrl = new TabController();
                 if ((userInfo.IsSuperUser && PortalSettings.Current.ActiveTab.IsSuperTab))
                 {
-                    portalTabs = tabCtrl.GetTabsByPortal(Null.NullInteger).AsList();
+                    portalTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger).AsList();
                 }
                 else
                 {
@@ -199,7 +198,7 @@ namespace DotNetNuke.Web.UI
                     return false;
                 }
 
-                TabInfo parentTab = new TabController().GetTab(parentTabID, PortalSettings.Current.ActiveTab.PortalID, false);
+                TabInfo parentTab = TabController.Instance.GetTab(parentTabID, PortalSettings.Current.ActiveTab.PortalID, false);
                 string permissionList = "MANAGE";
                 if ((!TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
                 {
@@ -210,12 +209,8 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
-        //todo: Settings
-        //Public Function SaveTabInfoObject(ByVal newTab As DotNetNuke.Entities.Tabs.TabInfo, ByVal relativeToTab As DotNetNuke.Entities.Tabs.TabInfo, ByVal location As TabRelativeLocation, ByVal templateMapPath As String, ByVal tabSettings As Hashtable) As Integer
         public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateMapPath)
         {
-            TabController tabCtrl = new TabController();
-
             //Validation:
             //Tab name is required
             //Tab name is invalid
@@ -247,7 +242,7 @@ namespace DotNetNuke.Web.UI
                     {
                         //get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
                         //if none are found get a list of all the tabs from the default language and then select the last one
-                        var selectedTabSibblings = tabCtrl.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
+                        var selectedTabSibblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
                         foreach (TabInfo sibling in selectedTabSibblings)
                         {
                             TabInfo siblingDefaultTab = sibling.DefaultLanguageTab;
@@ -261,7 +256,7 @@ namespace DotNetNuke.Web.UI
                         //still haven't found it
                         if ((defaultLanguageSelectedTab == null))
                         {
-                            var defaultLanguageTabs = tabCtrl.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
+                            var defaultLanguageTabs = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
                             defaultLanguageSelectedTab = defaultLanguageTabs[defaultLanguageTabs.Count];
                             //get the last tab
                         }
@@ -337,7 +332,7 @@ namespace DotNetNuke.Web.UI
                         }
                     }
 
-                    PortalSettings _PortalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                     if (_PortalSettings.ContentLocalizationEnabled)
                     {
@@ -351,40 +346,40 @@ namespace DotNetNuke.Web.UI
 
                     if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
                     {
-                        tab.TabID = tabCtrl.AddTabAfter(tab, relativeToTab.TabID);
+                        tab.TabID = TabController.Instance.AddTabAfter(tab, relativeToTab.TabID);
                     }
                     else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
                     {
-                        tab.TabID = tabCtrl.AddTabBefore(tab, relativeToTab.TabID);
+                        tab.TabID = TabController.Instance.AddTabBefore(tab, relativeToTab.TabID);
                     }
                     else
                     {
-                        tab.TabID = tabCtrl.AddTab(tab);
+                        tab.TabID = TabController.Instance.AddTab(tab);
                     }
 
                     if (_PortalSettings.ContentLocalizationEnabled)
                     {
-                        tabCtrl.CreateLocalizedCopies(tab);
+                        TabController.Instance.CreateLocalizedCopies(tab);
                     }
 
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheProvider", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheDuration", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
-                    tabCtrl.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
                 }
                 else
                 {
-                    tabCtrl.UpdateTab(tab);
+                    TabController.Instance.UpdateTab(tab);
 
                     if ((location == TabRelativeLocation.AFTER && (relativeToTab != null)))
                     {
-                        tabCtrl.MoveTabAfter(tab, relativeToTab.TabID);
+                        TabController.Instance.MoveTabAfter(tab, relativeToTab.TabID);
                     }
                     else if ((location == TabRelativeLocation.BEFORE && (relativeToTab != null)))
                     {
-                        tabCtrl.MoveTabBefore(tab, relativeToTab.TabID);
+                        TabController.Instance.MoveTabBefore(tab, relativeToTab.TabID);
                     }
                 }
             }
@@ -425,33 +420,23 @@ namespace DotNetNuke.Web.UI
         {
             if (tabID != -1)
             {
-                TabController objTabs = new TabController();
-                TabInfo objtab = objTabs.GetTab(tabID, portalID, false);
+                TabInfo objtab = TabController.Instance.GetTab(tabID, portalID, false);
 
                 if (((objtab == null)))
                 {
                     return false;
                 }
-                else if (objtab.Level == 0)
+                if (objtab.Level == 0)
                 {
                     return false;
                 }
-                else
+                if (tabID == objtab.ParentId)
                 {
-                    if (tabID == objtab.ParentId)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return Validate_IsCircularReference(portalID, objtab.ParentId);
-                    }
+                    return true;
                 }
+                return Validate_IsCircularReference(portalID, objtab.ParentId);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public static void DeserializeTabPermissions(XmlNodeList nodeTabPermissions, TabInfo tab)
@@ -476,9 +461,8 @@ namespace DotNetNuke.Web.UI
                         roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
                         break;
                     default:
-                        var portalController = new PortalController();
-                        var portal = portalController.GetPortal(tab.PortalID);
-                        var role = TestableRoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
+                        var portal = PortalController.Instance.GetPortal(tab.PortalID);
+                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
                         if (role != null)
                         {
                             roleId = role.RoleID;
@@ -502,7 +486,7 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            new TabController().UpdateTab(tab);
+            TabController.Instance.UpdateTab(tab);
         }
     }
 

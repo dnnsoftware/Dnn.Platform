@@ -239,11 +239,11 @@ namespace DotNetNuke.Modules.Admin.Users
             else
             {
                 cmdUnLock.Visible = UserMembership.LockedOut;
-                cmdUnAuthorize.Visible = UserMembership.Approved;
-                cmdAuthorize.Visible = !UserMembership.Approved;
+                cmdUnAuthorize.Visible = UserMembership.Approved && !User.IsInRole("Unverified Users");
+                cmdAuthorize.Visible = !UserMembership.Approved || User.IsInRole("Unverified Users");
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser && UserController.GetCurrentUserInfo().UserID!=User.UserID)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=User.UserID)
             {
                 cmdToggleSuperuser.Visible = true;
                
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (Request.IsAuthenticated != true) return;
             ////ensure only superusers can change user superuser state
-            if (UserController.GetCurrentUserInfo().IsSuperUser != true) return;
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true) return;
             
             var currentSuperUserState = User.IsSuperUser;
             User.IsSuperUser = !currentSuperUserState;

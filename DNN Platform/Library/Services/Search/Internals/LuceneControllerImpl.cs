@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Search.Internals
         private void CheckDisposed()
         {
             if (Thread.VolatileRead(ref _isDisposed) == DISPOSED)
-                throw new ObjectDisposedException("LuceneController is disposed and cannot be used anymore");
+                throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed","LuceneController is disposed and cannot be used anymore"));
         }
         #endregion
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock.",
+                                        Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter","Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
                                         e, new SearchItemInfo());
 #pragma warning restore 0618
                                 }
@@ -223,10 +223,16 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void CheckValidIndexFolder()
         {
-            if (!System.IO.Directory.Exists(IndexFolder) || System.IO.Directory.GetFiles(IndexFolder, "*.*").Length == 0)
+            if (!ValidateIndexFolder())
             {
-                throw new SearchIndexEmptyException("Search indexing directory is either empty or does not exist");
+                throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid","Search indexing directory is either empty or does not exist"));
             }
+        }
+
+        private bool ValidateIndexFolder()
+        {
+            return System.IO.Directory.Exists(IndexFolder) &&
+                   System.IO.Directory.GetFiles(IndexFolder, "*.*").Length > 0;
         }
 
         private FastVectorHighlighter FastHighlighter
@@ -254,6 +260,13 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", searchContext.LuceneQuery.PageIndex, 0);
 
             var luceneResults = new LuceneResults();
+
+            //validate whether index folder is exist and contains index files, otherwise return null.
+            if (!ValidateIndexFolder())
+            {
+                return luceneResults;
+            }
+
             //TODO - Explore simple highlighter as it does not give partial words
             var highlighter = FastHighlighter;
             var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);
@@ -465,6 +478,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (analyzer == null)
             {
                 var customAnalyzerType = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+                
                 if (!string.IsNullOrEmpty(customAnalyzerType))
                 {
                     try
@@ -473,8 +487,9 @@ namespace DotNetNuke.Services.Search.Internals
                         analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
                         if (analyzer == null)
                         {
-                            throw new ArgumentException("The class'" + customAnalyzerType +
-                                                        "' can not created because it's invalid or is not an analyzer, will use default analyzer.");
+                            throw new ArgumentException(String.Format(
+                                Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."), 
+                                customAnalyzerType));
                         }
 
                         DataCache.SetCache("Search_CustomAnalyzer", analyzer);

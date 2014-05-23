@@ -16,6 +16,8 @@
 // // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 using DotNetNuke.Framework;
 using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.Utilities;
@@ -29,7 +31,9 @@ namespace DotNetNuke.Tests.Core.Framework
         public void Setup()
         {
             HttpContextHelper.RegisterMockHttpContext();
-            UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "Default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
+
         }
 
         [TearDown]

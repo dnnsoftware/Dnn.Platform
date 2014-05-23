@@ -149,14 +149,16 @@
                             click: function () {
                                 $dnnDialog.dialog("close");
                                 $this.trigger("click", [true]);
-                            }
-                        },
+                            },
+                            'class': 'dnnPrimaryAction'
+            },
                         {
                             text: opts.noText,
                             click: function () {
                                 $(this).dialog("close");
-                            }
-                        }
+                            },
+                            'class': 'dnnSecondaryAction'
+        }
                     ]
                 });
                 $dnnDialog.dialog('open');

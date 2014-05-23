@@ -143,10 +143,18 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     string unlocalizedText = Text;
                     Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
+                    if (String.IsNullOrEmpty(Text))
+                    {
+                        Text = unlocalizedText;
+                    }
 
                     if ((string.IsNullOrEmpty(ToolTip)))
                     {
                         ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
+                        if (String.IsNullOrEmpty(ToolTip))
+                        {
+                            ToolTip = unlocalizedText;
+                        }
                     }
                 }
             }

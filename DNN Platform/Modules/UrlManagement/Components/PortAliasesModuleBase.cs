@@ -28,7 +28,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.UserControls;
@@ -72,7 +71,7 @@ namespace DotNetNuke.Modules.UrlManagement.Components
         {
             get
             {
-                return _Aliases ?? (_Aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(_currentPortalId).ToList());
+                return _Aliases ?? (_Aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(_currentPortalId).ToList());
             }
         }
 
@@ -149,7 +148,7 @@ namespace DotNetNuke.Modules.UrlManagement.Components
             //Remove the alias from the aliases collection
             var portalAlias = Aliases[index];
 
-            TestablePortalAliasController.Instance.DeletePortalAlias(portalAlias);
+            PortalAliasController.Instance.DeletePortalAlias(portalAlias);
             //should remove the portal's folder if exist
             var portalFolder = PortalController.GetPortalFolder(portalAlias.HTTPAlias);
             var serverPath = Globals.GetAbsoluteServerPath(Request);
@@ -353,7 +352,7 @@ namespace DotNetNuke.Modules.UrlManagement.Components
             if (string.IsNullOrEmpty(message) && AddMode)
             {
                 PortalAliasInfo existingPortal;
-                TestablePortalAliasController.Instance.GetPortalAliases().TryGetValue(strAlias, out existingPortal);
+                PortalAliasController.Instance.GetPortalAliases().TryGetValue(strAlias, out existingPortal);
                 if (existingPortal != null)
                 {
                     message = Localization.GetString("DuplicateAlias", LocalResourceFile);
@@ -377,11 +376,11 @@ namespace DotNetNuke.Modules.UrlManagement.Components
 
                 if (AddMode)
                 {
-                    TestablePortalAliasController.Instance.AddPortalAlias(portalAlias);
+                    PortalAliasController.Instance.AddPortalAlias(portalAlias);
                 }
                 else
                 {
-                    TestablePortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+                    PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
                 }
 
                 //Reset Edit Index

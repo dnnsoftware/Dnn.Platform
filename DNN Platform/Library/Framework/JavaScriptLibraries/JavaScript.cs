@@ -29,12 +29,11 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
@@ -51,7 +50,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScript
     {
-        private const string ScriptPreix = "JSL.";
+        private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
         #region Public Methods
@@ -63,7 +62,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static bool IsInstalled(String jsname)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null;
         }
 
@@ -77,7 +76,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 return false;
             }
-            return HttpContext.Current.IsDebuggingEnabled;
+            return HttpContextSource.Current.IsDebuggingEnabled;
         }
 
         /// <summary>
@@ -87,16 +86,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns></returns>
         public static string Version(String jsname)
         {
-            JavaScriptLibrary library =
-                JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == jsname);
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null ? Convert.ToString(library.Version) : String.Empty;
         }
 
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
+        /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname)
+        public static void RequestRegistration(string jsname)
         {
             //handle case where script has no javascript library
             switch (jsname)
@@ -112,93 +108,49 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return;
             }
 
-            JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
-            if (library != null)
-            {
-                AddItemRequest(library.JavaScriptLibraryID);
-            }
-            else
-            {
-                //covers case where upgrading to 7.2.0 and JSL's are not installed
-                AddPreInstallorLegacyItemRequest(jsname);
-            }
+            RequestRegistration(jsname, null, SpecificVersion.Latest);
+        }
+        
+        /// <summary>Requests a script to be added to the page</summary>
+        /// <param name="jsname">the library name</param>
+        /// <param name="version">the library's version</param>
+        public static void RequestRegistration(string jsname, Version version)
+        {
+            RequestRegistration(jsname, version, SpecificVersion.Exact);
         }
 
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
+        /// <summary>Requests a script to be added to the page</summary>
         /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname, Version version)
+        /// <param name="version">the library's version</param>
+        /// <param name="specific">
+        /// how much of the <paramref name="version"/> to pay attention to.
+        /// When <see cref="SpecificVersion.Latest"/> is passed, ignore the <paramref name="version"/>.
+        /// When <see cref="SpecificVersion.LatestMajor"/> is passed, match the major version.
+        /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
+        /// When <see cref="SpecificVersion.Exact"/> is passed, match all parts of the version.
+        /// </param>
+        public static void RequestRegistration(string jsname, Version version, SpecificVersion specific)
         {
-            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.Version == version);
-            if (library != null)
-            {
-                AddItemRequest(library.JavaScriptLibraryID);
-            }
-            else
-            {
-                //this will only occur if a specific library is requested and not available
-                LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
-            }
-        }
-
-        /// <summary>
-        ///     adds a request for a script into the page items collection
-        /// </summary>
-        /// <param name="jsname">the library name</param>
-        public static void RequestRegistration(String jsname, Version version, SpecificVersion specific)
-        {
-            JavaScriptLibrary library;
-            bool isProcessed = false;
             switch (specific)
             {
                 case SpecificVersion.Latest:
-                    library = GetHighestVersionLibrary(jsname);
-                    AddItemRequest(library.JavaScriptLibraryID);
-                    isProcessed = true;
-                    break;
+                    RequestHighestVersionLibraryRegistration(jsname);
+                    return;
                 case SpecificVersion.LatestMajor:
-                    library =
-                        JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                            .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Major >= version.Major);
-                    if (library != null)
-                    {
-                        AddItemRequest(library.JavaScriptLibraryID);
-                    }
-                    else
-                    {
-                        //unable to find a higher major version
-                        library = GetHighestVersionLibrary(jsname);
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" +
-                                     library.Version);
-                    }
-                    isProcessed = true;
-                    break;
                 case SpecificVersion.LatestMinor:
-                    library =
-                        JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                            .OrderByDescending(l => l.Version).FirstOrDefault(l => l.Version.Minor >= version.Minor);
-                    if (library != null)
+                    if (RequestLooseVersionLibraryRegistration(jsname, version, specific)) 
                     {
-                        AddItemRequest(library.JavaScriptLibraryID);
+                        return;
                     }
-                    else
-                    {
-                        //unable to find a higher minor version
-                        library = GetHighestVersionLibrary(jsname);
-                        AddItemRequest(library.JavaScriptLibraryID);
-                        LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" +
-                                     library.Version);
-                    }
-                    isProcessed = true;
+
                     break;
+                case SpecificVersion.Exact:
+                    RequestSpecificVersionLibraryRegistration(jsname, version);
+                    return;
             }
-            if (isProcessed == false)
-            {
-                //this should only occur if packages are incorrect or a RequestRegistration call has a typo
-                LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
-            }
+
+            //this should only occur if packages are incorrect or a RequestRegistration call has a typo
+            LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
         }
 
         /// <summary>
@@ -229,14 +181,68 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         #region Private Methods
 
+        private static void RequestHighestVersionLibraryRegistration(string jsname)
+        {
+            var library = GetHighestVersionLibrary(jsname);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+            }
+            else
+            {
+                //covers case where upgrading to 7.2.0 and JSL's are not installed
+                AddPreInstallorLegacyItemRequest(jsname);
+            }
+        }
+
+        private static bool RequestLooseVersionLibraryRegistration(string jsname, Version version, SpecificVersion specific) 
+        {
+            Func<JavaScriptLibrary, bool> isValidLibrary = specific == SpecificVersion.LatestMajor
+                ? (Func<JavaScriptLibrary, bool>)(l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor)
+                : l => l.Version.Major == version.Major && l.Version.Minor == version.Minor && l.Version.Build >= version.Build;
+            var library = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                              .OrderByDescending(l => l.Version)
+                                                              .FirstOrDefault(isValidLibrary);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+                return true;
+            }
+
+            //unable to find a higher major version
+            library = GetHighestVersionLibrary(jsname);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+                LogCollision("Requested:" + jsname + ":" + version + ":" + specific + ".Resolved:" + library.Version);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void RequestSpecificVersionLibraryRegistration(string jsname, Version version)
+        {
+            JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
+            if (library != null)
+            {
+                AddItemRequest(library.JavaScriptLibraryID);
+            }
+            else
+            {
+                //this will only occur if a specific library is requested and not available
+                LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
+            }
+        }
+
         private static void AddItemRequest(int javaScriptLibraryId)
         {
-            HttpContext.Current.Items[ScriptPreix + javaScriptLibraryId] = true;
+            HttpContextSource.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
         }
 
         private static void AddPreInstallorLegacyItemRequest(string jsl)
         {
-            HttpContext.Current.Items[LegacyPrefix + jsl] = true;
+            HttpContextSource.Current.Items[LegacyPrefix + jsl] = true;
         }
 
         private static IEnumerable<JavaScriptLibrary> GetFinalScripts(IEnumerable<string> scripts)
@@ -249,7 +255,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == item);
 
                 JavaScriptLibrary existingLatestLibrary =
-                    finalScripts.FindAll(lib => lib.LibraryName == processingLibrary.LibraryName)
+                    finalScripts.FindAll(lib => lib.LibraryName.Equals(processingLibrary.LibraryName, StringComparison.OrdinalIgnoreCase))
                         .OrderByDescending(l => l.Version)
                         .SingleOrDefault();
                 if (existingLatestLibrary != null)
@@ -283,19 +289,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             try
             {
-                IEnumerable<JavaScriptLibrary> librarys = JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName == jsname)
-                    .OrderByDescending(l => l.Version);
-                if (librarys.Any())
-                {
-                    return librarys.First();
-                }
+                return JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
+                                                           .OrderByDescending(l => l.Version)
+                                                           .FirstOrDefault(); 
             }
             catch (Exception)
             {
                 //no library found (install or upgrade)
                 return null;
             }
-            return null;
         }
 
         private static string GetScriptPath(JavaScriptLibrary js)
@@ -308,7 +310,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return js.CDNPath;
                 }
             }
-            return ("~/Resources/libraries/" + js.LibraryName + "/" + js.Version + "/" + js.FileName);
+            return ("~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName);
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -328,8 +330,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static IEnumerable<string> GetScriptVersions()
         {
-            List<string> orderedScripts = (from object item in HttpContext.Current.Items.Keys
-                                           where item.ToString().StartsWith(ScriptPreix)
+            List<string> orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
+                                           where item.ToString().StartsWith(ScriptPrefix)
                                            select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
             List<string> finalScripts = orderedScripts.ToList();
@@ -349,7 +351,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         foreach (PackageDependencyInfo dependency in package.Dependencies)
                         {
                             JavaScriptLibrary dependantlibrary = GetHighestVersionLibrary(dependency.PackageName);
-                            if (HttpContext.Current.Items[ScriptPreix + "." + dependantlibrary.JavaScriptLibraryID] ==
+                            if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependantlibrary.JavaScriptLibraryID] ==
                                 null)
                             {
                                 finalScripts.Add(dependantlibrary.JavaScriptLibraryID.ToString());
@@ -364,14 +366,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static void LogCollision(string collisionText)
         {
             //need to log an event
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("Javascript Libraries",
-                collisionText,
-                PortalController.GetCurrentPortalSettings(),
-                UserController.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.SCRIPT_COLLISION);
+            EventLogController.Instance.AddLog("Javascript Libraries",
+                                            collisionText,
+                                            PortalController.Instance.GetCurrentPortalSettings(),
+                                            UserController.Instance.GetCurrentUserInfo().UserID,
+                                            EventLogController.EventLogType.SCRIPT_COLLISION);
             string strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
-            var page = HttpContext.Current.Handler as Page;
+            var page = HttpContextSource.Current.Handler as Page;
             if (page != null)
             {
                 Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
@@ -409,12 +410,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         break;
                 }
                 Control scriptloader = page.FindControl(pagePortion);
-                var fallback = new DnnJsIncludeFallback(jsl.ObjectName,
-                    VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + jsl.Version + "/" +
-                                                  jsl.FileName));
+                var fallback = new DnnJsIncludeFallback(jsl.ObjectName, VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + Globals.FormatVersion(jsl.Version, "00", 3, "_") + "/" + jsl.FileName));
                 if (scriptloader != null)
                 {
-                    scriptloader.Controls.Add(fallback);
+                    //add the fallback control after script loader.
+                    var index = scriptloader.Parent.Controls.IndexOf(scriptloader);
+                    scriptloader.Parent.Controls.AddAt(index + 1, fallback);
                 }
             }
         }
@@ -439,9 +440,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void HandlePreInstallorLegacyItemRequests(Page page)
         {
-            List<string> legacyScripts = (from object item in HttpContext.Current.Items.Keys
-                where item.ToString().StartsWith(LegacyPrefix)
-                select item.ToString().Substring(7)).ToList();
+            List<string> legacyScripts = (from object item in HttpContextSource.Current.Items.Keys
+                                          where item.ToString().StartsWith(LegacyPrefix)
+                                          select item.ToString().Substring(7)).ToList();
             foreach (string legacyScript in legacyScripts)
             {
                 switch (legacyScript)
@@ -566,13 +567,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 case ClientAPI.ClientNamespaceReferences.dnn:
                 case ClientAPI.ClientNamespaceReferences.dnn_dom:
-                    if (HttpContext.Current.Items.Contains(LegacyPrefix + "dnn.js"))
+                    if (HttpContextSource.Current.Items.Contains(LegacyPrefix + "dnn.js"))
                     {
                         break;
                     }
 
                     ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
-                    HttpContext.Current.Items.Add(LegacyPrefix + "dnn.js", true);
+                    HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
 
                     if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
                     {

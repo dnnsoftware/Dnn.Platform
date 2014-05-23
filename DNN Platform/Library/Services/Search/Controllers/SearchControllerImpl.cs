@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
             if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId)))
-                throw new ArgumentException("ModuleId based search must have SearchTypeId for a module only");
+                throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
 
             if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
                 || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)

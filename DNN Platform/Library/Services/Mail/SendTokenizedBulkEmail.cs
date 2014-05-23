@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 else
                 {
-                    PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     _strSenderLanguage = portalSettings.DefaultLanguage;
                 }
             }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Mail
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
         {
-            _portalSettings = PortalController.GetCurrentPortalSettings();
+            _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             PortalAlias = _portalSettings.PortalAlias.HTTPAlias;
             SendingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
             _tokenReplace = new TokenReplace();
@@ -438,18 +438,17 @@ namespace DotNetNuke.Services.Mail
 
             var userList = new List<UserInfo>();
             var keyList = new List<string>();
-            var roleController = new RoleController();
             
             foreach (string roleName in _addressedRoles)
             {
                 string role = roleName;
-                var roleInfo = TestableRoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
+                var roleInfo = RoleController.Instance.GetRole(_portalSettings.PortalId, r => r.RoleName == role);
 
-                foreach (UserInfo objUser in roleController.GetUsersByRoleName(_portalSettings.PortalId, roleName))
+                foreach (UserInfo objUser in RoleController.Instance.GetUsersByRole(_portalSettings.PortalId, roleName))
                 {
                     UserInfo user = objUser;
                     ProfileController.GetUserProfile(ref user);
-                    var userRole = roleController.GetUserRole(_portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
+                    var userRole = RoleController.Instance.GetUserRole(_portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
                     //only add if user role has not expired and effectivedate has been passed
                     if ((userRole.EffectiveDate <= DateTime.Now || Null.IsNull(userRole.EffectiveDate)) && (userRole.ExpiryDate >= DateTime.Now || Null.IsNull(userRole.ExpiryDate)))
                     {

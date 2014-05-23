@@ -9,7 +9,7 @@
         <asp:Literal ID="litGroupName" runat="server" />
         <asp:TextBox ID="txtGroupName" runat="server" MaxLength="50" class="dnnFormRequired" />
         <asp:RequiredFieldValidator ID="reqGroupName" runat="server" ControlToValidate="txtGroupName" CssClass="dnnFormMessage dnnFormError" ResourceKey="GroupName.Required" />
-        <asp:RegularExpressionValidator ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[A-Za-z0-9\.\s_-]*" />
+        <asp:RegularExpressionValidator ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
         <asp:Label ID="lblInvalidGroupName" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="GroupNameDuplicate" Visible="false" />
     </div>
     <div class="dnnFormItem">

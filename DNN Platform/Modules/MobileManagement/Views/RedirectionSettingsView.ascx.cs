@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.MobileManagement.Presenters;
 using DotNetNuke.Modules.MobileManagement.Views;
 using DotNetNuke.Services.ClientCapability;
@@ -34,7 +35,8 @@ namespace DotNetNuke.Modules.MobileManagement
     [PresenterBinding(typeof(RedirectionSettingsPresenter))]
     public partial class RedirectionSettingsView : ModuleView, IRedirectionSettingsView
     {
-        #region "Properties
+        #region Properties
+
         public int RedirectId
         {
             get
@@ -76,13 +78,17 @@ namespace DotNetNuke.Modules.MobileManagement
 
         private string _capability = string.Empty;
         private string _capabilityValue = string.Empty;
+
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
 
             dgCapabilityList.ItemCommand += OnCapabilitiesItemCommand;
             dgCapabilityList.ItemDataBound += CapabilitiesItemDataBound;
@@ -165,7 +171,8 @@ namespace DotNetNuke.Modules.MobileManagement
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
+
         private void BindRedirection(int redirectId)
         {
             // Populating existing redirection settings
@@ -177,7 +184,7 @@ namespace DotNetNuke.Modules.MobileManagement
                 txtRedirectName.Text = redirect.Name;
                 chkEnable.Checked = redirect.Enabled;
                 chkChildPages.Checked = redirect.IncludeChildTabs;
-                var tabs = new TabController().GetTabsByPortal(ModuleContext.PortalId).AsList().Where(IsVisible);
+                var tabs = TabController.Instance.GetTabsByPortal(ModuleContext.PortalId).AsList().Where(IsVisible);
                 var tabInfos = tabs as IList<TabInfo> ?? tabs.ToList();
                 if (redirect.SourceTabId != -1)
                 {
@@ -242,11 +249,11 @@ namespace DotNetNuke.Modules.MobileManagement
             BindPortals();
             BindCapabilities();
         }
+
         private void BindPortals()
         {
             // Populating Portals dropdown
-            var portalController = new PortalController();
-			var portals = portalController.GetPortals().Cast<PortalInfo>().Where(p => p.PortalID != ModuleContext.PortalId).ToList();
+            var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().Where(p => p.PortalID != ModuleContext.PortalId).ToList();
             if (portals.Count > 0)
             {
 				cboPortal.Items.Clear();
@@ -275,6 +282,7 @@ namespace DotNetNuke.Modules.MobileManagement
             cboCapabilityName.DataSource = capabilities;
             cboCapabilityName.DataBind();
         }
+
         private void BindCapabilityValues(string capability)
         {
             if (capability != string.Empty)
@@ -290,11 +298,13 @@ namespace DotNetNuke.Modules.MobileManagement
             }
             cboCapabilityValue.DataBind();                 
         }
+
         private void SetCapabilityAndValue()
         {
             if (_capability == string.Empty) _capability = cboCapabilityName.SelectedValue;
             if (_capabilityValue == string.Empty) _capabilityValue = cboCapabilityValue.SelectedValue;
         }
+
         private void SaveRedirection()
         {
             IRedirection redirection = new Redirection();
@@ -382,7 +392,6 @@ namespace DotNetNuke.Modules.MobileManagement
             
             if(tab.ParentId != Null.NullInteger)
             {
-                var tabController = new TabController();
                 do
                 {
                     if (tab.ParentId == PortalSettings.Current.AdminTabId || tab.ParentId == PortalSettings.Current.UserTabId)
@@ -390,7 +399,7 @@ namespace DotNetNuke.Modules.MobileManagement
                         return false;
                     }
 
-                    tab = tabController.GetTab(tab.ParentId, tab.PortalID, false);
+                    tab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                 } while (tab != null && tab.ParentId != Null.NullInteger);
             }
 
@@ -399,7 +408,8 @@ namespace DotNetNuke.Modules.MobileManagement
 
         #endregion
 
-        #region "Event Handlers"
+        #region Event Handlers
+
         private void lnkSave_OnClick(object sender, EventArgs e)
         {
                      

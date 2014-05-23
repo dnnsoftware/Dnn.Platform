@@ -1,8 +1,8 @@
 #Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -17,9 +17,9 @@ Imports DotNetNuke.Web.Api
 
 #End Region
 
-Namespace [OWNER].[MODULE]
+Namespace _OWNER_._MODULE_
     <AllowAnonymous> _
-    Public Class [MODULE]Controller
+    Public Class _MODULE_Controller
         Inherits DnnApiController
         <HttpGet> _
         Public Function MyResponse() As HttpResponseMessage

@@ -29,7 +29,6 @@ using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.UI.WebControls;
 
@@ -69,7 +68,7 @@ namespace DotNetNuke.UI.ControlPanel
                 if ((!string.IsNullOrEmpty(SitesLst.SelectedValue)))
                 {
                     int selectedPortalID = int.Parse(SitesLst.SelectedValue);
-                    var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
+                    var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
                     if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
                     {
@@ -125,8 +124,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void LoadPortalsList()
         {
-            var portalCtrl = new PortalController();
-            ArrayList portals = portalCtrl.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             SitesLst.ClearSelection();
             SitesLst.Items.Clear();

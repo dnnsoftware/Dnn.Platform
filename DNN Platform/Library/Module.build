@@ -33,7 +33,6 @@
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
-      <ExternalModulePackages Include="$(MSBuildProjectDirectory)\..\Externally Sourced\Modules\*.*" />
     </ItemGroup>
   </Target>
   
@@ -46,7 +45,7 @@
     <Copy SourceFiles="..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
@@ -84,8 +83,6 @@
 
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
-
-    <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

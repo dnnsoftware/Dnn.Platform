@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private PortalSettings PortalSettings
         {
-            get { return PortalController.GetCurrentPortalSettings(); }
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
         #endregion
@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchResult.UniqueKey.Contains("adminonly"))
             {
-                return UserController.GetCurrentUserInfo().IsSuperUser || UserController.GetCurrentUserInfo().IsInRole("Administrators");
+                return UserController.Instance.GetCurrentUserInfo().IsSuperUser || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators");
             }
             
             if (searchResult.UniqueKey.Contains("friendsandgroups"))
@@ -77,12 +77,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")
                                              ? searchResult.UniqueKey.Split('_')[2]
                                              : string.Empty;
-                return HasSocialReplationship(userInSearchResult, UserController.GetCurrentUserInfo(), extendedVisibility);
+                return HasSocialReplationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
             }
 
             if (searchResult.UniqueKey.Contains("membersonly"))
             {
-                return UserController.GetCurrentUserInfo().UserID != Null.NullInteger;
+                return UserController.Instance.GetCurrentUserInfo().UserID != Null.NullInteger;
             }
 
             if (searchResult.UniqueKey.Contains("allusers"))

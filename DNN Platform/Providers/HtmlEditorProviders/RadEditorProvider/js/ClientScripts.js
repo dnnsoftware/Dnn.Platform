@@ -12,6 +12,13 @@
     }
 }
 
+function OnDnnEditorClientSubmit(editor) {
+    editor.set_mode(1);
+    if (editor.get_mode() != 1) {
+        editor.set_mode(2);
+    }
+}
+
 if (typeof(Sys) != "undefined"){
     Sys.Application.notifyScriptLoaded() ;
 }

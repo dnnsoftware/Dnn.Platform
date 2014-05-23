@@ -330,8 +330,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private string CreateModuleControl()
         {
-            EventLogController objEventLog = new EventLogController();
-
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
@@ -340,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
 
-            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+            EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
 
             var controlName = Null.NullString;
@@ -414,7 +412,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     tw.WriteLine(sourceCode);
                     tw.Close();
 
-                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+                    EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
                 }
             }
@@ -530,8 +528,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
-            ModuleController objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
         }
 
@@ -540,8 +537,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
-            ModuleController objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
         }
 

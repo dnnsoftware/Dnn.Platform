@@ -168,8 +168,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void SaveTags()
         {
-            string tags = new PortalSecurity().InputFilter(_Tags, PortalSecurity.FilterFlag.NoMarkup | PortalSecurity.FilterFlag.NoScripting);
-            tags = HttpContext.Current.Server.HtmlEncode(tags);
+            string tags = _Tags;
+
             if (!string.IsNullOrEmpty(tags))
             {
                 foreach (string t in tags.Split(','))

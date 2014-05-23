@@ -35,7 +35,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-
+using DotNetNuke.Security.Permissions;
 using Moq;
 
 using NUnit.Framework;
@@ -94,11 +94,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileDeletionController = new Mock<IFileDeletionController>();
             
             FolderManager.RegisterInstance(_folderManager.Object);
-            FolderPermissionControllerWrapper.RegisterInstance(_folderPermissionController.Object);
-            PortalControllerWrapper.RegisterInstance(_portalController.Object);
+            FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
             FolderMappingController.RegisterInstance(_folderMappingController.Object);
             TestableGlobals.SetTestableInstance(_globals.Object);
-            CBOWrapper.RegisterInstance(_cbo.Object);
+            CBO.SetTestableInstance(_cbo.Object);
             PathUtils.RegisterInstance(_pathUtils.Object);
             FileVersionController.RegisterInstance(_fileVersionController.Object);
             ContentWorkflowController.RegisterInstance(_contentWorkflowController.Object);
@@ -117,9 +117,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TearDown]
         public void TearDown()
         {
+            TestableGlobals.ClearInstance();
+            CBO.ClearInstance();
+
+            FolderPermissionController.ClearInstance();
             FileLockingController.ClearInstance();
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
+            PortalController.ClearInstance();
+
         }
 
         #endregion
@@ -1004,7 +1010,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             _fileInfo.Setup(fi => fi.Extension).Returns("zip");
 
-            _mockFileManager.Setup(mfm => mfm.ExtractFiles(_fileInfo.Object, _folderInfo.Object)).Verifiable();
+            _mockFileManager.Setup(mfm => mfm.ExtractFiles(_fileInfo.Object, _folderInfo.Object, null)).Verifiable();
 
             _mockFileManager.Object.UnzipFile(_fileInfo.Object, _folderInfo.Object);
 
@@ -1071,6 +1077,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
 
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 
             _fileInfo.VerifySet(fi => fi.Width = 10);
@@ -1088,6 +1097,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
 
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 
             _fileInfo.VerifySet(fi => fi.SHA1Hash = Constants.FOLDER_UnmodifiedFileHash);
@@ -1103,6 +1115,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.GetHash(_fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 

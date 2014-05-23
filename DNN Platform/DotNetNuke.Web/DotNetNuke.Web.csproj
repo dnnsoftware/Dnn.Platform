@@ -130,6 +130,7 @@
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Api\Internal\Auth\AuthMessageHandlerBase.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
     <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
     <Compile Include="Api\Internal\DnnPageEditorAttribute.cs" />
+    <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
     <Compile Include="Api\IPortalAliasRouteManager.cs" />
     <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
     <Compile Include="Api\PortalAliasRouteManager.cs" />
@@ -151,7 +153,15 @@
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Components\Controllers\ControlBarController.cs" />
+    <Compile Include="Components\Controllers\IControlBarController.cs" />
+    <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
+    <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
+    <Compile Include="Components\LocalizationHelper.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
+    <Compile Include="InternalServices\EventLogServiceController.cs" />
+    <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
     <Compile Include="InternalServices\ImageHeader.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
@@ -187,6 +197,7 @@
     <Compile Include="Api\IServiceRouteMapper.cs" />
     <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
     <Compile Include="UI\WebControls\DnnFileUpload.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
@@ -211,6 +222,7 @@
     <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
     <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
+    <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
     <Compile Include="UI\WebControls\DnnToolTip.cs" />
     <Compile Include="UI\WebControls\DnnTreeNode.cs" />
     <Compile Include="Mvp\IWebServiceViewOfT.cs" />
@@ -404,6 +416,9 @@
     <Compile Include="UI\WebControls\UniformControlCollection.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedList.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedListItem.cs" />
+    <Compile Include="UI\WebControls\DnnUrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Validators\AttributeBasedObjectValidator.cs" />
     <Compile Include="Validators\DataAnnotationsObjectValidator.cs" />
     <Compile Include="Validators\ObjectValidator.cs" />

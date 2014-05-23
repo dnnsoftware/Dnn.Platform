@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             txtDescription.Text = objRoleGroupInfo.Description;
 
                             //Check if Group has any roles assigned
-                            int roleCount = TestableRoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == RoleGroupID).Count;
+                            int roleCount = RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == RoleGroupID).Count;
 
                             if (roleCount > 0)
                             {

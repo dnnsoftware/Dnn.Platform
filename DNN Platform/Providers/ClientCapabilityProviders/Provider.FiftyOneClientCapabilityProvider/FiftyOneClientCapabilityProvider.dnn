@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.02.02">
+    <package name="FiftyOneClientCapabilityProvider" type="Provider" version="07.03.01">
       <friendlyName>DotNetNuke Client Capability Provider</friendlyName>
       <description>Device Detection / Client Capability Provider</description>
       <iconFile>~/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/mobiledevicedet_16X16.png</iconFile>
@@ -25,7 +25,15 @@
             </file>
           </files>
         </component>
-
+        <component type="File">
+          <files>
+            <file>
+              <path>App_Data</path>
+              <name>51Degrees-Lite.dat</name>
+              <sourceFileName>51Degrees-Lite.dat</sourceFileName>
+            </file>
+          </files>
+        </component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/Admin/FiftyOneClientCapabilityProvider</basePath>
@@ -129,7 +137,31 @@
             </uninstall>
           </config>
         </component>
-        
+
+        <component type="Config">
+          <config>
+            <configFile>51Degrees.mobi.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="overwrite">
+                    <detection enabled="false" autoUpdate="true" binaryFilePath="~/App_Data/51Degrees-Lite.dat"
+                        bandwidthMonitoringEnabled="false"
+                        featureDetectionEnabled="false"
+                        memoryMode="false"
+                    />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes/>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+        <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
       </components>
     </package>
   </packages>

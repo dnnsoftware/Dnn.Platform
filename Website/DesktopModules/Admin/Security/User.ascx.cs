@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser==false)
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //if an admin, check if the user is only within this portal
-            if (UserController.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser)
@@ -434,17 +434,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#region Event Handlers
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-            jQuery.RequestDnnPluginsRegistration();
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -466,7 +455,15 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected override void OnPreRender(EventArgs e)
         {
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+            jQuery.RequestDnnPluginsRegistration();
+
             base.OnPreRender(e);
+
 
 			if (Host.EnableStrengthMeter)
 			{

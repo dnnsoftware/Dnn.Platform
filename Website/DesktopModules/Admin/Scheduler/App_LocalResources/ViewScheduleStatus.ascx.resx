@@ -207,4 +207,7 @@
   <data name="Name.Header" xml:space="preserve">
     <value>Task Name</value>
   </data>
+  <data name="Stop.Header" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>

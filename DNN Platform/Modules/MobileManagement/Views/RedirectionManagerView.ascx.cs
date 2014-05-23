@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.MobileManagement
             switch (key)
             {
                 case "source":
-                    var source = (redirect.SourceTabId == -1) ? ModuleContext.PortalAlias.HTTPAlias : new TabController().GetTabsByPortal(ModuleContext.PortalId).Where(r => r.Key == redirect.SourceTabId).First().Value.TabName;
+                    var source = (redirect.SourceTabId == -1) ? ModuleContext.PortalAlias.HTTPAlias : TabController.Instance.GetTabsByPortal(ModuleContext.PortalId).First(r => r.Key == redirect.SourceTabId).Value.TabName;
                     tooltip = string.Format(LocalizeString("RedirectTooltipSource.Text"), source);
                     break;
                 case "destination":

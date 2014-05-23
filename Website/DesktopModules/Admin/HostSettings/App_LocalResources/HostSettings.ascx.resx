@@ -11,7 +11,7 @@
     associated with the data types.
     
     Example:
-    
+    m
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -308,21 +308,6 @@
   </data>
   <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
     <value>You Must Specify The Host Email Address</value>
-  </data>
-  <data name="plSchedulerMode.Text" xml:space="preserve">
-    <value>Scheduler Mode:</value>
-  </data>
-  <data name="plSchedulerMode.Help" xml:space="preserve">
-    <value>The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive. Alternatively, the Request Method executes tasks when HTTP Requests are made.  You can also disable the scheduler by selecting Disabled.</value>
-  </data>
-  <data name="Disabled.Text" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
-  <data name="TimerMethod.Text" xml:space="preserve">
-    <value>Timer Method</value>
-  </data>
-  <data name="RequestMethod.Text" xml:space="preserve">
-    <value>Request Method</value>
   </data>
   <data name="15Seconds.Text" xml:space="preserve">
     <value>15 Seconds</value>
@@ -796,7 +781,7 @@
     <value>The application you are running</value>
   </data>
   <data name="FrameworkDownLevel.Text" xml:space="preserve">
-    <value>Note: You are running on an old version of the .NET Framework.  Future upgrades of the DotNetNuke platform will require .NET 4.0 or later. If you believe you are running .NET 3.5 SP1 already, please check your web.config file and ensure that the 3.5 or above versions of both System.Core and System.Data.Linq are referenced in the assemblies node.</value>
+    <value>Note: You are running on an old version of the .NET Framework.  The DNN Platform requires .NET 4.0 or later.</value>
   </data>
   <data name="plBetaNotice.Help" xml:space="preserve">
     <value>Check this box to display a message indicating that the running version is a Beta release.</value>
@@ -969,6 +954,9 @@
   <data name="plResetLinkValidity.Text" xml:space="preserve">
     <value>Reset link timeout (minutes)</value>
   </data>
+    <data name="plAdminResetLinkValidity.Text" xml:space="preserve">
+    <value>Administrator reset link timeout (minutes)</value>
+  </data>
   <data name="plNumberPasswords.Text" xml:space="preserve">
     <value>Number of passwords to store</value>
   </data>
@@ -1037,6 +1025,12 @@
   </data>
   <data name="valResetLink.Error" xml:space="preserve">
     <value>Reset link timeouts must be greater than 0</value>
+  </data>
+  <data name="plAdminResetLinkValidity.Help" xml:space="preserve">
+    <value>Administrator reset links are only valid for (in minutes).</value>
+  </data>
+  <data name="valAdminResetLink.Error" xml:space="preserve">
+    <value>Administrator reset link timeouts must be greater than 0</value>
   </data>
   <data name="AlwaysUse.Text" xml:space="preserve">
     <value>All URLs.</value>
@@ -1195,4 +1189,38 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plMaxUploadSize.Text" xml:space="preserve">
   <value>Max Upload Size</value>
 </data>
+  <data name="maxUploadSize.Error" xml:space="preserve">
+  <value>Maximum Upload Size must be between 12 and {0}</value>
+</data>
+  <data name="plMaxIdleTime.Text" xml:space="preserve">
+    <value>Max Idle Time:</value>
+  </data>
+  <data name="plMaxIdleTime.Help" xml:space="preserve">
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0. 
+</value>
+  </data>
+  <data name="plConnectionLimit.Text" xml:space="preserve">
+    <value>Connection Limit:</value>
+  </data>
+  <data name="plConnectionLimit.Help" xml:space="preserve">
+    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1. </value>
+  </data>
+  <data name="ConnectionLimitValidation.Text" xml:space="preserve">
+    <value>Numbers from 1 to 2147483647 only!</value>
+  </data>
+  <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
+    <value>Numbers from 1 to 2147483647 only!</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiry.Help" xml:space="preserve">
+    <value>The number of days before a User must change their password (value of 0 means the password never expires)</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiry.Text" xml:space="preserve">
+    <value>Password Expiry (in days):</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiryReminder.Help" xml:space="preserve">
+    <value>The number of days warning the user will recieve that their password is about to expire.</value>
+  </data>
+  <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
+    <value>Password Expiry Reminder (in days):</value>
+  </data>
 </root>

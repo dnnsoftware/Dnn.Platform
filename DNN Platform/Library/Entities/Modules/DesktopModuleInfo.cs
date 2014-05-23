@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -470,7 +470,10 @@ namespace DotNetNuke.Entities.Modules
                             IsPremium = isPremium;
                             break;
                         default:
-                            var content = reader.ReadElementContentAsString();
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
                             break;
                     }
                 }

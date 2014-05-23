@@ -45,6 +45,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public IList<PortalConfig> Portals { get; set; }
         public IList<HostSettingConfig> Settings { get; set; }
 
+        public string FolderMappingsSettings { get; set; } 
         public InstallConfig()
         {
             Portals = new List<PortalConfig>();

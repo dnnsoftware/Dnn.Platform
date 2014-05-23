@@ -227,7 +227,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
 	.smListings{width:100%; clear:both; margin-bottom:15px;}
 	
 	.DnnModule .smListings ul{ padding-left:0!important;}
-	.smListings > ul > li{display:table; width:100%; background:#eee; border-bottom:1px solid #eee;  }
+	.smListings > ul > li{overflow: auto; width:100%; background:#eee; border-bottom:1px solid #eee;  }
 	.smListings > ul > li.active{background:none;}
 
 

@@ -100,6 +100,7 @@ namespace DotNetNuke.Common.Utilities
 
         //Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
+        public const string TabSettingsCacheKey = "TabSettings{0}";
         public const CacheItemPriority TabCachePriority = CacheItemPriority.High;
         public const int TabCacheTimeOut = 20;
         public const string TabPathCacheKey = "Tab_TabPathDictionary{0}_{1}";
@@ -143,6 +144,7 @@ namespace DotNetNuke.Common.Utilities
         public const int ModuleControlsCacheTimeOut = 20;
 
         public const string TabModuleCacheKey = "TabModules{0}";
+        public const string TabModuleSettingsCacheKey = "TabModuleSettings{0}";
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
 
@@ -151,7 +153,9 @@ namespace DotNetNuke.Common.Utilities
         public const int ModulePermissionCacheTimeOut = 20;
 
         public const string ModuleCacheKey = "Modules{0}";
+        public const string ModuleSettingsCacheKey = "ModuleSettings{0}";
         public const int ModuleCacheTimeOut = 20;
+        public const CacheItemPriority ModuleCachePriority = CacheItemPriority.AboveNormal;
 
         public const string FolderCacheKey = "Folders{0}";
         public const int FolderCacheTimeOut = 20;
@@ -170,6 +174,7 @@ namespace DotNetNuke.Common.Utilities
         public const int FolderPermissionCacheTimeOut = 20;
 
         public const string ListsCacheKey = "Lists{0}";
+        public const string ListEntriesCacheKey = "ListEntries|{0}|{1}";
         public const CacheItemPriority ListsCachePriority = CacheItemPriority.Normal;
         public const int ListsCacheTimeOut = 20;
 
@@ -255,6 +260,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority ContentTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int ContentTypesCacheTimeOut = 20;
 
+        public const string PermissionsCacheKey = "Permissions";
+        public const CacheItemPriority PermissionsCachePriority = CacheItemPriority.AboveNormal;
+        public const int PermissionsCacheTimeout = 20;
+
         public const string PackageTypesCacheKey = "PackagesTypes";
         public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int PackageTypesCacheTimeout = 20;
@@ -299,25 +308,24 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (Globals.Status == Globals.UpgradeStatus.None)
                 {
-                    var objEventLogInfo = new LogInfo();
+                    var log = new LogInfo();
                     switch (removedReason)
                     {
                         case CacheItemRemovedReason.Removed:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
                             break;
                         case CacheItemRemovedReason.Expired:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
                             break;
                         case CacheItemRemovedReason.Underused:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
                             break;
                         case CacheItemRemovedReason.DependencyChanged:
-                            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
+                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
                             break;
                     }
-                    objEventLogInfo.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog(objEventLogInfo);
+                    log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
+                    LogController.Instance.AddLog(log);
                 }
             }
             catch (Exception exc)
@@ -336,10 +344,9 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //log the cache clear event
-            var objEventLogInfo = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
-            objEventLogInfo.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(objEventLogInfo);
+            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
+            log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
+            LogController.Instance.AddLog(log);
         }
 
         public static void ClearCache(string cachePrefix)
@@ -370,9 +377,7 @@ namespace DotNetNuke.Common.Utilities
             Dictionary<int, int> portals = PortalController.GetPortalDictionary();
             if (portals.ContainsKey(TabId))
             {
-                var tabController = new TabController();
-
-                Hashtable tabSettings = tabController.GetTabSettings(TabId);
+                Hashtable tabSettings = TabController.Instance.GetTabSettings(TabId);
                 if (tabSettings["CacheProvider"] != null && tabSettings["CacheProvider"].ToString().Length > 0)
                 {
                     OutputCachingProvider outputProvider = OutputCachingProvider.Instance(tabSettings["CacheProvider"].ToString());
@@ -491,13 +496,9 @@ namespace DotNetNuke.Common.Utilities
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var objEventLogInfo = new LogInfo
-                                    {
-                                        LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString()
-                                    };
-                                objEventLogInfo.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
-                                var objEventLog = new EventLogController();
-                                objEventLog.AddLog(objEventLogInfo);
+                                var log = new LogInfo{ LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
+                                LogController.Instance.AddLog(log);
                             }
                         }
 

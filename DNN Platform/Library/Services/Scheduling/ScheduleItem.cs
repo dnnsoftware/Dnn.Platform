@@ -60,6 +60,7 @@ namespace DotNetNuke.Services.Scheduling
             ThreadID = Null.NullInteger;
             ProcessGroup = Null.NullInteger;
             Servers = Null.NullString;
+            ScheduleStartDate = Null.NullDate;
         }
 
         #endregion
@@ -71,6 +72,8 @@ namespace DotNetNuke.Services.Scheduling
         public bool CatchUpEnabled { get; set; }
 
         public bool Enabled { get; set; }
+
+        public DateTime ScheduleStartDate { get; set; }
 
         public string FriendlyName { get; set; }
 
@@ -203,15 +206,19 @@ namespace DotNetNuke.Services.Scheduling
             CatchUpEnabled = Null.SetNullBoolean(dr["CatchUpEnabled"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             Servers = Null.SetNullString(dr["Servers"]);
-            try
-            {
-                NextStart = Null.SetNullDateTime(dr["NextStart"]);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                //Ignore 
-            }
 
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'NextStart'").Length > 0)
+                {
+                    NextStart = Null.SetNullDateTime(dr["NextStart"]);
+                }
+                if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
+                {
+                    ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
+                }
+            }
             //Fill BaseEntityInfo
             base.FillInternal(dr);
         }

@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Profile
         {
             PropertyDefinitionId = Null.NullInteger;
             //Get the default PortalSettings
-            PortalSettings _Settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
             PortalId = _Settings.PortalId;
         }
 

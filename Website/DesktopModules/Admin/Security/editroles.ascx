@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Security.EditRoles" CodeFile="EditRoles.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="Url" Src="~/controls/UrlControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Url" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnEditRole dnnClear" id="dnnEditRole">
@@ -17,7 +17,7 @@
                     <asp:TextBox ID="txtRoleName" runat="server" MaxLength="50" />
                     <asp:Label ID="lblRoleName" Visible="False" runat="server" />
                     <asp:RequiredFieldValidator ID="valRoleName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName" ControlToValidate="txtRoleName" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[A-Za-z0-9\.\s_-]*" />
+                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plDescription" runat="server" ResourceKey="Description" ControlName="txtDescription" />

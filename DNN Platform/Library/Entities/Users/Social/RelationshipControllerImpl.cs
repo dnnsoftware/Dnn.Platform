@@ -57,7 +57,8 @@ namespace DotNetNuke.Entities.Users.Social
 
         #region Constructors
 
-        public RelationshipControllerImpl() : this(DataService.Instance, new EventLogController())
+        public RelationshipControllerImpl()
+            : this(DataService.Instance, EventLogController.Instance)
         {
         }
 
@@ -118,7 +119,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          : "RelationshipType_Updated";
 
             relationshipType.RelationshipTypeId = _dataService.SaveRelationshipType(relationshipType,
-                                                                                    UserController.GetCurrentUserInfo().
+                                                                                    UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
 
             //log event
@@ -187,7 +188,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          : "Relationship_Updated";
 
             relationship.RelationshipId = _dataService.SaveRelationship(relationship,
-                                                                        UserController.GetCurrentUserInfo().UserID);
+                                                                        UserController.Instance.GetCurrentUserInfo().UserID);
 
             //log event
             string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
@@ -253,7 +254,7 @@ namespace DotNetNuke.Entities.Users.Social
                                          : "UserRelationship_Updated";
 
             userRelationship.UserRelationshipId = _dataService.SaveUserRelationship(userRelationship,
-                                                                                    UserController.GetCurrentUserInfo().
+                                                                                    UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
 
             //log event            
@@ -308,7 +309,7 @@ namespace DotNetNuke.Entities.Users.Social
 
             userRelationshipPreference.PreferenceId =
                 _dataService.SaveUserRelationshipPreference(userRelationshipPreference,
-                                                            UserController.GetCurrentUserInfo().UserID);
+                                                            UserController.Instance.GetCurrentUserInfo().UserID);
 
             //log event            
             string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
@@ -465,7 +466,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowerRelationship(UserInfo targetUser)
         {
-            return GetFollowerRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            return GetFollowerRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -500,7 +501,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         public UserRelationship GetFollowingRelationship(UserInfo targetUser)
         {
-            return GetFollowingRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            return GetFollowingRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -535,7 +536,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         public UserRelationship GetFriendRelationship(UserInfo targetUser)
         {
-            return GetFriendRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            return GetFriendRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -629,7 +630,7 @@ namespace DotNetNuke.Entities.Users.Social
         private void ClearUserCache(UserRelationship userRelationship)
         {
             //Get Portal
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (settings != null)
             {

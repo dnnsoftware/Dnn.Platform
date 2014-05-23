@@ -18,12 +18,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System.Threading;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -36,21 +35,8 @@ namespace DotNetNuke.Web.Api.Internal
         {
             Requires.NotNull("context", context);
 
-            var principal = Thread.CurrentPrincipal;
-            if(!principal.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            var currentPortal = TestablePortalController.Instance.GetCurrentPortalSettings();
-
-            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser) return true;
-
-            bool isPageEditor = TabPermissionController.HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(((DnnApiController)context.ActionContext.ControllerContext.Controller).PortalSettings);
-            if (isPageEditor) return true;
+            return PagePermissionsAttributesHelper.HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(((DnnApiController)context.ActionContext.ControllerContext.Controller).PortalSettings);
             
-            return false;
         }
 
         private bool IsModuleAdmin(PortalSettings portalSettings)
@@ -61,7 +47,7 @@ namespace DotNetNuke.Web.Api.Internal
                 if (!objModule.IsDeleted)
                 {
                     bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
-                    if (blnHasModuleEditPermissions && objModule.ModuleDefinition.DefaultCacheTime != -1)
+                    if (blnHasModuleEditPermissions)
                     {
                         isModuleAdmin = true;
                         break;

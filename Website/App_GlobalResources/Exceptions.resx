@@ -297,4 +297,40 @@
   <data name="CannotMoveFolderBetweenFolderType.Text" xml:space="preserve">
     <value>The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed</value>
   </data>
+  <data name="ErrorCreatingBusinessControllerClass.Text" xml:space="preserve">
+    <value>Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})</value>
+  </data>
+  <data name="InvalidAnalyzerClass.Text" xml:space="preserve">
+    <value>The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer.</value>
+  </data>
+  <data name="LuceneControllerIsDisposed.Text" xml:space="preserve">
+    <value>LuceneController is disposed and cannot be used anymore</value>
+  </data>
+  <data name="ModuleDefIdMustBeGreaterThanZero.Text" xml:space="preserve">
+    <value>ModuleDefId must be greater than zero when SearchTypeId is for a module</value>
+  </data>
+  <data name="ModuleDefIdWhenSearchTypeForModule.Text" xml:space="preserve">
+    <value>ModuleDefId is needed only when SearchTypeId is for a module</value>
+  </data>
+  <data name="ModuleIdMustBeGreaterThanZero.Text" xml:space="preserve">
+    <value>ModuleId must be greater than zero when SearchTypeId is for a module</value>
+  </data>
+  <data name="ModuleIdMustHaveSearchTypeIdForModule.Text" xml:space="preserve">
+    <value>ModuleId based search must have SearchTypeId for a module only</value>
+  </data>
+  <data name="ModuleIdWhenSearchTypeForModule.Text" xml:space="preserve">
+    <value>ModuleId is needed only when SearchTypeId is for a module</value>
+  </data>
+  <data name="SearchAnalyzerMinWordLength.Text" xml:space="preserve">
+    <value>Search Analyzer: min word length ({0}) is greater than max word length ({1}) value</value>
+  </data>
+  <data name="SearchIndexingDirectoryNoValid.Text" xml:space="preserve">
+    <value>Search indexing directory is either empty or does not exist</value>
+  </data>
+  <data name="UnableToCreateLuceneWriter.Text" xml:space="preserve">
+    <value>Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock.</value>
+  </data>
+  <data name="PublishPagePermissionsNotMet" xml:space="preserve">
+    <value>Permissions are not met. The page has not been published.</value>
+  </data>
 </root>

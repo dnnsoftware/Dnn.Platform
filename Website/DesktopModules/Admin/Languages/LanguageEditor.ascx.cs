@@ -22,13 +22,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -36,12 +36,11 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
-
 using Telerik.Web.UI;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using DNNControls = DotNetNuke.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
@@ -704,6 +703,9 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
                 defDoc.Load(ResourceFile(Localization.SystemLocale, "System"));
 
+                //store all changed resources
+                var changedResources = new Dictionary<string, string>();
+
                 // only items different from default will be saved
                 foreach (GridDataItem di in resourcesGrid.Items)
                 {
@@ -724,7 +726,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                     node = AddResourceKey(resDoc, resourceKey.Text);
                                 }
                                 node.InnerXml = Server.HtmlEncode(txtValue.Text);
-
+                                if (txtValue.Text != txtDefault.Text) changedResources.Add(resourceKey.Text, txtValue.Text); 
                                 break;
                             case "Host":
                             case "Portal":
@@ -737,6 +739,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                                         node = AddResourceKey(resDoc, resourceKey.Text);
                                     }
                                     node.InnerXml = Server.HtmlEncode(txtValue.Text);
+                                    changedResources.Add(resourceKey.Text, txtValue.Text);
                                 }
                                 else if ((node != null))
                                 {
@@ -792,7 +795,14 @@ namespace DotNetNuke.Modules.Admin.Languages
                         break;
                 }
                 string selectedFile = SelectedResourceFile.Replace(Server.MapPath(Globals.ApplicationPath + "/"), "");
-
+                if (changedResources.Count > 0)
+                {
+                    string values = string.Join("; ", changedResources.Select(x => x.Key + "=" + x.Value).ToArray());
+                    var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
+                    log.LogProperties.Add(new LogDetailInfo(Localization.GetString("ResourceUpdated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)));
+                    log.LogProperties.Add(new LogDetailInfo("Updated Values", values));
+                    LogController.Instance.AddLog(log);
+                }
                 UI.Skins.Skin.AddModuleMessage(this,
                                 string.Format(Localization.GetString("Updated", LocalResourceFile), ResourceFile(Locale, rbMode.SelectedValue)),
                                 ModuleMessage.ModuleMessageType.GreenSuccess);

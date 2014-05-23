@@ -2,6 +2,8 @@
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
+
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 using Moq;
@@ -12,6 +14,12 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class ValidateAntiForgeryTokenAttributeTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            AntiForgery.ClearInstance();
+        }
+
         [Test]
         [TestCase("{0}={1}; ")]  //simple
         [TestCase("foo=fee; {0}={1}; key=value")] //normal

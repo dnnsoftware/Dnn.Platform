@@ -123,6 +123,9 @@
   <data name="DeletetUser.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Delete This User?</value>
   </data>
+  <data name="UnregisterUser.Text" xml:space="preserve">
+    <value>Are you sure you want to unregister? This will delete your user account.</value>
+  </data>
   <data name="RemoveItem.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Remove This Item?</value>
   </data>
@@ -182,6 +185,9 @@
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
+  </data>
+  <data name="cmdStop.Text" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="cmdDownLoad.Text" xml:space="preserve">
     <value>Download</value>
@@ -959,6 +965,9 @@
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>Username:</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name:</value>
   </data>
   <data name="PageDisabled.Header" xml:space="preserve">
     <value>Page Disabled</value>
@@ -1847,5 +1856,41 @@
   </data>
   <data name="FriendsAndGroups.Text" xml:space="preserve">
     <value>Friends and Groups</value>
+  </data>
+  <data name="PermissionRoleHeader.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="InvalidRoleId.Text" xml:space="preserve">
+    <value>The role specified is invalid.  Please specify a valid role.</value>
+  </data>
+  <data name="PermissionActionsHeader.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="RoleNotFound.Text" xml:space="preserve">
+    <value>The selected role is not found. Please refresh the page and try again</value>
+  </data>
+  <data name="RoleSelect.Text" xml:space="preserve">
+    <value>Select Role:</value>
+  </data>
+  <data name="CreatingConfiguredFolderMapping.Error" xml:space="preserve">
+    <value>Error when creating a folder mapping from config file</value>
+  </data>
+  <data name="PermissionUserHeader.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ChooseFile.Text" xml:space="preserve">
+    <value>Choose File</value>
+  </data>
+  <data name="Review.Text" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="FileUpload.UnzipFilePromptTitle.Text" xml:space="preserve">
+    <value>Unzip Information</value>
+  </data>
+  <data name="FileUpload.UnzipFileFailedPromptBody.Text" xml:space="preserve">
+    <value>&lt;div class="invalidFiles"&gt;&lt;p&gt;[COUNT] of [TOTAL] file(s) were not extracted because their file types are not supported:&lt;/p&gt;[FILELIST]&lt;/div&gt;</value>
+  </data>
+  <data name="FileUpload.UnzipFileSuccessPromptBody.Text" xml:space="preserve">
+    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) files were extracted successfully.&lt;/div&gt;</value>
   </data>
 </root>

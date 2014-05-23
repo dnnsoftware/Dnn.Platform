@@ -137,11 +137,10 @@ namespace DotNetNuke.Services.Search
             bool hasExcluded = Null.NullBoolean;
             bool hasMandatory = Null.NullBoolean;
 
-            var objPortalController = new PortalController();
-            PortalInfo objPortal = objPortalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
 
             //Get the Settings for this Portal
-            var portalSettings = new PortalSettings(objPortal);
+            var portalSettings = new PortalSettings(portal);
 
             //We will assume that the content is in the locale of the Portal
             Hashtable commonWords = GetCommonWords(portalSettings.DefaultLanguage);
@@ -249,7 +248,6 @@ namespace DotNetNuke.Services.Search
 			
             //Process results against permissions and mandatory and excluded results
             var results = new SearchResultsInfoCollection();
-            var objTabController = new TabController();
             foreach (KeyValuePair<int, Dictionary<int, SearchResultsInfo>> kvpResults in dicResults)
             {
                 foreach (SearchResultsInfo result in kvpResults.Value.Values)
@@ -257,11 +255,11 @@ namespace DotNetNuke.Services.Search
                     if (!result.Delete)
                     {
 						//Check If authorised to View Tab
-                        TabInfo objTab = objTabController.GetTab(result.TabId, portalId, false);
+                        TabInfo objTab = TabController.Instance.GetTab(result.TabId, portalId, false);
                         if (TabPermissionController.CanViewPage(objTab))
                         {
 							//Check If authorised to View Module
-                            ModuleInfo objModule = new ModuleController().GetModule(result.ModuleId, result.TabId, false);
+                            ModuleInfo objModule = ModuleController.Instance.GetModule(result.ModuleId, result.TabId, false);
                             if (ModulePermissionController.CanViewModule(objModule))
                             {
                                 results.Add(result);
@@ -291,7 +289,6 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
-            var moduleController = new ModuleController();
             var indexer = new ModuleIndexer();
             
             var modulesDic = new Dictionary<int, string>();
@@ -299,7 +296,7 @@ namespace DotNetNuke.Services.Search
             {                
                 if (!modulesDic.ContainsKey(item.ModuleId))
                 {
-                    var module = moduleController.GetModule(item.ModuleId);
+                    var module = ModuleController.Instance.GetModule(item.ModuleId, Null.NullInteger, true);
                     modulesDic.Add(item.ModuleId, module.CultureCode);
                     
                     //Remove all indexed items for this module

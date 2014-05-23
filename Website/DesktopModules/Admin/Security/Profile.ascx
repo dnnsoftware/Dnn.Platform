@@ -19,6 +19,7 @@
 <div class="dnnForm dnnProfile dnnClear">
 	<dnn:ProfileEditorControl id="ProfileProperties" runat="Server" 
             GroupByMode="Section"
+            ViewStateMode="Disabled"
             enableClientValidation="true" />
     <div class="dnnClear"></div>
 	<ul id="actionsRow" runat="server" class="dnnActions dnnClear">

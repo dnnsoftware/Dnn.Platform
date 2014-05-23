@@ -229,7 +229,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return _settings ?? (_settings = (RoleID == Null.NullInteger)
                                                      ? new Dictionary<string, string>()
-                                                     : TestableRoleController.Instance.GetRoleSettings(RoleID) as
+                                                     : RoleController.Instance.GetRoleSettings(RoleID) as
                                                        Dictionary<string, string>);
             }
         }
@@ -311,7 +311,7 @@ namespace DotNetNuke.Security.Roles
 
         private void GetRoleType()
         {
-            PortalInfo portal = new PortalController().GetPortal(PortalID);
+            var portal = PortalController.Instance.GetPortal(PortalID);
             if (RoleID == portal.AdministratorRoleId)
             {
                 _RoleType = RoleType.Administrator;
@@ -553,6 +553,8 @@ namespace DotNetNuke.Security.Roles
                 {
                     switch (reader.Name.ToLowerInvariant())
                     {
+                        case "role":
+                            break;
                         case "rolename":
                             RoleName = reader.ReadElementContentAsString();
                             break;
@@ -655,6 +657,12 @@ namespace DotNetNuke.Security.Roles
                                 default:
                                     Status = RoleStatus.Approved;
                                     break;
+                            }
+                            break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
                             }
                             break;
                     }

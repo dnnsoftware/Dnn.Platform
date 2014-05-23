@@ -244,6 +244,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     switch (reader.Name)
                     {
+                        case "moduleDefinition":
+                            break;
                         case "friendlyName":
                             FriendlyName = reader.ReadElementContentAsString();
                             break;
@@ -259,6 +261,12 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             break;
                         case "definitionName":
                             DefinitionName = reader.ReadElementContentAsString();
+                            break;
+                        default:
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
                             break;
                     }
                 }

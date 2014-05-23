@@ -108,18 +108,16 @@ namespace DotNetNuke.Services.Messaging
                 return _MessagingPage;
             }
 
-            var mc = new ModuleController();
-            ModuleInfo md = mc.GetModuleByDefinition(PortalSettings.Current.PortalId, ModuleFriendlyName);
+            ModuleInfo md = ModuleController.Instance.GetModuleByDefinition(PortalSettings.Current.PortalId, ModuleFriendlyName);
             if ((md != null))
             {
-                ArrayList a = mc.GetModuleTabs(md.ModuleID);
+                var a = ModuleController.Instance.GetTabModulesByModule(md.ModuleID);
                 if ((a != null))
                 {
-                    var mi = a[0] as ModuleInfo;
+                    var mi = a[0];
                     if ((mi != null))
                     {
-                        var tc = new TabController();
-                        _MessagingPage = tc.GetTab(mi.TabID, PortalSettings.Current.PortalId, false);
+                        _MessagingPage = TabController.Instance.GetTab(mi.TabID, PortalSettings.Current.PortalId, false);
                     }
                 }
             }
@@ -169,8 +167,7 @@ namespace DotNetNuke.Services.Messaging
 
             var users = new List<UserInfo>();
 
-            var userController = new UserController();
-            users.Add(userController.GetUser(message.PortalID, message.ToUserID));
+            users.Add(UserController.Instance.GetUser(message.PortalID, message.ToUserID));
 
             List<RoleInfo> emptyRoles = null;
             List<int> files = null;
@@ -183,7 +180,7 @@ namespace DotNetNuke.Services.Messaging
 
         public void UpdateMessage(Message message)
         {
-            var user = UserController.GetCurrentUserInfo().UserID;
+            var user = UserController.Instance.GetCurrentUserInfo().UserID;
             switch (message.Status)
             {
                 case MessageStatusType.Unread:

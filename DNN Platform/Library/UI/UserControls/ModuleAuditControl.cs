@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     //contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.GetCurrentPortalSettings().PortalId, int.Parse(CreatedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(CreatedByUser));
                     if (userInfo != null)
                     {
                         CreatedByUser = userInfo.DisplayName;
@@ -165,7 +165,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     //contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.GetCurrentPortalSettings().PortalId, int.Parse(LastModifiedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(LastModifiedByUser));
                     if (userInfo != null)
                     {
                         LastModifiedByUser = userInfo.DisplayName;

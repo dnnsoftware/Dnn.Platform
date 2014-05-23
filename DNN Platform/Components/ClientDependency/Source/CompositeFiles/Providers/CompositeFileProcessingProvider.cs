@@ -162,12 +162,21 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 		}
 
         protected virtual void WriteFileToStream(ref StreamWriter sw, FileInfo fi, ClientDependencyType type, string origUrl, ref List<CompositeFileDefinition> fileDefs, HttpContextBase http)
-		{
+        {
+            string fileContents;
+            try
+            {
+                //if it is a file based dependency then read it				
+                fileContents = File.ReadAllText(fi.FullName, Encoding.UTF8); //read as utf 8
+            }
+            catch (Exception ex)
+            {
+                ClientDependencySettings.Instance.Logger.Error(string.Format("Could not read file {0} contents. EXCEPTION: {1}", fi.FullName, ex.Message), ex);
+                return;
+            }
+            
 			try
 			{
-				//if it is a file based dependency then read it				
-                var fileContents = File.ReadAllText(fi.FullName, Encoding.UTF8); //read as utf 8
-
 				WriteContentToStream(ref sw, MinifyFile(ParseCssFilePaths(fileContents, type, origUrl, http), type), type, http);
 				fileDefs.Add(new CompositeFileDefinition(origUrl, true));
 			    return;
@@ -175,11 +184,17 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 			catch (Exception ex)
 			{
                 ClientDependencySettings.Instance.Logger.Error(string.Format("Could not write file {0} contents to stream. EXCEPTION: {1}", fi.FullName, ex.Message), ex);
-			    return;
+                //when minify failed, we need output the original file so that functionality will not broken
+                WriteContentToStream(ref sw, fileContents, type, http, false);
 			}
 		}
 
-		private void WriteContentToStream(ref StreamWriter sw, string content, ClientDependencyType type, HttpContextBase context)
+        private void WriteContentToStream(ref StreamWriter sw, string content, ClientDependencyType type, HttpContextBase context)
+        {
+            WriteContentToStream(ref sw, content, type, context, true);
+        }
+
+		private void WriteContentToStream(ref StreamWriter sw, string content, ClientDependencyType type, HttpContextBase context, bool minify)
 		{
 			//need to parse
 			if (type == ClientDependencyType.Css && ClientDependencySettings.Instance.DefaultFileRegistrationProvider.EnableCompositeFiles)
@@ -216,7 +231,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 			}
 			else
 			{
-				sw.WriteLine(MinifyFile(content, type));
+				sw.WriteLine(minify ? MinifyFile(content, type) : content);
 			}
 		}
 

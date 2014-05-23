@@ -24,9 +24,9 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
@@ -180,6 +180,32 @@ namespace DotNetNuke.Services.Scheduling
                     Exceptions.Exceptions.LogException(ex);
                 }
             }
+
+            /// <summary>
+            /// Gets a schedulehistory item from the collection of schedule items in progress.
+            /// </summary>
+            /// <param name="scheduleItem"></param>
+            /// <remarks>Thread Safe</remarks>
+            private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
+                    {
+                        ScheduleHistoryItem item = ScheduleInProgress.Where(si => si.ScheduleID == scheduleItem.ScheduleID).SingleOrDefault();
+                        return item;
+                    }
+                    
+                }
+                catch (ApplicationException ex)
+                {
+                    // The writer lock request timed out.
+                    Interlocked.Increment(ref _writerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                }
+                return null;
+            }
+
 
             private static bool ScheduleInProgressContains(ScheduleHistoryItem scheduleHistoryItem)
             {
@@ -391,13 +417,12 @@ namespace DotNetNuke.Services.Scheduling
                         }
                         strDebug.Append(" task has conflicting dependency");
                     }
-                    var objEventLog = new EventLogController();
-                    var objEventLogInfo = new LogInfo();
-                    objEventLogInfo.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
-                    objEventLogInfo.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    objEventLogInfo.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
-                    objEventLogInfo.LogTypeKey = "DEBUG";
-                    objEventLog.AddLog(objEventLogInfo);
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
                 }
             }
 
@@ -405,12 +430,11 @@ namespace DotNetNuke.Services.Scheduling
             {
                 if (_debug)
                 {
-                    var objEventLog = new EventLogController();
-                    var objEventLogInfo = new LogInfo();
-                    objEventLogInfo.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
-                    objEventLogInfo.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    objEventLogInfo.LogTypeKey = "DEBUG";
-                    objEventLog.AddLog(objEventLogInfo);
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
                 }
             }
 
@@ -569,12 +593,11 @@ namespace DotNetNuke.Services.Scheduling
 				{
 					return;
 				}
-                var eventLogController = new EventLogController();
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
-                var eventLogInfo = new LogInfo();
-                eventLogInfo.AddProperty("Initiator", sourceOfHalt);
-                eventLogInfo.LogTypeKey = "SCHEDULER_SHUTTING_DOWN";
-                eventLogController.AddLog(eventLogInfo);
+                var log = new LogInfo();
+                log.LogTypeKey = "SCHEDULER_SHUTTING_DOWN";
+                log.AddProperty("Initiator", sourceOfHalt);
+                LogController.Instance.AddLog(log);
 
                 KeepRunning = false;
 
@@ -623,10 +646,20 @@ namespace DotNetNuke.Services.Scheduling
 
             public static void LoadQueueFromEvent(EventName eventName)
             {
-                List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), ServerController.GetExecutingServerName());
+                var executingServer = ServerController.GetExecutingServerName();
+                List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
+
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
+                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+
+                var serverGroupServers = ServerGroupServers(thisServer);
 
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
+                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    {
+                        scheduleItem.Servers = serverGroupServers;
+                    }
                     var historyItem = new ScheduleHistoryItem(scheduleItem);
 
                     if (!IsInQueue(historyItem) &&
@@ -643,11 +676,22 @@ namespace DotNetNuke.Services.Scheduling
             public static void LoadQueueFromTimer()
             {
                 _forceReloadSchedule = false;
+                var executingServer = ServerController.GetExecutingServerName();
+                List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
 
-                List<ScheduleItem> schedule = SchedulingController.GetSchedule(ServerController.GetExecutingServerName());
+                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
+                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+                
+                var serverGroupServers = ServerGroupServers(thisServer);
+
 
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
+                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    {
+                        scheduleItem.Servers = serverGroupServers;
+                    }
+
                     var historyItem = new ScheduleHistoryItem(scheduleItem);
 
                     if (!IsInQueue(historyItem) &&
@@ -666,6 +710,13 @@ namespace DotNetNuke.Services.Scheduling
                         AddToScheduleQueue(historyItem);
                     }
                 }
+            }
+
+            private static string ServerGroupServers(ServerInfo thisServer)
+            {
+                //Get the servers
+                var servers = ServerController.GetEnabledServers().Where(s =>  s.ServerGroup == thisServer.ServerGroup);
+                return servers.Aggregate(string.Empty, (current, serverInfo) => current + serverInfo.ServerName + ",");
             }
 
             public static void PurgeScheduleHistory()
@@ -708,11 +759,9 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    var eventLogController = new EventLogController();
-                    var eventLogInfo = new LogInfo();
-                    eventLogInfo.AddProperty("EVENT", eventName.ToString());
-                    eventLogInfo.LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT";
-                    eventLogController.AddLog(eventLogInfo);
+                    var log = new LogInfo {LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT"};
+                    log.AddProperty("EVENT", eventName.ToString());
+                    LogController.Instance.AddLog(log);
 
                     //We allow for three threads to run simultaneously.
                     //As long as we have an open thread, continue.
@@ -796,17 +845,16 @@ namespace DotNetNuke.Services.Scheduling
                     //Loop until KeepRunning = false
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.LogTypeKey = "SCHEDULER_STARTED";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo();
+                        log.LogTypeKey = "SCHEDULER_STARTED";
+                        LogController.Instance.AddLog(log);
                     }
 
                     while (KeepRunning)
                     {
                         try
                         {
-                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart)
+                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart) 
                             {
                                 if (!KeepThreadAlive)
                                     return;
@@ -935,9 +983,8 @@ namespace DotNetNuke.Services.Scheduling
                     }
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
+                        LogController.Instance.AddLog(log);
                     }
                 }
             }
@@ -993,6 +1040,15 @@ namespace DotNetNuke.Services.Scheduling
                                 case "d":
                                     scheduleHistoryItem.NextStart = scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
                                     break;
+                                case "w":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                    break;
+                                case "mo":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                    break;
+                                case "y":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                    break;
                             }
                         }
                         else
@@ -1011,13 +1067,21 @@ namespace DotNetNuke.Services.Scheduling
                                 case "d":
                                     scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
                                     break;
+                                case "w":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
+                                    break;
+                                case "mo":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                    break;
+                                case "y":
+                                    scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                    break;
                             }
                         }
                     }
 
                     //Update the ScheduleHistory in the database
                     UpdateScheduleHistory(scheduleHistoryItem);
-                    var eventLogInfo = new LogInfo();
 
                     if (scheduleHistoryItem.NextStart != Null.NullDate)
                     {
@@ -1033,21 +1097,18 @@ namespace DotNetNuke.Services.Scheduling
 
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        //Write out the log entry for this event
-                        var objEventLog = new EventLogController();
-
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_COMPLETED";
-                        objEventLog.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        log.AddProperty("TYPE", schedulerClient.GetType().FullName);
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1098,6 +1159,15 @@ namespace DotNetNuke.Services.Scheduling
                             case "d":
                                 scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.RetryTimeLapse);
                                 break;
+                            case "w":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.RetryTimeLapse * 7);
+                                break;
+                            case "mo":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.RetryTimeLapse);
+                                break;
+                            case "y":
+                                scheduleHistoryItem.NextStart = scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.RetryTimeLapse);
+                                break;
                         }
                     }
                     //Update the ScheduleHistory in the database
@@ -1117,24 +1187,22 @@ namespace DotNetNuke.Services.Scheduling
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_FAILURE"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         if (exception != null)
                         {
-                            eventLogInfo.AddProperty("EXCEPTION", exception.Message);
+                            log.AddProperty("EXCEPTION", exception.Message);
                         }
-                        eventLogInfo.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
-                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_FAILURE";
-                        eventLogController.AddLog(eventLogInfo);
+                        log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1152,19 +1220,17 @@ namespace DotNetNuke.Services.Scheduling
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        eventLogInfo.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_PROGRESSING";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_PROGRESSING"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", schedulerClient.GetType().FullName);
+                        log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1199,24 +1265,21 @@ namespace DotNetNuke.Services.Scheduling
                     //object property to note the start time.
                     scheduleHistoryItem.StartDate = DateTime.Now;
                     AddScheduleHistory(scheduleHistoryItem);
-
-
+                    
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         //Write out the log entry for this event
-                        var eventLogController = new EventLogController();
-                        var eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        eventLogInfo.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
-                        eventLogInfo.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        eventLogInfo.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
-                        eventLogInfo.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        eventLogInfo.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
-                        eventLogInfo.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
-                        eventLogInfo.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        eventLogInfo.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
-                        eventLogInfo.LogTypeKey = "SCHEDULER_EVENT_STARTED";
-                        eventLogController.AddLog(eventLogInfo);
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_STARTED"};
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
+                        log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
+                        log.AddProperty("READER TIMEOUTS", _readerTimeouts.ToString());
+                        log.AddProperty("WRITER TIMEOUTS", _writerTimeouts.ToString());
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 catch (Exception exc)
@@ -1253,6 +1316,134 @@ namespace DotNetNuke.Services.Scheduling
                             _processGroup[i] = new ProcessGroup();
                         }
                     }
+                }
+            }
+
+            //DNN-5001
+            public static void StopScheduleInProgress(ScheduleItem scheduleItem, ScheduleHistoryItem runningscheduleHistoryItem)
+            {
+                try
+                {
+                    //attempt to stop task only if it is still in progress
+                    if (GetScheduleItemFromScheduleInProgress(scheduleItem) != null)
+                    {
+                        var scheduleHistoryItem = GetScheduleItemFromScheduleInProgress(scheduleItem);
+                        scheduleHistoryItem.ScheduleHistoryID = runningscheduleHistoryItem.ScheduleHistoryID;
+                        scheduleHistoryItem.StartDate = runningscheduleHistoryItem.StartDate;
+                        //Remove the object in the ScheduleInProgress collection
+                        RemoveFromScheduleInProgress(scheduleHistoryItem);
+
+                        //A SchedulerClient is notifying us that their
+                        //process has completed.  Decrease our ActiveThreadCount
+                        Interlocked.Decrement(ref _activeThreadCount);
+
+                        //Update the schedule item object property
+                        //to note the end time and next start
+                        scheduleHistoryItem.EndDate = DateTime.Now;
+
+                        if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
+                        {
+                            scheduleHistoryItem.NextStart = Null.NullDate;
+                        }
+                        else
+                        {
+                            if (scheduleHistoryItem.CatchUpEnabled)
+                            {
+                                switch (scheduleHistoryItem.TimeLapseMeasurement)
+                                {
+                                    case "s":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "m":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "h":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddHours(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "d":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.NextStart.AddDays(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "w":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                        break;
+                                    case "mo":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "y":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                switch (scheduleHistoryItem.TimeLapseMeasurement)
+                                {
+                                    case "s":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddSeconds(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "m":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMinutes(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "h":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddHours(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "d":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "w":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                        break;
+                                    case "mo":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddMonths(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                    case "y":
+                                        scheduleHistoryItem.NextStart =
+                                            scheduleHistoryItem.StartDate.AddYears(scheduleHistoryItem.TimeLapse);
+                                        break;
+                                }
+                            }
+                        }
+                        //Update the ScheduleHistory in the database
+                        UpdateScheduleHistory(scheduleHistoryItem);
+
+
+                        if (scheduleHistoryItem.NextStart != Null.NullDate)
+                        {
+                            //Put the object back into the ScheduleQueue
+                            //collection with the new NextStart date.
+                            scheduleHistoryItem.StartDate = Null.NullDate;
+                            scheduleHistoryItem.EndDate = Null.NullDate;
+                            scheduleHistoryItem.LogNotes = "";
+                            scheduleHistoryItem.ProcessGroup = -1;
+                            AddToScheduleQueue(scheduleHistoryItem);
+                        }
+
+                        //Write out the log entry for this event
+                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        log.AddProperty("REASON", "Scheduler task has been stopped manually");
+                        log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        LogController.Instance.AddLog(log);
+                    }
+
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.Exceptions.ProcessSchedulerException(exc);
                 }
             }
         }

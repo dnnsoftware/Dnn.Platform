@@ -1,4 +1,4 @@
-﻿(function ($, sys) {
+﻿(function ($) {
 	if (typeof webcontrols === "undefined" || webcontrols === null) { webcontrols = {}; };
 	webcontrols.termsSelector = {
 		OnClientDropDownOpened: function (sender, e) {
@@ -109,13 +109,13 @@
 		}, 0);
 	};
 
-	$().ready(function () {
+	$(document).ready(function () {
 		updateTerms();
-		if (typeof sys != "undefined") {
-			sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+		if (typeof Sys != "undefined") {
+			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 				updateTerms();
 			});
 		}
 	});
-}(jQuery, window.Sys));
+}(jQuery));
 

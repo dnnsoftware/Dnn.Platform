@@ -46,11 +46,7 @@
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblMode" runat="server" resourcekey="lblMode" suffix=":" />
-					<asp:RadioButtonList ID="rblMode" RepeatDirection="Vertical" runat="server" CssClass="dnnFormRadioButtons">
-						<asp:ListItem Value="" Text="Everyone" />
-						<asp:ListItem Value="Registered" Text="Registered Users" />                                                                                                                            
-						<asp:ListItem Value="Admin" Text="Administrators" />
-						<asp:ListItem Value="Host" Text="Host Users" />                                                                                                                                             
+					<asp:RadioButtonList ID="rblMode" RepeatDirection="Vertical" runat="server" CssClass="dnnFormRadioButtons">                                                                                                                                          
 					</asp:RadioButtonList>
 				</div>
 				<div class="dnnFormItem">

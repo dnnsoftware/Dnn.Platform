@@ -73,7 +73,13 @@ namespace DotNetNuke.Tests.Urls
 
         internal static string FilePath
         {
-            get { return Config.GetSetting("UrlTestFilesPath"); }
+            get
+            {
+                var uri = new System.Uri(Assembly.GetExecutingAssembly().CodeBase);
+                string path = Path.GetFullPath(uri.AbsolutePath).Replace("%20", " ");
+
+                return Path.Combine(path.Substring(0, path.IndexOf("bin", System.StringComparison.Ordinal)), "TestFiles");
+            }
         }
 
         internal static string GetEmbeddedFileName(string fileName)

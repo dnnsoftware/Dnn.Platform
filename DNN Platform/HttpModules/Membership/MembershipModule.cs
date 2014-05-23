@@ -43,9 +43,18 @@ using DotNetNuke.Security.Roles.Internal;
 
 namespace DotNetNuke.HttpModules.Membership
 {
+    /// <summary>
+    /// Information about membership
+    /// </summary>
     public class MembershipModule : IHttpModule
     {
 	    private static string _cultureCode;
+        /// <summary>
+        /// Gets the name of the module.
+        /// </summary>
+        /// <value>
+        /// The name of the module: "DNNMembershipModule"
+        /// </value>
         public string ModuleName
         {
             get
@@ -69,11 +78,18 @@ namespace DotNetNuke.HttpModules.Membership
 
         #region IHttpModule Members
 
+        /// <summary>
+        /// Initializes the specified application.
+        /// </summary>
+        /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
         }
 
+        /// <summary>
+        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
+        /// </summary>
         public void Dispose()
         {
         }
@@ -86,12 +102,22 @@ namespace DotNetNuke.HttpModules.Membership
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
 
+        /// <summary>
+        /// Called when unverified user skin initialize.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
 			var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
             UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
+        /// <summary>
+        /// Authenticates the request.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="allowUnknownExtensinons">if set to <c>true</c> to allow unknown extensinons.</param>
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensinons)
         {
             HttpRequestBase request = context.Request;
@@ -116,7 +142,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
 
             //Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");
@@ -130,7 +156,6 @@ namespace DotNetNuke.HttpModules.Membership
 
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
-                var roleController = new RoleController();
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
 				//if current login is from windows authentication, the ignore the process
 				if (user == null && context.User is WindowsPrincipal)
@@ -180,11 +205,11 @@ namespace DotNetNuke.HttpModules.Membership
                 //check for RSVP code
                 if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
-                    foreach (var role in TestableRoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
+                    foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
                     {
                         if (role.RSVPCode == request.QueryString["rsvp"])
                         {
-                            roleController.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
+                            RoleController.Instance.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID, RoleStatus.Approved, false, false);
                         }
                     }
                 }

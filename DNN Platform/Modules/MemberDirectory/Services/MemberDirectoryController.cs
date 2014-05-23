@@ -30,7 +30,6 @@ using System.Net.Http;
 using System.Web.Http;
 
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -59,7 +58,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private bool CanViewGroupMembers(int portalId, int groupId)
         {
-            var group = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            var group = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if(group == null)
             {
                 return false;
@@ -92,10 +91,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             return setting;
         }
 
-        private IEnumerable<UserInfo> GetUsers(int groupId, string searchTerm, int pageIndex, int pageSize)
+        private IEnumerable<UserInfo> GetUsers(int userId, int groupId, string searchTerm, int pageIndex, int pageSize, string propertyNames, string propertyValues)
         {
-            var portalId = PortalSettings.PortalId;
-            var userId = PortalSettings.UserId;
+            var portalId = PortalSettings.PortalId;            
             var isAdmin = PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
 
             var filterBy = GetSetting(ActiveModule.ModuleSettings, "FilterBy", String.Empty);
@@ -104,9 +102,20 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             var sortField = GetSetting(ActiveModule.TabModuleSettings, "SortField", "DisplayName");
             var sortOrder = GetSetting(ActiveModule.TabModuleSettings, "SortOrder", "ASC");
 
+            var excludeHostUsers = Boolean.Parse(GetSetting(ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));
+            var isBasicSearch = false;
+            if (String.IsNullOrEmpty(propertyNames))
+            {
+                isBasicSearch = true;
+                AddSearchTerm(ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
+            }
+
             IList<UserInfo> users;
             switch (filterBy)
             {
+                case "User":
+                    users = new List<UserInfo> { UserController.GetUserById(portalId, userId) };
+                    break;
                 case "Group":
                     if (groupId == -1)
                     {
@@ -114,11 +123,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     if (CanViewGroupMembers(portalId, groupId))
                     {
-                        users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
+                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
                                                                                        Int32.Parse(filterValue),
                                                                                        -1, isAdmin, pageIndex, pageSize,
                                                                                        sortField, (sortOrder == "ASC"),
-                                                                                       "DisplayName", searchTerm);
+                                                                                       propertyNames, propertyValues);
                     }
                     else
                     {
@@ -126,29 +135,41 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     break;
                 case "Relationship":
-                    users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, userId, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, userId, -1,
                                                                            Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
-                                                                           "DisplayName", searchTerm);
+                                                                           propertyNames, propertyValues);
                     break;
                 case "ProfileProperty":
-                    var propertyNames = "DisplayName,";
-                    var propertyValues = searchTerm + ",";
                     var propertyValue = GetSetting(ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
-                    users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1, -1,
                                                                            -1, isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
                     break;
                 default:
-                    users = TestableUserController.Instance.GetUsersBasicSearch(PortalSettings.PortalId, pageIndex, pageSize,
+                    users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(PortalSettings.PortalId, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
-                                                                           "DisplayName", searchTerm);
+                                                                           "DisplayName", searchTerm)
+                                                                           :
+                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, -1,
+                                                                               -1, isAdmin, pageIndex, pageSize,
+                                                                               sortField, (sortOrder == "ASC"),
+                                                                               propertyNames, propertyValues);
                     break;
             }
+            if (excludeHostUsers)
+            {                
+                return FilterExcludedUsers(users);
+            }
             return users;
+        }
+
+        private IEnumerable<UserInfo> FilterExcludedUsers(IEnumerable<UserInfo> users)
+        {
+            return users.Where(u => !u.IsSuperUser).Select(u => u).ToList();
         }
 
         #endregion
@@ -160,13 +181,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var portalId = PortalSettings.PortalId;
-
                 if (userId < 0) userId = PortalSettings.UserId;
-                var isAdmin = PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
-
-                var filterBy = GetSetting(ActiveModule.ModuleSettings, "FilterBy", String.Empty);
-                var filterValue = GetSetting(ActiveModule.ModuleSettings, "FilterValue", String.Empty);
+                
                 var searchField1 = GetSetting(ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
                 var searchField2 = GetSetting(ActiveModule.TabModuleSettings, "SearchField2", "Email");
                 var searchField3 = GetSetting(ActiveModule.TabModuleSettings, "SearchField3", "City");
@@ -174,61 +190,13 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                 var propertyNames = "";
                 var propertyValues = "";
-
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
 
-                if (filterBy == "ProfileProperty")
-                {
-                    var propertyValue = GetSetting(ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
-                    AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
-                }
-
-                propertyNames = propertyNames.TrimEnd(',');
-                propertyValues = propertyValues.TrimEnd(',');
-
-                var sortField = GetSetting(ActiveModule.TabModuleSettings, "SortField", "DisplayName");
-                var sortOrder = GetSetting(ActiveModule.TabModuleSettings, "SortOrder", "ASC");
-
-                IList<UserInfo> users;
-                switch (filterBy)
-                {
-                    case "User":
-                        users = new List<UserInfo> { UserController.GetUserById(portalId, userId) };
-                        break;
-                    case "Group":
-                        if (groupId == -1)
-                        {
-                            groupId = Int32.Parse(filterValue);
-                        }
-                        if (CanViewGroupMembers(portalId, groupId))
-                        {
-                            users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, groupId,
-                                                                                   -1, isAdmin, pageIndex, pageSize,
-                                                                                   sortField, (sortOrder == "ASC"),
-                                                                                   propertyNames, propertyValues);
-                        }
-                        else
-                        {
-                            users = new List<UserInfo>();
-                        }
-                        break;
-                    case "Relationship":
-                        users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
-                                                                               Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
-                                                                               sortField, (sortOrder == "ASC"),
-                                                                               propertyNames, propertyValues);
-                        break;
-                    default:
-                        users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, -1,
-                                                                               -1, isAdmin, pageIndex, pageSize,
-                                                                               sortField, (sortOrder == "ASC"),
-                                                                               propertyNames, propertyValues);
-                        break;
-                }
-                return Request.CreateResponse(HttpStatusCode.OK, GetMembers(users));
+                return Request.CreateResponse(HttpStatusCode.OK, GetMembers(
+                                                                    GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues)));
             }
             catch (Exception exc)
             {
@@ -242,7 +210,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var users = GetUsers(groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize);
+                var users = GetUsers(PortalSettings.UserId, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
                 return Request.CreateResponse(HttpStatusCode.OK, GetMembers(users));
             }
             catch (Exception exc)
@@ -275,7 +243,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var names = (from UserInfo user in GetUsers(groupId, displayName.Trim(), 0, 10)
+                var names = (from UserInfo user in GetUsers(PortalSettings.UserId, groupId, displayName.Trim(), 0, 10, "", "")
                              select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
                                 .ToList();
 

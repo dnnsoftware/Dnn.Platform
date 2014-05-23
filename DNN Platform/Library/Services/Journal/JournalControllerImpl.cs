@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Journal
 
         private void UpdateGroupStats(int portalId, int groupId)
         {
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if (role == null)
             {
                 return;
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Journal
                 }
                 dr.Close();
             }
-            TestableRoleController.Instance.UpdateRoleSettings(role, true);
+            RoleController.Instance.UpdateRoleSettings(role, true);
         }
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0 && originalSecuritySet != "U")
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -388,7 +388,7 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0)
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -488,7 +488,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return null;
             }
-            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
+            return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)

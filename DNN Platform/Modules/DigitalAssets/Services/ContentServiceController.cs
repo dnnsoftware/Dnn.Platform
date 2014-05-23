@@ -142,8 +142,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage UnzipFile(UnzipFileRequest request)
         {
-            DigitalAssetsController.UnzipFile(request.FileId, request.Overwrite);
-            return Request.CreateResponse(HttpStatusCode.OK, "Success");
+            var model = DigitalAssetsController.UnzipFile(request.FileId, request.Overwrite);
+            return Request.CreateResponse(HttpStatusCode.OK, model);
         }
 
         [HttpPost]

@@ -26,6 +26,7 @@ using System.Data;
 using System.Reflection;
 using System.Web;
 
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -107,6 +108,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		public void SetUp()
 		{
 			ComponentFactory.Container = new SimpleContainer();
+            UnitTestHelper.ClearHttpContext();
 			_dataProvider = MockComponentProvider.CreateDataProvider();
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
@@ -722,7 +724,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			           		"PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
 			           		"HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
 			           		"ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-			           		"UserTabId", "SearchTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+			           		"UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
 			           	};
 
 			foreach (var col in cols)
@@ -736,7 +738,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             else if (portalId == Portal1)
                 homePage = HomePageOnPortal1;
 
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "-1", "-1", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
 
 			return table.CreateDataReader();
 		}
@@ -960,7 +962,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private HttpApplication GenerateApplication()
 		{
-			UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
+
 			var app = new HttpApplication();
 
 			var requestProp = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);

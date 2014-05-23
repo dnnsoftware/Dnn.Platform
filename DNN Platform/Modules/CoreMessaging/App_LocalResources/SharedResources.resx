@@ -192,4 +192,13 @@
   <data name="Save.Text" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Daily.Text" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Hourly.Text" xml:space="preserve">
+    <value>Hourly</value>
+  </data>
+  <data name="Weekly.Text" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
 </root>

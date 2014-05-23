@@ -23,14 +23,14 @@ namespace DotNetNuke.Modules.Journal.Controls {
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings portalSettings {
             get {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserInfo userInfo {
             get {
-                return UserController.GetCurrentUserInfo();
+                return UserController.Instance.GetCurrentUserInfo();
             }
         }
 

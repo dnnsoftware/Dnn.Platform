@@ -79,61 +79,58 @@ namespace DotNetNuke.Modules.Admin.Vendors
 
                     if (ModuleId > 0)
                     {
-                        //Get settings from the database
-                        Hashtable settings = new ModuleController().GetModuleSettings(ModuleId);
-
-                        if (optSource.Items.FindByValue(Convert.ToString(settings["bannersource"])) != null)
+                        if (optSource.Items.FindByValue(Convert.ToString(Settings["bannersource"])) != null)
                         {
-                            optSource.Items.FindByValue(Convert.ToString(settings["bannersource"])).Selected = true;
+                            optSource.Items.FindByValue(Convert.ToString(Settings["bannersource"])).Selected = true;
                         }
                         else
                         {
                             optSource.Items.FindByValue("L").Selected = true;
                         }
-                        if (cboType.Items.FindByValue(Convert.ToString(settings["bannertype"])) != null)
+                        if (cboType.Items.FindByValue(Convert.ToString(Settings["bannertype"])) != null)
                         {
-                            cboType.Items.FindByValue(Convert.ToString(settings["bannertype"])).Selected = true;
+                            cboType.Items.FindByValue(Convert.ToString(Settings["bannertype"])).Selected = true;
                         }
-                        if (!String.IsNullOrEmpty(Convert.ToString(settings["bannergroup"])))
+                        if (!String.IsNullOrEmpty(Convert.ToString(Settings["bannergroup"])))
                         {
-                            DNNTxtBannerGroup.Text = Convert.ToString(settings["bannergroup"]);
+                            DNNTxtBannerGroup.Text = Convert.ToString(Settings["bannergroup"]);
                         }
-                        if (optOrientation.Items.FindByValue(Convert.ToString(settings["orientation"])) != null)
+                        if (optOrientation.Items.FindByValue(Convert.ToString(Settings["orientation"])) != null)
                         {
-                            optOrientation.Items.FindByValue(Convert.ToString(settings["orientation"])).Selected = true;
+                            optOrientation.Items.FindByValue(Convert.ToString(Settings["orientation"])).Selected = true;
                         }
                         else
                         {
                             optOrientation.Items.FindByValue("V").Selected = true;
                         }
-                        if (!String.IsNullOrEmpty(Convert.ToString(settings["bannercount"])))
+                        if (!String.IsNullOrEmpty(Convert.ToString(Settings["bannercount"])))
                         {
-                            txtCount.Text = Convert.ToString(settings["bannercount"]);
+                            txtCount.Text = Convert.ToString(Settings["bannercount"]);
                         }
                         else
                         {
                             txtCount.Text = "1";
                         }
-                        if (!String.IsNullOrEmpty(Convert.ToString(settings["border"])))
+                        if (!String.IsNullOrEmpty(Convert.ToString(Settings["border"])))
                         {
-                            txtBorder.Text = Convert.ToString(settings["border"]);
+                            txtBorder.Text = Convert.ToString(Settings["border"]);
                         }
                         else
                         {
                             txtBorder.Text = "0";
                         }
-                        if (!String.IsNullOrEmpty(Convert.ToString(settings["padding"])))
+                        if (!String.IsNullOrEmpty(Convert.ToString(Settings["padding"])))
                         {
-                            txtPadding.Text = Convert.ToString(settings["padding"]);
+                            txtPadding.Text = Convert.ToString(Settings["padding"]);
                         }
                         else
                         {
                             txtPadding.Text = "4";
                         }
-                        txtBorderColor.Text = Convert.ToString(settings["bordercolor"]);
-                        txtRowHeight.Text = Convert.ToString(settings["rowheight"]);
-                        txtColWidth.Text = Convert.ToString(settings["colwidth"]);
-                        txtBannerClickThroughURL.Text = Convert.ToString(settings["bannerclickthroughurl"]);
+                        txtBorderColor.Text = Convert.ToString(Settings["bordercolor"]);
+                        txtRowHeight.Text = Convert.ToString(Settings["rowheight"]);
+                        txtColWidth.Text = Convert.ToString(Settings["colwidth"]);
+                        txtBannerClickThroughURL.Text = Convert.ToString(Settings["bannerclickthroughurl"]);
                     }
                 }
             }
@@ -150,28 +147,26 @@ namespace DotNetNuke.Modules.Admin.Vendors
                 if (Page.IsValid)
                 {
 					//Update settings in the database
-                    var objModules = new ModuleController();
-
                     if (optSource.SelectedItem != null)
                     {
-                        objModules.UpdateModuleSetting(ModuleId, "bannersource", optSource.SelectedItem.Value);
+                        ModuleController.Instance.UpdateModuleSetting(ModuleId, "bannersource", optSource.SelectedItem.Value);
                     }
                     if (cboType.SelectedItem != null)
                     {
-                        objModules.UpdateModuleSetting(ModuleId, "bannertype", cboType.SelectedItem.Value);
+                        ModuleController.Instance.UpdateModuleSetting(ModuleId, "bannertype", cboType.SelectedItem.Value);
                     }
-                    objModules.UpdateModuleSetting(ModuleId, "bannergroup", DNNTxtBannerGroup.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "bannergroup", DNNTxtBannerGroup.Text);
                     if (optOrientation.SelectedItem != null)
                     {
-                        objModules.UpdateModuleSetting(ModuleId, "orientation", optOrientation.SelectedItem.Value);
+                        ModuleController.Instance.UpdateModuleSetting(ModuleId, "orientation", optOrientation.SelectedItem.Value);
                     }
-                    objModules.UpdateModuleSetting(ModuleId, "bannercount", txtCount.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "border", txtBorder.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "bordercolor", txtBorderColor.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "rowheight", txtRowHeight.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "colwidth", txtColWidth.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "padding", txtPadding.Text);
-                    objModules.UpdateModuleSetting(ModuleId, "bannerclickthroughurl", txtBannerClickThroughURL.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "bannercount", txtCount.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "border", txtBorder.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "bordercolor", txtBorderColor.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "rowheight", txtRowHeight.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "colwidth", txtColWidth.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "padding", txtPadding.Text);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "bannerclickthroughurl", txtBannerClickThroughURL.Text);
 
                     //Redirect back to the portal home page
                     Response.Redirect(ReturnURL, true);

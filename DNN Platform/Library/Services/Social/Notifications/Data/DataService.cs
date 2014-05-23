@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         public int SendNotification(Notification notification, int portalId)
         {
-            var createdByUserId = UserController.GetCurrentUserInfo().UserID;
+            var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             return _provider.ExecuteScalar<int>(GetFullyQualifiedName("SendNotification"),
                                                 notification.NotificationTypeID,
                                                 portalId,

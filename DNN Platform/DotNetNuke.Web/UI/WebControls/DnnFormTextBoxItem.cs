@@ -73,7 +73,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
             //Load from ControlState
             _textBox.Text = Convert.ToString(Value);
-
+            if (TextMode == TextBoxMode.Password)
+            {
+                _textBox.Attributes.Add("autocomplete", "off");
+            }
             container.Controls.Add(_textBox);
 
             return _textBox;

@@ -165,10 +165,12 @@ namespace DotNetNuke.Web.Client.Providers
                 form.Controls.Remove(holderControl);
                 form.Controls.AddAt(0, holderControl);
             }
-            else
+
+            var scriptManager = ScriptManager.GetCurrent(page);
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
             {
-                page.Controls.Remove(holderControl);
-                page.Controls.AddAt(0, holderControl);
+                holderControl.ID = "$crm_" + holderControl.ID;
+                scriptManager.RegisterDataItem(holderControl, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
             }
         }
     }

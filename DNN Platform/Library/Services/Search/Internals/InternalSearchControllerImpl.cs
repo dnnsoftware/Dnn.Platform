@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -37,7 +38,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Internal;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
 
@@ -97,8 +98,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         // get searchable module definition list
                         var portalId = int.Parse(cacheItem.CacheKey.Split('-')[1]);
-                        var moduleController = new ModuleController();
-                        var modules = moduleController.GetSearchModules(portalId);
+                        var modules = ModuleController.Instance.GetSearchModules(portalId);
                         var modDefIds = new HashSet<int>();
 
                         foreach (ModuleInfo module in modules)
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Search.Internals
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var searchContentSources = GetSearchContentSourceList(portal.PortalID);
                 foreach (var searchContentSource in searchContentSources)
@@ -206,22 +206,22 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
-
+            
             if (searchDocument.SearchTypeId == _moduleSearchTypeId)
             {
                 if(searchDocument.ModuleDefId <= 0)
-                    throw new ArgumentException("ModuleDefId must be greater than zero when SearchTypeId is for a module");
+                    throw new ArgumentException( Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero","ModuleDefId must be greater than zero when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId <= 0)
-                    throw new ArgumentException("ModuleId must be greater than zero when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero","ModuleId must be greater than zero when SearchTypeId is for a module"));
             }
             else
             {
                 if (searchDocument.ModuleDefId > 0)
-                    throw new ArgumentException("ModuleDefId is needed only when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdWhenSearchTypeForModule","ModuleDefId is needed only when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId > 0)
-                    throw new ArgumentException("ModuleId is needed only when SearchTypeId is for a module");
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdWhenSearchTypeForModule","ModuleId is needed only when SearchTypeId is for a module"));
             }
 
             var doc = new Document();
@@ -439,7 +439,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (searchDocument.AuthorUserId > 0)
             {
-                var user = TestableUserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
+                var user = UserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
                 if (user != null && !string.IsNullOrEmpty(user.DisplayName))
                 {
                     var field = new Field(Constants.AuthorNameTag, user.DisplayName, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);

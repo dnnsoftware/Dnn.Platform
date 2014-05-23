@@ -1331,8 +1331,8 @@ Please do not reply to this email.</value>
   <data name="//Admin//FileManagement.String" xml:space="preserve">
     <value>File Management</value>
   </data>
-  <data name="UrlPathCleaned.Error" xml:space="preserve">
-    <value>The Page URL entered contains characters which cannot be used in a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.</value>
+  <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
+    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
   </data>
   <data name="UrlPathNotUnique.Error" xml:space="preserve">
     <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>
@@ -1480,9 +1480,6 @@ Please do not reply to this email.</value>
                                         &lt;tr&gt;
                                             &lt;td align="center"&gt;
                                                 &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.twitter.com/" &gt; Follow us on Twitter&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.facebook.com/" &gt; Become a fan on Facebook&lt;/a&gt;
-
                                             &lt;/td&gt;
                                         &lt;/tr&gt;
                                     &lt;/table&gt;
@@ -1560,5 +1557,14 @@ Sincerely,
   </data>
   <data name="//Admin//UserSwitcher.String" xml:space="preserve">
     <value>User Switcher</value>
+  </data>
+  <data name="AspNetHostingPermission.Text" xml:space="preserve">
+    <value>This extension requires Full Trust.</value>
+  </data>
+  <data name="ReflectionPermission.Text" xml:space="preserve">
+    <value>This extension requries Reflection permission.</value>
+  </data>
+  <data name="WebPermission.Text" xml:space="preserve">
+    <value>This extension requires Web permission.</value>
   </data>
 </root>

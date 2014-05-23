@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/URLControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
 <script language="javascript" type="text/javascript">
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
@@ -28,6 +28,14 @@
 		$("#<%=cmdUpdate.ClientID%>").click(function() {
 			needReload = true;
 		});
+	    
+        $('input[id$=cmdDeleteModule]').dnnConfirm({
+            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+        	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+        	isButton: true
+        });
 	}
 
 	var searchPages = function(keyword) {
@@ -324,7 +332,7 @@
 				</div>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblTags" runat="server" suffix=":" />
-					<dnnweb:TermsSelector ID="termsSelector" runat="server" />
+					<dnnweb:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>
 			</fieldset>
 		</div>
@@ -348,13 +356,11 @@
 			<fieldset>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblSkin" runat="server" suffix=":" />
-					<%--<asp:DropDownList ID="drpSkin" runat="server" DataTextField="Key" DataValueField ="Value" />--%>
-                    <dnnweb:DnnComboBox ID="drpSkin" runat="server" DataTextField="Key" DataValueField ="Value" />
+                    <dnnweb:DnnSkinComboBox ID="drpSkin" runat="server" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblContainer" runat="server" suffix=":" />
-					<%--<asp:DropDownList ID="drpContainer" runat="server" DataTextField="Key" DataValueField ="Value"  />--%>
-                    <dnnweb:DnnComboBox ID="drpContainer" runat="server" DataTextField="Key" DataValueField ="Value"  />
+                    <dnnweb:DnnSkinComboBox ID="drpContainer" runat="server"  />
 					
 				</div>
                 <div class="dnnFormItem">

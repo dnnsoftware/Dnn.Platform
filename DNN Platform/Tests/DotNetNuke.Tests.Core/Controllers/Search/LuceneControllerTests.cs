@@ -109,6 +109,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             _luceneController.Dispose();
             DeleteIndexFolder();
+            SearchHelper.ClearInstance();
         }
 
 

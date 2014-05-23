@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                var moduleInfo = new ModuleController().GetModule(moduleId, tabId);
+                var moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
                 desktopModule = moduleInfo.DesktopModule;
 
@@ -85,10 +85,8 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage MoveModule(MoveModuleDTO postData)
         {
-            var moduleController = new ModuleController();
-
-            moduleController.UpdateModuleOrder(postData.TabId, postData.ModuleId, postData.ModuleOrder, postData.Pane);
-            moduleController.UpdateTabModuleOrder(postData.TabId);
+            ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, postData.ModuleOrder, postData.Pane);
+            ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }

@@ -71,11 +71,10 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private int _moduleId = -1;
         private ModuleInfo _module;
-        private readonly ModuleController _moduleController = new ModuleController();
 
         private ModuleInfo Module
         {
-            get { return _module ?? (_module = _moduleController.GetModule(_moduleId, TabId, false)); }
+            get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
         }
 
         private string ReturnURL

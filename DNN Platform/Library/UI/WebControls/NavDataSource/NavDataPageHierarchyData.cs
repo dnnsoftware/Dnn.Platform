@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-                    return PortalController.GetCurrentPortalSettings().HomeDirectory + m_objNode.Image;
+                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + m_objNode.Image;
                 }
             }
         }

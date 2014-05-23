@@ -40,6 +40,12 @@ namespace DotNetNuke.Services.UserProfile
 {
     public class UserProfilePicHandler : IHttpHandler
     {
+        #region Private Fields
+
+        private static object _locker = new object();
+
+        #endregion
+
         #region IHttpHandler Members
 
         public void ProcessRequest(HttpContext context)
@@ -83,9 +89,8 @@ namespace DotNetNuke.Services.UserProfile
            
             CalculateSize(ref height, ref width, ref size);
 
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
-            var userController = new UserController();
-            var user = userController.GetUser(settings.PortalId, userId);
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
             IFileInfo photoFile = null;
             var photoLoaded = false;
@@ -101,10 +106,16 @@ namespace DotNetNuke.Services.UserProfile
                 var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                    lock (_locker)
                     {
-                        var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
-                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                        if (!FileManager.Instance.FileExists(folder, sizedPhoto))
+                        {
+                            using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
+                            {
+                                var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
+                                FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                            }
+                        }
                     }
                 }
 
@@ -135,6 +146,7 @@ namespace DotNetNuke.Services.UserProfile
 
             if (!photoLoaded)
             {
+                context.Response.ContentType = "image/gif";
                 context.Response.WriteFile(context.Request.MapPath("~/images/no_avatar.gif"));
             }
 
@@ -151,8 +163,8 @@ namespace DotNetNuke.Services.UserProfile
             bool isVisible = false;
             photoFile = null;
 
-            UserInfo user = UserController.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            UserInfo user = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
@@ -240,7 +252,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private void SetupCulture()
         {
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings == null) return;
 
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(settings);

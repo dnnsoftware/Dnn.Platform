@@ -68,7 +68,7 @@ namespace DotNetNuke.Security.Roles
             userRole.UserRoleID = Convert.ToInt32(dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
                                                                 (int)userRole.Status, userRole.IsOwner,
                                                                 userRole.EffectiveDate, userRole.ExpiryDate, 
-                                                                UserController.GetCurrentUserInfo().UserID));
+                                                                UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         #endregion
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Roles
                                                          role.AutoAssignment,
                                                          role.RSVPCode,
                                                          role.IconFile,
-                                                         UserController.GetCurrentUserInfo().UserID,
+                                                         UserController.Instance.GetCurrentUserInfo().UserID,
                                                          (int)role.Status,
                                                          (int)role.SecurityMode,
                                                          role.IsSystemRole));
@@ -184,7 +184,7 @@ namespace DotNetNuke.Security.Roles
                                     role.AutoAssignment,
                                     role.RSVPCode,
                                     role.IconFile,
-                                    UserController.GetCurrentUserInfo().UserID,
+                                    UserController.Instance.GetCurrentUserInfo().UserID,
                                     (int)role.Status,
                                     (int)role.SecurityMode,
                                     role.IsSystemRole);
@@ -204,7 +204,7 @@ namespace DotNetNuke.Security.Roles
             {
                 if (!currentSettings.ContainsKey(setting.Key) || currentSettings[setting.Key] != setting.Value)
                 {
-                    dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.GetCurrentUserInfo().UserID);
+                    dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
         }
@@ -347,7 +347,7 @@ namespace DotNetNuke.Security.Roles
             dataProvider.UpdateUserRole(userRole.UserRoleID,
                                         (int)userRole.Status, userRole.IsOwner,
                                         userRole.EffectiveDate, userRole.ExpiryDate, 
-                                        UserController.GetCurrentUserInfo().UserID);
+                                        UserController.Instance.GetCurrentUserInfo().UserID);
 		}
 
 		#endregion
@@ -381,7 +381,7 @@ namespace DotNetNuke.Security.Roles
         {
             var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName,
                                                         roleGroup.Description,
-                                                        UserController.GetCurrentUserInfo().UserID);
+                                                        UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
@@ -459,7 +459,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
-            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName, roleGroup.Description, UserController.GetCurrentUserInfo().UserID);
+            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName, roleGroup.Description, UserController.Instance.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
         }
 		

@@ -22,6 +22,8 @@
 using System;
 using System.Xml.XPath;
 
+using DotNetNuke.Common;
+
 namespace DotNetNuke.Services.Installer.Installers
 {
     public class JavaScriptFileInstaller : FileInstaller
@@ -91,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Installers
             XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");
             if (libraryNav != null)
             {
-                BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Package.Version);
+                BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(Package.Version, "00", 3, "_"));
             }
         }
 

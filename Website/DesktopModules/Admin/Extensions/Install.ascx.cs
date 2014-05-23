@@ -564,7 +564,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             else if (Installer.InstallerInfo.Installed && !chkRepairInstall.Checked)
             {
                 lblWarningMessageWrapper.Visible = true;
-				if (UserController.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
+				if (UserController.Instance.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
                 {
                     pnlRepair.Visible = true;
                 }
@@ -604,6 +604,13 @@ namespace DotNetNuke.Modules.Admin.Extensions
             if (Installer.InstallerInfo.ManifestFile != null)
             {
                 manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
+            }
+            if (PackageType!=null)
+            {
+		        if (PackageType.PackageType == "CoreLanguagePack" || PackageType.PackageType == "ExtensionLanguagePack")
+		        {
+		            compact = true;
+		        }
             }
             if (!IsAzureDatabase())
             {

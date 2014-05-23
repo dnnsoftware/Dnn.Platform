@@ -28,7 +28,6 @@ using System.Text;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
@@ -89,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             _mockMessagingController = new Mock<IMessagingController>();
             MessagingController.SetTestableInstance(_mockMessagingController.Object);
-            TestablePortalController.SetTestableInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
             PortalGroupController.RegisterInstance(_portalGroupController.Object);
 
             _mockInternalMessagingController = new Mock<IInternalMessagingController>();
@@ -101,7 +100,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupDataProvider();
             SetupDataTables();
         }
-
+        
         private void SetupDataProvider()
         {
             //Standard DataProvider Path for Logging
@@ -113,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             ComponentFactory.Container = null;
             MessagingController.ClearInstance();
-            TestablePortalController.ClearInstance();
+            PortalController.ClearInstance();
             InternalMessagingController.ClearInstance();
         }
 
@@ -733,88 +732,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-        [ExpectedException(typeof(RecipientLimitExceededException))]
-        public void SendNotification_Throws_On_Recipient_Limit_Exceeded()
-        {
-            var adminUser = new UserInfo { PortalID = Constants.CONTENT_ValidPortalId };
-
-            _mockNotificationsController.Setup(nc => nc.GetAdminUser()).Returns(adminUser);
-
-            var roles = new List<RoleInfo>
-                            {
-                                new RoleInfo { RoleName = "Role1" },
-                                new RoleInfo { RoleName = "Role2" }
-                            };
-
-            _mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(1);
-
-            var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            _portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
-
-            _mockNotificationsController.Object.SendNotification(
-                CreateUnsavedNotification(),
-                Constants.PORTAL_Zero,
-                roles,
-                null);
-        }
-
-        [Test]
-        public void SendNotification_Filters_Input_When_ProfanityFilter_Is_Enabled()
-        {
-            const string expectedSubjectFiltered = "subject_filtered";
-            const string expectedBodyFiltered = "body_filtered";
-
-            var adminUser = new UserInfo
-            {
-                UserID = Constants.UserID_Admin,
-                DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.PORTAL_Zero
-            };
-
-            _mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
-
-            var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            _portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
-
-            var roles = new List<RoleInfo>();
-            var users = new List<UserInfo>
-                            {
-                                new UserInfo
-                                    {
-                                        UserID = Constants.UserID_User12,
-                                        DisplayName = Constants.UserDisplayName_User12
-                                    }
-                            };
-
-
-
-            _mockDataService
-                .Setup(ds => ds.SendNotification(
-                    It.IsAny<Notification>(),
-                    Constants.PORTAL_Zero));
-
-            _mockNotificationsController
-                .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
-                .Returns("YES");
-
-            _mockNotificationsController.Setup(mc => mc.InputFilter(Constants.Messaging_NotificationSubject)).Returns(expectedSubjectFiltered);
-            _mockNotificationsController.Setup(mc => mc.InputFilter(Constants.Messaging_NotificationBody)).Returns(expectedBodyFiltered);
-            _mockNotificationsController.Setup(nc => nc.GetExpirationDate(It.IsAny<int>())).Returns(DateTime.MinValue);
-
-            var notification = CreateUnsavedNotification();
-            notification.SenderUserID = adminUser.UserID;
-
-            _mockNotificationsController.Object.SendNotification(
-                notification,
-                Constants.PORTAL_Zero,
-                roles,
-                users);
-
-            Assert.AreEqual(expectedSubjectFiltered, notification.Subject);
-            Assert.AreEqual(expectedBodyFiltered, notification.Body);
-        }
-
-        [Test]
         public void SendNotification_Calls_DataService_On_Valid_Notification()
         {
             var adminUser = new UserInfo
@@ -848,6 +765,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
+            notification.SendToast = false;
 
             _mockNotificationsController.Object.SendNotification(
                 notification,
@@ -896,6 +814,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
+            notification.SendToast = false;
 
             _mockNotificationsController.Object.SendNotification(
                 notification,
@@ -946,6 +865,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
+            notification.SendToast = false;
 
             _mockNotificationsController.Object.SendNotification(
                 notification,
@@ -1006,6 +926,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
+            notification.SendToast = false;
 
             _mockNotificationsController.Object.SendNotification(
                 notification,
@@ -1074,6 +995,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var notification = CreateUnsavedNotification();
             notification.SenderUserID = adminUser.UserID;
+            notification.SendToast = false;
 
             _mockNotificationsController.Object.SendNotification(
                 notification,
@@ -1246,7 +1168,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                            To = Constants.UserDisplayName_User12,
                            From = Constants.UserDisplayName_Admin,
                            SenderUserID = Constants.UserID_Admin,
-                           Context = Constants.Messaging_NotificationContext
+                           Context = Constants.Messaging_NotificationContext,
+                           SendToast = false
                        };
         }
 

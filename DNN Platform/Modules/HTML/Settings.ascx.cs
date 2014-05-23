@@ -110,15 +110,15 @@ namespace DotNetNuke.Modules.Html
 											|| ModuleSettings["HtmlText_UseDecorate"].ToString() == "1";
 
                     // get workflow/version settings
-                    var arrWorkflows = new ArrayList();
-                    foreach (WorkflowStateInfo objState in workflowStateController.GetWorkflows(PortalId))
+                    var workflows = new ArrayList();
+                    foreach (WorkflowStateInfo state in workflowStateController.GetWorkflows(PortalId))
                     {
-                        if (!objState.IsDeleted)
+                        if (!state.IsDeleted)
                         {
-                            arrWorkflows.Add(objState);
+                            workflows.Add(state);
                         }
                     }
-                    cboWorkflow.DataSource = arrWorkflows;
+                    cboWorkflow.DataSource = workflows;
                     cboWorkflow.DataBind();
                     var workflow = htmlTextController.GetWorkflow(ModuleId, TabId, PortalId);
                     if ((cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null))
@@ -133,8 +133,10 @@ namespace DotNetNuke.Modules.Html
                         rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
                     }
 
-					txtSearchDescLength.Text = ModuleSettings.ContainsKey("HtmlText_SearchDescLength") && !string.IsNullOrEmpty(ModuleSettings["HtmlText_SearchDescLength"].ToString())
-								? ModuleSettings["HtmlText_SearchDescLength"].ToString() : HtmlTextController.MAX_DESCRIPTION_LENGTH.ToString();
+					txtSearchDescLength.Text = ModuleSettings.ContainsKey("HtmlText_SearchDescLength") 
+                                                && !string.IsNullOrEmpty(ModuleSettings["HtmlText_SearchDescLength"].ToString())
+								                    ? ModuleSettings["HtmlText_SearchDescLength"].ToString() 
+                                                    : HtmlTextController.MAX_DESCRIPTION_LENGTH.ToString();
                 }
                 //Module failed to load
             }
@@ -152,22 +154,20 @@ namespace DotNetNuke.Modules.Html
             try
             {
                 var htmlTextController = new HtmlTextController();
-                var objWorkflow = new WorkflowStateController();
 
                 // update replace token setting
-                var objModules = new ModuleController();
-                objModules.UpdateModuleSetting(ModuleId, "HtmlText_ReplaceTokens", chkReplaceTokens.Checked.ToString());
-				objModules.UpdateModuleSetting(ModuleId, "HtmlText_UseDecorate", cbDecorate.Checked ? "1" : "0");
-				objModules.UpdateModuleSetting(ModuleId, "HtmlText_SearchDescLength", txtSearchDescLength.Text);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_ReplaceTokens", chkReplaceTokens.Checked.ToString());
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_UseDecorate", cbDecorate.Checked ? "1" : "0");
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "HtmlText_SearchDescLength", txtSearchDescLength.Text);
 
                 // disable module caching if token replace is enabled
                 if (chkReplaceTokens.Checked)
                 {
-                    ModuleInfo objModule = objModules.GetModule(ModuleId, TabId, false);
-                    if (objModule.CacheTime > 0)
+                    ModuleInfo module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+                    if (module.CacheTime > 0)
                     {
-                        objModule.CacheTime = 0;
-                        objModules.UpdateModule(objModule);
+                        module.CacheTime = 0;
+                        ModuleController.Instance.UpdateModule(module);
                     }
                 }
 

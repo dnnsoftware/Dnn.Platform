@@ -274,7 +274,7 @@ namespace DotNetNuke.Services.Vendors
 
         public BannerInfo GetBanner(int BannerId)
         {
-            return (BannerInfo) CBO.FillObject(DataProvider.Instance().GetBanner(BannerId), typeof (BannerInfo));
+            return CBO.FillObject<BannerInfo>(DataProvider.Instance().GetBanner(BannerId));
         }
 
         public DataTable GetBannerGroups(int PortalId)

@@ -169,8 +169,7 @@ namespace DotNetNuke.Services.Search
         private IEnumerable<SearchDocument> GetSearchDocuments(IndexingProvider indexer, DateTime startDate)
         {
             var searchDocs = new List<SearchDocument>();
-            var portalController = new PortalController();
-            var portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
 
             foreach (var portal in portals.Cast<PortalInfo>())
@@ -219,8 +218,7 @@ namespace DotNetNuke.Services.Search
         private IEnumerable<SearchDocument> GetModuleMetaData(DateTime startDate)
         {
             var searchDocs = new List<SearchDocument>();
-            var portalController = new PortalController();
-            var portals = portalController.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
             var indexer = new ModuleIndexer();
             DateTime indexSince;
 
@@ -318,13 +316,11 @@ namespace DotNetNuke.Services.Search
         protected SearchItemInfoCollection GetContent(IndexingProvider indexer)
         {
             var searchItems = new SearchItemInfoCollection();
-            var objPortals = new PortalController();
-            var arrPortals = objPortals.GetPortals();
-            int intPortal;
-            for (intPortal = 0; intPortal <= arrPortals.Count - 1; intPortal++)
+            var portals = PortalController.Instance.GetPortals();
+            for (var index = 0; index <= portals.Count - 1; index++)
             {
-                var objPortal = (PortalInfo) arrPortals[intPortal];
-                searchItems.AddRange(indexer.GetSearchIndexItems(objPortal.PortalID));
+                var portal = (PortalInfo) portals[index];
+                searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
             }
             return searchItems;
         }

@@ -21,6 +21,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -29,6 +30,7 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Urls
 {
+    [Serializable]
     public class ExtensionUrlProviderInfo : IHydratable
     {
         public ExtensionUrlProviderInfo()

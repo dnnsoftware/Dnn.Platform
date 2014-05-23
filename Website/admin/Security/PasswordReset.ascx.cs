@@ -68,7 +68,10 @@ namespace DotNetNuke.Modules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
+            if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
+            {
+                Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
+            }
             cmdChangePassword.Click +=cmdChangePassword_Click;
             
             hlCancel.NavigateUrl = Globals.NavigateURL();
@@ -197,28 +200,25 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var portalSecurity = new PortalSecurity();
+            var log = new LogInfo
+            {
+                LogPortalID = PortalSettings.PortalId,
+                LogPortalName = PortalSettings.PortalName,
+                LogUserID = UserId
+            };
 
-            var objEventLog = new EventLogController();
-            var objEventLogInfo = new LogInfo();
-            
-            objEventLogInfo.AddProperty("IP", _ipAddress);
-            objEventLogInfo.LogPortalID = PortalSettings.PortalId;
-            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-            objEventLogInfo.LogUserID = UserId;
-        //    objEventLogInfo.LogUserName = portalSecurity.InputFilter(txtUsername.Text,
-          //                                                           PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             if (string.IsNullOrEmpty(message))
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_SUCCESS";
+                log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
             }
             else
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_FAILURE";
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Cause", message));
+                log.LogTypeKey = "PASSWORD_SENT_FAILURE";
+                log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
+            log.AddProperty("IP", _ipAddress);
             
-            objEventLog.AddLog(objEventLogInfo);
+            LogController.Instance.AddLog(log);
         }
 
         #endregion

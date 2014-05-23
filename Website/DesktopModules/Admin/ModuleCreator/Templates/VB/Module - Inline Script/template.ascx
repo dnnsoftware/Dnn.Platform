@@ -1,4 +1,4 @@
-<%@ Control Language="VB" ClassName="[OWNER].[MODULE].[CONTROL]" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
+<%@ Control Language="VB" ClassName="_OWNER_._MODULE_._CONTROL_" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
 
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="System" %>
@@ -10,8 +10,8 @@
 #Region "Copyright"
 
 ' 
-' Copyright (c) [YEAR]
-' by [OWNER]
+' Copyright (c) _YEAR_
+' by _OWNER_
 ' 
 
 #End Region
@@ -31,8 +31,7 @@ Protected Overrides Sub OnLoad(e As EventArgs)
 End Sub
 
 Protected Sub cmdSave_Click(sender As Object, e As EventArgs) Handles cmdSave.Click
-    Dim controller As New ModuleController()
-    controller.UpdateModuleSetting(ModuleId, "field", txtField.Text)
+        ModuleController.Instance.UpdateModuleSetting(ModuleId, "field", txtField.Text)
     Skins.Skin.AddModuleMessage(Me, "Update Successful", Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
 End Sub
 

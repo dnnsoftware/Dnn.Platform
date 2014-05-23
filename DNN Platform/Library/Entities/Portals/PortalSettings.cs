@@ -37,7 +37,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
@@ -114,8 +114,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings(int tabID, int portalID)
         {
-            var controller = new PortalController();
-            var portal = controller.GetPortal(portalID);
+            var portal = PortalController.Instance.GetPortal(portalID);
             GetPortalSettings(tabID, portal);
         }
 
@@ -138,8 +137,7 @@ namespace DotNetNuke.Entities.Portals
             ActiveTab = new TabInfo();
             PortalId = objPortalAliasInfo.PortalID;
             PortalAlias = objPortalAliasInfo;
-            var controller = new PortalController();
-            var portal = controller.GetPortal(PortalId);
+            var portal = PortalController.Instance.GetPortal(PortalId);
             if (portal != null)
             {
                 GetPortalSettings(tabID, portal);
@@ -178,6 +176,8 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
         public Guid GUID { get; set; }
         public string HomeDirectory { get; set; }
+        
+        public string HomeSystemDirectory { get; set; }
         public int HomeTabId { get; set; }
         public float HostFee { get; set; }
         public int HostSpace { get; set; }
@@ -194,6 +194,8 @@ namespace DotNetNuke.Entities.Portals
         public string RegisteredRoleName { get; set; }
         public int RegisterTabId { get; set; }
         public int SearchTabId { get; set; }
+        public int ErrorPage404 { get; private set; }
+        public int ErrorPage500 { get; private set; }
         public int SiteLogHistory { get; set; }
         public int SplashTabId { get; set; }
         public int SuperTabId { get; set; }
@@ -276,7 +278,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -348,7 +350,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
+                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
                 {
                     return alias.HTTPAlias;
                 }
@@ -428,6 +430,20 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether to use the module effect in edit mode.
+        /// </summary>
+        /// <remarks>Defaults to True</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool EnableModuleEffect
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("EnableModuleEffect", PortalId, true);
+            }
+        }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// Gets whether hide the login link.
@@ -473,22 +489,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        public int ErrorPage404
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("AUM_ErrorPage404", PortalId, Null.NullInteger);
-            }
-        }
-
-        public int ErrorPage500
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsInteger("AUM_ErrorPage500", PortalId, Null.NullInteger);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether folders which are hidden or whose name begins with underscore
@@ -510,6 +510,16 @@ namespace DotNetNuke.Entities.Portals
         }
 
         public string HomeDirectoryMapPath { get; private set; }
+
+        public string HomeSystemDirectoryMapPath { get; private set; }
+
+        public bool IncludePortalCss
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("IncludePortalCss", PortalId, false);
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -714,7 +724,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return UserController.GetCurrentUserInfo();
+                return UserController.Instance.GetCurrentUserInfo();
             }
         }
 
@@ -759,6 +769,32 @@ namespace DotNetNuke.Entities.Portals
 		    }
 	    }
 
+        /// <summary>
+        /// Website Administrator whether receive the notification email when new user register.
+        /// </summary>
+        public string DefaultAuthProvider
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
+            }
+        }
+
+        public int SMTPConnectionLimit
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalId, 1);
+            }
+        }
+
+        public int SMTPMaxIdleTime
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalId,  0);
+            }
+        }
         #endregion
 
         #region IPropertyAccess Members
@@ -1020,9 +1056,8 @@ namespace DotNetNuke.Entities.Portals
         private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
         {
             TabInfo tab;
-            var tabController = new TabController();
-            var portalTabs = tabController.GetTabsByPortal(PortalId);
-            var hostTabs = tabController.GetTabsByPortal(Null.NullInteger);
+            var portalTabs = TabController.Instance.GetTabsByPortal(PortalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
             bool tabFound = portalTabs.TryGetValue(tabId, out tab);
             if (!tabFound)
             {
@@ -1086,9 +1121,12 @@ namespace DotNetNuke.Entities.Portals
             RegisterTabId = portal.RegisterTabId;
             UserTabId = portal.UserTabId;
             SearchTabId = portal.SearchTabId;
+            ErrorPage404 = portal.Custom404TabId;
+            ErrorPage500 = portal.Custom500TabId;
             DefaultLanguage = portal.DefaultLanguage;
-            HomeDirectory = portal.HomeDirectory;
+            //HomeDirectory = portal.HomeDirectory;            
             HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
+            HomeSystemDirectoryMapPath = portal.HomeSystemDirectoryMapPath;
             Pages = portal.Pages;
             Users = portal.Users;
             CultureCode = portal.CultureCode;
@@ -1103,6 +1141,7 @@ namespace DotNetNuke.Entities.Portals
                 DefaultLanguage = Localization.SystemLocale;
             }
             HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
+            HomeSystemDirectory = Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/";
 
             //verify tab for portal. This assigns the Active Tab based on the Tab Id/PortalId
             if (VerifyPortalTab(PortalId, tabID))
@@ -1154,9 +1193,8 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         private bool VerifyPortalTab(int portalId, int tabId)
         {
-            var tabController = new TabController();
-            var portalTabs = tabController.GetTabsByPortal(portalId);
-            var hostTabs = tabController.GetTabsByPortal(Null.NullInteger);
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
             //Check portal
             bool isVerified = VerifyTabExists(tabId, portalTabs);
@@ -1207,13 +1245,11 @@ namespace DotNetNuke.Entities.Portals
 
         private bool VerifySpecialTab(int portalId, int tabId)
         {
-            var tabController = new TabController();
-            TabInfo tab;
             bool isVerified = false;
 
             if (tabId > 0)
             {
-                tab = tabController.GetTab(tabId, portalId, false);
+                TabInfo tab = TabController.Instance.GetTab(tabId, portalId, false);
                 if (tab != null)
                 {
                     ActiveTab = tab.Clone();
@@ -1226,11 +1262,11 @@ namespace DotNetNuke.Entities.Portals
 
         private bool VerifyTabExists(int tabId, TabCollection tabs)
         {
-            TabInfo tab;
             bool isVerified = false;
 
             if (tabId != Null.NullInteger)
             {
+                TabInfo tab;
                 if (tabs.TryGetValue(tabId, out tab))
                 {
                     if (!tab.IsDeleted)
@@ -1409,7 +1445,7 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasInfo")]
         public static PortalAliasInfo GetPortalAliasInfo(string portalAlias)
         {
-            return PortalAliasController.GetPortalAliasInfo(portalAlias);
+            return PortalAliasController.Instance.GetPortalAlias(portalAlias);
         }
 
         [Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByPortal")]
@@ -1428,7 +1464,7 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in TestablePortalAliasController.Instance.GetPortalAliases())
+            foreach (var kvp in PortalAliasController.Instance.GetPortalAliases())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }

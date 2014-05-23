@@ -269,25 +269,34 @@ namespace DotNetNuke.Common.Utilities
             return intValue;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the value of a node
-        /// </summary>
-        /// <param name="navigator">Parent XPathNavigator</param>
-        /// <param name="path">The Xpath expression to the value</param>
-        /// <returns></returns>
-        /// <history>
-        /// 	[cnurse]	11/08/2004	moved from PortalController and made Public Shared
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        /// <summary>Gets the value of a child node as a <see cref="string"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <returns>The value of the node or <see cref="string.Empty"/> if the node doesn't exist or doesn't have a value</returns>
         public static string GetNodeValue(XPathNavigator navigator, string path)
         {
-            string strValue = Null.NullString;
-            XPathNavigator elementNav = navigator.SelectSingleNode(path);
-            if (elementNav != null)
+            return GetNodeValue(navigator, path, string.Empty);
+        }
+
+        /// <summary>Gets the value of a child node as a <see cref="string"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value</param>
+        /// <returns>The value of the node or <paramref name="defaultValue"/></returns>
+        public static string GetNodeValue(XPathNavigator navigator, string path, string defaultValue)
+        {
+            var childNodeNavigator = navigator.SelectSingleNode(path);
+            if (childNodeNavigator == null)
             {
-                strValue = elementNav.Value;
+                return defaultValue;
             }
+
+            var strValue = childNodeNavigator.Value;
+            if (string.IsNullOrEmpty(strValue) && !string.IsNullOrEmpty(defaultValue))
+            {
+                return defaultValue;
+            }
+
             return strValue;
         }
 
@@ -387,6 +396,37 @@ namespace DotNetNuke.Common.Utilities
             return bValue;
         }
 
+        /// <summary>Gets the value of a child node as a <see cref="bool"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <returns>The value of the node or <c>false</c> if the node doesn't exist or doesn't have a value</returns>
+        public static bool GetNodeValueBoolean(XPathNavigator navigator, string path)
+        {
+            return GetNodeValueBoolean(navigator, path, false);
+        }
+
+        /// <summary>Gets the value of a child node as a <see cref="bool"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value</param>
+        /// <returns>The value of the node or <paramref name="defaultValue"/></returns>
+        public static bool GetNodeValueBoolean(XPathNavigator navigator, string path, bool defaultValue)
+        {
+            var childNodeNavigator = navigator.SelectSingleNode(path);
+            if (childNodeNavigator == null)
+            {
+                return defaultValue;
+            }
+
+            string strValue = childNodeNavigator.Value;
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(strValue);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node
@@ -418,6 +458,34 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+            return dateValue;
+        }
+
+        /// <summary>Gets the value of a child node as a <see cref="DateTime"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value</param>
+        /// <returns>The value of the node or <paramref name="defaultValue"/></returns>
+        public static DateTime GetNodeValueDate(XPathNavigator navigator, string path, DateTime defaultValue)
+        {
+            var childNodeNavigator = navigator.SelectSingleNode(path);
+            if (childNodeNavigator == null)
+            {
+                return defaultValue;
+            }
+
+            string strValue = childNodeNavigator.Value;
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return defaultValue;
+            }
+
+            var dateValue = Convert.ToDateTime(strValue);
+            if (dateValue.Date.Equals(Null.NullDate.Date))
+            {
+                return Null.NullDate;
+            }
+
             return dateValue;
         }
 
@@ -471,6 +539,37 @@ namespace DotNetNuke.Common.Utilities
             return intValue;
         }
 
+        /// <summary>Gets the value of a child node as an <see cref="int"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value</returns>
+        public static int GetNodeValueInt(XPathNavigator navigator, string path)
+        {
+            return GetNodeValueInt(navigator, path, 0);
+        }
+
+        /// <summary>Gets the value of a child node as an <see cref="int"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value</param>
+        /// <returns>The value of the node or <paramref name="defaultValue"/></returns>
+        public static int GetNodeValueInt(XPathNavigator navigator, string path, int defaultValue)
+        {
+            var childNodeNavigator = navigator.SelectSingleNode(path);
+            if (childNodeNavigator == null)
+            {
+                return defaultValue;
+            }
+
+            string strValue = childNodeNavigator.Value;
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToInt32(strValue);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node
@@ -519,6 +618,37 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
             return sValue;
+        }
+
+        /// <summary>Gets the value of a child node as a <see cref="float"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value</returns>
+        public static float GetNodeValueSingle(XPathNavigator navigator, string path)
+        {
+            return GetNodeValueSingle(navigator, path, 0);
+        }
+
+        /// <summary>Gets the value of a child node as a <see cref="float"/></summary>
+        /// <param name="navigator">A navigator pointing to the parent node</param>
+        /// <param name="path">An XPath expression to find the child node</param>
+        /// <param name="defaultValue">Default value to return if the node doesn't exist or doesn't have a value</param>
+        /// <returns>The value of the node or <paramref name="defaultValue"/></returns>
+        public static float GetNodeValueSingle(XPathNavigator navigator, string path, float defaultValue)
+        {
+            var childNodeNavigator = navigator.SelectSingleNode(path);
+            if (childNodeNavigator == null)
+            {
+                return defaultValue;
+            }
+
+            string strValue = childNodeNavigator.Value;
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToSingle(strValue, CultureInfo.InvariantCulture);
         }
 
         /// -----------------------------------------------------------------------------

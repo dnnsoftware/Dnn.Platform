@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FolderMappingController.RegisterInstance(_folderMappingController.Object);
             DirectoryWrapper.RegisterInstance(_directory.Object);
 			FileWrapper.RegisterInstance(_file.Object);
-            CBOWrapper.RegisterInstance(_cbo.Object);
+            CBO.SetTestableInstance(_cbo.Object);
             PathUtils.RegisterInstance(_pathUtils.Object);
             UserSecurityController.SetTestableInstance(_mockUserSecurityController.Object);
             FileDeletionController.SetTestableInstance(_mockFileDeletionController.Object);
@@ -101,6 +101,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             UserSecurityController.ClearInstance();
             FileLockingController.ClearInstance();
             MockComponentProvider.ResetContainer();
+            CBO.ClearInstance();
+            FileDeletionController.ClearInstance();
         }
 
         #endregion
@@ -772,7 +774,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folders = new List<FolderInfo>();
 
-            _cbo.Setup(cbo => cbo.GetCachedObject<List<FolderInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>())).Returns(folders).Verifiable();
+            _cbo.Setup(cbo => cbo.GetCachedObject<List<FolderInfo>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), false)).Returns(folders).Verifiable();
 
             _mockFolderManager.Object.GetFolders(Constants.CONTENT_ValidPortalId);
 

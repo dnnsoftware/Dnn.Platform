@@ -142,7 +142,9 @@
     <Compile Include="Controllers\Messaging\NotificationsControllerTests.cs" />
     <Compile Include="Controllers\Search\SearchQueryStringParserTests.cs" />
     <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
+    <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
     <Compile Include="Providers\Builders\FolderInfoBuilder.cs" />
     <Compile Include="Providers\Builders\FileInfoBuilder.cs" />
     <Compile Include="Providers\Folder\DatabaseFolderProviderTests.cs" />
@@ -158,7 +160,6 @@
     <Compile Include="RetryableActionTests.cs" />
     <Compile Include="Services\ClientCapability\FacebookRequestControllerTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
-    <Compile Include="Services\Mail\MailTests.cs" />
     <Compile Include="Services\Mobile\PreviewProfileControllerTests.cs" />
     <Compile Include="Services\Mobile\RedirectionControllerTests.cs" />
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />

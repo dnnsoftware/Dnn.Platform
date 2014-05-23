@@ -35,7 +35,6 @@ using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Log.EventLog;
 
@@ -69,7 +68,7 @@ namespace DotNetNuke.Entities.Urls
             string newRewritePath = rewritePath;
             string aliasCulture = null;
             //get the culture for this alias
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID).ToList();
 
             if (primaryAliases.Count > 0)
             {
@@ -91,8 +90,7 @@ namespace DotNetNuke.Entities.Urls
                 if (redirect.PortalAliasId > 0)
                 {
                     //has a custom portal alias
-                    var pac = new PortalAliasController();
-                    PortalAliasInfo customAlias = pac.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
+                    PortalAliasInfo customAlias = PortalAliasController.Instance.GetPortalAliasByPortalAliasID(redirect.PortalAliasId);
                     if (customAlias != null)
                     {
                         //this will be used to add the Url to the dictionary
@@ -137,30 +135,27 @@ namespace DotNetNuke.Entities.Urls
                 }
                 //check the culture of the redirect to see if it either doesn't match the alias or needs to specify
                 //the language when requested
-                if (redirect.CultureCode != null)
+                if (!String.IsNullOrEmpty(redirect.CultureCode) && redirect.CultureCode != "Default")
                 {
-                    if (redirect.CultureCode != "" && redirect.CultureCode != "Default")
+                    //806 : specify duplicates where the alias culture doesn't match the redirect culture
+                    //so that redirect to the best match between alias culture and redirect culture
+                    //compare the supplied alias culture with the redirect culture
+                    //856 : if alias culture == "" and a custom 301 redirect then redirects are forced
+                    if (!string.IsNullOrEmpty(aliasCulture) && aliasCulture != redirect.CultureCode)
                     {
-                        //806 : specify duplicates where the alias culture doesn't match the redirect culture
-                        //so that redirect to the best match between alias culture and redirect culture
-                        //compare the supplied alias culture with the redirect culture
-                        //856 : if alias culture == "" and a custom 301 redirect then redirects are forced
-                        if (!string.IsNullOrEmpty(aliasCulture) && aliasCulture != redirect.CultureCode)
-                        {
-                            //the culture code and the specific culture alias don't match
-                            //set 301 check status and set to delete if a duplicate is found
-                            redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
-                                                                                redirectedRewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.Custom_Redirect);
-                            newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(newRewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.Custom_Redirect);
-                            duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
-                        }
-                        //add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
-                        RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
+                        //the culture code and the specific culture alias don't match
+                        //set 301 check status and set to delete if a duplicate is found
+                        redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
+                                                                            redirectedRewritePath,
+                                                                            ActionType.CheckFor301,
+                                                                            RedirectReason.Custom_Redirect);
+                        newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(newRewritePath,
+                                                                            ActionType.CheckFor301,
+                                                                            RedirectReason.Custom_Redirect);
+                        duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
                     }
+                    //add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
+                    RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
                 }
                 //now add the custom redirect to the tab dictionary
                 if (String.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
@@ -380,23 +375,45 @@ namespace DotNetNuke.Entities.Urls
                 cultureRewritePath += "&language=" + cultureCode;
             }
             //hard coded page paths - using 'tabDeleted' in case there is a clash with an existing page (ie, someone has created a page that takes place of the standard page, created page has preference)
+            
+            //need check custom login/register page set in portal and redirect to the specific page.
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var loginRewritePath = portalRewritePath + "&ctl=Login" + cultureRewritePath;
+            var loginPreference = UrlEnums.TabKeyPreference.TabDeleted;
+            var loginTabId = Null.NullInteger;
+            if (portal != null && portal.LoginTabId > Null.NullInteger && Globals.ValidateLoginTabID(portal.LoginTabId))
+            {
+                loginTabId = portal.LoginTabId;
+                loginPreference = UrlEnums.TabKeyPreference.TabOK;
+                loginRewritePath = CreateRewritePath(loginTabId, cultureCode);
+            }
             AddToTabDict(tabIndex,
                             dupCheck,
                             httpAlias,
                             "login",
-                            portalRewritePath + "&ctl=Login" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
+                            loginRewritePath,
+                            loginTabId,
+                            loginPreference,
                             ref tabDepth,
                             false,
                             false);
+
+            var registerRewritePath = portalRewritePath + "&ctl=Register" + cultureRewritePath;
+            var registerPreference = UrlEnums.TabKeyPreference.TabDeleted;
+            var registerTabId = Null.NullInteger;
+            if (portal != null && portal.RegisterTabId > Null.NullInteger)
+            {
+                registerTabId = portal.RegisterTabId;
+                registerPreference = UrlEnums.TabKeyPreference.TabOK;
+                registerRewritePath = CreateRewritePath(registerTabId, cultureCode);
+            }
             AddToTabDict(tabIndex,
                             dupCheck,
                             httpAlias,
                             "register",
-                            portalRewritePath + "&ctl=Register" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
+                            registerRewritePath,
+                            registerTabId,
+                            registerPreference,
                             ref tabDepth,
                             false,
                             false);
@@ -849,9 +866,8 @@ namespace DotNetNuke.Entities.Urls
                                 portalId = portalDic[tabId];
                             }
 
-                            var tc = new TabController();
-                            TabInfo tab1 = tc.GetTab(tabIdOriginal, portalId, false);
-                            TabInfo tab2 = tc.GetTab(tabId, portalId, false);
+                            TabInfo tab1 = TabController.Instance.GetTab(tabIdOriginal, portalId, false);
+                            TabInfo tab2 = TabController.Instance.GetTab(tabId, portalId, false);
                             if (tab1 != null)
                             {
                                 tab1Name = tab1.TabName + " [" + tab1.TabPath + "]";
@@ -869,16 +885,15 @@ namespace DotNetNuke.Entities.Urls
                         const string msg2 = "PLEASE NOTE : this is an information message only, this message does not affect site operations in any way.";
 
                         //771 : change to admin alert instead of exception
-                        var elc = new EventLogController();
                         //log a host alert
-                        var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                        logValue.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
-                        logValue.AddProperty("Duplicate Page Details", msg);
-                        logValue.AddProperty("Warning Information", msg2);
-                        logValue.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
-                        logValue.AddProperty("Hide this message", "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
-                        logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                        elc.AddLog(logValue);
+                        var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                        log.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
+                        log.AddProperty("Duplicate Page Details", msg);
+                        log.AddProperty("Warning Information", msg2);
+                        log.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
+                        log.AddProperty("Hide this message", "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
+                        log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 else
@@ -898,7 +913,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static OrderedDictionary BuildPortalAliasesRegexDictionary()
         {
-            IDictionary<string, PortalAliasInfo> aliases = TestablePortalAliasController.Instance.GetPortalAliases();
+            IDictionary<string, PortalAliasInfo> aliases = PortalAliasController.Instance.GetPortalAliases();
             //create a new OrderedDictionary.  We use this because we
             //want to key by the correct regex pattern and return the
             //portalAlias that matches, and we want to preserve the
@@ -1277,10 +1292,10 @@ namespace DotNetNuke.Entities.Urls
             useAliases = new List<PortalAliasInfo>();
             aliasCultures = new Dictionary<string, string>();
             //761 : return list of chosen aliases as well, so that Urls can be d
-            var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
             //list of portal aliases for this portal
             List<string> chosenAliases = null;
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
             if (primaryAliases.Count > 0)
             {
                 chosenAliases = primaryAliases.GetAliasesForPortalId(portalId);
@@ -1528,7 +1543,7 @@ namespace DotNetNuke.Entities.Urls
             PortalAliasInfo retValue = null;
 
             //get the portal alias collection from the cache
-            var portalAliasCollection = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+            var portalAliasCollection = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
             bool foundAlias = false;
 
@@ -1649,8 +1664,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             //add log entry for cache clearance
-            var elc = new EventLogController();
-            var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
+            var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
             try
             {
                 //817 : not clearing items correctly from dictionary
@@ -1662,9 +1676,9 @@ namespace DotNetNuke.Entities.Urls
                 Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            logValue.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
-            logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-            elc.AddLog(logValue);
+            log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
+            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+            LogController.Instance.AddLog(log);
         }
 
         #endregion

@@ -1,29 +1,29 @@
 ﻿/*
    SQL Database Install Script
-   for [MODULE] Module
-   Copyright (c) [YEAR]
-   by [OWNER]
+   for _MODULE_ Module
+   Copyright (c) _YEAR_
+   by _OWNER_
 */
 
-CREATE TABLE [dbo].[OWNER]_[MODULE]s
+CREATE TABLE [dbo]._OWNER___MODULE_s
 (
-    [MODULE]ID int IDENTITY(1,1) NOT NULL,
+    _MODULE_ID int IDENTITY(1,1) NOT NULL,
     ModuleID int NOT NULL,
     Title nvarchar(50) NOT NULL,
     Description nvarchar(max) NOT NULL,
     IsActive [bit] NOT NULL,
     CreatedOnDate [datetime] NOT NULL,
     CreatedByUserID [int] NOT NULL,
-    CONSTRAINT [PK_[OWNER]_[MODULE]s]
-    PRIMARY KEY CLUSTERED ( [[MODULE]ID] ASC )
+    CONSTRAINT [PK__OWNER___MODULE_s]
+    PRIMARY KEY CLUSTERED ( [_MODULE_ID] ASC )
 )
 
 
 GO
 
-ALTER TABLE [dbo].[OWNER]_[MODULE]s 
+ALTER TABLE [dbo]._OWNER___MODULE_s 
     ADD CONSTRAINT
-	FK_[OWNER]_[MODULE]s_Modules FOREIGN KEY
+	FK__OWNER___MODULE_s_Modules FOREIGN KEY
 	(
 	    ModuleID
 	) REFERENCES dbo.Modules

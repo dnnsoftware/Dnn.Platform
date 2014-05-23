@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 string strMode = "";
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //Check if Personal Preference is set
                 if (objUserInfo.UserID >= 0)
@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.UserControls
             }
             set
             {
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 if (value.ToUpper() != "BASIC")
                 {
@@ -411,7 +411,7 @@ namespace DotNetNuke.UI.UserControls
                 PopulateLists();
 
                 //Get the current user
-                //UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                //UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //Set the width and height of the controls
                 _richTextEditor.Width = Width;

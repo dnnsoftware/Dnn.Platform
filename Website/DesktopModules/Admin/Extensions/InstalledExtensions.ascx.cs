@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 if ((_packagesInUse == null))
                 {
-                    _packagesInUse = PackageController.GetModulePackagesInUse(PortalController.GetCurrentPortalSettings().PortalId, ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
+                    _packagesInUse = PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
                 }
                 return _packagesInUse;
             }
@@ -189,11 +189,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         var formatString = ModuleContext.NavigateUrl(ModuleContext.TabId, "UnInstall", false, parameters);                        
                         formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
-                        imageColumn.Visible = UserController.GetCurrentUserInfo().IsSuperUser;
+                        imageColumn.Visible = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
                     }
                     if (imageColumn.CommandName == "Edit")
                     {
-                        string formatString = ModuleContext.EditUrl("PackageID", "keyfield", "Edit");
+                        string formatString = ModuleContext.EditUrl("packageid", "keyfield", "Edit");
                         formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
@@ -241,8 +241,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     var portalID = Convert.ToInt32(DataBinder.Eval(dataItem, "PortalID"));
                     if ((portalID != Null.NullInteger && portalID != int.MinValue))
                     {
-                        var controller = new PortalController();
-                        PortalInfo portal = controller.GetPortal(portalID);
+                        var portal = PortalController.Instance.GetPortal(portalID);
                         returnValue = string.Format(Localization.GetString("InstalledOnPortal.Tooltip", LocalResourceFile), portal.PortalName);
                     }
                     else

@@ -147,7 +147,9 @@ namespace DotNetNuke.Security
                                       "javascript:",
                                       "vbscript:",
                                       "unescape",
-                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?"
+                                      "alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?",
+                                      @"eval*.\(",
+                                      "onload"
                                   };
 
             const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
@@ -391,14 +393,14 @@ namespace DotNetNuke.Security
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.SystemAndPortalList:
-                            settings = PortalController.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentPortalSettings();
                             listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", removeItem.Value, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.PortalList:
-                            settings = PortalController.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentPortalSettings();
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", removeItem.Value, options));
                             break;
@@ -452,14 +454,14 @@ namespace DotNetNuke.Security
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", string.Empty, options));
                             break;
                         case FilterScope.SystemAndPortalList:
-                            settings = PortalController.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentPortalSettings();
                             listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", string.Empty, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", string.Empty, options));
                             break;
                         case FilterScope.PortalList:
-                            settings = PortalController.GetCurrentPortalSettings();
+                            settings = PortalController.Instance.GetCurrentPortalSettings();
                             listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + removeItem.Text + @"\b", string.Empty, options));        
                             break;
@@ -699,8 +701,8 @@ namespace DotNetNuke.Security
 
         public static bool IsDenied(string roles)
         {
-            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsDenied(objUserInfo, settings, roles);
         }
 
@@ -744,7 +746,7 @@ namespace DotNetNuke.Security
 
         public static bool IsInRole(string role)
         {
-            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             HttpContext context = HttpContext.Current;
             if (!String.IsNullOrEmpty(role) && ((context.Request.IsAuthenticated == false && role == Globals.glbRoleUnauthUserName)))
             {
@@ -755,8 +757,8 @@ namespace DotNetNuke.Security
 
         public static bool IsInRoles(string roles)
         {
-            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, roles);            
         }
 

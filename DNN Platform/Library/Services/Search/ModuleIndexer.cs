@@ -196,8 +196,7 @@ namespace DotNetNuke.Services.Search
         #pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
         {
-            var moduleController = new ModuleController();
-            var module = moduleController.GetModule(searchItem.ModuleId);
+            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
 
             var searchDoc = new SearchDocument
             {
@@ -310,8 +309,7 @@ namespace DotNetNuke.Services.Search
         protected SearchContentModuleInfoCollection GetModuleList(int portalId)
         {
             var results = new SearchContentModuleInfoCollection();
-            var objModules = new ModuleController();
-            var arrModules = objModules.GetSearchModules(portalId);
+            var arrModules = ModuleController.Instance.GetSearchModules(portalId);
             var businessControllers = new Hashtable();
             var htModules = new Hashtable();
             
@@ -361,12 +359,14 @@ namespace DotNetNuke.Services.Search
         {
             try
             {
-                var message = string.Format("Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4}) ",
-                                                  module.DesktopModule.BusinessControllerClass,
-                                                  module.DesktopModule.ModuleName,
-                                                  module.ModuleID,
-                                                  module.TabID,
-                                                  module.PortalID);
+                var message = string.Format(
+                        Localization.Localization.GetExceptionMessage("ErrorCreatingBusinessControllerClass",
+                            "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
+                        module.DesktopModule.BusinessControllerClass,
+                        module.DesktopModule.ModuleName,
+                        module.ModuleID,
+                        module.TabID,
+                        module.PortalID);
                 throw new Exception(message, ex);
             }
             catch (Exception ex1)
@@ -377,23 +377,21 @@ namespace DotNetNuke.Services.Search
 
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleInfo>();
             //Only get modules that are set to be Indexed.
-            var modules = moduleController.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
+            var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 
             foreach (var module in modules.Where(module => !searchModuleIds.Contains(module.ModuleID)))
             {
                 try
                 {
-                    var tab = tabController.GetTab(module.TabID, portalId, false);
+                    var tab = TabController.Instance.GetTab(module.TabID, portalId, false);
                     //Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
-                        //Check if the business controller is in the Hashtable
+                        //Check if the business controller is in the Hashtable                        
                         var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
                         if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
                         {

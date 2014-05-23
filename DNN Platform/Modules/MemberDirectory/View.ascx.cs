@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Web.Routing;
 using System.Web.UI;
 
@@ -118,7 +119,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User");
+                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User") && ModuleContext.PortalSettings.UserId > -1;
             }
         }
 

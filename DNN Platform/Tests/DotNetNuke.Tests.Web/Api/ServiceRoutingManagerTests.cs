@@ -24,8 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Framework.Internal.Reflection;
+using DotNetNuke.Framework.Reflections;
 
 using Moq;
 using NUnit.Framework;
@@ -50,7 +49,13 @@ namespace DotNetNuke.Tests.Web.Api
 
             _mockPortalController = new Mock<IPortalController>();
             _portalController = _mockPortalController.Object;
-            TestablePortalController.SetTestableInstance(_portalController);
+            PortalController.SetTestableInstance(_portalController);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
         }
 
         [Test]
@@ -158,7 +163,7 @@ namespace DotNetNuke.Tests.Web.Api
             _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
             mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
-            TestablePortalAliasController.SetTestableInstance(mockPac.Object);
+            PortalAliasController.SetTestableInstance(mockPac.Object);
 
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(routeCollection);
@@ -179,7 +184,7 @@ namespace DotNetNuke.Tests.Web.Api
             _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
             mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
-            TestablePortalAliasController.SetTestableInstance(mockPac.Object);
+            PortalAliasController.SetTestableInstance(mockPac.Object);
 
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(routeCollection);
