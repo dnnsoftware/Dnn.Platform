@@ -1161,7 +1161,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         {
                             if (redirecturl.Url == url && redirecturl.HttpStatus != "200")
                             {
-                                TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, false);
+                                TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, true);
                             }
                         }
                     }
