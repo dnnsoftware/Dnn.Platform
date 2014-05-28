@@ -40,11 +40,8 @@ namespace DotNetNuke.Tests.Data
         [SetUp]
         public void SetUp()
         {
-            if (ComponentFactory.Container == null)
-            {
-                ComponentFactory.Container = new SimpleContainer();
-                ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
-            }
+            ComponentFactory.Container = new SimpleContainer();
+            ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
         }
 
         [Test]
