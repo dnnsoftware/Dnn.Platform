@@ -392,7 +392,7 @@ namespace DotNetNuke.Services.FileSystem
                 ContentWorkflow folderWorkflow = null;
 
                 var contentFileName = fileName;
-
+                var fileHash = string.Empty;
                 if (needToWriteFile)
                 {
                     if (!fileContent.CanSeek)
@@ -403,7 +403,8 @@ namespace DotNetNuke.Services.FileSystem
 
                     // Retrieve Metadata
                     file.Size = (int)fileContent.Length;
-                    file.SHA1Hash = folderProvider.GetHashCode(file, fileContent);
+                    fileHash = folderProvider.GetHashCode(file, fileContent);
+                    file.SHA1Hash = fileHash;
                     fileContent.Position = 0;
 
                     file.Width = 0;
@@ -490,7 +491,7 @@ namespace DotNetNuke.Services.FileSystem
                                                               file.Folder,
                                                               file.FolderId,
                                                               createdByUserID,
-                                                              file.SHA1Hash,
+                                                              fileHash,
                                                               file.LastModificationTime,
                                                               file.Title,
                                                               file.StartDate,
@@ -510,6 +511,13 @@ namespace DotNetNuke.Services.FileSystem
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
+                    }
+
+                    var providerHash = folderProvider.GetHashCode(file);
+                    if (fileHash != providerHash)
+                    {
+                        DataProvider.Instance()
+                            .UpdateFileHashCode(file.FileId, providerHash);
                     }
                 }
                 catch (FileLockedException fle)

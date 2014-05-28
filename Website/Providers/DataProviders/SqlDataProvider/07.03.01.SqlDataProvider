@@ -8,7 +8,21 @@
 /*****                                                  *****/
 /************************************************************/
 
+/***** Fix bug Content-2547: add sp UpdateFileHashCode. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileHashCode]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileHashCode]
+GO
 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileHashCode]
+	@FileId				  Int, 		-- Not Null
+	@HashCode VARCHAR(40)  -- Not NULL
+AS
+BEGIN
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET    SHA1Hash = @HashCode
+    WHERE  FileId = @FileId
+END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
