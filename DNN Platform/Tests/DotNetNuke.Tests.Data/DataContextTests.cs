@@ -21,6 +21,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.Configuration;
 
 using DotNetNuke.ComponentModel;
@@ -41,7 +42,21 @@ namespace DotNetNuke.Tests.Data
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
-            ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
+            //ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
+            ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
+            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
+            {
+                {"name", "SqlDataProvider"},
+                {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
+                {"connectionStringName", "SiteSqlServer"},
+                {"objectQualifier", ""},
+                {"databaseOwner", "dbo."}
+            });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
         }
 
         [Test]
