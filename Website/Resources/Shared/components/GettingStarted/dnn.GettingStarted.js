@@ -111,7 +111,7 @@
                             $element("div", { "class": this._options.headerLeftInputCss }).append(
                                 $element("div").append(
                                     $element("div", { "class": this._options.inputboxWrapperCss }).append(
-                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).text(this._options.resources.signUpLabel)
+                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).val(this._options.resources.signUpLabel)
                                     ),
                                     $element("a", { href: "javascript:void(0);", title: this._options.resources.signUpButton }).text(this._options.resources.signUpButton)
                                 )
