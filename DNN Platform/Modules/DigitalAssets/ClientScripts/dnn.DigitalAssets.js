@@ -141,6 +141,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 }
             }, 250);
         });
+
+        controller.initMainMenuButtons(settings);
     }
 
     function setupDnnMainToolbarTitles() {

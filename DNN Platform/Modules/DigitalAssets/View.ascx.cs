@@ -606,7 +606,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-                ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                ClientResourceManager.RegisterScript(Page, popupFilePath, FileOrder.Js.DnnModalPopup);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
 
                 var i = 1;
