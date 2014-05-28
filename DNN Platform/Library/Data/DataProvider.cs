@@ -1618,6 +1618,13 @@ namespace DotNetNuke.Data
                                       lastModificationTime);
         }
 
+        public virtual void UpdateFileHashCode(int fileId, string hashCode)
+        {
+            ExecuteNonQuery("UpdateFileHashCode",
+                                      fileId,
+                                      hashCode);
+        }
+
         public virtual void UpdateFileContent(int fileId, byte[] content)
         {
             ExecuteNonQuery("UpdateFileContent", fileId, GetNull(content));
