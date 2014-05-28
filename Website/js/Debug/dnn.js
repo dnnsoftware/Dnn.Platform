@@ -347,9 +347,10 @@ dnn.extend(dnn, {
             mask.style.position = 'absolute';
             mask.style.left = ele.offsetLeft + "px";
             mask.style.top = ele.offsetTop + "px";
-            mask.style.width = rect.width + "px";
-            mask.style.height = rect.height + "px";
+            mask.style.width = (rect.right - rect.left) + "px";
+            mask.style.height = (rect.bottom - rect.top) + "px";
             mask.style.opacity = '0';
+            mask.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
             mask.style.zIndex = "-1";
 
             return mask;
