@@ -332,6 +332,9 @@ span.dnnModuleDigitalAssetsNoItems {
     margin-right: 10px;
     margin-left: 0;
 }
+#dnnModuleDigitalAssetsMainToolbar button.hidden, #dnnModuleDigitalAssetsMainToolbar span.hidden {
+    display: none !important;
+}
 
 #dnnModuleDigitalAssetsMainToolbar button span {
     background-position: center center;
