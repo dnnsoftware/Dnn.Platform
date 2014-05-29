@@ -1851,4 +1851,7 @@
   <data name="FriendsAndGroups.Text" xml:space="preserve">
     <value>Friends and Groups</value>
   </data>
+  <data name="SharedModule.Text" xml:space="preserve">
+    <value>This is a Shared Module.</value>
+  </data>
 </root>

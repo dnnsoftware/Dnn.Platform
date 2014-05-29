@@ -51,6 +51,8 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.Containers
 {
+    using DotNetNuke.Entities.Tabs;
+
     using Web.Client;
 
     /// -----------------------------------------------------------------------------
@@ -239,6 +241,11 @@ namespace DotNetNuke.UI.Containers
             ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo\">{0}</div>", message)));
         }
 
+        private void AddModuleSharedHighlighting(string message)
+        {
+            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo\">{0}</div>", message)));
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ProcessChildControls parses all the controls in the container, and if the
@@ -337,6 +344,12 @@ namespace DotNetNuke.UI.Containers
             if (showMessage)
             {
                 AddAdministratorOnlyHighlighting(adminMessage);
+            }
+
+            if (PortalSettings.UserMode == PortalSettings.Mode.Edit && (new TabController().GetTabsByModuleID(ModuleConfiguration.ModuleID).Count > 1 || ModuleConfiguration.AllTabs))
+            {
+                var sharedModuleMessage = Localization.GetString("SharedModule.Text");
+                AddModuleSharedHighlighting(sharedModuleMessage);
             }
         }
 
