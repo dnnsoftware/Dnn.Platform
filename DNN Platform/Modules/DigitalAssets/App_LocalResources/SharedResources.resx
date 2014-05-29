@@ -330,4 +330,13 @@
   <data name="ManageFolderTypesToolBarButtonExtensionPoint.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
   </data>
+  <data name="UnlinkToolBarButtonExtensionPoint.AltText" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkToolBarButtonExtensionPoint.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UserHasNoPermissionToUnlinkFolder.Error" xml:space="preserve">
+    <value>The user has no permission to unlink this folder</value>
+  </data>
 </root>

@@ -291,6 +291,8 @@
             deleteText: '<%= Localization.GetSafeJSString(LocalizeString("Delete")) %>',
             deleteTitle: '<%= Localization.GetSafeJSString(LocalizeString("Delete.Title")) %>',
             deleteConfirmText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirm")) %>',
+            deleteConfirmWithMappedSubfoldersText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirmWithMappedSubfolders")) %>',
+            deleteConfirmWithMappedSubfolderText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirmWithMappedSubfolder")) %>',
             okText: '<%= Localization.GetSafeJSString(LocalizeString("OkConfirm")) %>',
             noText: '<%= Localization.GetSafeJSString(LocalizeString("NoConfirm")) %>',
             closeText: '<%= Localization.GetSafeJSString(LocalizeString("Close")) %>',
@@ -350,8 +352,11 @@
             noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>',
             unzipFilePromptTitle: '<%= Localization.GetSafeJSString("FileUpload.UnzipFilePromptTitle.Text", Localization.SharedResourceFile) %>',
             unzipFileFailedPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileFailedPromptBody.Text", Localization.SharedResourceFile) %>',
-            unzipFileSuccessPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileSuccessPromptBody.Text", Localization.SharedResourceFile) %>'
-
+            unzipFileSuccessPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileSuccessPromptBody.Text", Localization.SharedResourceFile) %>',
+            unlinkFolderErrorText: '<%= Localization.GetSafeJSString(LocalizeString("UnlinkFolderError.Title")) %>',
+            unlinkTitle: '<%= Localization.GetSafeJSString(LocalizeString("Unlink.Title")) %>',
+            unlinkConfirmText: '<%= Localization.GetSafeJSString(LocalizeString("UnlinkConfirm.Text")) %>',
+            unlinkText: '<%= Localization.GetSafeJSString(LocalizeString("Unlink.Text")) %>'
         },
         new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {}, {userId: '<%= UserId %>'})
     );
