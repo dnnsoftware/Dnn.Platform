@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private bool GetOnlyUnmap(IFolderInfo folder)
         {
-            if (folder.ParentID == Null.NullInteger)
+            if (folder == null || folder.ParentID == Null.NullInteger)
             {
                 return true;
             }
