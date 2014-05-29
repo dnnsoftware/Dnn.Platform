@@ -441,10 +441,9 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderManager = FolderManager.Instance;
 
-                // Check if this is a User Folder
-                var effectivePortalId = isHostPortal
-                                            ? Null.NullInteger
-                                            : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalSettings.PortalId;
+
+                // Check if this is a User Folder                
                 int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out userId))
