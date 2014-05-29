@@ -33,8 +33,12 @@ namespace DotNetNuke.Tests.Utilities
             string path = Path.GetFullPath(uri.AbsolutePath);
 
             WebsiteAppPath = "http://localhost/DNN_Platform";
-            WebsitePhysicalAppPath = Path.Combine(path.Substring(0, path.IndexOf("DNN%20Platform", System.StringComparison.Ordinal)), "Website") ;
+            var websiteRootPath = path.Substring(0, path.IndexOf("DNN%20Platform", System.StringComparison.Ordinal));
+            WebsitePhysicalAppPath = Path.Combine(websiteRootPath, "Website");
+            HighlightDataPath = Path.Combine(websiteRootPath, "DNN Platform//Modules//PreviewProfileManagement//Resources//highlightDevices.xml");
         }
+
+        public string HighlightDataPath { get; set; }
 
         public string WebsiteAppPath { get; set; }
 
