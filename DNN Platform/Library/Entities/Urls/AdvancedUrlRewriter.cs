@@ -1619,7 +1619,11 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 if (portalAliases.Count > 0)
                                 {
-                                    var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
+                                    //var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
+                                    string url = requestUri.ToString();
+                                    RewriteController.CheckLanguageMatch(ref url, result);
+                                    var cpa = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
+
                                     if (cpa != null)
                                     {
                                         httpAlias = cpa.HTTPAlias;

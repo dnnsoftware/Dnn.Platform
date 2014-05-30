@@ -424,7 +424,7 @@ namespace DotNetNuke.Entities.Urls
             return found;
         }
 
-        private static string CheckLanguageMatch(ref string url, UrlAction result)
+        internal static string CheckLanguageMatch(ref string url, UrlAction result)
         {
             //ok now scan for the language modifier 
             Match langMatch = Regex.Match(url, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
