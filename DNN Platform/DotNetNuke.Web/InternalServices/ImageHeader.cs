@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.InternalServices
 	/// </summary>
 	public static class ImageHeader
 	{
-		private const string ErrorMessage = "Could not recognise image format.";
+		private const string ErrorMessage = "Could not recognize image format.";
 
 		private static readonly Dictionary<byte[], Func<BinaryReader, Size>> ImageFormatDecoders = new Dictionary
 			<byte[], Func<BinaryReader, Size>>
