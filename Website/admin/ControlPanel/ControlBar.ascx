@@ -410,9 +410,9 @@
         noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
         titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
         deleteText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("DeletePage") )%>',
-        publishConfirmHeader: '<%= GetPublishConfirmHeader()%>',
-        publishConfirmText: '<%= GetPublishConfirmText()%>',
-        publishedPage: '<%= GetTabPublishing()%>',
+        publishConfirmHeader: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetPublishConfirmHeader())%>',
+        publishConfirmText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetPublishConfirmText())%>',
+        publishedPage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetTabPublishing())%>',
         copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
             
         dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
@@ -430,8 +430,8 @@
         defaultCategoryValue: 'All',
         
         loadingModulesId: 'ControlBar_ModuleListWaiter_LoadingMessage',
-        loadingModulesMessage: '<%= GetString("LoadingModule.Text")%>',
-        loadingModulesOnNoDefaultCategoryMessage: "<%= GetString("LoadingModuleOnNoDefaultCategory.Text")%>"
+        loadingModulesMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("LoadingModule.Text"))%>',
+        loadingModulesOnNoDefaultCategoryMessage: "<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("LoadingModuleOnNoDefaultCategory.Text"))%>"
     };
     
     $(function() {
