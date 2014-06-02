@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.InternalServices
 			{
 				byte marker = binaryReader.ReadByte();
 				short chunkLength = ReadLittleEndianInt16(binaryReader);
-				if (marker == 0xc0)
+                if (marker == 0xc0 || marker == 0xc2)
 				{
 					binaryReader.ReadByte();
 					int height = ReadLittleEndianInt16(binaryReader);
