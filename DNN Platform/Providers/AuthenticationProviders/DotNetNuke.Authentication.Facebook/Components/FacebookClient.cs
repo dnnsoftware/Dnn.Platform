@@ -58,11 +58,14 @@ namespace DotNetNuke.Authentication.Facebook.Components
         protected override TimeSpan GetExpiry(string responseText)
         {
             TimeSpan expiry = TimeSpan.MinValue;
-            foreach (string token in responseText.Split('&'))
+            if (!String.IsNullOrEmpty(responseText))
             {
-                if (token.StartsWith("expires"))
+                foreach (string token in responseText.Split('&'))
                 {
-                    expiry = new TimeSpan(0, 0, Convert.ToInt32(token.Replace("expires=", "")));
+                    if (token.StartsWith("expires"))
+                    {
+                        expiry = new TimeSpan(0, 0, Convert.ToInt32(token.Replace("expires=", "")));
+                    }
                 }
             }
             return expiry;
@@ -71,11 +74,14 @@ namespace DotNetNuke.Authentication.Facebook.Components
         protected override string GetToken(string responseText)
         {
             string authToken = String.Empty;
-            foreach (string token in responseText.Split('&'))
+            if (!String.IsNullOrEmpty(responseText))
             {
-                if (token.StartsWith("access_token"))
+                foreach (string token in responseText.Split('&'))
                 {
-                    authToken = token.Replace("access_token=", "");
+                    if (token.StartsWith("access_token"))
+                    {
+                        authToken = token.Replace("access_token=", "");
+                    }
                 }
             }
             return authToken;
