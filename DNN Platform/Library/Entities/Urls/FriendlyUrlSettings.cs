@@ -374,7 +374,7 @@ namespace DotNetNuke.Entities.Urls
 
             _deletedTabHandling = PortalController.GetPortalSetting(DeletedTabHandlingTypeSetting, PortalId, DeletedTabHandlingType.Do404Error.ToString());
 
-            UseBaseFriendlyUrls = GetStringSetting("useBaseFriendlyUrls", null);
+            UseBaseFriendlyUrls = GetStringSetting("useBaseFriendlyUrls", String.Empty);
             if (!String.IsNullOrEmpty(UseBaseFriendlyUrls) && !UseBaseFriendlyUrls.EndsWith(";"))
             {
                 UseBaseFriendlyUrls += ";";
