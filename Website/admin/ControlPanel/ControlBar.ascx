@@ -12,7 +12,7 @@
             </div>
             <!-- close ServiceIcon -->
             <ul id="ControlNav">
-                <% if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+                <% if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
                    {%>
                 <li><a href="<%= GetTabURL("Admin", false, Null.NullInteger) %>">
                     <%= GetString("Tool.Admin.Text") %></a>
@@ -203,7 +203,7 @@
                 </li>
                 <% } %>
                 
-                 <% if (UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
+                 <% if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
                     {%>
                 <li><a href="javascript:void(0)">
                     <%= GetString("Tool.Users.Text") %></a>
