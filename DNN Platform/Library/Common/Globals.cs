@@ -3806,7 +3806,8 @@ namespace DotNetNuke.Common
         {
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
             var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
-            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}";
+            var cdv = DateTime.Now.Ticks;
+            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}&cdv="+cdv;
 
         }
 
