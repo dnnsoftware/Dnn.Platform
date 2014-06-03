@@ -1337,6 +1337,7 @@ dnn.controlBar.init = function (settings) {
             return false;
         }
 
+        dnn.controlBar.forceCategorySelection = true;
         $find(settings.categoryComboId).findItemByValue("Developer").select();
         addModule();
     }
