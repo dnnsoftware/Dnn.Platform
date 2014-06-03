@@ -8,7 +8,49 @@
 /*****                                                  *****/
 /************************************************************/
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId					int,
+    @VersionGuid			uniqueidentifier,	
+    @FileName				nvarchar(246),
+    @Extension				nvarchar(100),
+    @Size					int,
+    @Width					int,
+    @Height					int,
+    @ContentType			nvarchar(200),	
+    @FolderID				int,
+	@LastModifiedByUserID  	int,
+	@Hash					varchar(40),
+	@LastModificationTime	datetime,
+	@Title					nvarchar(256),
+	@EnablePublishPeriod	bit,
+	@StartDate				datetime,
+	@EndDate				datetime,	
+	@ContentItemID			int
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    FileName = @FileName,
+               VersionGuid = @VersionGuid,
+               Extension = @Extension,
+               Size = @Size,
+               Width = @Width,
+               Height = @Height,
+               ContentType = @ContentType,
+               FolderID = @FolderID,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate(),
+			   SHA1Hash = @Hash,
+			   LastModificationTime = @LastModificationTime,
+			   Title = @Title,
+			   EnablePublishPeriod = @EnablePublishPeriod,
+			   StartDate = @StartDate,
+			   EndDate = @EndDate,
+			   ContentItemID = @ContentItemID
+    WHERE  FileId = @FileId
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
