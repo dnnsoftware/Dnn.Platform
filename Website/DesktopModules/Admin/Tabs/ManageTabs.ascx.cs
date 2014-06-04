@@ -93,7 +93,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab = new TabInfo { TabID = Null.NullInteger, PortalID = PortalId };
                             break;
                         case "copy":
-                            _tab = TabController.Instance.GetTab(TabId, PortalId, false).Clone();
+                            var originalTab = TabController.Instance.GetTab(TabId, PortalId, false);
+                            _tab = originalTab.Clone();
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -101,6 +102,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab.TabPath = Null.NullString;
                             _tab.DefaultLanguageGuid = Null.NullGuid;
                             _tab.CultureCode = Null.NullString;
+                            foreach (var key in originalTab.TabSettings.Keys)
+                            {
+                                _tab.TabSettings[key] = originalTab.TabSettings[key];
+                            }
 
                             break;
                         default:

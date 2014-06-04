@@ -904,6 +904,7 @@ namespace DotNetNuke.Entities.Tabs
 
             clonedTab.Panes = new ArrayList();
             clonedTab.Modules = new ArrayList();
+
             return clonedTab;
         }
 
