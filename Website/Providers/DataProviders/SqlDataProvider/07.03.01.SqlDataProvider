@@ -13,23 +13,23 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
-    @FileId					int,
-    @VersionGuid			uniqueidentifier,	
-    @FileName				nvarchar(246),
-    @Extension				nvarchar(100),
-    @Size					int,
-    @Width					int,
-    @Height					int,
-    @ContentType			nvarchar(200),	
-    @FolderID				int,
-	@LastModifiedByUserID  	int,
-	@Hash					varchar(40),
-	@LastModificationTime	datetime,
-	@Title					nvarchar(256),
-	@EnablePublishPeriod	bit,
-	@StartDate				datetime,
-	@EndDate				datetime,	
-	@ContentItemID			int
+    @FileId					INT,
+    @VersionGuid			UNIQUEIDENTIFIER,	
+    @FileName				NVARCHAR(246),
+    @Extension				NVARCHAR(100),
+    @Size					INT,
+    @Width					INT,
+    @Height					INT,
+    @ContentType			NVARCHAR(200),	
+    @FolderID				INT,
+    @LastModifiedByUserID  	INT,
+    @Hash					VARCHAR(40),
+    @LastModificationTime	DATETIME,
+    @Title					NVARCHAR(256),
+    @EnablePublishPeriod	BIT,
+    @StartDate				DATETIME,
+    @EndDate				DATETIME,	
+    @ContentItemID			INT
 AS
     UPDATE {databaseOwner}{objectQualifier}Files
         SET    FileName = @FileName,

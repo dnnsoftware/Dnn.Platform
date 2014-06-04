@@ -1043,7 +1043,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
-                It.IsAny<string>(),
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),

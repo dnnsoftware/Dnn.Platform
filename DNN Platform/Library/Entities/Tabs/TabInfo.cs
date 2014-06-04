@@ -893,14 +893,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            if (TabSettings != null)
-            {
-                foreach (var key in TabSettings.Keys)
-                {
-                    clonedTab.TabSettings.Add(key, TabSettings[key]);
-                }
-            }
-
             Clone(clonedTab, this);
 
             //localized properties
