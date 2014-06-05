@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Skins.Controls
         //This method is copied from user skin object
         private int GetMessageTab()
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}", PortalSettings.PortalId);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", PortalSettings.PortalId, PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
                 return messageTabId;

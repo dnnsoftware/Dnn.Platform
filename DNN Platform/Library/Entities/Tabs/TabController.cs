@@ -892,9 +892,18 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Copy Permissions from original Tab for Admins only
+                //If original tab is user tab or its parent tab is user tab, then copy full permission
+                //from original tab.
                 PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
-                localizedCopy.TabPermissions.AddRange(
+                if (originalTab.TabID == portal.UserTabId || originalTab.ParentId == portal.UserTabId)
+                {
+                    localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions);
+                }
+                else
+                {
+                    localizedCopy.TabPermissions.AddRange(
                     originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
+                }
 
                 //Get the original Tabs Parent
                 //check the original whether have parent.
