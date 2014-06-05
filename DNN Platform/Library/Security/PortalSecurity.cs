@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -39,6 +40,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cryptography;
@@ -50,6 +52,10 @@ namespace DotNetNuke.Security
 {
     public class PortalSecurity
     {
+        private const string RoleFriendPrefix = "FRIEND:";
+        private const string RoleFollowerPrefix = "FOLLOWER:";
+        private const string RoleOwnerPrefix = "OWNER:";
+
         #region FilterFlag enum
 
         ///-----------------------------------------------------------------------------
@@ -92,8 +98,128 @@ namespace DotNetNuke.Security
         }
 
         #endregion
-		
-		#region Private Methods
+
+        #region private enum
+        enum RoleType
+        {
+            Security,
+            Friend,
+            Follower,
+            Owner
+        }
+        #endregion
+
+        #region Private Methods
+
+        private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        {
+            var roleType = GetRoleType(roleName);
+            roleAllowed = null;
+            switch (roleType)
+            {
+                case RoleType.Friend:
+                    ProcessFriendRole(user, roleName, out roleAllowed);
+                    break;
+                case RoleType.Follower:
+                    ProcessFollowerRole(user, roleName, out roleAllowed);
+                    break;
+                case RoleType.Owner:
+                    ProcessOwnerRole(user, roleName, out roleAllowed);
+                    break;
+                default:
+                    ProcessSecurityRole(user, settings, roleName, out roleAllowed);
+                    break;
+            }
+        }
+
+        private static void ProcessFriendRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
+            var relationShip = RelationshipController.Instance.GetFriendRelationship(user, targetUser);
+            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static void ProcessFollowerRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var targetUser = UserController.Instance.GetUserById(user.PortalID, GetEntityFromRoleName(roleName));
+            var relationShip = RelationshipController.Instance.GetFollowerRelationship(user, targetUser);
+            if (relationShip != null && relationShip.Status == RelationshipStatus.Accepted)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static void ProcessOwnerRole(UserInfo user, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            var entityId = GetEntityFromRoleName(roleName);
+            if (entityId == user.UserID)
+            {
+                roleAllowed = true;
+            }
+        }
+
+        private static int GetEntityFromRoleName(string roleName)
+        {
+            var roleParts = roleName.Split(':');
+            int result;
+            if (roleParts.Length > 1 && Int32.TryParse(roleParts[1], out result))
+            {
+                return result;
+            }
+            return Null.NullInteger;
+        }
+
+        private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        {
+            roleAllowed = null;
+            //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+            if (!String.IsNullOrEmpty(roleName))
+            {
+                //Deny permission
+                if (roleName.StartsWith("!"))
+                {
+                    //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                    if (!(settings.PortalId == user.PortalID && settings.AdministratorId == user.UserID))
+                    {
+                        string denyRole = roleName.Replace("!", "");
+                        if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
+                        {
+                            roleAllowed = false;
+                        }
+                    }
+                }
+                else //Grant permission
+                {
+                    if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
+                    {
+                        roleAllowed = true;
+                    }
+                }
+            }            
+        }
+
+        private static RoleType GetRoleType(string roleName)
+        {
+            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFriendPrefix))
+            {
+                return RoleType.Friend;
+            }
+            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleFollowerPrefix))
+            {
+                return RoleType.Follower;
+            }
+            if (roleName.ToUpper(CultureInfo.InvariantCulture).StartsWith(RoleOwnerPrefix))
+            {
+                return RoleType.Owner;
+            }
+            return RoleType.Security;
+        }
 
         private string BytesToHexString(byte[] bytes)
         {
@@ -756,7 +882,7 @@ namespace DotNetNuke.Security
             {
                 return true;
             }
-            return objUserInfo.IsInRole(role);
+            return IsInRoles(objUserInfo, PortalController.Instance.GetCurrentPortalSettings(), role);
         }
 
         public static bool IsInRoles(string roles)
@@ -774,40 +900,42 @@ namespace DotNetNuke.Security
             if (!isInRoles)
             {
                 if (roles != null)
-                {
-                    //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                {                    
                     foreach (string role in roles.Split(new[] { ';' }))
                     {
-                        if (!String.IsNullOrEmpty(role))
+                        bool? roleAllowed;
+                        ProcessRole(objUserInfo, settings, role, out roleAllowed);
+                        if (roleAllowed.HasValue)
                         {
-                            //Deny permission
-                            if (role.StartsWith("!"))
-                            {
-                                //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                                if (!(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
-                                {
-                                    string denyRole = role.Replace("!", "");
-                                    if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            else //Grant permission
-                            {
-                                if (role == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(role))
-                                {
-                                    isInRoles = true;
-                                    break;
-                                }
-                            }
+                            isInRoles = roleAllowed.Value;
+                            break;
                         }
                     }
                 }
             }
-            return isInRoles;
+            return isInRoles; 
         }
-		
+
+        public static bool IsFriend(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleFriendPrefix + userId);
+        }
+
+        public static bool IsFollower(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleFollowerPrefix + userId);
+        }
+
+        public static bool IsOwner(int userId)
+        {
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
+        }
 		#endregion
 		
 		#region Obsoleted Methods, retained for Binary Compatability
@@ -882,5 +1010,5 @@ namespace DotNetNuke.Security
         }
 		
 		#endregion
-    }
+    }    
 }
