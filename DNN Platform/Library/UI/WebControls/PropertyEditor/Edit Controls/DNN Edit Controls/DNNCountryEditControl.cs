@@ -20,7 +20,10 @@
 #endregion
 #region Usings
 
+using System;
+using System.Linq;
 using System.Web.UI;
+using DotNetNuke.Common.Lists;
 
 #endregion
 
@@ -57,6 +60,31 @@ namespace DotNetNuke.UI.WebControls
             ParentKey = "";
             TextField = ListBoundField.Text;
             ValueField = ListBoundField.Text;
+            ItemChanged += OnItemChanged;
+        }
+
+        void OnItemChanged(object sender, PropertyEditorEventArgs e)
+        {
+            var regionContainer = ControlUtilities.FindControl<Control>(Parent, "Region", true);
+            if (regionContainer != null)
+            {
+                var regionControl = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(regionContainer);
+                if (regionControl != null)
+                {
+                    var listController = new ListController();
+                    var countries = listController.GetListEntryInfoItems("Country");
+                    foreach (var checkCountry in countries)
+                    {
+                        if (checkCountry.Text == e.StringValue)
+                        {
+                            var attributes = new object[1];
+                            attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Text, ListBoundField.Text);
+                            regionControl.CustomAttributes = attributes;
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
