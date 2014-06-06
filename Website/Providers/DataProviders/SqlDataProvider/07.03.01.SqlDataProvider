@@ -52,6 +52,68 @@ AS
     WHERE  FileId = @FileId
 GO
 
+/*** Fix bug Content-2592: Null object exception when installing Event module ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+	@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@CreatedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+	INSERT INTO  {databaseOwner}{objectQualifier}Schedule(
+		 TypeFullName
+		,TimeLapse
+		,TimeLapseMeasurement
+		,RetryTimeLapse
+		,RetryTimeLapseMeasurement
+		,RetainHistoryNum
+		,AttachToEvent
+		,CatchUpEnabled
+		,Enabled
+		,ObjectDependencies
+		,Servers
+		,FriendlyName
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,ScheduleStartDate
+		)
+	VALUES
+		(@TypeFullName
+		,@TimeLapse
+		,@TimeLapseMeasurement
+		,@RetryTimeLapse
+		,@RetryTimeLapseMeasurement
+		,@RetainHistoryNum
+		,@AttachToEvent
+		,@CatchUpEnabled
+		,@Enabled
+		,@ObjectDependencies
+		,@Servers
+		,@FriendlyName
+		,@CreatedByUserID
+		,getdate()
+		,@CreatedByUserID
+		,getdate()
+		,@ScheduleStartDate
+		)
+		select SCOPE_IDENTITY()
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
