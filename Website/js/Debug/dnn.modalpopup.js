@@ -166,6 +166,7 @@
                 }
                 
                 windowTop.location.href = url;
+                window.dnnModal.pageUnloaded = true;
                 if($(".ui-widget-overlay").length > 0)
                 {
                     dnn.removeIframeMask($(".ui-widget-overlay")[0]);
