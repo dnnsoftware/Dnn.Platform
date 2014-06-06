@@ -1439,8 +1439,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (searchProvider && (!searchPattern || searchPattern == '')) {
             searchProvider.clearSearch();
         }
-
-        $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).show();
     }
 
     function loadInitialContent() {
