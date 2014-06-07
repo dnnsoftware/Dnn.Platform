@@ -30,7 +30,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -61,15 +60,14 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchResult.ModuleId > 0)
             {
                 //Get All related tabIds from moduleId (while minimizing DB access; using caching)
-                var tabController = new TabController();
                 var moduleId = searchResult.ModuleId;
                 // The next call has over 30% performance enhancement over the above one
-                var tabModules = tabController.GetTabsByPortal(searchResult.PortalId).Values
+                var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
                     .SelectMany(tabinfo => tabinfo.ChildModules.Where(kv => kv.Key == moduleId)).Select(m => m.Value);
 
                 foreach (ModuleInfo module in tabModules)
                 {
-                    var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                    var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                     if (!module.IsDeleted && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
@@ -109,13 +107,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 return searchResult.Url;
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            var tabController = new TabController();
             //Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)
             {
-                var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                 if (TabPermissionController.CanViewPage(tab) && ModulePermissionController.CanViewModule(module))
                 {
                     try
@@ -126,7 +123,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         {
                             var portalSettings = new PortalSettings(searchResult.PortalId);
                             portalSettings.PortalAlias =
-                                TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                                PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
                             url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
                                                       searchResult.QueryString);
                         }

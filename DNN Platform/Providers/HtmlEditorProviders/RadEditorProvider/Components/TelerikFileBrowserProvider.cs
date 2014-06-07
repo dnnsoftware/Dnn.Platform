@@ -637,7 +637,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		    {
 		        return null;
 		    }
-
+            radDirectory.Permissions = FileSystemValidation.TelerikPermissions(dnnParentFolder);
 		    var dnnChildFolders = FolderManager.Instance.GetFolders(dnnParentFolder).Where(folder => (FileSystemValidation.HasPermission(folder, "BROWSE,READ")));
             var radDirectories = new List<DirectoryItem>();
             foreach (var dnnChildFolder in dnnChildFolders)

@@ -44,6 +44,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI;
 
 using Telerik.Web.UI;
@@ -252,7 +253,7 @@ namespace DesktopModules.Admin.Tabs
             jQuery.RequestDnnPluginsRegistration();
 
             JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-            ClientAPI.RegisterClientScriptBlock(Page, "dnn.controls.js");
+            ClientResourceManager.RegisterScript(Page, ClientAPI.ScriptPath + "dnn.controls.js", 14);
             dgPermissions.RegisterScriptsForAjaxPanel();
         }
 
@@ -262,7 +263,7 @@ namespace DesktopModules.Admin.Tabs
 
             try
             {
-                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
+                if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.Instance.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
                 {
                     btnBulkCreate.Enabled = true;
                 }
@@ -312,7 +313,7 @@ namespace DesktopModules.Admin.Tabs
         {
             try
             {
-                TabController.CopyDesignToChildren(new TabController().GetTab(Convert.ToInt32(ctlPages.SelectedNode.Value), PortalId, false), drpSkin.SelectedValue, drpContainer.SelectedValue);
+                TabController.CopyDesignToChildren(TabController.Instance.GetTab(Convert.ToInt32(ctlPages.SelectedNode.Value), PortalId, false), drpSkin.SelectedValue, drpContainer.SelectedValue);
                 ShowSuccessMessage(Localization.GetString("DesignCopied", LocalResourceFile));
             }
             catch (Exception ex)
@@ -345,20 +346,18 @@ namespace DesktopModules.Admin.Tabs
         {
             SelectedNode = e.Node.Value;
 
-            var tabController = new TabController();
             var portalId = rblMode.SelectedValue == "H" ? Null.NullInteger : PortalId;
-            var objTab = tabController.GetTab(int.Parse(e.Node.Value), portalId, false);
+            var objTab = TabController.Instance.GetTab(int.Parse(e.Node.Value), portalId, false);
 
             switch (e.MenuItem.Value.ToLower())
             {
                 case "makehome":
                     if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
                     {
-                        var portalController = new PortalController();
-                        PortalInfo portalInfo = portalController.GetPortal(PortalId);
+                        var portalInfo = PortalController.Instance.GetPortal(PortalId);
                         portalInfo.HomeTabId = objTab.TabID;
                         PortalSettings.HomeTabId = objTab.TabID;
-                        portalController.UpdatePortalInfo(portalInfo);                        
+                        PortalController.Instance.UpdatePortalInfo(portalInfo);                        
                         DataCache.ClearPortalCache(PortalId, false);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabMadeHome", LocalResourceFile), objTab.TabName));
@@ -387,7 +386,7 @@ namespace DesktopModules.Admin.Tabs
                 case "delete":
                     if (TabPermissionController.CanDeletePage(objTab))
                     {
-                        tabController.SoftDeleteTab(objTab.TabID, PortalSettings);
+                        TabController.Instance.SoftDeleteTab(objTab.TabID, PortalSettings);
                         BindTree();
                         //keep the parent tab selected
                         if (objTab.ParentId != Null.NullInteger)
@@ -419,7 +418,7 @@ namespace DesktopModules.Admin.Tabs
                     if (TabPermissionController.CanManagePage(objTab))
                     {
                         objTab.IsVisible = false;
-                        tabController.UpdateTab(objTab);
+                        TabController.Instance.UpdateTab(objTab);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabHidden", LocalResourceFile), objTab.TabName));
                     }
@@ -428,7 +427,7 @@ namespace DesktopModules.Admin.Tabs
                     if (TabPermissionController.CanManagePage(objTab))
                     {
                         objTab.IsVisible = true;
-                        tabController.UpdateTab(objTab);
+                        TabController.Instance.UpdateTab(objTab);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabShown", LocalResourceFile), objTab.TabName));
                     }
@@ -437,7 +436,7 @@ namespace DesktopModules.Admin.Tabs
                     if (TabPermissionController.CanManagePage(objTab))
                     {
                         objTab.DisableLink = true;
-                        tabController.UpdateTab(objTab);
+                        TabController.Instance.UpdateTab(objTab);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabDisabled", LocalResourceFile), objTab.TabName));
                     }
@@ -446,7 +445,7 @@ namespace DesktopModules.Admin.Tabs
                     if (TabPermissionController.CanManagePage(objTab))
                     {
                         objTab.DisableLink = false;
-                        tabController.UpdateTab(objTab);
+                        TabController.Instance.UpdateTab(objTab);
                         BindTreeAndShowTab(objTab.TabID);
                         ShowSuccessMessage(string.Format(Localization.GetString("TabEnabled", LocalResourceFile), objTab.TabName));
                     }
@@ -487,8 +486,7 @@ namespace DesktopModules.Admin.Tabs
 
         protected void CtlPagesNodeEdit(object sender, RadTreeNodeEditEventArgs e)
         {            
-            var objTabController = new TabController();
-            var objTab = objTabController.GetTab(int.Parse(e.Node.Value), PortalId, false);
+            var objTab = TabController.Instance.GetTab(int.Parse(e.Node.Value), PortalId, false);
             if (objTab != null && TabPermissionController.CanManagePage(objTab))
             {
                 //Check for invalid
@@ -507,7 +505,7 @@ namespace DesktopModules.Admin.Tabs
                 else
                 {
                     objTab.TabName = e.Text;
-                    objTabController.UpdateTab(objTab);
+                    TabController.Instance.UpdateTab(objTab);
                 }
 
                 BindTreeAndShowTab(objTab.TabID);
@@ -539,8 +537,7 @@ namespace DesktopModules.Admin.Tabs
             if (ctlPages.SelectedNode != null)
             {
                 var tabid = Convert.ToInt32(ctlPages.SelectedNode.Value);
-                var moduleController = new ModuleController();
-                var dic = moduleController.GetTabModules(tabid);
+                var dic = ModuleController.Instance.GetTabModules(tabid);
 
                 lst.AddRange(dic.Values.Where(objModule => objModule.IsDeleted == false));
             }
@@ -572,8 +569,7 @@ namespace DesktopModules.Admin.Tabs
 
             var pages = strValue.Split(char.Parse("\n"));
             var parentId = Convert.ToInt32(((LinkButton)sender).CommandArgument);
-            var tabController = new TabController();
-            var rootTab = tabController.GetTab(parentId, PortalId, true);
+            var rootTab = TabController.Instance.GetTab(parentId, PortalId, true);
             var tabs = new List<TabInfo>();
 
             foreach (var strLine in pages)
@@ -627,9 +623,8 @@ namespace DesktopModules.Admin.Tabs
             var moduleId = Convert.ToInt32(((ImageButton)sender).CommandArgument);
             var tabId = Convert.ToInt32(ctlPages.SelectedNode.Value);
 
-            var moduleController = new ModuleController();
-            moduleController.DeleteTabModule(tabId, moduleId, true);
-            moduleController.ClearCache(tabId);
+            ModuleController.Instance.DeleteTabModule(tabId, moduleId, true);
+            ModuleController.Instance.ClearCache(tabId);
 
             grdModules.Rebind();
         }
@@ -641,10 +636,9 @@ namespace DesktopModules.Admin.Tabs
                 return;
 
             var intTab = Convert.ToInt32(ctlPages.SelectedNode.Value);
-            var tabcontroller = new TabController();
-            var tab = tabcontroller.GetTab(intTab, PortalId, true);
-            this.Page.Validate();
-            if (!this.Page.IsValid) 
+            var tab = TabController.Instance.GetTab(intTab, PortalId, true);
+            Page.Validate();
+            if (!Page.IsValid) 
                 return;
             if (tab != null && TabPermissionController.CanManagePage(tab))
             {
@@ -657,8 +651,8 @@ namespace DesktopModules.Admin.Tabs
 
                 tab.IsDeleted = false;
                 tab.Url = ctlURL.Url;
-                tabcontroller.UpdateTabSetting(tab.TabID, "LinkNewWindow", ctlURL.NewWindow.ToString());
-                tabcontroller.UpdateTabSetting(tab.TabID, "AllowIndex", chkAllowIndex.Checked.ToString());
+                TabController.Instance.UpdateTabSetting(tab.TabID, "LinkNewWindow", ctlURL.NewWindow.ToString());
+                TabController.Instance.UpdateTabSetting(tab.TabID, "AllowIndex", chkAllowIndex.Checked.ToString());
 
                 tab.SkinSrc = drpSkin.SelectedValue;
                 tab.ContainerSrc = drpContainer.SelectedValue;
@@ -702,7 +696,7 @@ namespace DesktopModules.Admin.Tabs
                 tab.Terms.Clear();
                 tab.Terms.AddRange(termsSelector.Terms);
 
-                tabcontroller.UpdateTab(tab);
+                TabController.Instance.UpdateTab(tab);
                 ShowSuccessMessage(string.Format(Localization.GetString("TabUpdated", LocalResourceFile), tab.TabName));
 
                 BindTree();
@@ -838,33 +832,24 @@ namespace DesktopModules.Admin.Tabs
 
         private void BindSkinsAndContainers()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(PortalSettings.PortalId);
+            drpSkin.PortalId = PortalId;
+            drpSkin.RootPath = SkinController.RootSkin;
+            drpSkin.Scope = SkinScope.All;
+            drpSkin.IncludeNoneSpecificItem = true;
+            drpSkin.NoneSpecificText = Localization.GetString("DefaultSkin", LocalResourceFile);
 
-            var skins = SkinController.GetSkins(portal, SkinController.RootSkin, SkinScope.All)
-                                         .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-
-            drpSkin.Items.Clear();
-            drpSkin.DataSource = skins;
-            drpSkin.DataBind();
-            //drpSkin.Items.Insert(0, new ListItem(Localization.GetString("DefaultSkin", LocalResourceFile), ""));
-            drpSkin.InsertItem(0, Localization.GetString("DefaultSkin", LocalResourceFile), "");
-
-            drpContainer.Items.Clear();
-            drpContainer.DataSource = containers;
-            drpContainer.DataBind();
-            //drpContainer.Items.Insert(0, new ListItem(Localization.GetString("DefaultContainer", LocalResourceFile), ""));
-            drpContainer.InsertItem(0, Localization.GetString("DefaultContainer", LocalResourceFile), "");
+            drpContainer.PortalId = PortalId;
+            drpContainer.RootPath = SkinController.RootContainer;
+            drpContainer.Scope = SkinScope.All;
+            drpContainer.IncludeNoneSpecificItem = true;
+            drpContainer.NoneSpecificText = Localization.GetString("DefaultContainer", LocalResourceFile);
         }
 
         private void BindTab(int tabId)
         {
             pnlBulk.Visible = false;
 
-            var tabController = new TabController();
-            var tab = tabController.GetTab(tabId, PortalId, true);
+            var tab = TabController.Instance.GetTab(tabId, PortalId, true);
             
             if (tab != null)
             {
@@ -980,8 +965,7 @@ namespace DesktopModules.Admin.Tabs
             }
             else
             {
-                var tabController = new TabController();
-                var parent = tabController.GetTab(Convert.ToInt32(strParent), -1, false);
+                var parent = TabController.Instance.GetTab(Convert.ToInt32(strParent), -1, false);
                 if (parent != null)
                 {
                     rootNode.Text = parent.TabName;
@@ -1226,14 +1210,13 @@ namespace DesktopModules.Admin.Tabs
                 return false;
             }
 
-            var tabController = new TabController();
             switch (position)
             {
                 case Position.Above:
-                    tabController.MoveTabBefore(tab, targetTab.TabID);
+                    TabController.Instance.MoveTabBefore(tab, targetTab.TabID);
                     break;
                 case Position.Below:
-                    tabController.MoveTabAfter(tab, targetTab.TabID);
+                    TabController.Instance.MoveTabAfter(tab, targetTab.TabID);
                     break;
             }
 
@@ -1249,8 +1232,7 @@ namespace DesktopModules.Admin.Tabs
                 return false;
             }
 
-            var tabController = new TabController();
-            tabController.MoveTabToParent(tab, (targetTab == null) ? Null.NullInteger : targetTab.TabID);
+            TabController.Instance.MoveTabToParent(tab, (targetTab == null) ? Null.NullInteger : targetTab.TabID);
 
             ShowSuccessMessage(string.Format(Localization.GetString("TabMoved", LocalResourceFile), tab.TabName));
             return true;
@@ -1258,9 +1240,8 @@ namespace DesktopModules.Admin.Tabs
 
         private void PerformDragAndDrop(RadTreeViewDropPosition dropPosition, RadTreeNode sourceNode, RadTreeNode destNode)
         {
-            var tabController = new TabController();
-            var sourceTab = tabController.GetTab(int.Parse(sourceNode.Value), PortalId, false);
-            var targetTab = tabController.GetTab(int.Parse(destNode.Value), PortalId, false);
+            var sourceTab = TabController.Instance.GetTab(int.Parse(sourceNode.Value), PortalId, false);
+            var targetTab = TabController.Instance.GetTab(int.Parse(destNode.Value), PortalId, false);
 
             switch (dropPosition)
             {
@@ -1309,8 +1290,7 @@ namespace DesktopModules.Admin.Tabs
         {
             if (IsNumeric(moduleId))
             {
-                var moduleController = new ModuleController();
-                var module = moduleController.GetModule(moduleId);
+                var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
                 if (module != null)
                 {
                     return ModuleContext.NavigateUrl(module.TabID, "", false, "ctl=Module", "ModuleId=" + moduleId);
@@ -1372,14 +1352,13 @@ namespace DesktopModules.Admin.Tabs
                 tab.ContainerSrc = objRoot.ContainerSrc;
             }
 
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings.ContentLocalizationEnabled)
             {
                 tab.CultureCode = LocaleController.Instance.GetDefaultLocale(tab.PortalID).Code;
             }
 
-            var controller = new TabController();
-            var parentTab = controller.GetTab(parentId, -1, false);
+            var parentTab = TabController.Instance.GetTab(parentId, -1, false);
 
             if (parentTab != null)
             {
@@ -1449,14 +1428,13 @@ namespace DesktopModules.Admin.Tabs
                 tab.PermanentRedirect = objRoot.PermanentRedirect;
             }
 
-            var ctrl = new TabController();
-            tab.TabID = ctrl.AddTab(tab);
+            tab.TabID = TabController.Instance.AddTab(tab);
             ApplyDefaultTabTemplate(tab);
 
             //create localized tabs if content localization is enabled
             if (portalSettings.ContentLocalizationEnabled)
             {
-                ctrl.CreateLocalizedCopies(tab);
+                TabController.Instance.CreateLocalizedCopies(tab);
             }
 
             ShowSuccessMessage(string.Format(Localization.GetString("TabCreated", LocalResourceFile), tab.TabName));
@@ -1497,8 +1475,7 @@ namespace DesktopModules.Admin.Tabs
             var tabID = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
             if (tabID != Null.NullInteger && tabID != tab.TabID)
             {
-                var controller = new TabController();
-                var existingTab = controller.GetTab(tabID, tab.PortalID, false);
+                var existingTab = TabController.Instance.GetTab(tabID, tab.PortalID, false);
                 if (existingTab != null && existingTab.IsDeleted)
                     ShowErrorMessage(Localization.GetString("TabRecycled", LocalResourceFile));
                 else

@@ -121,10 +121,10 @@
     <value>Drop File(s) Here</value>
   </data>
   <data name="File.Text" xml:space="preserve">
-    <value>File</value>
+    <value>File:</value>
   </data>
   <data name="Folder.Text" xml:space="preserve">
-    <value>Folder</value>
+    <value>Folder:</value>
   </data>
   <data name="UploadFile.Text" xml:space="preserve">
     <value>Upload File</value>

@@ -9,7 +9,7 @@
 #dnnMobileManagement .dnnRedirectionType { width:250px; text-align: center; font-size:small; }
 #dnnMobileManagement .dnnRedirectionIsEnabled { width: 100px; text-align: center; }
 
-#dnnMobileManagement a.delete { display: block;background: url(../../../images/delete.gif) no-repeat;width: 16px;height: 16px;margin: 0 auto; }
+#dnnMobileManagement a.delete { display: block;width: 16px;height: 16px;margin: 0 auto; }
 #dnnMobileManagement a.enable { display: block;width: 16px;height: 16px;margin: 0 auto; }
 
 #dnnMobileManagement .dnnFormItem .dnnDropDownList{ width: 218px !important; margin-right: 15px; float: left; }

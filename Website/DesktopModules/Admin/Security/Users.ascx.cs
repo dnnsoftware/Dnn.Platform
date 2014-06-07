@@ -122,6 +122,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 filterString += filterPropertyString + "&";
             }
+            filterString += "pagesize=" + grdUsers.PageSize + "&";            
             if (!string.IsNullOrEmpty(page))
             {
                 filterString += page;
@@ -216,7 +217,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
             filters += "," + Localization.GetString("All");
             filters += "," + Localization.GetString("OnLine");
-            filters += "," + Localization.GetString("Unauthorized");
+            if (!IsSuperUser)
+            {
+                filters += "," + Localization.GetString("Unauthorized");
+            }
             filters += "," + Localization.GetString("Deleted");
             var strAlphabet = filters.Split(',');
             rptLetterSearch.DataSource = strAlphabet;
@@ -227,7 +231,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                UserController.DeleteUnauthorizedUsers(PortalId);
+                UserController.DeleteUnauthorizedUsers(UsersPortalId);
                 RebindGrid();
             }
             catch (Exception exc)
@@ -288,8 +292,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private bool IsPortalAdministrator(int userId)
 		{
-			var portalController = new PortalController();
-			var groupId = portalController.GetPortal(PortalSettings.PortalId).PortalGroupID;
+            var groupId = PortalController.Instance.GetPortal(PortalSettings.PortalId).PortalGroupID;
 			if (groupId != Null.NullInteger)
 			{
 				return PortalGroupController.Instance.GetPortalsByGroup(groupId).Any(p => p.AdministratorId == userId);
@@ -397,12 +400,11 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             
             InitializeGrid();
-
-            if (!IsPostBack)
+            if (!Page.IsPostBack)
             {
                 SetInitialPageSize();
             }
-
+            
             if (Request.QueryString["filter"] != null)
             {
                 Filter = Request.QueryString["filter"];
@@ -497,11 +499,19 @@ namespace DotNetNuke.Modules.Admin.Users
             if (Request.QueryString["pagesize"] != null)
             {
                 grdUsers.PageSize = Convert.ToInt32(Request.QueryString["pagesize"]);
-            }
+            }            
             else
             {
-                var setting = UserModuleBase.GetSetting(UsersPortalId, "Records_PerPage");
-                grdUsers.PageSize = Convert.ToInt32(setting);
+                var pageSizeSetting = GetPageSizeSetting(PortalSettings.PortalId, UserInfo.UserID);
+                if (pageSizeSetting != Null.NullInteger)
+                {
+                    grdUsers.PageSize = pageSizeSetting;
+                }
+                else
+                {
+                    var setting = UserModuleBase.GetSetting(UsersPortalId, "Records_PerPage");
+                    grdUsers.PageSize = Convert.ToInt32(setting);   
+                }                
             }
         }
 
@@ -576,7 +586,30 @@ namespace DotNetNuke.Modules.Admin.Users
                 case "Restore":
                     RestoreUser(GetUserId(e));
                     break;
+                case "ChangePageSize":
+                    ChangePageSizeSetting(PortalSettings.PortalId, UserInfo.UserID, ((GridPageSizeChangedEventArgs)e).NewPageSize);
+                    break;
             }
+        }
+        private void ChangePageSizeSetting(int portalId, int userId, int pageSize)
+        {
+            var personalizationController = new Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(userId, portalId);
+            personalization.Profile["User-Accounts:" + "pageSize_" + portalId] = pageSize.ToString(CultureInfo.InvariantCulture);
+            personalization.IsModified = true;
+            personalizationController.SaveProfile(personalization);
+        }
+
+        private int GetPageSizeSetting(int portalId, int userId)
+        {
+            var personalizationController = new Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var pageSizeValue = personalization.Profile["User-Accounts:" + "pageSize_" + portalId];
+            if (pageSizeValue == null)
+            {
+                return Null.NullInteger;
+            }
+            return Int32.Parse(pageSizeValue.ToString(), CultureInfo.InvariantCulture);
         }
 
         private int GetUserId(GridCommandEventArgs e)

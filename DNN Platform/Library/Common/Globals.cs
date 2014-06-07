@@ -44,6 +44,7 @@ using System.Xml;
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities;
@@ -261,12 +262,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <value>ContentPane</value>
         public const string glbDefaultPane = "ContentPane";
-
-        /// <summary>
-        /// Image file types
-        /// </summary>
-        /// <value>jpg,jpeg,jpe,gif,bmp,png,swf</value>
-        public const string glbImageFileTypes = "jpg,jpeg,jpe,gif,bmp,png";
 
         /// <summary>
         /// Config files folder
@@ -763,16 +758,7 @@ namespace DotNetNuke.Common
             string cultureCode = Null.NullString;
             if (settings != null)
             {
-                TabInfo linkTab = default(TabInfo);
-                var controller = new TabController();
-                if (IsSuperTab)
-                {
-                    linkTab = controller.GetTab(TabID, Null.NullInteger, false);
-                }
-                else
-                {
-                    linkTab = controller.GetTab(TabID, settings.PortalId, false);
-                }
+                TabInfo linkTab = TabController.Instance.GetTab(TabID, IsSuperTab ? Null.NullInteger : settings.PortalId, false);
                 if (linkTab != null)
                 {
                     cultureCode = linkTab.CultureCode;
@@ -785,6 +771,25 @@ namespace DotNetNuke.Common
 
             return cultureCode;
         }
+
+        /// <summary>
+        /// Image file types
+        /// </summary>
+        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,swf</value>
+        public static string glbImageFileTypes
+        {
+            get
+            {
+                var listController = new ListController();
+                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
+                if (listEntries == null || listEntries.Count() == 0)
+                {
+                    return "jpg,jpeg,jpe,gif,bmp,png";
+                }
+                return String.Join(",", listEntries.Select(l => l.Value));
+            }
+        }
+
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -1051,7 +1056,7 @@ namespace DotNetNuke.Common
             string appName;
             if (HttpContext.Current.Items["ApplicationName"] == null || String.IsNullOrEmpty(HttpContext.Current.Items["ApplicationName"].ToString()))
             {
-                PortalSettings _PortalSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (_PortalSettings == null)
                 {
                     appName = "/";
@@ -1432,8 +1437,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                var objPortals = new PortalController();
-                PortalInfo objPortal = objPortals.GetPortal(portalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                 ParentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
             }
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
@@ -1858,7 +1862,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit);
+            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1874,7 +1878,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout);
+            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout);
         }
 
         /// <summary>
@@ -1890,7 +1894,7 @@ namespace DotNetNuke.Common
         public static void CreateRSS(IDataReader dr, string TitleField, string URLField, string CreatedDateField, string SyndicateField, string DomainName, string FileName)
         {
             // Obtain PortalSettings from Current Context
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string strRSS = "";
             string strRelativePath = DomainName + FileName.Substring(FileName.IndexOf("\\Portals")).Replace("\\", "/");
             strRelativePath = strRelativePath.Substring(0, strRelativePath.LastIndexOf("/"));
@@ -2146,7 +2150,7 @@ namespace DotNetNuke.Common
         public static HttpWebRequest GetExternalRequest(string Address)
         {
             //Obtain PortalSettings from Current Context
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             //Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
             //Set a time out to the request ... 10 seconds
@@ -2498,7 +2502,7 @@ namespace DotNetNuke.Common
         public static string AccessDeniedURL(string Message)
         {
             string strURL = "";
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
             {
                 if (String.IsNullOrEmpty(Message))
@@ -2557,7 +2561,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static string ApplicationURL()
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (_portalSettings != null)
             {
                 return (ApplicationURL(_portalSettings.ActiveTab.TabID));
@@ -2667,7 +2671,7 @@ namespace DotNetNuke.Common
         /// <returns>The formatted (friendly) URL</returns>
         public static string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
@@ -2807,8 +2811,7 @@ namespace DotNetNuke.Common
                 case TabType.Tab:
                     if (Int32.TryParse(url, out intId))
                     {
-                        var objTabController = new TabController();
-                        if (objTabController.GetTab(intId, portalSettings.PortalId, false) == null)
+                        if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
                             //the tab does not exist
                             strUrl = "";
@@ -2833,7 +2836,7 @@ namespace DotNetNuke.Common
         public static string LoginURL(string returnURL, bool @override)
         {
             string strURL = "";
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!string.IsNullOrEmpty(returnURL))
             {
                 returnURL = String.Format("returnurl={0}", returnURL);
@@ -2873,7 +2876,7 @@ namespace DotNetNuke.Common
         public static string UserProfileURL(int userId)
         {
             string strURL = "";
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             strURL = NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
 
@@ -2887,7 +2890,7 @@ namespace DotNetNuke.Common
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL()
         {
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString);
         }
 
@@ -2911,7 +2914,7 @@ namespace DotNetNuke.Common
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string cultureCode = GetCultureCode(tabID, isSuperTab, _portalSettings);
             return NavigateURL(tabID, isSuperTab, _portalSettings, Null.NullString, cultureCode);
         }
@@ -2930,7 +2933,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return NavigateURL(_portalSettings.ActiveTab.TabID, controlKey);
             }
         }
@@ -2944,7 +2947,7 @@ namespace DotNetNuke.Common
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return NavigateURL(_portalSettings.ActiveTab.TabID, controlKey, additionalParameters);
         }
 
@@ -2957,7 +2960,7 @@ namespace DotNetNuke.Common
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, string controlKey)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return NavigateURL(tabID, _portalSettings, controlKey, null);
         }
 
@@ -2971,7 +2974,7 @@ namespace DotNetNuke.Common
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return NavigateURL(tabID, _portalSettings, controlKey, additionalParameters);
         }
 
@@ -3049,13 +3052,11 @@ namespace DotNetNuke.Common
                 url += "&portalid=" + settings.PortalId;
             }
 
-            var controller = new TabController();
-
             TabInfo tab = null;
 
             if (settings != null)
             {
-                tab = controller.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
+                tab = TabController.Instance.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
             }
 
             //only add language to url if more than one locale is enabled
@@ -3151,7 +3152,7 @@ namespace DotNetNuke.Common
         public static string RegisterURL(string returnURL, string originalURL)
         {
             string strURL;
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string extraParams = String.Empty;
             if (!string.IsNullOrEmpty(returnURL))
             {
@@ -3349,7 +3350,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return LinkClick(Link, TabID, ModuleID, TrackClicks, ForceDownload, _portalSettings.PortalId, _portalSettings.EnableUrlLanguage, _portalSettings.GUID.ToString());
         }
 
@@ -3450,7 +3451,7 @@ namespace DotNetNuke.Common
             }
             if (htRoles == null)
             {
-                var roles = TestableRoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
+                var roles = RoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
                 htRoles = new Hashtable();
                 int i;
                 for (i = 0; i <= roles.Count - 1; i++)
@@ -3503,12 +3504,11 @@ namespace DotNetNuke.Common
         public static string GenerateTabPath(int parentId, string tabName)
         {
             string strTabPath = "";
-            var objTabs = new TabController();
 
             if (!Null.IsNull(parentId))
             {
                 string strTabName;
-                var objTab = objTabs.GetTab(parentId, Null.NullInteger, false);
+                var objTab = TabController.Instance.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
                     strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
@@ -3519,7 +3519,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        objTab = objTabs.GetTab(objTab.ParentId, objTab.PortalID, false);
+                        objTab = TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
                     }
                 }
             }
@@ -3595,12 +3595,12 @@ namespace DotNetNuke.Common
 		public static bool ValidateModuleInTab(int tabId, string moduleName)
 		{
 			bool hasModule = Null.NullBoolean;
-            foreach (ModuleInfo objModule in new ModuleController().GetTabModules(tabId).Values)
+            foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
             {
 				if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {
                     //We need to ensure that Anonymous Users or All Users have View permissions to the login page
-                    TabInfo tab = new TabController().GetTab(tabId, objModule.PortalID, false);
+                    TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
                     if (TabPermissionController.CanViewPage(tab))
                     {
 						hasModule = true;
@@ -3771,7 +3771,7 @@ namespace DotNetNuke.Common
         public static bool IsHostTab(int tabId)
         {
             bool isHostTab = false;
-            TabCollection hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
+            TabCollection hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
             if (hostTabs != null)
             {
@@ -3789,9 +3789,10 @@ namespace DotNetNuke.Common
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
+        [Obsolete("Obsoleted in DNN 7.3.0 as it causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead.")]
         public static string UserProfilePicFormattedUrl()
         {
-            var avatarUrl = PortalController.GetCurrentPortalSettings().DefaultPortalAlias;
+            var avatarUrl = PortalController.Instance.GetCurrentPortalSettings().DefaultPortalAlias;
             if (string.IsNullOrEmpty(avatarUrl))
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
@@ -3810,14 +3811,18 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>        
-        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} 
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
         public static string UserProfilePicRelativeUrl()
         {
-            return Globals.ApplicationPath + "/profilepic.ashx?userId={0}&h={1}&w={2}";
+            var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
+            var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
+            var cdv = DateTime.Now.Ticks;
+            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}&cdv="+cdv;
+
         }
 
         #region "Obsolete - retained for Binary Compatability"
@@ -3910,7 +3915,7 @@ namespace DotNetNuke.Common
         public static void AddFile(string strFileName, string strExtension, string FolderPath, string strContentType, int Length, int imageWidth, int imageHeight)
         {
             // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             int portalId = IsHostTab(portalSettings.ActiveTab.TabID) ? Null.NullInteger : portalSettings.PortalId;
             var objFiles = new FileController();
             var objFolders = new FolderController();
@@ -3970,7 +3975,7 @@ namespace DotNetNuke.Common
         public static string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string ParentFolderName = null;
             if (IsHostTab(_portalSettings.ActiveTab.TabID))
             {
@@ -4041,7 +4046,7 @@ namespace DotNetNuke.Common
         {
             // Obtain current PortalSettings from Current Context
             int excludeTabId = Null.NullInteger;
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!blnIncludeActiveTab)
             {
                 excludeTabId = _portalSettings.ActiveTab.TabID;
@@ -4206,13 +4211,13 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated in DotNetNuke 5.0")]
         public static bool IsTabPreview()
         {
-            return (PortalController.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.View);
+            return (PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.View);
         }
 
         [Obsolete("This function has been obsoleted: Use Common.Globals.LinkClick() for proper handling of URLs")]
         public static string LinkClickURL(string Link)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return LinkClick(Link, _portalSettings.ActiveTab.TabID, -1, false);
         }
 
@@ -4226,7 +4231,7 @@ namespace DotNetNuke.Common
         public static string ProfileURL(int userID)
         {
             string strURL = "";
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (_portalSettings.UserTabId != -1)
             {

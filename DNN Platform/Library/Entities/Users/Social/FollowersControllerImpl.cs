@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void FollowUser(UserInfo targetUser)
         {
-            FollowUser(UserController.GetCurrentUserInfo(), targetUser);
+            FollowUser(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void UnFollowUser(UserInfo targetUser)
         {
-            var followRelationship = RelationshipController.Instance.GetFollowerRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            var followRelationship = RelationshipController.Instance.GetFollowerRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
 
             RelationshipController.Instance.DeleteUserRelationship(followRelationship);
         }

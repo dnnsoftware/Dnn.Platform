@@ -295,3 +295,110 @@ a.videoLink {
 a.videoLink:hover {
 	text-decoration: underline;
 }
+
+.dnnFormPassword .password-strength-container {
+    display: inline-block;
+    position: relative;
+    max-width: 455px;
+    width: 266px;
+    padding: 10px;
+    background: #e3e3e5;
+    margin: 0 0 18px -10px;
+}
+.dnnFormPassword  input[type="password"].password-confirm.checkStength  {
+    width: 248px;   
+}
+
+.dnnFormItem .password-strength-container input[type="password"] {
+    width: 100%;
+    margin-bottom: 6px; /* reset the default */
+    max-width: 248px;
+}
+
+.meter {
+    position: relative;
+    float: right;
+    width: 130px;
+    height: 20px;
+    padding: 0 4px 0 0;
+    background: #a3a3a3;
+}
+
+.meter div {
+    width: 0;
+    height: 20px;
+}
+
+.meter label {
+    position: absolute;
+    right: 4px;
+    top:0;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.password-strength-tooltip, .confirm-password-tooltip {
+    position: absolute;
+    z-index: 9;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.75);
+
+    -webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android 1.6- */
+    -moz-border-radius: 3px; /* Firefox 1-3.6 */
+    border-radius: 3px; /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
+
+    color: #DDDDDD;
+    font-size: 11px;
+    padding: 0;
+}
+
+.password-strength-tooltip:before, .confirm-password-tooltip:before {
+    background: none repeat scroll 0 0 transparent;
+    border-top: 7px solid rgba(0, 0, 0, 0.75);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    height: 0;
+    margin-left: 30px;
+    position: absolute;
+    bottom: -7px;
+    width: 0;
+}
+
+.password-strength-tooltip-content {
+    width: 250px;
+}
+
+.confirm-password-tooltip-content {
+    display: block;
+    padding: 6px 12px;
+    white-space: nowrap;
+}
+
+.password-strength-tooltip-content ul {
+    list-style-type: none;
+    margin: 12px
+}
+
+.password-strength-tooltip-content li {
+    list-style-type: none;
+}
+
+.password-strength-tooltip-content li label {
+    display: block;
+    padding: 0 0 0 26px;
+    line-height: 18px;
+    background: url("/Icons/Sigma/Delete_16x16_Standard_2.png") no-repeat left center;
+}
+
+.password-strength-tooltip-content li label.satisfied {
+    background-image: url("/Icons/Sigma/Grant_16x16_Standard.png");
+}
+
+.dnnFormItem input.matched {
+    background: url("/Icons/Sigma/Grant_16x16_Standard.png") #fff no-repeat 98% center;
+}
+
+.dnnFormItem input.unmatched {
+    background: url("/Icons/Sigma/Delete_16x16_Standard_2.png") #fff no-repeat 98% center;
+}

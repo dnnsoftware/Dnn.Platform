@@ -238,11 +238,27 @@ span.dnnModuleDigitalAssetsNoItems {
     height: 20px;    
     width: 20px;
 }
-
+#dnnModuleDigitalAssetsMainToolbarTitle {
+    padding: 5px 0 5px 10px;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span {
+    display: inline-block;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span.title-currentFolder {
+    float: right;
+    margin-right: 10px;
+}
+#dnnModuleDigitalAssetsMainToolbarTitle span.title-currentFolder img {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: text-bottom;
+}
 #dnnModuleDigitalAssetsMainToolbar {
     height: 34px;
     padding: 5px 0 5px 10px;
     border-left: 1px solid #CCCCCC;
+    position: relative;
 }
 
 #dnnModuleDigitalAssetsMainToolbar button {
@@ -292,6 +308,20 @@ span.dnnModuleDigitalAssetsNoItems {
     margin-right: 0;
 }
 
+#dnnModuleDigitalAssetsMainToolbar button.middleButton {
+    margin-right: 0;
+    margin-left: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    -webkit-border-bottom-left-radius: 1px;
+    -moz-border-radius-bottomleft: 1px;
+    border-bottom-left-radius: 1px;
+}
+
+#dnnModuleDigitalAssetsMainToolbar button.split {
+    border-left-width: 1px;
+}
+
 #dnnModuleDigitalAssetsMainToolbar button.rightButton {
     -webkit-border-top-right-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
@@ -301,6 +331,9 @@ span.dnnModuleDigitalAssetsNoItems {
     border-bottom-right-radius: 3px;
     margin-right: 10px;
     margin-left: 0;
+}
+#dnnModuleDigitalAssetsMainToolbar button.hidden, #dnnModuleDigitalAssetsMainToolbar span.hidden {
+    display: none !important;
 }
 
 #dnnModuleDigitalAssetsMainToolbar button span {
@@ -688,17 +721,17 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     width: 200px;   
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtPlus, .dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtMinus {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtPlus, .dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtMinus {
     background-image: url("images/tree.png");
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtHover .rtIn, .dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtSelected .rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtHover .rtIn, .dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtSelected .rtIn {
     border: 1px solid transparent;
     background-color: transparent;
     background-image: none;
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista .rtSelected .rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default .rtSelected .rtIn {
     background-color: transparent;
     background-image: none;
     font-weight: bold;
@@ -713,10 +746,6 @@ div.dnnModuleDigitalAssetsGrid > table > tfoot > tr.rgPager > td > table {
     cursor: pointer;
     margin-top: 25px;
     width: 410px;
-}
-
-#dnnModuleDigitalAssetsPermissions table.dnnPermissionsGrid {
-    width: 100%;
 }
 
 #dnnModuleDigitalAssetsButtonPane .dnnActions {
@@ -1004,10 +1033,13 @@ div.dnnModuleDigitalAssetsListViewItem span:hover {
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_wrapper {
     height:16px;    
     margin-top: 5px;
-    min-width:25px;
+    min-width:1px;
     position: relative;
-    float: right;
+    float: left;
     top: -5px;
+}
+#dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_wrapper button {
+    margin-left: 6px;
 }
 
 #dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton {
@@ -1112,7 +1144,7 @@ div.dnnModuleDigitalAssetsDragClue, .dnnModuleDigitalAssetsGrid.GridDraggedRows,
     padding-left: 0;
 }
 
-.dnnModuledigitalAssetsTreeView.RadTreeView_Vista.rtDragClue>ul>div>span.rtIn {
+.dnnModuledigitalAssetsTreeView.RadTreeView_Default.rtDragClue>ul>div>span.rtIn {
     color: inherit;
 }
 
@@ -1172,4 +1204,8 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
 #FilterByFolderOptions .dnnDropDownList {
     margin-bottom: 0;
     width: 98%;
+}
+
+.dialogNote {
+    margin: 5px 0 5px 0;
 }

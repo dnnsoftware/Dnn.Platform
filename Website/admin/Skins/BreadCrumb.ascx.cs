@@ -70,6 +70,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 return groupId;
             }
         }
+
+        //do not show when there is no breadcrumb(only has current tab)
+        public bool HideWithNoBreadCrumb { get; set; }
+
         private void InitializeComponent()
         {
         }
@@ -84,6 +88,11 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (HideWithNoBreadCrumb && PortalSettings.ActiveTab.BreadCrumbs.Count == 1)
+            {
+                return;
+            }
 
             //public attributes
             string strSeparator;

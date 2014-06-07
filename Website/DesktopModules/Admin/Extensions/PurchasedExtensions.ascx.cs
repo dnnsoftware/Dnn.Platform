@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     dt.Rows[i][dcol1] = packageName;
                     dt.Rows[i][dcol2] = fileName;
 
-                    PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     dt.Rows[i][dcol3] = "<a class='dnnPrimaryAction' href='" +
                                         Globals.NavigateURL(_portalSettings.ActiveTab.TabID, Null.NullString,
                                                             "fileAction",

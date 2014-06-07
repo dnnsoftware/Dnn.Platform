@@ -124,6 +124,7 @@
             };
 
             dnn.searchResult.init({
+                defaultText: '<%= DefaultText %>',
                 comboAdvancedDates: '<%= AdvnacedDatesList.ClientID %>',
                 comboAdvancedScope: '<%= SearchScopeList.ClientID %>',
                 noresultsText: '<%= NoResultsText %>',

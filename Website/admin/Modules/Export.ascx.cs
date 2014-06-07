@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
-
+using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -61,13 +61,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private new int ModuleId = -1;
         private ModuleInfo _module;
-	    private const string _invalidCharsRegex = "[\x00-\x08]|[\x0B-\x0C]|[\x0E-\x1F]";
 
         private ModuleInfo Module
         {
             get
             {
-                return _module ?? (_module = new ModuleController().GetModule(ModuleId, TabId, false));
+                return _module ?? (_module = ModuleController.Instance.GetModule(ModuleId, TabId, false));
             }
         }
 
@@ -97,19 +96,34 @@ namespace DotNetNuke.Modules.Admin.Modules
 						//Double-check
 						if (objObject is IPortable)
                         {
-                            var content = Convert.ToString(((IPortable)objObject).ExportModule(moduleID));
+                            XmlDocument moduleXml = new XmlDocument();
+                            XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, Module, true);
+
+                            //add attributes to XML document
+                            XmlAttribute typeAttribute = moduleXml.CreateAttribute("type");
+                            typeAttribute.Value = CleanName(Module.DesktopModule.ModuleName);
+                            moduleNode.Attributes.Append(typeAttribute);
+
+                            XmlAttribute versionAttribute = moduleXml.CreateAttribute("version");
+                            versionAttribute.Value = Module.DesktopModule.Version;
+                            moduleNode.Attributes.Append(versionAttribute);
+
+                            // Create content from XmlNode
+                            StringWriter sw = new StringWriter();
+                            XmlTextWriter xw = new XmlTextWriter(sw);
+                            moduleNode.WriteTo(xw);
+                            var content = sw.ToString();
                             if (!String.IsNullOrEmpty(content))
                             {
-								//remove invalid chars in content
-	                            content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
+								//remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
+	                            //content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
 								//add attributes to XML document
-                                content = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + "<content type=\"" + CleanName(Module.DesktopModule.ModuleName) + "\" version=\"" +
-                                          Module.DesktopModule.Version + "\">" + content + "</content>";
+                                //content = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + "<content type=\"" + CleanName(Module.DesktopModule.ModuleName) + "\" version=\"" +
+                                //          Module.DesktopModule.Version + "\">" + content + "</content>";
 
                                 //First check the Portal limits will not be exceeded (this is approximate)
-                                var objPortalController = new PortalController();
                                 var strFile = PortalSettings.HomeDirectoryMapPath + folder.FolderPath + fileName;
-                                if (objPortalController.HasSpaceAvailable(PortalId, content.Length))
+                                if (PortalController.Instance.HasSpaceAvailable(PortalId, content.Length))
                                 {
                                     //add file to Files table
 									using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))

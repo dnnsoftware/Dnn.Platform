@@ -30,7 +30,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -50,7 +49,7 @@ namespace DotNetNuke.Entities.Urls
             if (portalId > Null.NullInteger)
             {
                 var portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = Globals.GetDomainName(context.Request, true) };
-                TestablePortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
 
                 context.Response.Redirect(context.Request.Url.ToString(), true);
             }
@@ -59,7 +58,7 @@ namespace DotNetNuke.Entities.Urls
         protected static bool CanAutoAddPortalAlias()
         {
             bool autoAddPortalAlias = HostController.Instance.GetBoolean("AutoAddPortalAlias");
-            autoAddPortalAlias = autoAddPortalAlias && (new PortalController().GetPortals().Count == 1);
+            autoAddPortalAlias = autoAddPortalAlias && (PortalController.Instance.GetPortals().Count == 1);
             return autoAddPortalAlias;
         }
     }

@@ -56,8 +56,7 @@ namespace DotNetNuke.Security.Permissions
 
         private static void ClearPermissionCache(int moduleId)
         {
-            var objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModule(moduleId, Null.NullInteger, false);
+            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
             DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
 
@@ -219,7 +218,7 @@ namespace DotNetNuke.Security.Permissions
                                                                  modulePermission.RoleID,
                                                                  modulePermission.AllowAccess,
                                                                  modulePermission.UserID,
-                                                                 UserController.GetCurrentUserInfo().UserID);
+                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             DataCache.ClearModulePermissionsCache(tabId);
             return id;
         }
@@ -235,7 +234,7 @@ namespace DotNetNuke.Security.Permissions
                                                                  modulePermission.RoleID,
                                                                  modulePermission.AllowAccess,
                                                                  modulePermission.UserID,
-                                                                 UserController.GetCurrentUserInfo().UserID);
+                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
             ClearPermissionCache(modulePermission.ModuleID);
             return id;
         }
@@ -265,7 +264,7 @@ namespace DotNetNuke.Security.Permissions
         [Obsolete("Deprecated in DNN 5.1.")]
         public ModulePermissionInfo GetModulePermission(int modulePermissionID)
         {
-            return CBO.FillObject<ModulePermissionInfo>(DataProvider.Instance().GetModulePermission(modulePermissionID), true);
+            return CBO.FillObject<ModulePermissionInfo>(DataProvider.Instance().GetModulePermission(modulePermissionID));
         }
 
         [Obsolete("Deprecated in DNN 5.0. Replaced by ModulePermissionColelction.ToString(String)")]
@@ -365,7 +364,7 @@ namespace DotNetNuke.Security.Permissions
                                                            modulePermission.RoleID,
                                                            modulePermission.AllowAccess,
                                                            modulePermission.UserID,
-                                                           UserController.GetCurrentUserInfo().UserID);
+                                                           UserController.Instance.GetCurrentUserInfo().UserID);
             ClearPermissionCache(modulePermission.ModuleID);
         }
 

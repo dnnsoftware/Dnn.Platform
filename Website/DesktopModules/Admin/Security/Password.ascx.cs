@@ -272,28 +272,15 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#region Event Handlers
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-            jQuery.RequestDnnPluginsRegistration();
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            //ClientAPI.RegisterKeyCapture(Parent, cmdUpdate.Controls[0], 13);
-            //ClientAPI.RegisterKeyCapture(this, cmdUpdate.Controls[0], 13);
             cmdReset.Click += cmdReset_Click;
             cmdUserReset.Click += cmdUserReset_Click;
             cmdUpdate.Click += cmdUpdate_Click;
             cmdUpdateQA.Click += cmdUpdateQA_Click;
 
-			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.GetCurrentUserInfo().UserID)
+			if (MembershipProviderConfig.RequiresQuestionAndAnswer && User.UserID != UserController.Instance.GetCurrentUserInfo().UserID)
 			{
 				pnlChange.Visible = false;
 			    cmdUpdate.Visible = false;
@@ -312,8 +299,14 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected override void OnPreRender(EventArgs e)
         {
-            base.OnPreRender(e);
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
+            jQuery.RequestDnnPluginsRegistration();
+
+            base.OnPreRender(e);
 
 			if (Host.EnableStrengthMeter)
 			{
@@ -322,8 +315,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 				var options = new DnnPaswordStrengthOptions();
 				var optionsAsJsonString = Json.Serialize(options);
-				var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
-					"password-strength", optionsAsJsonString, Environment.NewLine);
+				var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
 
 				if (ScriptManager.GetCurrent(Page) != null)
 				{
@@ -378,8 +370,8 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             try
             {
-                //create resettoken valid for 24hrs
-                UserController.ResetPasswordToken(User,1440);
+                //create resettoken
+                UserController.ResetPasswordToken(User, Entities.Host.Host.AdminMembershipResetLinkValidity);
 
                 bool canSend = Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings) == string.Empty;
                 var message = String.Empty;
@@ -461,25 +453,25 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             var portalSecurity = new PortalSecurity();
 
-            var objEventLog = new EventLogController();
-            var objEventLogInfo = new LogInfo();
+            var log = new LogInfo
+            {
+                LogPortalID = PortalSettings.PortalId,
+                LogPortalName = PortalSettings.PortalName,
+                LogUserID = UserId,
+                LogUserName = portalSecurity.InputFilter(User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
+            };
 
-            objEventLogInfo.LogPortalID = PortalSettings.PortalId;
-            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-            objEventLogInfo.LogUserID = UserId;
-            objEventLogInfo.LogUserName = portalSecurity.InputFilter(User.Username,
-                                                                     PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
             if (string.IsNullOrEmpty(message))
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_SUCCESS";
+                log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
             }
             else
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_FAILURE";
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Cause", message));
+                log.LogTypeKey = "PASSWORD_SENT_FAILURE";
+                log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            objEventLog.AddLog(objEventLogInfo);
+            LogController.Instance.AddLog(log);
         }
 
         private void cmdUpdate_Click(Object sender, EventArgs e)

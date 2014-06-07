@@ -247,7 +247,7 @@
     <value>You must select a billing frequency if you wish to enter a fee for this role</value>
   </data>
   <data name="valRoleName2.Text" xml:space="preserve">
-    <value>&lt;br&gt;The Name is invalid - roles can only contain the following characters A-Za-z0-9_- and spaces</value>
+    <value>&lt;br&gt;The Name is invalid - roles can not contain the following characters: &amp; $ + , / ? ~ # &lt; &gt; ( ) ¿ ¡ « » !  . :  * ' [ ]</value>
   </data>
   <data name="securityModeListLabel.Help" xml:space="preserve">
     <value>Choose the security mode for this role/group.</value>

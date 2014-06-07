@@ -310,8 +310,7 @@ namespace DotNetNuke.Modules.Admin.Skins
                                     cboValue.Visible = false;
                                     break;
                                 case "[TABID]":
-                                    var objTabs = new TabController();
-                                    foreach (var objTab in objTabs.GetTabsByPortal(PortalId).Values)
+                                    foreach (var objTab in TabController.Instance.GetTabsByPortal(PortalId).Values)
                                     {
                                         cboValue.AddItem(objTab.TabName, objTab.TabID.ToString());
                                     }

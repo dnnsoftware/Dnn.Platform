@@ -20,10 +20,12 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.Internal;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
@@ -35,43 +37,101 @@ namespace DotNetNuke.Entities.Tabs
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
 
-        public void PublishTab(int tabID, int portalID)
+        public bool IsTabPublished(int tabID, int portalID)
         {
-            var tab = TestableTabController.Instance.GetTab(tabID, portalID);
+            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var tab = TabController.Instance.GetTab(tabID, portalID);
+
+            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            return existPermission != null && existPermission.AllowAccess;
+        }
+
+        public void SetTabPublishing(int tabID, int portalID, bool publish)
+        {
+            var tab = TabController.Instance.GetTab(tabID, portalID);
             if (!TabPermissionController.CanAdminPage(tab))
             {
                 var errorMessage = Localization.GetExceptionMessage("PublishPagePermissionsNotMet", "Permissions are not met. The page has not been published.");
-                var permissionsNotMetExc =  new PermissionsNotMetException(tabID, errorMessage );
+                var permissionsNotMetExc = new PermissionsNotMetException(tabID, errorMessage);
                 Logger.Error(errorMessage, permissionsNotMetExc);
                 throw permissionsNotMetExc;
             }
+
+            if (publish)
+            {
+                PublishTabInternal(tab);
+            }
+            else
+            {
+                UnpublishTabInternal(tab);
+            }
+        }
+
+        public bool CanPublishingBePerformed(int tabID, int portalID)
+        {
+            var tab = TabController.Instance.GetTab(tabID, portalID);
+            if (!TabPermissionController.CanAdminPage(tab))
+            {
+                return false; //User has no permission
+            }
+            
+            Hashtable settings = TabController.Instance.GetTabSettings(tabID);
+            if (settings["WorkflowID"] != null)
+            {
+                return Convert.ToInt32(settings["WorkflowID"]) == 1; //If workflowID is 1, then the Page workflow is Direct Publish
+            }
+
+            //If workflowID is 1, then the Page workflow is Direct Publish
+            //If WorkflowID is -1, then there is no Workflow setting
+            var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
+
+            return (workflowID == 1) || (workflowID == -1);
+
+        }
+
+        #region private Methods
+        private void PublishTabInternal(TabInfo tab)
+        {
             var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
 
-            if (HasAlreadyPermission(tab, "VIEW", allUsersRoleId))
+            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            if (existPermission != null)
             {
-                return;
+                tab.TabPermissions.Remove(existPermission);
             }
-            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));            
+
+            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
+            TabPermissionController.SaveTabPermissions(tab);
+            ClearTabCache(tab);   
+        }
+        
+        private void UnpublishTabInternal(TabInfo tab)
+        {
+            var administratorsRoleID = PortalController.Instance.GetPortal(tab.PortalID).AdministratorRoleId;
+            var permissionsToRemove = new List<int>();
+            permissionsToRemove.AddRange(tab.TabPermissions.Where(p => p.RoleID != administratorsRoleID).Select(p => p.TabPermissionID));
+            foreach (var tabPermissionId in permissionsToRemove)
+            {
+                tab.TabPermissions.Remove(tab.TabPermissions.Cast<TabPermissionInfo>().SingleOrDefault(p => p.TabPermissionID == tabPermissionId));
+            }
             TabPermissionController.SaveTabPermissions(tab);
             ClearTabCache(tab);
         }
-        
-        #region private Methods
 
         private void ClearTabCache(TabInfo tabInfo)
         {
-            new TabController().ClearCache(tabInfo.PortalID);
+            TabController.Instance.ClearCache(tabInfo.PortalID);
             //Clear the Tab's Cached modules
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
-        private bool HasAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
+        private TabPermissionInfo GetAlreadyPermission(TabInfo tab, string permissionKey, int roleId)
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
 
             return
                 tab.TabPermissions.Cast<TabPermissionInfo>()
-                    .Any(tp => tp.AllowAccess && tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
+                    .FirstOrDefault(tp => tp.RoleID == roleId && tp.PermissionID == permission.PermissionID);
         }
 
         private TabPermissionInfo GetTabPermissionByRole(int tabID, string permissionKey, int roleID)

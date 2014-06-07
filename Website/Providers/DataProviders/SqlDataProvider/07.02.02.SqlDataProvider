@@ -43,9 +43,122 @@ IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopMod
 GO
 
 --Correct error data
-UPDATE {databaseOwner}[{objectQualifier}FolderPermission] SET RoleID = NULL WHERE UserID IS NOT NULL
+
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE IsNull(UserID, -1) = -1
+ AND FolderPermissionID NOT IN
+ (SELECT Min(FolderPermissionID) 
+ FROM {databaseOwner} [{objectQualifier}FolderPermission]
+ WHERE IsNull(UserID, -1) = -1
+ GROUP BY FolderID, PermissionID, RoleID);
+ GO
+
+ UPDATE {databaseOwner}[{objectQualifier}FolderPermission]
+ SET UserID = Null
+ WHERE UserID = -1;
+ GO
+
+DELETE FROM 
+{databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE UserID Is Not Null
+ AND FolderPermissionID NOT IN
+ (SELECT Min(FolderPermissionID) 
+ FROM {databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE UserID Is Not Null 
+ GROUP BY FolderID, PermissionID, UserID);
+ GO
+
+ UPDATE {databaseOwner}[{objectQualifier}FolderPermission]
+ SET RoleID = Null
+ WHERE UserID IS Not Null
+ AND RoleID Is Not Null;
+ GO
+
+ -- DesktopModule Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND DesktopModulePermissionID NOT IN(SELECT Min(DesktopModulePermissionID) 
+										 FROM  {databaseOwner}[{objectQualifier}DesktopModulePermission]
+										 WHERE IsNull(UserID, -1) = -1
+										 GROUP BY PortalDesktopModuleID, PermissionID, RoleID);
 GO
 
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ WHERE UserID Is Not Null
+   AND DesktopModulePermissionID NOT IN (SELECT Min(DesktopModulePermissionID) 
+										  FROM  {databaseOwner}[{objectQualifier}DesktopModulePermission]
+										  WHERE UserID Is Not Null 
+										  GROUP BY PortalDesktopModuleID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
+
+
+-- Module Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND ModulePermissionID NOT IN(SELECT Min(ModulePermissionID) 
+								  FROM  {databaseOwner}[{objectQualifier}ModulePermission]
+								  WHERE IsNull(UserID, -1) = -1
+								  GROUP BY ModuleID, PermissionID, RoleID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]
+ WHERE UserID Is Not Null
+   AND ModulePermissionID NOT IN (SELECT Min(ModulePermissionID) 
+								  FROM {databaseOwner}[{objectQualifier}ModulePermission]
+                                  WHERE UserID Is Not Null 
+								  GROUP BY ModuleID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
+
+
+-- Module Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND TabPermissionID NOT IN(SELECT Min(TabPermissionID) 
+								  FROM  {databaseOwner}[{objectQualifier}TabPermission]
+								  WHERE IsNull(UserID, -1) = -1
+								  GROUP BY TabID, PermissionID, RoleID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]
+ WHERE UserID Is Not Null
+   AND TabPermissionID NOT IN (SELECT Min(TabPermissionID) 
+								  FROM {databaseOwner}[{objectQualifier}TabPermission]
+                                  WHERE UserID Is Not Null 
+								  GROUP BY TabID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Roles ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
 	(RoleID, PortalDesktopModuleID, PermissionID) 
 	INCLUDE (AllowAccess)

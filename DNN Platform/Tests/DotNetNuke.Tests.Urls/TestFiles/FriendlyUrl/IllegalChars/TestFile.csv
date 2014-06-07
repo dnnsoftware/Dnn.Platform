@@ -3,5 +3,5 @@ Page Single,						Abou?t Us,			,				http://,	About Us,	,						http://{alias}/Abo
 Edit Page Home Single,				Abou?t Us,			,				http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/AboutUs/ctl/Edit/mid/100.aspx
 Page Multiple,						Ab#out?Us,			,				http://,	About Us,	,						http://{alias}/AboutUs.aspx
 Edit Page Home Multiple,			Ab#out?Us,			,				http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/AboutUs/ctl/Edit/mid/100.aspx
-Page Replace Multiple,				Ab#out?Us+,			#:-;?:!;+:=,	http://,	About Us,	,						http://{alias}/Ab-out!Us=.aspx
-Edit Page Home Replace Multiple,	Ab#out?Us+,			#:-;?:!;+:=,	http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/Ab-out!Us=/ctl/Edit/mid/100.aspx
+Page Replace Multiple,				Ab#out?Us,			#:-;?:!,		http://,	About Us,	,						http://{alias}/Ab-out!Us.aspx
+Edit Page Home Replace Multiple,	Ab#out?Us,			#:-;?:!,		http://,	About Us,	&ctl=Edit&mid=100,		http://{alias}/Ab-out!Us/ctl/Edit/mid/100.aspx

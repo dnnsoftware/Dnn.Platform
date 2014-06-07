@@ -44,9 +44,7 @@ namespace DotNetNuke.Services.ModuleCache
         {
             try
             {
-                ArrayList portals;
-                var portalController = new PortalController();
-                portals = portalController.GetPortals();
+                var portals = PortalController.Instance.GetPortals();
                 foreach (KeyValuePair<string, ModuleCachingProvider> kvp in ModuleCachingProvider.GetProviderList())
                 {
                     try

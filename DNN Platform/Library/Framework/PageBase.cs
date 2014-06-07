@@ -137,7 +137,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Framework
             }
             else
             {
-                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=" + (exc == null || UserController.GetCurrentUserInfo() == null || !UserController.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message));
+                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=" + (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message));
                 if (!Globals.IsAdminControl() && hideContent)
                 {
                     url += "&content=0";
@@ -284,7 +284,10 @@ namespace DotNetNuke.Framework
                 Localization.SetThreadCultures(PageCulture, PortalSettings);
             }
 
-			AJAX.AddScriptManager(this, !isInstallPage);
+            if (ScriptManager.GetCurrent(this) == null)
+            {
+                AJAX.AddScriptManager(this, !isInstallPage);
+            }
 
             var dnncoreFilePath = HttpContext.Current.IsDebuggingEnabled
                    ? "~/js/Debug/dnncore.js"

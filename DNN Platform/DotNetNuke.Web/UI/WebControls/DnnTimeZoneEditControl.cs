@@ -47,6 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void CreateChildControls()
         {
             TimeZones = new DnnTimeZoneComboBox();
+            TimeZones.ViewStateMode = ViewStateMode.Disabled;
 
             Controls.Clear();
             Controls.Add(TimeZones);

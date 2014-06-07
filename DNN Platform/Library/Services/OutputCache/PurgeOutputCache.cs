@@ -45,9 +45,7 @@ namespace DotNetNuke.Services.OutputCache
         {
             try
             {
-                ArrayList portals;
-                var portalController = new PortalController();
-                portals = portalController.GetPortals();
+                var portals = PortalController.Instance.GetPortals();
                 foreach (KeyValuePair<string, OutputCachingProvider> kvp in OutputCachingProvider.GetProviderList())
                 {
                     try

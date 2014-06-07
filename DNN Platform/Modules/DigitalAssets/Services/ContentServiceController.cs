@@ -69,8 +69,24 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage DeleteItems(DeleteItemsRequest request)
         {
-            var notDeletedItems = DigitalAssetsController.DeleteItems(from i in request.Items select new ItemBaseViewModel { ItemID = i.ItemId, IsFolder = i.IsFolder });
+            var notDeletedItems = DigitalAssetsController.DeleteItems(request.Items);
             return Request.CreateResponse(HttpStatusCode.OK, notDeletedItems);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UnlinkFolder(UnlinkFolderRequest request)
+        {
+            DigitalAssetsController.UnlinkFolder(request.FolderId);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage GetMappedSubfoldersCount(MappedPathSubFoldersCountRequest request)
+        {
+            var mappedSubfoldersCount = DigitalAssetsController.GetMappedSubFoldersCount(request.Items, PortalSettings.PortalId);
+            return Request.CreateResponse(HttpStatusCode.OK, mappedSubfoldersCount);
         }
 
         [HttpPost]
@@ -142,8 +158,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage UnzipFile(UnzipFileRequest request)
         {
-            DigitalAssetsController.UnzipFile(request.FileId, request.Overwrite);
-            return Request.CreateResponse(HttpStatusCode.OK, "Success");
+            var model = DigitalAssetsController.UnzipFile(request.FileId, request.Overwrite);
+            return Request.CreateResponse(HttpStatusCode.OK, model);
         }
 
         [HttpPost]

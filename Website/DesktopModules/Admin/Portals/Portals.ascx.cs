@@ -31,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -185,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             var str = new StringBuilder();
             try
             {
-                var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
+                var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
                 foreach ( PortalAliasInfo portalAliasInfo in arr)
                 {
                     var httpAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
@@ -291,15 +290,13 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                var portal = objPortalController.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
+                var portal = PortalController.Instance.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
                 if (portal != null)
                 {
                     var strMessage = PortalController.DeletePortal(portal, Globals.GetAbsoluteServerPath(Request));
                     if (string.IsNullOrEmpty(strMessage))
                     {
-                        var objEventLog = new EventLogController();
-                        objEventLog.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
+                        EventLogController.Instance.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PortalDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else

@@ -297,9 +297,9 @@ namespace DotNetNuke.Common.Utilities
             return Globals.HostMapPath;
         }
 
-        private static string GetPortalMapPath(int portalID)
+        private static string GetPortalMapPath(int portalId)
         {
-            var portalInfo = new PortalController().GetPortal(portalID);
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
             return portalInfo.HomeDirectoryMapPath;
         }
 

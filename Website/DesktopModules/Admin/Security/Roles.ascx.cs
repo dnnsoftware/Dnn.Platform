@@ -65,9 +65,9 @@ namespace DesktopModules.Admin.Security
 
         private void BindData()
         {
-            var roles = _roleGroupId < -1 
-                                ? TestableRoleController.Instance.GetRoles(PortalId) 
-                                : TestableRoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == _roleGroupId);
+            var roles = _roleGroupId < -1
+                                ? RoleController.Instance.GetRoles(PortalId)
+                                : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == _roleGroupId);
             grdRoles.DataSource = roles;
 
             if (_roleGroupId < 0)

@@ -30,7 +30,6 @@ using System.Net.Http;
 using System.Web.Http;
 
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -59,7 +58,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private bool CanViewGroupMembers(int portalId, int groupId)
         {
-            var group = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            var group = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if(group == null)
             {
                 return false;
@@ -124,7 +123,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     if (CanViewGroupMembers(portalId, groupId))
                     {
-                        users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
+                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1,
                                                                                        Int32.Parse(filterValue),
                                                                                        -1, isAdmin, pageIndex, pageSize,
                                                                                        sortField, (sortOrder == "ASC"),
@@ -136,7 +135,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     break;
                 case "Relationship":
-                    users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, userId, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, userId, -1,
                                                                            Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
@@ -145,17 +144,17 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     var propertyValue = GetSetting(ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
-                    users = TestableUserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, userId, -1, -1,
                                                                            -1, isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
                     break;
                 default:
-                    users = isBasicSearch ? TestableUserController.Instance.GetUsersBasicSearch(PortalSettings.PortalId, pageIndex, pageSize,
+                    users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(PortalSettings.PortalId, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            "DisplayName", searchTerm)
                                                                            :
-                                                                           TestableUserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, -1,
+                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, -1, -1,
                                                                                -1, isAdmin, pageIndex, pageSize,
                                                                                sortField, (sortOrder == "ASC"),
                                                                                propertyNames, propertyValues);

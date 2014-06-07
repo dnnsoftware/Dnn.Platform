@@ -35,7 +35,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
-
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -96,31 +95,20 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             {
                 ViewState["ScheduleID"] = Request.QueryString["ScheduleID"];
                 ScheduleItem scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
-
                 txtFriendlyName.Text = scheduleItem.FriendlyName;
                 txtType.Enabled = false;
                 txtType.Text = scheduleItem.TypeFullName;
                 chkEnabled.Checked = scheduleItem.Enabled;
-                if (scheduleItem.TimeLapse == Null.NullInteger)
+                if (!Null.IsNull(scheduleItem.ScheduleStartDate))
                 {
-                    txtTimeLapse.Text = "";
+                    startScheduleDatePicker.SelectedDate = scheduleItem.ScheduleStartDate;
                 }
-                else
-                {
-                    txtTimeLapse.Text = Convert.ToString(scheduleItem.TimeLapse);
-                }
+                txtTimeLapse.Text = Convert.ToString(scheduleItem.TimeLapse);
                 if (ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement) != null)
                 {
                     ddlTimeLapseMeasurement.FindItemByValue(scheduleItem.TimeLapseMeasurement).Selected = true;
                 }
-                if (scheduleItem.RetryTimeLapse == Null.NullInteger)
-                {
-                    txtRetryTimeLapse.Text = "";
-                }
-                else
-                {
-                    txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
-                }
+                txtRetryTimeLapse.Text = Convert.ToString(scheduleItem.RetryTimeLapse);
                 if (ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement) != null)
                 {
                     ddlRetryTimeLapseMeasurement.FindItemByValue(scheduleItem.RetryTimeLapseMeasurement).Selected = true;
@@ -141,7 +129,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 }
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
-                BindServers(scheduleItem.Servers);
+                txtServers.Text = scheduleItem.Servers;
             }
             else
             {
@@ -151,89 +139,46 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             }
         }
 
-        private void BindServers(string selectedServers)
-        {
-            var servers = ServerController.GetServers();
-
-            foreach (var webServer in servers)
-            {
-                if (webServer.Enabled)
-                {
-                    var serverName = ServerController.GetServerName(webServer);
-                    var serverItem = new ListItem(serverName, serverName);
-                    if (string.IsNullOrEmpty(selectedServers))
-                    {
-                        serverItem.Selected = true;
-                    }
-                    else
-                    {
-                        serverItem.Selected = Null.NullBoolean;
-                        foreach (var selectedServer in selectedServers.Split(','))
-                        {
-                            if (selectedServer == serverName)
-                            {
-                                serverItem.Selected = true;
-                                break;
-                            }
-                        }
-                    }
-                    lstServers.Items.Add(serverItem);
-                }
-            }
-        }
-
         private ScheduleItem CreateScheduleItem()
         {
             var scheduleItem = new ScheduleItem();
             scheduleItem.TypeFullName = txtType.Text;
             scheduleItem.FriendlyName = txtFriendlyName.Text;
-            if (String.IsNullOrEmpty(txtTimeLapse.Text) || txtTimeLapse.Text == "0" || txtTimeLapse.Text == "-1")
-            {
-                scheduleItem.TimeLapse = Null.NullInteger;
-            }
-            else
-            {
-                scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
-            }
+            //DNN-4964 - values for time lapse and retry frequency can't be set to 0, -1 or left empty (client side validation has been added)
+            scheduleItem.TimeLapse = Convert.ToInt32(txtTimeLapse.Text);
             scheduleItem.TimeLapseMeasurement = ddlTimeLapseMeasurement.SelectedItem.Value;
-
-            if (String.IsNullOrEmpty(txtRetryTimeLapse.Text) || txtRetryTimeLapse.Text == "0" || txtRetryTimeLapse.Text == "-1")
-            {
-                scheduleItem.RetryTimeLapse = Null.NullInteger;
-            }
-            else
-            {
-                scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
-            }
+            scheduleItem.RetryTimeLapse = Convert.ToInt32(txtRetryTimeLapse.Text);
             scheduleItem.RetryTimeLapseMeasurement = ddlRetryTimeLapseMeasurement.SelectedItem.Value;
             scheduleItem.RetainHistoryNum = Convert.ToInt32(ddlRetainHistoryNum.SelectedItem.Value);
             scheduleItem.AttachToEvent = ddlAttachToEvent.SelectedItem.Value;
             scheduleItem.CatchUpEnabled = chkCatchUpEnabled.Checked;
             scheduleItem.Enabled = chkEnabled.Checked;
             scheduleItem.ObjectDependencies = txtObjectDependencies.Text;
+            scheduleItem.ScheduleStartDate = startScheduleDatePicker.SelectedDate != null
+                                                 ? startScheduleDatePicker.SelectedDate.Value
+                                                 : Null.NullDate; 
 
             //if servers are specified, the concatenated string needs to be prefixed and suffixed by commas ( ie. ",SERVER1,SERVER2," )
             var servers = Null.NullString;
-            var bAllSelected = true;
-            foreach (ListItem item in lstServers.Items)
+
+            if (!String.IsNullOrEmpty(txtServers.Text))
             {
-                if (item.Selected)
-                {
-                    servers += "," + item.Value;
-                }
-                else
-                {
-                    bAllSelected = Null.NullBoolean;
-                }
+                servers = txtServers.Text;
+                
             }
-            if (bAllSelected)
-            {
-                servers = Null.NullString;
-            }
+            
             if (!string.IsNullOrEmpty(servers))
             {
-                scheduleItem.Servers = servers + ",";
+                if (!servers.StartsWith(","))
+                {
+                    servers = "," +servers; 
+                }
+                if (!servers.EndsWith(","))
+                {
+                    servers = servers + ",";
+                }
             }
+            scheduleItem.Servers = servers;
             return scheduleItem;
         }
 
@@ -266,9 +211,18 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+                if (chkEnabled.Checked)
+                {
+                    //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
+                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate!=null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate)<DateTime.Now;
+                }
+                else
+                {
+                    cmdRun.Enabled = chkEnabled.Checked;
+                    cmdRun.Visible = chkEnabled.Checked;   
+                }
+                
 
-                cmdRun.Enabled = chkEnabled.Checked;
-                cmdRun.Visible = chkEnabled.Checked;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -298,9 +252,9 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (ViewState["ScheduleID"] != null)
             {
                 scheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
-                SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem);
+                SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
             }
-            SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem);
+            SchedulingProvider.Instance().RunScheduleItemNow(scheduleItem, true);
 
             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RunNow", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
 
@@ -320,6 +274,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         /// </history>
         protected void OnUpdateClick(Object sender, EventArgs e)
         {
+            if (VerifyValidTimeLapseRetry() == false)
+            {
+                return;
+            }
             var objScheduleItem = CreateScheduleItem();
             if (ViewState["ScheduleID"] != null)
             {
@@ -337,6 +295,48 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 SchedulingProvider.Instance().ReStart("Change made to schedule.");
             }
             Response.Redirect(Globals.NavigateURL(), true);
+        }
+
+        private bool VerifyValidTimeLapseRetry()
+        {
+            var timeLapse = CalculateTime(Convert.ToInt32(txtTimeLapse.Text), ddlTimeLapseMeasurement.SelectedItem.Value);
+            var retry = CalculateTime(Convert.ToInt32(txtRetryTimeLapse.Text), ddlRetryTimeLapseMeasurement.SelectedItem.Value);
+            if (retry > timeLapse)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InvalidFrequencyAndRetry", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                return false;
+            }
+            return true;
+        }
+
+        private static DateTime CalculateTime(int lapse, string measurement)
+        {
+            var nextTime = new DateTime();
+            switch (measurement)
+            {
+                case "s":
+                    nextTime = DateTime.Now.AddSeconds(lapse);
+                    break;
+                case "m":
+                    nextTime = DateTime.Now.AddMinutes(lapse);
+                    break;
+                case "h":
+                    nextTime = DateTime.Now.AddHours(lapse);
+                    break;
+                case "d":
+                    nextTime = DateTime.Now.AddDays(lapse);
+                    break;
+                case "w":
+                    nextTime = DateTime.Now.AddDays(lapse);
+                    break;
+                case "mo":
+                    nextTime = DateTime.Now.AddMonths(lapse);
+                    break;
+                case "y":
+                    nextTime = DateTime.Now.AddYears(lapse);
+                    break;
+            }
+            return nextTime;
         }
 
         #endregion

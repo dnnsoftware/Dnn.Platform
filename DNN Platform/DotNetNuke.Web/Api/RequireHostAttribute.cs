@@ -20,7 +20,7 @@
 #endregion
 
 using System.Threading;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Web.Api
 {
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            var currentUser = TestablePortalController.Instance.GetCurrentPortalSettings().UserInfo;
+            var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
             return currentUser.IsSuperUser;
         }
     }

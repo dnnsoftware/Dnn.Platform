@@ -31,7 +31,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -99,7 +98,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         private bool IsChildPortal(PortalSettings ps, HttpContext context)
         {
             var isChild = false;
-            var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
             var serverPath = Globals.GetAbsoluteServerPath(context.Request);
 
             if (arr.Count > 0)

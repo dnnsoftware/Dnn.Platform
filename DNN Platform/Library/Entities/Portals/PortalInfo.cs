@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Portals
     ///            Dim _PhysicalPath As String
     ///            Dim PortalSettings As PortalSettings = Nothing
     ///            If Not HttpContext.Current Is Nothing Then
-    ///                PortalSettings = PortalController.GetCurrentPortalSettings()
+    ///                PortalSettings = PortalController.Instance.GetCurrentPortalSettings()
     ///            End If
     ///            If PortalId = Null.NullInteger Then
     ///                _PhysicalPath = DotNetNuke.Common.Globals.HostMapPath + RelativePath
@@ -284,6 +284,17 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks><seealso cref="HomeDirectoryMapPath"></seealso></remarks>
         [XmlElement("homedirectory")]
         public string HomeDirectory { get; set; }
+
+        /// <summary>
+        /// Home System (local) directory of the portal (logical path)
+        /// </summary>
+        /// <value>Portal home system directory</value>
+        /// <returns>Portal home system directory in local filesystem</returns>
+        /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
+        [XmlElement("homesystemdirectory")]
+        public string HomeSystemDirectory {
+            get { return String.Format("{0}-System", HomeDirectory); }
+        }
 
         /// <summary>
         /// TabdId of the Home page
@@ -666,7 +677,7 @@ namespace DotNetNuke.Entities.Portals
                 if (_administratorRoleName == Null.NullString && AdministratorRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo adminRole = TestableRoleController.Instance.GetRole(PortalID, r => r.RoleID == AdministratorRoleId);
+                    RoleInfo adminRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == AdministratorRoleId);
                     if (adminRole != null)
                     {
                         _administratorRoleName = adminRole.RoleName;
@@ -696,6 +707,21 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+        /// Fysical path on disk of the home directory of the portal
+        /// </summary>
+        /// <value></value>
+        /// <returns>Fully qualified path of the home system (local) directory</returns>
+        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
+        [XmlIgnore]
+        public string HomeSystemDirectoryMapPath
+        {
+            get
+            {
+                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeSystemDirectory.Replace("/", "\\"));
+            }
+        }
+
+        /// <summary>
         /// Actual number of pages of the portal
         /// </summary>
         /// <value>Number of pages of the portal</value>
@@ -708,8 +734,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (_pages < 0)
                 {
-                    var objTabController = new TabController();
-                    _pages = objTabController.GetTabCount(PortalID);
+                    _pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
                 }
                 return _pages;
             }
@@ -734,7 +759,7 @@ namespace DotNetNuke.Entities.Portals
                 if (_registeredRoleName == Null.NullString && RegisteredRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo regUsersRole = TestableRoleController.Instance.GetRole(PortalID, r => r.RoleID == RegisteredRoleId);
+                    RoleInfo regUsersRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == RegisteredRoleId);
                     if (regUsersRole != null)
                     {
                         _registeredRoleName = regUsersRole.RoleName;

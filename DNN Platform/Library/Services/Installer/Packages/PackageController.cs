@@ -69,10 +69,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(package, 
-                        PortalController.GetCurrentPortalSettings(), 
-                        UserController.GetCurrentUserInfo().UserID, 
+            EventLogController.Instance.AddLog(package, 
+                        PortalController.Instance.GetCurrentPortalSettings(), 
+                        UserController.Instance.GetCurrentUserInfo().UserID, 
                         "",
                         logType);
             
@@ -94,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.Email,
                                                 package.ReleaseNotes,
                                                 package.IsSystemPackage,
-                                                UserController.GetCurrentUserInfo().UserID,
+                                                UserController.Instance.GetCurrentUserInfo().UserID,
                                                 package.FolderName,
                                                 package.IconFile);
 
@@ -156,7 +155,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.Email,
                                    package.ReleaseNotes,
                                    package.IsSystemPackage,
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    package.FolderName,
                                    package.IconFile);
 
@@ -222,7 +221,19 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
-            return GetExtensionPackages(portalId).SingleOrDefault(predicate);
+            return GetExtensionPackage(portalId, predicate, false);
+        }
+
+        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
+        {
+            var package = GetExtensionPackages(portalId).FirstOrDefault(predicate);
+
+            if (package != null && useCopy)
+            {
+                return package.Clone();
+            }
+
+            return package;
         }
 
         public IList<PackageInfo> GetExtensionPackages(int portalId)
@@ -307,9 +318,15 @@ namespace DotNetNuke.Services.Installer.Packages
                         SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
                         string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger
                                                                 ? Path.Combine(Globals.HostMapPath, strRootSkin)
-                                                                : Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                                                                : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
 
-                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
+                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
+                        {
+                            //To be compliant with all versions
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);    
+                        }                        
                         break;
                     case "Provider":
                         //Check if the provider is the default provider
@@ -439,8 +456,19 @@ namespace DotNetNuke.Services.Installer.Packages
 
                                         if ((iconFileNav.Value != string.Empty) && (package.PackageType == "Module" || package.PackageType == "Auth_System" || package.PackageType == "Container" || package.PackageType == "Skin"))
                                         {
-                                            package.IconFile = package.FolderName + "/" + iconFileNav.Value;
-                                            package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            if (iconFileNav.Value.StartsWith("~/"))
+                                            {
+                                                package.IconFile = iconFileNav.Value;
+                                            }
+                                            else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                                            {
+                                                package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                                            }
+                                            else
+                                            {
+                                                package.IconFile = (String.IsNullOrEmpty(package.FolderName) ? "" : package.FolderName + "/") + iconFileNav.Value;
+                                                package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            }
                                         }
                                     }
 

@@ -21,7 +21,7 @@
 using System;
 using System.Linq;
 
-using DotNetNuke.Framework.Internal.Reflection;
+using DotNetNuke.Framework.Reflections;
 
 using Moq;
 using NUnit.Framework;

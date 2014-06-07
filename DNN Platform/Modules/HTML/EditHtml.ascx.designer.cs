@@ -13,6 +13,15 @@ namespace DotNetNuke.Modules.Html {
     public partial class EditHtml {
         
         /// <summary>
+        /// customJS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude customJS;
+        
+        /// <summary>
         /// ehmContent control.
         /// </summary>
         /// <remarks>
@@ -184,6 +193,15 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.LinkButton cmdPreview;
         
         /// <summary>
+        /// hlCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+        
+        /// <summary>
         /// divPreviewVersion control.
         /// </summary>
         /// <remarks>
@@ -310,6 +328,15 @@ namespace DotNetNuke.Modules.Html {
         protected global::DotNetNuke.Web.UI.WebControls.DnnGrid dgHistory;
         
         /// <summary>
+        /// lblNoRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoRecords;
+        
+        /// <summary>
         /// dnnVersions control.
         /// </summary>
         /// <remarks>
@@ -346,12 +373,66 @@ namespace DotNetNuke.Modules.Html {
         protected global::DotNetNuke.Web.UI.WebControls.DnnGrid dgVersions;
         
         /// <summary>
-        /// hlCancel control.
+        /// imgDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImage imgDelete;
+        
+        /// <summary>
+        /// imgPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImage imgPreview;
+        
+        /// <summary>
+        /// imgRollback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImage imgRollback;
+        
+        /// <summary>
+        /// btnRemove control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImageButton btnRemove;
+        
+        /// <summary>
+        /// btnPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImageButton btnPreview;
+        
+        /// <summary>
+        /// btnRollback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnImageButton btnRollback;
+        
+        /// <summary>
+        /// lblNoRecords1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoRecords1;
     }
 }

@@ -144,11 +144,11 @@
                 <div id="hostSkinSettings">
                     <div class="dnnFormItem">
                         <dnn:label id="plHostSkin" controlname="hostSkinCombo" runat="server" />
-                        <dnn:dnncombobox id="hostSkinCombo" runat="Server" datatextfield="Key" datavaluefield="Value" />
+                        <dnn:DnnSkinComboBox id="hostSkinCombo" runat="Server" />
                     </div>
                     <div class="dnnFormItem">
                         <dnn:label id="plHostContainer" controlname="hostContainerCombo" runat="server" />
-                        <dnn:dnncombobox id="hostContainerCombo" runat="Server" datatextfield="Key" datavaluefield="Value" cssclass="dnnFixedSizeComboBox" />
+                        <dnn:DnnSkinComboBox id="hostContainerCombo" runat="Server" cssclass="dnnFixedSizeComboBox" />
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("SkinPreview")%></a>
                     </div>
@@ -156,11 +156,11 @@
                 <div id="adminSkinSettings">
                     <div class="dnnFormItem">
                         <dnn:label id="plAdminSkin" controlname="editSkinCombo" runat="server" />
-                        <dnn:dnncombobox id="editSkinCombo" runat="Server" datatextfield="Key" datavaluefield="Value" />
+                        <dnn:DnnSkinComboBox id="editSkinCombo" runat="Server" />
                     </div>
                     <div class="dnnFormItem" id="adminContainerPreview">
                         <dnn:label id="plAdminContainer" controlname="editContainerCombo" runat="server" />
-                        <dnn:dnncombobox id="editContainerCombo" runat="Server" datatextfield="Key" datavaluefield="Value" cssclass="dnnFixedSizeComboBox" />
+                        <dnn:DnnSkinComboBox id="editContainerCombo" runat="Server" cssclass="dnnFixedSizeComboBox" />
                         <a href="#" class="dnnSecondaryAction">
                             <%=LocalizeString("EditSkinPreview")%></a>
                     </div>
@@ -261,6 +261,18 @@
                     <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plConnectionLimit" controlname="ConnectionLimit" runat="server" />
+                    <asp:TextBox ID="txtConnectionLimit" runat="server" MaxLength="256" Width="225" />
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" validationexpression="^\d*" ControlToValidate="txtConnectionLimit"/>
+                    <asp:RangeValidator runat="server" id="rexNumber1" Type="Integer" controltovalidate="txtConnectionLimit" validationexpression="^\d*" MinimumValue="1" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="ConnectionLimitValidation"  />
+                </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plMaxIdleTime" controlname="MaxIdleTime" runat="server" />
+                    <asp:TextBox ID="txtMaxIdleTime" runat="server" MaxLength="256" Width="225" />
+                    <asp:RegularExpressionValidator runat="server" validationexpression="^\d*" ControlToValidate="txtMaxIdleTime"/>
+                    <asp:RangeValidator runat="server" id="rexNumber2" Type="Integer" controltovalidate="txtMaxIdleTime" MinimumValue="0" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="MaxIdleTimeValidation" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plSMTPAuthentication" controlname="optSMTPAuthentication" runat="server" />
                     <asp:RadioButtonList ID="optSMTPAuthentication" CssClass="dnnHSRadioButtons" runat="server"
                         RepeatLayout="Flow">
@@ -350,26 +362,6 @@
                     <dnn:label id="plJQueryUIVersion" controlname="jQueryUIVersion" runat="server" />
                     <asp:Label ID="jQueryUIVersion" runat="server"></asp:Label>
                 </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryDebugVersion" controlname="chkJQueryDebugVersion" runat="server" />
-                    <asp:CheckBox ID="chkJQueryDebugVersion" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryUseHosted" controlname="chkJQueryUseHosted" runat="server" />
-                    <asp:CheckBox ID="chkJQueryUseHosted" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryHostUrl" controlname="txtJQueryHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryHostedUrl" runat="server" MaxLength="256" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryMigrateHostUrl" controlname="txtJQueryMigrateHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryMigrateHostedUrl" runat="server" MaxLength="256" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plJQueryUIHostUrl" controlname="txtJQueryUIHostedUrl" runat="server" />
-                    <asp:TextBox ID="txtJQueryUIHostedUrl" runat="server" MaxLength="256" />
-                </div>
             </fieldset>
             <h2 id="Panel-CdnSettings" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("CdnSettings")%></a></h2>
             <fieldset>
@@ -434,6 +426,13 @@
                     <asp:Label ID="lblResetLinkValidity" runat="server" />
                 </div>
                 <div class="dnnFormItem">
+                    <dnn:label id="plAdminResetLinkValidity" controlname="txtAdminResetLinkValidity" runat="server" />
+                    <asp:TextBox ID="txtAdminResetLinkValidity" runat="server" MaxLength="8" />
+                    <asp:CompareValidator ID="valAdminResetLink" runat="server" ValueToCompare="0" ControlToValidate="txtAdminResetLinkValidity" CssClass="dnnFormMessage dnnFormError"
+                        resourceKey="valAdminResetLink.Error" Operator="GreaterThan" Type="Integer" Display="Dynamic"></asp:CompareValidator>
+                    <asp:Label ID="lblAdminResetLinkValidity" runat="server" />
+                </div>
+                <div class="dnnFormItem">
                     <dnn:label id="plEnablePasswordHistory" controlname="chkEnablePasswordHistory" runat="server" />
                     <asp:CheckBox ID="chkEnablePasswordHistory" runat="server" />
                 </div>
@@ -454,6 +453,7 @@
                     <dnn:label id="plEnableIPChecking" controlname="chkIPChecking" runat="server" />
                     <asp:CheckBox ID="chkIPChecking" runat="server" />
                 </div>
+                <dnn:propertyeditorcontrol id="passwordSettings" runat="Server" valuedatafield="PropertyValue" namedatafield="Name" helpstyle-cssclass="dnnFormHelpContent dnnClear" sortmode="SortOrderAttribute" />
             </fieldset>
             <h2 id="Panel-IPFilters" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("IPFilters")%></a></h2>
             <fieldset class="asContentIPFilters">
@@ -488,7 +488,7 @@
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="txtCustomAnalyzer" />
+                    <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>
                 </div>
                 <div class="dnnTableHeader">
@@ -588,17 +588,7 @@
                     <asp:RegularExpressionValidator ID="valFileExtensions" CssClass="dnnFormMessage dnnFormError"
                         runat="server" ControlToValidate="txtFileExtensions" EnableClientScript="true"
                         ValidationExpression="[A-Za-z0-9,_]*" resourceKey="valFileExtensions.Error" Display="Dynamic" />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSchedulerMode" controlname="cboSchedulerMode" runat="server" />
-                    <dnn:dnncombobox id="cboSchedulerMode" runat="server">
-                        <Items>
-                        <dnn:DnnComboBoxItem resourcekey="Disabled" Value="0" />
-                        <dnn:DnnComboBoxItem resourcekey="TimerMethod" Value="1" />
-                        <dnn:DnnComboBoxItem resourcekey="RequestMethod" Value="2" />
-                        </Items>
-                    </dnn:dnncombobox>
-                </div>
+                </div>              
                 <div class="dnnFormItem">
                     <dnn:label id="plLogBuffer" controlname="chkLogBuffer" runat="server" />
                     <asp:CheckBox ID="chkLogBuffer" runat="server" />

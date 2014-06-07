@@ -81,6 +81,9 @@
       <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -100,10 +103,6 @@
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SharpZipLib">
-      <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -261,25 +260,39 @@
     <Compile Include="Entities\Content\Taxonomy\TermUsage.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowController.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowLogType.cs" />
+    <Compile Include="Entities\Content\Workflow\ContentWorkflowSource.cs" />
+    <Compile Include="Entities\Content\Workflow\IContentWorkflowAction.cs" />
     <Compile Include="Entities\Content\Workflow\IContentWorkflowController.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflow.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowLog.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowState.cs" />
     <Compile Include="Entities\Content\Workflow\ContentWorkflowStatePermission.cs" />
     <Compile Include="Entities\DataStructures\NTree.cs" />
+    <Compile Include="Entities\Host\IServerWebRequestAdapter.cs" />
+    <Compile Include="Entities\Host\ServerWebRequestAdapter.cs" />
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Obsolete\IUserController.cs" />
+    <Compile Include="Obsolete\IModuleController.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
     <Compile Include="Entities\Modules\ModuleSearchBase.cs" />
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
-    <Compile Include="Entities\Portals\Internal\IPortalAliasController.cs" />
+    <Compile Include="Entities\Modules\ModuleController.cs" />
+    <Compile Include="Obsolete\IPortalAliasController.cs" />
+    <Compile Include="Obsolete\TestablePortalAliasController.cs" />
+    <Compile Include="Obsolete\ITabController.cs" />
+    <Compile Include="Obsolete\CBO.cs" />
+    <Compile Include="Obsolete\FolderPermissionController.cs" />
+    <Compile Include="Obsolete\LogController.cs" />
+    <Compile Include="Obsolete\PortalAliasController.cs" />
+    <Compile Include="Obsolete\PortalController.cs" />
+    <Compile Include="Entities\Portals\IPortalAliasController.cs" />
     <Compile Include="Entities\Portals\Internal\IPortalTemplateIO.cs" />
-    <Compile Include="Entities\Portals\Internal\PortalAliasControllerImpl.cs" />
     <Compile Include="Entities\Portals\Internal\PortalTemplateIO.cs" />
-    <Compile Include="Entities\Portals\Internal\PortalTemplateIOImpl.cs" />
-    <Compile Include="Entities\Portals\Internal\TestablePortalAliasController.cs" />
-    <Compile Include="Entities\Portals\Internal\TestablePortalController.cs" />
+    <Compile Include="Obsolete\RoleController.cs" />
+    <Compile Include="Obsolete\TabController.cs" />
+    <Compile Include="Obsolete\TestablePortalController.cs" />
     <Compile Include="Entities\Tabs\ITabPublishingController.cs" />
     <Compile Include="Entities\Tabs\TabAliasSkinInfo.cs" />
     <Compile Include="Entities\Tabs\TabException.cs" />
@@ -342,9 +355,8 @@
     <Compile Include="Entities\Users\Exceptions\InvalidVerificationCodeException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserAlreadyVerifiedException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserDoesNotExistException.cs" />
-    <Compile Include="Entities\Users\Internal\IUserController.cs" />
-    <Compile Include="Entities\Users\Internal\TestableUserController.cs" />
-    <Compile Include="Entities\Users\Internal\UserControllerImpl.cs" />
+    <Compile Include="Entities\Users\IUserController.cs" />
+    <Compile Include="Obsolete\TestableUserController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordSettings.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPropertyAccess.cs" />
@@ -422,11 +434,11 @@
     <Compile Include="Framework\JavaScriptLibraries\CommonJS.cs" />
     <Compile Include="Framework\JavaScriptLibraries\SpecificVersion.cs" />
     <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryController.cs" />
-    <Compile Include="Framework\Internal\Reflection\AssemblyWrapper.cs" />
-    <Compile Include="Framework\Internal\Reflection\IAssembly.cs" />
-    <Compile Include="Framework\Internal\Reflection\IAssemblyLocator.cs" />
-    <Compile Include="Framework\Internal\Reflection\ITypeLocator.cs" />
-    <Compile Include="Framework\Internal\Reflection\TypeLocator.cs" />
+    <Compile Include="Framework\Reflections\AssemblyWrapper.cs" />
+    <Compile Include="Framework\Reflections\IAssembly.cs" />
+    <Compile Include="Framework\Reflections\IAssemblyLocator.cs" />
+    <Compile Include="Framework\Reflections\ITypeLocator.cs" />
+    <Compile Include="Framework\Reflections\TypeLocator.cs" />
     <Compile Include="Framework\IServiceFrameworkInternals.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScript.cs" />
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptLibrary.cs" />
@@ -456,29 +468,27 @@
     <Compile Include="Entities\Host\ServerController.cs" />
     <Compile Include="Entities\Host\ServerInfo.cs" />
     <Compile Include="Entities\Icons\IconController.cs" />
-    <Compile Include="Entities\Modules\Internal\IModuleController.cs" />
-    <Compile Include="Entities\Modules\Internal\ModuleControllerImpl.cs" />
-    <Compile Include="Entities\Modules\Internal\TestableModuleController.cs" />
-    <Compile Include="Entities\Portals\IPortalSettings.cs" />
-    <Compile Include="Entities\Portals\TestablePortalSettings.cs" />
-    <Compile Include="Entities\Tabs\Internal\ITabController.cs" />
-    <Compile Include="Entities\Tabs\Internal\TabControllerImpl.cs" />
-    <Compile Include="Entities\Tabs\Internal\TestableTabController.cs" />
+    <Compile Include="Entities\Modules\IModuleController.cs" />
+    <Compile Include="Obsolete\TestableModuleController.cs" />
+    <Compile Include="Entities\Tabs\ITabController.cs" />
+    <Compile Include="Obsolete\TestableTabController.cs" />
     <Compile Include="Framework\IServicesFramework.cs" />
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
     <Compile Include="Modules\SQL\Components\SqlQueryController.cs" />
     <Compile Include="Modules\SQL\Components\SqlQuery.cs" />
+    <Compile Include="Obsolete\UserController.cs" />
     <Compile Include="Security\FIPSCompliant.cs" />
     <Compile Include="Security\Membership\AspNetMembershipProvider.cs" />
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
+    <Compile Include="Security\Permissions\IFolderPermissionController.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
+    <Compile Include="Obsolete\TestableRoleController.cs" />
+    <Compile Include="Security\Roles\IRoleController.cs" />
     <Compile Include="Security\Roles\SecurityMode.cs" />
-    <Compile Include="Security\Roles\Internal\IRoleController.cs" />
-    <Compile Include="Security\Roles\Internal\RoleControllerImpl.cs" />
-    <Compile Include="Security\Roles\Internal\TestableRoleController.cs" />
+    <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
@@ -519,8 +529,13 @@
     <Compile Include="Services\FileSystem\FileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileSizeFormatProvider.cs" />
+    <Compile Include="Services\FileSystem\FileUrlHelper.cs" />
     <Compile Include="Services\FileSystem\FileVersionController.cs" />
     <Compile Include="Services\FileSystem\FileVersionInfo.cs" />
+    <Compile Include="Services\FileSystem\FolderMappings\FolderMappingsConfigController.cs" />
+    <Compile Include="Services\FileSystem\FolderMappings\FolderTypeConfig.cs" />
+    <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
+    <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlersContainer.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
@@ -538,6 +553,7 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
@@ -718,7 +734,7 @@
     <Compile Include="Entities\Modules\ModuleControlInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Entities\Modules\ModuleController.cs">
+    <Compile Include="Obsolete\ModuleController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Entities\Modules\ModuleInfo.cs">
@@ -1000,17 +1016,11 @@
     <Compile Include="Services\FileSystem\IFileManager.cs" />
     <Compile Include="Services\FileSystem\IFolderInfo.cs" />
     <Compile Include="Services\FileSystem\IFolderManager.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\CBOWrapper.cs" />
     <Compile Include="Services\FileSystem\Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Services\FileSystem\Wrappers\FileWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\FolderPermissionControllerWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\ICBO.cs" />
+    <Compile Include="Common\Utilities\ICBO.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IDirectory.cs" />
     <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IFolderPermissionController.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IUserController.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\PortalControllerWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\UserControllerWrapper.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
     <Compile Include="Services\FileSystem\FileController.cs" />
@@ -1259,6 +1269,7 @@
     <Compile Include="Services\Tokens\PropertyAccess\PropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\TicksPropertyAccess.cs" />
     <Compile Include="Services\Tokens\TokenReplace.cs" />
+    <Compile Include="Services\Upgrade\Internals\Steps\AddFcnModeStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\BaseInstallationStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InstallVersionStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\IISVerificationStep.cs" />
@@ -1410,6 +1421,7 @@
     <Compile Include="UI\UserControls\HelpButtonControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\UserControls\IFilePickerUploader.cs" />
     <Compile Include="UI\UserControls\LabelControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1648,7 +1660,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Services\Log\Logger\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">

@@ -48,7 +48,7 @@
                     <div id="extensionTypeRow" runat="server" class="dnnFormItem">
                         <dnn:Label ID="plExtensionType" runat="server" ControlName="cboExtensionType" />
                         <%--<asp:DropDownList ID="cboExtensionType" runat="server" DataTextField="Description" DataValueField="PackageType" AutoPostBack="true"/>--%>
-                        <dnn:DnnComboBox ID="cboExtensionType" runat="server" DataTextField="Description" DataValueField="PackageType" AutoPostBack="true"/>
+                        <dnn:DnnComboBox ID="cboExtensionType" runat="server" DataTextField="Description" DataValueField="PackageType" AutoPostBack="true" CausesValidation="False"/>
                     </div>
                     <div class="dnnFormItem">
                         <asp:Label ID="lblHelp" runat="server" cssClass="WizardText" resourcekey="IntroductionHelp" />
@@ -79,7 +79,7 @@
                     <Items>
                         <dnn:DnnFormTextBoxItem ID="owner" runat="server" DataField="Owner" />
                         <dnn:DnnFormTextBoxItem ID="organization" runat="server" DataField="Organization" />
-                        <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField = "URL" />
+                        <dnn:DnnFormTextBoxItem ID="url" runat="server" DataField = "Url" ResourceKey="URL" />
                         <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField="Email" />
                     </Items>
                 </dnn:DnnFormEditor>                

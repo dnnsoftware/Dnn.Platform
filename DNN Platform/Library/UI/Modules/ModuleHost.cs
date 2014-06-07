@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 

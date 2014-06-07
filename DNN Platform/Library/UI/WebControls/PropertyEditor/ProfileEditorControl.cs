@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.WebControls
 
                 if (definition != null && definition.ReadOnly && (editor.Editor.EditMode == PropertyEditorMode.Edit))
                 {
-                    PortalSettings ps = PortalController.GetCurrentPortalSettings();
+                    PortalSettings ps = PortalController.Instance.GetCurrentPortalSettings();
                     if (!PortalSecurity.IsInRole(ps.AdministratorRoleName))
                     {
                         editor.Editor.EditMode = PropertyEditorMode.View;

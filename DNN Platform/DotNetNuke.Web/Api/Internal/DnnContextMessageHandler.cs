@@ -23,10 +23,9 @@ using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Tabs.Internal;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Localization.Internal;
 
@@ -54,7 +53,7 @@ namespace DotNetNuke.Web.Api.Internal
         private static PortalSettings SetupPortalSettings(HttpRequestMessage request)
         {
             var domainName = TestableGlobals.Instance.GetDomainName(request.RequestUri);
-            var alias = TestablePortalAliasController.Instance.GetPortalAlias(domainName);
+            var alias = PortalAliasController.Instance.GetPortalAlias(domainName);
 
             int tabId;
             ValidateTabAndModuleContext(request, alias.PortalID, out tabId);
@@ -67,7 +66,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         private static bool TabIsInPortal(int tabId, int portalId)
         {
-            var tab = TestableTabController.Instance.GetTab(tabId, portalId);
+            var tab = TabController.Instance.GetTab(tabId, portalId);
 
             return tab != null;
         }
@@ -87,7 +86,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 if (moduleId != Null.NullInteger)
                 {
-                    var module = TestableModuleController.Instance.GetModule(moduleId, tabId);
+                    var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                     if (module == null)
                     {
                         throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("TabModuleNotExist", Localization.ExceptionsResourceFile)));

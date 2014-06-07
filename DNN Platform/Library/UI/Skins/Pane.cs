@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -344,7 +344,7 @@ namespace DotNetNuke.UI.Skins
             var request = PaneControl.Page.Request;
             Containers.Container container = null;
 
-            if (PortalSettings.EnablePopUps && request.Url.ToString().Contains("popUp=true"))
+            if (PortalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
                 containerSrc = module.ContainerPath + "popUpContainer.ascx";
                 //Check Skin for a popup Container
@@ -433,9 +433,8 @@ namespace DotNetNuke.UI.Skins
                 var paneName = Convert.ToString(args.EventArguments["pane"]);
                 var moduleOrder = Convert.ToInt32(args.EventArguments["order"]);
 
-                var moduleController = new ModuleController();
-                moduleController.UpdateModuleOrder(portalSettings.ActiveTab.TabID, moduleId, moduleOrder, paneName);
-                moduleController.UpdateTabModuleOrder(portalSettings.ActiveTab.TabID);
+                ModuleController.Instance.UpdateModuleOrder(portalSettings.ActiveTab.TabID, moduleId, moduleOrder, paneName);
+                ModuleController.Instance.UpdateTabModuleOrder(portalSettings.ActiveTab.TabID);
 
                 //Redirect to the same page to pick up changes
                 PaneControl.Page.Response.Redirect(PaneControl.Page.Request.RawUrl, true);

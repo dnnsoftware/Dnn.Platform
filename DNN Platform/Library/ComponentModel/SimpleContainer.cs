@@ -262,6 +262,8 @@ namespace DotNetNuke.ComponentModel
             AddComponentType(contractType);
 
             AddBuilder(contractType, new InstanceComponentBuilder(name, instance));
+
+            RegisterComponent(name, instance.GetType());
         }
 
         public override void RegisterComponentSettings(string name, IDictionary dependencies)

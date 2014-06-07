@@ -91,10 +91,9 @@ namespace DotNetNuke.Services.ModuleCache
                 }
             }
 
-            var portalController = new PortalController();
-            PortalInfo portalInfo = portalController.GetPortal(portalId);
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
 
-            string homeDirectoryMapPath = portalInfo.HomeDirectoryMapPath;
+            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
 
             if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
@@ -117,7 +116,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static string GetCacheFolder()
         {
-            int portalId = PortalController.GetCurrentPortalSettings().PortalId;
+            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
             return GetCacheFolder(portalId);
         }
 
@@ -292,8 +291,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void Remove(int tabModuleId)
         {
-            var controller = new ModuleController();
-            ModuleInfo tabModule = controller.GetTabModule(tabModuleId);
+            ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
 
             int portalId = tabModule.PortalID;
             if (portalId == Null.NullInteger)

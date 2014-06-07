@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void AddHtmlTextLog(HtmlTextLogInfo objHtmlTextLog)
         {
-            DataProvider.Instance().AddHtmlTextLog(objHtmlTextLog.ItemID, objHtmlTextLog.StateID, objHtmlTextLog.Comment, objHtmlTextLog.Approved, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().AddHtmlTextLog(objHtmlTextLog.ItemID, objHtmlTextLog.StateID, objHtmlTextLog.Comment, objHtmlTextLog.Approved, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         #endregion

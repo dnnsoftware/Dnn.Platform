@@ -116,11 +116,9 @@ namespace DesktopModules.Admin.ModuleCreator
 
         private string CreateModuleControl()
         {
-            EventLogController objEventLog = new EventLogController();
-
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
-            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+            EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
 
             var controlName = Null.NullString;
@@ -195,7 +193,7 @@ namespace DesktopModules.Admin.ModuleCreator
                     tw.WriteLine(sourceCode);
                     tw.Close();
 
-                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+                    EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
                 }
 
@@ -343,15 +341,14 @@ namespace DesktopModules.Admin.ModuleCreator
                         ModuleControlController.AddModuleControl(objModuleControl);
 
                         //Update current module to reference new moduledefinition
-                        var objModules = new ModuleController();
-                        var objModule = objModules.GetModule(ModuleId, TabId, false);
+                        var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                         objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                         objModule.ModuleTitle = txtModule.Text;
 
                         //HACK - need core enhancement to be able to update ModuleDefID
                         DotNetNuke.Data.DataProvider.Instance().ExecuteSQL("Update dbo.Modules set ModuleDefID = " + objModule.ModuleDefID.ToString() + " where ModuleID = " + ModuleId.ToString());
 
-                        objModules.UpdateModule(objModule);
+                        ModuleController.Instance.UpdateModule(objModule);
 
                         return true;
                     }

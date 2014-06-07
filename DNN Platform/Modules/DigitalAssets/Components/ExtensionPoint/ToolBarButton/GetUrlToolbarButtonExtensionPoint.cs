@@ -23,6 +23,7 @@ using System;
 using System.ComponentModel.Composition;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
@@ -76,7 +77,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public int Order
         {
-            get { return 6; }
+            get { return 8; }
         }
+
+        public bool Enabled
+        {
+            get { return true; }
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }

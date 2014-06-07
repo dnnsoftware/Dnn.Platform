@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -38,8 +39,10 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
@@ -73,47 +76,28 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (_contentTypes == null)
                 {
+                    var listController = new ListController();
+                    var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+                    if (listEntries == null || listEntries.Count() == 0)
+                    {
+                        _contentTypes = GetDefaultContentTypes();
+                    }
                     _contentTypes = new Dictionary<string, string>();
-                    _contentTypes.Add("txt", "text/plain");
-                    _contentTypes.Add("htm", "text/html");
-                    _contentTypes.Add("html", "text/html");
-                    _contentTypes.Add("rtf", "text/richtext");
-                    _contentTypes.Add("jpg", "image/jpeg");
-                    _contentTypes.Add("jpeg", "image/jpeg");
-                    _contentTypes.Add("gif", "image/gif");
-                    _contentTypes.Add("bmp", "image/bmp");
-                    _contentTypes.Add("png", "image/png");
-                    _contentTypes.Add("ico", "image/x-icon");
-                    _contentTypes.Add("svg", "image/svg+xml");
-                    _contentTypes.Add("ttf", "font/ttf");
-                    _contentTypes.Add("eot", "application/vnd.ms-fontobject");
-                    _contentTypes.Add("woff", "application/font-woff");
-                    _contentTypes.Add("mp3", "audio/mpeg");
-                    _contentTypes.Add("wma", "audio/x-ms-wma");
-                    _contentTypes.Add("mpg", "video/mpeg");
-                    _contentTypes.Add("mpeg", "video/mpeg");
-                    _contentTypes.Add("avi", "video/avi");
-                    _contentTypes.Add("mp4", "video/mp4");
-                    _contentTypes.Add("wmv", "video/x-ms-wmv");
-                    _contentTypes.Add("pdf", "application/pdf");
-                    _contentTypes.Add("doc", "application/msword");
-                    _contentTypes.Add("dot", "application/msword");
-                    _contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                    _contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
-                    _contentTypes.Add("csv", "text/csv");
-                    _contentTypes.Add("xls", "application/x-msexcel");
-                    _contentTypes.Add("xlt", "application/x-msexcel");
-                    _contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                    _contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
-                    _contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
-                    _contentTypes.Add("pps", "application/vnd.ms-powerpoint");
-                    _contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-                    _contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+                    foreach (var contentTypeEntry in listEntries)
+                    {
+                        _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                    }
                 }
 
                 return _contentTypes;
             }
         }
+
+        private bool IgnoreWhiteList
+        {
+            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
+        }
+
         #endregion
 
         #region Constants
@@ -130,6 +114,49 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Private Methods
+
+        private Dictionary<string, string> GetDefaultContentTypes()
+        {
+            var contentTypes = new Dictionary<string, string>();
+            contentTypes.Add("txt", "text/plain");
+            contentTypes.Add("htm", "text/html");
+            contentTypes.Add("html", "text/html");
+            contentTypes.Add("rtf", "text/richtext");
+            contentTypes.Add("jpg", "image/jpeg");
+            contentTypes.Add("jpeg", "image/jpeg");
+            contentTypes.Add("gif", "image/gif");
+            contentTypes.Add("bmp", "image/bmp");
+            contentTypes.Add("png", "image/png");
+            contentTypes.Add("ico", "image/x-icon");
+            contentTypes.Add("svg", "image/svg+xml");
+            contentTypes.Add("ttf", "font/ttf");
+            contentTypes.Add("eot", "application/vnd.ms-fontobject");
+            contentTypes.Add("woff", "application/font-woff");
+            contentTypes.Add("mp3", "audio/mpeg");
+            contentTypes.Add("wma", "audio/x-ms-wma");
+            contentTypes.Add("mpg", "video/mpeg");
+            contentTypes.Add("mpeg", "video/mpeg");
+            contentTypes.Add("avi", "video/avi");
+            contentTypes.Add("mp4", "video/mp4");
+            contentTypes.Add("wmv", "video/x-ms-wmv");
+            contentTypes.Add("pdf", "application/pdf");
+            contentTypes.Add("doc", "application/msword");
+            contentTypes.Add("dot", "application/msword");
+            contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
+            contentTypes.Add("csv", "text/csv");
+            contentTypes.Add("xls", "application/x-msexcel");
+            contentTypes.Add("xlt", "application/x-msexcel");
+            contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
+            contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pps", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+            contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+
+            return contentTypes;
+        }
+
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
             try
@@ -329,23 +356,21 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            if (checkPermissions && !FolderPermissionControllerWrapper.Instance.CanAddFolder(folder))
+            if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && !(UserController.GetCurrentUserInfo().IsSuperUser) && !(HostController.Instance.GetBoolean("IgnoreWhiteList", false)))
+            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !IgnoreWhiteList))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
             //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && (UserController.GetCurrentUserInfo().IsSuperUser) && HostController.Instance.GetBoolean("IgnoreWhiteList", false))
+            if (!IsAllowedExtension(fileName) && UserController.Instance.GetCurrentUserInfo().IsSuperUser && IgnoreWhiteList)
              {
-                 var eventLogController = new EventLogController();
-                 var logInfo = new LogInfo();
-                 logInfo.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
-                 logInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                 eventLogController.AddLog(logInfo);
+                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                 log.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                 LogController.Instance.AddLog(log);
              }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -386,7 +411,7 @@ namespace DotNetNuke.Services.FileSystem
                 ContentWorkflow folderWorkflow = null;
 
                 var contentFileName = fileName;
-
+                var fileHash = string.Empty;
                 if (needToWriteFile)
                 {
                     if (!fileContent.CanSeek)
@@ -397,7 +422,8 @@ namespace DotNetNuke.Services.FileSystem
 
                     // Retrieve Metadata
                     file.Size = (int)fileContent.Length;
-                    file.SHA1Hash = GetHash(fileContent);
+                    fileHash = folderProvider.GetHashCode(file, fileContent);
+                    file.SHA1Hash = fileHash;
                     fileContent.Position = 0;
 
                     file.Width = 0;
@@ -423,7 +449,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
 
-                    if (!PortalControllerWrapper.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
+                    if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, file.Size))
                     {
                         throw new NoSpaceAvailableException(
                             Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
@@ -431,7 +457,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     //Publish Period
-                    if (fileExists && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
+                    if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserID))
                     {
                         throw new FileLockedException(
                                         Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
@@ -441,7 +467,7 @@ namespace DotNetNuke.Services.FileSystem
                     folderWorkflow = ContentWorkflowController.Instance.GetWorkflowByID(folder.WorkflowID);
                     if (folderWorkflow != null)
                     {
-                        file.FileId = fileExists ? oldFile.FileId : Null.NullInteger; // If workflow exists, then the file already exists
+                        file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger; // If workflow exists, then the file already exists
 
                         // Create Content Item if does not exists
                         if (file.ContentItemID == Null.NullInteger)
@@ -459,7 +485,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                     // Versioning
-                    else if (fileExists && FileVersionController.Instance.IsFolderVersioned(folder) && oldFile.SHA1Hash != file.SHA1Hash)
+                    else if (oldFile != null && FileVersionController.Instance.IsFolderVersioned(folder) && oldFile.SHA1Hash != file.SHA1Hash)
                     {
                         contentFileName = FileVersionController.Instance.AddFileVersion(oldFile, createdByUserID);
                     }
@@ -467,6 +493,7 @@ namespace DotNetNuke.Services.FileSystem
                 else
                 {
                     file.Size = (int)folderProvider.GetFileSize(file);
+                    file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
                 if (folderWorkflow == null || !fileExists)
@@ -483,7 +510,7 @@ namespace DotNetNuke.Services.FileSystem
                                                               file.Folder,
                                                               file.FolderId,
                                                               createdByUserID,
-                                                              file.SHA1Hash,
+                                                              fileHash,
                                                               file.LastModificationTime,
                                                               file.Title,
                                                               file.StartDate,
@@ -503,6 +530,13 @@ namespace DotNetNuke.Services.FileSystem
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
+                    }
+
+                    var providerHash = folderProvider.GetHashCode(file);
+                    if (fileHash != providerHash)
+                    {
+                        DataProvider.Instance()
+                            .UpdateFileHashCode(file.FileId, providerHash);
                     }
                 }
                 catch (FileLockedException fle)
@@ -565,12 +599,12 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file.FolderMappingID == destinationFolder.FolderMappingID)
             {
-                if (!FolderPermissionControllerWrapper.Instance.CanAddFolder(destinationFolder))
+                if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
                 {
                     throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
                 }
 
-                if (!PortalControllerWrapper.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
+                if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
                 {
                     throw new NoSpaceAvailableException(Localization.Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
                 }
@@ -745,7 +779,7 @@ namespace DotNetNuke.Services.FileSystem
             var file = DataCache.GetCache(strCacheKey);
             if (file == null)
             {
-                file = CBOWrapper.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
+                file = CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
                 if (file != null)
                 {
                     var intCacheTimeout = 20 * Convert.ToInt32(GetPerformanceSetting());
@@ -779,7 +813,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("folder", folder);
 
-            return CBOWrapper.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
+            return CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFile(fileName, folder.FolderID, retrieveUnpublishedFiles));
         }
 
         /// <summary>
@@ -1084,26 +1118,43 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
+        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual void UnzipFile(IFileInfo file)
+        public virtual int UnzipFile(IFileInfo file)
         {
 
             Requires.NotNull("file", file);
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            UnzipFile(file, destinationFolder);
+            return UnzipFile(file, destinationFolder);
         }
 
         /// <summary>
         /// Extracts the files and folders contained in the specified zip file to the specified folder.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <param name="destinationFolder">The folder to unzip too</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
+        public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
+        {
+            return UnzipFile(file, destinationFolder, null);
+        }
+
+        /// <summary>
+        /// Extracts the files and folders contained in the specified zip file to the specified folder.
+        /// </summary>
+        /// <param name="file">The file to unzip.</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <param name="invalidFiles">Files which can't exact.</param>
+        /// <returns>Total files count in the zip file.</returns>
+        /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
+
+        public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
 
             Requires.NotNull("file", file);
@@ -1114,7 +1165,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
-            ExtractFiles(file, destinationFolder);
+            return ExtractFiles(file, destinationFolder, invalidFiles);
         }
 
         /// <summary>
@@ -1173,8 +1224,8 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                 }
-
-                file.SHA1Hash = GetHash(fileContent);
+                
+                file.SHA1Hash = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(file.FolderMappingID).FolderProviderType).GetHashCode(file, fileContent);
             }
 
             // Get file size from folder provider.
@@ -1235,7 +1286,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            if (!FolderPermissionControllerWrapper.Instance.CanViewFolder(folder))
+            if (!FolderPermissionController.Instance.CanViewFolder(folder))
             {
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
             }
@@ -1412,11 +1463,17 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual void ExtractFiles(IFileInfo file, IFolderInfo destinationFolder)
+        internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
 
             ZipInputStream zipInputStream = null;
+
+            if (invalidFiles == null)
+            {
+                invalidFiles = new List<string>();
+            }
+            var exactFilesCount = 0;
 
             try
             {
@@ -1430,6 +1487,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!zipEntry.IsDirectory)
                         {
+                            exactFilesCount++;
                             var fileName = Path.GetFileName(zipEntry.Name);
 
                             EnsureZipFolder(zipEntry.Name, destinationFolder);
@@ -1459,6 +1517,7 @@ namespace DotNetNuke.Services.FileSystem
                             }
                             catch (InvalidFileExtensionException exc)
                             {
+                                invalidFiles.Add(zipEntry.Name);
                                 Logger.Warn(exc);
                             }
                             catch (Exception exc)
@@ -1479,6 +1538,8 @@ namespace DotNetNuke.Services.FileSystem
                     zipInputStream.Dispose();
                 }
             }
+
+            return exactFilesCount;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1534,7 +1595,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual int GetCurrentUserID()
         {
-            return UserController.GetCurrentUserInfo().UserID;
+            return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1565,10 +1626,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>SHA1 hash of the file</returns>
         internal virtual string GetHash(IFileInfo fileInfo)
         {
-            using (var stream = GetFileContent(fileInfo))
-            {
-                return GetHash(stream);
-            }
+            return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(fileInfo.FolderMappingID).FolderProviderType).GetHashCode(fileInfo);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1712,7 +1770,6 @@ namespace DotNetNuke.Services.FileSystem
                                                updateLazyload ? file.Width : Null.NullInteger,
                                                updateLazyload ? file.Height : Null.NullInteger,
                                                file.ContentType,
-                                               file.Folder,
                                                file.FolderId,
                                                GetCurrentUserID(),
                                                updateLazyload ? file.SHA1Hash : Null.NullString,

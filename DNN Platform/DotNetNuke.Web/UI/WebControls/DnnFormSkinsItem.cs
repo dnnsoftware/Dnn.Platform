@@ -68,8 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (IncludePortalSkins)
             {
                 // load portal skins
-                var portalController = new PortalController();
-                var portal = portalController.GetPortal(PortalId);
+                var portal = PortalController.Instance.GetPortal(PortalId);
 
                 foreach (var skin in SkinController.GetSkins(portal, skinRoot, SkinScope.Site))
                 {

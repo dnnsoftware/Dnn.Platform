@@ -92,6 +92,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="ContentTestHelper.cs" />
     <Compile Include="DnnUnitTest.cs" />
+    <Compile Include="DnnWebTest.cs" />
     <Compile Include="EnumerableAssert.cs" />
     <Compile Include="ExceptionAssert.cs" />
     <Compile Include="FileAssert.cs" />
@@ -101,9 +102,7 @@
     <Compile Include="HttpSimulator\HttpSimulatorTests.cs" />
     <Compile Include="HttpSimulator\ReflectionHelper.cs" />
     <Compile Include="HttpSimulator\SimulatedHttpRequest.cs" />
-    <Compile Include="IISManager.cs" />
     <Compile Include="MailAssert.cs" />
-    <Compile Include="MailManager.cs" />
     <Compile Include="Mocks\MockComponentProvider.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,7 +110,6 @@
     <Compile Include="SimulatedHttpRequest.cs" />
     <Compile Include="UnitTestHelper.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="WebConfigManager.cs" />
     <Compile Include="ZipManager.cs" />
   </ItemGroup>
   <ItemGroup>

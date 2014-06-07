@@ -252,39 +252,43 @@ namespace DotNetNuke.Security.Permissions
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalID = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = dataProvider.GetTabPermissionsByPortal(portalID);
             var dic = new Dictionary<int, TabPermissionCollection>();
-            try
+
+            if (portalID > -1)
             {
-                while (dr.Read())
+                IDataReader dr = dataProvider.GetTabPermissionsByPortal(portalID);
+                try
                 {
-                    //fill business object
-                    var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
-
-                    //add Tab Permission to dictionary
-                    if (dic.ContainsKey(tabPermissionInfo.TabID))
+                    while (dr.Read())
                     {
-                        //Add TabPermission to TabPermission Collection already in dictionary for TabId
-                        dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
-                    }
-                    else
-                    {
-                        //Create new TabPermission Collection for TabId
-                        var collection = new TabPermissionCollection {tabPermissionInfo};
+                        //fill business object
+                        var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
 
-                        //Add Collection to Dictionary
-                        dic.Add(tabPermissionInfo.TabID, collection);
+                        //add Tab Permission to dictionary
+                        if (dic.ContainsKey(tabPermissionInfo.TabID))
+                        {
+                            //Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
+                        }
+                        else
+                        {
+                            //Create new TabPermission Collection for TabId
+                            var collection = new TabPermissionCollection { tabPermissionInfo };
+
+                            //Add Collection to Dictionary
+                            dic.Add(tabPermissionInfo.TabID, collection);
+                        }
                     }
                 }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                //close datareader
-                CBO.CloseDataReader(dr, true);
+                catch (Exception exc)
+                {
+                    Exceptions.LogException(exc);
+                }
+                finally
+                {
+                    //close datareader
+                    CBO.CloseDataReader(dr, true);
+                }
             }
             return dic;
         }
@@ -293,17 +297,19 @@ namespace DotNetNuke.Security.Permissions
         {
             if (folder == null) return false;
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
-                || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey))
-                && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+                    || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
+                   && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
+            //Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
+            //&& !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
 
         private bool HasPagePermission(TabInfo tab, string permissionKey)
         {
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
-                || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
-                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey))
-                && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+                    || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
+                   && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+            //Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            //&&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
@@ -511,8 +517,6 @@ namespace DotNetNuke.Security.Permissions
         {
             if ((folder.FolderPermissions != null))
             {
-                FolderPermissionCollection folderPermissions = GetFolderPermissionsCollectionByFolder(folder.PortalID, folder.FolderPath);
-
                 //Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
                 var permController = new PermissionController();
                 ArrayList permArray = permController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ");
@@ -563,20 +567,16 @@ namespace DotNetNuke.Security.Permissions
                     folder.FolderPermissions.Add(folderPermission, true);
                 }
 
-                if (!folderPermissions.CompareTo(folder.FolderPermissions))
+                dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
+                foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
-                    dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
-
-                    foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
-                    {
-                        dataProvider.AddFolderPermission(folder.FolderID,
-                                                         folderPermission.PermissionID,
-                                                         folderPermission.RoleID,
-                                                         folderPermission.AllowAccess,
-                                                         folderPermission.UserID,
-                                                         UserController.GetCurrentUserInfo().UserID);
-                    }
-                }
+                    dataProvider.AddFolderPermission(folder.FolderID,
+                                                        folderPermission.PermissionID,
+                                                        folderPermission.RoleID,
+                                                        folderPermission.AllowAccess,
+                                                        folderPermission.UserID,
+                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                }                
             }
         }
 
@@ -654,7 +654,7 @@ namespace DotNetNuke.Security.Permissions
             bool canView;
             if (module.InheritViewPermissions)
             {
-                TabInfo objTab = new TabController().GetTab(module.TabID, module.PortalID, false);
+                TabInfo objTab = TabController.Instance.GetTab(module.TabID, module.PortalID, false);
                 canView = TabPermissionController.CanViewPage(objTab);
             }
             else
@@ -720,8 +720,8 @@ namespace DotNetNuke.Security.Permissions
         public virtual bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             bool isAuthorized = false;
-            UserInfo userInfo = UserController.GetCurrentUserInfo();
-            TabInfo tab = new TabController().GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
+            UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
+            TabInfo tab = TabController.Instance.GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
             if (userInfo != null && userInfo.IsSuperUser)
             {
                 isAuthorized = true;
@@ -846,7 +846,7 @@ namespace DotNetNuke.Security.Permissions
                                                              modulePermission.RoleID,
                                                              modulePermission.AllowAccess,
                                                              modulePermission.UserID,
-                                                             UserController.GetCurrentUserInfo().UserID);
+                                                             UserController.Instance.GetCurrentUserInfo().UserID);
                         }
                     }
                 }
@@ -1032,11 +1032,10 @@ namespace DotNetNuke.Security.Permissions
         public virtual void SaveTabPermissions(TabInfo tab)
         {
             TabPermissionCollection objCurrentTabPermissions = GetTabPermissions(tab.TabID, tab.PortalID);
-            var objEventLog = new EventLogController();
             if (!objCurrentTabPermissions.CompareTo(tab.TabPermissions))
             {
                 dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                objEventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
                 if (tab.TabPermissions != null)
                 {
                     foreach (TabPermissionInfo objTabPermission in tab.TabPermissions)
@@ -1046,8 +1045,8 @@ namespace DotNetNuke.Security.Permissions
                                                       objTabPermission.RoleID,
                                                       objTabPermission.AllowAccess,
                                                       objTabPermission.UserID,
-                                                      UserController.GetCurrentUserInfo().UserID);
-                        objEventLog.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
                     }
                 }
             }

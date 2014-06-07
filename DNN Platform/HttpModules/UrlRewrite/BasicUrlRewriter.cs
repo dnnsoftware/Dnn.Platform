@@ -35,7 +35,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Urls.Config;
@@ -166,7 +165,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         childAlias = childAlias.Replace(":" + request.Url.Port, "");
                     }
 
-                    if (PortalAliasController.GetPortalAliasInfo(childAlias) != null)
+                    if (PortalAliasController.Instance.GetPortalAlias(childAlias) != null)
                     {
                         //check if the domain name contains the alias
                         if (childAlias.IndexOf(domainName, StringComparison.OrdinalIgnoreCase) == -1)
@@ -201,11 +200,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             //if the TabId is not for the correct domain
                             //see if the correct domain can be found and redirect it 
-                            portalAliasInfo = PortalAliasController.GetPortalAliasInfo(domainName);
+                            portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(domainName);
                             if (portalAliasInfo != null && !request.Url.LocalPath.ToLower().EndsWith("/linkclick.aspx"))
                             {
-                                if (app.Request.Url.AbsoluteUri.StartsWith("https://",
-                                                                           StringComparison.InvariantCultureIgnoreCase))
+                                if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     strURL = "https://" + portalAliasInfo.HTTPAlias.Replace("*.", "");
                                 }
@@ -230,7 +228,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 }
                 //using the DomainName above will find that alias that is the domainname portion of the Url
                 //ie. dotnetnuke.com will be found even if zzz.dotnetnuke.com was entered on the Url
-                portalAliasInfo = PortalAliasController.GetPortalAliasInfo(portalAlias);
+                portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias);
                 if (portalAliasInfo != null)
                 {
                     portalId = portalAliasInfo.PortalID;
@@ -423,7 +421,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             PortalAliasInfo objPortalAlias;
             do
             {
-                objPortalAlias = PortalAliasController.GetPortalAliasInfo(myAlias);
+                objPortalAlias = PortalAliasController.Instance.GetPortalAlias(myAlias);
 
                 if (objPortalAlias != null)
                 {
@@ -659,7 +657,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
 
                         //Get the Portal
-                        PortalInfo portal = new PortalController().GetPortal(portalID);
+                        PortalInfo portal = PortalController.Instance.GetPortal(portalID);
                         string requestQuery = app.Request.Url.Query;
                         if (!string.IsNullOrEmpty(requestQuery))
                         {
@@ -775,8 +773,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
                         tabPath = tabPath.Replace("/", "//");
                         tabPath = tabPath.Replace(".aspx", "");
-                        var objTabController = new TabController();
-                        TabCollection objTabs = objTabController.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
+                        TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
                         foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
                         {
                             if ((kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLower() == tabPath))

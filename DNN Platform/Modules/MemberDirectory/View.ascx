@@ -2,18 +2,18 @@
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client"%>
-<dnn:DnnJsInclude ID="DnnJsInclude" runat="server" FilePath="~/Resources/Shared/scripts/knockout.js" />
-<dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.js" Priority="101" />
-<dnn:DnnCssInclude ID="DnnCssInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.css" />
-<dnn:DnnJsInclude ID="DnnJsInclude2" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="102" />
-<dnn:DnnCssInclude ID="DnnCssInclude2" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css" />
-<dnn:DnnCssInclude ID="DnnCssInclude3" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css" />
-<dnn:DnnJsInclude ID="DnnJsInclude3" runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js" Priority="103" />
-<dnn:DnnCssInclude ID="DnnCssInclude4" runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" />
-<dnn:DnnJsInclude ID="DnnJsInclude6" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/jquery.dnnUserFileUpload.js" Priority="104" />
+<dnn:DnnJsInclude ID="DnnJsInclude" runat="server" FilePath="~/Resources/Shared/scripts/knockout.js" AddTag="false"/>
+<dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.js" Priority="101" AddTag="false" />
+<dnn:DnnCssInclude ID="DnnCssInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.css" AddTag="false" />
+<dnn:DnnJsInclude ID="DnnJsInclude2" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="102" AddTag="false" />
+<dnn:DnnCssInclude ID="DnnCssInclude2" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css" AddTag="false" />
+<dnn:DnnCssInclude ID="DnnCssInclude3" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css" AddTag="false" />
+<dnn:DnnJsInclude ID="DnnJsInclude3" runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js" Priority="103" AddTag="false" />
+<dnn:DnnCssInclude ID="DnnCssInclude4" runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" AddTag="false" />
+<dnn:DnnJsInclude ID="DnnJsInclude6" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/jquery.dnnUserFileUpload.js" Priority="104" AddTag="false" />
 
 <div id="memberDirectory" runat="server"  class="dnnForm dnnMemberDirectory">
-	<div id="searchBar" class="mdSearch dnnClear" runat="server">
+	<div id="searchBar" class="mdSearch dnnClear" runat="server" ViewStateMode="Disabled">
     	<div class="mdSearchBar" id="mdBasicSearchBar">
         	<div class="searchWrapper">
                 <a href="#" id="refreshResults" data-bind="visible: ResetEnabled, click: resetSearch" title="<%=LocalizeString("Refresh") %>"><span><%=LocalizeString("Refresh") %></span></a>
@@ -57,7 +57,7 @@
             <div data-bind="visible: !$parent.isEven($data)">
                 <%=AlternateItemTemplate %>
             </div>            
-            <div id="popUpPanel" runat="Server" class="mdHoverContent dnnClear">
+            <div id="popUpPanel" runat="Server" class="mdHoverContent dnnClear" ViewStateMode="Disabled">
             	<div class="mdHoverContentTop">
             	    <%=PopUpTemplate %>
                 </div>
@@ -66,7 +66,7 @@
             </div>
         </li>
     </ul>
-    <div id="loadMore" runat="server" Visible="False" class="mdLoadMore" style="display:none" data-bind="visible: CanLoadMore()"><a href="" class="dnnTertiaryAction" title="" data-bind="click: loadMore">&darr; <%=LocalizeString("LoadMore")%></a></div>
+    <div id="loadMore" runat="server" ViewStateMode="Disabled" Visible="False" class="mdLoadMore" style="display:none" data-bind="visible: CanLoadMore()"><a href="" class="dnnTertiaryAction" title="" data-bind="click: loadMore">&darr; <%=LocalizeString("LoadMore")%></a></div>
 </div>
 
 <script language="javascript" type="text/javascript">
@@ -78,7 +78,7 @@
             pageSize: <% = PageSize %>,
             profileUrl: "<% = ViewProfileUrl %>",
             profileUrlUserToken: "<% = ProfileUrlUserToken %>",
-            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicFormattedUrl() %>',
+            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
             addFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AddFriend")) %>',
             acceptFriendText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AcceptFriend")) %>',
             friendPendingText:'<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("FriendPending")) %>',

@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
         {
             base.OnLoad();
 
-            View.Model.Groups = TestableRoleController.Instance.GetRoles(PortalId, r => r.Status == RoleStatus.Approved);
+            View.Model.Groups = RoleController.Instance.GetRoles(PortalId, r => r.Status == RoleStatus.Approved);
             View.Model.Relationships = RelationshipController.Instance.GetRelationshipsByPortalId(PortalId);
 
             View.Model.ProfileProperties = new List<ProfilePropertyDefinition>();

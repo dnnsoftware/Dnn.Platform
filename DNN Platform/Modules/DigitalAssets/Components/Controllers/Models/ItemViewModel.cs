@@ -45,5 +45,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
         public string Size { get; set; }
 
         public int? FolderMappingID { get; set; }
+
+        public string UnlinkAllowedStatus { get; set; }
     }
 }

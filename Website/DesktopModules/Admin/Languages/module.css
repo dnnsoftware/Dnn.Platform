@@ -196,4 +196,8 @@ input.txtFileName + span{
     height: 60px;
     padding-top: 17px;
 }
-
+.pages
+{
+    max-height:500px;
+    overflow-y:scroll;
+}

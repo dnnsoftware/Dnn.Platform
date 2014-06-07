@@ -116,13 +116,18 @@ namespace DotNetNuke.Modules.Journal.Components {
             {
                 beginDate = SqlDateTime.MinValue.Value;
             }
+
+            if (beginDate > SqlDateTime.MinValue.Value)
+            {
+                beginDate = beginDate.ToUniversalTime();
+            }
             try
             {
                 while (true)
                 {
                     var reader = DataProvider.Instance()
                                              .ExecuteReader("Journal_GetSearchItems", moduleInfo.PortalID,
-                                                            moduleInfo.TabModuleID, beginDate.ToUniversalTime(), lastJournalId,
+                                                            moduleInfo.TabModuleID, beginDate, lastJournalId,
                                                             Constants.SearchBatchSize);
                     var journalIds = new Dictionary<int, int>();
 
@@ -207,7 +212,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         public bool HasViewPermission(SearchResult searchResult)
         {
             var securityKeys = searchResult.UniqueKey.Split('_')[2].Split(',');
-            var userInfo = UserController.GetCurrentUserInfo();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
             
             var selfKey = string.Format("U{0}", userInfo.UserID);
 
@@ -220,7 +225,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             if (securityKeys.Any(s => s.StartsWith("R")))
             {
                 var groupId = Convert.ToInt32(securityKeys.First(s => s.StartsWith("R")).Substring(1));
-                var role = new RoleController().GetRole(groupId, searchResult.PortalId);
+                var role = RoleController.Instance.GetRoleById(searchResult.PortalId, groupId);
                 if (role != null && !role.IsPublic && !userInfo.IsInRole(role.RoleName))
                 {
                     return false;
@@ -245,7 +250,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         public string GetDocUrl(SearchResult searchResult)
         {
             var url = string.Empty;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);

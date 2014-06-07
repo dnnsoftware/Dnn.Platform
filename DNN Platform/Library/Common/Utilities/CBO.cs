@@ -25,6 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
 
@@ -44,19 +46,10 @@ using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Common.Utilities
 {
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      CBO
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CBO class generates objects.
     /// </summary>
-    /// <history>
-    ///     [cnurse]	12/01/2007	Documented
-    /// </history>
-    /// -----------------------------------------------------------------------------
-    public class CBO
+    public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
 		#region Private Constants
 		
@@ -66,23 +59,27 @@ namespace DotNetNuke.Common.Utilities
 
 		#endregion
 
+        protected override Func<ICBO> GetFactory()
+        {
+            return () => new CBO();
+        }
+
 		#region Private Shared Methods
 
 		#region Object Creation/Hydration Helper Methods
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateObjectFromReader creates an object of a specified type from the
-        /// provided DataReader
-        /// </summary>
-        /// <param name="objType">The type of the Object</param>
-        /// <param name="dr">The IDataReader to use to fill the object</param>
-        /// <param name="closeReader">A flag that indicates whether the DataReader should be closed</param>
-        /// <returns>The object (TObject)</returns>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        private static object CreateObjectInternal(Type objType, bool initialise)
+        {
+            object objObject = Activator.CreateInstance(objType);
+
+            if (initialise)
+            {
+                InitializeObject(objObject);
+            }
+            return objObject;
+           
+        }
+
         private static object CreateObjectFromReader(Type objType, IDataReader dr, bool closeReader)
         {
             object objObject = null;
@@ -103,7 +100,7 @@ namespace DotNetNuke.Common.Utilities
                 if (canRead)
                 {
 					//Create the Object
-                    objObject = CreateObject(objType, false);
+                    objObject = CreateObjectInternal(objType, false);
 
                     //hydrate the custom business object
                     FillObjectFromReader(objObject, dr);
@@ -122,23 +119,6 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// FillDictionaryFromReader fills a dictionary of objects of a specified type
-		/// from a DataReader.
-		/// </summary>
-		/// <typeparam name="TKey">The type of the key</typeparam>
-		/// <typeparam name="TValue">The type of the value</typeparam>
-		/// <param name="keyField">The key field for the object.  This is used as
-		/// the key in the Dictionary.</param>
-		/// <param name="dr">The IDataReader to use to fill the objects</param>
-		/// <param name="objDictionary">The Dictionary to fill.</param>
-		/// <param name="closeReader">Whether close the data reader when operation complete.</param>
-		/// <returns>A Dictionary of objects (T)</returns>
-		/// <history>
-		/// 	[cnurse]	11/30/2007	Created
-		/// </history>
-		/// -----------------------------------------------------------------------------
         private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField, IDataReader dr,
                                                                                         IDictionary<TKey, TValue>
                                                                                             objDictionary,
@@ -199,21 +179,6 @@ namespace DotNetNuke.Common.Utilities
             return objDictionary;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillListFromReader fills a list of objects of a specified type 
-        /// from a DataReader
-        /// </summary>
-        /// <param name="objType">The type of the business object</param>
-        /// <param name="dr">The IDataReader to use to fill the objects</param>
-        /// <param name="objList">The List to Fill</param>
-        /// <param name="closeReader">A flag that indicates whether the DataReader should be closed</param>
-        /// <returns>A List of objects (TItem)</returns>
-        /// <remarks></remarks>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static IList FillListFromReader(Type objType, IDataReader dr, IList objList, bool closeReader)
         {
             object objObject;
@@ -242,20 +207,6 @@ namespace DotNetNuke.Common.Utilities
             return objList;
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// FillListFromReader fills a list of objects of a specified type
-		/// from a DataReader
-		/// </summary>
-		/// <param name="dr">The IDataReader to use to fill the objects</param>
-		/// <param name="objList">The List to Fill</param>
-		/// <param name="closeReader">A flag that indicates whether the DataReader should be closed</param>
-		/// <returns>A List of objects (TItem)</returns>
-		/// <remarks></remarks>
-		/// <history>
-		/// 	[cnurse]	11/30/2007	Created
-		/// </history>
-		/// -----------------------------------------------------------------------------
         private static IList<TItem> FillListFromReader<TItem>(IDataReader dr, IList<TItem> objList, bool closeReader)
         {
             TItem objObject;
@@ -284,18 +235,6 @@ namespace DotNetNuke.Common.Utilities
             return objList;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillObjectFromReader fills an object from the provided DataReader.  If the object 
-        /// implements the IHydratable interface it will use the object's IHydratable.Fill() method.
-        /// Otherwise, it will use reflection to fill the object.
-        /// </summary>
-        /// <param name="objObject">The object to fill</param>
-        /// <param name="dr">The DataReader</param>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void FillObjectFromReader(object objObject, IDataReader dr)
         {
             try
@@ -330,16 +269,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// HydrateObject uses reflection to hydrate an object.
-        /// </summary>
-        /// <param name="hydratedObject">The object to Hydrate</param>
-        /// <param name="dr">The IDataReader that contains the columns of data for the object</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void HydrateObject(object hydratedObject, IDataReader dr)
         {
             PropertyInfo objPropertyInfo = null;
@@ -423,12 +352,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-         /// <summary>
-         /// Changes type of an object, taking into account Nullable types
-         /// </summary>
-         /// <param name="obj"></param>
-         /// <param name="type"></param>
-         /// <returns></returns>
          static object ChangeType(object obj, Type type)
          {
              Type u = Nullable.GetUnderlyingType(type);
@@ -445,11 +368,6 @@ namespace DotNetNuke.Common.Utilities
              return Convert.ChangeType(obj, type);
          }
  
-         /// <summary>
-         /// Returns default value for a type - i.e. null for reference types and default value for value types
-         /// </summary>
-         /// <param name="type"></param>
-         /// <returns></returns>
          static object GetDefault(Type type)
          {
              if (type.IsValueType)
@@ -464,33 +382,12 @@ namespace DotNetNuke.Common.Utilities
 
 		#region Object Mapping Helper Methods
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetColumnName gets the name of the Database Column that maps to the property.
-        /// </summary>
-        /// <param name="objProperty">The proeprty of the business object</param>
-        /// <returns>The name of the Database Column</returns>
-        /// <history>
-        /// 	[cnurse]	12/02/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string GetColumnName(PropertyInfo objProperty)
         {
             string columnName = objProperty.Name;
             return columnName;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetObjectMapping gets an instance of the ObjectMappingInfo class for the type.
-        /// This is cached using a high priority as reflection is expensive.
-        /// </summary>
-        /// <param name="objType">The type of the business object</param>
-        /// <returns>An ObjectMappingInfo object representing the mapping for the object</returns>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static ObjectMappingInfo GetObjectMapping(Type objType)
         {
             string cacheKey = objectMapCacheKey + objType.FullName;
@@ -517,32 +414,12 @@ namespace DotNetNuke.Common.Utilities
             return objMap;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetPrimaryKey gets the Primary Key property
-        /// </summary>
-        /// <param name="objType">The type of the business object</param>
-        /// <returns>The name of the Primary Key property</returns>
-        /// <history>
-        /// 	[cnurse]	12/01/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string GetPrimaryKey(Type objType)
         {
             string primaryKey = defaultPrimaryKey;
             return primaryKey;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetTableName gets the name of the Database Table that maps to the object.
-        /// </summary>
-        /// <param name="objType">The type of the business object</param>
-        /// <returns>The name of the Database Table</returns>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string GetTableName(Type objType)
         {
             string tableName = string.Empty;
@@ -568,9 +445,28 @@ namespace DotNetNuke.Common.Utilities
 
 		#endregion
 
-		#region Public Shared Methods
+        #region Public Methods
 
-		#region Clone Object
+        List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
+        {
+            return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
+        }
+
+        TObject ICBO.FillObject<TObject>(IDataReader dr)
+        {
+            return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
+        }
+
+        TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        {
+            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+        }
+
+        #endregion
+
+        #region Public Shared Methods
+
+        #region Clone Object
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -658,21 +554,6 @@ namespace DotNetNuke.Common.Utilities
         /// CreateObject creates a new object of Type TObject.
         /// </summary>
         /// <typeparam name="TObject">The type of object to create.</typeparam>
-        /// <remarks>This overload does not initialise the object</remarks>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static TObject CreateObject<TObject>()
-        {
-            return (TObject) CreateObject(typeof (TObject), false);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateObject creates a new object of Type TObject.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object to create.</typeparam>
         /// <param name="initialise">A flag that indicates whether to initialise the
         /// object.</param>
         /// <history>
@@ -681,31 +562,9 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static TObject CreateObject<TObject>(bool initialise)
         {
-            return (TObject) CreateObject(typeof (TObject), initialise);
+            return (TObject)CreateObjectInternal(typeof(TObject), initialise);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateObject creates a new object.
-        /// </summary>
-        /// <param name="objType">The type of object to create.</param>
-        /// <param name="initialise">A flag that indicates whether to initialise the
-        /// object.</param>
-        /// <history>
-        /// 	[cnurse]	11/30/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static object CreateObject(Type objType, bool initialise)
-        {
-            object objObject = Activator.CreateInstance(objType);
-
-            if (initialise)
-            {
-                InitializeObject(objObject);
-            }
-            return objObject;
-        }
-		
 		#endregion
 
 		#region DeserializeObject
@@ -927,40 +786,6 @@ namespace DotNetNuke.Common.Utilities
 
 		#region FillDictionary
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader
-        /// </summary>
-        /// <typeparam name="TItem">The value for the Dictionary Item</typeparam>
-        /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr) where TItem : IHydratable
-        {
-            return FillDictionaryFromReader("KeyID", dr, new Dictionary<int, TItem>(), true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader
-        /// </summary>
-        /// <typeparam name="TItem">The value for the Dictionary Item</typeparam>
-        /// <param name="objToFill">The Dictionary to fill</param>
-        /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr,
-                                                                    ref IDictionary<int, TItem> objToFill)
-            where TItem : IHydratable
-        {
-            return FillDictionaryFromReader("KeyID", dr, objToFill, true);
-        }
-
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// FillDictionary fills a Dictionary of objects from a DataReader
         /// </summary>
@@ -968,17 +793,12 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TValue">The value for the Dictionary Item</typeparam>
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
                 (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// FillDictionary fills a Dictionary of objects from a DataReader
         /// </summary>
@@ -986,19 +806,11 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TValue">The value for the Dictionary Item</typeparam>
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
-        /// <param name="closeReader">if true, closes reader. If false, rdr left open</param>
-        /// <history>
-        /// 	[bchapman]	10/29/2012	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr,
-                                                                            bool closeReader)
+        /// <param name="closeReader">A flag indicating whether to close the reader.</param>
+        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
         {
-            return
-                (Dictionary<TKey, TValue>)
-                FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
+            return (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1013,8 +825,7 @@ namespace DotNetNuke.Common.Utilities
         /// 	[cnurse]	11/29/2007	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr,
-                                                                            IDictionary<TKey, TValue> objDictionary)
+        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
         {
             return (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
@@ -1054,37 +865,6 @@ namespace DotNetNuke.Common.Utilities
             return (TObject) CreateObjectFromReader(typeof (TObject), dr, closeReader);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillObject fills an object from a DataReader
-        /// </summary>
-        /// <param name="dr">The Data Reader</param>
-        /// <param name="objType">The type of the object</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static object FillObject(IDataReader dr, Type objType)
-        {
-            return CreateObjectFromReader(objType, dr, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillObject fills an object from a DataReader
-        /// </summary>
-        /// <param name="dr">The Data Reader</param>
-        /// <param name="objType">The type of the object</param>
-        /// <param name="closeReader">A flag that indicates the reader should be closed</param>
-        /// <history>
-        /// 	[cnurse]	11/29/2007	Documented
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static object FillObject(IDataReader dr, Type objType, bool closeReader)
-        {
-            return CreateObjectFromReader(objType, dr, closeReader);
-        }
-		
 		#endregion
 
         public static IQueryable<TItem> FillQueryable<TItem>(IDataReader dr)
@@ -1184,14 +964,12 @@ namespace DotNetNuke.Common.Utilities
         /// 	[cnurse]	01/13/2008	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs,
-                                                       CacheItemExpiredCallback cacheItemExpired)
+        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
         }
 
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs,
-                                                       CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
@@ -1390,31 +1168,6 @@ namespace DotNetNuke.Common.Utilities
         }
 
 		#endregion
-		
-		#endregion
-
-		#region Obsolete
-
-        [Obsolete("Obsolete in DotNetNuke 5.0.  Replaced by GetProperties(Of TObject)() ")]
-        public static ArrayList GetPropertyInfo(Type objType)
-        {
-            var arrProperties = new ArrayList();
-
-            //get cached object mapping for type
-            ObjectMappingInfo objMappingInfo = GetObjectMapping(objType);
-
-            arrProperties.AddRange(objMappingInfo.Properties.Values);
-
-            return arrProperties;
-        }
-
-        [Obsolete("Obsolete in DotNetNuke 5.0.  Replaced by SerializeObject(Object) ")]
-        public static XmlDocument Serialize(object objObject)
-        {
-            var document = new XmlDocument();
-            SerializeObject(objObject, document);
-            return document;
-        }
 		
 		#endregion
     }

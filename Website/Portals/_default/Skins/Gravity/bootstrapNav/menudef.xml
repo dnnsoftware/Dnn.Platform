@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
   <template>SimpleTokens.txt</template>
-  <scripts>
-    <script>simple.js</script>
-  </scripts>
 </manifest>

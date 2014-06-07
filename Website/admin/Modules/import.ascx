@@ -16,7 +16,7 @@
             <dnn:Label ID="plFile" runat="server" ControlName="cboFiles" Suffix=":" />
               <dnn:DnnComboBox runat="server" ID="cboFiles"  AutoPostBack="true"/>
         </div>
-    </fieldset>
+ </fieldset>
     <h2 id="dnnPanel-ModuleContent" class="dnnFormSectionHead">
         <a href="#" class="">
             <%=LocalizeString("ModuleContent")%></a></h2>

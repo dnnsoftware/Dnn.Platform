@@ -28,7 +28,7 @@ using System.Text;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
@@ -198,6 +198,32 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates a Permission
+        /// </summary>
+        /// <param name="permissions">The permissions collection</param>
+        /// <param name="role">The role to add</param>
+        /// -----------------------------------------------------------------------------
+        protected override void AddPermission(ArrayList permissions, RoleInfo role)
+        {
+            //Search TabPermission Collection for the user 
+            if (
+                _ModulePermissions.Cast<ModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            {
+                return;
+            }
+
+            //role not found so add new            
+            foreach (PermissionInfo objPermission in permissions)
+            {
+                if (objPermission.PermissionKey == "VIEW")
+                {
+                    AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
+                }
+            }            
+        }
+
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new ModulePermissionInfo(permission)
@@ -213,6 +239,24 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             //Clear Permission List
             _PermissionsList = null;
+        }
+
+        protected override void UpdatePermission(PermissionInfo permission, int roleId, string roleName, string stateKey)
+        {
+            if (InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
+            {
+                return;
+            }
+            base.UpdatePermission(permission, roleId, roleName, stateKey);
+        }
+
+        protected override void UpdatePermission(PermissionInfo permission, string displayName, int userId, string stateKey)
+        {
+            if (InheritViewPermissionsFromTab && permission.PermissionKey == "VIEW")
+            {
+                return;
+            }
+            base.UpdatePermission(permission, displayName, userId, stateKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -317,10 +361,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
-            var moduleInfo = TestableModuleController.Instance.GetModule(ModuleID, TabId);
+            var moduleInfo = ModuleController.Instance.GetModule(ModuleID, TabId, false);
 
             var permissionController = new PermissionController();
-            var permissions = permissionController.GetPermissionsByModuleID(ModuleID);
+            var permissions = permissionController.GetPermissionsByModule(ModuleID, TabId);
 
             var permissionList = new ArrayList();
             for (int i = 0; i <= permissions.Count - 1; i++)
@@ -411,6 +455,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             _ModulePermissions.Remove(permissionID, roleID, userID);
+            //Clear Permission List
+            _PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------

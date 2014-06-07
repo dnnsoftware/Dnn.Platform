@@ -58,7 +58,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DecryptParameter(string value)
         {
-            return DecryptParameter(value, PortalController.GetCurrentPortalSettings().GUID.ToString());
+            return DecryptParameter(value, PortalController.Instance.GetCurrentPortalSettings().GUID.ToString());
         }
 
         public static string DecryptParameter(string value, string encryptionKey)
@@ -81,7 +81,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string EncryptParameter(string value)
         {
-            return EncryptParameter(value, PortalController.GetCurrentPortalSettings().GUID.ToString());
+            return EncryptParameter(value, PortalController.Instance.GetCurrentPortalSettings().GUID.ToString());
         }
 
         public static string EncryptParameter(string value, string encryptionKey)
@@ -185,7 +185,7 @@ namespace DotNetNuke.Common.Utilities
                 string ssloffload = request.Headers[ssloffloadheader];
                 if (!string.IsNullOrEmpty(ssloffload))
                 {
-                    PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     if (portalSettings.ActiveTab.IsSecure)
                     {
                         return true;
@@ -218,7 +218,12 @@ namespace DotNetNuke.Common.Utilities
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect, int windowHeight, int windowWidth, bool refresh, string closingUrl)
         {
-	        var popUpUrl = url;
+	        
+            if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
+            {
+                url = url.Replace("http://", "https://");
+            }
+            var popUpUrl = url;
             //ensure delimiters are not used
 	        if (!popUpUrl.Contains("dnnModal.show"))
 	        {
@@ -307,6 +312,12 @@ namespace DotNetNuke.Common.Utilities
                 url = "";
             }
             return url;
+        }
+
+        //Whether current page is show in popup.
+        public static bool InPopUp()
+        {
+            return HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
         }
     }
 }

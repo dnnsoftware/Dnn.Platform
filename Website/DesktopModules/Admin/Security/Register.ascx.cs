@@ -38,7 +38,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -581,7 +580,7 @@ namespace DotNetNuke.Modules.Admin.Users
             //Validate Unique Display Name
             if (CreateStatus == UserCreateStatus.AddUser && RequireUniqueDisplayName)
             {
-                user = TestableUserController.Instance.GetUserByDisplayname(PortalId, User.DisplayName);
+                user = UserController.Instance.GetUserByDisplayname(PortalId, User.DisplayName);
                 if (user != null)
                 {
                     CreateStatus = UserCreateStatus.DuplicateDisplayName;
@@ -590,7 +589,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     while (user != null)
                     {
                         displayName = User.DisplayName + " 0" + i.ToString(CultureInfo.InvariantCulture);
-                        user = TestableUserController.Instance.GetUserByDisplayname(PortalId, displayName);
+                        user = UserController.Instance.GetUserByDisplayname(PortalId, displayName);
                         i++;
                     }
                     User.DisplayName = displayName;

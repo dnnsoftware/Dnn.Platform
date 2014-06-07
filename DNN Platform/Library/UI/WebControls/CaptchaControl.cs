@@ -416,7 +416,7 @@ namespace DotNetNuke.UI.WebControls
 			url += "?" + KEY + "=" + Encrypt(EncodeTicket(), DateTime.Now.AddSeconds(Expiration));
 
 			//Append the Alias to the url so that it doesn't lose track of the alias it's currently on
-			var _portalSettings = PortalController.GetCurrentPortalSettings();
+			var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
 			return url;
 		}

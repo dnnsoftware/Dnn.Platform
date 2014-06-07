@@ -27,10 +27,10 @@
                     };
                 })(cookieId);
             } else {
-                showEvent = function() {
+                showEvent = function () {
                 };
             }
-            
+
             $wrap.tabs({
                 activate: showEvent,
                 active: opts.selected,
@@ -40,7 +40,7 @@
                     duration: opts.duration
                 }
             });
-            
+
             if (window.location.hash && window.location.hash != '#') {
                 $('a[href="' + window.location.hash + '"]', $wrap).trigger('click');
             }
@@ -102,6 +102,7 @@
                             $('.ui-dialog-buttonpane').find('button:contains("' + opts.noText + '")').addClass('dnnConfirmCancel');
                         },
                         position: 'center',
+                        draggable: false,
                         buttons: [
                         {
                             text: opts.yesText,
@@ -159,6 +160,16 @@
 
 })(jQuery);
 
+(function($) {
+    if ($.dnnConfirm) return;
+
+    $.dnnConfirm = function (opts) {
+        var defaultAction = opts.actionUrl ? opts.actionUrl : 'javascript:void(0);';
+        var shadowLink = $('<a href="' + defaultAction + '" />');
+        shadowLink.dnnConfirm(opts).click();
+    };
+})(jQuery);
+
 (function ($) {
     $.dnnAlert = function (options) {
         var opts = $.extend({}, $.dnnAlert.defaultOptions, options),
@@ -200,20 +211,22 @@
 
         $wrap.each(function () {
             var $this = $(this);
-            if (typeof(opts.onExpand) === "function") {
+            if (typeof (opts.onExpand) === "function") {
                 $this.bind('onExpand', opts.onExpand);
             }
-            if (typeof(opts.onHide) === "function") {
+            if (typeof (opts.onHide) === "function") {
                 $this.bind('onHide', opts.onHide);
             }
             // wire up click event to perform slide toggle
             $this.find(opts.clickToToggleSelector).click(function (e) {
                 var toggle = $(this).toggleClass(opts.toggleClass).parent().next(opts.regionToToggleSelector).slideToggle(function () {
-                    var id = $(toggle.context.parentNode).attr("id");
-                    var cookieId = id ? id.replace(/[^a-zA-Z0-9\-]+/g, "") : '';
                     var visible = $(this).is(':visible');
-                    if (cookieId) {
-                        dnn.dom.setCookie(cookieId, visible, opts.cookieDays, '/', '', false, opts.cookieMilleseconds);
+                    if (opts.saveState) {
+                        var id = $(toggle.context.parentNode).attr("id");
+                        var cookieId = id ? id.replace(/[^a-zA-Z0-9\-]+/g, "") : '';
+                        if (cookieId) {
+                            dnn.dom.setCookie(cookieId, visible, opts.cookieDays, '/', '', false, opts.cookieMilleseconds);
+                        }
                     }
                     if (visible) {
                         $(this).trigger("onExpand");
@@ -251,16 +264,27 @@
                     $parentSeparator = $self.parents(opts.panelSeparatorSelector),
                     groupPanelIndex = $parentSeparator.find(opts.sectionHeadSelector).index($self);
 
-                if (cookieValue == "false") { // cookie explicitly set to false
-                    collapsePanel($clicker, $region);
+                // default value
+                var isOpen = false;
+                if ((indexInArray === 0 && opts.defaultState == "first") || // cookie set to true OR first panel
+                    ($parentSeparator.size() > 0 && groupPanelIndex === 0 && opts.defaultState == "first") || // grouping is used & its the first panel in its group
+                    (opts.defaultState == "open"))  // default open
+                {
+                    isOpen = true;
                 }
-                else if (cookieValue == "true" || indexInArray === 0) { // cookie set to true OR first panel
+                if (opts.saveState) {
+                    if (cookieValue == "true") {
+                        isOpen = true;
+                    }
+                    else if (cookieValue == "false") {
+                        isOpen = false;
+                    }
+                }
+
+                if (isOpen) {
                     expandPanel($clicker, $region);
                 }
-                else if ($parentSeparator.size() > 0 && groupPanelIndex === 0) { // grouping is used & its the first panel in its group
-                    expandPanel($clicker, $region);
-                }
-                else { // nada...
+                else {
                     collapsePanel($clicker, $region);
                 }
             });
@@ -293,7 +317,9 @@
         validationGroup: '',
         panelSeparatorSelector: '.ui-tabs-panel',
         cookieDays: 0,
-        cookieMilleseconds: 1200000 // twenty minutes
+        cookieMilleseconds: 1200000, // twenty minutes
+        saveState: true,
+        defaultState: 'first' // open | closed | first
     };
 
 })(jQuery);
@@ -409,7 +435,7 @@
             $this.parent().css({ position: 'relative' });
             $this.css({ position: 'absolute', right: '-29%' });
             var hoverOnToolTip = false, hoverOnPd = false;
-            
+
             dnnFormHelp.hoverIntent({
                 over: function () {
                     hoverOnPd = true;
@@ -436,7 +462,7 @@
             });
 
             var pinHelper = helpSelector.find(opts.pinSelector);
-            
+
             pinHelper.on('click', function (e) {
                 e.preventDefault();
                 if ($this.hasClass(opts.pinnedClass)) {
@@ -446,7 +472,7 @@
                     $this.removeClass(opts.pinnedClass);
                 }
                 else {
-                    
+
                     $this.addClass(opts.pinnedClass);
                     if ($.isFunction($().draggable)) {
                         helpSelector.draggable();
@@ -482,7 +508,7 @@
             , labelClass: 'dnnBoxLabel'
         };
         settings = $.extend(settings, options || {});
-        
+
         var addEvents = function (object) {
             var checked = object.checked,
                 disabled = object.disabled,
@@ -504,18 +530,18 @@
         };
 
         return this.each(function () {
-        	var ch = this;
-	        
-			if ($(ch).data("checkBoxWrapped")) {
-				return;
-			}
-	        $(ch).data("checkBoxWrapped", true);
+            var ch = this;
+
+            if ($(ch).data("checkBoxWrapped")) {
+                return;
+            }
+            $(ch).data("checkBoxWrapped", true);
 
             if ($(this).hasClass('normalCheckBox') || $(this).hasClass('normalRadioButton')) return;
             var parentCheckBoxHolder = $(this).closest('.normalCheckBox');
             var parentRadioButtonHolder = $(this).closest('.normalRadioButton');
             if (parentCheckBoxHolder.length || parentRadioButtonHolder.length) return;
-            var $ch = addEvents(ch); 
+            var $ch = addEvents(ch);
             if (ch.wrapper) ch.wrapper.remove();
             ch.wrapper = $('<span class="' + settings.cls + '"><span class="mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFAAAAAAAApWe5zwAAAAF0Uk5TAEDm2GYAAAAMSURBVHjaYmAACDAAAAIAAU9tWeEAAAAASUVORK5CYII=" /></span></span>');
             ch.wrapperInner = ch.wrapper.children('span:eq(0)');
@@ -523,21 +549,21 @@
                 function (e) { ch.wrapperInner.addClass(settings.cls + '-hover'); cb(e); },
                 function (e) { ch.wrapperInner.removeClass(settings.cls + '-hover'); cb(e); }
             );
-            
+
             $ch.css({ position: 'absolute', zIndex: -1, opacity: 0 }).after(ch.wrapper);
-            
+
             var label, parentLabel = false;
             label = $ch.closest('label');
             if (!label.length)
                 label = false;
             else
                 parentLabel = true;
-            
+
             if (!label && $ch.attr('id')) {
                 label = $('label[for="' + $ch.attr('id') + '"]');
                 if (!label.length) label = false;
             }
-            
+
             if (label) {
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
@@ -576,7 +602,7 @@
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
             $ch.bind('check', function () { ch.wrapper.addClass(settings.cls + '-checked'); }).bind('uncheck', function () { ch.wrapper.removeClass(settings.cls + '-checked'); });
-	        $ch.bind('focus', function (e) { if(!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
+            $ch.bind('focus', function (e) { if (!e.isTrigger) ch.wrapper.addClass(settings.cls + '-focus'); }).bind('blur', function () { ch.wrapper.removeClass(settings.cls + '-focus'); });
 
             /* Applying checkbox state */
             if (ch.checked)
@@ -608,7 +634,7 @@
             var pd = this,
                 $pd = $(this);
             if (pd.tooltipWrapper) pd.tooltipWrapper.remove();
-            
+
             pd.tooltipWrapper = $('<div class="' + settings.cls + '" data-tipholder="' + settings.holderId + '"> <div class="dnnFormHelpContent dnnClear"><span class="dnnHelpText">' + settings.helpContent + '</span></div></div>');
             $('body').append(pd.tooltipWrapper);
             pd.tooltipWrapper.css({ position: 'absolute' });
@@ -737,7 +763,7 @@
         else {
             inputControl.addClass('dnnSpinnerInput');
         }
-        
+
         var strContainerDiv = '';
         strContainerDiv += '<div class="dnnSpinner">';
         strContainerDiv += '<div class="dnnSpinnerDisplay"></div>';
@@ -987,7 +1013,7 @@
         if (urlAppend.length) {
             url += url.indexOf('?') === -1 ? '?' : '&';
             url += urlAppend.join('&');
-        }        
+        }
         return url;
     };
 
@@ -1265,7 +1291,7 @@
                 self.dom.$elem.removeClass(self.options.loadingClass);
                 callback(parsed);
             };
-            
+
             this.dom.$elem.addClass(this.options.loadingClass);
             // DNN service framework attached if needed
             var services = self.options.moduleId ? ($.dnnSF ? $.dnnSF(self.options.moduleId) : null) : null;
@@ -1342,7 +1368,7 @@
 
         for (i = 0; i < results.length; i++) {
             result = sanitizeResult(results[i]);
-            if (this.filterResult(result, filter)) {                           
+            if (this.filterResult(result, filter)) {
                 filtered.push(result);
             }
         }
@@ -1764,6 +1790,7 @@
             if (tagslist[0] == '') {
                 tagslist = new Array();
             }
+			value = value.replace(/<.*?>/g, '');
             value = jQuery.trim(value);
             var skipTag;
             if (options.unique) {
@@ -1840,7 +1867,7 @@
     $.fn.dnnTagExist = function (val) {
         var id = $(this).attr('id'),
             tagslist = $(this).val().split(delimiter[id]);
-        return (jQuery.inArray(val, tagslist) >= 0); 
+        return (jQuery.inArray(val, tagslist) >= 0);
     };
 
     $.fn.dnnImportTags = function (str) {
@@ -2098,7 +2125,7 @@
         $(obj).val(tagslist.join(delimiter[id]));
     };
 
-    $.fn.dnnTagsInput.importTags = function(obj, val) {
+    $.fn.dnnTagsInput.importTags = function (obj, val) {
         $(obj).val('');
         var id = $(obj).attr('id');
         var tags = val.split(delimiter[id]);
@@ -2391,7 +2418,7 @@
             return this.unbind("mousewheel", fn);
         }
     });
-    
+
     function handler(event) {
         var orgEvent = event || window.event,
             args = [].slice.call(arguments, 1),
@@ -2426,7 +2453,7 @@
 })(jQuery);
 
 (function ($) {
-	$.fn.dnnFileInput = function (options) {
+    $.fn.dnnFileInput = function (options) {
         var opts = $.extend({}, $.fn.dnnFileInput.defaultOptions, options);
 
         return this.each(function () {
@@ -2434,11 +2461,11 @@
             if ($ctrl.hasClass('normalFileUpload')) return;
 
             if (this.wrapper)
-            	return;
-	        
-        	//ignore decoration for elements in rad control.
-	        if ($ctrl.parents().hasClass("RadUpload"))
-		        return;
+                return;
+
+            //ignore decoration for elements in rad control.
+            if ($ctrl.parents().hasClass("RadUpload"))
+                return;
 
             // if this.wrapper is undefined, then we check if parent node is a wrapper
             if (this.parentNode && this.parentNode.tagName.toLowerCase() == 'span' && $ctrl.parent().hasClass('dnnInputFileWrapper')) {
@@ -2450,7 +2477,7 @@
             text = text || 'Choose File';
             this.wrapper.text(text);
             $ctrl.wrap(this.wrapper);
-	        $ctrl.data("wrapper", $ctrl.parent());
+            $ctrl.data("wrapper", $ctrl.parent());
 
             if (opts.showSelectedFileNameAsButtonText) {
                 $ctrl.change(function () {
@@ -2530,9 +2557,11 @@
                     });
                     var src;
                     if (data.dataType && typeof(data.result) == "object" && data.result.length) {
-                        data.result = data.result.text();
+                        data.result = JSON.parse(data.result.text());
+                    } else {
+                        data.result = JSON.parse(data.result);
                     }
-                    var testContent = $('<pre>' + data.result + '</pre>');
+                    var testContent = $('<pre>' + data.result.FilePath + '</pre>');
                     if (testContent.length) {
                         src = testContent.text();
                     }
@@ -2541,38 +2570,13 @@
 
                     if (src && $.trim(src)) {
                         img.src = src;
-
-                        // set updated files into combo
-                        var foldersCombo = $find(settings.foldersComboId);
-                        var folderPath = foldersCombo.get_value();
-                        url = service.getServiceRoot('internalservices') + 'fileupload/loadfiles';
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: { FolderPath: folderPath, FileFilter: settings.fileFilter, Required: false },
-                            beforeSend: service.setModuleHeaders,
-                            success: function (d) {
-                                var combo = $find(settings.filesComboId);
-                                combo.clearItems();
-                                for (var i = 0; i < d.length; i++) {
-                                    var txt = d[i].Text;
-                                    var val = d[i].Value;
-
-                                    var comboItem = new window.Telerik.Web.UI.RadComboBoxItem();
-                                    comboItem.set_text(txt);
-                                    comboItem.set_value(val);
-                                    combo.get_items().add(comboItem);
-                                    if (src.indexOf(txt) > 0) {
-                                        comboItem.select();
-                                        $('#' + settings.fileIdId).val(val);
-                                        var path = folderPath ? folderPath + '/' + txt : txt;
-                                        $('#' + settings.filePathId).val(path);
-                                    }
-                                }
-                            },
-                            error: function () {
-                            }
-                        });
+                        var fileName = data.result.FilePath.replace('\\', '/');
+                        if (fileName.indexOf('/') > -1) {
+                            fileName = fileName.split('/')[fileName.split('/').length - 1];
+                        }
+                        
+                        dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
+                        dnn[settings.filesComboId].selectedItem({ key: data.result.FileId, value: fileName});
                     }
                 },
                 fail: function (e, data) {
@@ -2582,12 +2586,44 @@
                 }
             });
 
+            $('#' + scope + ' input[name=uploadFileButton]').click(function() {
+                var instance = dnn[settings.fileUploadId];
+                
+                var options = instance.options;
+                if (dnn[settings.foldersComboId].selectedItem() != null) {
+                    instance.options.folderPicker.initialState.selectedItem = dnn[settings.foldersComboId].selectedItem();
+                    instance.options.folderPath = window.dnn.dnnFileUpload.getSelectedPath(dnn[settings.foldersComboId]);
+                }
+
+                instance.show(options);
+                
+                window.dnn.dnnFileUpload.updateExpandPath(dnn[settings.foldersComboId], instance._panel._folderPicker.id());
+                
+                instance._panel.$element.on("onfileuploadcomplete", function (event, data) {
+                    if (typeof data == "string") {
+                        data = JSON.parse(data);
+                    }
+                    if (data && data.fileId) {
+                        var folderPicker = instance._panel._folderPicker;
+                        dnn[settings.foldersComboId].selectedItem(folderPicker.selectedItem());
+                        window.dnn.dnnFileUpload.Folders_Changed(dnn[settings.foldersComboId].selectedItem(), dnn[settings.foldersComboId].$element);
+                        window.dnn.dnnFileUpload.updateExpandPath(folderPicker, settings.foldersComboId);
+                        
+                        dnn[settings.filesComboId].refresh(dnn[settings.foldersComboId].selectedItem().key);
+                        dnn[settings.filesComboId].selectedItem({ key: data.fileId.toString(), value: data.fileName });
+                        window.dnn.dnnFileUpload.Files_Changed(dnn[settings.filesComboId].selectedItem(), dnn[settings.filesComboId].$element);
+                    }
+                });
+            });
+
             // set initial thumb image
             setTimeout(function () {
-                var filesCombo = $find(settings.filesComboId);
-                var selectedFileId = filesCombo.get_value();
+                dnn[settings.filesComboId].options.services.parameters.parentId = settings.selectedFolderId;
+                var filesCombo = dnn[settings.filesComboId];
+                var selectedFileId = filesCombo.selectedItem() ? filesCombo.selectedItem().key : null;
                 url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
-                if (selectedFileId) {
+             	var fileId  = selectedFileId ? parseInt(selectedFileId) : 0;
+                if (fileId > 0) {
                     $.ajax({
                         url: url,
                         type: 'GET',
@@ -2605,7 +2641,6 @@
                     });
                 }
             }, 500);
-
         });
     };
 
@@ -2616,57 +2651,38 @@
         window.dnn.dnnFileUpload.settings[scope] = settings;
     };
     window.dnn.dnnFileUpload.getSettings = function (sender) {
-        var senderId = sender.get_id();
-        var scope = $('#' + senderId).closest('.dnnFileUploadScope').attr('id');
+        var scope = sender.closest('.dnnFileUploadScope').attr('id');
         return window.dnn.dnnFileUpload.settings[scope];
     };
-    window.dnn.dnnFileUpload.Folders_Changed = function (sender, e) {
+    window.dnn.dnnFileUpload.Folders_Changed = function (node, sender) {
         var settings = window.dnn.dnnFileUpload.getSettings(sender);
-        if (!settings) return;
+        if (!settings) return false;
 
-        var item = e.get_item();
-        if (item) {
-            var folderPath = item.get_value();
-            settings.folder = folderPath;
-            var service = $.dnnSF();
-            var url = service.getServiceRoot('internalservices') + 'fileupload/loadfiles';
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: { FolderPath: folderPath, FileFilter: settings.fileFilter, Required: false },
-                beforeSend: service.setModuleHeaders,
-                success: function (d) {
-                    var combo = $find(settings.filesComboId);
-                    combo.clearItems();
-                    for (var i = 0; i < d.length; i++) {
-                        var txt = d[i].Text;
-                        var val = d[i].Value;
-                        var comboItem = new window.Telerik.Web.UI.RadComboBoxItem();
-                        comboItem.set_text(txt);
-                        comboItem.set_value(val);
-                        combo.get_items().add(comboItem);
-                        if (i == 0) {
-                            comboItem.select();
-                        }
-                    }
-                },
-                error: function () {
+        if (node) {
+            //get the selected folder path
+            var selectedPathArray = dnn[settings.foldersComboId].selectedPath();
+            if (selectedPathArray.length === 0 && settings.folder) {
+                return settings.folder;
+            }
+            var selectedPath = "";
+            if (selectedPathArray.length > 1) {
+                for (var i = 1, size = selectedPathArray.length; i < size; i++) {
+                    selectedPath += selectedPathArray[i].name + "/";
                 }
-            });
+            } 
+            settings.folder = selectedPath;
+
+            dnn[settings.filesComboId].refresh(node.key);
+            dnn[settings.filesComboId].selectedItem(null);
+            window.dnn.dnnFileUpload.Files_Changed({ key: null }, $('#' + settings.filesComboId));
         }
     };
-    window.dnn.dnnFileUpload.Files_Changed = function (sender, e) {
+    window.dnn.dnnFileUpload.Files_Changed = function (node, sender) {
         var settings = window.dnn.dnnFileUpload.getSettings(sender);
         if (!settings) return;
 
-        var item = e.get_item();
-        if (item) {
-            var fileId = item.get_value();
-            $('#' + settings.fileIdId).val(fileId);
-            var fileName = item.get_text();
-            var folderPath = settings.folder;
-            var path = folderPath ? folderPath + '/' + fileName : fileName;
-            $('#' + settings.filePathId).val(path);
+        if (node) {
+            var fileId = node.key;
             var service = $.dnnSF();
             var url = service.getServiceRoot('internalservices') + 'fileupload/loadimage';
             if (fileId) {
@@ -2690,7 +2706,41 @@
                 $('#' + settings.dropZoneId + ' img').remove();
         }
     };
-
+    window.dnn.dnnFileUpload.updateExpandPath = function(dropDownList, targetId) {
+        //set expand path
+        var selectedPaths = dropDownList.selectedPath();
+        var expandPath = "";
+        if (selectedPaths.length == 0) { //which means the tree view hasn't opened.
+            expandPath = dnn.getVar(dropDownList.id() + '_expandPath');
+        }
+        else if (selectedPaths.length > 1) {
+            for (var i = 0; i < selectedPaths.length - 1; i++) {
+                if (expandPath == "") {
+                    expandPath = selectedPaths[i].id;
+                } else {
+                    expandPath = expandPath + "," + selectedPaths[i].id;
+                }
+            }
+        }
+        
+        if (expandPath != "") {
+            dnn.setVar(targetId + '_expandPath', expandPath);
+        }
+    };
+    window.dnn.dnnFileUpload.getSelectedPath = function(dropDownList) {
+        var selectedPathArray = dropDownList.selectedPath();
+        var settings = window.dnn.dnnFileUpload.getSettings(dropDownList.$element);
+        if (selectedPathArray.length === 0 && settings.folder) {
+            return settings.folder;
+        }
+        var selectedPath = "";
+        if (selectedPathArray.length > 1) {
+            for (var i = 1, size = selectedPathArray.length; i < size; i++) {
+                selectedPath += selectedPathArray[i].name + "/";
+            }
+        }
+        return selectedPath;
+    };
 })(jQuery);
 
 (function ($) {
@@ -4048,7 +4098,7 @@
 })(jQuery);
 
 // please keep this func at last of this file, thanks
-(function ($) { 
+(function ($) {
     /* Start customised controls */
     var inputFocusFix = function () {
         var errorMsg = $(this).next();
@@ -4061,25 +4111,25 @@
             clearTimeout(throttle);
             throttle = null;
         }
-        throttle = setTimeout(function() {
+        throttle = setTimeout(function () {
             $('.dnnForm input[type="checkbox"]').dnnCheckbox();
             $('.dnnForm input[type="radio"]').dnnCheckbox({ cls: 'dnnRadiobutton' });
             $('.dnnTooltip').dnnTooltip();
             $('.dnnForm input[type="text"], .dnnForm input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
             $('.dnnForm :file').dnnFileInput();
         }, 200);
-    	//change the window confirm style to DNN style
-        $("*[onclick*='return confirm']").each(function() {
-	        var instance = $(this);
-	    	var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
-	    	var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
-	        if (script != null) {
-	        	var confirmContent = script[2];
-		        instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
-			        text: confirmContent,
-			        isButton: isButton
-		        });
-	        }
+        //change the window confirm style to DNN style
+        $("*[onclick*='return confirm']").each(function () {
+            var instance = $(this);
+            var isButton = this.nodeName.toLowerCase() == "img" || this.nodeName.toLowerCase() == "input";
+            var script = /return confirm\((['"])([\s\S]*?)\1\)/g.exec(instance.attr("onclick"));
+            if (script != null) {
+                var confirmContent = script[2];
+                instance.attr("onclick", instance.attr("onclick").replace(script[0], "void(0)")).dnnConfirm({
+                    text: confirmContent,
+                    isButton: isButton
+                });
+            }
         });
     };
     var saveRgDataDivScrollTop = function () {

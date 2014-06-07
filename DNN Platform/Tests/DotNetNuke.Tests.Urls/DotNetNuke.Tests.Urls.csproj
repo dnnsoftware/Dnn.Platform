@@ -74,6 +74,7 @@
     <None Include="TestFiles\FriendlyUrl\Regex\TestFile.csv" />
     <None Include="TestFiles\UrlRewrite\DoNotRedirect\Settings.csv" />
     <None Include="TestFiles\UrlRewrite\DoNotRedirect\TestFile.csv" />
+    <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_5318.csv" />
     <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361_dic.csv" />
     <None Include="TestFiles\UrlRewrite\Jira_Tests\DNN_3361.csv" />
     <None Include="TestFiles\UrlRewrite\Jira_Tests\TestFile.csv" />

@@ -49,8 +49,7 @@ namespace DotNetNuke.Security.Permissions
 
 		private static void ClearPermissionCache(int tabId)
 		{
-			var objTabs = new TabController();
-			var objTab = objTabs.GetTab(tabId, Null.NullInteger, false);
+            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
 			DataCache.ClearTabPermissionsCache(objTab.PortalID);
 		}
 
@@ -263,8 +262,7 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteTabPermissionsByUser(UserInfo user)
         {
             _provider.DeleteTabPermissionsByUser(user);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
@@ -290,7 +288,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(string permissionKey)
         {
-            return HasTabPermission(PortalController.GetCurrentPortalSettings().ActiveTab.TabPermissions, permissionKey);
+            return HasTabPermission(PortalController.Instance.GetCurrentPortalSettings().ActiveTab.TabPermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -316,7 +314,7 @@ namespace DotNetNuke.Security.Permissions
         public static void SaveTabPermissions(TabInfo tab)
         {
             _provider.SaveTabPermissions(tab);
-            new EventLogController().AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 
@@ -327,7 +325,7 @@ namespace DotNetNuke.Security.Permissions
 		[Obsolete("Deprecated in DNN 5.1.")]
 		public int AddTabPermission(TabPermissionInfo objTabPermission)
 		{
-			int id = Convert.ToInt32(DataProvider.Instance().AddTabPermission(objTabPermission.TabID, objTabPermission.PermissionID, objTabPermission.RoleID, objTabPermission.AllowAccess, objTabPermission.UserID, UserController.GetCurrentUserInfo().UserID));
+			int id = Convert.ToInt32(DataProvider.Instance().AddTabPermission(objTabPermission.TabID, objTabPermission.PermissionID, objTabPermission.RoleID, objTabPermission.AllowAccess, objTabPermission.UserID, UserController.Instance.GetCurrentUserInfo().UserID));
 			ClearPermissionCache(objTabPermission.TabID);
 			return id;
 		}
@@ -407,7 +405,7 @@ namespace DotNetNuke.Security.Permissions
 		[Obsolete("Deprecated in DNN 5.1.")]
 		public void UpdateTabPermission(TabPermissionInfo objTabPermission)
 		{
-			DataProvider.Instance().UpdateTabPermission(objTabPermission.TabPermissionID, objTabPermission.TabID, objTabPermission.PermissionID, objTabPermission.RoleID, objTabPermission.AllowAccess, objTabPermission.UserID, UserController.GetCurrentUserInfo().UserID);
+			DataProvider.Instance().UpdateTabPermission(objTabPermission.TabPermissionID, objTabPermission.TabID, objTabPermission.PermissionID, objTabPermission.RoleID, objTabPermission.AllowAccess, objTabPermission.UserID, UserController.Instance.GetCurrentUserInfo().UserID);
 			ClearPermissionCache(objTabPermission.TabID);
 		}
 

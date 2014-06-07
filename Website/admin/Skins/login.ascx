@@ -2,4 +2,4 @@
 <asp:HyperLink ID="loginLink" runat="server" CssClass="SkinObject" />
 <div class="loginGroup" id="loginGroup" runat="server">
     <asp:HyperLink ID="enhancedLoginLink" runat="server" CssClass="secondaryActionsList" />
-</div><!--close loginGroup-->
+</div>

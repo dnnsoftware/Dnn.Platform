@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private static bool IsLocalizationEnabled()
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
         }
 

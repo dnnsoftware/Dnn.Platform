@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.InternalServices
             };
             var contentUrl = builder.Uri.AbsoluteUri;
 
-            var fallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
+            var fallbackUrl = Globals.AddHTTP(request.Url.Host + Globals.ResolveUrl("~/Portals/_default/GettingStartedFallback.htm"));
 
             var isValid = IsValidUrl(contentUrl);
 

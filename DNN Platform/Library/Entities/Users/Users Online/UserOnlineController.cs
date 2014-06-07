@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Users
                 return;
             }
             //Get the logged in User ID
-            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
             //Get user list
             Hashtable userList = GetUserList();

@@ -19,15 +19,32 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+
 namespace DotNetNuke.Entities.Tabs
 {
     public interface ITabPublishingController
     {
         /// <summary>
-        /// Publish a page. Set VIEW permission to All Users
+        /// Check if a page is published or not.
         /// </summary>
-        /// <param name="tabID">Tab Id from the tab to be published</param>
-        /// <param name="portalID">Portal Id from the portal where the tab exists</param>
-        void PublishTab(int tabID, int portalID);
+        /// <param name="tabID">Tha tab Id</param>
+        /// <param name="portalID">The portal ID where the tab is</param>        
+        bool IsTabPublished(int tabID, int portalID);
+
+        /// <summary>
+        /// Set a page as published or unpublished
+        /// </summary>
+        /// <param name="tabID">The tab ID</param>
+        /// <param name="portalID">The portal ID where the tab is</param>
+        /// <param name="publish">A boolean value where True means the page is going to be published and otherwise unpublished</param>
+        void SetTabPublishing(int tabID, int portalID, bool publish);
+
+        /// <summary>
+        /// Check if Publish/Unpublish page actions can be performed
+        /// </summary>
+        /// <param name="tabID">The tab ID</param>
+        /// <param name="portalID">The portal ID where the tab is</param>
+        bool CanPublishingBePerformed(int tabID, int portalID);
     }
 }

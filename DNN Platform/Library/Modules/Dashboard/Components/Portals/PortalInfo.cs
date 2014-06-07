@@ -48,8 +48,7 @@ namespace DotNetNuke.Modules.Dashboard.Components.Portals
             {
                 if (_Pages < 0)
                 {
-                    var controller = new TabController();
-                    _Pages = controller.GetTabCount(PortalID);
+                    _Pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
                 }
                 return _Pages;
             }
@@ -65,7 +64,7 @@ namespace DotNetNuke.Modules.Dashboard.Components.Portals
             {
                 if (_Roles < 0)
                 {
-                    _Roles = TestableRoleController.Instance.GetRoles(PortalID, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).Count;
+                    _Roles = RoleController.Instance.GetRoles(PortalID, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved).Count;
                 }
                 return _Roles;
             }

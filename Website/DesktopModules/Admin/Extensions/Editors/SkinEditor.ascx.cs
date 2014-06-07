@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 skinFormReadOnly.DataBind();
                 skinFormReadOnly.Visible = true;
 
-                lblHelp.Visible = false;
+                pnlHelp.Visible = false;
             }
             if (skin != null && ModuleContext.PortalSettings.ActiveTab.IsSuperTab)
             {

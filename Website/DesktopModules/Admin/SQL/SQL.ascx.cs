@@ -323,8 +323,7 @@ namespace DotNetNuke.Modules.Admin.SQL
         {
             var props = new LogProperties { new LogDetailInfo("User", UserInfo.Username), new LogDetailInfo("SQL Query", query) };
 
-            var elc = new EventLogController();
-            elc.AddLog(props, PortalSettings, UserId, EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(), true);
+            EventLogController.Instance.AddLog(props, PortalSettings, UserId, EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(), true);
         }
 
         private void CheckSecurity()

@@ -21,7 +21,6 @@ using System.Web.Helpers;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -66,7 +65,7 @@ namespace DotNetNuke.Framework
 
         public void RegisterAjaxScript(Page page)
         {
-            var portalSettings = TestablePortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings == null) return;
             var path = portalSettings.PortalAlias.HTTPAlias;
             int index = path.IndexOf('/');

@@ -174,23 +174,6 @@ namespace DotNetNuke.Services.Social.Notifications
                 throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
             }
 
-            //Cannot exceed RecipientLimit
-            var recipientCount = 0;
-            if (users != null) recipientCount += users.Count;
-            if (roles != null) recipientCount += roles.Count;
-            if (recipientCount > InternalMessagingController.Instance.RecipientLimit(pid))
-            {
-                throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));
-            }
-
-            //Profanity Filter
-            var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", pid, "NO");
-            if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
-            {
-                notification.Subject = InputFilter(notification.Subject);
-                notification.Body = InputFilter(notification.Body);
-            }
-
             notification.To = sbTo.ToString().Trim(',');
             if (notification.ExpirationDate != new DateTime())
             {
@@ -211,7 +194,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 _messagingDataService.CreateMessageRecipientsForRole(
                     notification.NotificationID,
                     roleIds,
-                    UserController.GetCurrentUserInfo().UserID);
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //send message to each User - this should be called after CreateMessageRecipientsForRole.
@@ -234,7 +217,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 _messagingDataService.SaveMessageRecipient(
                     recipient,
-                    UserController.GetCurrentUserInfo().UserID);
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //if sendToast is true, then mark all recipients' as ready for toast.
@@ -413,7 +396,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual int GetCurrentUserId()
         {
-            return UserController.GetCurrentUserInfo().UserID;
+            return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         internal virtual DateTime GetExpirationDate(int notificationTypeId)

@@ -96,23 +96,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 Controls.Add(_fileControl);
             }
 
-            ////Create Table
-            //_fileControl = new DnnFilePicker
-            //                   {
-            //                       ID = string.Format("{0}FileControl", ID),
-            //                       FileFilter = FileFilter,
-            //                       FilePath = FilePath,
-            //                       Permissions = "ADD",
-            //                       UsePersonalFolder = true,
-            //                       ShowFolders = false,
-            //                       User = User
-            //                   };
-
-           
-
-            ////Add table to Control
-            //Controls.Add(_fileControl);
-
             base.CreateChildControls();
         }
 

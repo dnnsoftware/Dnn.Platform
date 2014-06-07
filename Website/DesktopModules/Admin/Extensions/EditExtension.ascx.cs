@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             get
             {
-                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID));
+                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID, true));
             }
         }
 
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             cmdUpdate.Click += OnUpdateClick;
             Page.PreRenderComplete += (sender, args) =>
                                           {
-                                              if (HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
+                                              if (UrlUtils.InPopUp())
                                               {
                                                   var title = string.Format("{0} > {1}", Page.Title, Package.FriendlyName);
                                                   Page.Title = title;

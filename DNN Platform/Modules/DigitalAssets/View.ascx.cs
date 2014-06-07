@@ -264,6 +264,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 nextNode.Expanded = false;
                 nextNode.Selected = true;
+                rootNode.Selected = false;
             }
 
             if (rootNode.Nodes.Count == 0)
@@ -347,6 +348,13 @@ namespace DotNetNuke.Modules.DigitalAssets
                     },
                 new DnnMenuItem
                     {
+                        Text = Localization.GetString("UnlinkFolder", LocalResourceFile),
+                        Value = "UnlinkFolder",
+                        CssClass = "permission_DELETE",
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
+                    },
+                new DnnMenuItem
+                    {
                         Text = Localization.GetString("ViewFolderProperties", LocalResourceFile),
                         Value = "Properties",
                         CssClass = "permission_READ",
@@ -418,10 +426,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                     }, 
                 new DnnMenuItem
                     {
-                        Text = Localization.GetString("GetUrl", LocalResourceFile),
-                        Value = "GetUrl",
-                        CssClass = "permission_READ singleItem onlyFiles",
-                        ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
+                        Text = Localization.GetString("Unlink", LocalResourceFile),
+                        Value = "Unlink",
+                        CssClass = "permission_DELETE singleItem onlyFolders",
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
                     }, 
                 new DnnMenuItem
                     {
@@ -436,7 +444,14 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Value = "Properties",
                         CssClass = "permission_READ singleItem",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
-                    },                        
+                    }, 
+                new DnnMenuItem
+                    {
+                        Text = Localization.GetString("GetUrl", LocalResourceFile),
+                        Value = "GetUrl",
+                        CssClass = "permission_READ singleItem onlyFiles",
+                        ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
+                    }
                 });
 
             // Dnn Menu Item Extension Point
@@ -556,6 +571,8 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
+                        //handle upgrades where FilterCondition didn't exist
+                        SettingsRepository.SetDefaultFilterCondition(ModuleId);
                         this.RootFolderViewModel = this.controller.GetRootFolder(ModuleId);
                         break;
                 }
@@ -603,7 +620,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-                ClientResourceManager.RegisterScript(Page, "~/js/dnn.modalpopup.js", FileOrder.Js.DnnModalPopup);
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                ClientResourceManager.RegisterScript(Page, popupFilePath, FileOrder.Js.DnnModalPopup);
                 ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
 
                 var i = 1;
@@ -616,6 +636,9 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 InitializeGrid();
                 FolderTypeComboBox.ItemDataBound += OnItemDataBoundFolderTypeComboBox;
+
+                MainToolBar.ModuleContext = ModuleContext;
+                SelectionToolBar.ModuleContext = ModuleContext;
             }
             catch (Exception exc) //Module failed to load
             {

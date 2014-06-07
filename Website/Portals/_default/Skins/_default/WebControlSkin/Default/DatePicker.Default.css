@@ -617,6 +617,7 @@ body > .RadCalendarPopupShadows {
 .dnnFormItem > .RadPicker_Default {
     width: 47% !important;
     margin-bottom: 18px !important;
+    display: inline-block;
 }
 
 .RadPicker_Default .rcTable {

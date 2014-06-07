@@ -24,20 +24,20 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlTypes;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Caching;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.Journal
 {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Journal
 
         private void UpdateGroupStats(int portalId, int groupId)
         {
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if (role == null)
             {
                 return;
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Journal
                 }
                 dr.Close();
             }
-            TestableRoleController.Instance.UpdateRoleSettings(role, true);
+            RoleController.Instance.UpdateRoleSettings(role, true);
         }
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
@@ -127,7 +127,60 @@ namespace DotNetNuke.Services.Journal
                 UpdateGroupStats(portalId, groupId);
             }
         }
+        
+        private Stream GetJournalImageContent(Stream fileContent)
+        {
+            Image image = new Bitmap(fileContent);
+            int thumbnailWidth = 400;
+            int thumbnailHeight = 400;
+            GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
+            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
+            var result = new MemoryStream();
+            thumbnail.Save(result, image.RawFormat);
 
+            return result;
+        }
+
+        private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
+        {
+            if (imageWidth >= imageHeight)
+            {
+                thumbnailWidth = Math.Min(imageWidth, thumbnailWidth);
+                thumbnailHeight = GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
+            }
+            else
+            {
+                thumbnailHeight = Math.Min(imageHeight, thumbnailHeight);
+                thumbnailWidth = GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
+            }
+        }
+
+        private int GetMinorSize(int imageMinorSize, int imageMajorSize, int thumbnailMajorSize)
+        {
+            if (imageMajorSize == thumbnailMajorSize)
+            {
+                return imageMinorSize;
+            }
+
+            double calculated = (Convert.ToDouble(imageMinorSize) * Convert.ToDouble(thumbnailMajorSize)) / Convert.ToDouble(imageMajorSize);
+            return Convert.ToInt32(Math.Round(calculated));
+        }
+
+
+        private bool IsImageFile(string fileName)
+        {
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).ToLower().Replace(".", "") + ",") > -1;        
+        }
+
+        private bool ThumbnailCallback()
+        {
+            return true;
+        }
+        #endregion
+
+        #region Public Methods
+
+        // Journal Items
         public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
@@ -235,7 +288,7 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0 && originalSecuritySet != "U")
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -388,7 +441,7 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0)
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -446,12 +499,7 @@ namespace DotNetNuke.Services.Journal
                 }
             }
         }
-
-        #endregion
-
-        #region Public Methods
-
-        // Journal Items
+        
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
         {
             return GetJournalItem(portalId, currentUserId, journalId, false, false);
@@ -488,9 +536,21 @@ namespace DotNetNuke.Services.Journal
             {
                 return null;
             }
-            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
+            return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
+        public IFileInfo SaveJourmalFile(UserInfo userInfo, string fileName, Stream fileContent)
+        {
+            var userFolder = FolderManager.Instance.GetUserFolder(userInfo);
+
+            if (IsImageFile(fileName))
+            {
+                return FileManager.Instance.AddFile(userFolder, fileName, GetJournalImageContent(fileContent), true);
+            }
+            //todo: deal with the case where the exact file name already exists.            
+            return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    
+        }
+        
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;

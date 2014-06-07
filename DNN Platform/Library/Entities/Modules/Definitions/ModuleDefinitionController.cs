@@ -236,12 +236,12 @@ namespace DotNetNuke.Entities.Modules.Definitions
                                                                       moduleDefinition.FriendlyName,
                                                                       moduleDefinition.DefinitionName,
                                                                       moduleDefinition.DefaultCacheTime,
-                                                                      UserController.GetCurrentUserInfo().UserID);
+                                                                      UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
 				//Upgrade Module Definition
-                dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.GetCurrentUserInfo().UserID);
+                dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (saveChildren)
             {

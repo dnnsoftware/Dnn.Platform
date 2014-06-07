@@ -25,7 +25,7 @@
             <asp:Panel runat="server" ID="LeftPaneContents" CssClass="dnnModuleDigitalAssetsLeftPaneContents">
                 <div class="dnnModuleDigitalAssetsFilesView" id="dnnModuleDigitalAssetsLeftPaneFilesTabContent">
                     <div id="dnnModuleDigitalAssetsLeftPaneFilesTabContentScroll">
-                        <dnnweb:DnnTreeView ID="FolderTreeView" runat="server" Skin="Vista" CssClass="dnnModuledigitalAssetsTreeView" 
+                        <dnnweb:DnnTreeView ID="FolderTreeView" runat="server" CssClass="dnnModuledigitalAssetsTreeView" 
                             OnClientNodeExpanding="dnnModule.digitalAssets.treeViewOnNodeExpanding" 
                             OnClientNodeCollapsing="dnnModule.digitalAssets.treeViewOnNodeCollapsing"
                             OnClientNodeClicking="dnnModule.digitalAssets.treeViewOnNodeClicking" 
@@ -56,7 +56,11 @@
             <div id="dnnModuleDigitalAssetsBreadcrumb">
                 <ul></ul>
             </div>
-            
+            <div id="dnnModuleDigitalAssetsMainToolbarTitle">
+                <span class="title-views"><%=Localization.GetString("ToolbarTitle.Views.Text", LocalResourceFile)%></span>
+                <span class="title-actions"><%=Localization.GetString("ToolbarTitle.Actions.Text", LocalResourceFile)%></span>
+                <span class="title-currentFolder"></span>
+            </div>
             <div id="dnnModuleDigitalAssetsMainToolbar">                
                 <dnnext:ToolBarButtonExtensionControl Module="DigitalAssets" runat="server" ID="MainToolBar" Group="Main" IsHost="<%# IsHostPortal %>" />                
             </div>
@@ -87,7 +91,7 @@
                                         onclick="dnnModule.digitalAssets.listviewOnClick(this, event);">
                                         <input type="checkbox" class="dnnModuleDigitalAssetsListViewItemCheckBox" />
                                         <div class="dnnModuleDigitalAssetsThumbnail">
-                                            <img src="../../images/loading.gif" data-src="#= format(ThumbnailUrl) #" class="#= format(ThumbnailClass) #" alt="#= format(ItemName) #"/>
+                                            <img data-src="#= format(ThumbnailUrl) #" class="#= format(ThumbnailClass) #" alt="#= format(ItemName) #"/>
                                         </div>
                                         <span class="dnnModuleDigitalAssetsListViewItemLinkName" title="#= format(ItemName) #" >#= dnnModule.digitalAssets.highlightItemName( dnnModule.digitalAssets.getReducedItemName(ItemName, IsFolder) ) #</span>
                                     </div>
@@ -211,7 +215,7 @@
     </div>
     <div id="dnnModuleDigitalAssetsSelectDestinationFolderModal" style="display: none;">
         <div id="dnnModuleDigitalAssetsDestinationFolderScroll" class="dnnScroll">
-            <dnnweb:DnnTreeView ID="DestinationTreeView" runat="server" Skin="Vista" CssClass="dnnModuleDigitalAssetsDestinationTreeView dnnModuledigitalAssetsTreeView"
+            <dnnweb:DnnTreeView ID="DestinationTreeView" runat="server" CssClass="dnnModuleDigitalAssetsDestinationTreeView dnnModuledigitalAssetsTreeView"
                                 OnClientNodeExpanding="dnnModule.digitalAssets.destinationTreeViewOnNodeExpanding"
                                 OnClientNodeAnimationEnd="dnnModule.digitalAssets.destinationTreeViewRefreshScrollbars"
                                 OnClientNodeCollapsed="dnnModule.digitalAssets.destinationTreeViewRefreshScrollbars"
@@ -287,6 +291,8 @@
             deleteText: '<%= Localization.GetSafeJSString(LocalizeString("Delete")) %>',
             deleteTitle: '<%= Localization.GetSafeJSString(LocalizeString("Delete.Title")) %>',
             deleteConfirmText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirm")) %>',
+            deleteConfirmWithMappedSubfoldersText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirmWithMappedSubfolders")) %>',
+            deleteConfirmWithMappedSubfolderText: '<%= Localization.GetSafeJSString(LocalizeString("DeleteConfirmWithMappedSubfolder")) %>',
             okText: '<%= Localization.GetSafeJSString(LocalizeString("OkConfirm")) %>',
             noText: '<%= Localization.GetSafeJSString(LocalizeString("NoConfirm")) %>',
             closeText: '<%= Localization.GetSafeJSString(LocalizeString("Close")) %>',
@@ -343,7 +349,14 @@
             unzipFileErrorTitle: '<%= Localization.GetSafeJSString(LocalizeString("UnzipFileErrorTitle.Text")) %>',
             uploadingExtracting: '<%= Localization.GetSafeJSString(LocalizeString("UploadingExtracting.Text")) %>',
             noItemsText: '<%= Localization.GetSafeJSString("NoItems", LocalResourceFile) %>',
-            noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>'
+            noItemsSearchText: '<%= Localization.GetSafeJSString("NoItemsSearch", LocalResourceFile) %>',
+            unzipFilePromptTitle: '<%= Localization.GetSafeJSString("FileUpload.UnzipFilePromptTitle.Text", Localization.SharedResourceFile) %>',
+            unzipFileFailedPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileFailedPromptBody.Text", Localization.SharedResourceFile) %>',
+            unzipFileSuccessPromptBody: '<%= Localization.GetSafeJSString("FileUpload.UnzipFileSuccessPromptBody.Text", Localization.SharedResourceFile) %>',
+            unlinkFolderErrorText: '<%= Localization.GetSafeJSString(LocalizeString("UnlinkFolderError.Title")) %>',
+            unlinkTitle: '<%= Localization.GetSafeJSString(LocalizeString("Unlink.Title")) %>',
+            unlinkConfirmText: '<%= Localization.GetSafeJSString(LocalizeString("UnlinkConfirm.Text")) %>',
+            unlinkText: '<%= Localization.GetSafeJSString(LocalizeString("Unlink.Text")) %>'
         },
         new dnnModule.DigitalAssetsController($.ServicesFramework(<%=ModuleId %>), {}, {userId: '<%= UserId %>'})
     );

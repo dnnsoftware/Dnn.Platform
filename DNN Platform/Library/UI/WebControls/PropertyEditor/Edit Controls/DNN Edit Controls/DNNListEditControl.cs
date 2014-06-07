@@ -371,7 +371,7 @@ namespace DotNetNuke.UI.WebControls
             switch (ValueField)
             {
                 case ListBoundField.Id:
-                    entry = objListController.GetListEntryInfo(Convert.ToInt32(Value));
+                    entry = objListController.GetListEntryInfo(ListName, Convert.ToInt32(Value));
                     break;
                 case ListBoundField.Text:
                     entryText = StringValue;

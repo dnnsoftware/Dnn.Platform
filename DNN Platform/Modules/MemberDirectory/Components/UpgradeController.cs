@@ -64,19 +64,16 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
 
 		private void UpdateDisplaySearchSettings()
 		{
-            var moduleController = new ModuleController();
-            var portalController = new PortalController();
-
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-				foreach (ModuleInfo module in moduleController.GetModulesByDefinition(portal.PortalID, "Member Directory"))
+                foreach (ModuleInfo module in ModuleController.Instance.GetModulesByDefinition(portal.PortalID, "Member Directory"))
 	            {
-					foreach (ModuleInfo tabModule in moduleController.GetAllTabsModulesByModuleID(module.ModuleID))
+					foreach (ModuleInfo tabModule in ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID))
 		            {
 			            if (tabModule.TabModuleSettings.ContainsKey("DisplaySearch"))
 			            {
 				            var oldValue = bool.Parse(tabModule.TabModuleSettings["DisplaySearch"].ToString());
-							moduleController.UpdateTabModuleSetting(tabModule.TabModuleID, "DisplaySearch", oldValue ? "Both" : "None");
+                            ModuleController.Instance.UpdateTabModuleSetting(tabModule.TabModuleID, "DisplaySearch", oldValue ? "Both" : "None");
 			            }
 		            }
 	            }

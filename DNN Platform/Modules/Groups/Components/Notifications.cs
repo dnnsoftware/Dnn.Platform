@@ -62,9 +62,9 @@ namespace DotNetNuke.Modules.Groups.Components {
 
             var roleOwners = new List<UserInfo>();
 
-            var rc = new RoleController();
-            foreach (UserInfo userInfo in rc.GetUsersByRoleName(group.PortalID, group.RoleName)) {
-                var userRoleInfo = rc.GetUserRole(group.PortalID, userInfo.UserID, group.RoleID);
+            foreach (UserInfo userInfo in RoleController.Instance.GetUsersByRole(group.PortalID, group.RoleName))
+            {
+                var userRoleInfo = RoleController.Instance.GetUserRole(group.PortalID, userInfo.UserID, group.RoleID);
                 if (userRoleInfo.IsOwner && userRoleInfo.UserID != group.CreatedByUserID)
                 {
                     roleOwners.Add(UserController.GetUserById(group.PortalID, userRoleInfo.UserID));

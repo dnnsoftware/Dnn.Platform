@@ -134,13 +134,15 @@ namespace DotNetNuke.Services.Installer.Installers
             if (_desktopModule.SupportedFeatures == Null.NullInteger)
             {
                 //Set an Event Message so the features are loaded by reflection on restart
-                var oAppStartMessage = new EventMessage();
-                oAppStartMessage.Priority = MessagePriority.High;
-                oAppStartMessage.ExpirationDate = DateTime.Now.AddYears(-1);
-                oAppStartMessage.SentDate = DateTime.Now;
-                oAppStartMessage.Body = "";
-                oAppStartMessage.ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke";
-                oAppStartMessage.ProcessorCommand = "UpdateSupportedFeatures";
+                var oAppStartMessage = new EventMessage
+                                        {
+                                            Priority = MessagePriority.High,
+                                            ExpirationDate = DateTime.Now.AddYears(-1),
+                                            SentDate = DateTime.Now,
+                                            Body = "",
+                                            ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+                                            ProcessorCommand = "UpdateSupportedFeatures"
+                                        };
 
                 //Add custom Attributes for this message
                 oAppStartMessage.Attributes.Add("BusinessControllerClass", _desktopModule.BusinessControllerClass);
@@ -232,13 +234,15 @@ namespace DotNetNuke.Services.Installer.Installers
             XPathNavigator eventMessageNav = manifestNav.SelectSingleNode("eventMessage");
             if (eventMessageNav != null)
             {
-                _eventMessage = new EventMessage();
-                _eventMessage.Priority = MessagePriority.High;
-                _eventMessage.ExpirationDate = DateTime.Now.AddYears(-1);
-                _eventMessage.SentDate = DateTime.Now;
-                _eventMessage.Body = "";
-                _eventMessage.ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing);
-                _eventMessage.ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing);
+                _eventMessage = new EventMessage
+                                    {
+                                        Priority = MessagePriority.High,
+                                        ExpirationDate = DateTime.Now.AddYears(-1),
+                                        SentDate = DateTime.Now,
+                                        Body = "",
+                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", Log, Util.EVENTMESSAGE_TypeMissing),
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", Log, Util.EVENTMESSAGE_CommandMissing)
+                                    };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {
                     var attribName = attributeNav.Name;
@@ -248,7 +252,8 @@ namespace DotNetNuke.Services.Installer.Installers
                         if (!String.IsNullOrEmpty(attribValue))
                         {
                             string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = ""; foreach (string version in upgradeVersions)
+                            attribValue = ""; 
+                            foreach (string version in upgradeVersions)
                             {
                                 Version upgradeVersion = null;
                                 try
@@ -260,13 +265,13 @@ namespace DotNetNuke.Services.Installer.Installers
                                     Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
                                 }
 
-                                if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion && Globals.Status == Globals.UpgradeStatus.Upgrade) //To allow when upgrading to an upper version
-                                {
-                                    attribValue += version + ",";
-                                }
-                                else if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install || Globals.Status == Globals.UpgradeStatus.None)) //To allow when fresh installing or installresources
+                                if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
                                 {
                                     attribValue += version + ",";                                    
+                                }
+                                else if (upgradeVersion != null && upgradeVersion > Package.InstalledVersion)
+                                {
+                                    attribValue += version + ",";
                                 }
                             }
                             attribValue = attribValue.TrimEnd(',');

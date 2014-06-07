@@ -10,6 +10,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
@@ -26,11 +27,61 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
     {
+        #region Private Fields
 
         private static readonly object EventSelectionChanged = new object();
 
         private readonly Lazy<DnnDropDownListOptions> _options =
             new Lazy<DnnDropDownListOptions>(() => new DnnDropDownListOptions());
+
+        private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
+        private HtmlAnchor _selectedValue;
+
+        #endregion
+
+        #region Protected Properties
+
+        internal DnnDropDownListOptions Options
+        {
+            get
+            {
+                return _options.Value;
+            }
+        }
+
+        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
+        {
+            get
+            {
+                EnsureChildControls();
+                return _stateControl;
+            }
+        }
+
+        private HtmlAnchor SelectedValue
+        {
+            get
+            {
+                EnsureChildControls();
+                return _selectedValue;
+            }
+        }
+
+        private bool UseUndefinedItem
+        {
+            get
+            {
+                return ViewState.GetValue("UseUndefinedItem", false);
+            }
+            set
+            {
+                ViewState.SetValue("UseUndefinedItem", value, false);
+            }
+        }
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
@@ -47,43 +98,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected virtual void OnSelectionChanged(EventArgs e)
-        {
-            var eventHandler = (EventHandler)Events[EventSelectionChanged];
-            if (eventHandler == null)
-            {
-                return;
-            }
-            eventHandler(this, e);
-        }
+        #endregion
 
-        internal DnnDropDownListOptions Options
-        {
-            get
-            {
-                return _options.Value;
-            }
-        }
-
-        private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
-        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
-        {
-            get
-            {
-                EnsureChildControls();
-                return _stateControl;
-            }
-        }
-
-        private HtmlAnchor _selectedValue;
-        private HtmlAnchor SelectedValue
-        {
-            get
-            {
-                EnsureChildControls();
-                return _selectedValue;
-            }
-        }
+        #region Public Properties
 
         public override ControlCollection Controls
         {
@@ -92,34 +109,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 EnsureChildControls();
                 return base.Controls;
             }
-        }
-
-        protected override void CreateChildControls()
-        {
-            Controls.Clear();
-
-            var selectedItemPanel = new Panel { CssClass = "selected-item" };
-
-            _selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
-            _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
-            selectedItemPanel.Controls.Add(_selectedValue);
-            Controls.Add(selectedItemPanel);
-
-            _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
-            _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
-            Controls.Add(_stateControl);
-
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            StateControl.Value = ""; // for state persistence (stateControl)
-        }
-
-        private static string LocalizeString(string key)
-        {
-            return Localization.GetString(key, Localization.SharedResourceFile);
         }
 
         /// <summary>
@@ -174,18 +163,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 FirstItem = value;
                 UseUndefinedItem = true;
-            }
-        }
-
-        private bool UseUndefinedItem
-        {
-            get
-            {
-                return ViewState.GetValue("UseUndefinedItem", false);
-            }
-            set
-            {
-                ViewState.SetValue("UseUndefinedItem", value, false);
             }
         }
 
@@ -289,6 +266,81 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        /// <summary>
+        /// When the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
+        /// we need expand its parent nodes to make it selected.
+        /// </summary>
+        public string ExpandPath
+        {
+            get
+            {
+                return ClientAPI.GetClientVariable(Page, ClientID + "_expandPath");
+            }
+            set
+            {
+                ClientAPI.RegisterClientVariable(Page, ClientID + "_expandPath", value, true);
+            }
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        protected override void CreateChildControls()
+        {
+            Controls.Clear();
+
+            var selectedItemPanel = new Panel { CssClass = "selected-item" };
+
+            _selectedValue = new HtmlAnchor { HRef = "javascript:void(0);", Title = LocalizeString("DropDownList.SelectedItemExpandTooltip") };
+            _selectedValue.Attributes.Add(HtmlTextWriterAttribute.Class.ToString(), "selected-value");
+            _selectedValue.ViewStateMode = ViewStateMode.Disabled;
+            selectedItemPanel.Controls.Add(_selectedValue);
+            Controls.Add(selectedItemPanel);
+
+            _stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
+            _stateControl.ValueChanged += (sender, args) => OnSelectionChanged(EventArgs.Empty);
+            Controls.Add(_stateControl);
+
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            StateControl.Value = ""; // for state persistence (stateControl)
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            RegisterClientScript(Page, Skin);
+
+            this.AddCssClass("dnnDropDownList");
+
+            base.OnPreRender(e);
+
+            RegisterStartupScript();
+        }
+
+        protected virtual void OnSelectionChanged(EventArgs e)
+        {
+            var eventHandler = (EventHandler)Events[EventSelectionChanged];
+            if (eventHandler == null)
+            {
+                return;
+            }
+            eventHandler(this, e);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private static string LocalizeString(string key)
+        {
+            return Localization.GetString(key, Localization.SharedResourceFile);
+        }
+
         internal static void RegisterClientScript(Page page, string skin)
         {
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css");
@@ -333,18 +385,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return script.Append(Page.ClientScript.GetPostBackEventReference(options), "; ");
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            RegisterClientScript(Page, Skin);
-
-            this.AddCssClass("dnnDropDownList");
-
-            base.OnPreRender(e);
-
-            RegisterStartupScript();
-        }
-
         private void RegisterStartupScript()
         {
             Options.InternalStateFieldId = StateControl.ClientID;
@@ -385,6 +425,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 Page.ClientScript.RegisterStartupScript(GetType(), ClientID + "DnnDropDownList", script, true);
             }
         }
+
+        #endregion
 
     }
 

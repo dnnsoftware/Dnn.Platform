@@ -42,7 +42,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -120,7 +119,7 @@ namespace DotNetNuke.Services.Localization
     /// </example>
     public class Localization
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Localization));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
         #region Private Members
 
         private static string _defaultKeyName = "resourcekey";
@@ -131,7 +130,10 @@ namespace DotNetNuke.Services.Localization
         #endregion
 
         #region Public Shared Properties
-
+        
+        /// <summary>
+        /// Returns ~/App_GlobalResources
+        /// </summary>
         public static string ApplicationResourceDirectory
         {
             get
@@ -140,6 +142,9 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        /// <summary>
+        /// Returns ~/App_GlobalResources/Exceptions.resx
+        /// </summary>
         public static string ExceptionsResourceFile
         {
             get
@@ -148,6 +153,9 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
+        /// <summary>
+        /// Returns ~/App_GlobalResources/GlobalResources.resx
+        /// </summary>
         public static string GlobalResourceFile
         {
             get
@@ -429,18 +437,17 @@ namespace DotNetNuke.Services.Localization
                         AddTranslatorRole(portalID, newLocale);
                     }
 
-                    DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.GetCurrentUserInfo().UserID);
+                    DataProvider.Instance().AddPortalLanguage(portalID, languageID, false, UserController.Instance.GetCurrentUserInfo().UserID);
                     string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
                     DataCache.RemoveCache(cacheKey);
 
-                    var objEventLog = new EventLogController();
-                    objEventLog.AddLog("portalID/languageID",
+                    EventLogController.Instance.AddLog("portalID/languageID",
                                        portalID + "/" + languageID,
-                                       PortalController.GetCurrentPortalSettings(),
-                                       UserController.GetCurrentUserInfo().UserID,
+                                       PortalController.Instance.GetCurrentPortalSettings(),
+                                       UserController.Instance.GetCurrentUserInfo().UserID,
                                        EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
 
-                    var portalInfo = new PortalController().GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalID);
                     if (portalInfo != null && newLocale.Code != portalInfo.DefaultLanguage)
                     {
                         // check to see if this is the first extra language being added to the portal
@@ -468,11 +475,11 @@ namespace DotNetNuke.Services.Localization
             if (Config.GetFriendlyUrlProvider() == "advanced")
             {
                 // create new HTTPAlias for language
-                var portalInfo = new PortalController().GetPortal(portalId);
+                var portalInfo = PortalController.Instance.GetPortal(portalId);
                 PortalAliasInfo currentAlias = null;
                 string httpAlias = null;
 
-                var portalAliasses = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+                var portalAliasses = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
                 var portalAliasInfos = portalAliasses as IList<PortalAliasInfo> ?? portalAliasses.ToList();
                 if (portalAliasses != null && portalAliasInfos.Any())
                 {
@@ -503,7 +510,7 @@ namespace DotNetNuke.Services.Localization
                                 HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant())
                             };
 
-                        TestablePortalAliasController.Instance.AddPortalAlias(newAlias);
+                        PortalAliasController.Instance.AddPortalAlias(newAlias);
                     }
                 }
             }
@@ -525,7 +532,7 @@ namespace DotNetNuke.Services.Localization
 
                 alias = String.Format("{0}/{1}", httpAlias, modifiedLocale);
 
-                var tab = new TabController().GetTabByName(modifiedLocale, portalId);
+                var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = (tab == null);
 
                 if (isValid)
@@ -537,7 +544,7 @@ namespace DotNetNuke.Services.Localization
                 if (isValid)
                 {
                     PortalAliasInfo existingAlias;
-                    TestablePortalAliasController.Instance.GetPortalAliases().TryGetValue(alias, out existingAlias);
+                    PortalAliasController.Instance.GetPortalAliases().TryGetValue(alias, out existingAlias);
 
                     isValid = (existingAlias == null);
                 }
@@ -565,8 +572,7 @@ namespace DotNetNuke.Services.Localization
 
         public static void AddLanguageToPortals(int languageID)
         {
-            var controller = new PortalController();
-            foreach (PortalInfo portal in controller.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
@@ -579,7 +585,7 @@ namespace DotNetNuke.Services.Localization
         {
             //Create new Translator Role
             string roleName = string.Format("Translator ({0})", language.Code);
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+            RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
             if (role == null)
             {
@@ -590,7 +596,7 @@ namespace DotNetNuke.Services.Localization
                 role.Description = string.Format("A role for {0} translators", language.EnglishName);
                 role.SecurityMode = SecurityMode.SecurityRole;
                 role.Status = RoleStatus.Approved;
-                TestableRoleController.Instance.AddRole(role);
+                RoleController.Instance.AddRole(role);
             }
 
             string roles = string.Format("Administrators;{0}", string.Format("Translator ({0})", language.Code));
@@ -733,12 +739,11 @@ namespace DotNetNuke.Services.Localization
             RemoveLanguageFromPortals(language.LanguageId);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(language, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
+            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
-        
+
         public static string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
         {
             return TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(cultureCodes, fallback);
@@ -841,205 +846,205 @@ namespace DotNetNuke.Services.Localization
             return name;
         }
 
-		#region Language detection
-		/// <summary>
-		/// Detects the current language for the request.
-		/// The order in which the language is being detect is:
-		///		1. QueryString
-		///		2. Cookie
-		///		3. User profile (if request is authenticated)
-		///		4. Browser preference (if portal has this option enabled)
-		///		5. Portal default
-		///		6. System default (en-US)
-		///	At any point, if a valid language is detected nothing else should be done
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo</returns>
-		public static CultureInfo GetPageLocale(PortalSettings portalSettings)
-		{
-			CultureInfo pageCulture = null;
+        #region Language detection
+        /// <summary>
+        /// Detects the current language for the request.
+        /// The order in which the language is being detect is:
+        ///		1. QueryString
+        ///		2. Cookie
+        ///		3. User profile (if request is authenticated)
+        ///		4. Browser preference (if portal has this option enabled)
+        ///		5. Portal default
+        ///		6. System default (en-US)
+        ///	At any point, if a valid language is detected nothing else should be done
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo</returns>
+        public static CultureInfo GetPageLocale(PortalSettings portalSettings)
+        {
+            CultureInfo pageCulture = null;
 
-			// 1. querystring
-			if (portalSettings != null)
-				pageCulture = GetCultureFromQs(portalSettings);
+            // 1. querystring
+            if (portalSettings != null)
+                pageCulture = GetCultureFromQs(portalSettings);
 
-			// 2. cookie
-			if (portalSettings != null && pageCulture == null)
-				pageCulture = GetCultureFromCookie(portalSettings);
+            // 2. cookie
+            if (portalSettings != null && pageCulture == null)
+                pageCulture = GetCultureFromCookie(portalSettings);
 
-			// 3. user preference
-			if (portalSettings != null && pageCulture == null)
-				pageCulture = GetCultureFromProfile(portalSettings);
+            // 3. user preference
+            if (portalSettings != null && pageCulture == null)
+                pageCulture = GetCultureFromProfile(portalSettings);
 
-			// 4. browser
-			if (portalSettings != null && pageCulture == null)
-				pageCulture = GetCultureFromBrowser(portalSettings);
+            // 4. browser
+            if (portalSettings != null && pageCulture == null)
+                pageCulture = GetCultureFromBrowser(portalSettings);
 
-			// 5. portal default
-			if (portalSettings != null && pageCulture == null)
-				pageCulture = GetCultureFromPortal(portalSettings);
+            // 5. portal default
+            if (portalSettings != null && pageCulture == null)
+                pageCulture = GetCultureFromPortal(portalSettings);
 
-			// 6. system default
-			if (pageCulture == null)
-				pageCulture = new CultureInfo(SystemLocale);
+            // 6. system default
+            if (pageCulture == null)
+                pageCulture = new CultureInfo(SystemLocale);
 
-			// finally set the cookie
-			SetLanguage(pageCulture.Name);
-			return pageCulture;
-		}
+            // finally set the cookie
+            SetLanguage(pageCulture.Name);
+            return pageCulture;
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the querystring
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		private static CultureInfo GetCultureFromQs(PortalSettings portalSettings)
-		{
-			if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
-				return null;
+        /// <summary>
+        /// Tries to get a valid language from the querystring
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        private static CultureInfo GetCultureFromQs(PortalSettings portalSettings)
+        {
+            if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
+                return null;
 
-			string language = HttpContext.Current.Request["language"];
-			CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
-			return culture;
-		}
+            string language = HttpContext.Current.Request["language"];
+            CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
+            return culture;
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the cookie
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		private static CultureInfo GetCultureFromCookie(PortalSettings portalSettings)
-		{
-			CultureInfo culture;
-			if (HttpContext.Current == null || HttpContext.Current.Request.Cookies["language"] == null)
-				return null;
+        /// <summary>
+        /// Tries to get a valid language from the cookie
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        private static CultureInfo GetCultureFromCookie(PortalSettings portalSettings)
+        {
+            CultureInfo culture;
+            if (HttpContext.Current == null || HttpContext.Current.Request.Cookies["language"] == null)
+                return null;
 
-			string language = HttpContext.Current.Request.Cookies["language"].Value;
-			culture = GetCultureFromString(portalSettings.PortalId, language);
-			return culture;
-		}
+            string language = HttpContext.Current.Request.Cookies["language"].Value;
+            culture = GetCultureFromString(portalSettings.PortalId, language);
+            return culture;
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the user profile
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		private static CultureInfo GetCultureFromProfile(PortalSettings portalSettings)
-		{
-			UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+        /// <summary>
+        /// Tries to get a valid language from the user profile
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        private static CultureInfo GetCultureFromProfile(PortalSettings portalSettings)
+        {
+			UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
-			if (HttpContext.Current == null || !HttpContext.Current.Request.IsAuthenticated || objUserInfo.UserID == -1)
-				return null;
+            if (HttpContext.Current == null || !HttpContext.Current.Request.IsAuthenticated || objUserInfo.UserID == -1)
+                return null;
 
-			string language = objUserInfo.Profile.PreferredLocale;
-			CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
-			return culture;
-		}
+            string language = objUserInfo.Profile.PreferredLocale;
+            CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
+            return culture;
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the browser preferences if the portal has the setting 
-		/// to use browser languages enabled.
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		private static CultureInfo GetCultureFromBrowser(PortalSettings portalSettings)
-		{
-			if (!portalSettings.EnableBrowserLanguage)
-				return null;
-			else
-				return GetBrowserCulture(portalSettings.PortalId);
-		}
+        /// <summary>
+        /// Tries to get a valid language from the browser preferences if the portal has the setting 
+        /// to use browser languages enabled.
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        private static CultureInfo GetCultureFromBrowser(PortalSettings portalSettings)
+        {
+            if (!portalSettings.EnableBrowserLanguage)
+                return null;
+            else
+                return GetBrowserCulture(portalSettings.PortalId);
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the portal default preferences
-		/// </summary>
-		/// <param name="portalSettings">Current PortalSettings</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		private static CultureInfo GetCultureFromPortal(PortalSettings portalSettings)
-		{
-			CultureInfo culture = null;
-			if (!String.IsNullOrEmpty(portalSettings.DefaultLanguage))
-			{
-				// As the portal default language can never be disabled, we know this language is available and enabled
-				culture = new CultureInfo(portalSettings.DefaultLanguage);
-			}
-			else
-			{
-				// Get the first enabled locale on the portal
-				Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
-				if (portalSettings.PortalId > Null.NullInteger)
-					enabledLocales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
+        /// <summary>
+        /// Tries to get a valid language from the portal default preferences
+        /// </summary>
+        /// <param name="portalSettings">Current PortalSettings</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        private static CultureInfo GetCultureFromPortal(PortalSettings portalSettings)
+        {
+            CultureInfo culture = null;
+            if (!String.IsNullOrEmpty(portalSettings.DefaultLanguage))
+            {
+                // As the portal default language can never be disabled, we know this language is available and enabled
+                culture = new CultureInfo(portalSettings.DefaultLanguage);
+            }
+            else
+            {
+                // Get the first enabled locale on the portal
+                Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
+                if (portalSettings.PortalId > Null.NullInteger)
+                    enabledLocales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
 
-				if (enabledLocales.Count > 0)
-				{
-					foreach (string localeCode in enabledLocales.Keys)
-					{
-						culture = new CultureInfo(localeCode);
-						break;
-					}
-				}
-			}
-			return culture;
-		}
+                if (enabledLocales.Count > 0)
+                {
+                    foreach (string localeCode in enabledLocales.Keys)
+                    {
+                        culture = new CultureInfo(localeCode);
+                        break;
+                    }
+                }
+            }
+            return culture;
+        }
 
-		/// <summary>
-		/// Tries to get a valid language from the browser preferences
-		/// </summary>
-		/// <param name="portalId">Id of the current portal</param>
-		/// <returns>A valid CultureInfo if any is found</returns>
-		public static CultureInfo GetBrowserCulture(int portalId)
-		{
+        /// <summary>
+        /// Tries to get a valid language from the browser preferences
+        /// </summary>
+        /// <param name="portalId">Id of the current portal</param>
+        /// <returns>A valid CultureInfo if any is found</returns>
+        public static CultureInfo GetBrowserCulture(int portalId)
+        {
             if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.UserLanguages == null)
-				return null;
+                return null;
 
-			CultureInfo culture = null;
-			foreach (string userLang in HttpContext.Current.Request.UserLanguages)
-			{
-				//split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
-				string language = userLang.Split(';')[0];
-				culture = GetCultureFromString(portalId, language);
-				if (culture != null)
-					break;
-			}
-			return culture;
-		}
+            CultureInfo culture = null;
+            foreach (string userLang in HttpContext.Current.Request.UserLanguages)
+            {
+                //split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
+                string language = userLang.Split(';')[0];
+                culture = GetCultureFromString(portalId, language);
+                if (culture != null)
+                    break;
+            }
+            return culture;
+        }
 
-		/// <summary>
-		/// Parses the language parameter into a valid and enabled language in the current portal.
-		/// If an exact match is not found (language-region), it will try to find a match for the language only.
-		/// Ex: requested locale is "en-GB", requested language is "en", enabled locale is "en-US", so "en" is a match for "en-US".
-		/// </summary>
-		/// <param name="portalId">Id of current portal</param>
-		/// <param name="language">Language to be parsed</param>
-		/// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
-		private static CultureInfo GetCultureFromString(int portalId, string language)
-		{
-			CultureInfo culture = null;
-			if (!String.IsNullOrEmpty(language))
-			{
-				if (LocaleController.Instance.IsEnabled(ref language, portalId))
-					culture = new CultureInfo(language);
-				else
-				{
-					string preferredLanguage = language.Split('-')[0];
+        /// <summary>
+        /// Parses the language parameter into a valid and enabled language in the current portal.
+        /// If an exact match is not found (language-region), it will try to find a match for the language only.
+        /// Ex: requested locale is "en-GB", requested language is "en", enabled locale is "en-US", so "en" is a match for "en-US".
+        /// </summary>
+        /// <param name="portalId">Id of current portal</param>
+        /// <param name="language">Language to be parsed</param>
+        /// <returns>A valid and enabled CultureInfo that matches the language passed if any.</returns>
+        private static CultureInfo GetCultureFromString(int portalId, string language)
+        {
+            CultureInfo culture = null;
+            if (!String.IsNullOrEmpty(language))
+            {
+                if (LocaleController.Instance.IsEnabled(ref language, portalId))
+                    culture = new CultureInfo(language);
+                else
+                {
+                    string preferredLanguage = language.Split('-')[0];
 
-					Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
-					if (portalId > Null.NullInteger)
-						enabledLocales = LocaleController.Instance.GetLocales(portalId);
+                    Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
+                    if (portalId > Null.NullInteger)
+                        enabledLocales = LocaleController.Instance.GetLocales(portalId);
 
-					foreach (string localeCode in enabledLocales.Keys)
-					{
-						if (localeCode.Split('-')[0] == preferredLanguage.Split('-')[0])
-						{
-							culture = new CultureInfo(localeCode);
-							break;
-						}
-					}
-				}
-			}
-			return culture;
-		}
-		#endregion
+                    foreach (string localeCode in enabledLocales.Keys)
+                    {
+                        if (localeCode.Split('-')[0] == preferredLanguage.Split('-')[0])
+                        {
+                            culture = new CultureInfo(localeCode);
+                            break;
+                        }
+                    }
+                }
+            }
+            return culture;
+        }
+        #endregion
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
@@ -1118,7 +1123,7 @@ namespace DotNetNuke.Services.Localization
         /// -----------------------------------------------------------------------------
         public static string GetString(string key)
         {
-            return GetString(key, null, PortalController.GetCurrentPortalSettings(), null, false);
+            return GetString(key, null, PortalController.Instance.GetCurrentPortalSettings(), null, false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1153,7 +1158,7 @@ namespace DotNetNuke.Services.Localization
         /// -----------------------------------------------------------------------------
         public static string GetString(string key, string resourceFileRoot, bool disableShowMissingKeys)
         {
-            return GetString(key, resourceFileRoot, PortalController.GetCurrentPortalSettings(), null, disableShowMissingKeys);
+            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, disableShowMissingKeys);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1252,13 +1257,13 @@ namespace DotNetNuke.Services.Localization
         /// -----------------------------------------------------------------------------
         public static string GetStringUrl(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, PortalController.GetCurrentPortalSettings(), null, true);
+            return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
         }
 
         #endregion
 
         #region GetSafeJSString
-        
+
         /// <summary>
         /// this function will escape reserved character fields to their "safe" javascript equivalents
         /// </summary>
@@ -1569,7 +1574,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (userInfo.UserID != accessingUserID)
                     {
-                        objTokenReplace.AccessingUser = new UserController().GetUser(portalSettings.PortalId, accessingUserID);
+                        objTokenReplace.AccessingUser = UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
                     }
                 }
                 if (customArray != null)
@@ -1630,8 +1635,8 @@ namespace DotNetNuke.Services.Localization
         /// <param name = "host">Boolean that defines wether or not to load host (ie. all available) locales</param>
         public static void LoadCultureDropDownList(DropDownList list, CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
-            IEnumerable<ListItem> cultureListItems = LoadCultureInListItems(displayType, selectedValue, filter, host);  
-            
+            IEnumerable<ListItem> cultureListItems = LoadCultureInListItems(displayType, selectedValue, filter, host);
+
             //add the items to the list
             foreach (var cultureItem in cultureListItems)
             {
@@ -1663,7 +1668,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public static IEnumerable<ListItem> LoadCultureInListItems(CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             Dictionary<string, Locale> enabledLanguages;
             if (host)
             {
@@ -1699,21 +1704,14 @@ namespace DotNetNuke.Services.Localization
         /// <remarks>
         /// Resource keys are: ControlTitle_[key].Text
         /// Key MUST be lowercase in the resource file
+        /// Key can also be "blank" for admin/edit controls. These will only be used
+        /// in admin pages
         /// </remarks>
-        /// <history>
-        /// 	[vmasanas]	08/11/2004	Created
-        ///     [cnurse]    11/28/2008  Modified Signature
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string LocalizeControlTitle(IModuleControl moduleControl)
         {
             string controlTitle = moduleControl.ModuleContext.Configuration.ModuleTitle;
             string controlKey = moduleControl.ModuleContext.Configuration.ModuleControl.ControlKey.ToLower();
-
-            if (!string.IsNullOrEmpty(controlTitle) && !string.IsNullOrEmpty(controlKey))
-            {
-                controlTitle = moduleControl.ModuleContext.Configuration.ModuleControl.ControlTitle;
-            }
 
             if (!string.IsNullOrEmpty(controlKey))
             {
@@ -1724,6 +1722,27 @@ namespace DotNetNuke.Services.Localization
                     controlTitle = moduleControl.ModuleContext.Configuration.ModuleControl.ControlTitle;
                 }
                 else
+                {
+                    controlTitle = localizedvalue;
+                }
+            }
+            else
+            {
+                bool isAdminPage = false;
+                //we should be checking that the tab path matches //Admin//pagename or //admin
+                //in this way we should avoid partial matches (ie //Administrators
+                if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
+                    String.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
+                    String.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0
+                    )
+                {
+                    isAdminPage = true;
+                }
+
+                string reskey = "ControlTitle_.Text";
+                string localizedvalue = GetString(reskey, moduleControl.LocalResourceFile);
+                if (!string.IsNullOrEmpty(localizedvalue) && isAdminPage)
                 {
                     controlTitle = localizedvalue;
                 }
@@ -1873,23 +1892,34 @@ namespace DotNetNuke.Services.Localization
                 {
                     // only do this with Advanced URL Management
 
-                    var portalInfo = new PortalController().GetPortal(portalID);
+                    var portalInfo = PortalController.Instance.GetPortal(portalID);
                     if (portalInfo != null)
                     {
                         // check to see if this is the last extra language being added to the portal
                         var lastLanguage = LocaleController.Instance.GetLocales(portalID).Count == 2;
 
-                        var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalID);
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
                         foreach (var portalAliasInfo in portalAliases)
                         {
                             if (portalAliasInfo.CultureCode == language.Code)
                             {
-                                TestablePortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+                                PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
                             }
 
                             if (lastLanguage && portalAliasInfo.CultureCode == portalInfo.DefaultLanguage)
                             {
-                                TestablePortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+                                PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+
+                                //Fix PortalSettings for the rest of this request
+                                var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == String.Empty);
+                                if (newDefaultAlias != null)
+                                {
+                                    var settings = PortalController.Instance.GetCurrentPortalSettings();
+                                    if (settings != null)
+                                    {
+                                        settings.PortalAlias = newDefaultAlias;
+                                    }
+                                }
                             }
                         }
                     }
@@ -1897,39 +1927,37 @@ namespace DotNetNuke.Services.Localization
 
                 //Get Translator Role
                 string roleName = string.Format("Translator ({0})", language.Code);
-                RoleInfo role = TestableRoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
+                RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
                 if (role != null)
                 {
-                    TestableRoleController.Instance.DeleteRole(role);
+                    RoleController.Instance.DeleteRole(role);
                 }
 
                 DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("portalID/languageID",
+                EventLogController.Instance.AddLog("portalID/languageID",
                                    portalID + "/" + languageID,
-                                   PortalController.GetCurrentPortalSettings(),
-                                   UserController.GetCurrentUserInfo().UserID,
+                                   PortalController.Instance.GetCurrentPortalSettings(),
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                    EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
 
                 DataCache.ClearPortalCache(portalID, false);
             }
         }
 
-        public static void RemoveLanguageFromPortals(int languageID)
+        public static void RemoveLanguageFromPortals(int languageId)
         {
-            var controller = new PortalController();
-            foreach (PortalInfo portal in controller.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                RemoveLanguageFromPortal(portal.PortalID, languageID);
+                RemoveLanguageFromPortal(portal.PortalID, languageId);
             }
         }
 
-        public static void RemoveLanguagesFromPortal(int portalID)
+        public static void RemoveLanguagesFromPortal(int portalId)
         {
-            foreach (Locale locale in LocaleController.Instance.GetLocales(portalID).Values)
+            foreach (Locale locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
-                RemoveLanguageFromPortal(portalID, locale.LanguageId);
+                RemoveLanguageFromPortal(portalId, locale.LanguageId);
             }
         }
 
@@ -1941,16 +1969,15 @@ namespace DotNetNuke.Services.Localization
 
         public static void SaveLanguage(Locale locale, bool clearCache)
         {
-            var objEventLog = new EventLogController();
             if (locale.LanguageId == Null.NullInteger)
             {
-                locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.GetCurrentUserInfo().UserID);
-                objEventLog.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_CREATED);
+                locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_CREATED);
             }
             else
             {
-                DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.GetCurrentUserInfo().UserID);
-                objEventLog.AddLog(locale, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_UPDATED);
+                DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
             if (clearCache)
                 DataCache.ClearHostCache(true);
@@ -2011,48 +2038,48 @@ namespace DotNetNuke.Services.Localization
                 throw new ArgumentNullException("cultureInfo");
             }
 
-			Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
 
-			if (portalSettings != null && portalSettings.ContentLocalizationEnabled &&
-						HttpContext.Current.Request.IsAuthenticated &&
-						portalSettings.AllowUserUICulture)
-			{
-				Thread.CurrentThread.CurrentUICulture = GetUserUICulture(cultureInfo, portalSettings);
-			}
-			else
-			{
-				Thread.CurrentThread.CurrentUICulture = cultureInfo;
-			}
-		}
+            if (portalSettings != null && portalSettings.ContentLocalizationEnabled &&
+                        HttpContext.Current.Request.IsAuthenticated &&
+                        portalSettings.AllowUserUICulture)
+            {
+                Thread.CurrentThread.CurrentUICulture = GetUserUICulture(cultureInfo, portalSettings);
+            }
+            else
+            {
+                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            }
+        }
 
-		/// <summary>
-		/// When portal allows users to select their preferred UI language, this method
-		/// will return the user ui preferred language if defined. Otherwise defaults
-		/// to the current culture
-		/// </summary>
-		/// <param name="currentCulture">Current culture</param>
-		/// <param name="portalSettings">PortalSettings for the current request</param>
-		/// <returns></returns>
-		private static CultureInfo GetUserUICulture(CultureInfo currentCulture, PortalSettings portalSettings)
-		{
-			CultureInfo uiCulture = currentCulture;
-			try
-			{
-				object oCulture = Personalization.Personalization.GetProfile("Usability", "UICulture");
-				if (oCulture != null)
-				{
-					CultureInfo ci = GetCultureFromString(portalSettings.PortalId, oCulture.ToString());
-					if (ci != null)
-						uiCulture = ci;
-				}
-			}
-			catch
-			{
-				// UserCulture seems not valid anymore, update to current culture
-				Personalization.Personalization.SetProfile("Usability", "UICulture", currentCulture.Name);
-			}
-			return uiCulture;
-		}
+        /// <summary>
+        /// When portal allows users to select their preferred UI language, this method
+        /// will return the user ui preferred language if defined. Otherwise defaults
+        /// to the current culture
+        /// </summary>
+        /// <param name="currentCulture">Current culture</param>
+        /// <param name="portalSettings">PortalSettings for the current request</param>
+        /// <returns></returns>
+        private static CultureInfo GetUserUICulture(CultureInfo currentCulture, PortalSettings portalSettings)
+        {
+            CultureInfo uiCulture = currentCulture;
+            try
+            {
+                object oCulture = Personalization.Personalization.GetProfile("Usability", "UICulture");
+                if (oCulture != null)
+                {
+                    CultureInfo ci = GetCultureFromString(portalSettings.PortalId, oCulture.ToString());
+                    if (ci != null)
+                        uiCulture = ci;
+                }
+            }
+            catch
+            {
+                // UserCulture seems not valid anymore, update to current culture
+                Personalization.Personalization.SetProfile("Usability", "UICulture", currentCulture.Name);
+            }
+            return uiCulture;
+        }
 
         /// <summary>
         /// Maps the culture code string into the corresponding language ID in the
@@ -2073,7 +2100,7 @@ namespace DotNetNuke.Services.Localization
         [Obsolete("Deprecated in DNN 5.0. Replaced by GetLocales().")]
         public static LocaleCollection GetEnabledLocales()
         {
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var enabledLocales = new LocaleCollection();
             foreach (KeyValuePair<string, Locale> kvp in LocaleController.Instance.GetLocales(objPortalSettings.PortalId))
             {
@@ -2195,7 +2222,7 @@ namespace DotNetNuke.Services.Localization
         [Obsolete("Deprecated in DNN 5.5.  Replcaed by LocaleController.IsEnabled()")]
         public static bool LocaleIsEnabled(string localeCode)
         {
-            PortalSettings _Settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
 
             return LocaleController.Instance.IsEnabled(ref localeCode, _Settings.PortalId);
         }
@@ -2248,13 +2275,13 @@ namespace DotNetNuke.Services.Localization
         [Obsolete("Deprecated in DNN 5.0. Replaced by Host.EnableBrowserLanguage OR PortalSettings.EnableBrowserLanguage")]
         public static bool UseBrowserLanguage()
         {
-            return PortalController.GetCurrentPortalSettings().EnableBrowserLanguage;
+            return PortalController.Instance.GetCurrentPortalSettings().EnableBrowserLanguage;
         }
 
         [Obsolete("Deprecated in DNN 5.0. Replaced by Host.EnableUrlLanguage OR PortalSettings.EnableUrlLanguage")]
         public static bool UseLanguageInUrl()
         {
-            return PortalController.GetCurrentPortalSettings().EnableUrlLanguage;
+            return PortalController.Instance.GetCurrentPortalSettings().EnableUrlLanguage;
         }
 
         [Obsolete("Deprecated in DNN 6.0. Replaced by new DnnTimeZoneComboBox control and use of .NET TimeZoneInfo class")]

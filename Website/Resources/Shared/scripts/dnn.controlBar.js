@@ -9,11 +9,36 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.isMouseDown = false;
     dnn.controlBar.hideModuleLocationMenu = true;
     dnn.controlBar.showSelectedModule = false;
-    dnn.controlBar.status = null;    
-    dnn.controlBar.moduleLoadingIndex = 0;
-    dnn.controlBar.moduleLoadingInitialSize = 15;
+    dnn.controlBar.status = null;
+    dnn.controlBar.scrollBarFixedSize = 980;
+    
+    //Lazy loading settings
+    dnn.controlBar.moduleLoadingPageIndex = 0;
+    dnn.controlBar.moduleLoadingInitialPageSize = 15;
     dnn.controlBar.moduleLoadingSize = 7;
     dnn.controlBar.allModulesLoaded = false;
+    dnn.controlBar.forceLoadingPane = false;
+    dnn.controlBar.forceCategorySelection = false;
+    dnn.controlBar.forceCategorySearch = false;
+    dnn.controlBar.scrollTrigger = true;
+
+    //Search Module settings
+    dnn.controlBar.minInputLength = 2;
+    dnn.controlBar.inputDelay = 400;    
+    dnn.controlBar.lastVal = '';
+    dnn.controlBar.searchTimeout = null;
+
+    //Bookmark Modules settings
+    dnn.controlBar.bookmarkModuleCategory = settings.bookmarkModuleCategory;
+    dnn.controlBar.bookmarkedModuleKeys = settings.bookmarkedModuleKeys.split(',');
+    
+    //Scrolling when dragging
+    dnn.controlBar.initialDragPosition = null;
+    dnn.controlBar.initialScrollPosition = null;
+    dnn.controlBar.arrowScrollingContainer = null;    
+    dnn.controlBar.arrowScrollingButtonSpeed = 10;
+    dnn.controlBar.mouseWheelScrollingContainer = null;
+    
     dnn.controlBar.getService = function () {
         return $.dnnSF();
     };
@@ -35,11 +60,27 @@ dnn.controlBar.init = function (settings) {
         var selectedPageId = dnn.controlBar.selectedPage ? dnn.controlBar.selectedPage.id : '';
         var selectedPageName = dnn.controlBar.selectedPage ? dnn.controlBar.selectedPage.name : '';
         var visibilityComboVal = $find(settings.visibilityComboId).get_value();
-        var persistValue = [dnn.controlBar.addNewModule, categoryComboVal, selectedPageId, selectedPageName, visibilityComboVal].join('|');
-        dnn.dom.setCookie('ControlBarInitStatus', persistValue);
+        var moduleLoadIndex = dnn.controlBar.moduleLoadingPageIndex;
+        var forceScrollX = dnn.controlBar.getCurrentScrollPositionX($('#ControlBar_ModuleListHolder_NewModule').next().data('jsp'));
+        var searchTerm = dnn.controlBar.getSearchTermValue();
+        var persistValue = [
+                                dnn.controlBar.addNewModule,
+                                categoryComboVal,
+                                selectedPageId,
+                                selectedPageName,
+                                visibilityComboVal,
+                                moduleLoadIndex,
+                                forceScrollX,
+                                searchTerm
+                            ].join('|');
+        dnn.dom.setCookie('ControlBarInitStatus', persistValue, 0, dnn.controlBar.getSiteRoot());
         dnn.controlBar.status = null;
     };
     dnn.controlBar.loadStatus = function () {
+        if (dnn.controlBar.status) {
+            return;
+        }
+
         var persistValue = dnn.dom.getCookie('ControlBarInitStatus');
         if (persistValue) {
             var persits = persistValue.split('|');
@@ -48,17 +89,20 @@ dnn.controlBar.init = function (settings) {
                 category: persits[1],
                 pageId: persits[2],
                 pageName: persits[3],
-                visibility: persits[4]
+                visibility: persits[4],
+                moduleLoadIndex: persits[5],
+                forceScrollX: persits[6],
+                searchTerm: persits[7]
             };
         }
         else {
             dnn.controlBar.status = null;
         }
-        dnn.dom.setCookie('ControlBarInitStatus', '', -1);
+        dnn.dom.setCookie('ControlBarInitStatus', '', -1, dnn.controlBar.getSiteRoot());
     };
     dnn.controlBar.removeStatus = function () {
         dnn.controlBar.status = null;
-        dnn.dom.setCookie('ControlBarInitStatus', '', -1);
+        dnn.dom.setCookie('ControlBarInitStatus', '', -1, dnn.controlBar.getSiteRoot());
     };
     dnn.controlBar.responseError = function (xhr) {
         if (xhr) {
@@ -76,6 +120,32 @@ dnn.controlBar.init = function (settings) {
         });
         return items.join(',');
     };
+
+    dnn.controlBar.saveBookmarkModules = function (title, bookmarkModules, $bookmarkLink, removedBookmarkModuleId) {
+        var service = dnn.controlBar.getService();
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        $.ajax({
+            url: serviceUrl + 'SaveBookmark',
+            type: 'POST',
+            data: { Title: title, Bookmark: bookmarkModules },
+            beforeSend: service.setModuleHeaders,
+            success: function () {
+                $bookmarkLink.addClass("hideBookmark");
+                if (dnn.controlBar.isBookmarkModuleCategorySelected()) {
+                    var $moduleItem = $("#ControlBar_Module_AddNewModule ul.ControlBar_ModuleList .ControlBar_ModuleDiv[data-module=" + removedBookmarkModuleId + "]");
+                    if ($moduleItem) {
+                        $moduleItem.parent().hide();
+                    }
+                } else {
+                    $find(settings.categoryComboId).findItemByValue(dnn.controlBar.bookmarkModuleCategory).select();
+                }
+            },
+            error: function (xhr) {
+                dnn.controlBar.responseError(xhr);
+            }
+        });
+    };
+
     dnn.controlBar.saveBookmark = function (title, ul) {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
@@ -92,6 +162,19 @@ dnn.controlBar.init = function (settings) {
             }
         });
     };
+
+    dnn.controlBar.showModuleListLoading = function(containerId, showPanel, showNoResultMessage) {
+        var loadingContainer = $(containerId);
+        var shouldShowMessage = showNoResultMessage;
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            loadingContainer.removeClass("NextElements");
+        } else {
+            loadingContainer.addClass("NextElements");
+            shouldShowMessage = shouldShowMessage && false;
+        }
+        dnn.controlBar.setModuleListLoading(containerId, !showPanel, shouldShowMessage);
+    };
+
     dnn.controlBar.setModuleListLoading = function (containerId, hideLoading, showNoResultMessage) {
         var loadingContainer = $(containerId);
         var messageContainer = loadingContainer.prev();
@@ -115,72 +198,177 @@ dnn.controlBar.init = function (settings) {
                 messageContainer.hide();
             }
         } else {
-            listContainer.hide();
+            if (dnn.controlBar.isFirstModuleLoadingPage()) {
+                listContainer.hide();
+            } else {
+                listContainer.show();
+            }
             scrollContainer.hide();
             loadingContainer.show();
             messageContainer.hide();
         }
     };
 
-    dnn.controlBar.getModuleLoadingStartIndex = function() {
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+    dnn.controlBar.getModuleLoadingCurrentIndex = function() {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
             return 0;
         } else {
-            return dnn.controlBar.moduleLoadingInitialSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingIndex -1));
+            return dnn.controlBar.moduleLoadingInitialPageSize + (dnn.controlBar.moduleLoadingSize * (dnn.controlBar.moduleLoadingPageIndex -1));
         }
     };
     
-    dnn.controlBar.getModuleLoadingCurrentSize = function () {
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
-            return dnn.controlBar.moduleLoadingInitialSize;            
+    dnn.controlBar.getModuleLoadingCurrentPageSize = function () {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            if (dnn.controlBar.forceModuleLoadIndex) {
+                return dnn.controlBar.moduleLoadingInitialPageSize + dnn.controlBar.forceModuleLoadIndex * dnn.controlBar.moduleLoadingSize;
+            }
+            return dnn.controlBar.moduleLoadingInitialPageSize;            
         } else {
             return dnn.controlBar.moduleLoadingSize;
         }
     };
 
-    dnn.controlBar.getDesktopModulesForNewModule = function (category) {
+    dnn.controlBar.isFirstModuleLoadingPage = function() {
+        return (dnn.controlBar.moduleLoadingPageIndex == 0);
+    };
+
+    dnn.controlBar.getWaitingTime = function(startDate) {
+        var minimumTimeToLoading = 300;
+        var elapsedTime = new Date() - startDate;
+        var waitingTime = elapsedTime > minimumTimeToLoading ? 0 : minimumTimeToLoading - elapsedTime;
+
+        return waitingTime;
+    };
+
+    dnn.controlBar.getDesktopModulesForNewModule = function (category, val) {
         if (dnn.controlBar.allModulesLoaded) {
             return;
         }
+        if (!dnn.controlBar.isFirstModuleLoadingPage()) {
+            dnn.controlBar.scrollTrigger = false;
+        }
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
-        //if (dnn.controlBar.moduleLoadingIndex == 0) {
-            dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule');
-        //}
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);                
+        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
+        var startDate = new Date();
+        var currentIndex = dnn.controlBar.getModuleLoadingCurrentIndex();
+        var pageSize = dnn.controlBar.getModuleLoadingCurrentPageSize();
         $.ajax({
             url: serviceUrl + 'GetPortalDesktopModules',
             type: 'GET',
-            data: 'category=' + category + '&loadingStartIndex='+ dnn.controlBar.getModuleLoadingStartIndex() +'&loadingSize='+dnn.controlBar.getModuleLoadingCurrentSize(),
+            data: 'category=' + category + '&loadingStartIndex=' + currentIndex + '&loadingPageSize=' + pageSize + '&searchTerm=' +val,
             beforeSend: service.setModuleHeaders,
             success: function (d) {
-                if (d && d.length) {
-                    //if (dnn.controlBar.moduleLoadingIndex == 0) {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                    //}
-                    var containerId = '#ControlBar_ModuleListHolder_NewModule';                    
-                    dnn.controlBar.renderModuleList(containerId, d);
-                    dnn.controlBar.moduleLoadingIndex = dnn.controlBar.moduleLoadingIndex + 1;
-                    if (d.length < dnn.controlBar.moduleLoadingSize) {
-                        dnn.controlBar.allModulesLoaded = true;
-                    }
-                }
-                else {
-                    if (dnn.controlBar.moduleLoadingIndex == 0) {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true, true);
+                setTimeout(function() {
+                    if (d && d.length) {                        
+                        dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false);
+                        dnn.controlBar.forceLoadingPane = false;
+                        dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);                        
+                        var containerId = '#ControlBar_ModuleListHolder_NewModule';
+                        if ((dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingInitialPageSize) || (!dnn.controlBar.isFirstModuleLoadingPage() && d.length < dnn.controlBar.moduleLoadingSize)) {
+                            dnn.controlBar.allModulesLoaded = true;
+                        }
+
+                        if (dnn.controlBar.isFirstModuleLoadingPage()
+                                && d.length > dnn.controlBar.moduleLoadingInitialPageSize
+                                && (d.length - dnn.controlBar.moduleLoadingInitialPageSize) % dnn.controlBar.moduleLoadingSize != 0) {
+                                dnn.controlBar.allModulesLoaded = true;
+                        }
+
+                        dnn.controlBar.renderModuleList(containerId, d);
+                        if (dnn.controlBar.isFirstModuleLoadingPage() && d.length > dnn.controlBar.moduleLoadingInitialPageSize) {
+                            var pageCount = d.length - dnn.controlBar.moduleLoadingInitialPageSize;
+                            if (pageCount % dnn.controlBar.moduleLoadingSize == 0) {
+                                dnn.controlBar.moduleLoadingPageIndex = parseInt(pageCount / dnn.controlBar.moduleLoadingSize) + 1;
+                            } else {
+                                dnn.controlBar.moduleLoadingPageIndex = parseInt(pageCount / dnn.controlBar.moduleLoadingSize) + 2;
+                            }
+                            
+                        } else {
+                            dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
+                        }
+                        
                     } else {
-                        dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', true);
-                        dnn.controlBar.allModulesLoaded = true;
+                        if (dnn.controlBar.getSelectedCategory() == settings.defaultCategoryValue) {
+                            dnn.controlBar.showModuleListLoading('#ControlBar_ModuleListWaiter_NewModule', false, true);
+                            dnn.controlBar.setLoadingModulesMessage(settings.loadingModulesMessage);
+                            dnn.controlBar.allModulesLoaded = true;
+                        } else {
+                            dnn.controlBar.setLoadingModulesMessage(String.format(settings.loadingModulesOnNoDefaultCategoryMessage, dnn.controlBar.getSelectedCategory()));
+                            dnn.controlBar.forceCategorySearch = true;
+                            $find(settings.categoryComboId).findItemByValue(settings.defaultCategoryValue).select();
+                        }
+                        
                     }
-                }
+                }, dnn.controlBar.getWaitingTime(startDate));
+
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
+                if (!dnn.controlBar.isFirstModuleLoadingPage()) {
+                    dnn.controlBar.scrollTrigger = true;
+                }
             }
         });
     };
+
+    dnn.controlBar.setLoadingModulesMessage = function(message) {
+        var $loadingMessageElement = $("#" + settings.loadingModulesId);
+        $loadingMessageElement.text(message);
+    };
+
+    dnn.controlBar.getSearchTermValue = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+        return $searchInput.val();
+    };
+
+    dnn.controlBar.initModuleSearch = function() {
+        var $searchInput = $("#" + settings.searchInputId);
+
+        $searchInput.mouseup(function () {
+            return false;
+        }).keypress(function (e) {
+            if (e.keyCode == 13) {
+                var val = $(this).val();
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchModules(val);                
+                return false;
+            }
+        }).keyup(function (e) {
+            var val = $(this).val();
+            if (dnn.controlBar.lastVal.length != val.length &&
+                (val.length == 0 || val.length >= dnn.controlBar.minInputLength)) {
+                clearTimeout(dnn.controlBar.searchTimeout);
+                dnn.controlBar.searchTimeout = setTimeout(function () {
+                    dnn.controlBar.searchModules(val);
+                }, dnn.controlBar.inputDelay);
+            }
+            dnn.controlBar.lastVal = val;
+        });
+
+        var $searchButton = $("#ControlBar_Module_AddNewModule .search-container .search-button");
+        $searchButton.click(function() {
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+
+        var $clearButton = $("#ControlBar_Module_AddNewModule .search-container .clear-button");
+        $clearButton.click(function() {
+            dnn.controlBar.resetModuleSearch();
+            dnn.controlBar.searchModules(dnn.controlBar.getSearchTermValue());
+        });
+    };
+    dnn.controlBar.initModuleSearch();
+
+    dnn.controlBar.searchModules = function (val) {
+        dnn.controlBar.moduleLoadingPageIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), val);
+    };
+    
     dnn.controlBar.getTabModules = function (tab) {
+        dnn.controlBar.resetModuleSearch();        
         var service = dnn.controlBar.getService();
-        var serviceUrl = dnn.controlBar.getServiceUrl(service);
+        var serviceUrl = dnn.controlBar.getServiceUrl(service);        
         dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule');
         $.ajax({
             url: serviceUrl + 'GetTabModules',
@@ -191,11 +379,14 @@ dnn.controlBar.init = function (settings) {
                 if (d && d.length) {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true);
                     var containerId = '#ControlBar_ModuleListHolder_ExistingModule';
+                    dnn.controlBar.allModulesLoaded = true;
                     dnn.controlBar.renderModuleList(containerId, d);
+                    dnn.controlBar.moduleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex + 1;
                 }
                 else {
                     dnn.controlBar.setModuleListLoading('#ControlBar_ModuleListWaiter_ExistingModule', true, true);
                 }
+                dnn.controlBar.allModulesLoaded = true;
             },
             error: function (xhr) {
                 dnn.controlBar.responseError(xhr);
@@ -263,7 +454,7 @@ dnn.controlBar.init = function (settings) {
             beforeSend: service.setModuleHeaders,
             success: function (d) {
                 dnn.controlBar.addingModule = false;
-                dnn.dom.setCookie('FadeModuleID', d.TabModuleID);
+                dnn.dom.setCookie('FadeModuleID', d.TabModuleID, 0, dnn.controlBar.getSiteRoot());
                 // save status to restore add module panel when page refresh
                 dnn.controlBar.saveStatus();
                 window.location.href = window.location.href.split('#')[0];
@@ -311,9 +502,11 @@ dnn.controlBar.init = function (settings) {
     dnn.controlBar.publishPage = function () {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getPageServiceUrl(service);
+        var requestData = { Publish: settings.publishedPage != "true" };
         $.ajax({
             url: serviceUrl + 'PublishPage',
             type: 'POST',
+            data: requestData,
             beforeSend: service.setModuleHeaders,
             success: function () {
                 window.location.href = window.location.href.split('#')[0];
@@ -403,13 +596,155 @@ dnn.controlBar.init = function (settings) {
         $('#shareableWarning').dialog('close');
     };
 
+    dnn.controlBar.isActiveElementEmpty = function() {
+        var $activeElement = $(document.activeElement);
+        if ($activeElement && $activeElement.length > 0 && ($activeElement.get(0).tagName == "INPUT" || $activeElement.get(0).tagName == "TEXTAREA")) {
+            if ($activeElement.val().length == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    dnn.controlBar.initialiseArrowScrolling = function(container) {
+        dnn.controlBar.arrowScrollingContainer = container;
+    };
+
+    dnn.controlBar.initialiseMouseWheelScrolling = function (container) {
+        dnn.controlBar.mouseWheelScrollingContainer = container.parent();
+    };
+
+    dnn.controlBar.isValidArrowScrollingContainer = function() {
+        if (dnn.controlBar.arrowScrollingContainer && dnn.controlBar.arrowScrollingContainer.is(":visible")) {
+            return true;
+        }
+        return false;
+    };
+
+    dnn.controlBar.isValidMouseWheelScrollingContainer = function(targetElement) {
+        if (dnn.controlBar.mouseWheelScrollingContainer && dnn.controlBar.mouseWheelScrollingContainer.has(targetElement).length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    dnn.controlBar.getWheelEventDelta = function(event) {
+        if (event.deltaY) {
+            return event.deltaY;
+        }
+        if (event.wheelDelta) {
+            return event.wheelDelta * (-1); //IE uses wheelDelta property
+        }
+        return event.detail;
+    };
+
+    dnn.controlBar.moveScrollingContainer = function (direction, speed) {
+        if (!speed) {
+            speed = 1;
+        }
+        if (!dnn.controlBar.scrollTrigger) {
+            return;
+        }
+        var xOffset = direction == "left" ? dnn.controlBar.arrowScrollingButtonSpeed * (-1) * speed: (direction == "right" ? dnn.controlBar.arrowScrollingButtonSpeed * speed : 0);
+        var scrollContainer = dnn.controlBar.arrowScrollingContainer.next();
+        var jspapi = scrollContainer.data('jsp');
+        if (jspapi && xOffset != 0) {
+            jspapi.scrollByX(xOffset);
+        }
+    };
+
+    dnn.controlBar.moveArrowScrollingContainer = function (keyCode) {        
+        if (keyCode == 37) {
+            dnn.controlBar.moveScrollingContainer("left", 1);
+        }else if (keyCode == 39) {
+            dnn.controlBar.moveScrollingContainer("right", 1);
+        }        
+    };
+
+    dnn.controlBar.moveMouseWheelScrollingContainer = function(delta) {
+        if (delta < 0) {
+            dnn.controlBar.moveScrollingContainer("left", 3);
+        } else {
+            dnn.controlBar.moveScrollingContainer("right", 3);
+        }
+    };
+    
+    dnn.controlBar.addBookmarkModule = function(moduleId) {
+        if (dnn.controlBar.bookmarkedModuleKeys.indexOf(moduleId) < 0) {
+            dnn.controlBar.bookmarkedModuleKeys.push(moduleId);
+        }
+        return dnn.controlBar.bookmarkedModuleKeys.join(',');
+    };
+
+    dnn.controlBar.removeBookmarkModule = function (moduleId) {
+        var index = dnn.controlBar.bookmarkedModuleKeys.indexOf(moduleId);
+        if (index >= 0) {
+            dnn.controlBar.bookmarkedModuleKeys.splice(index,1);
+        }
+        return dnn.controlBar.bookmarkedModuleKeys.join(',');
+    };
+
+    dnn.controlBar.isBookmarkModuleCategorySelected = function() {
+        return (dnn.controlBar.getSelectedCategory() == dnn.controlBar.bookmarkModuleCategory);
+    };
+
+    dnn.controlBar.getBookmarkClass = function (bookmarked, existsInBookmarkCategory) {
+        if (existsInBookmarkCategory) {
+            return 'bookmark hideBookmark'; //Modules in Common/Bookmark category must not be bookmarked
+        }
+
+        if (!dnn.controlBar.isBookmarkModuleCategorySelected()) {
+            return bookmarked ? 'bookmark hideBookmark' : 'bookmark';
+        } else {
+            return bookmarked ? 'removeBookmark' : 'bookmark hideBookmark';
+        }
+    };
+
+    dnn.controlBar.getBookmarkTooltip = function(bookmarkClass) {
+        if (bookmarkClass.indexOf('removeBookmark') >= 0) {
+            return settings.removeBookmarksTip;
+        }
+        return settings.addToBookmarksTip;
+    };
+
+    dnn.controlBar.fillModuleList = function(ul, moduleList) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
+            ul.empty().css('left', 1000);
+        }
+        $('li.moreModules', ul).remove();
+        for (var i = 0; i < moduleList.length; i++) {
+            var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked, moduleList[i].ExistsInBookmarkCategory);
+            var bookmarkTooltip = dnn.controlBar.getBookmarkTooltip(bookmarkClass);
+            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
+        }
+    };
+
+    dnn.controlBar.cleanViewPort = function() {
+        $(".viewportSeparator").each(function() {
+            $(this).get(0).style.display = '';
+        });            
+    };
+
+    dnn.controlBar.setViewPort = function(windowWidth, margin) {
+        var viewportRelativeSize = Math.round(margin * 100 / windowWidth);
+        $(".viewportSeparator").css("width", viewportRelativeSize + "%").show();
+    };
+
+    dnn.controlBar.getScrollBarMargin = function(windowWidth) {
+        return Math.round((windowWidth - dnn.controlBar.scrollBarFixedSize) / 2);
+    };
+
     dnn.controlBar.renderModuleList = function (containerId, moduleList) {
 
-        var currentModuleIndex = dnn.controlBar.moduleLoadingIndex;
+        var currentModuleLoadingPageIndex = dnn.controlBar.moduleLoadingPageIndex;
         var container = $(containerId);
-        var scrollContainer = container.next();
-        
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+        dnn.controlBar.initialiseArrowScrolling(container);
+        dnn.controlBar.initialiseMouseWheelScrolling(container);
+
+        var scrollContainer = container.next();        
+        if (dnn.controlBar.isFirstModuleLoadingPage()) {
             var api = scrollContainer.data('jsp');
             if (api) {
                 api.scrollToX(0, null);
@@ -418,84 +753,119 @@ dnn.controlBar.init = function (settings) {
             scrollContainer = container.next(); // reinit because api destroy...    
         }
         
-        $(containerId).css('overflow', 'hidden');
         var ul = $('ul.ControlBar_ModuleList', container);
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
-            ul.empty().css('left', 1000);
-        }
-        var windowWidth = $(window).width();
-        var margin = Math.round((windowWidth - 980) / 2);
-
+        dnn.controlBar.fillModuleList(ul, moduleList);
+        
         $('#ControlBar_Module_ModulePosition').hide();
-        for (var i = 0; i < moduleList.length; i++) {
-            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
-        }
-        var oldUlWidth = ul.css('width');
-        var ulWidth = (dnn.controlBar.getModuleLoadingStartIndex() * 160) + moduleList.length * 160;
-        ul.css('width', ulWidth + 'px');
+
         // some math here
-        var dummyScrollWidth = Math.round((980 * (ulWidth + margin)) / windowWidth);
+        var windowWidth = $(window).width();
+        var margin = dnn.controlBar.getScrollBarMargin(windowWidth);
+        var ulWidth = (dnn.controlBar.getModuleLoadingCurrentIndex() * 160) + moduleList.length * 160 + (dnn.controlBar.allModulesLoaded ? margin : 0);
+        ul.css('width', ulWidth + 'px');        
+        dnn.controlBar.setViewPort(windowWidth, margin);
+        var dummyScrollWidth = Math.round((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth);
         var ulLeft = margin;        
         var oldX = 0;
         var reloading = false;
+        var isFirstModuleLoadingPage = dnn.controlBar.isFirstModuleLoadingPage();
         var modulesInitFunc = function () {
             $('div.controlBar_ModuleListScrollDummy_Content', scrollContainer).css('width', dummyScrollWidth);
-            if (currentModuleIndex == 0) {
-                scrollContainer.jScrollPane({ stickToRight: true });
+            if (currentModuleLoadingPageIndex == 0) {
+                scrollContainer.jScrollPane({'arrowButtonSpeed': dnn.controlBar.arrowScrollingButtonSpeed});
             } else {
                 var jspapi = scrollContainer.data('jsp');
-                if (jspapi) {
+                if (jspapi) {                    
+                    dnn.controlBar.scrollTrigger = false;
                     jspapi.reinitialise();
+                    dnn.controlBar.scrollTrigger = true;                    
                 }
             }
+            var $searchInput = $("#" + settings.searchInputId);
+            $searchInput.focus();
+            
             scrollContainer.unbind('jsp-scroll-x');
             scrollContainer.bind('jsp-scroll-x', function (e, x, isAtleft, isAtRight) {                
                 var xOffset, leftOffset;
+                if (!dnn.controlBar.scrollTrigger) {
+                    return;
+                }
                 if (isAtleft) {
                     oldX = 0;
                     ulLeft = margin;
                     reloading = false;                    
                 } else if (isAtRight) {
                     var justAtRight = (oldX == x);
-                    oldX = Math.round((980 * (ulWidth + margin)) / windowWidth) - 980;                         
-                    if (moduleList.length != 0 && justAtRight && !reloading) {
-                        //oldX = Math.round((980 * (oldUlWidth + margin)) / windowWidth) - 980;
-                        reloading = true;
-                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory());
-                        ulLeft = -(ulWidth - windowWidth);
-                    } else {
-                        //ulLeft = -(oldUlWidth - windowWidth);
-                        return;
+                    oldX = Math.round((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth) - dnn.controlBar.scrollBarFixedSize;                         
+                    if (moduleList.length != 0 && justAtRight && !reloading) {                        
+                        reloading = true;                        
+                        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
                     }
-                } else {                    
+                    ulLeft = -(ulWidth - windowWidth);
+                } else {
+                    reloading = false;
                     if (x > oldX) {                        
                         // scroll to right
                         xOffset = x - oldX;
-                        if (reloading) {
-                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                            reloading = false;
-                        } else {
-                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        }
+                        leftOffset = ((ulWidth + margin) / ((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft -= Math.abs(leftOffset);
                     } else {                        
                         // scroll to left
                         xOffset = oldX - x;
-                        if (reloading) {
-                            leftOffset = (oldUlWidth / ((980 * (oldUlWidth + margin)) / windowWidth)) * xOffset;
-                            reloading = false;
-                        } else {
-                            leftOffset = (ulWidth / ((980 * (ulWidth + margin)) / windowWidth)) * xOffset;
-                        }
+                        leftOffset = ((ulWidth + margin) / ((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth)) * xOffset;
                         ulLeft += Math.abs(leftOffset);
                     }
                     oldX = x;
-                }
-                
-                //if (!reloading) {
-                    ul.css('left', ulLeft+"px");
-                //}
+                }                                
+                ul.css('left', ulLeft+"px");                
             });
+            
+            $('#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark').on('click', function () {
+                var moduleId = $(this).parent().attr('data-module');
+                var bookmarTitle = "module";
+                var bookmarkModules = dnn.controlBar.addBookmarkModule(moduleId);
+                dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this));
+            }).hover(function () {
+                if ($(this).attr("class").indexOf("hideBookmark") > 0) {
+                    return; // The button is hidden
+                }
+                $(this).addClass("highlight");
+                var $self = $(this).parent();
+                $self.dnnHelperTipDestroy();
+            }, function() {
+                $(this).removeClass("highlight");
+                var holderId = $(this).parent().attr('id');;
+                var $self = $(this).parent();
+                $self.dnnHelperTip({
+                    helpContent: settings.dragModuleToolTip,
+                    holderId: holderId,
+                    show: true
+                });
+            });
+
+
+            $('#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark').on('click', function () {
+                var moduleId = $(this).parent().attr('data-module');
+                var bookmarTitle = "module";
+                var bookmarkModules = dnn.controlBar.removeBookmarkModule(moduleId);
+                dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this), moduleId);
+            }).hover(function () {
+                if ($(this).attr("class").indexOf("hideBookmark") > 0) {
+                    return; // The button is hidden
+                }
+                $(this).addClass("highlight");
+                var $self = $(this).parent();
+                $self.dnnHelperTipDestroy();
+            }, function () {
+                $(this).removeClass("highlight");
+                var holderId = $(this).parent().attr('id');;
+                var $self = $(this).parent();
+                $self.dnnHelperTip({
+                    helpContent: settings.dragModuleToolTip,
+                    holderId: holderId,
+                    show: true
+                });
+            });;
 
             $('div.ControlBar_ModuleDiv', ul).each(function () {
                 if (!this.id)
@@ -506,9 +876,12 @@ dnn.controlBar.init = function (settings) {
                     var $this = $(this);
                     var dataModuleId = $this.data('module');
                     if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data('module') !== dataModuleId && !$('#ControlBar_Module_ModulePosition').is(":visible")) {
-                        dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
+                        dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                     }
                     $this.addClass('ControlBar_Module_Selected');
+                    $this.mousedown(function() {
+                        $(this).addClass("grabbing");
+                    });
                     if (!$('#ControlBar_Module_ModulePosition').is(":visible")) {
                     	$this.find('div.ModuleLocator_Menu').removeClass('ModuleLocator_Hover');
                     }
@@ -523,16 +896,19 @@ dnn.controlBar.init = function (settings) {
                         show: true
                     });
 
+                    $this.find('a.bookmark').show();
+                    $this.find('a.removeBookmark').show();
                 }
 
             }, function () {
                 if (!dnn.controlBar.isMouseDown) {
                     dnn.controlBar.showSelectedModule = false;
-
+                    var $this = $(this);
                     setTimeout(function () {
-                    	if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule && !$('#ControlBar_Module_ModulePosition').is(":visible")) {
-                            dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
-                        }
+                    	if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule && !$('#ControlBar_Module_ModulePosition').is(":visible")) {                    	    
+                    	    dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
+                    	}
+                    	
                     }, 600);
                 }
 
@@ -546,6 +922,7 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
+                dnn.controlBar.addGrabbingStyle($(this));
             })
             .mouseup(function () {
                 $('.dnnDropEmptyPanes').each(function () {
@@ -555,15 +932,19 @@ dnn.controlBar.init = function (settings) {
                     // this special code is for you -- IE8
                     this.className = this.className;
                 });
+                dnn.controlBar.removeGrabbingStyle($('div.ControlBar_ModuleDiv', ul));
             })
             .draggable({
                 dropOnEmpty: true,
                 cursor: 'move',
                 placeholder: "dnnDropTarget",
                 helper: function (event, ui) {
-                    var dragTip = $('<div class="dnnDragdropTip"></div>');
+                    var dragTip = $('<div class="dnnDragdropTip helperGrabbing"></div>');
                     var title = $('span', this).html();
                     dragTip.html(title);
+                    dragTip.mouseup(function () {
+                        dnn.controlBar.removeGrabbingStyle($('div.ControlBar_ModuleDiv', ul));                        
+                    });
                     $('body').append(dragTip);
 
                     // destroy tooltip
@@ -576,6 +957,27 @@ dnn.controlBar.init = function (settings) {
                     dnn.controlBar.dragdropCopyModule = $('#ControlBar_Module_chkCopyModule').get(0).checked;
                     dnn.controlBar.dragdropAddExistingModule = !dnn.controlBar.addNewModule;
                     return dragTip;
+                },
+                drag: function (e, ui) {
+                    if (dnn.controlBar.isCursorOutsideY(e, container)) {
+                        $("div.helperGrabbing").removeClass("helperGrabbing");
+                        if (navigator.userAgent.match(/MSIE/i)) {
+                            $("div.dnnDragdropTip").css("cursor", "move");
+                        }                        
+                        return;
+                    }                    
+                    $("div.dnnDragdropTip").addClass("helperGrabbing");
+                    if (navigator.userAgent.match(/MSIE/i)) {
+                        $("div.dnnDragdropTip").css("cursor", "");
+                    }
+                    
+                    var xOffset = dnn.controlBar.initialDragPosition.X - e.pageX;
+                    var scrollNewX = dnn.controlBar.initialScrollPosition.X + (((dnn.controlBar.scrollBarFixedSize * (ulWidth + margin)) / windowWidth) * xOffset) / (ulWidth + margin);
+                    
+                    var jspapi = scrollContainer.data('jsp');                    
+                    if (jspapi) {
+                        jspapi.scrollToX(scrollNewX);
+                    }
                 },
                 cursorAt: { left: 10, top: 30 },
                 connectToSortable: '.dnnSortable',
@@ -592,7 +994,8 @@ dnn.controlBar.init = function (settings) {
                     $('div.actionMenu').show();
                 },
                 start: function (event, ui) {
-                    $('div.actionMenu').hide();
+                    dnn.controlBar.setInitialPositions(event, scrollContainer);
+                    $('div.actionMenu').hide();                    
                 }
             });
 
@@ -618,14 +1021,14 @@ dnn.controlBar.init = function (settings) {
                         	if (dnn.controlBar.hideModuleLocationMenu) {
                         		$this.removeClass('ModuleLocator_Hover');
                             	$('#ControlBar_Module_ModulePosition').slideUp('fast', function () {
-                                	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {
-                                		$this.parent().removeClass('ControlBar_Module_Selected');
+                                	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {                                	    
+                                	    dnn.controlBar.unselectModule($this.parent());
                                 	}
                                 });
                             }
 
-                            if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {
-                                dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
+                            if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {                                
+                                dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                             }
                         }, 200);
                     });
@@ -635,46 +1038,124 @@ dnn.controlBar.init = function (settings) {
 
             }, function () {
                 var $this = $(this);
-                dnn.controlBar.showSelectedModule = false;
                 dnn.controlBar.hideModuleLocationMenu = true;
                 setTimeout(function () {
                     if (dnn.controlBar.hideModuleLocationMenu) {
                         $this.removeClass('ModuleLocator_Hover');
                         $('#ControlBar_Module_ModulePosition').slideUp('fast', function() {
                         	if (dnn.controlBar.selectedModule && dnn.controlBar.selectedModule.data("module") != $this.parent().data("module")) {
-                        		$this.parent().removeClass('ControlBar_Module_Selected');
+                        	    dnn.controlBar.unselectModule($this.parent());
                         	}
                         });
                     }
 
                     if (!dnn.controlBar.showSelectedModule && dnn.controlBar.selectedModule) {
-                        dnn.controlBar.selectedModule.removeClass('ControlBar_Module_Selected');
+                        dnn.controlBar.unselectModule(dnn.controlBar.selectedModule);
                     }
                 }, 200);
             });
+
+            if (isFirstModuleLoadingPage && dnn.controlBar.forceScrollX) {
+                var jspapi = scrollContainer.data('jsp');                    
+                if (jspapi) {
+                    jspapi.scrollToX(dnn.controlBar.forceScrollX, null);
+                    dnn.controlBar.forceScrollX = null;
+                }
+            }
         };
-        setTimeout(modulesInitFunc, 0);
-        if (dnn.controlBar.moduleLoadingIndex == 0) {
+        if (dnn.controlBar.isFirstModuleLoadingPage()
+                && (!dnn.controlBar.forceScrollX || dnn.controlBar.forceScrollX == 0)) {
             ul.animate({ left: margin }, 300);
+        }
+        setTimeout(modulesInitFunc, 0);
+    };
+
+    dnn.controlBar.addGrabbingStyle = function($selector) {
+        $selector.addClass("grabbing");
+        if (navigator.userAgent.match(/MSIE/i) || navigator.userAgent.match(/Safari/i)) {
+            $selector.css("cursor", "url('/images/icon_cursor_grabbing.cur'), move");
         }
     };
 
-    dnn.controlBar.initializeModuleSearch = function() {
-        dnn.controlBar.moduleLoadingIndex = 0;
-        dnn.controlBar.allModulesLoaded = false;
+    dnn.controlBar.removeGrabbingStyle = function($selector) {
+        $selector.removeClass("grabbing");
+        if (navigator.userAgent.match(/MSIE/i) || navigator.userAgent.match(/Safari/i)) {
+            $selector.css("cursor", "");
+        }
     };
+
+    dnn.controlBar.getCurrentScrollPositionX = function(jspapi) {
+        var scrollX = 0;
+        if (jspapi) {
+            var scrollPosX = parseInt(jspapi.getContentPositionX()); //getContentPosition can return a NaN value
+            if (scrollPosX) {
+                scrollX = scrollPosX;
+            }
+        }
+        return scrollX;
+    };
+
+    dnn.controlBar.setInitialPositions = function(dragEvent, $scrollContainer) {
+        dnn.controlBar.initialDragPosition = { "X": dragEvent.pageX, "Y": dragEvent.pageY };
+               
+        var scrollX = dnn.controlBar.getCurrentScrollPositionX($scrollContainer.data("jsp"));
+        dnn.controlBar.initialScrollPosition = { "X": scrollX, "Y": 0 };
+    };
+
+    dnn.controlBar.isCursorOutsideY = function(dragEvent, $container) {
+        var containerOffSet = $container.offset();
+        if (dragEvent.pageY > containerOffSet.top + $container.height()) {
+            return true;
+        }
+        return false;
+    };
+
+
+    dnn.controlBar.unselectModule = function($selectedModule) {
+        $selectedModule.removeClass('ControlBar_Module_Selected');
+
+        if ($selectedModule.find('a.bookmark').length > 0) {
+            $selectedModule.find('a.bookmark').get(0).style.display = '';
+        }
+        if ($selectedModule.find('a.removeBookmark').length > 0) {
+            $selectedModule.find('a.removeBookmark').get(0).style.display = '';
+        }
+    };
+
+    dnn.controlBar.resetModuleSearch = function () {
+        var $searchInput = $("#" + settings.searchInputId);
+        $searchInput.val('').focus();
+        if (dnn.controlBar.status && dnn.controlBar.status.searchTerm) {
+            $searchInput.val(dnn.controlBar.status.searchTerm);
+        }
+        dnn.controlBar.resetModuleLoadingSettings();
+    };
+
+    dnn.controlBar.resetModuleLoadingSettings = function() {
+        dnn.controlBar.moduleLoadingPageIndex = 0;
+        dnn.controlBar.allModulesLoaded = false;
+        dnn.controlBar.mousedown = false;
+    }
 
     dnn.controlBar.getSelectedCategory = function () {
         var category = null;
         if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
             var selectedCategory = dnn.controlBar.status.category;
             if (selectedCategory) {
-                $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
                 category = selectedCategory;
                 dnn.controlBar.removeStatus();
+                if ($find(settings.categoryComboId).get_value() != selectedCategory) {
+                    dnn.controlBar.forceCategorySelection = true;    
+                    $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
+                }
             }
         } else {
-            category = $find(settings.categoryComboId).get_value();
+            var $categoryCombo = $find(settings.categoryComboId);
+            if ($categoryCombo) {
+                category = $categoryCombo.get_value();
+            } else {
+                category = settings.defaultCategoryValue;
+            }
         }
 
         return category;
@@ -682,10 +1163,17 @@ dnn.controlBar.init = function (settings) {
 
     dnn.controlBar.ControlBar_Module_CategoryList_Changed = function (sender, e) {
         var item = e.get_item();
-        if (item) {
-            //Reset module search
-            dnn.controlBar.initializeModuleSearch();
-            dnn.controlBar.getDesktopModulesForNewModule(item.get_value());
+        if (item && !dnn.controlBar.forceCategorySelection) {
+            if (!dnn.controlBar.forceCategorySearch) {
+                //Reset module search
+                dnn.controlBar.resetModuleSearch();
+            } else {
+                dnn.controlBar.forceCategorySearch = false;
+                dnn.controlBar.resetModuleLoadingSettings();
+            }          
+            dnn.controlBar.getDesktopModulesForNewModule(item.get_value(), dnn.controlBar.getSearchTermValue());
+        } else if (dnn.controlBar.forceCategorySelection) {
+            dnn.controlBar.forceCategorySelection = false;
         }
     };
     
@@ -714,12 +1202,25 @@ dnn.controlBar.init = function (settings) {
 
     //attach mouse move to detect mouse button
     $(document).mousedown(function () {
-        dnn.controlBar.isMouseDown = true;
+        dnn.controlBar.isMouseDown = true;    
     });
     $(document).mouseup(function () {
         dnn.controlBar.isMouseDown = false;
     });
 
+    //attach resize to fix viewPort
+    $(window).resize(function () {
+        if (dnn.controlBar.addNewModule && !$("#ControlBar_ModuleListHolder_NewModule").is(":visible")) {
+            return;
+        }
+        if (!dnn.controlBar.addNewModule && !$("#ControlBar_ModuleListHolder_ExistingModule").is(":visible")) {
+            return;
+        }
+
+        var windowWidth = $(window).width();
+        var margin = dnn.controlBar.getScrollBarMargin(windowWidth);
+        dnn.controlBar.setViewPort(windowWidth, margin);
+    });
     var currentUserMode = settings.currentUserMode;
 
     $('div.subNav').hide();
@@ -825,7 +1326,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'CreateModule');
+                    dnn.dom.setCookie('ControlBarInit', 'CreateModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -836,6 +1337,7 @@ dnn.controlBar.init = function (settings) {
             return false;
         }
 
+        dnn.controlBar.forceCategorySelection = true;
         $find(settings.categoryComboId).findItemByValue("Developer").select();
         addModule();
     }
@@ -850,7 +1352,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'AddNewModule');
+                    dnn.dom.setCookie('ControlBarInit', 'AddNewModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -859,27 +1361,24 @@ dnn.controlBar.init = function (settings) {
             });
 
             return false;
+        }        
+        dnn.controlBar.resetModuleSearch();
+
+        if (dnn.controlBar.status && dnn.controlBar.status.moduleLoadIndex) {
+            dnn.controlBar.forceModuleLoadIndex = dnn.controlBar.status.moduleLoadIndex;
+        }
+        if (dnn.controlBar.status && dnn.controlBar.status.forceScrollX) {
+            dnn.controlBar.forceScrollX = dnn.controlBar.status.forceScrollX;
         }
 
-        //var category = null;
-        //if (dnn.controlBar.status && dnn.controlBar.status.addNewModule) {
-        //    var selectedCategory = dnn.controlBar.status.category;
-        //    if (selectedCategory) {
-        //        $find(settings.categoryComboId).findItemByValue(selectedCategory).select();
-        //        category = selectedCategory;
-        //        dnn.controlBar.removeStatus();
-        //    }
-        //} else {
-        //    category = $find(settings.categoryComboId).get_value();
-        //}
-
-        //Reset module search
-        dnn.controlBar.initializeModuleSearch();
-        dnn.controlBar.getDesktopModulesForNewModule( dnn.controlBar.getSelectedCategory() );
+        dnn.controlBar.getDesktopModulesForNewModule(dnn.controlBar.getSelectedCategory(), dnn.controlBar.getSearchTermValue());
+        dnn.controlBar.cleanViewPort();
         dnn.controlBar.addNewModule = true;
         toggleModulePane($('#ControlBar_Module_AddNewModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
         $('#ControlBar_ModuleListMessage_NewModule').hide();
+
+        dnn.controlBar.forceModuleLoadIndex = null;
         return false;
     }
     $('#controlBar_AddExistingModule').click(function () {
@@ -892,7 +1391,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'AddExistingModule');
+                    dnn.dom.setCookie('ControlBarInit', 'AddExistingModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -909,7 +1408,7 @@ dnn.controlBar.init = function (settings) {
                 dnn.controlBar.selectedPage = { id: parseInt(selectedPageId, 10), name: dnn.controlBar.status.pageName };
                 dnn[settings.pagePickerId].selectedItem({ key: selectedPageId, value: dnn.controlBar.status.pageName });
                 var visibilityCombo = $find(settings.visibilityComboId);
-                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);
+                var makeCopyCheckbox = $("#" + settings.makeCopyCheckboxId);                
                 dnn.controlBar.getTabModules(selectedPageId);
                 visibilityCombo.enable();
                 makeCopyCheckbox.attr("disabled", false).parent().removeClass("disabled");
@@ -918,7 +1417,8 @@ dnn.controlBar.init = function (settings) {
                 }
             }
         }
-    
+
+        dnn.controlBar.cleanViewPort();
         dnn.controlBar.addNewModule = false;
         toggleModulePane($('#ControlBar_Module_AddExistingModule'), true);
         $('#ControlBar_Action_Menu').addClass('onActionMenu');
@@ -1064,13 +1564,14 @@ dnn.controlBar.init = function (settings) {
 
 
     $('a#ControlBar_PublishPage').dnnConfirm({
-        text: settings.publishText,
+        text: settings.publishConfirmText,
         yesText: settings.yesText,
         noText: settings.noText,
-        title: settings.titleText,
-        callbackTrue: function () {
+        title: settings.publishConfirmHeader,
+        callbackTrue: function() {
             dnn.controlBar.publishPage();
-        }
+        },
+        width: '500px'
     });
 
     $('a#shareableWarning_cmdConfirm').click(function () {
@@ -1144,7 +1645,7 @@ dnn.controlBar.init = function (settings) {
         });
     });
 
-    $(document.body).on('click', 'a.bookmark', function () {
+    $(document.body).on('click', 'div.subNav a.bookmark', function () {
         var $this = $(this);
         if ($this.hasClass('hideBookmark')) return false;
 
@@ -1185,12 +1686,33 @@ dnn.controlBar.init = function (settings) {
             $('li.BookmarkToggle > a', outerWrapper).click();
         }
     });
+        
+    $(document.body).on('keydown', function (e) {
+        if (!dnn.controlBar.isActiveElementEmpty()) {
+            return;
+        }
+        if ((e.keyCode == 37 || e.keyCode == 39) && dnn.controlBar.isValidArrowScrollingContainer())
+        {        
+            dnn.controlBar.moveArrowScrollingContainer(e.keyCode);
+        }
+    });
 
-    $(document.body).on('click', 'a.removeBookmark', function () {
+    $(document.body).mousewheel(function (event) {
+        var wheelEvent = event.originalEvent;
+        if (!wheelEvent) {
+            return;
+        }        
+        if (!dnn.controlBar.isValidMouseWheelScrollingContainer(wheelEvent.target)) {
+            return;
+        }
+        dnn.controlBar.moveMouseWheelScrollingContainer(dnn.controlBar.getWheelEventDelta(wheelEvent));
+        event.preventDefault();
+    });
+
+    $(document.body).on('click', 'div.subNav a.removeBookmark', function () {
         var $this = $(this);
         var li = $this.parent();
-        var tabname = li.attr('data-tabname');
-        console.log(tabname);
+        var tabname = li.attr('data-tabname');        
         var wrapper = $this.closest('dl');
         var title = wrapper.attr('id').indexOf('host') > 0 ? 'host' : 'admin';
         var outerWrapper = wrapper.parent();
@@ -1236,7 +1758,9 @@ dnn.controlBar.init = function (settings) {
     // initialize -- this action is between page mode toggle
     var initAction = dnn.dom.getCookie('ControlBarInit');
     if (initAction) {
-        dnn.dom.setCookie('ControlBarInit', '', -1);
+        dnn.dom.setCookie('ControlBarInit', '', -1, dnn.controlBar.getSiteRoot());
+        // load status
+        dnn.controlBar.loadStatus();
         switch (initAction) {
             case 'AddNewModule':
                 setTimeout(function () {
@@ -1261,7 +1785,7 @@ dnn.controlBar.init = function (settings) {
     // fade module if needed
     var fadeModule = dnn.dom.getCookie('FadeModuleID');
     if (fadeModule) {
-        dnn.dom.setCookie('FadeModuleID', '', -1);
+        dnn.dom.setCookie('FadeModuleID', '', -1, dnn.controlBar.getSiteRoot());
         var anchorLink = $('a[name="' + fadeModule + '"]');
         var module = anchorLink.parent();
         if (module && module.length > 0) {

@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected PortalSettings PortalSettings
         {
-            get { return PortalController.GetCurrentPortalSettings(); }
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
         protected PropertyInfo Property
@@ -226,7 +226,8 @@ namespace DotNetNuke.Web.UI.WebControls
                                 {
                                     LocalResourceFile = LocalResourceFile, 
                                     ResourceKey = ResourceKey + ".Text", 
-                                    ToolTipKey = ResourceKey + ".Help"
+                                    ToolTipKey = ResourceKey + ".Help",
+                                    ViewStateMode = ViewStateMode.Disabled
                                 };
 
             if (Required) {

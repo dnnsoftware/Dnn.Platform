@@ -361,7 +361,7 @@ namespace DotNetNuke.Entities.Urls
             TabId404 = Null.NullInteger;
             if (portalId > -1)
             {
-                var portal = new PortalController().GetPortal(portalId);
+                var portal = PortalController.Instance.GetPortal(portalId);
                 TabId500 = portal.Custom404TabId;
                 TabId404 = portal.Custom404TabId;
             }
@@ -374,8 +374,8 @@ namespace DotNetNuke.Entities.Urls
 
             _deletedTabHandling = PortalController.GetPortalSetting(DeletedTabHandlingTypeSetting, PortalId, DeletedTabHandlingType.Do404Error.ToString());
 
-            UseBaseFriendlyUrls = GetStringSetting("useBaseFriendlyUrls", "/SearchResults;/ModuleDefinitions");
-            if (UseBaseFriendlyUrls.EndsWith(";") == false)
+            UseBaseFriendlyUrls = GetStringSetting("useBaseFriendlyUrls", String.Empty);
+            if (!String.IsNullOrEmpty(UseBaseFriendlyUrls) && !UseBaseFriendlyUrls.EndsWith(";"))
             {
                 UseBaseFriendlyUrls += ";";
             }
@@ -384,7 +384,7 @@ namespace DotNetNuke.Entities.Urls
             NoFriendlyUrlRegex = GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx");
 
             //703 default debug code to false
-            AllowDebugCode = GetBooleanSetting(AllowDebugCodeSetting, false);
+            AllowDebugCode = Host.Host.DebugMode;
 
             VanityUrlPrefix = GetStringSetting(VanityUrlPrefixSetting, "users");
 

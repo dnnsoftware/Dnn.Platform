@@ -13,6 +13,7 @@
         var panes = opts.panes;
         var supportsMove = opts.supportsMove;
         var count = adminCount + customCount;
+        var isShared = opts.IsShared;
         
         if (count > 0 || supportsMove) {
             var $form = $("body form");
@@ -30,7 +31,10 @@
                     buildMoveMenu(menuRoot, "Move", "actionMenuMove");
                 }
                 
-	            watchResize(moduleId);
+                if (isShared) {
+                    buildSharedMenu(menuRoot, "Shared Module", "dnn_shared");
+                }
+                watchResize(moduleId);
             }
         }
 
@@ -148,6 +152,10 @@
                 noText: opts.noText,
                 title: opts.confirmTitle
             });
+        }
+        
+        function buildSharedMenu(root, rootText, rootClass, actions, actionCount) {
+            root.append("<li class=\"" + rootClass + "\"><div>" + rootText + "</div>");
         }
 
         function buildMenuRoot(root, rootText, rootClass) {

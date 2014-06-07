@@ -291,4 +291,19 @@
   <data name="SmartPhone.Text" xml:space="preserve">
     <value>Smart Phone</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Site Redirection Management</value>
+  </data>
+  <data name="DeleteRule.Tooltip" xml:space="preserve">
+    <value>Delete Rule</value>
+  </data>
+  <data name="DragAndDrop.Tooltip" xml:space="preserve">
+    <value>Drag &amp; drop to set the priority of the rule</value>
+  </data>
+  <data name="EditRule.Tooltip" xml:space="preserve">
+    <value>Edit Rule</value>
+  </data>
+  <data name="ToggleRuleEnableSetting.Tooltip" xml:space="preserve">
+    <value>Toggle the Enable Setting</value>
+  </data>
 </root>

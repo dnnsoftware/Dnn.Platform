@@ -80,11 +80,10 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            var moduleController = new ModuleController();
             ModuleInfo slaveModule = null;
             if (moduleId != -1)
             {
-                ModuleInfo module = moduleController.GetModule(moduleId, tabId, false);
+                ModuleInfo module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 if (module != null)
                 {
                     slaveModule = module.Clone();
@@ -143,7 +142,7 @@ namespace DotNetNuke.UI
         {
             var request = HttpContext.Current.Request;
             var isLegacyUi = true;
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings != null)
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));

@@ -37,6 +37,7 @@ using System.Xml.XPath;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization.Internal;
@@ -47,10 +48,9 @@ using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
+using DotNetNuke.Web.UI.WebControls;
 using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -604,7 +604,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.SuperUser.Password = installInfo["password"];
             _installConfig.SuperUser.Locale = _culture;
             // Defaults
-            _installConfig.SuperUser.Password = installInfo["email"];
+            _installConfig.SuperUser.Email = installInfo["email"];
             _installConfig.SuperUser.FirstName = "SuperUser";
             _installConfig.SuperUser.LastName = "Account";
 
@@ -750,7 +750,7 @@ namespace DotNetNuke.Services.Install
 
         void BindTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
             foreach (var template in templates)
             {
@@ -862,6 +862,36 @@ namespace DotNetNuke.Services.Install
                 _installConfig = InstallController.Instance.GetInstallConfig();
                 _connectionConfig = _installConfig.Connection;
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            passwordContainer.CssClass = "password-strength-container";
+            txtPassword.CssClass = "password-strength";
+                
+            var options = new DnnPaswordStrengthOptions();
+            var optionsAsJsonString = Json.Serialize(options);
+            var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+                "password-strength", optionsAsJsonString, Environment.NewLine);
+            Page.ClientScript.RegisterStartupScript(GetType(), "PasswordStrength", script, true);
+
+            txtConfirmPassword.CssClass = "password-confirm";
+            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+            {
+                FirstElementSelector = "#" + passwordContainer.ClientID + " input[type=password]",
+                SecondElementSelector = ".password-confirm",
+                ContainerSelector = ".dnnFormPassword",
+                UnmatchedCssClass = "unmatched",
+                MatchedCssClass = "matched"
+            };
+
+            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+
+            Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", confirmScript, true);
+
+
         }
 
         /// -----------------------------------------------------------------------------
@@ -1076,6 +1106,7 @@ namespace DotNetNuke.Services.Install
 											{new UpdateLanguagePackStep(), 5},
                                             {installSite, 20},
                                             {createSuperUser, 5},
+                                            {new AddFcnModeStep(), 1},
                                             {activateLicense, 4},
                                             {new InstallVersionStep(), 1}
                                         };

@@ -8,22 +8,16 @@ journalItem.ItemData = null;
 journalItem.Security = 'E';
 var cancelRequest = false;
 var photoTool = null;
-function IsImage(value) {
-    if (value != null) {
-        return value.match(/^((jpg|png|gif|jpe|jpeg|tiff))$/i) != null;
-    } else {
-        return false;
-    }
-}
+
 function attachPhoto(fileId, path, isImage) {
     $('#tbar-attach-Area').hide();
     $(".filePreviewArea").append("<div id='attachClose' class='miniclose'></div>");
     $("#attachClose").show().click(function () {
-            journalItem.ItemData = null;
-            journalItem.JournalType = 'status';
-            $('.filePreviewArea').empty();
-            $('#tbar-attach-Area').show();
-        });
+        journalItem.ItemData = null;
+        journalItem.JournalType = 'status';
+        $('.filePreviewArea').empty();
+        $('#tbar-attach-Area').show();
+    });
   
     if (photoTool.hasClass('selected') && isImage) {
         journalItem.JournalType = 'photo';
@@ -45,6 +39,217 @@ function attachPhoto(fileId, path, isImage) {
 
 }
 
+function bindConfirm() {
+    var options = journalOptions;
+    $(".journalrow .minidel, .journalrow .miniclose").each(function () {
+        if ($(this).data("confirmBinded")) {
+            return;
+        }
+
+        var $this = $(this);
+        var oThis = this;
+
+        $this.data("confirmBinded", true);
+        var clickFuncs = [];
+        if (typeof $this.attr("onclick") != "undefined" && $this.attr("onclick").length > 0) {
+            var clickFunc = $this.attr("onclick").substr(0, $this.attr("onclick").indexOf("("));
+            $this.attr("onclick", "");
+            clickFuncs.push(eval(clickFunc));
+        } else {
+            for (var i = 0; i < $this.data("events").click.length; i++) {
+                var handler = $this.data("events").click[i].handler;
+                if (typeof handler.name != "undefined" && handler.name.length > 0) {
+                    clickFuncs.push(handler);
+                    break;
+                }
+            }
+
+            $this.unbind("click");
+        }
+
+        $this.dnnConfirm({
+            text: options.confirmText,
+            yesText: options.yesText,
+            noText: options.noText,
+            title: options.title,
+            isButton: true,
+            callbackTrue: function () {
+                for (var i = 0; i < clickFuncs.length; i++)
+                    clickFuncs[i].call(oThis, oThis);
+            }
+        });
+    });
+}
+
+function buildLikes(data, journalId) {
+    var currLike = $('#like-' + journalId).text();
+    if (currLike == resxLike) {
+        $('#like-' + journalId).fadeOut(function () {
+            $(this).text(resxUnLike).fadeIn();
+        });
+    } else {
+        $('#like-' + journalId).fadeOut(function () {
+            $(this).text(resxLike).fadeIn();
+        });
+    }
+    $('#jid-' + journalId + ' .likes').fadeOut(function () {
+        $(this).empty().append(data.LikeList).fadeIn();
+    });
+};
+
+function getItems(sf) {
+    var rows = $(".journalrow").get();
+        
+    data = {};
+    data.ProfileId = pid;
+    data.GroupId = gid;
+    data.RowIndex = rows.length + 1;
+    data.MaxRows = pagesize;
+
+    $.ajax({
+        type: "POST",
+        url: sf.getServiceRoot('Journal') + 'Services/GetListForProfile',
+        beforeSend: sf.setModuleHeaders,
+        data: data,
+        success: function (data) {
+            if (data.length > 0) {
+                $("#journalItems").append(data);
+                pluginInit();
+                var newRows = $(".journalrow").get();
+                var diff = (newRows.length - rows.length);
+                if (diff < pagesize) {
+                    $("#getMore").hide();
+                }
+            }
+            if (typeof (callback) != "undefined") {
+                callback(data);
+            }
+        },
+        error: function (xhr, status, error) {
+            alert(error);
+        }
+    });
+}
+
+function IsImage(value) {
+    if (value != null) {
+        return value.match(/^((jpg|png|gif|jpe|jpeg|tiff))$/i) != null;
+    } else {
+        return false;
+    }
+}
+
+function journalDelete(obj) {
+    var p = obj.parentNode;
+    var jid = p.id.replace('jid-', '');
+    var data = {};
+    data.JournalId = jid;
+    journalPost('SoftDelete', data, journalRemove, jid);
+};
+
+function journalPost(method, data, callback, journalId) {
+    var sf = journalOptions.servicesFramework;
+    $.ajax({
+        type: "POST",
+        url: sf.getServiceRoot('Journal') + "Services/" + method,
+        beforeSend: sf.setModuleHeaders,
+        data: data,
+        success: function (data) {
+            if (typeof (callback) != "undefined") {
+                callback(data,journalId);
+            }
+        },
+        error: function (xhr, status, error) {
+            alert(error);
+        }
+    });
+};
+
+function journalRemove(data, jid) {
+    $('#jid-' + jid).slideUp(function () {
+        $(this).remove();
+    });
+};
+
+function pluginInit() {
+    var sf = journalOptions.servicesFramework;
+    
+    $('.jcmt').each(function () {
+        if($(this).data("journalCommentsBinded")) {
+            return;
+        }
+        $(this).data("journalCommentsBinded", true);
+            
+        $(this).journalComments(commentOpts);
+    });
+        
+    var rows = $(".journalrow");
+    if (rows.length == pagesize) {
+        $("#getMore").show();
+    }
+        
+    $('a[id^="cmtbtn-"]').each(function () {
+        if($(this).data("clickBinded")) {
+            return;
+        }
+        $(this).data("clickBinded", true);
+
+        $(this).click(function(e) {
+
+            e.preventDefault();
+            var jid = $(this).attr('id').replace('cmtbtn-', '');
+            var cmtarea = $("#jcmt-" + jid + " .cmteditarea");
+            var cmtbtn = $("#jcmt-" + jid + " .cmtbtn");
+            var cmtbtnlink = $("#jcmt-" + jid + " .cmtbtn a");
+            if (cmtarea.css('display') == 'none') {
+                cmtarea.show();
+                cmtbtnlink.addClass('disabled');
+                cmtbtn.show();
+                $("#jcmt-" + jid + "-txt").focus();
+
+            } else {
+
+                var cmtedit = $("#jcmt-" + jid + " .cmteditor");
+                var plh = $("#jcmt-" + jid + " .editorPlaceholder");
+                cmtedit.animate({
+                    height: '0'
+                }, 400, function() {
+                    cmtbtn.hide();
+                    cmtbtnlink.addClass('disabled').hide();
+                    cmtedit.text('').hide();
+                    cmtarea.hide();
+                    plh.show();
+                });
+            }
+        });
+    });
+
+    $('a[id^="like-"]').each(function () {
+        if($(this).data("clickBinded")) {
+            return;
+        }
+        $(this).data("clickBinded", true);
+
+        $(this).click(function(e) {
+            e.preventDefault();
+            var jid = $(this).attr('id').replace('like-', '');
+            var data = { };
+            data.JournalId = jid;
+            journalPost('Like', data, buildLikes, jid);
+        });
+    });
+
+    bindConfirm();
+
+    if (!$("#getMore").data("clickBinded")) {
+        $("#getMore").click(function(e) {
+            getItems(sf);
+            e.preventDefault();
+        });
+        $("#getMore").data("clickBinded", true);
+    }
+    $('#journalContent, .cmteditor').mentionsInput({servicesFramework: sf});
+}
 
 (function ($, window) {
     "use strict";

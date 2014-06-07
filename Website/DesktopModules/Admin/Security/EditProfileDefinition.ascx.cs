@@ -82,9 +82,9 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 bool _IsList = false;
                 var objListController = new ListController();
-                ListEntryInfo dataType = objListController.GetListEntryInfo(PropertyDefinition.DataType);
+                ListEntryInfo dataType = objListController.GetListEntryInfo("DataType", PropertyDefinition.DataType);
 
-                if ((dataType != null) && (dataType.ListName == "DataType") && (dataType.Value == "List"))
+                if ((dataType != null) && (dataType.Value == "List"))
                 {
                     _IsList = true;
                 }
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Users
             bool isValid = true;
 
             var objListController = new ListController();
-            string strDataType = objListController.GetListEntryInfo(definition.DataType).Value;
+            string strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
 
             switch (strDataType)
             {

@@ -156,6 +156,7 @@
     <Content Include="05.01.03.txt" />
     <Content Include="05.01.04.txt" />
     <Content Include="05.02.00.txt" />
+    <Content Include="07.03.00.txt" />
     <Content Include="05.04.03.txt" />
     <Content Include="App_LocalResources\EditHtml.ascx.resx" />
     <Content Include="App_LocalResources\HtmlModule.ascx.resx" />
@@ -166,7 +167,7 @@
     <Content Include="Images\html.gif" />
     <Content Include="HtmlModule.ascx" />
     <Content Include="license.txt" />
-    <Content Include="module.css" />
+    <Content Include="edit.css" />
     <Content Include="MyWork.ascx" />
     <Content Include="releaseNotes.txt" />
     <Content Include="Settings.ascx" />
@@ -192,6 +193,14 @@
     <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>
       <Name>DotNetNuke.Web</Name>

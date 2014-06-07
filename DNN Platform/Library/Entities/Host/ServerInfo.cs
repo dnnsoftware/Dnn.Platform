@@ -45,6 +45,7 @@ namespace DotNetNuke.Entities.Host
             ServerGroup = String.Empty;
             CreatedDate = created;
             LastActivityDate = lastactivity;
+            Enabled = true;
         }
 
         public int ServerID { get; set; }
@@ -63,6 +64,10 @@ namespace DotNetNuke.Entities.Host
 
         public DateTime LastActivityDate { get; set; }
 
+        public int PingFailureCount { get; set; }
+
+        public string UniqueId { get; set; }
+
         #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
@@ -79,11 +84,27 @@ namespace DotNetNuke.Entities.Host
             ServerID = Null.SetNullInteger(dr["ServerID"]);
             IISAppName = Null.SetNullString(dr["IISAppName"]);
             ServerName = Null.SetNullString(dr["ServerName"]);
-            ServerGroup = Null.SetNullString(dr["ServerGroup"]);
             Url = Null.SetNullString(dr["URL"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
             LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
+
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'PingFailureCount'").Length > 0)
+                {
+                    PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+                }
+                if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
+                {
+                    ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                }
+                if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
+                {
+                    UniqueId = Null.SetNullString(dr["UniqueId"]);
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------

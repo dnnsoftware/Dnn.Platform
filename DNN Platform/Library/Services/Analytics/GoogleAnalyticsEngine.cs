@@ -74,10 +74,10 @@ namespace DotNetNuke.Services.Analytics
 
             //check whether setting to not track traffic if current user is host user or website administrator.
             if (!trackForAdmin &&
-                (UserController.GetCurrentUserInfo().IsSuperUser
+                (UserController.Instance.GetCurrentUserInfo().IsSuperUser
                  ||
                  (PortalSettings.Current != null &&
-                  UserController.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
+                  UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
             {
                 return "";
             }

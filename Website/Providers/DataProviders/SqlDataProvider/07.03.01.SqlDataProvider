@@ -1,0 +1,171 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFile]
+    @FileId					INT,
+    @VersionGuid			UNIQUEIDENTIFIER,	
+    @FileName				NVARCHAR(246),
+    @Extension				NVARCHAR(100),
+    @Size					INT,
+    @Width					INT,
+    @Height					INT,
+    @ContentType			NVARCHAR(200),	
+    @FolderID				INT,
+    @LastModifiedByUserID  	INT,
+    @Hash					VARCHAR(40),
+    @LastModificationTime	DATETIME,
+    @Title					NVARCHAR(256),
+    @EnablePublishPeriod	BIT,
+    @StartDate				DATETIME,
+    @EndDate				DATETIME,	
+    @ContentItemID			INT
+AS
+    UPDATE {databaseOwner}{objectQualifier}Files
+        SET    FileName = @FileName,
+               VersionGuid = @VersionGuid,
+               Extension = @Extension,
+               Size = @Size,
+               Width = @Width,
+               Height = @Height,
+               ContentType = @ContentType,
+               FolderID = @FolderID,
+               LastModifiedByUserID = @LastModifiedByUserID,
+               LastModifiedOnDate = getdate(),
+			   SHA1Hash = @Hash,
+			   LastModificationTime = @LastModificationTime,
+			   Title = @Title,
+			   EnablePublishPeriod = @EnablePublishPeriod,
+			   StartDate = @StartDate,
+			   EndDate = @EndDate,
+			   ContentItemID = @ContentItemID
+    WHERE  FileId = @FileId
+GO
+
+/*** Fix bug Content-2592: Null object exception when installing Event module ***/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+	@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@CreatedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+	INSERT INTO  {databaseOwner}{objectQualifier}Schedule(
+		 TypeFullName
+		,TimeLapse
+		,TimeLapseMeasurement
+		,RetryTimeLapse
+		,RetryTimeLapseMeasurement
+		,RetainHistoryNum
+		,AttachToEvent
+		,CatchUpEnabled
+		,Enabled
+		,ObjectDependencies
+		,Servers
+		,FriendlyName
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,ScheduleStartDate
+		)
+	VALUES
+		(@TypeFullName
+		,@TimeLapse
+		,@TimeLapseMeasurement
+		,@RetryTimeLapse
+		,@RetryTimeLapseMeasurement
+		,@RetainHistoryNum
+		,@AttachToEvent
+		,@CatchUpEnabled
+		,@Enabled
+		,@ObjectDependencies
+		,@Servers
+		,@FriendlyName
+		,@CreatedByUserID
+		,getdate()
+		,@CreatedByUserID
+		,getdate()
+		,@ScheduleStartDate
+		)
+		select SCOPE_IDENTITY()
+GO
+
+/* Add Content Types to Lists    */
+/*********************************/
+
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'txt', N'text/plain', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'htm', N'text/html', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'html', N'text/html', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'rtf', N'text/richtext', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'jpg', N'image/jpeg', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'jpeg', N'image/jpeg', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'gif', N'image/gif', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'bmp', N'image/bmp', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'png', N'image/png', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'ico', N'image/x-icon', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'svg', N'image/svg+xml', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'ttf', N'font/ttf', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'eot', N'application/vnd.ms-fontobject', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'woff', N'application/font-woff', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'mp3', N'audio/mpeg', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'wma', N'audio/x-ms-wma', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'mpg', N'video/mpeg', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'mpeg', N'video/mpeg', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'avi', N'video/avi', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'mp4', N'video/mp4', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'wmv', N'video/x-ms-wmv', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'pdf', N'application/pdf', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'doc', N'application/msword', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'dot', N'application/msword', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'docx', N'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'dotx', N'application/vnd.openxmlformats-officedocument.wordprocessingml.template', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'csv', N'text/csv', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'xls', N'application/x-msexcel', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'xlt', N'application/x-msexcel', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'xlsx', N'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'xltx', N'application/vnd.openxmlformats-officedocument.spreadsheetml.template', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'ppt', N'application/vnd.ms-powerpoint', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'pps', N'application/vnd.ms-powerpoint', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'pptx', N'application/vnd.openxmlformats-officedocument.presentationml.presentation', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ContentTypes', N'ppsx', N'application/vnd.openxmlformats-officedocument.presentationml.slideshow', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+
+GO
+
+/* Add Image File Types to Lists    */
+/************************************/
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'jpeg', N'Joint Photographic Experts Group', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'jpg', N'Joint Photographic Experts Group 2', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'jpe', N'Joint Photographic Experts Group 3', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'gif', N'Graphics Interchange Format', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'bmp', N'Bitmap', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate]) VALUES (N'ImageTypes', N'png', N'Portable Network Graphics', 0, 0, 0, -1, N'', -1, 1, -1, '2014-06-06 09:13:51.647', -1, '2014-06-06 09:13:51.647')
+
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

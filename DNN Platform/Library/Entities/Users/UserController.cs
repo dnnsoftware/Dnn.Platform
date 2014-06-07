@@ -23,7 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -34,26 +34,21 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
+using System.Globalization;
 
 namespace DotNetNuke.Entities.Users
 {
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserController
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserController class provides Business Layer methods for Users
     /// </summary>
@@ -77,9 +72,14 @@ namespace DotNetNuke.Entities.Users
     /// </remarks>
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
     /// -----------------------------------------------------------------------------
-    public class UserController
+    public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
         private const string DefaultUsersFoldersPath = "Users";
+
+        protected override Func<IUserController> GetFactory()
+        {
+            return () => new UserController();
+        }
 
         #region Public Properties
 
@@ -93,40 +93,36 @@ namespace DotNetNuke.Entities.Users
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
         {
-            var objEventLog = new EventLogController();
-
             //initialize log record
-            var objEventLogInfo = new LogInfo();
             var objSecurity = new PortalSecurity();
-            objEventLogInfo.AddProperty("IP", ip);
-            objEventLogInfo.LogPortalID = portalId;
-            objEventLogInfo.LogPortalName = portalName;
-            objEventLogInfo.LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
-            objEventLogInfo.LogUserID = userId;
+            var log = new LogInfo
+            {
+                LogTypeKey = loginStatus.ToString(),
+                LogPortalID = portalId,
+                LogPortalName = portalName,
+                LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+                LogUserID = userId
+            };
+            log.AddProperty("IP", ip);
 
             //create log record
-            objEventLogInfo.LogTypeKey = loginStatus.ToString();
-            objEventLog.AddLog(objEventLogInfo);
+            LogController.Instance.AddLog(log);
         }
 
         private static void AutoAssignUsersToPortalRoles(UserInfo user, int portalId)
         {
-            var roleController = new RoleController();
-
-            foreach (var role in TestableRoleController.Instance.GetRoles(portalId, role => role.AutoAssignment && role.Status == RoleStatus.Approved))
+            foreach (var role in RoleController.Instance.GetRoles(portalId, role => role.AutoAssignment && role.Status == RoleStatus.Approved))
             {
-                roleController.AddUserRole(portalId, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             }
 
             //Clear the roles cache - so the usercount is correct
-            TestableRoleController.Instance.ClearRoleCache(portalId);
+            RoleController.Instance.ClearRoleCache(portalId);
         }
 
         private static void AutoAssignUsersToRoles(UserInfo user, int portalId)
         {
-            var roleController = new RoleController();
-            var portalController = new PortalController();
-            var thisPortal = portalController.GetPortal(portalId);
+            var thisPortal = PortalController.Instance.GetPortal(portalId);
 
             if (IsMemberOfPortalGroup(portalId))
             {
@@ -134,8 +130,8 @@ namespace DotNetNuke.Entities.Users
                 {
                     if (!user.Membership.Approved && portal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
-                        var role = TestableRoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == "Unverified Users");
-                        roleController.AddUserRole(portal.PortalID, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == "Unverified Users");
+                        RoleController.Instance.AddUserRole(portal.PortalID, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
                     else
                     {
@@ -147,8 +143,8 @@ namespace DotNetNuke.Entities.Users
             {
                 if (!user.Membership.Approved && thisPortal.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
-                    var role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleName == "Unverified Users");
-                    roleController.AddUserRole(portalId, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                    var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == "Unverified Users");
+                    RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                 }
                 else
                 {
@@ -188,7 +184,7 @@ namespace DotNetNuke.Entities.Users
                                                    {
                                                        FolderID = userFolder.FolderID,
                                                        UserID = user.UserID,
-                                                       RoleID = Null.NullInteger,
+                                                       RoleID = Int32.Parse(Globals.glbRoleNothing),
                                                        AllowAccess = true
                                                    };
 
@@ -215,6 +211,27 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByUserName(portalId, username);
         }
 
+        private static UserInfo GetCurrentUserInternal()
+        {
+            UserInfo user;
+            if ((HttpContext.Current == null))
+            {
+                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
+                {
+                    return new UserInfo();
+                }
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                if (portalSettings != null)
+                {
+                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
+                    return user ?? new UserInfo();
+                }
+                return new UserInfo();
+            }
+            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
+            return user ?? new UserInfo();            
+        }
+
         private static int GetEffectivePortalId(int portalId)
         {
             return PortalController.GetEffectivePortalId(portalId);
@@ -233,7 +250,7 @@ namespace DotNetNuke.Entities.Users
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<Dictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
-                                                            DataCache.UserLookupCachePriority), (c) => new Dictionary<int, string>());
+                                                            DataCache.UserLookupCachePriority), (c) => new Dictionary<int, string>(),true);
         }
 
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)
@@ -356,7 +373,7 @@ namespace DotNetNuke.Entities.Users
             }
             if (settings["Security_UsersControl"] == null)
             {
-                var portal = new PortalController().GetPortal(portalId);
+                var portal = PortalController.Instance.GetPortal(portalId);
 
                 if (portal != null && portal.Users > 1000)
                 {
@@ -420,6 +437,40 @@ namespace DotNetNuke.Entities.Users
             return PortalController.IsMemberOfPortalGroup(portalId);
         }
 
+        private static void MergeUserProfileProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            foreach (ProfilePropertyDefinition property in userMergeFrom.Profile.ProfileProperties)
+            {
+                if (string.IsNullOrEmpty(userMergeTo.Profile.GetPropertyValue(property.PropertyName)))
+                {
+                    userMergeTo.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
+                }
+            }
+        }
+
+        private static void MergeUserProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
+        {
+            if (string.IsNullOrEmpty(userMergeTo.DisplayName))
+            {
+                userMergeTo.DisplayName = userMergeFrom.DisplayName;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.Email))
+            {
+                userMergeTo.Email = userMergeFrom.Email;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.FirstName))
+            {
+                userMergeTo.FirstName = userMergeFrom.FirstName;
+            }
+
+            if (string.IsNullOrEmpty(userMergeTo.LastName))
+            {
+                userMergeTo.LastName = userMergeFrom.LastName;
+            }
+        }
+
         private static void SendDeleteEmailNotifications(UserInfo user, PortalSettings portalSettings)
         {
             var message = new Message();
@@ -447,7 +498,75 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        #region Public Methods
+        #region Public Mehods
+
+        UserInfo IUserController.GetCurrentUserInfo()
+        {
+            return GetCurrentUserInternal();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUser retrieves a User from the DataStore
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
+        /// <returns>The User as a UserInfo object</returns>
+        /// -----------------------------------------------------------------------------
+        public UserInfo GetUser(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
+        }
+
+        public UserInfo GetUserByDisplayname(int portalId, string displayName)
+        {
+            return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
+        }
+
+        UserInfo IUserController.GetUserById(int portalId, int userId)
+        {
+            return GetUserById(portalId, userId);
+        }
+
+        public IList<UserInfo> GetUsersAdvancedSearch(int portalId, int userId, int filterUserId, int filterRoleId, int relationTypeId,
+            bool isAdmin, int pageIndex, int pageSize, string sortColumn, bool sortAscending, string propertyNames,
+            string propertyValues)
+        {
+            return MembershipProvider.Instance().GetUsersAdvancedSearch(PortalController.GetEffectivePortalId(portalId), userId, filterUserId, filterRoleId, relationTypeId,
+                                                      isAdmin, pageIndex, pageSize, sortColumn,
+                                                      sortAscending, propertyNames, propertyValues);
+        }
+
+        public IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn, bool sortAscending,
+            string propertyName, string propertyValue)
+        {
+            return MembershipProvider.Instance().GetUsersBasicSearch(PortalController.GetEffectivePortalId(portalId), pageIndex, pageSize, sortColumn,
+                                                       sortAscending, propertyName, propertyValue);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Update all the Users Display Names
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void UpdateDisplayNames()
+        {
+            int portalId = GetEffectivePortalId(PortalId);
+
+            var arrUsers = GetUsers(PortalId);
+            foreach (UserInfo objUser in arrUsers)
+            {
+                objUser.UpdateDisplayName(DisplayFormat);
+                UpdateUser(portalId, objUser);
+            }
+        }
+
+        #endregion
+
+        #region Public Helper Methods
+
         /// <summary>
         /// add new userportal record (used for creating sites with existing user)
         /// </summary>
@@ -469,8 +588,8 @@ namespace DotNetNuke.Entities.Users
         {
             Requires.NotNull("user", user);
 
-            var settings = PortalController.GetCurrentPortalSettings();
-            var role = TestableRoleController.Instance.GetRole(settings.PortalId, r => r.RoleName == "Unverified Users");
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var role = RoleController.Instance.GetRole(settings.PortalId, r => r.RoleName == "Unverified Users");
 
             RoleController.DeleteUserRole(user, role, settings, false);
 
@@ -560,16 +679,6 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
-        public static bool ResetAndChangePassword(UserInfo user, string oldPassword, string newPassword)
-        {
-            if (System.Web.Security.Membership.ValidateUser(user.Username, oldPassword))
-            {
-                string resetPassword = ResetPassword(user, String.Empty);
-                return ChangePassword(user, resetPassword, newPassword);
-            }
-            return false;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
@@ -585,8 +694,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -610,38 +718,6 @@ namespace DotNetNuke.Entities.Users
             if (username == "host" && (password == "host" || password == "dnnhost"))
             {
                 loginStatus = UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
-            }
-        }
-
-        /// <summary>
-        /// Move a user to a different portal.
-        /// </summary>
-        /// <param name="user">The user to move</param>
-        /// <param name="portal">The destination portal</param>
-        /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
-        public static void MoveUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser)
-        {
-            CopyUserToPortal(user, portal, mergeUser);
-            RemoveUser(user);
-        }
-
-        /// <summary>
-        /// Copys a user to a different portal
-        /// </summary>
-        /// <param name="user">The user to copy</param>
-        /// <param name="portal">The destination portal</param>
-        /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
-        /// <param name="deleteUser">A flag that indicates whether to delete the original user</param>
-        [Obsolete("Deprecated in DNN 7.2.2. This method has been replaced by UserController.MoveUserToPortal and UserControllar.CopyUserToPortal")]
-        public static void CopyUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser, bool deleteUser)
-        {
-            if (deleteUser)
-            {
-                MoveUserToPortal(user, portal, mergeUser);
-            }
-            else
-            {
-                CopyUserToPortal(user, portal, mergeUser);
             }
         }
 
@@ -681,40 +757,6 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(targetUser.PortalID, targetUser);
         }
 
-        private static void MergeUserProfileProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
-        {
-            foreach (ProfilePropertyDefinition property in userMergeFrom.Profile.ProfileProperties)
-            {
-                if (string.IsNullOrEmpty(userMergeTo.Profile.GetPropertyValue(property.PropertyName)))
-                {
-                    userMergeTo.Profile.SetProfileProperty(property.PropertyName, property.PropertyValue);
-                }
-            }
-        }
-
-        private static void MergeUserProperties(UserInfo userMergeFrom, UserInfo userMergeTo)
-        {
-            if (string.IsNullOrEmpty(userMergeTo.DisplayName))
-            {
-                userMergeTo.DisplayName = userMergeFrom.DisplayName;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.Email))
-            {
-                userMergeTo.Email = userMergeFrom.Email;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.FirstName))
-            {
-                userMergeTo.FirstName = userMergeFrom.FirstName;
-            }
-
-            if (string.IsNullOrEmpty(userMergeTo.LastName))
-            {
-                userMergeTo.LastName = userMergeFrom.LastName;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates a new User in the Data Store
@@ -742,8 +784,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(user, PortalController.GetCurrentPortalSettings(), GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_CREATED);
+                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_CREATED);
                 DataCache.ClearPortalCache(portalId, false);
                 if (!user.IsSuperUser)
                 {
@@ -795,7 +836,7 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -808,8 +849,7 @@ namespace DotNetNuke.Entities.Users
             if (canDelete)
             {
                 //Obtain PortalSettings from Current Context
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
                     //send email notification to portal administrator that the user was removed from the portal
@@ -899,33 +939,6 @@ namespace DotNetNuke.Entities.Users
             }
 
             return user;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Get the current UserInfo object
-        /// </summary>
-        /// <returns>The current UserInfo if authenticated, oherwise an empty user</returns>
-        /// -----------------------------------------------------------------------------
-        public static UserInfo GetCurrentUserInfo()
-        {
-            UserInfo user;
-            if ((HttpContext.Current == null))
-            {
-                if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
-                {
-                    return new UserInfo();
-                }
-                var portalSettings = PortalController.GetCurrentPortalSettings();
-                if (portalSettings != null)
-                {
-                    user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
-                    return user ?? new UserInfo();
-                }
-                return new UserInfo();
-            }
-            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
-            return user ?? new UserInfo();
         }
 
         public static ArrayList GetDeletedUsers(int portalId)
@@ -1071,7 +1084,6 @@ namespace DotNetNuke.Entities.Users
             return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Retruns a String corresponding to the Registration Status of the User
@@ -1146,28 +1158,13 @@ namespace DotNetNuke.Entities.Users
         public static Hashtable GetDefaultUserSettings()
         {
             var portalId = -1;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             if (portalSettings != null)
             {
                 portalId = portalSettings.PortalId;
             }
             return GetUserSettings(portalId, new Hashtable());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetUser retrieves a User from the DataStore
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
-        /// -----------------------------------------------------------------------------
-        public UserInfo GetUser(int portalId, int userId)
-        {
-            return GetUserById(portalId, userId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1437,6 +1434,18 @@ namespace DotNetNuke.Entities.Users
 			return MembershipProvider.Instance().GetUsersByDisplayName(GetEffectivePortalId(portalId), nameToMatch, pageIndex, pageSize, ref totalRecords, includeDeleted, superUsersOnly);
 		}
 
+        /// <summary>
+        /// Move a user to a different portal.
+        /// </summary>
+        /// <param name="user">The user to move</param>
+        /// <param name="portal">The destination portal</param>
+        /// <param name="mergeUser">A flag that indicates whether to merge the original user</param>
+        public static void MoveUserToPortal(UserInfo user, PortalInfo portal, bool mergeUser)
+        {
+            CopyUserToPortal(user, portal, mergeUser);
+            RemoveUser(user);
+        }
+
         public static void RemoveDeletedUsers(int portalId)
         {
             var arrUsers = GetUsers(true, false, portalId);
@@ -1461,24 +1470,40 @@ namespace DotNetNuke.Entities.Users
             if ((retValue))
             {
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 //Log event
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
                 //Delete userFolder - DNN-3787
-#pragma warning disable 618
-                var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
-#pragma warning restore 618
-                var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+                var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
                 var folderPortalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
-                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, folderPath);
+                var userFolder = FolderManager.Instance.GetFolder(folderPortalId, userFolderPath);
                 if (userFolder != null)
                 {
-                    FolderManager.Instance.Synchronize(folderPortalId, folderPath, true, true);
+                    FolderManager.Instance.Synchronize(folderPortalId, userFolderPath, true, true);
                     var notDeletedSubfolders = new List<IFolderInfo>();
                     FolderManager.Instance.DeleteFolder(userFolder, notDeletedSubfolders);
+
+                    if (notDeletedSubfolders.Count == 0)
+                    {
+                        //try to remove the parent folder if there is no other users use this folder.
+                        var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                        if(parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
+                        {
+                            FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
+
+                            if (notDeletedSubfolders.Count == 0)
+                            {
+                                //try to remove the root folder if there is no other users use this folder.
+                                var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                                if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
+                                {
+                                    FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 DataCache.ClearPortalCache(portalId, false);
@@ -1500,8 +1525,18 @@ namespace DotNetNuke.Entities.Users
         /// <returns></returns>
         public static bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
-            var portalSettings = PortalController.GetCurrentPortalSettings();
-            if (GetCurrentUserInfo().IsInRole(portalSettings.AdministratorRoleName))
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (GetCurrentUserInternal().IsInRole(portalSettings.AdministratorRoleName))
+            {
+                string resetPassword = ResetPassword(user, String.Empty);
+                return ChangePassword(user, resetPassword, newPassword);
+            }
+            return false;
+        }
+
+        public static bool ResetAndChangePassword(UserInfo user, string oldPassword, string newPassword)
+        {
+            if (System.Web.Security.Membership.ValidateUser(user.Username, oldPassword))
             {
                 string resetPassword = ResetPassword(user, String.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
@@ -1545,7 +1580,7 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(user.PortalID, user);
             if (sendEmail)
             {
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return  Mail.SendMail(user, MessageType.PasswordReminder, portalSettings) == string.Empty;
             }
             return true;
@@ -1572,11 +1607,10 @@ namespace DotNetNuke.Entities.Users
                 RestoreUserPermissions(user);
 
                 // Obtain PortalSettings from Current Context
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 //Log event
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
+                EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
@@ -1609,23 +1643,6 @@ namespace DotNetNuke.Entities.Users
             var retValue = MembershipProvider.Instance().UnLockUser(user);
             DataCache.ClearUserCache(portalId, user.Username);
             return retValue;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Update all the Users Display Names
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void UpdateDisplayNames()
-        {
-            int portalId = GetEffectivePortalId(PortalId);
-
-            var arrUsers = GetUsers(PortalId);
-            foreach (UserInfo objUser in arrUsers)
-            {
-                objUser.UpdateDisplayName(DisplayFormat);
-                UpdateUser(portalId, objUser);
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -1669,6 +1686,7 @@ namespace DotNetNuke.Entities.Users
 		/// </remarks>
 		internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool clearCache)
 		{
+		    var originalPortalId = user.PortalID;
 			portalId = GetEffectivePortalId(portalId);
 			user.PortalID = portalId;
 
@@ -1676,21 +1694,23 @@ namespace DotNetNuke.Entities.Users
 			MembershipProvider.Instance().UpdateUser(user);
 			if (loggedAction)
 			{
-				var objEventLog = new EventLogController();
-
                 //if the httpcontext is null, then get portal settings by portal id.
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
                 else if (portalId > Null.NullInteger)
                 {
                     portalSettings = new PortalSettings(portalId);
                 }
 
-			    objEventLog.AddLog(user, portalSettings, GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
 			}
+
+            //Reset PortalId
+            FixMemberPortalId(user, originalPortalId);
+
 			//Remove the UserInfo from the Cache, as it has been modified
 			if (clearCache)
 			{
@@ -1956,318 +1976,5 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        #region "Obsoleted Methods, retained for Binary Compatability"
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.CreateUser")]
-        public int AddUser(UserInfo objUser)
-        {
-            CreateUser(ref objUser);
-            return objUser.UserID;
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.CreateUser")]
-        public int AddUser(UserInfo objUser, bool addToMembershipProvider)
-        {
-            CreateUser(ref objUser);
-            return objUser.UserID;
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUsers")]
-        public void DeleteAllUsers(int portalId)
-        {
-            DeleteUsers(portalId, false, true);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUser")]
-        public bool DeleteUser(int portalId, int userId)
-        {
-            var objUser = GetUser(portalId, userId);
-
-            //Call Shared method with notify=true, deleteAdmin=false
-            return DeleteUser(ref objUser, true, false);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.DeleteUsers")]
-        public void DeleteUsers(int portalId)
-        {
-            DeleteUsers(portalId, true, false);
-        }
-
-        [Obsolete("Deprecated in DNN 6.1.")]
-        public static ArrayList FillUserCollection(int portalId, IDataReader dr, ref int totalRecords)
-        {
-            //Note:  the DataReader returned from this method should contain 2 result sets.  The first set
-            //       contains the TotalRecords, that satisfy the filter, the second contains the page
-            //       of data
-            var arrUsers = new ArrayList();
-            try
-            {
-                while (dr.Read())
-                {
-                    //fill business object
-                    UserInfo user = FillUserInfo(portalId, dr, false);
-                    //add to collection
-                    arrUsers.Add(user);
-                }
-                //Get the next result (containing the total)
-                dr.NextResult();
-
-                //Get the total no of records from the second result
-                totalRecords = Globals.GetTotalRecords(ref dr);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                //close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-            return arrUsers;
-        }
-
-        [Obsolete("Deprecated in DNN 6.1.")]
-        public static ArrayList FillUserCollection(int portalId, IDataReader dr)
-        {
-            //Note:  the DataReader returned from this method should contain 2 result sets.  The first set
-            //       contains the TotalRecords, that satisfy the filter, the second contains the page
-            //       of data
-            var arrUsers = new ArrayList();
-            try
-            {
-                while (dr.Read())
-                {
-                    //fill business object
-                    UserInfo user = FillUserInfo(portalId, dr, false);
-                    //add to collection
-                    arrUsers.Add(user);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                //close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-            return arrUsers;
-        }
-
-        [Obsolete("Deprecated in DNN 6.1.")]
-        public static UserInfo FillUserInfo(int portalId, IDataReader dr, bool closeDataReader)
-        {
-            UserInfo objUserInfo = null;
-            try
-            {
-                //read datareader
-                var bContinue = true;
-                if (closeDataReader)
-                {
-                    bContinue = false;
-                    if (dr.Read())
-                    {
-                        //Ensure the data reader returned is valid
-                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            bContinue = true;
-                        }
-                    }
-                }
-                if (bContinue)
-                {
-                    objUserInfo = new UserInfo
-                    {
-                        PortalID = portalId,
-                        IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
-                        IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]),
-                        UserID = Null.SetNullInteger(dr["UserID"]),
-                        FirstName = Null.SetNullString(dr["FirstName"]),
-                        LastName = Null.SetNullString(dr["LastName"]),
-                        RefreshRoles = Null.SetNullBoolean(dr["RefreshRoles"]),
-                        DisplayName = Null.SetNullString(dr["DisplayName"])
-                    };
-                    objUserInfo.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], objUserInfo.AffiliateID));
-                    objUserInfo.Username = Null.SetNullString(dr["Username"]);
-                    GetUserMembership(objUserInfo);
-                    objUserInfo.Email = Null.SetNullString(dr["Email"]);
-                    objUserInfo.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-
-					var schema = dr.GetSchemaTable();
-					if (schema != null)
-					{
-						if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
-						{
-							objUserInfo.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
-						}
-						if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
-						{
-							objUserInfo.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
-						}
-					}
-
-	                if (!objUserInfo.IsSuperUser)
-                    {
-                        objUserInfo.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
-                    }
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, closeDataReader);
-            }
-            return objUserInfo;
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
-        public UserInfo FillUserInfo(int portalID, string username)
-        {
-            return GetCachedUser(portalID, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function should be replaced by String.Format(DataCache.UserCacheKey, portalId, username)")]
-        public string GetCacheKey(int portalID, string username)
-        {
-            return string.Format(DataCache.UserCacheKey, portalID, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function should be replaced by String.Format(DataCache.UserCacheKey, portalId, username)")]
-        public static string CacheKey(int portalId, string username)
-        {
-            return string.Format(DataCache.UserCacheKey, portalId, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. Not needed any longer for due to autohydration")]
-        public static ArrayList GetUnAuthorizedUsers(int portalId, bool isHydrated)
-        {
-            return GetUnAuthorizedUsers(portalId);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. Not needed any longer for due to autohydration")]
-        public static UserInfo GetUser(int portalId, int userId, bool isHydrated)
-        {
-            return GetUserById(portalId, userId);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetUser retrieves a User from the DataStore
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "portalId">The Id of the Portal</param>
-        /// <param name = "userId">The Id of the user being retrieved from the Data Store.</param>
-        /// <param name = "isHydrated">A flag that determines whether the user is hydrated.</param>
-        /// <param name = "hydrateRoles">A flag that instructs the method to automatically hydrate the roles</param>
-        /// <returns>The User as a UserInfo object</returns>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Deprecated in DNN 5.1. Not needed any longer for single users due to autohydration")]
-        public static UserInfo GetUser(int portalId, int userId, bool isHydrated, bool hydrateRoles)
-        {
-            return GetUserById(portalId, userId);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
-        public UserInfo GetUserByUsername(int portalID, string username)
-        {
-            return GetCachedUser(portalID, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
-        public UserInfo GetUserByUsername(int portalID, string username, bool synchronizeUsers)
-        {
-            return GetCachedUser(portalID, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUserByName")]
-        public static UserInfo GetUserByName(int portalId, string username, bool isHydrated)
-        {
-            return GetCachedUser(portalId, username);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
-        public ArrayList GetSuperUsers()
-        {
-            return GetUsers(Null.NullInteger);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
-        public ArrayList GetUsers(bool synchronizeUsers, bool progressiveHydration)
-        {
-            return GetUsers(Null.NullInteger);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
-        public ArrayList GetUsers(int portalId, bool synchronizeUsers, bool progressiveHydration)
-        {
-            var totalRecords = -1;
-            return GetUsers(portalId, -1, -1, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
-        public static ArrayList GetUsers(int portalId, bool isHydrated)
-        {
-            var totalRecords = -1;
-            return GetUsers(portalId, -1, -1, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsers")]
-        public static ArrayList GetUsers(int portalId, bool isHydrated, int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsers(portalId, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByEmail")]
-        public static ArrayList GetUsersByEmail(int portalId, bool isHydrated, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByUserName")]
-        public static ArrayList GetUsersByUserName(int portalId, bool isHydrated, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByUserName(portalId, userNameToMatch, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.GetUsersByProfileProperty")]
-        public static ArrayList GetUsersByProfileProperty(int portalId, bool isHydrated, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords)
-        {
-            return GetUsersByProfileProperty(portalId, propertyName, propertyValue, pageIndex, pageSize, ref totalRecords);
-        }
-
-        [Obsolete("Deprecated in DNN 6.1. The method had no implementation !!!")]
-        public static void SetAuthCookie(string username, bool createPersistentCookie)
-        {
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.ChangePassword")]
-        public bool SetPassword(UserInfo objUser, string newPassword)
-        {
-            return ChangePassword(objUser, Null.NullString, newPassword);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.ChangePassword")]
-        public bool SetPassword(UserInfo objUser, string oldPassword, string newPassword)
-        {
-            return ChangePassword(objUser, oldPassword, newPassword);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.UnlockUserAccount")]
-        public void UnlockUserAccount(UserInfo objUser)
-        {
-            UnLockUser(objUser);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. This function has been replaced by UserController.UpdateUser")]
-        public void UpdateUser(UserInfo objUser)
-        {
-            UpdateUser(objUser.PortalID, objUser);
-        }
-
-        #endregion
     }
 }

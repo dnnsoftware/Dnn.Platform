@@ -40,6 +40,8 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Entities.Host
 {
+    using DotNetNuke.Entities.Portals;
+
     using Web.Client;
 
     /// <summary>
@@ -637,6 +639,10 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
+                }
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
@@ -875,6 +881,17 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetInteger("MembershipResetLinkValidity", 60);
+            }
+        }
+
+        /// <summary>
+        /// set length of time (in minutes) that reset links are valid for - default is 24 hours (1440 min)
+        /// </summary>
+        public static int AdminMembershipResetLinkValidity
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("AdminMembershipResetLinkValidity", 1440);
             }
         }
 
@@ -1193,7 +1210,21 @@ namespace DotNetNuke.Entities.Host
                 return setting;
             }
         }
-
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the delayAtAppStart value
+        /// </summary>
+        /// <remarks>
+        ///   Defaults is 1 min(60 sec)
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static int SchedulerdelayAtAppStart
+        {
+            get
+            {
+                return HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1);
+            }
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether to inlcude Common Words in the Search Index
@@ -1368,48 +1399,97 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         /// <history>
         ///   [cnurse]	01/28/2008   Created
+        ///   [ohine]	02/01/2009   modifed for portal based smtp
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPAuthentication
         {
             get
             {
-                return HostController.Instance.GetString("SMTPAuthentication");
+                return GetSmtpSetting("SMTPAuthentication");
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the SMTP mode (portal|host)
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static bool SMTPPortalEnabled
+        {
+            get
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+                if (portalSettings == null)
+                {
+                    //without portal settings, we can't continue
+                    return false;
+                }
+
+                //we don't want to load the portal smtp server when on a host tab. 
+                if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
+                {
+                    return false;
+                }
+
+                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalSettings.PortalId, Null.NullString);
+
+                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Get's the SMTP setting, if portal smtp is configured, it will return items from the portal settings collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static string GetSmtpSetting(string settingName)
+        {
+            if (SMTPPortalEnabled)
+            {
+                return PortalController.GetPortalSetting(settingName, PortalSettings.Current.PortalId, Null.NullString);
+            }
+
+            return HostController.Instance.GetString(settingName);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the SMTP Password
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPPassword
         {
             get
-            {              
-                string decryptedText;
-                try
+            {
+                if (SMTPPortalEnabled)
                 {
-                    decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+                    return PortalController.GetEncryptedString("SMTPPassword", PortalController.Instance.GetCurrentPortalSettings().PortalId, Config.GetDecryptionkey());
                 }
-                catch (Exception)
+                else
                 {
-                    //fixes case where smtppassword failed to encrypt due to failing upgrade
-                    var current = HostController.Instance.GetString("SMTPPassword");
-                    if (!string.IsNullOrEmpty(current))
+                    string decryptedText;
+                    try
                     {
-                        HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
-                        decryptedText = current;
+                        decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
                     }
-                    else
+                    catch (Exception)
                     {
-                        decryptedText = string.Empty;
+                        //fixes case where smtppassword failed to encrypt due to failing upgrade
+                        var current = HostController.Instance.GetString("SMTPPassword");
+                        if (!string.IsNullOrEmpty(current))
+                        {
+                            HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+                            decryptedText = current;
+                        }
+                        else
+                        {
+                            decryptedText = string.Empty;
+                        }
                     }
+                    return decryptedText;
                 }
-                return decryptedText;
             }
         }
 
@@ -1417,15 +1497,12 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Server
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPServer
         {
             get
             {
-                return HostController.Instance.GetString("SMTPServer");
+                return GetSmtpSetting("SMTPServer");
             }
         }
 
@@ -1433,18 +1510,53 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         ///   Gets the SMTP Username
         /// </summary>
-        /// <history>
-        ///   [cnurse]	01/28/2008   Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static string SMTPUsername
         {
             get
             {
-                return HostController.Instance.GetString("SMTPUsername");
+                return GetSmtpSetting("SMTPUsername");
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the SMTP Connection Limit
+        /// </summary>
+        /// <history>
+        ///   [evi]	03/05/2014   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SMTPConnectionLimit
+        {
+            get
+            {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 1);
+                }
+                return HostController.Instance.GetInteger("SMTPConnectionLimit", 1);
+            }
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets the SMTP MaxIdleTime
+        /// </summary>
+        /// <history>
+        ///   [evi]	03/05/2014   Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public static int SMTPMaxIdleTime
+        {
+            get
+            {
+                if (SMTPPortalEnabled)
+                {
+                    return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 0);
+                }
+                return HostController.Instance.GetInteger("SMTPMaxIdleTime", 0);
+            }
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether Exceptions are rethrown
@@ -1568,6 +1680,7 @@ namespace DotNetNuke.Entities.Host
         /// <history>
         ///   [jbrinkman]    09/30/2008    Created
         /// </history>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryDebug
         {
             get
@@ -1585,6 +1698,7 @@ namespace DotNetNuke.Entities.Host
         /// <history>
         ///   [jbrinkman]    09/30/2008    Created
         /// </history>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool jQueryHosted
         {
             get
@@ -1600,6 +1714,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string jQueryUrl
         {
             get
@@ -1622,6 +1737,7 @@ namespace DotNetNuke.Entities.Host
 		///   Defaults to the DefaultHostedUrl constant in the jQuery class.
 		///   The framework will default to the latest released 1.x version hosted on Google.
 		/// </remarks>
+		[Obsolete("This is managed through the JavaScript Library package")]
 		public static string jQueryMigrateUrl
 		{
 			get
@@ -1644,6 +1760,7 @@ namespace DotNetNuke.Entities.Host
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
         ///   The framework will default to the latest released 1.x version hosted on Google.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string jQueryUIUrl
         {
             get

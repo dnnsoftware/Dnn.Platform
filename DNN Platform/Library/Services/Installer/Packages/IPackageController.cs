@@ -45,6 +45,19 @@ namespace DotNetNuke.Services.Installer.Packages
         PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate);
 
         /// <summary>
+        /// GetExtensionPackage is used to retrieve a specific package from the data store.
+        /// </summary>
+        /// <param name="portalId">The Id of the portal.  Most extension packages do not belong to
+        /// a specific portal so in most situations developers will need to pass -1 to indicate this.
+        /// The main situation where the portal Id will have a specific value is for skins which have
+        /// been installed for a spcific portal/site.</param>
+        /// <param name="predicate">The "search criteria" to use to identify the extension package to
+        /// retrieve.  In most cases this will be a simple lambda method e.g. p => p.Name == "Name"</param>
+        /// <param name="useCopy">Whether use a copy of the package info object.</param>
+        /// <returns>The extension package</returns>
+        PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy);
+
+        /// <summary>
         /// GetExtensionPackages is used to retrieve packages from the data store.
         /// </summary>
         /// <param name="portalId">The Id of the portal.  Most extension packages do not belong to

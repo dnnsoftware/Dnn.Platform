@@ -36,7 +36,6 @@ using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls.Config;
 using DotNetNuke.Entities.Users;
@@ -122,7 +121,7 @@ namespace DotNetNuke.Entities.Urls
             string defaultPage = Globals.glbDefaultPage.ToLower();
             string portalAliasUrl = url.ToLower().Replace("/" + defaultPage, "");
             //if there is a straight match on a portal alias, it's the home page for that portal requested 
-            var portalAlias = PortalAliasController.GetPortalAliasInfo(portalAliasUrl);
+            var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
             {
                 //special case : sometimes, some servers issue root/default.aspx when root/ was requested, sometimes not.  It depends
@@ -184,7 +183,7 @@ namespace DotNetNuke.Entities.Urls
                         //check for culture-specific aliases
                         string culture = null;
                         var primaryAliases =
-                            TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
                                                          .Where(a => a.IsPrimary).ToList();
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
@@ -386,8 +385,8 @@ namespace DotNetNuke.Entities.Urls
                             userParam = "UserId=" + user.UserID.ToString();
 
                             //Get the User profile Tab
-                            var portal = new PortalController().GetPortal(result.PortalId);
-                            var profilePage = new TabController().GetTab(portal.UserTabId, result.PortalId, false);
+                            var portal = PortalController.Instance.GetPortal(result.PortalId);
+                            var profilePage = TabController.Instance.GetTab(portal.UserTabId, result.PortalId, false);
 
                             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
@@ -425,7 +424,7 @@ namespace DotNetNuke.Entities.Urls
             return found;
         }
 
-        private static string CheckLanguageMatch(ref string url, UrlAction result)
+        internal static string CheckLanguageMatch(ref string url, UrlAction result)
         {
             //ok now scan for the language modifier 
             Match langMatch = Regex.Match(url, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -442,7 +441,7 @@ namespace DotNetNuke.Entities.Urls
                 url = url.Replace(langParms, "") + langParms;
                 result.CultureCode = langMatch.Groups["code"].Value; //get the culture code in the requested url
 
-                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                 if (primaryAliases.Count > 0)
                 {
                     string aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
@@ -587,8 +586,7 @@ namespace DotNetNuke.Entities.Urls
             TabInfo tab = null;
             if (tabId > 0 && portalId > -1)
             {
-                var tc = new TabController();
-                tab = tc.GetTab(tabId, portalId, false);
+                tab = TabController.Instance.GetTab(tabId, portalId, false);
             }
             //don't overwrite specific skin at tab level for rewritten Urls
             if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
@@ -1421,8 +1419,10 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
-            //fallback position - all portals match 'Admin'
-            const string adminPageName = "Admin";
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+            
+            string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin
             //in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
@@ -1510,7 +1510,7 @@ namespace DotNetNuke.Entities.Urls
                 int lastParmToProcessTo;
 
                 string userIdParm = null;
-                PortalInfo thisPortal = new PortalController().GetPortal(result.PortalId);
+                var thisPortal = PortalController.Instance.GetPortal(result.PortalId);
 
                 //check if there is more than one parm, and keep the value of the primary (first) parm
                 if (thisPortal.UserTabId == result.TabId || thisPortal.UserTabId == -1)

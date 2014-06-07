@@ -109,7 +109,7 @@
     <contenttemplate>
         <div class="dnnCPAddModule">
             <h5><asp:Label runat="server" ResourceKey="AddModule" /></h5>            
-            <asp:RadioButton ID="AddNewModule" runat="server" ResourceKey="AddNew" GroupName="AddModule" Checked="true" AutoPostBack="true" />           
+            <asp:RadioButton ID="AddNewModule" runat="server" ResourceKey="AddNew" GroupName="AddModule" AutoPostBack="true" />           
             <asp:RadioButton ID="AddExistingModule" runat="server" ResourceKey="AddExisting" GroupName="AddModule" AutoPostBack="true" />            
             <asp:HyperLink ID="hlMoreExtensions" runat="server" CssClass="dnnPrimaryAction" Visible="false" />
         </div>

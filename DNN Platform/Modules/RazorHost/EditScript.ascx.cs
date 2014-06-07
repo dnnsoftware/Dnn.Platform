@@ -104,8 +104,7 @@ namespace DotNetNuke.Modules.RazorHost
             if (isCurrentScript.Checked)
             {
                 //Update setting
-                var controller = new ModuleController();
-                controller.UpdateModuleSetting(ModuleContext.ModuleId, "ScriptFile", scriptList.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "ScriptFile", scriptList.SelectedValue);
             }
         }
 

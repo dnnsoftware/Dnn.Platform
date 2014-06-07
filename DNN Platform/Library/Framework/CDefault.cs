@@ -26,6 +26,7 @@ using System.Web;
 using System.Web.UI;
 
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
@@ -60,7 +61,10 @@ namespace DotNetNuke.Framework
         {
             if (Page.Form != null)
             {
-                ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+                {
+                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                }
             }
         }
 
@@ -84,7 +88,7 @@ namespace DotNetNuke.Framework
         {
             // The Getting Started dialog can be also opened from the Control Bar, also do not show getting started in popup.
             var controller = new GettingStartedController();
-            if (!controller.ShowOnStartup || (HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().Contains("popUp=true")))
+            if (!controller.ShowOnStartup || UrlUtils.InPopUp())
             {
                 return;
             }
@@ -110,11 +114,9 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                var result = "";
-                var tabcontroller = new TabController();
-                var tab = tabcontroller.GetTabByName("Advanced Settings", PortalSettings.PortalId);
-                var modulecontroller = new ModuleController();
-                var modules = modulecontroller.GetTabModules(tab.TabID).Values;
+                string result ;
+                var tab = TabController.Instance.GetTabByName("Advanced Settings", PortalSettings.PortalId);
+                var modules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
 
                 if (modules.Count > 0)
                 {

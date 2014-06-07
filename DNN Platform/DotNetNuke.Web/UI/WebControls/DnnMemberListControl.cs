@@ -153,7 +153,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             
-            _currentUser = UserController.GetCurrentUserInfo();
+            _currentUser = UserController.Instance.GetCurrentUserInfo();
             _relationshipController = new RelationshipController();
         }
 

@@ -1,3 +1,4 @@
+
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
@@ -21,17 +22,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using FiftyOne.Foundation.Mobile.Detection;
 
 using System.Web;
+
+using FiftyOne.Foundation.UI;
 
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
     /// <summary>
     /// 51Degrees.mobi Implementation of IClientCapability
     /// </summary>
-    public class FiftyOneClientCapability : DotNetNuke.Services.ClientCapability.ClientCapability
+    public class FiftyOneClientCapability : Services.ClientCapability.ClientCapability
     {
         #region Constructor
 
@@ -42,9 +46,9 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
-        public FiftyOneClientCapability(BaseDeviceInfo device)
+        public FiftyOneClientCapability(Device device)
         {
-            Initialise(device.GetAllProperties());
+            Initialise(device.GetPropertyValuesAsStrings().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray()));
             UserAgent = device.UserAgent;
         }
 
@@ -59,9 +63,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             if (browserCaps != null)
             {
-                Initialise(
-                    browserCaps.Capabilities[FiftyOne.Foundation.Mobile.Detection.Constants.FiftyOneDegreesProperties] 
-                        as SortedList<string, List<string>>);
+                Initialise(browserCaps.Capabilities[Constants.FiftyOneDegreesProperties] as SortedList<string, string[]>);
             }
         }
 
@@ -72,12 +74,25 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
-        public FiftyOneClientCapability(SortedList<string, List<string>> properties)
+        public FiftyOneClientCapability(SortedList<string, string[]> properties)
         {
             Initialise(properties);
         }
 
-        private void Initialise(SortedList<string, List<string>> properties)
+        /// <summary>
+        /// Constructs a new instance of ClientCapability.
+        /// See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
+        /// for a full list of available properties.
+        /// All the properties used are non-lists and therefore the first
+        /// item contained in the values list contains the only available value.
+        /// </summary>
+        public FiftyOneClientCapability(Match match)
+        {
+            Initialise(match.Results);
+            UserAgent = match.TargetUserAgent;
+        }
+
+        private void Initialise(IDictionary<string, string[]> properties)
         {
             if (properties != null)
             {
@@ -114,16 +129,9 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// </summary>
         /// <param name="properties">A collection of device related capabilities.</param>
         /// <returns>Device related capabilities with property names and values converted to strings.</returns>
-        private static IDictionary<string, string> GetCapabilities(SortedList<string, List<string>> properties)
+        private static IDictionary<string, string> GetCapabilities(IDictionary<string, string[]> properties)
         {
-            var dictionary = new Dictionary<string, string>();
-            foreach (var key in properties.Keys)
-            {
-                dictionary.Add(
-                    key,
-                    String.Join(FiftyOne.Foundation.Mobile.Detection.Constants.ValueSeperator, properties[key].ToArray()));
-            }
-            return dictionary;
+            return properties.Keys.ToDictionary(key => key, key => String.Join(Constants.ValueSeperator, properties[key].ToArray()));
         }
 
         /// <summary>
@@ -133,7 +141,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// <param name="properties">A collection of device related capabilities.</param>
         /// <param name="property">The name of the property to return as a boolean.</param>
         /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
-        private static bool GetBoolValue(SortedList<string, List<string>> properties, string property)
+        private static bool GetBoolValue(IDictionary<string, string[]> properties, string property)
         {
             bool value;
             if (properties.ContainsKey(property) &&
@@ -149,7 +157,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// <param name="properties">A collection of device related capabilities.</param>
         /// <param name="property">The name of the property to return as a integer.</param>
         /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
-        private static int GetIntValue(SortedList<string, List<string>> properties, string property)
+        private static int GetIntValue(IDictionary<string, string[]> properties, string property)
         {
             int value;
             if (properties.ContainsKey(property) &&
@@ -165,7 +173,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// <param name="properties">A collection of device related properties.</param>
         /// <param name="property">The name of the property to return as a string.</param>
         /// <returns>The string value of the property, or null if the property is not found.</returns>
-        private static string GetStringValue(SortedList<string, List<string>> properties, string property)
+        private static string GetStringValue(IDictionary<string, string[]> properties, string property)
         {
             if (properties.ContainsKey(property))
                 return properties[property][0];

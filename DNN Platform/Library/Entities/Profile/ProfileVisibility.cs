@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Profile
                     foreach (var role in roles)
                     {
                         int roleId = Int32.Parse(role);
-                        RoleInfo userRole = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
+                        RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
                         RoleVisibilities.Add(userRole);
                     }
                 }

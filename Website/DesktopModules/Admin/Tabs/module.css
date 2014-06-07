@@ -240,6 +240,8 @@ div.um-page-url-container {
 .dnnFormItem div.um-page-url-container-updatable a.dnnSecondaryAction {
     margin: 0;
 }
+.dnnFormItem .dnnFileUploadScope{ width: 430px;}
+.dnnFormItem .dnnFileUploadScope .dnnDropDownList{ width: 160px;}
 
 /* ===========   End Pages Module Styling   =========== */
 

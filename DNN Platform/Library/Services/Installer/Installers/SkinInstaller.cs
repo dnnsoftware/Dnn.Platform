@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    _RootPath = PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath;
+                    _RootPath = PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath;
                 }
                 return _RootPath;
             }

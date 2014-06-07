@@ -54,12 +54,12 @@ namespace DotNetNuke.Services.Localization
 
         public string GetString(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, null, PortalController.GetCurrentPortalSettings(), false);
+            return GetString(key, resourceFileRoot, null, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language)
         {
-            return GetString(key, resourceFileRoot, language, PortalController.GetCurrentPortalSettings(), false);
+            return GetString(key, resourceFileRoot, language, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings)

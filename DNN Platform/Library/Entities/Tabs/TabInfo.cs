@@ -41,7 +41,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -236,7 +235,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return new ModuleController().GetTabModules(TabID);
+                return ModuleController.Instance.GetTabModules(TabID);
             }
         }
 
@@ -247,8 +246,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_defaultLanguageTab == null && (!DefaultLanguageGuid.Equals(Null.NullGuid)))
                 {
-                    var tabCtrl = new TabController();
-                    _defaultLanguageTab = (from kvp in tabCtrl.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
+                    _defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
                 return _defaultLanguageTab;
             }
@@ -443,9 +441,8 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_localizedTabs == null)
                 {
-                    var tabCtrl = new TabController();
                     _localizedTabs =
-                        (from kvp in tabCtrl.GetTabsByPortal(PortalID)
+                        (from kvp in TabController.Instance.GetTabsByPortal(PortalID)
                          where kvp.Value.DefaultLanguageGuid == UniqueId && LocaleController.Instance.GetLocale(PortalID, kvp.Value.CultureCode) != null
                          select kvp.Value).ToDictionary(t => t.CultureCode);
                 }
@@ -488,7 +485,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : new TabController().GetTabSettings(TabID));
+                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : TabController.Instance.GetTabSettings(TabID));
             }
         }
 
@@ -510,7 +507,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TestableTabController.Instance.GetAliasSkins(TabID, PortalID));
+                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TabController.Instance.GetAliasSkins(TabID, PortalID));
             }
         }
 
@@ -519,7 +516,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TestableTabController.Instance.GetCustomAliases(TabID, PortalID));
+                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TabController.Instance.GetCustomAliases(TabID, PortalID));
             }
         }
 
@@ -586,7 +583,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TestableTabController.Instance.GetTabUrls(TabID, PortalID));
+                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TabController.Instance.GetTabUrls(TabID, PortalID));
             }
         }
 
@@ -907,6 +904,7 @@ namespace DotNetNuke.Entities.Tabs
 
             clonedTab.Panes = new ArrayList();
             clonedTab.Modules = new ArrayList();
+
             return clonedTab;
         }
 

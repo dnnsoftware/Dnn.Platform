@@ -30,9 +30,18 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.HttpModules.Exceptions
 {
+    /// <summary>
+    /// Handles the exception that occur with http modules
+    /// </summary>
     public class ExceptionModule : IHttpModule
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ExceptionModule));
+        /// <summary>
+        /// Gets the name of the module.
+        /// </summary>
+        /// <value>
+        /// The name of the module: "ExceptionModule"
+        /// </value>
         public string ModuleName
         {
             get
@@ -43,6 +52,10 @@ namespace DotNetNuke.HttpModules.Exceptions
 
         #region IHttpModule Members
 
+        /// <summary>
+        /// Initializes the error handling for the specified application.
+        /// </summary>
+        /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
             application.Error += OnErrorRequest;
@@ -54,6 +67,11 @@ namespace DotNetNuke.HttpModules.Exceptions
 
         #endregion
 
+        /// <summary>
+        /// Called when error handling is requested.
+        /// </summary>
+        /// <param name="s">The object with the error</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void OnErrorRequest(object s, EventArgs e)
         {
             try

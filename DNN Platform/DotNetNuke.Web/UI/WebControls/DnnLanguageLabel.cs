@@ -35,11 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
-        #region "Public Enums"
-
-        #endregion
-
-        #region "Controls"
+        #region Controls
 
         private Image _Flag;
 
@@ -47,9 +43,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        private bool _Localize = true;
+        public DnnLanguageLabel()
+        {
+            Localize = true;
+        }
 
-        #region "Public Properties"
+        #region Public Properties
 
         public CultureDropDownTypes DisplayType { get; set; }
 
@@ -67,7 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "Protected Methods"
+        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -80,21 +79,19 @@ namespace DotNetNuke.Web.UI.WebControls
         ///   CreateChildControls overrides the Base class's method to correctly build the
         ///   control based on the configuration
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/31/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
             //First clear the controls collection
             Controls.Clear();
 
-            _Flag = new Image();
+            _Flag = new Image {ViewStateMode = ViewStateMode.Disabled};
             Controls.Add(_Flag);
 
             Controls.Add(new LiteralControl("&nbsp;"));
 
             _Label = new Label();
+            _Label.ViewStateMode = ViewStateMode.Disabled;
             Controls.Add(_Label);
 
             //Call base class's method
@@ -106,9 +103,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         ///   OnPreRender runs just before the control is rendered
         /// </summary>
-        /// <history>
-        ///   [cnurse]	07/31/2006  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
@@ -125,7 +119,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (DisplayType == 0)
             {
-                PortalSettings _PortalSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 string _ViewTypePersonalizationKey = "ViewType" + _PortalSettings.PortalId;
                 string _ViewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", _ViewTypePersonalizationKey));
                 switch (_ViewType)
@@ -157,19 +151,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        #region "ILocalizable Implementation"
+        #region ILocalizable Implementation
 
-        public bool Localize
-        {
-            get
-            {
-                return _Localize;
-            }
-            set
-            {
-                _Localize = value;
-            }
-        }
+        public bool Localize { get; set; }
 
         public string LocalResourceFile { get; set; }
 

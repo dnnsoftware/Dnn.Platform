@@ -71,8 +71,7 @@ namespace DotNetNuke.Common
             //This code is only retained for binary compatability.
 #pragma warning disable 612,618
             var objFolderController = new FolderController();
-            var objPortalController = new PortalController();
-            ArrayList arrPortals = objPortalController.GetPortals();
+            ArrayList arrPortals = PortalController.Instance.GetPortals();
             int i;
             for (i = 0; i <= arrPortals.Count - 1; i++)
             {
@@ -202,6 +201,8 @@ namespace DotNetNuke.Common
                     //Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
 
+                    //Log Server information
+                    ServerController.UpdateServerActivity(new ServerInfo());
                     //Start Scheduler
                     StartScheduler();
                     //Log Application Start
@@ -216,8 +217,6 @@ namespace DotNetNuke.Common
                     //Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
-                    //Log Server information
-                    ServerController.UpdateServerActivity(new ServerInfo());
                     Logger.Info("Application Initialized");
 
                     initialized = true;
@@ -305,11 +304,12 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static void LogStart()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo();
-            objEventLogInfo.BypassBuffering = true;
-            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString();
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo
+            {
+                BypassBuffering = true,
+                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString()
+            };
+            LogController.Instance.AddLog(log);
         }
 
         /// -----------------------------------------------------------------------------
@@ -376,12 +376,13 @@ namespace DotNetNuke.Common
                         shutdownDetail = "No shutdown reason provided.";
                         break;
                 }
-                var objEv = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.BypassBuffering = true;
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString();
-                objEventLogInfo.AddProperty("Shutdown Details", shutdownDetail);
-                objEv.AddLog(objEventLogInfo);
+                var log = new LogInfo
+                {
+                    BypassBuffering = true,
+                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString()
+                };
+                log.AddProperty("Shutdown Details", shutdownDetail);
+                LogController.Instance.AddLog(log);
 
                 Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
             }

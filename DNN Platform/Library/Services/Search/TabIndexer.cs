@@ -67,8 +67,7 @@ namespace DotNetNuke.Services.Search
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var tabController = new TabController();
-            var tabs = tabController.GetTabsByPortal(portalId).AsList().Where(t => ((t.TabSettings["AllowIndex"] == null) ||
+            var tabs = TabController.Instance.GetTabsByPortal(portalId).AsList().Where(t => ((t.TabSettings["AllowIndex"] == null) ||
                                                                                     (t.TabSettings["AllowIndex"] != null && t.TabSettings["AllowIndex"].ToString().ToLower() != "false")) &&
                                                                                     t.LastModifiedOnDate > startDate);
             try

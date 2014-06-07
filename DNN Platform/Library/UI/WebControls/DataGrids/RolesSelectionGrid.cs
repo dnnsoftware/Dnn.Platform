@@ -307,8 +307,8 @@ namespace DotNetNuke.UI.WebControls
 			}
 
 			_roles = roleGroupId > -2
-                    ? TestableRoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
-                    : TestableRoleController.Instance.GetRoles(PortalController.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+                    ? RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.RoleGroupID == roleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+                    : RoleController.Instance.GetRoles(PortalController.Instance.GetCurrentPortalSettings().PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
 			if (roleGroupId < 0)
 			{
@@ -412,7 +412,7 @@ namespace DotNetNuke.UI.WebControls
 		    pnlRoleSlections = new Panel {CssClass = "dnnRolesGrid"};
 
 		    //Optionally Add Role Group Filter
-			PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+			PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			ArrayList arrGroups = RoleController.GetRoleGroups(_portalSettings.PortalId);
 			if (arrGroups.Count > 0)
 			{

@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Api.Internal
                 if (!objModule.IsDeleted)
                 {
                     bool blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, objModule);
-                    if (blnHasModuleEditPermissions && objModule.ModuleDefinition.DefaultCacheTime != -1)
+                    if (blnHasModuleEditPermissions)
                     {
                         isModuleAdmin = true;
                         break;

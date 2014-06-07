@@ -44,7 +44,7 @@
                 <asp:TemplateColumn HeaderText="Version">
                     <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="150px"/>
                     <ItemStyle HorizontalAlign="Left" />
-                    <ItemTemplate><asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Container.DataItem) %>' /></ItemTemplate>
+                    <ItemTemplate><asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Eval("Version")) %>' /></ItemTemplate>
                 </asp:TemplateColumn>
             </Columns>
         </asp:DataGrid>
@@ -61,7 +61,7 @@
                 <asp:TemplateColumn HeaderText="Version">
                     <HeaderStyle HorizontalAlign="Left" Wrap="False" Width="150px"/>
                     <ItemStyle HorizontalAlign="Left" />
-                    <ItemTemplate><asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Container.DataItem) %>' /></ItemTemplate>
+                    <ItemTemplate><asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Eval("Version")) %>' /></ItemTemplate>
                 </asp:TemplateColumn>
             </Columns>
         </asp:DataGrid>

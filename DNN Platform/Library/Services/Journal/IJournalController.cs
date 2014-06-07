@@ -20,7 +20,10 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.IO;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.Journal
 {
@@ -125,7 +128,17 @@ namespace DotNetNuke.Services.Journal
         /// <param name="portalId">Id of portal.</param>
         /// <returns>Enumerable JournalTypeInfo object list.</returns>
         IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId);
-        
+
+        /// <summary>
+        /// Save an uploaded file 
+        /// </summary>
+        /// <param name="userInfo">User who uploads the file</param>
+        /// <param name="fileName">File Name</param>
+        /// <param name="fileContent">File content</param>
+        /// <returns>A FileInfo object corresponding to the saved file</returns>
+        IFileInfo SaveJourmalFile(UserInfo userInfo, string fileName, Stream fileContent);
+
+
         /// <summary>
         /// Save the journal object into database.
         /// </summary>

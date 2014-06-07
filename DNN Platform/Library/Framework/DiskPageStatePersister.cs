@@ -72,7 +72,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache";
+                return PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath + "Cache";
             }
         }
 

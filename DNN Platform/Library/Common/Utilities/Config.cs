@@ -24,6 +24,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Web.Configuration;
+using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -64,7 +65,19 @@ namespace DotNetNuke.Common.Utilities
 
         #endregion
 
-        /// <summary>
+        #region FcnMode enum
+
+        public enum FcnMode
+        {
+            Default,
+            Disabled,
+            NotSet, 
+            Single
+        }
+
+        #endregion
+        
+            /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
         /// when the key already exists, this need to be updated or not
         /// </summary>
@@ -240,6 +253,21 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Returns the fcnMode from webconfig httpRuntime
+        /// </summary>
+        /// <returns>decryption key</returns>
+        /// -----------------------------------------------------------------------------
+        public static string GetFcnMode()
+        {
+            var configNav = Load();
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime").CreateNavigator();
+
+            var result = XmlUtils.GetAttributeValue(httpNode, "fcnMode");
+
+            return result;
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes
         /// </summary>
         /// <returns>Size in bytes</returns>
@@ -267,7 +295,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode != null)
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return Math.Min(maxRequestLength, maxAllowedContentLength);
             }
 
@@ -293,7 +321,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode != null)
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return maxAllowedContentLength / 1024 / 1024;
             }
             return defaultRequestFilter;
@@ -593,7 +621,9 @@ namespace DotNetNuke.Common.Utilities
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
                 //save the config file
-                var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
+                var settings = new XmlWriterSettings {CloseOutput = true, Indent = true};
+                //var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
+                var writer = XmlWriter.Create(strFilePath, settings);        
                 xmlDoc.WriteTo(writer);
                 writer.Flush();
                 writer.Close();
@@ -861,6 +891,44 @@ namespace DotNetNuke.Common.Utilities
 
             return xmlConfig;
         }
+
+        public static bool IsNet45OrNewer()
+        {
+            // Class "ReflectionContext" exists from .NET 4.5 onwards.
+            return Type.GetType("System.Reflection.ReflectionContext", false) != null;
+        }
+
+        public static string AddFCNMode(FcnMode fcnMode)
+        {
+            string strError = "";
+            var xmlConfig = new XmlDocument();
+            try
+            {
+                //open the web.config
+                xmlConfig = Load();
+
+                //check current .net version and if attribute has been added already
+                if ((IsNet45OrNewer()) && String.IsNullOrEmpty(GetFcnMode()))
+                {
+                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                                                xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
+                    XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                //in case of error installation shouldn't be stopped, log into log4net
+                Logger.Error(ex);
+                //strError += ex.Message;
+            }
+
+            //save the web.config
+            Save(xmlConfig);
+
+            return strError;  
+
+        }
+
 
     }
 }

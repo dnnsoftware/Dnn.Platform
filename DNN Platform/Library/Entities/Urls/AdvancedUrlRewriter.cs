@@ -36,17 +36,16 @@ using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.EventQueue;
-
-using Assembly = System.Reflection.Assembly;
 
 #endregion
 
@@ -262,7 +261,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 //get the portal alias info for the requested alias (which is the wrong one)
                                 //and set that as the alias, but also set the found alias as the primary
-                                PortalAliasInfo wrongAliasInfo = PortalAliasController.GetPortalAliasInfo(wrongAlias);
+                                PortalAliasInfo wrongAliasInfo = PortalAliasController.Instance.GetPortalAlias(wrongAlias);
                                 if (wrongAliasInfo != null)
                                 {
                                     result.PortalAlias = wrongAliasInfo;
@@ -289,7 +288,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!redirectAlias && IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
                     {
                         //it was an incorrect alias
-                        PortalAliasInfo primaryAlias = PortalAliasController.GetPortalAliasInfo(primaryHttpAlias);
+                        PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
                         if (primaryAlias != null) result.PrimaryAlias = primaryAlias;
                         //try and redirect the alias if the settings allow it
                         redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
@@ -303,6 +302,7 @@ namespace DotNetNuke.Entities.Urls
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                         response.AddHeader("Location", result.FinalUrl);
                         finished = true;
+                        response.End();
                     }
                     if (!finished)
                     {
@@ -343,7 +343,7 @@ namespace DotNetNuke.Entities.Urls
                         //check the identified portal alias details for any extra rewrite information required
                         //this includes the culture and the skin, which can be placed into the rewrite path
                         //This logic is here because it will catch any Urls which are excluded from rewriting
-                        var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                        var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                         if (result.PortalId > -1 && result.HttpAlias != null)
                         {
@@ -420,33 +420,11 @@ namespace DotNetNuke.Entities.Urls
                                 response.Status = "301 Moved Permanently";
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                 response.AddHeader("Location", result.FinalUrl);
+                                response.End();
                             }
                         }
                     }
-                    //look for a 404 result from the rewrite, because of a deleted page or rule
-                    if (!finished && result.Action == ActionType.Output404)
-                    {
-                        if (result.DomainName == result.HttpAlias && result.PortalAlias != null
-								&& result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
-                        {
-                            //Request for domain with no page identified (and no home page set in Site Settings)
-                            result.Action = ActionType.Continue;
-                        }
-                        else
-                        {
-                            finished = true;
-                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
-
-                            if (showDebug)
-                            {
-                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
-                            }
-                            //show the 404 page if configured
-                            result.Reason = RedirectReason.Requested_404;
-                            Handle404OrException(settings, context, null, result, true, showDebug);
-                        }
-                    }
-
+                    
                     if (!finished)
                     {
                         //check to see if this tab has an external url that should be forwared or not
@@ -475,6 +453,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.Status = "301 Moved Permanently";
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
+                                    response.End();
                                     break;
                                 case ActionType.Redirect302:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
@@ -487,6 +466,31 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                         finished = true;
+                    }
+
+                    //shifted until after the 301 redirect code to allow redirects to be checked for pages which have no rewrite value
+                    //look for a 404 result from the rewrite, because of a deleted page or rule
+                    if (!finished && result.Action == ActionType.Output404)
+                    {
+                        if (result.OriginalPath == result.HttpAlias && result.PortalAlias != null
+                                && result.Reason != RedirectReason.Deleted_Page && result.Reason != RedirectReason.Disabled_Page)
+                        {
+                            //Request for domain with no page identified (and no home page set in Site Settings)
+                            result.Action = ActionType.Continue;
+                        }
+                        else
+                        {
+                            finished = true;
+                            response.AppendHeader("X-Result-Reason", result.Reason.ToString().Replace("_", " "));
+
+                            if (showDebug)
+                            {
+                                ShowDebugData(context, requestUri.AbsoluteUri, result, null);
+                            }
+                            //show the 404 page if configured
+                            result.Reason = RedirectReason.Requested_404;
+                            Handle404OrException(settings, context, null, result, true, showDebug);
+                        }
                     }
 
                     if (!finished)
@@ -586,6 +590,7 @@ namespace DotNetNuke.Entities.Urls
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                             response.AddHeader("Location", result.FinalUrl);
                                             finished = true;
+                                            response.End();
                                         }
                                         else if (result.Action == ActionType.Redirect302)
                                         {
@@ -755,7 +760,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 //format up the error message to show
                 const string debugMsg = "{0}, {1}, {2}, {3}, {4}, {5}, {6}";
-                string productVer = Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
+                string productVer = DotNetNukeContext.Current.Application.Version.ToString();
                 string portalSettings = "";
                 string browser = "Unknown";
                 //949 : don't rely on 'result' being non-null
@@ -778,22 +783,11 @@ namespace DotNetNuke.Entities.Urls
                 response.AppendHeader("X-" + _productName + "-Debug",
                                       string.Format(debugMsg, requestUri, finalUrl, rewritePath, action, productVer,
                                                     portalSettings, browser));
-#if (DEBUG)
-                var rawOutput = new StringWriter();
-                rawOutput.WriteLine("<div style='background-color:black;color:white;'>");
-                rawOutput.WriteLine("<p>Advanced Url Rewriting Debug Output</p>");
-                rawOutput.WriteLine("<p>" +
-                                    string.Format(debugMsg, requestUri, finalUrl, rewritePath, action, productVer,
-                                                  portalSettings, browser) + "</p>");
-#endif
                 int msgNum = 1;
                 if (result != null)
                 {
                     foreach (string msg in result.DebugMessages)
                     {
-#if (DEBUG)
-                        rawOutput.WriteLine("<div>Debug Message " + msgNum.ToString("00") + ": " + msg + "</div>");
-#endif
                         response.AppendHeader("X-" + _productName + "-Debug-" + msgNum.ToString("00"), msg);
                         msgNum++;
                     }
@@ -802,19 +796,6 @@ namespace DotNetNuke.Entities.Urls
                 {
                     response.AppendHeader("X-" + _productName + "-Ex", ex.Message);
                 }
-#if (DEBUG)
-                if (ex != null)
-                {
-                    rawOutput.WriteLine("Exception : " + ex.Message);
-                }
-                else
-                {
-                    rawOutput.WriteLine("No Exception");
-                }
-
-                rawOutput.WriteLine("</div>");
-                response.Write(rawOutput.ToString());
-#endif
             }
         }
 
@@ -827,8 +808,13 @@ namespace DotNetNuke.Entities.Urls
                 var portalId = Host.Host.HostPortalID;
                 if (portalId > Null.NullInteger)
                 {
+                    if (string.IsNullOrEmpty(result.DomainName))
+                    {
+                        result.DomainName = Globals.GetDomainName(context.Request); //parse the domain name out of the request
+                    }
+
                     //Get all the existing aliases
-                    var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
                     bool autoaddAlias;
                     bool isPrimary = false;
@@ -856,10 +842,10 @@ namespace DotNetNuke.Entities.Urls
                         var portalAliasInfo = new PortalAliasInfo
                                                   {
                                                       PortalID = portalId, 
-                                                      HTTPAlias = result.RewritePath,
+                                                      HTTPAlias = result.DomainName,
                                                       IsPrimary = isPrimary
                                                   };
-                        TestablePortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+                        PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
 
                         context.Response.Redirect(context.Request.Url.ToString(), true);
                     }
@@ -982,8 +968,7 @@ namespace DotNetNuke.Entities.Urls
                     if (useDNNTab && errTabId > -1)
                     {
                         unhandled404 = false; //we're handling it here
-                        var tc = new TabController();
-                        TabInfo errTab = tc.GetTab(errTabId, result.PortalId, true);
+                        TabInfo errTab = TabController.Instance.GetTab(errTabId, result.PortalId, true);
                         if (errTab != null)
                         {
                             bool redirect = false;
@@ -1031,8 +1016,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 if (result.HttpAlias != null && result.PortalId > -1)
                                 {
-                                    var pac = new PortalAliasController();
-                                    PortalAliasInfo pa = pac.GetPortalAlias(result.HttpAlias, result.PortalId);
+                                    PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias, result.PortalId);
                                     ps = new PortalSettings(errTabId, pa);
                                 }
                                 else
@@ -1041,14 +1025,13 @@ namespace DotNetNuke.Entities.Urls
                                     //results when iis is configured to handle portal alias, but 
                                     //DNN isn't.  This always returns 404 because a multi-portal site
                                     //can't just show the 404 page of the host site.
-                                    var pc = new PortalController();
-                                    ArrayList portals = pc.GetPortals();
+                                    ArrayList portals = PortalController.Instance.GetPortals();
                                     if (portals != null && portals.Count == 1)
                                     {
                                         //single portal install, load up portal settings for this portal
                                         var singlePortal = (PortalInfo) portals[0];
                                         //list of aliases from database
-                                        var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(singlePortal.PortalID).ToList();
+                                        var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(singlePortal.PortalID).ToList();
                                         //list of aliases from Advanced Url settings
                                         List<string> chosen = aliases.GetAliasesForPortalId(singlePortal.PortalID);
                                         PortalAliasInfo useFor404 = null;
@@ -1150,17 +1133,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else
                         {
-#if (DEBUG)
-                            //955: xss vulnerability when outputting raw url back to the page
-                            //only do so in debug mode, and sanitize the Url.
-                            //sanitize output Url to prevent xss attacks on the default 404 page
-                            string requestedUrl = request.Url.ToString();
-                            requestedUrl = HttpUtility.HtmlEncode(requestedUrl);
-                            errorPageHtml.Write(status + "<br>The requested Url (" + requestedUrl +
-                                                ") does not return any valid content.");
-#else
                             errorPageHtml.Write(status + "<br>The requested Url does not return any valid content.");
-#endif
                             if (reason404 != null)
                             {
                                 errorPageHtml.Write(status + "<br>" + reason404);
@@ -1306,7 +1279,10 @@ namespace DotNetNuke.Entities.Urls
             {
                 request = context.Request;
             }
-            //check for external forwarding or a permanent redirect request
+
+            try
+            {
+                            //check for external forwarding or a permanent redirect request
             //592 : check for permanent redirect (823 : moved location from 'checkForRedirects')
             if (result.TabId > -1 && result.PortalId > -1 &&
                 (settings.ForwardExternalUrlsType != DNNPageForwardType.NoForward ||
@@ -1405,7 +1381,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         result.Action = ActionType.Redirect301;
                                         result.Reason = RedirectReason.Tab_Permanent_Redirect;
-                                            //should be already set, anyway
+                                        //should be already set, anyway
                                         result.RewritePath = cleanPath;
                                     }
                                     else
@@ -1456,6 +1432,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.AppendHeader("X-Redirect-Reason",
                                                           result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
+                                    response.End();
                                 }
                             }
                             else
@@ -1475,6 +1452,13 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+            }
+
+            }
+            catch (ThreadAbortException)
+            {
+                //do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
+                //level try/catch block, so we handle it here.
             }
             return finished;
         }
@@ -1620,7 +1604,7 @@ namespace DotNetNuke.Entities.Urls
             //if (result.RedirectAllowed && result.PortalId > -1)
             if (result.PortalId > -1) //portal has been identified
             {
-                var portalAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                 if (queryStringCol != null && queryStringCol["forceAlias"] != "true")
                 {
@@ -1635,7 +1619,11 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 if (portalAliases.Count > 0)
                                 {
-                                    var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
+                                    //var cpa = portalAliases.GetAliasByPortalIdAndSettings(result);
+                                    string url = requestUri.ToString();
+                                    RewriteController.CheckLanguageMatch(ref url, result);
+                                    var cpa = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, result.CultureCode, result.BrowserType);
+
                                     if (cpa != null)
                                     {
                                         httpAlias = cpa.HTTPAlias;
@@ -1768,7 +1756,7 @@ namespace DotNetNuke.Entities.Urls
             if (customAliasesForTabs != null && customAliasesForTabs.Count > 0)
             {
                 //remove any customAliases that are also primary aliases.
-                foreach (var cpa in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId))
+                foreach (var cpa in PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId))
                 {
                     if (cpa.IsPrimary == true && customAliasesForTabs.Contains(cpa.HTTPAlias))
                     {
@@ -1946,7 +1934,7 @@ namespace DotNetNuke.Entities.Urls
                 if (queryStringCol["alias"] != null && queryStringCol["captcha"] == null)
                 {
                     string alias = queryStringCol["alias"];
-                    PortalAliasInfo portalAlias = PortalAliasController.GetPortalAliasInfo(alias);
+                    PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(alias);
                     if (portalAlias != null)
                     {
                         //ok the portal alias was found by the alias name
@@ -1999,15 +1987,13 @@ namespace DotNetNuke.Entities.Urls
                         //691 : change logic to force change in portal alias context rather than force back.
                         //This is because the tabid in the query string should take precedence over the portal alias
                         //to handle parent.com/default.aspx?tabid=xx where xx lives in parent.com/child/ 
-                        var tc = new TabController();
-                        var tab = tc.GetTab(result.TabId, Null.NullInteger, false);
+                        var tab = TabController.Instance.GetTab(result.TabId, Null.NullInteger, false);
                         //when result alias is null or result alias is different from tab-identified portalAlias
                         if (tab != null && (result.PortalAlias == null || tab.PortalID != result.PortalAlias.PortalID))
                         {
                             //the tabid is different to the identified portalid from the original alias identified
                             //so get a new alias 
-                            var pac = new PortalAliasController();
-                            PortalAliasInfo tabPortalAlias = pac.GetPortalAlias(httpAliasFromTab, tab.PortalID);
+                            PortalAliasInfo tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(httpAliasFromTab, tab.PortalID);
                             if (tabPortalAlias != null)
                             {
                                 result.PortalId = tabPortalAlias.PortalID;
@@ -2024,15 +2010,15 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!string.IsNullOrEmpty(result.HttpAlias))
                 {
-                    result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.HttpAlias);
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.HttpAlias);
                 }
                 else
                 {
-                    result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.DomainName);
+                    result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
                     if (result.PortalAlias == null && result.DomainName.EndsWith("/"))
                     {
                         result.DomainName = result.DomainName.TrimEnd('/');
-                        result.PortalAlias = PortalAliasController.GetPortalAliasInfo(result.DomainName);
+                        result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
                     }
                 }
             }
@@ -2049,7 +2035,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     result.PortalId = Host.Host.HostPortalID;
                     // use the host portal, but replaced to the host portal home page
-                    var aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                    var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                     if (aliases.Count > 0)
                     {
                         string alias = null;
@@ -2094,7 +2080,7 @@ namespace DotNetNuke.Entities.Urls
                 //here because the portal alias matched, but no tab was found, and because there are custom tab aliases used for this portal
                 //need to redirect back to the chosen portal alias and keep the current path.
                 string wrongAlias = result.HttpAlias; //it's a valid alias, but only for certain tabs
-                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                 if (primaryAliases != null && result.PortalId > -1)
                 {
                     //going to look for the correct alias based on the culture of the request
@@ -2104,8 +2090,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         //this might end up in a double redirect if the path of the Url is for a specific language as opposed
                         //to a path belonging to the default language domain
-                        var pc = new PortalController();
-                        PortalInfo portal = pc.GetPortal(result.PortalId);
+                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
                         if (portal != null)
                         {
                             requestCultureCode = portal.DefaultLanguage;
@@ -2161,7 +2146,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string culture = null;
             //look for specific alias to rewrite language parameter
-            var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+            var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
             if (result.PortalId > -1 && result.HttpAlias != null)
             {
                 culture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
@@ -2269,7 +2254,10 @@ namespace DotNetNuke.Entities.Urls
                 || physicalPath.EndsWith("upgradewizard.aspx", true, CultureInfo.InvariantCulture)
                 || Globals.Status == Globals.UpgradeStatus.Install
                 || Globals.Status == Globals.UpgradeStatus.Upgrade)
+            {
                 return true;
+            }
+
             //954 : DNN 7.0 compatibility
             //check for /default.aspx which is default Url launched from the Upgrade/Install wizard page
             //961 : check domain as well as path for the referer
@@ -2286,12 +2274,38 @@ namespace DotNetNuke.Entities.Urls
             return false;
         }
 
+        private static bool IgnoreRequestForWebServer(string requestedPath)
+        {
+            if (requestedPath.ToLowerInvariant().IndexOf("synchronizecache.aspx", StringComparison.Ordinal) > 1
+                || requestedPath.EndsWith("keepalive.aspx", true, CultureInfo.InvariantCulture))
+            {
+                return true;
+            }
+
+            //Get the root
+            var rootPath = requestedPath.Substring(0, requestedPath.LastIndexOf("/", StringComparison.Ordinal));
+            rootPath = rootPath.Substring(rootPath.IndexOf("://", StringComparison.Ordinal) + 3);
+                
+            //Check if this is a WebServer and not a portalalias.
+            var alias = PortalAliasController.Instance.GetPortalAlias(rootPath);
+            if (alias != null)
+            {
+                return false;
+            }
+
+            //Check if this is a WebServer
+            var server = ServerController.GetEnabledServers().SingleOrDefault(s => s.Url == rootPath);
+            if (server != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static bool IgnoreRequestForInstall(HttpRequest request)
         {
             try
             {
-                //string physicalPath = request.PhysicalPath;
-                //return IgnoreRequestForInstall(physicalPath);
                 string physicalPath = request.PhysicalPath;
                 string requestedDomain = request.Url.Host;
                 string refererPath = null, refererDomain = null;
@@ -2316,7 +2330,7 @@ namespace DotNetNuke.Entities.Urls
             //check if we are upgrading/installing 
             //829 : use result physical path instead of requset physical path
             //875 : cater for the upgradewizard.aspx Url that is new to DNN 6.1
-            if (request != null && (IgnoreRequestForInstall(request)))
+            if (request != null && (IgnoreRequestForInstall(request) || IgnoreRequestForWebServer(requestedPath)))
             {
                 //ignore all install requests
                 retVal = true;
@@ -2453,8 +2467,6 @@ namespace DotNetNuke.Entities.Urls
                         || result.Action == ActionType.Redirect302)) //or specific 302 redirect
                 {
                     //we have ordered a 301 redirect earlier in the code
-                    var tc = new TabController();
-
                     //get the url for redirection by re-submitting the path into the Friendly Url Provider
                     string pathOnly = RewriteController.GetRewriteOrRequestedPath(result, requestUri);
                     //727 prevent redirectLoop with do301 in querystring
@@ -2477,7 +2489,7 @@ namespace DotNetNuke.Entities.Urls
                                 && settings.DeletedTabHandlingType == DeletedTabHandlingType.Do301RedirectToPortalHome)
                             {
                                 //redirecting to home page  
-                                TabInfo homeTab = tc.GetTab(portalHomeTabId, result.PortalId, false);
+                                TabInfo homeTab = TabController.Instance.GetTab(portalHomeTabId, result.PortalId, false);
                                 if (homeTab != null)
                                 {
                                     string homePageUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(homeTab, 
@@ -2644,7 +2656,7 @@ namespace DotNetNuke.Entities.Urls
                                 string rawUrlLowerCase = StripDebugParameter(requestUri.AbsoluteUri.ToLower());
 
                                 //check to see if just an alias redirect of an internal alias
-                                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
 
                                 if (settings.InternalAliasList != null && settings.InternalAliasList.Count > 0 && primaryAliases.Count > 0)
                                 {
@@ -2760,8 +2772,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool CheckFor301RedirectExclusion(int tabId, int portalId, bool checkBaseUrls, out TabInfo tab, FriendlyUrlSettings settings)
         {
             bool doRedirect = false;
-            var tc = new TabController();
-            tab = tc.GetTab(tabId, portalId, false);
+            tab = TabController.Instance.GetTab(tabId, portalId, false);
             //don't redirect unless allowed, the tab is valid, and it's not an admin or super tab 
             if (tab != null && tab.IsSuperTab == false && !tab.DoNotRedirect)
             {
