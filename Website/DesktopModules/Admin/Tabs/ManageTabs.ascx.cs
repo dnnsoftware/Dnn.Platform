@@ -1190,28 +1190,30 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
             else if (ReferenceEquals(control.GetType(), typeof(DnnComboBox)))
             {
+                var dnnComboBox = (DnnComboBox)control;
                 if (!string.IsNullOrEmpty(Convert.ToString(tabSettings[tabSettingsKey])))
                 {
-                    ((DnnComboBox)control).ClearSelection();
-                    ((DnnComboBox)control).FindItemByValue(tabSettings[tabSettingsKey].ToString()).Selected = true;
+                    dnnComboBox.ClearSelection();
+                    dnnComboBox.FindItemByValue(tabSettings[tabSettingsKey].ToString()).Selected = true;
                 }
                 else
                 {
-                    ((DnnComboBox)control).ClearSelection();
-                    ((DnnComboBox)control).FindItemByValue("").Selected = true;
+                    dnnComboBox.ClearSelection();
+                    dnnComboBox.FindItemByValue("").Selected = true;
 
                 }
             }
             else if (ReferenceEquals(control.GetType(), typeof(RadioButtonList)))
             {
+                var dnnRadioList = (RadioButtonList)control;
                 if (!string.IsNullOrEmpty(Convert.ToString(tabSettings[tabSettingsKey])))
                 {
-                    ((RadioButtonList)control).ClearSelection();
-                    ((RadioButtonList)control).Items.FindByValue(tabSettings[tabSettingsKey].ToString()).Selected = true;
+                    dnnRadioList.ClearSelection();
+                    dnnRadioList.Items.FindByValue(tabSettings[tabSettingsKey].ToString()).Selected = true;
                 }
                 else
                 {
-                    ((RadioButtonList)control).ClearSelection();
+                    dnnRadioList.ClearSelection();
                 }
             }
         }
