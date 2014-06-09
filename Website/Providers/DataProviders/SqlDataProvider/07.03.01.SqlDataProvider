@@ -166,6 +166,78 @@ INSERT INTO {databaseOwner}[{objectQualifier}Lists] ( [ListName], [Value], [Text
 
 GO
 
+/***** Fix bug Content-26684: when delete file version, do not update CreatedByUserID value. *****/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFileVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFileVersion] 
+	@FileId int,
+	@Version int
+AS
+BEGIN
+	DECLARE @PublishedVersion int
+
+	-- Check there is at least one version
+	IF NOT EXISTS(SELECT FileID FROM {objectQualifier}FileVersions WHERE FileId = @FileId)
+	BEGIN
+		SELECT NULL
+		RETURN
+	END
+		
+	SELECT @PublishedVersion = PublishedVersion
+	FROM {databaseOwner}{objectQualifier}Files
+	WHERE FileId = @FileId
+
+	IF @PublishedVersion = @Version 
+	BEGIN
+		-- Get the previous version
+		SELECT @PublishedVersion = MAX(Version)
+		FROM {databaseOwner}{objectQualifier}FileVersions 
+		WHERE FileId = @FileId
+			AND Version < @Version
+
+		-- If there is no previous version, get the min exsisting version
+		IF @PublishedVersion IS NULL 
+			SELECT @PublishedVersion = MIN(Version)
+			FROM {databaseOwner}{objectQualifier}FileVersions 
+			WHERE FileId = @FileId
+
+		-- Update the published version
+		IF @PublishedVersion IS NOT NULL 
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Files
+			SET [PublishedVersion] = @PublishedVersion,
+				[Extension] = v.[Extension],
+				[Size] = v.[Size],
+				[Width] = v.Width,		
+				[Height] = v.Height,
+				[ContentType] = v.ContentType,
+				[Content] = v.Content,
+				[LastModifiedByUserID] = v.LastModifiedByUserID,
+				[LastModifiedOnDate] = v.LastModifiedOnDate,
+				[SHA1Hash] = v.SHA1Hash
+			FROM {databaseOwner}{objectQualifier}files AS f
+				INNER JOIN {databaseOwner}{objectQualifier}FileVersions AS v
+				ON ( f.FileId = v.FileId AND v.Version = @PublishedVersion)		
+			WHERE f.FileId = @FileId
+
+			DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+			WHERE FileId = @FileId 
+			AND Version = @PublishedVersion
+		END
+	END
+
+	DELETE FROM {databaseOwner}{objectQualifier}FileVersions
+	WHERE FileId = @FileId 
+	  AND Version = @Version
+
+	SELECT @PublishedVersion
+END
+
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
