@@ -1202,6 +1202,18 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                 }
             }
+            else if (ReferenceEquals(control.GetType(), typeof(RadioButtonList)))
+            {
+                if (!string.IsNullOrEmpty(Convert.ToString(tabSettings[tabSettingsKey])))
+                {
+                    ((RadioButtonList)control).ClearSelection();
+                    ((RadioButtonList)control).Items.FindByValue(tabSettings[tabSettingsKey].ToString()).Selected = true;
+                }
+                else
+                {
+                    ((RadioButtonList)control).ClearSelection();
+                }
+            }
         }
 
         private void ShowCacheRows()
