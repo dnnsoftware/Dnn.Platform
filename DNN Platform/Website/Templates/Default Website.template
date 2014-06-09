@@ -2352,7 +2352,7 @@
               <footer />
               <header />
               <iconfile />
-              <inheritviewpermissions>false</inheritviewpermissions>
+              <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
               <modulepermissions>
                 <permission>
