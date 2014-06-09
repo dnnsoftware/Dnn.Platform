@@ -45,10 +45,6 @@
          <div class="dnnFormItem">
             <dnn:label id="sortFieldListLabel" runat="server" controlname="sortFieldList" />
             <asp:DropDownList runat="server" ID="sortFieldList">
-                <asp:ListItem Value="UserId" resourcekey="UserId"/>
-                <asp:ListItem Value="LastName" resourcekey="LastName"/>
-                <asp:ListItem Value="DisplayName" resourcekey="DisplayName"/>
-                <asp:ListItem Value="CreatedOnDate" resourcekey="DateCreated"/>
             </asp:DropDownList>
         </div>        
          <div class="dnnFormItem">
