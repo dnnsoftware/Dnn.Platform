@@ -24,6 +24,9 @@
             if($this.length == 0) return;
             dnn.addIframeMask($this[0]);
 		});
+		$(".dropdown").attr("aria-haspopup", "true");
+		$(".dropdownactive").attr("aria-haspopup", "true");
+		$(".dropdown-menu").attr("aria-haspopup", "false");
 	});
 })(jQuery);
 </script>
