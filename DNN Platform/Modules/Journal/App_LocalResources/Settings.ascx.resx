@@ -159,4 +159,10 @@
   <data name="MessageLength_Unlimited.Text" xml:space="preserve">
     <value>Unlimited</value>
   </data>
+  <data name="AllowResize.Help" xml:space="preserve">
+    <value>Choose whether or not uploaded big photos are going to be re-sized. Only those photos with at least one size dimension bigger than 400px, will be re-sized</value>
+  </data>
+  <data name="AllowResize.Text" xml:space="preserve">
+    <value>Re-size Photos</value>
+  </data>
 </root>
