@@ -846,6 +846,11 @@ namespace DotNetNuke.Entities.Tabs
             _tabUrls = null;
         }
 
+        internal void ClearSettingsCache()
+        {
+            _settings = null;
+        }
+
         #endregion
 
         #region Public Methods
