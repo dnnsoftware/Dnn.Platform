@@ -633,7 +633,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
             cboFolders.Services.Parameters.Add("permission", "ADD");
             var user = UserController.Instance.GetCurrentUserInfo();
-            var folders = FolderManager.Instance.GetFileSystemFolders(user, "BROWSE, ADD");
+            var folders = FolderManager.Instance.GetFolders(user, "BROWSE, ADD");
             var templateFolder = folders.SingleOrDefault(f => f.DisplayPath == "Templates/");
             if (templateFolder != null)
             {
