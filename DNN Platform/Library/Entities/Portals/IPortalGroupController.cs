@@ -42,5 +42,7 @@ namespace DotNetNuke.Entities.Portals
         void RemovePortalFromGroup(PortalInfo portal, PortalGroupInfo portalGroup, bool copyUsers, UserCopiedCallback callback);
 
         void UpdatePortalGroup(PortalGroupInfo portalGroup);
+
+        bool IsModuleShared(int moduleId, PortalInfo portal);
     }
 }

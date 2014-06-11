@@ -186,8 +186,8 @@ namespace DotNetNuke.Services.Search.Internals
         {
             //ModuleDefId will be zero for non-module
             var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
-            var keys = CBO.GetCachedObject<IDictionary<string, string>>(
-                            new CacheItemArgs(key, 120, CacheItemPriority.Default), SearchDocumentTypeDisplayNameCallBack);
+            var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
+                            new CacheItemArgs(key, 120, CacheItemPriority.Default), SearchDocumentTypeDisplayNameCallBack, false);
 
             return keys.ContainsKey(key) ? keys[key] : string.Empty;
         }

@@ -16,7 +16,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         setupDnnMainMenuButtons();
         setupDnnMainToolbarTitles();
 
-        //fileUpload = new dnnModule.DigitalAssetsFileUpload($, sf, moduleSettings, resourcesSettings, refreshFolder, getCurrentFolderPath);
     }
 
     var fileUpload;
@@ -141,6 +140,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 }
             }, 250);
         });
+
+        controller.initMainMenuButtons(settings);
     }
 
     function setupDnnMainToolbarTitles() {
@@ -559,6 +560,15 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             hideMenuOptions(menuSelector + " a.rmLink.disabledIfFiltered");
         }
 
+        var unlinkAllowedStatus = node.get_attributes().getAttribute("UnlinkAllowedStatus");
+        if (unlinkAllowedStatus.indexOf("onlyUnlink") >= 0) {
+            var deleteOption = treeViewContextMenu.findItemByValue("DeleteFolder");
+            hideMenuOption(deleteOption.get_element());
+        } else if (unlinkAllowedStatus.indexOf("false") >= 0) {
+            var unlinkOption = treeViewContextMenu.findItemByValue("UnlinkFolder");
+            hideMenuOption(unlinkOption.get_element());
+        }
+
         var permissions = node.get_attributes().getAttribute("permissions");
         checkPermissions(menuSelector, permissions, true, true);
     }
@@ -581,8 +591,16 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             case "DeleteFolder":
                 deleteItems([{
                     ItemId: node.get_value(),
-                    IsFolder: true
+                    IsFolder: true,
+                    UnlinkAllowedStatus: node.get_attributes().getAttribute("UnlinkAllowedStatus")
                 }], node.get_parent().get_value());
+                break;
+            case "UnlinkFolder":
+                unlinkFolder({
+                    ItemId: node.get_value(),
+                    IsFolder: true,
+                    ParentFolderId: node.get_parent().get_value()
+                });
                 break;
             case "Move":
                 moveDialog([{
@@ -1421,8 +1439,6 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (searchProvider && (!searchPattern || searchPattern == '')) {
             searchProvider.clearSearch();
         }
-
-        $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).show();
     }
 
     function loadInitialContent() {
@@ -1957,6 +1973,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         });
     }
 
+    function hideMenuOption(element) {
+        $(element).hide();
+    }
+
     function setupContextMenu(index, event) {
         var gridItem = grid.get_dataItems()[index];
         var items = setupSelectedItemsToContextMenu(gridItem, event.ctrlKey, event.shiftKey);
@@ -1993,8 +2013,20 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         var unzip = contextMenu.findItemByValue("UnzipFile");
         if (getExtension(gridItem.get_dataItem().ItemName) != "zip") {
-            unzip.set_visible(false);
+            hideMenuOption(unzip.get_element());
         }
+
+        if (items.length == 1) {
+            var unlinkAllowedStatus = gridItem.get_dataItem().UnlinkAllowedStatus;
+            if (unlinkAllowedStatus == "onlyUnlink") {
+                var deleteOption = contextMenu.findItemByValue("Delete");
+                hideMenuOption(deleteOption.get_element());
+            } else if (unlinkAllowedStatus == "false") {
+                var unlinkOption = contextMenu.findItemByValue("Unlink");
+                hideMenuOption(unlinkOption.get_element());
+            }
+        }
+        
 
         controller.setupGridContextMenuExtension(contextMenu, grid.get_selectedItems());
         
@@ -2083,6 +2115,16 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 $("#DigitalAssetsUnzipFileBtnId", "#" + controls.scopeWrapperId).hide();
             }
         }
+
+        if (items.length == 1) {
+            var unlinkAllowedStatus = items[0].UnlinkAllowedStatus;
+            if (unlinkAllowedStatus == "onlyUnlink") {
+                $("#DigitalAssetsDeleteBtnId", "#" + controls.scopeWrapperId).hide();
+            } else if (unlinkAllowedStatus == "false") {
+                $("#DigitalAssetsUnlinkBtnId", "#" + controls.scopeWrapperId).hide();
+            }
+        }
+        
 
         var $selectionToolbar = $("#dnnModuleDigitalAssetsSelectionToolbar", "#" + controls.scopeWrapperId);
         controller.updateSelectionToolBar($selectionToolbar, grid.get_selectedItems());
@@ -2433,6 +2475,71 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         deleteItems(convertToItemsFromGridItems(grid.get_selectedItems()), currentFolderId);
     }
 
+    function unlinkSelectedItems() {
+        var items = convertToItemsFromGridItems(grid.get_selectedItems());
+        if (items.length > 1) {
+            return;
+        }
+        if (!items[0].IsFolder) {
+            return;
+        }
+        unlinkFolder(items[0]);
+    }
+
+    function unlinkFolder(item)
+    {
+        var dialogTitle = resources.unlinkTitle;
+        var dialogText = resources.unlinkConfirmText;
+
+        $("<div class='dnnDialog'></div>").html(dialogText).dialog({
+            modal: true,
+            autoOpen: true,
+            dialogClass: "dnnFormPopup",
+            width: 400,
+            height: 190,
+            resizable: false,
+            title: dialogTitle,
+            buttons:
+            [
+                {
+                    id: "unlink_button",
+                    text: resources.unlinkText,
+                    "class": "dnnPrimaryAction",
+                    click: function() {
+                        $(this).dialog("close");
+                        enableLoadingPanel(true);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: getContentServiceUrl() + 'UnlinkFolder',
+                            data: { folderId: item.ItemId },
+                            async: false,
+                            beforeSend: servicesFramework.setModuleHeaders
+                        }).done(function(data) {                            
+                            
+                            if (item.ItemId == currentFolderId) {
+                                var parentNode = getCurrentNode().get_parent();
+                                currentFolderId = parentNode.get_value();
+                                parentNode.select();                                
+                            }
+                            loadFolderFirstPage(currentFolderId);
+
+                            treeView.trackChanges();
+                            treeView.findNodeByValue(item.ParentFolderId).get_nodes().remove(treeView.findNodeByValue(item.ItemId));
+                            treeView.commitChanges();
+                            treeViewRefreshScrollbars();                            
+                        }).fail(function(xhr) {
+                            handledXhrError(xhr, resources.unlinkFolderErrorText);
+                        }).always(function() {
+                            enableLoadingPanel(false);
+                        });
+                    }
+                },
+                { id: "cancel_button", text: resources.cancelText, click: function () { $(this).dialog("close"); }, "class": "dnnSecondaryAction" }
+            ]
+        });
+    }
+
     function convertToItemsFromGridItems(gridItems) {
         var items = [];
         for (var i = 0; i < gridItems.length; i++) {
@@ -2441,7 +2548,8 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 items.push({
                     ItemId: item.ItemID,
                     IsFolder: item.IsFolder,
-                    ParentFolderId: item.ParentFolderID
+                    ParentFolderId: item.ParentFolderID,
+                    UnlinkAllowedStatus: item.UnlinkAllowedStatus
                 });
             }
         }
@@ -2472,17 +2580,26 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
 
-    function deleteItems(items, parentFolderId) {
+    function confirmDeleteItems(items, parentFolderId, mappedSubfoldersCount) {
         var folderAndFileText = selectionText(items);
         var dialogTitle = resources.deleteTitle.replace('[ITEMS]', folderAndFileText);
         var dialogText = resources.deleteConfirmText.replace('[ITEMS]', folderAndFileText);
-
-        $("<div class='dnnDialog'></div>").html(dialogText).dialog({
+                                                
+        var dialogNote = "";
+        var dialogHeight = 190;
+        if (mappedSubfoldersCount > 0) {
+            dialogNote = mappedSubfoldersCount == 1 ? resources.deleteConfirmWithMappedSubfolderText.replace('[COUNT]', mappedSubfoldersCount)
+                                                    : resources.deleteConfirmWithMappedSubfoldersText.replace('[COUNT]', mappedSubfoldersCount);
+            dialogNote = "<p class='dialogNote'>" + dialogNote + "</p>";
+            dialogHeight = 230;
+        }
+        
+        $("<div class='dnnDialog'></div>").html(dialogText+dialogNote).dialog({
             modal: true,
             autoOpen: true,
             dialogClass: "dnnFormPopup",
             width: 400,
-            height: 190,
+            height: dialogHeight,
             resizable: false,
             title: dialogTitle,
             buttons:
@@ -2491,7 +2608,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                     id: "delete_button", text: resources.deleteText, "class": "dnnPrimaryAction", click: function () {
                         $(this).dialog("close");
                         enableLoadingPanel(true);
-                        
+
                         $.ajax({
                             url: getContentServiceUrl() + "DeleteItems",
                             data: {
@@ -2510,6 +2627,24 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 },
                 { id: "cancel_button", text: resources.cancelText, click: function () { $(this).dialog("close"); }, "class": "dnnSecondaryAction" }
             ]
+        });
+    }
+
+    function deleteItems(items, parentFolderId) {
+        enableLoadingPanel(true);
+        $.ajax({
+            url: getContentServiceUrl() + "GetMappedSubfoldersCount",
+            data: {
+                Items: items
+            },
+            type: "POST",
+            beforeSend: servicesFramework.setModuleHeaders
+        }).done(function(data) {
+            confirmDeleteItems(items, parentFolderId, data);
+        }).fail(function(xhr) {
+            handledXhrError(xhr, resources.deleteItemsErrorTitle);
+        }).always(function () {
+            enableLoadingPanel(false);
         });
     }
     
@@ -3010,7 +3145,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
             case "Delete":
                 deleteSelectedItems();
                 break;
-
+            case "Unlink":
+                unlinkSelectedItems();
+                break;
             case "Copy":
                 copySelectedItems();
                 break;
@@ -3452,6 +3589,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         openGetUrlModal: openGetUrlModal,
         loadInitialContent: loadInitialContent,
         getFullUrl: getFullUrl,
-        setupDnnMainToolbarTitles: setupDnnMainToolbarTitles
+        setupDnnMainToolbarTitles: setupDnnMainToolbarTitles,
+        unlinkSelectedItems: unlinkSelectedItems,
     };
 }(jQuery, $find, $telerik, dnnModal);

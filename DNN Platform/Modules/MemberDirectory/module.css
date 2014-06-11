@@ -74,7 +74,7 @@ ul.ui-autocomplete li{margin:0;padding:0;list-style:none;}
 		position:absolute;top:46px;left:0;
 		width:auto;
 		border:1px solid #ccc; background:#fff;
-		z-index:5;
+		z-index:10;
 		
 		/*CSS3*/
 		-moz-border-radius-bottomright: 3px;

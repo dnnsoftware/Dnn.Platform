@@ -26,6 +26,7 @@ using System.IO;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
@@ -137,7 +138,20 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <param name="items">Items list</param>
         /// <remarks>all the items belong at the same Folder</remarks>
         /// <returns>The non deleted item list. The files / subfolders for which the user has no permissions to delete</returns>
-        IEnumerable<ItemPathViewModel> DeleteItems(IEnumerable<ItemBaseViewModel> items);
+        IEnumerable<ItemPathViewModel> DeleteItems(IEnumerable<DeleteItem> items);
+
+        /// <summary>
+        /// Unlinks a specified folder
+        /// </summary>
+        /// <param name="folderID">The folder ID to be unlinked</param>
+        void UnlinkFolder(int folderID);
+
+        /// <summary>
+        /// Get the number of subfolders which support Mapped Path
+        /// </summary>
+        /// <param name="items">Items list</param>
+        /// <param name="portalID">Portal ID</param>
+        int GetMappedSubFoldersCount(IEnumerable<ItemBaseViewModel> items, int portalID);
 
         /// <summary>
         /// Renames a existing file.

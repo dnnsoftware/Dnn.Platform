@@ -17,7 +17,7 @@
     </div>
     <div class="dnnFormItem">
         <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
-        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" />
+        <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" CausesValidation="False" />
         <span class="dnnLoginRememberMe"><asp:checkbox id="chkCookie" resourcekey="Remember" runat="server" /></span>
     </div>
     <div class="dnnFormItem">
@@ -34,7 +34,7 @@
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
 		function setUpLogin() {
-			var actionLinks = $("a[id$=cmdLogin]");
+			var actionLinks = $("a[id$=DNN_cmdLogin]");
 			actionLinks.click(function () {
 				if ($(this).hasClass("dnnDisabledAction")) {
 					return false;

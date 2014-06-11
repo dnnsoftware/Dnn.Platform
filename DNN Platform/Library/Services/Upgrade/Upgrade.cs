@@ -2759,8 +2759,9 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
             }
 
-            //ensure old codeplex module is uninstalled
+            //ensure old codeplex module is uninstalled - need to check for both variants of package name
             UninstallPackage("DotNetNuke.Module Creator");
+            UninstallPackage("DNNCorp.ModuleCreator");
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");

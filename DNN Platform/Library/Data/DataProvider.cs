@@ -1610,7 +1610,7 @@ namespace DotNetNuke.Data
 		/// <param name="enablePublishPeriod">shall startdate/end date be used?</param>
 		/// <param name="contentItemId">ID of the associated contentitem with description etc. (optional)</param>
         public virtual void UpdateFile(int fileId, Guid versionGuid, string fileName, string extension, long size, 
-                                        int width, int height, string contentType, string folder, int folderId,
+                                        int width, int height, string contentType, int folderId,
                                         int lastModifiedByUserID, string hash, DateTime lastModificationTime, 
                                         string title, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
         {
@@ -1623,7 +1623,6 @@ namespace DotNetNuke.Data
                                       GetNull(width),
                                       GetNull(height),
                                       contentType,
-                                      folder,
                                       folderId,
                                       lastModifiedByUserID,
                                       hash,
@@ -1640,6 +1639,13 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateFileLastModificationTime",
                                       fileId,
                                       lastModificationTime);
+        }
+
+        public virtual void UpdateFileHashCode(int fileId, string hashCode)
+        {
+            ExecuteNonQuery("UpdateFileHashCode",
+                                      fileId,
+                                      hashCode);
         }
 
         public virtual void UpdateFileContent(int fileId, byte[] content)

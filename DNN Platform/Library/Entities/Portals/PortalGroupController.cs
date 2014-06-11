@@ -379,6 +379,12 @@ namespace DotNetNuke.Entities.Portals
 
             ClearCache();
         }
+        
+        public bool IsModuleShared(int moduleId, PortalInfo portal)
+        {
+            if (portal == null) return false;
+            return GetSharedModulesWithPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted) || GetSharedModulesByPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted);
+        }
 
         #endregion
     }

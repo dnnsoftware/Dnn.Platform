@@ -58,7 +58,8 @@
         };
 
         // initial setup for toast
-        if (checkLogin()) {
+        var pageUnloaded = window.dnnModal && window.dnnModal.pageUnloaded;
+        if (checkLogin() && !pageUnloaded) {
             dnn.toast.toastTimer = setTimeout(dnn.toast.refreshUser, 30000);
             dnn.toast.refreshUser();
         }

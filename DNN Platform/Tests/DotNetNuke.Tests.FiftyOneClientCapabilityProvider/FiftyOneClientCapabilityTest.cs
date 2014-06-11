@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
             var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
             // Act            
-            var bIsMobile = FiftyOneClientCapability.IsTablet;
+            var bIsMobile = FiftyOneClientCapability.IsMobile;
 
             //Assert
             Assert.IsTrue(bIsMobile);
@@ -143,7 +143,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
             var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
 
             // Act
-            var bIsMmobile = FiftyOneClientCapability.IsTablet;
+            var bIsMmobile = FiftyOneClientCapability.IsMobile;
 
             //Assert
             Assert.IsTrue(bIsMmobile);
@@ -156,7 +156,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
             var clientCapability = _clientCapabilityProvider.GetClientCapability(String.Empty);
 
             // Act
-            var bIsMmobile = clientCapability.IsTablet;
+            var bIsMmobile = clientCapability.IsMobile;
 
             //Assert
             Assert.IsFalse(bIsMmobile);
@@ -243,36 +243,6 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
 
             //Assert
             Assert.IsFalse(bIsMobile);
-        }
-
-        #endregion
-
-        #region Testing IsTablet True for common Tablets
-
-        [Test]
-        public void FiftyOneClientCapability_IsTablet_Returns_True_For_IPad()
-        {
-            //Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
-
-            // Act
-            var bIsTablet = FiftyOneClientCapability.IsTablet;
-
-            //Assert
-            Assert.IsTrue(bIsTablet);
-        }
-
-        [Test]
-        public void FiftyOneClientCapability_IsTablet_Returns_True_For_SamsungGalaxyGTP1000()
-        {
-            //Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
-
-            // Act
-            var bIsTablet = FiftyOneClientCapability.IsTablet;
-
-            //Assert
-            Assert.IsTrue(bIsTablet);
         }
 
         #endregion
@@ -372,80 +342,6 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
 
             //Assert
             Assert.IsFalse(bIsTablet);
-        }
-
-        #endregion
-
-        #region Testing touchscreen for known devices
-
-        [Test]
-        public void FiftyOneClientCapability_IsTouchScreen_Returns_True_For_IPhone()
-        {
-            // Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
-
-            // Act
-            var bIsTouchScreen = FiftyOneClientCapability.IsTouchScreen;
-
-            //Assert
-            Assert.IsTrue(bIsTouchScreen);
-        }
-
-        [Test]
-        public void FiftyOneClientCapability_IsTouchScreen_Returns_True_For_WP7()
-        {
-            //Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(wp7UserAgent);
-
-            // Act
-            var bIsTouchScreen = FiftyOneClientCapability.IsTouchScreen;
-
-            //Assert
-            Assert.IsTrue(bIsTouchScreen);
-        }
-
-        [Test]
-        public void FiftyOneClientCapability_IsTouchScreen_Returns_True_For_IPad()
-        {
-            //Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
-
-            // Act
-            var bIsTouchScreen = FiftyOneClientCapability.IsTouchScreen;
-
-            //Assert
-            Assert.IsTrue(bIsTouchScreen);
-        }
-
-        [Test]
-        public void FiftyOneClientCapability_IsTouchScreen_Returns_False_For_BlackBerry9105V1()
-        {
-            //Arrange
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(blackBerry9105V1);
-
-            // Act
-            var bIsTouchScreen = FiftyOneClientCapability.IsTouchScreen;
-
-            //Assert
-            Assert.IsFalse(bIsTouchScreen);
-        }
-
-        #endregion
-
-        #region Testing BrowserName
-
-        [Test]
-        public void FiftyOneClientCapability_BrowserName_Returns_BrowserName_For_IPhone()
-        {
-            // Arrange
-            var browserName = "Mobile Safari";
-            var FiftyOneClientCapability = _clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
-
-            // Act
-            var actualBrowserName = FiftyOneClientCapability.BrowserName;
-
-            //Assert
-            Assert.AreEqual(browserName, actualBrowserName);
         }
 
         #endregion

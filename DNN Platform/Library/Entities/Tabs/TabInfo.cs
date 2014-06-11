@@ -846,6 +846,11 @@ namespace DotNetNuke.Entities.Tabs
             _tabUrls = null;
         }
 
+        internal void ClearSettingsCache()
+        {
+            _settings = null;
+        }
+
         #endregion
 
         #region Public Methods
@@ -904,6 +909,7 @@ namespace DotNetNuke.Entities.Tabs
 
             clonedTab.Panes = new ArrayList();
             clonedTab.Modules = new ArrayList();
+
             return clonedTab;
         }
 

@@ -93,7 +93,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab = new TabInfo { TabID = Null.NullInteger, PortalID = PortalId };
                             break;
                         case "copy":
-                            _tab = TabController.Instance.GetTab(TabId, PortalId, false).Clone();
+                            var originalTab = TabController.Instance.GetTab(TabId, PortalId, false);
+                            _tab = originalTab.Clone();
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -101,6 +102,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             _tab.TabPath = Null.NullString;
                             _tab.DefaultLanguageGuid = Null.NullGuid;
                             _tab.CultureCode = Null.NullString;
+                            foreach (var key in originalTab.TabSettings.Keys)
+                            {
+                                _tab.TabSettings[key] = originalTab.TabSettings[key];
+                            }
 
                             break;
                         default:
@@ -426,17 +431,16 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 var tabList = GetTabs(true, true, false, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.TabID);
-                cboParentTab.SelectedPage = selectedParentTab;                   
+                if (selectedParentTab != null &&  (selectedParentTab.TabPath.StartsWith("//Admin") == false && selectedParentTab.TabPath.StartsWith("//Host") == false))
+                {
+                    cboParentTab.SelectedPage = selectedParentTab;
+                }  
             }
             else
             {
                 var tabList = GetTabs(true, true, true, true);
                 var selectedParentTab = tabList.SingleOrDefault(t => t.TabID == PortalSettings.ActiveTab.ParentId);
-
-                if (selectedParentTab != null && (selectedParentTab.TabPath.StartsWith("//Admin")==false && selectedParentTab.TabPath.StartsWith("//Host") == false))
-                {
-                    cboParentTab.SelectedPage = selectedParentTab;
-                }
+                cboParentTab.SelectedPage = selectedParentTab;            
             }
 
             if (string.IsNullOrEmpty(_strAction) || _strAction == "add" || _strAction == "copy")
@@ -629,7 +633,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
             cboFolders.Services.Parameters.Add("permission", "ADD");
             var user = UserController.Instance.GetCurrentUserInfo();
-            var folders = FolderManager.Instance.GetFileSystemFolders(user, "BROWSE, ADD");
+            var folders = FolderManager.Instance.GetFolders(user, "BROWSE, ADD");
             var templateFolder = folders.SingleOrDefault(f => f.DisplayPath == "Templates/");
             if (templateFolder != null)
             {
@@ -1161,7 +1165,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         {
                             if (redirecturl.Url == url && redirecturl.HttpStatus != "200")
                             {
-                                TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, false);
+                                TabController.Instance.DeleteTabUrl(redirecturl, Tab.PortalID, true);
                             }
                         }
                     }

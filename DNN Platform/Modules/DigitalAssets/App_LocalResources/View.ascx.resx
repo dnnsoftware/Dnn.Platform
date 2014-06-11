@@ -456,4 +456,25 @@
   <data name="ToolbarTitle.Views.Text" xml:space="preserve">
     <value>Views</value>
   </data>
+  <data name="Unlink.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkFolder.Text" xml:space="preserve">
+    <value>Unlink Folder</value>
+  </data>
+  <data name="UnlinkFolderError.Title" xml:space="preserve">
+    <value>An error occurred while unlinking the folder</value>
+  </data>
+  <data name="Unlink.Title" xml:space="preserve">
+    <value>Unlink Folder...</value>
+  </data>
+  <data name="UnlinkConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to unlink the Folder?</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolder.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folder. This will be unliked from this site and the folder and files will remain at the remote location</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folders. These will be unliked from this site and folders and files will remain at the remote location</value>
+  </data>
 </root>

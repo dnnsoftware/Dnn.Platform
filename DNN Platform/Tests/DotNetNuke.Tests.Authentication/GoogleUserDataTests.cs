@@ -25,7 +25,7 @@ using DotNetNuke.Services.Authentication.OAuth;
 
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Authentication
 {
     [TestFixture]
     public class GoogleUserDataTests

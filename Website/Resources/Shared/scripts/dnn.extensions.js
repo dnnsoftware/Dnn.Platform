@@ -27,7 +27,7 @@ if (typeof Object.getOwnPropertyNames === "undefined") {
     Object.getOwnPropertyNames = function(obj) {
         var ownProperties = [];
         for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
+            if (obj.hasOwnProperty && obj.hasOwnProperty(key)) {
                 ownProperties.push(key);
             }
         }

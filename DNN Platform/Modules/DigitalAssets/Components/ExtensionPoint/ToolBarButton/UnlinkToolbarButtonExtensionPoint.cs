@@ -21,7 +21,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.UI.Modules;
@@ -31,29 +30,29 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
     //TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
-    [ExportMetadata("Name", "ViewPropertiesDigitalAssetsToolBarButton")]
+    [ExportMetadata("Name", "DigitalAssetsUnlinkToolBarButton")]
     [ExportMetadata("Group", "Selection")]
     [ExportMetadata("Priority", 1)]
-    public class ViewPropertiesSelectionToolBarButtonExtensionPoint : IToolBarButtonExtensionPoint
+    public class UnlinkToolBarButtonExtensionPoint : IToolBarButtonExtensionPoint
     {
         public string ButtonId
         {
-            get { return "DigitalAssetsViewPropertiesSelectionBtnId"; }
+            get { return "DigitalAssetsUnlinkBtnId"; }
         }
 
         public string CssClass
         {
-            get { return "DigitalAssetsSelectionToolBar permission_READ singleItem"; }
+            get { return "DigitalAssetsSelectionToolBar DigitalAssetsUnlink permission_DELETE onlyFolders singleItem"; }
         }
 
         public string Action
         {
-            get { return "dnnModule.digitalAssets.showProperties()"; }
+            get { return "dnnModule.digitalAssets.unlinkSelectedItems()"; }
         }
 
         public string AltText
         {
-            get { return LocalizationHelper.GetString("ViewPropertiesSelectionToolBarButtonExtensionPoint.AltText"); }
+            get { return LocalizationHelper.GetString("UnlinkToolBarButtonExtensionPoint.AltText"); }
         }
 
         public bool ShowText
@@ -68,15 +67,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string Text
         {
-            get { return LocalizationHelper.GetString("ViewPropertiesSelectionToolBarButtonExtensionPoint.Text"); }
+            get { return LocalizationHelper.GetString("UnlinkToolBarButtonExtensionPoint.Text"); }
         }
 
         public string Icon
         {
-            get
-            {
-                return IconController.IconURL("ViewProperties", "16x16", "ToolBar");
-            } 
+            get { return IconController.IconURL("UnLink", "16x16", "Gray"); }
         }
 
         public int Order

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Web;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
@@ -29,6 +24,8 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         {
             PortalController.ClearInstance();
             RoleController.ClearInstance();
+            RelationshipController.ClearInstance();
+            UserController.ClearInstance();
         }
 
         [Test]
@@ -65,6 +62,186 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsFollowerRoleAndRoleEntityIsFollowedByUser()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FOLLOWER:" + relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFollowerRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(new UserRelationship() { Status = RelationshipStatus.Accepted });
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFollowerRoleAndRoleEntityIsNotFollowedByUser()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FOLLOWER:" + relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFollowerRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(() => null);
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        [TestCase(RelationshipStatus.None)]
+        [TestCase(RelationshipStatus.Pending)]
+        public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFollowerRoleAndRelationshipIsNotAccepted(RelationshipStatus relationshipStatus)
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FOLLOWER:" + relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFollowerRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(new UserRelationship() { Status = relationshipStatus });
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsFriendRoleAndRoleEntityIsFriend()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FRIEND:"+relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFriendRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(new UserRelationship() {Status = RelationshipStatus.Accepted});
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+            
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFriendRoleAndRoleEntityIsNotFriend()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FRIEND:" + relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFriendRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(() => null);
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        [TestCase(RelationshipStatus.None)]
+        [TestCase(RelationshipStatus.Pending)]
+        public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFriendRoleAndRelationshipIsNotAccepted(RelationshipStatus relationshipStatus)
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
+            var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
+            string roles = "FRIEND:" + relatedUser.UserID;
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetUserById(It.IsAny<int>(), Constants.USER_ValidId)).Returns(relatedUser);
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var mockRelationShipController = new Mock<IRelationshipController>();
+            mockRelationShipController.Setup(
+                rsc =>
+                    rsc.GetFriendRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
+                        .Returns(new UserRelationship() { Status = relationshipStatus });
+            RelationshipController.SetTestableInstance(mockRelationShipController.Object);
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsOwnerRoleAndRoleEntityIsUser()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = UserId };
+            string roles = "OWNER:"+UserId;
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
+
+
+        [Test]
+        public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsOwnerRoleAndRoleEntityIsNotUser()
+        {
+            //Arrange
+            var user = new UserInfo { IsSuperUser = false, UserID = UserId };
+            string roles = "OWNER:" + UserId+1;
+
+            var portalSettings = SetupPortalSettings();
+
+            //Act and Assert
+            Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
+        }
 
         [Test]
         public void PortalSecurity_IsInRoles_NonAdmin_In_Deny_Role_Is_False()

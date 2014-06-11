@@ -107,7 +107,7 @@
         }
     );
 
-    if (dnn.controls.triStateManager) {
+    if (dnn && dnn.controls && dnn.controls.triStateManager) {
         dnn.controls.triStateManager.updateAdvancedState = function (state, callback) {
             var $collection = this.parent().parent().find('td input.tristate');
             if ((this.hasClass('browse') || this.hasClass('read')) && state === 'False') {

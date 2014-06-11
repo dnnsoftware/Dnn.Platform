@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -170,6 +171,30 @@ namespace DotNetNuke.Services.FileSystem
             return folder.FolderID;
         }
 
+        private bool GetOnlyUnmap(IFolderInfo folder)
+        {
+            if (folder == null || folder.ParentID == Null.NullInteger)
+            {
+                return true;
+            }
+            return (FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
+                GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID) ;
+        }
+
+        private void UnmapFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
+        {
+            Requires.NotNull("folder", folder);
+
+            if (DirectoryWrapper.Instance.Exists(folder.PhysicalPath))
+            {
+                DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
+            }
+            DeleteFolder(folder.PortalID, folder.FolderPath);
+
+            // Notify folder deleted event
+            OnFolderDeleted(folder, GetCurrentUserId(), isCascadeDeleting);
+        }
+
         private void DeleteFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
         {
             Requires.NotNull("folder", folder);
@@ -297,8 +322,8 @@ namespace DotNetNuke.Services.FileSystem
 
 			return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
 		}
-
-        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder)
+        
+        private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder, bool unmap)
         {
             Requires.NotNull("folder", folder);
 
@@ -310,7 +335,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 foreach (var subfolder in subfolders)
                 {
-                    if (!DeleteFolderRecursive(subfolder, notDeletedSubfolders, false))
+                    if (!DeleteFolderRecursive(subfolder, notDeletedSubfolders, false, unmap || GetOnlyUnmap(subfolder)))
                     {
                         allSubFoldersHasBeenDeleted = false;
                     }
@@ -319,13 +344,27 @@ namespace DotNetNuke.Services.FileSystem
                 var files = GetFiles(folder, false, true);
                 foreach (var file in files)
                 {
-                    FileDeletionController.Instance.DeleteFile(file);
+                    if (unmap)
+                    {
+                        FileDeletionController.Instance.UnlinkFile(file);
+                    }
+                    else
+                    {
+                        FileDeletionController.Instance.DeleteFile(file);                        
+                    }
                     OnFileDeleted(file, GetCurrentUserId(), true);
-                }
-
+                }    
+                
                 if (allSubFoldersHasBeenDeleted)
                 {
-                    DeleteFolderInternal(folder, !isRecursiveDeletionFolder);                    
+                    if (unmap)
+                    {
+                        UnmapFolderInternal(folder, !isRecursiveDeletionFolder);
+                    }
+                    else
+                    {
+                        DeleteFolderInternal(folder, !isRecursiveDeletionFolder);                        
+                    }
                     return true;
                 }
             }
@@ -524,8 +563,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual void DeleteFolder(IFolderInfo folder)
+        {                
+            DeleteFolderInternal(folder, false);         
+        }
+
+        public virtual void UnlinkFolder(IFolderInfo folder)
         {
-            DeleteFolderInternal(folder, false);
+            DeleteFolderRecursive(folder, new Collection<IFolderInfo>(), true, true);
         }
 
         /// <summary>
@@ -547,7 +591,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns></returns>
         public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
         {
-            DeleteFolderRecursive(folder, notDeletedSubfolders, true);
+            DeleteFolderRecursive(folder, notDeletedSubfolders, true, GetOnlyUnmap(folder));
         }
 
        /// <summary>

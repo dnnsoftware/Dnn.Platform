@@ -44,6 +44,7 @@ using System.Xml;
 using DotNetNuke.Application;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities;
@@ -261,12 +262,6 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <value>ContentPane</value>
         public const string glbDefaultPane = "ContentPane";
-
-        /// <summary>
-        /// Image file types
-        /// </summary>
-        /// <value>jpg,jpeg,jpe,gif,bmp,png,swf</value>
-        public const string glbImageFileTypes = "jpg,jpeg,jpe,gif,bmp,png";
 
         /// <summary>
         /// Config files folder
@@ -776,6 +771,25 @@ namespace DotNetNuke.Common
 
             return cultureCode;
         }
+
+        /// <summary>
+        /// Image file types
+        /// </summary>
+        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,swf</value>
+        public static string glbImageFileTypes
+        {
+            get
+            {
+                var listController = new ListController();
+                var listEntries = listController.GetListEntryInfoItems("ImageTypes");
+                if (listEntries == null || listEntries.Count() == 0)
+                {
+                    return "jpg,jpeg,jpe,gif,bmp,png";
+                }
+                return String.Join(",", listEntries.Select(l => l.Value));
+            }
+        }
+
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -3806,7 +3820,8 @@ namespace DotNetNuke.Common
         {
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
             var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
-            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}";
+            var cdv = DateTime.Now.Ticks;
+            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}&cdv="+cdv;
 
         }
 

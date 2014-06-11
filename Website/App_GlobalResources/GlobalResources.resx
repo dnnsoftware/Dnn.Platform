@@ -1168,8 +1168,8 @@ Sincerely,
   <data name="//NewsPromotions.String" xml:space="preserve">
     <value>News &amp; Promotions</value>
   </data>
-  <data name="//OurServices.String" xml:space="preserve">
-    <value>Our Services</value>
+  <data name="//OurProducts.String" xml:space="preserve">
+    <value>Our Products</value>
   </data>
   <data name="//Modules.Text" xml:space="preserve">
     <value>Modules</value>

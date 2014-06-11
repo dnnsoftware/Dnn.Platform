@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -216,6 +217,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+
 
             _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
 
@@ -274,6 +277,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
             _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
 
@@ -1043,7 +1047,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
-                It.IsAny<string>(),
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
@@ -1168,6 +1171,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void GetContentType_Returns_Known_Value_When_Extension_Is_Not_Managed()
         {
             const string notManagedExtension = "asdf609vas21AS:F,l/&%/(%$";
+            _mockFileManager.Setup(mfm => mfm.ContentTypes).Returns(new Dictionary<string, string>());
 
             var contentType = _fileManager.GetContentType(notManagedExtension);
 

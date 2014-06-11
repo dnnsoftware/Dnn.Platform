@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         internal const string AllowFiles = "Journal_AllowFiles";
         internal const string AllowedFileTypes = "Journal_AllowedFileTypes";
         internal const string AllowPhotos = "Journal_AllowPhotos";
+        internal const string AllowResizePhotos = "Journal_AllowResizePhotos";
         internal const string DefaultSecurity = "Journal_DefaultSecurity";
         internal const string MaxCharacters = "Journal_MaxCharacters";
         internal const string JournalFilters = "Journal_Filters";

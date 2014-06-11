@@ -24,7 +24,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Web.Caching;
 using System.Web.Http;
+
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals.Data;
@@ -126,6 +129,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         #endregion
 
         #region Private Properties
+
+        private Mock<ICBO> _mockCBO;
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<DataProvider> _mockDataProvider;
@@ -136,8 +141,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private Mock<ITabController> _mockTabController;
         private SearchServiceController _searchServiceController;
         private IInternalSearchController _internalSearchController;
-        private InternalSearchControllerImpl _internalSearchControllerImpl;
         private LuceneControllerImpl _luceneController;
+
         #endregion
 
         #region Set Up
@@ -165,9 +170,14 @@ namespace DotNetNuke.Tests.Web.InternalServices
             DeleteIndexFolder();
             
             TabController.SetTestableInstance(_mockTabController.Object);
-            _internalSearchControllerImpl = new InternalSearchControllerImpl();
-            InternalSearchController.SetTestableInstance(_internalSearchControllerImpl);
             _internalSearchController = InternalSearchController.Instance;
+
+            _mockCBO = new Mock<ICBO>();
+            var tabKey = string.Format("{0}-{1}", TabSearchTypeId, 0);
+            var userKey = string.Format("{0}-{1}", UserSearchTypeId, 0);
+            _mockCBO.Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+                    .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
+            CBO.SetTestableInstance(_mockCBO.Object);
 
             //create instance of the SearchServiceController
             _searchServiceController = new SearchServiceController(HtmlModDefId);
@@ -178,6 +188,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             _luceneController.Dispose();
             DeleteIndexFolder();
+            CBO.ClearInstance();
             TabController.ClearInstance();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();

@@ -332,6 +332,9 @@ span.dnnModuleDigitalAssetsNoItems {
     margin-right: 10px;
     margin-left: 0;
 }
+#dnnModuleDigitalAssetsMainToolbar button.hidden, #dnnModuleDigitalAssetsMainToolbar span.hidden {
+    display: none !important;
+}
 
 #dnnModuleDigitalAssetsMainToolbar button span {
     background-position: center center;
@@ -1201,4 +1204,8 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
 #FilterByFolderOptions .dnnDropDownList {
     margin-bottom: 0;
     width: 98%;
+}
+
+.dialogNote {
+    margin: 5px 0 5px 0;
 }

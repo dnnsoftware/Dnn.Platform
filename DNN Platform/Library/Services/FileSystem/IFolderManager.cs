@@ -85,6 +85,12 @@ namespace DotNetNuke.Services.FileSystem
         void DeleteFolder(int folderId);
 
         /// <summary>
+        /// Unlink the specified folder
+        /// </summary>
+        /// <param name="folder">The folder to unlink</param>
+        void UnlinkFolder(IFolderInfo folder);
+
+        /// <summary>
         /// Delete the specified folder and all its content
         /// </summary>
         /// <param name="folder"> The folder to delete></param>

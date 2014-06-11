@@ -55,7 +55,7 @@ using DotNetNuke.Web.Api.Internal;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    [DnnAuthorize]
+    [DnnAuthorize]    
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
@@ -441,10 +441,9 @@ namespace DotNetNuke.Web.InternalServices
 
                 var folderManager = FolderManager.Instance;
 
-                // Check if this is a User Folder
-                var effectivePortalId = isHostPortal
-                                            ? Null.NullInteger
-                                            : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostPortal ? Null.NullInteger : portalSettings.PortalId;
+
+                // Check if this is a User Folder                
                 int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out userId))
@@ -536,6 +535,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+        [AllowAnonymous]
         public Task<HttpResponseMessage> UploadFromLocal()
         {
             var request = Request;
@@ -629,6 +629,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)
         {
             FileUploadDto result;

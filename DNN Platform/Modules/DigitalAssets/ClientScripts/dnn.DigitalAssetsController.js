@@ -87,6 +87,8 @@ dnnModule.DigitalAssetsController.prototype = function () {
             };
         },
         leftPaneTabActivated = function(id) {
+        },
+        initMainMenuButtons = function(settings) {
         };
 
     return {
@@ -110,6 +112,7 @@ dnnModule.DigitalAssetsController.prototype = function () {
         getLeftPaneActions: getLeftPaneActions,
         updateModuleState: updateModuleState,
         getCurrentState: getCurrentState,
-        leftPaneTabActivated: leftPaneTabActivated
+        leftPaneTabActivated: leftPaneTabActivated,
+        initMainMenuButtons: initMainMenuButtons
     };
 }();

@@ -79,6 +79,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PetaPoco">
+      <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -165,7 +168,6 @@
     <Compile Include="Services\Tokens\PropertyAccessTests.cs" />
     <Compile Include="TabCollectionTest.cs" />
     <Compile Include="Services\HtmlUtilsTest.cs" />
-    <Compile Include="TestSetup.cs" />
     <Compile Include="Providers\Caching\DataCacheTests.cs" />
     <Compile Include="Providers\Caching\MoqExtensions.cs">
       <SubType>Code</SubType>
@@ -217,6 +219,7 @@
   <ItemGroup>
     <None Include="..\App.config">
       <Link>App.config</Link>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
