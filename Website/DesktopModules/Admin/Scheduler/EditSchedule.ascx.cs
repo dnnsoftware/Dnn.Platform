@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 }
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
-                txtServers.Text = scheduleItem.Servers;
+                txtServers.Text = scheduleItem.Servers.Trim(',');
             }
             else
             {
