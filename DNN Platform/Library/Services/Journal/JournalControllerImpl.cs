@@ -44,6 +44,9 @@ namespace DotNetNuke.Services.Journal
     internal class JournalControllerImpl : IJournalController
     {
         private readonly IJournalDataService _dataService;
+        private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";
+        private const string AllowPhotosSetting = "Journal_AllowPhotos";
+        private const string EditorEnabledSetting = "Journal_EditorEnabled";
 
         #region Constructors
 
@@ -175,6 +178,21 @@ namespace DotNetNuke.Services.Journal
         private bool ThumbnailCallback()
         {
             return true;
+        }
+
+        private bool IsResizePhotosEnabled(ModuleInfo module)
+        {
+            return GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
+                   GetBooleanSetting(AllowPhotosSetting, true, module) &&
+                   GetBooleanSetting(EditorEnabledSetting, true, module);
+        }
+        private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
+        {            
+            if (module.ModuleSettings.Contains(settingName))
+            {
+                return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
+            }
+            return defaultValue;
         }
         #endregion
 
@@ -539,11 +557,11 @@ namespace DotNetNuke.Services.Journal
             return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
-        public IFileInfo SaveJourmalFile(UserInfo userInfo, string fileName, Stream fileContent)
+        public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
         {
             var userFolder = FolderManager.Instance.GetUserFolder(userInfo);
 
-            if (IsImageFile(fileName))
+            if (IsImageFile(fileName) && IsResizePhotosEnabled(module))
             {
                 return FileManager.Instance.AddFile(userFolder, fileName, GetJournalImageContent(fileContent), true);
             }

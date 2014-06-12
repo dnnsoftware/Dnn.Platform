@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private IDictionary<string, string> _contentTypes;
 
-        protected IDictionary<string, string> ContentTypes
+        public virtual IDictionary<string, string> ContentTypes
         {
             get
             {
@@ -78,14 +78,17 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     var listController = new ListController();
                     var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-                    if (listEntries == null || listEntries.Count() == 0)
+                    if (listEntries == null || !listEntries.Any())
                     {
                         _contentTypes = GetDefaultContentTypes();
                     }
                     _contentTypes = new Dictionary<string, string>();
-                    foreach (var contentTypeEntry in listEntries)
+                    if (listEntries != null)
                     {
-                        _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                        foreach (var contentTypeEntry in listEntries)
+                        {
+                            _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                        }
                     }
                 }
 
@@ -953,6 +956,16 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
+        /// Gets a flag that dertermines if the file is an Image
+        /// </summary>
+        /// <param name="file">The file to test.</param>
+        /// <returns>The flag as a boolean value.</returns>
+        public virtual bool IsImageFile(IFileInfo file)
+        {
+            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLower().Replace(".", "") + ",") > -1;
+        }
+
+        /// <summary>
         /// Moves the specified file into the specified folder.
         /// </summary>
         /// <param name="file">The file to move.</param>
@@ -1664,12 +1677,6 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual bool IsFileAutoSyncEnabled()
         {
             return Host.EnableFileAutoSync;
-        }
-
-        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual bool IsImageFile(IFileInfo file)
-        {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLower().Replace(".", "") + ",") > -1;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (IsAllowedExtension(fileName))
                 {
-                    var fileInfo = JournalController.Instance.SaveJourmalFile(UserInfo, fileName, file.InputStream);
+                    var fileInfo = JournalController.Instance.SaveJourmalFile(ActiveModule, UserInfo, fileName, file.InputStream);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {
