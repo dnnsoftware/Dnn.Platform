@@ -207,20 +207,18 @@ BEGIN
 		IF @PublishedVersion IS NOT NULL 
 		BEGIN
 			UPDATE {databaseOwner}{objectQualifier}Files
-			SET [PublishedVersion] = @PublishedVersion,
-				[Extension] = v.[Extension],
-				[Size] = v.[Size],
-				[Width] = v.Width,		
-				[Height] = v.Height,
-				[ContentType] = v.ContentType,
-				[Content] = v.Content,
+			SET [PublishedVersion]         = @PublishedVersion,
+				[Extension]            = [Extension],
+				[Size]                 = [Size],
+				[Width]                = Width,		
+				[Height]               = Height,
+				[ContentType]          = ContentType,
+				[Content]              = Content,
 				[LastModifiedByUserID] = v.LastModifiedByUserID,
-				[LastModifiedOnDate] = v.LastModifiedOnDate,
-				[SHA1Hash] = v.SHA1Hash
-			FROM {databaseOwner}{objectQualifier}files AS f
-				INNER JOIN {databaseOwner}{objectQualifier}FileVersions AS v
-				ON ( f.FileId = v.FileId AND v.Version = @PublishedVersion)		
-			WHERE f.FileId = @FileId
+				[LastModifiedOnDate]   = v.LastModifiedOnDate,
+				[SHA1Hash]             = v.SHA1Hash
+			FROM {databaseOwner}{objectQualifier}FileVersions		
+			WHERE FileId = @FileId AND Version = @PublishedVersion
 
 			DELETE FROM {databaseOwner}{objectQualifier}FileVersions
 			WHERE FileId = @FileId 
