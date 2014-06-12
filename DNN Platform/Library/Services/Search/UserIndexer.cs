@@ -22,10 +22,12 @@
 
 using System;
 using System.Collections;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
@@ -64,6 +66,7 @@ namespace DotNetNuke.Services.Search
     public class UserIndexer : IndexingProvider
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
+        internal const string ValueSplitFlag = "$$$";
 
         #region Private Properties
 
@@ -98,6 +101,15 @@ namespace DotNetNuke.Services.Search
                 startDate = SqlDateTime.MinValue.Value;
             }
 
+            var controller = new ListController();
+            var textDataType = controller.GetListEntryInfo("DataType", "Text");
+            var richTextDataType = controller.GetListEntryInfo("DataType", "RichText");
+
+            var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(portalId, false, false)
+                                        .Cast<ProfilePropertyDefinition>()
+                                        .Where(d => (textDataType != null && d.DataType == textDataType.EntryID) 
+                                                        || (richTextDataType != null && d.DataType == richTextDataType.EntryID)).ToList();
+
             try
             {
                 var startUserId = Null.NullInteger;
@@ -112,43 +124,99 @@ namespace DotNetNuke.Services.Search
                         var userId = Convert.ToInt32(reader["UserId"]);
                         var displayName = reader["DisplayName"].ToString();
                         var firstName = reader["FirstName"].ToString();
-                        var propertyName = reader["PropertyName"].ToString();
-                        var propertyValue = reader["PropertyValue"].ToString();
-                        var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(reader["Visibility"]));
-                        var modifiedTime = Convert.ToDateTime(reader["ModifiedTime"]).ToUniversalTime();
-                        //log the userid so that it can get the correct user collection next time.
-                        if (userId > startUserId)
+                        if (!string.IsNullOrEmpty(firstName) && firstName.Contains(ValueSplitFlag))
                         {
-                            startUserId = userId;
+                            firstName = Regex.Split(firstName, Regex.Escape(ValueSplitFlag))[0];
                         }
 
-                        var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode).ToLowerInvariant();
-                        if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
+                        var lastModifiedOnDate = Convert.ToDateTime(reader["LastModifiedOnDate"]).ToUniversalTime();
+                        if (!searchDocuments.ContainsKey(
+                                string.Format("{0}_{1}", userId, UserVisibilityMode.AllUsers)
+                                    .ToLowerInvariant()))
                         {
-                            uniqueKey = string.Format("{0}_{1}", uniqueKey, reader["ExtendedVisibility"]);
-                        }
-
-                        if (searchDocuments.ContainsKey(uniqueKey))
-                        {
-                            var document = searchDocuments[uniqueKey];
-                            document.Body += string.Format(" {0}", propertyValue);
-
-                            if (modifiedTime > document.ModifiedTimeUtc)
-                            {
-                                document.ModifiedTimeUtc = modifiedTime;
-                            }
-                        }
-                        else
-                        {
-                            //Need remove use exists index for all visibilities.
-                            if(!indexedUsers.Contains(userId))
+                            if (!indexedUsers.Contains(userId))
                             {
                                 indexedUsers.Add(userId);
                             }
-
-                            if (!string.IsNullOrEmpty(propertyValue))
+                            //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                            //so that can make sure DisplayName will be indexed
+                            var searchDoc = new SearchDocument
                             {
-                                var searchDoc = new SearchDocument
+                                SearchTypeId = UserSearchTypeId,
+                                UniqueKey =
+                                    string.Format("{0}_{1}", userId,
+                                        UserVisibilityMode.AllUsers).ToLowerInvariant(),
+                                PortalId = portalId,
+                                ModifiedTimeUtc = lastModifiedOnDate,
+                                Body = string.Empty,
+                                Description = firstName,
+                                Title = displayName
+                            };
+
+                            searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
+                        }
+
+                        foreach (var definition in profileDefinitions)
+                        {
+                            var propertyName = definition.PropertyName;
+
+                            if (!ContainsColumn(propertyName, reader))
+                            {
+                                continue;
+                            }
+
+                            var propertyValue = reader[propertyName].ToString();
+
+                            if (string.IsNullOrEmpty(propertyValue) || !propertyValue.Contains(ValueSplitFlag))
+                            {
+                                continue;
+                            }
+
+                            var splitValues = Regex.Split(propertyValue, Regex.Escape(ValueSplitFlag));
+
+                            propertyValue = splitValues[0];
+                            var visibilityMode = ((UserVisibilityMode)Convert.ToInt32(splitValues[1]));
+                            var extendedVisibility = splitValues[2];
+                            var modifiedTime = Convert.ToDateTime(splitValues[3]).ToUniversalTime();
+
+                            if (string.IsNullOrEmpty(propertyValue))
+                            {
+                                continue;
+                            }
+
+                            //log the userid so that it can get the correct user collection next time.
+                            if (userId > startUserId)
+                            {
+                                startUserId = userId;
+                            }
+
+                            var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode).ToLowerInvariant();
+                            if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
+                            {
+                                uniqueKey = string.Format("{0}_{1}", uniqueKey, extendedVisibility);
+                            }
+
+                            if (searchDocuments.ContainsKey(uniqueKey))
+                            {
+                                var document = searchDocuments[uniqueKey];
+                                document.Body += string.Format(" {0}", propertyValue);
+
+                                if (modifiedTime > document.ModifiedTimeUtc)
+                                {
+                                    document.ModifiedTimeUtc = modifiedTime;
+                                }
+                            }
+                            else
+                            {
+                                //Need remove use exists index for all visibilities.
+                                if (!indexedUsers.Contains(userId))
+                                {
+                                    indexedUsers.Add(userId);
+                                }
+
+                                if (!string.IsNullOrEmpty(propertyValue))
+                                {
+                                    var searchDoc = new SearchDocument
                                                     {
                                                         SearchTypeId = UserSearchTypeId,
                                                         UniqueKey = uniqueKey,
@@ -159,30 +227,11 @@ namespace DotNetNuke.Services.Search
                                                         Title = displayName
                                                     };
 
-                                searchDocuments.Add(uniqueKey, searchDoc);
-                            }
-                            else if (!searchDocuments.ContainsKey(string.Format("{0}_{1}", userId, UserVisibilityMode.AllUsers).ToLowerInvariant()))
-                            {
-                                if (!indexedUsers.Contains(userId))
-                                {
-                                    indexedUsers.Add(userId);
+                                    searchDocuments.Add(uniqueKey, searchDoc);
                                 }
-                                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                                //so that can make sure DisplayName will be indexed
-                                var searchDoc = new SearchDocument
-                                {
-                                    SearchTypeId = UserSearchTypeId,
-                                    UniqueKey = string.Format("{0}_{1}", userId, UserVisibilityMode.AllUsers).ToLowerInvariant(),
-                                    PortalId = portalId,
-                                    ModifiedTimeUtc = modifiedTime,
-                                    Body = string.Empty,
-                                    Description = firstName,
-                                    Title = displayName
-                                };
-
-                                searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
                             }
                         }
+
                         rowsAffected++;
                     }
 
@@ -263,6 +312,12 @@ namespace DotNetNuke.Services.Search
             query.Add(parsedQueryContent, Occur.MUST);
 
             LuceneController.Instance.Delete(query);
+        }
+
+        private bool ContainsColumn(string col, IDataReader reader)
+        {
+            var schema = reader.GetSchemaTable();
+            return schema != null && schema.Select("ColumnName = '" + col + "'").Length > 0;
         }
 
         #endregion

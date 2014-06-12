@@ -32,7 +32,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Modules.MemberDirectory.Presenters;
@@ -212,6 +212,8 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             if(!IsPostBack)
             {
+                BindSortList();
+
                 itemTemplate.Text = GetTabModuleSetting("ItemTemplate", DefaultItemTemplate);
                 alternateItemTemplate.Text = GetTabModuleSetting("AlternateItemTemplate", DefaultAlternateItemTemplate);
                 popUpTemplate.Text = GetTabModuleSetting("PopUpTemplate", DefaultPopUpTemplate);
@@ -276,6 +278,39 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             var name = Localization.GetString("ProfileProperties_" + propertyName, resourceFile);
             return string.IsNullOrEmpty(name) ? propertyName : name.Trim(':');
+        }
+
+        private void BindSortList()
+        {
+            sortFieldList.Items.Add(AddSearchItem("UserId"));
+            sortFieldList.Items.Add(AddSearchItem("LastName"));
+            sortFieldList.Items.Add(AddSearchItem("DisplayName"));
+            sortFieldList.Items.Add(AddSearchItem("CreatedOnDate", "DateCreated"));
+            var controller = new ListController();
+            var imageDataType = controller.GetListEntryInfo("DataType", "Image");
+            foreach (ProfilePropertyDefinition definition in Model.ProfileProperties)
+            {
+                if (imageDataType != null && definition.DataType != imageDataType.EntryID)
+                {
+                    sortFieldList.Items.Add(AddSearchItem(definition.PropertyName));
+                }
+            }
+        }
+
+        private ListItem AddSearchItem(string name)
+        {
+            return AddSearchItem(name, name);
+        }
+
+        private ListItem AddSearchItem(string name, string resourceKey)
+        {
+            var text = Localization.GetString(resourceKey, LocalResourceFile);
+            if (String.IsNullOrEmpty(text))
+            {
+                text = resourceKey;
+            }
+            var item = new ListItem(text, name);
+            return item;
         }
     }
 }

@@ -132,11 +132,12 @@ namespace DotNetNuke.Services.Journal
         /// <summary>
         /// Save an uploaded file 
         /// </summary>
+        /// <param name="module">Module where the file is uploaded</param>
         /// <param name="userInfo">User who uploads the file</param>
         /// <param name="fileName">File Name</param>
         /// <param name="fileContent">File content</param>
         /// <returns>A FileInfo object corresponding to the saved file</returns>
-        IFileInfo SaveJourmalFile(UserInfo userInfo, string fileName, Stream fileContent);
+        IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent);
 
 
         /// <summary>

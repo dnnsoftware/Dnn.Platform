@@ -616,6 +616,19 @@ namespace DotNetNuke.Web.InternalServices
                     ModuleController.Instance.AddModule(newModule);
                 }
 
+                //if the tab of original module has custom stylesheet defined, then also copy the stylesheet
+                //to the destination tab if its custom stylesheet is empty.
+                var originalTab = TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID);
+                var targetTab = PortalSettings.Current.ActiveTab;
+                if (originalTab != null
+                    && originalTab.TabSettings.ContainsKey("CustomStylesheet")
+                    && !string.IsNullOrEmpty(originalTab.TabSettings["CustomStylesheet"].ToString())
+                    && (!targetTab.TabSettings.ContainsKey("CustomStylesheet") ||
+                            string.IsNullOrEmpty(targetTab.TabSettings["CustomStylesheet"].ToString())))
+                {
+                    TabController.Instance.UpdateTabSetting(targetTab.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
+                }
+
                 if (remote)
                 {
                     //Ensure the Portal Admin has View rights

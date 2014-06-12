@@ -175,6 +175,13 @@ namespace DotNetNuke.Entities.Tabs
             var portalId = GetPortalId(tabId, -1);
             string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
+
+            //aslo clear the settings from tab object in cache.
+            var tab = GetTab(tabId, portalId, false);
+            if (tab != null)
+            {
+                tab.ClearSettingsCache();
+            }
         }
 
         private void CreateTabRedirect(TabInfo tab)

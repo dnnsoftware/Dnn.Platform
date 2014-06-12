@@ -150,6 +150,13 @@ namespace DotNetNuke.Services.FileSystem
                     new FileInfo { FileId = file.FileId, FileName = GetVersionedFilename(file, newVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
                     file.FileName);
 
+                //Update the Last Modification Time
+                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+                if (file.LastModificationTime != providerLastModificationTime)
+                {
+                    DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
+                }
+
                 // Notify File Changed
                 OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
             }
