@@ -130,6 +130,10 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                 chkCatchUpEnabled.Checked = scheduleItem.CatchUpEnabled;
                 txtObjectDependencies.Text = scheduleItem.ObjectDependencies;
                 txtServers.Text = scheduleItem.Servers.Trim(',');
+                if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
+                {
+                    ddlRetryTimeLapseMeasurement.Visible = false;
+                }
             }
             else
             {
@@ -337,6 +341,19 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     break;
             }
             return nextTime;
+        }
+
+        protected void VisibilityRetryTimeLapse(object sender, EventArgs e)
+        {
+
+            if (Convert.ToInt32(txtRetryTimeLapse.Text) == 0)
+            {
+                ddlRetryTimeLapseMeasurement.Visible = false;
+            }
+            else
+            {
+                ddlRetryTimeLapseMeasurement.Visible = true;
+            }
         }
 
         #endregion

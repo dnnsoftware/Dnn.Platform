@@ -40,9 +40,9 @@
         </div>
         <div class="dnnFormItem timeMeasurement">
             <dnn:Label ID="plRetryTimeLapse" runat="server" ControlName="txtRetryTimeLapse" />
-            <asp:TextBox ID="txtRetryTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" />
+            <asp:TextBox ID="txtRetryTimeLapse" runat="server" MaxLength="10" CssClass="dnnSmallSizeComboBox" OnTextChanged="VisibilityRetryTimeLapse" AutoPostBack="True"/>
             <asp:RequiredFieldValidator ID="RetryTimeLapseRequireValidator" CssClass="dnnFormMessage dnnFormError" EnableViewState="false" runat="server" resourcekey="RetryTimeLapseRequired.ErrorMessage" Display="Dynamic" ControlToValidate="txtRetryTimeLapse" />
-            <asp:RangeValidator runat="server" ControlToValidate="txtRetryTimeLapse" Display="Dynamic" ID="RetryTimeLapseValidator" EnableViewState="false" MinimumValue="1" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="RetryTimeLapseValidator.ErrorMessage"></asp:RangeValidator>
+            <asp:RangeValidator runat="server" ControlToValidate="txtRetryTimeLapse" Display="Dynamic" ID="RetryTimeLapseValidator" EnableViewState="false" MinimumValue="0" MaximumValue="999999" Type="Integer" CssClass="dnnFormMessage dnnFormError" resourcekey="RetryTimeLapseValidator.ErrorMessage"></asp:RangeValidator>
             <dnn:DnnComboBox ID="ddlRetryTimeLapseMeasurement" runat="server" CssClass="dnnSmallSizeComboBox">
                 <Items>
                     <dnn:DnnComboBoxItem resourcekey="Seconds" Value="s" />
