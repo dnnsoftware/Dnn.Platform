@@ -56,6 +56,7 @@ namespace DotNetNuke.Data.PetaPoco
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
             _database = new Database(connectionStringName);
+            _database.EnableAutoSelect = Entities.Host.Host.EnableAutoSelect;
             _mapper = new PetaPocoMapper(tablePrefix);
         }
 

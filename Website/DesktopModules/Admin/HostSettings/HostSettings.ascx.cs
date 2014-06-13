@@ -181,12 +181,7 @@ namespace DotNetNuke.Modules.Admin.Host
         private void BindJQuery()
         {
             jQueryVersion.Text = jQuery.Version;
-            jQueryUIVersion.Text = jQuery.UIVersion;
-            ////chkJQueryDebugVersion.Checked = jQuery.UseDebugScript;
-            ////chkJQueryUseHosted.Checked = jQuery.UseHostedScript;
-            ////txtJQueryHostedUrl.Text = jQuery.HostedUrl;
-            ////txtJQueryMigrateHostedUrl.Text = jQuery.HostedMigrateUrl;
-            ////txtJQueryUIHostedUrl.Text = jQuery.HostedUIUrl;
+            jQueryUIVersion.Text = jQuery.UIVersion;            
         }
 
 		private void BindCdnSettings()
@@ -392,7 +387,7 @@ namespace DotNetNuke.Modules.Admin.Host
             txtResetLinkValidity.Text = Entities.Host.Host.MembershipResetLinkValidity.ToString();
             txtAdminResetLinkValidity.Text = Entities.Host.Host.AdminMembershipResetLinkValidity.ToString();
             txtNumberPasswords.Text = Entities.Host.Host.MembershipNumberPasswords.ToString();
-
+            chkEnableAutoSelect.Checked = Entities.Host.Host.EnableAutoSelect;
 
             ViewState["SelectedLogBufferEnabled"] = chkLogBuffer.Checked;
             ViewState["SelectedUsersOnlineEnabled"] = chkUsersOnline.Checked;
@@ -890,11 +885,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("DefaultAdminSkin", editSkinCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultPortalContainer", hostContainerCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultAdminContainer", editContainerCombo.SelectedValue, false);
-                    ////HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
-                    ////HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
-                    ////HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
-                    ////HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
-                    ////HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
+                    
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
@@ -922,6 +913,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("MembershipResetLinkValidity", txtResetLinkValidity.Text, false);
                     HostController.Instance.Update("AdminMembershipResetLinkValidity", txtAdminResetLinkValidity.Text, false);
                     HostController.Instance.Update("MembershipNumberPasswords", txtNumberPasswords.Text, false);
+                    HostController.Instance.Update("EnableAutoSelect", chkEnableAutoSelect.Checked ? "Y" : "N", false);
 
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);
                     UpdateSchedule();
@@ -941,8 +933,7 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
                 finally
                 {
-                    //TODO: this is temporary until the AUM Caching is moved into the core.
-                    //DataCache.ClearHostCache(false);
+                    //TODO: this is temporary until the AUM Caching is moved into the core.                    
                     DataCache.ClearCache();
                 }
             }

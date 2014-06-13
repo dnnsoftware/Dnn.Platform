@@ -631,6 +631,10 @@
                     <asp:TextBox ID="txtAsyncTimeout" runat="server" MaxLength="4" />
                     <asp:Label runat="server" resourcekey="Seconds" />
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plEnableAutoSelect" controlname="chkEnableAutoSelect" runat="server" />
+                    <asp:CheckBox ID="chkEnableAutoSelect" runat="server" />
+                </div>
             </fieldset>
         </div>
     </div>
