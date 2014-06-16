@@ -738,10 +738,7 @@ namespace DotNetNuke.Framework
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            if (PortalSettings.IncludePortalCss)
-            {
-                ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
-            }
+            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
 
             //add Favicon
             ManageFavicon();

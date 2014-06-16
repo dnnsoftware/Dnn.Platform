@@ -513,14 +513,6 @@ namespace DotNetNuke.Entities.Portals
 
         public string HomeSystemDirectoryMapPath { get; private set; }
 
-        public bool IncludePortalCss
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("IncludePortalCss", PortalId, false);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the Inline Editor is enabled
