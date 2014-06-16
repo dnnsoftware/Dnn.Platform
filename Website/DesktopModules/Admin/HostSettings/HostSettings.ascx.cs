@@ -387,8 +387,7 @@ namespace DotNetNuke.Modules.Admin.Host
             txtResetLinkValidity.Text = Entities.Host.Host.MembershipResetLinkValidity.ToString();
             txtAdminResetLinkValidity.Text = Entities.Host.Host.AdminMembershipResetLinkValidity.ToString();
             txtNumberPasswords.Text = Entities.Host.Host.MembershipNumberPasswords.ToString();
-            chkEnableAutoSelect.Checked = Entities.Host.Host.EnableAutoSelect;
-
+           
             ViewState["SelectedLogBufferEnabled"] = chkLogBuffer.Checked;
             ViewState["SelectedUsersOnlineEnabled"] = chkUsersOnline.Checked;
 
@@ -913,7 +912,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("MembershipResetLinkValidity", txtResetLinkValidity.Text, false);
                     HostController.Instance.Update("AdminMembershipResetLinkValidity", txtAdminResetLinkValidity.Text, false);
                     HostController.Instance.Update("MembershipNumberPasswords", txtNumberPasswords.Text, false);
-                    HostController.Instance.Update("EnableAutoSelect", chkEnableAutoSelect.Checked ? "Y" : "N", false);
 
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);
                     UpdateSchedule();

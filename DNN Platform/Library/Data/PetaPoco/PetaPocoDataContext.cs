@@ -56,7 +56,6 @@ namespace DotNetNuke.Data.PetaPoco
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
             _database = new Database(connectionStringName);
-            _database.EnableAutoSelect = Entities.Host.Host.EnableAutoSelect;
             _mapper = new PetaPocoMapper(tablePrefix);
         }
 
@@ -72,6 +71,12 @@ namespace DotNetNuke.Data.PetaPoco
         public void Commit()
         {
             _database.CompleteTransaction();
+        }
+
+        public bool EnableAutoSelect
+        {
+            get { return _database.EnableAutoSelect; }
+            set { _database.EnableAutoSelect = value; }
         }
 
         public void Execute(CommandType type, string sql, params object[] args)

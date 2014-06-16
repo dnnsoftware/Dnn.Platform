@@ -1223,10 +1223,4 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
     <value>Password Expiry Reminder (in days):</value>
   </data>
-  <data name="plEnableAutoSelect.Help" xml:space="preserve">
-    <value>This setting determines if EnableAutoSelect Setting is enabled or not in Data Access Layer</value>
-  </data>
-  <data name="plEnableAutoSelect.Text" xml:space="preserve">
-    <value>Enable Auto Select?</value>
-  </data>
 </root>

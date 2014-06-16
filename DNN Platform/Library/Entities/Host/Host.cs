@@ -646,15 +646,7 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
-
-        public static bool EnableAutoSelect
-        {
-            get
-            {                
-                return HostController.Instance.GetBoolean("EnableAutoSelect", true);
-            }
-        }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether the Event Log Buffer is Enabled
