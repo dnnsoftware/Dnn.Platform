@@ -543,10 +543,8 @@ namespace DotNetNuke.Services.Localization
 
                 if (isValid)
                 {
-                    PortalAliasInfo existingAlias;
-                    PortalAliasController.Instance.GetPortalAliases().TryGetValue(alias, out existingAlias);
-
-                    isValid = (existingAlias == null);
+                    var aliases = PortalAliasController.Instance.GetPortalAliases();
+                    isValid = !aliases.Contains(alias);
                 }
 
                 if (isValid)

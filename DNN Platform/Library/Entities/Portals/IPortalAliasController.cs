@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets all the portal aliases defined
         /// </summary>
         /// <returns>A dictionary keyed by the HTTP Alias</returns>
-        IDictionary<string, PortalAliasInfo> GetPortalAliases();
+        PortalAliasCollection GetPortalAliases();
 
         /// <summary>
         /// Gets the portal alias by portal ID.
