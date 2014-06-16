@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,14 +18,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-
 using System;
+using System.ComponentModel;
 
-namespace DotNetNuke.Framework.Internal.Reflection
+using DotNetNuke.Common;
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Portals;
+
+
+namespace DotNetNuke.Entities.Portals.Internal
 {
-    //interface to allowing mocking of System.Reflection.Assembly
-    public interface IAssembly
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalController.Instance.GetCurrentPortalSettings to get a mockable PortalSettings")]
+    public class TestablePortalSettings : ComponentBase<IPortalSettings, TestablePortalSettings>, IPortalSettings
     {
-        Type[] GetTypes();
+        public string AdministratorRoleName
+        {
+            get { return PortalSettings.Current.AdministratorRoleName; }
+        }
     }
 }
