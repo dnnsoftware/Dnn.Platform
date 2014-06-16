@@ -273,6 +273,7 @@
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Obsolete\IPortalSettings.cs" />
     <Compile Include="Obsolete\IUserController.cs" />
     <Compile Include="Obsolete\IModuleController.cs" />
     <Compile Include="Entities\Modules\IShareable.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="Entities\Modules\ModuleSharing.cs" />
     <Compile Include="Entities\Modules\ModuleController.cs" />
     <Compile Include="Obsolete\IPortalAliasController.cs" />
+    <Compile Include="Obsolete\PortalTemplateIOImpl.cs" />
     <Compile Include="Obsolete\TestablePortalAliasController.cs" />
     <Compile Include="Obsolete\ITabController.cs" />
     <Compile Include="Obsolete\CBO.cs" />
@@ -356,6 +358,7 @@
     <Compile Include="Entities\Users\Exceptions\UserAlreadyVerifiedException.cs" />
     <Compile Include="Entities\Users\Exceptions\UserDoesNotExistException.cs" />
     <Compile Include="Entities\Users\IUserController.cs" />
+    <Compile Include="Obsolete\TestablePortalSettings.cs" />
     <Compile Include="Obsolete\TestableUserController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordController.cs" />
     <Compile Include="Entities\Users\Membership\MembershipPasswordSettings.cs" />

@@ -40,9 +40,9 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 5.2.1 - use overload that pass's a FriendlyName")]
+        [Obsolete("Obsoleted in 5.2.1 - use alternate overload")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
-                                      bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, DateTime ScheduleStartDate)
+                                      bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers)
         {
             return AddSchedule(TypeFullName,
                                TimeLapse,
@@ -55,10 +55,28 @@ namespace DotNetNuke.Services.Scheduling
                                Enabled,
                                ObjectDependencies,
                                Servers,
-                               TypeFullName, 
-                               ScheduleStartDate);
+                               TypeFullName,
+                               DateTime.Now);
         }
 
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
+        public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
+                              bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
+        {
+            return AddSchedule(TypeFullName,
+                               TimeLapse,
+                               TimeLapseMeasurement,
+                               RetryTimeLapse,
+                               RetryTimeLapseMeasurement,
+                               RetainHistoryNum,
+                               AttachToEvent,
+                               CatchUpEnabled,
+                               Enabled,
+                               ObjectDependencies,
+                               Servers,
+                               FriendlyName,
+                               DateTime.Now);
+        }
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
@@ -190,6 +208,26 @@ namespace DotNetNuke.Services.Scheduling
             Scheduler.CoreScheduler.ReloadSchedule();
         }
 
+        public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
+                                  string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
+        {
+            UpdateSchedule(ScheduleID,
+                            TypeFullName,
+                            TimeLapse,
+                            TimeLapseMeasurement,
+                            RetryTimeLapse,
+                            RetryTimeLapseMeasurement,
+                            RetainHistoryNum,
+                            AttachToEvent,
+                            CatchUpEnabled,
+                            Enabled,
+                            ObjectDependencies,
+                            Servers,
+                            FriendlyName,
+                            DateTime.Now);
+        }
+
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                           string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
