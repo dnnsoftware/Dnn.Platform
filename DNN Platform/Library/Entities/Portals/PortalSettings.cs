@@ -1456,7 +1456,8 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in PortalAliasController.Instance.GetPortalAliases())
+            var aliasController = new PortalAliasController();
+            foreach (var kvp in aliasController.GetPortalAliasesInternal())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }

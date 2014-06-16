@@ -2673,12 +2673,13 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns></returns>
         public static bool IsDuplicateWithPortalAlias(int portalId, string tabPath)
         {
-            IEnumerable<PortalAliasInfo> aliasLookup = PortalAliasController.Instance.GetPortalAliases().Values;
+            var aliasLookup = PortalAliasController.Instance.GetPortalAliases();
 
             foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId))
             {
                 string checkAlias = string.Format("{0}{1}", alias.HTTPAlias, tabPath.Replace("//", "/"));
-                if (aliasLookup.Any(a => a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase)))
+
+                if (aliasLookup.Cast<PortalAliasInfo>().Any(a => a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     return true;
                 }
