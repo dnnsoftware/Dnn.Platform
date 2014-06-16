@@ -258,6 +258,11 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
+            internal static ServerInfo GetServer(string executingServer)
+            {
+                return ServerController.GetServers().Single(s => s.ServerName.Equals(executingServer, StringComparison.OrdinalIgnoreCase));
+            }
+
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
             {
                 try
@@ -649,7 +654,7 @@ namespace DotNetNuke.Services.Scheduling
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
 
-                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
+                var thisServer = GetServer(executingServer);
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -679,7 +684,7 @@ namespace DotNetNuke.Services.Scheduling
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
 
-                var thisServer = ServerController.GetServers().Single(s => s.ServerName == executingServer);
+                var thisServer = GetServer(executingServer);
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
                 
                 var serverGroupServers = ServerGroupServers(thisServer);
