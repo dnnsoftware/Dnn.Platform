@@ -323,7 +323,17 @@ namespace DotNetNuke.Modules.Admin.SQL
         {
             var props = new LogProperties { new LogDetailInfo("User", UserInfo.Username), new LogDetailInfo("SQL Query", query) };
 
-            EventLogController.Instance.AddLog(props, PortalSettings, UserId, EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(), true);
+            //Add the event log with host portal id.
+            var log = new LogInfo
+            {
+                LogUserID = UserId,
+                LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
+                LogProperties = props,
+                BypassBuffering = true,
+                LogPortalID = Null.NullInteger
+            };
+
+            LogController.Instance.AddLog(log);
         }
 
         private void CheckSecurity()
