@@ -1102,14 +1102,14 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual int UnzipFile(IFileInfo file)
+        public virtual void UnzipFile(IFileInfo file)
         {
 
             Requires.NotNull("file", file);
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            return UnzipFile(file, destinationFolder);
+            UnzipFile(file, destinationFolder);
         }
 
         /// <summary>
@@ -1120,9 +1120,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-        public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
+        public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
         {
-            return UnzipFile(file, destinationFolder, null);
+            UnzipFile(file, destinationFolder, null);
         }
 
         /// <summary>
