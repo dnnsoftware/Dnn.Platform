@@ -375,6 +375,8 @@ namespace DesktopModules.Admin.Console
                 
                 if ((!IsPostBack))
 				{
+                    Console.Attributes["class"] = Console.Attributes["class"] + " " + Mode.ToLower(CultureInfo.InvariantCulture);
+
                     SettingsBreak.Visible = (AllowSizeChange && AllowViewChange);
 
 				    List<TabInfo> tempTabs = (IsHostTab())
