@@ -119,7 +119,7 @@
                     <MasterTableView TableLayout="Fixed" AllowCustomSorting="True" AllowSorting="true" EditMode="InPlace" EnableColumnsViewState="false">
                         <Columns>
                             <dnnweb:DnnGridClientSelectColumn HeaderStyle-Width="44px" UniqueName="Select" />                        
-                            <dnnweb:DnnGridBoundColumn UniqueName="ItemName" SortExpression="ItemName" DataField="ItemName" HeaderText="Name"/>
+                            <dnnweb:DnnGridBoundColumn UniqueName="ItemName" SortExpression="ItemName" DataField="ItemName" HeaderText="Name"  HeaderStyle-Width="100%" />
                             <dnnweb:DnnGridBoundColumn UniqueName="LastModifiedOnDate" DataField="LastModifiedOnDate" HeaderText="Modified" HeaderStyle-Width="170px" ReadOnly="True" />
                             <dnnweb:DnnGridBoundColumn UniqueName="Size" DataField="Size" HeaderText="Size" Visible="True" ReadOnly="True" HeaderStyle-Width="80px" />
                             <dnnweb:DnnGridBoundColumn UniqueName="ItemID" DataField="ItemID" HeaderText="ItemID" Visible="False" ReadOnly="True"/>
