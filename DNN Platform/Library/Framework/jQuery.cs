@@ -509,6 +509,7 @@ namespace DotNetNuke.Framework
         {
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);")]
