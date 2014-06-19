@@ -2663,9 +2663,16 @@ namespace DotNetNuke.Entities.Tabs
             {
                 string checkAlias = string.Format("{0}{1}", alias.HTTPAlias, tabPath.Replace("//", "/"));
 
-                if (aliasLookup.Cast<PortalAliasInfo>().Any(a => a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase)))
+                if (aliasLookup.Contains(alias.HTTPAlias.ToLowerInvariant()))
                 {
                     return true;
+                }
+                foreach (PortalAliasInfo a in aliasLookup.Values)
+                {
+                    if (a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
                 }
             }
 
