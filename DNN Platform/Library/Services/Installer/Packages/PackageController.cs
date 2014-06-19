@@ -141,7 +141,8 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void UpdatePackageInternal(PackageInfo package)
         {
-            provider.UpdatePackage(package.PortalID,
+            provider.UpdatePackage(package.PackageID,
+                                   package.PortalID,
                                    package.Name,
                                    package.FriendlyName,
                                    package.Description,

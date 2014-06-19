@@ -3148,13 +3148,14 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("UnRegisterAssembly", packageID, assemblyName) == 1;
         }
 
-        public virtual void UpdatePackage(int portalID, string name, string friendlyName, string description,
+        public virtual void UpdatePackage(int packageID, int portalID, string name, string friendlyName, string description,
                                           string type, string version, string license, string manifest, string owner,
                                           string organization, string url, string email, string releaseNotes,
                                           bool isSystemPackage, int lastModifiedByUserID, string folderName,
                                           string iconFile)
         {
             ExecuteNonQuery("UpdatePackage",
+                                      packageID,
                                       GetNull(portalID),
                                       name,
                                       friendlyName,
