@@ -8,14 +8,15 @@
 /*****                                                  *****/
 /************************************************************/
 
-/* CONTENT-2485: Add UniqueId column to identity the server when its behind affinity tool. */
-/**********************************/
+/* DNN-5506. */
+/*************/
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePackage]') AND type in (N'P', N'PC'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+	@PackageID			int,
 	@PortalID			int,
 	@Name			    nvarchar(128),
 	@FriendlyName	    nvarchar(250),
@@ -34,7 +35,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
 	@FolderName			nvarchar(128),
 	@IconFile			nvarchar(100)
 AS
-	UPDATE dbo.dnn_Packages
+	UPDATE {databaseOwner}{objectQualifier}Packages
 		SET	
 			PortalID = @PortalID,
 			FriendlyName = @FriendlyName,
@@ -52,7 +53,7 @@ AS
 			[LastModifiedByUserID] = @LastModifiedByUserID,	[LastModifiedOnDate] = getdate(),
 			FolderName = @FolderName,
 			IconFile = @IconFile
-		WHERE  [Name] = @Name AND [PackageType] = @PackageType AND [Version] = @Version
+		WHERE  PackageID = @PackageID
 GO
 
 
