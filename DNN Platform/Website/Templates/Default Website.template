@@ -653,7 +653,7 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.03.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&amp;lt;div class=&amp;quot;banner-container&amp;quot;&amp;gt;&amp;lt;h2&amp;gt;[Tab.Home.Header.Title]&amp;lt;/h2&amp;gt; &amp;lt;span&amp;gt;[Tab.Home.Header.Content]&amp;lt;/span&amp;gt; &amp;lt;img alt=&amp;quot;&amp;quot; src=&amp;quot;{{PortalRoot}}Images/logo2.png&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+              <content type="DNNHTML" version="07.03.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;banner-container row-fluid&quot;&gt;&lt;div class=&quot;span7 offset1&quot;&gt;&lt;h2&gt;[Tab.Home.Header.Title]&lt;/h2&gt; &lt;span&gt;[Tab.Home.Header.Content]&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;span3&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}Images/logo2.png&quot;  class=&quot;hidden-phone&quot; /&gt;&lt;/div&gt;&lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings/>
               <tabmodulesettings/>
               <definition>DNN_HTML</definition>
@@ -690,29 +690,30 @@
               <visibility>Maximized</visibility>
               <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
               <webslicettl>0</webslicettl>
-              <content type="DNNHTML" version="07.03.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;intro-container&quot;&gt;
-&lt;div class=&quot;main&quot;&gt;
+              <content type="DNNHTML" version="07.03.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[&lt;div class=&quot;intro-container row-fluid&quot;&gt;
+&lt;div class=&quot;row-fluid&quot;&gt;
+&lt;div class=&quot;main span8 offset1&quot;&gt;
 &lt;h2&gt;[Tab.Home.Main.Title]&lt;/h2&gt;
-&lt;ul&gt;
-    &lt;li class=&quot;qa&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.QA.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.QA.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.QA.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.QA.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;blog&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Blog.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Blog.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Blog.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Blog.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;leader&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.LeaderBoard.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.LeaderBoard.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.LeaderBoard.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.LeaderBoard.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;video&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Videos.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Videos.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Videos.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Videos.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;shop&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Shop.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Shop.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Shop.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Shop.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;help&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.OnlineHelp.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.OnlineHelp.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.OnlineHelp.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.OnlineHelp.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;forum&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Forums.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Forums.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Forums.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Forums.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;webinar&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Webinars.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Webinars.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Webinars.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Webinars.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;wiki&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Wikis.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Wikis.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Wikis.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Wikis.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;ul class=&quot;row-fluid&quot;&gt;
+    &lt;li class=&quot;qa span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.QA.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.QA.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.QA.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.QA.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;blog span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Blog.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Blog.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Blog.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Blog.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;leader span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.LeaderBoard.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.LeaderBoard.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.LeaderBoard.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.LeaderBoard.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;video span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Videos.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Videos.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Videos.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Videos.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;shop span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Shop.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Shop.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Shop.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Shop.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;help span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.OnlineHelp.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.OnlineHelp.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.OnlineHelp.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.OnlineHelp.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;forum span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Forums.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Forums.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Forums.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Forums.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;webinar span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Webinars.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Webinars.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Webinars.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Webinars.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;wiki span4&quot;&gt;&lt;a href=&quot;[Tab.Home.Main.Wikis.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span class=&quot;overlay&quot;&gt;&lt;p&gt;[Tab.Home.Main.Wikis.Tooltip]&lt;/p&gt;&lt;label&gt;[Tab.Home.Main.Wikis.SubLink.Text]&lt;/label&gt;&lt;/span&gt;&lt;span class=&quot;text&quot;&gt;[Tab.Home.Main.Wikis.Title]&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;slide span3 pull-right&quot;&gt;
 &lt;div class=&quot;social-links&quot;&gt;
 &lt;h3&gt;[Tab.Home.SocialLinks.Title]&lt;/h3&gt;
-&lt;ul&gt;
-    &lt;li class=&quot;facebook&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Facebook.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;linkedin&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.LinkedIn.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;twitter&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Twitter.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
-    &lt;li class=&quot;youtube&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Youtube.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;ul class=&quot;row-fluid&quot;&gt;
+    &lt;li class=&quot;facebook span4&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Facebook.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;linkedin span4 offset1&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.LinkedIn.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;twitter span4 offset1&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Twitter.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;youtube span4 offset1&quot;&gt;&lt;a href=&quot;[Tab.Home.SocialLinks.Youtube.Link]&quot; target=&quot;_blank&quot;&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class=&quot;product social&quot;&gt; &lt;img alt=&quot;&quot; src=&quot;{{PortalRoot}}images/logo-evoq-social.png&quot;&gt;
@@ -722,7 +723,8 @@
 &lt;p&gt;[Tab.Home.Product.Content.Text]&lt;/p&gt;
 &lt;a class=&quot;btn-action&quot; href=&quot;[Tab.Home.Product.Content.Link]&quot; target=&quot;_blank&quot;&gt;&lt;span&gt;[Tab.Home.Product.Content.Link.Title]&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;div class=&quot;company-intro&quot;&gt;[Tab.Home.CompanyIntro.Text]&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;company-intro row-fluid&quot;&gt;&lt;p&gt;[Tab.Home.CompanyIntro.Text]&lt;/p&gt;&lt;/div&gt;
 &lt;/div&gt;]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
               <modulesettings/>
               <tabmodulesettings/>
@@ -4997,7 +4999,7 @@
           <extension>css</extension>
           <filename>home.css</filename>
           <height>0</height>
-          <size>12500</size>
+          <size>12843</size>
           <width>0</width>
         </file>
         <file>
