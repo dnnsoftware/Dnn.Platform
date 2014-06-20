@@ -77,6 +77,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         private Panel pnlPermissions;        
         private TextBox txtUser;
         private HiddenField hiddenUserIds;
+        private HiddenField roleField;
 
         public PermissionsGrid()
         {
@@ -636,14 +637,14 @@ namespace DotNetNuke.Security.Permissions.Controls
                 SetUpGrid(userPermissionsGrid, "DisplayName", "userid", Localization.GetString("PermissionUserHeader.Text", PermissionProvider.Instance().LocalResourceFile));
             }
         }
-        private void FillSelectRoleComboBox(int selectedRoleId)
+        private void FillSelectRoleComboBox(int selectedRoleGroupId)
         {
             cboSelectRole.Items.Clear();
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();            
-            var groupRoles = (selectedRoleId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
+            var groupRoles = (selectedRoleGroupId > -2) ? RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == selectedRoleGroupId && r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
 
-            if (selectedRoleId < 0)
+            if (selectedRoleGroupId < 0)
             {                
                 groupRoles.Add(new RoleInfo { RoleID = UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });                                
                 groupRoles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });            
@@ -838,7 +839,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
 
-            var divAddRoleControles = new Panel {CssClass = "dnnFormItem"};
+            var addRoleControls = new Panel {CssClass = "dnnFormItem"};
             var divRoleGroups = new Panel {CssClass = "leftGroup"};
             var divSelectRole = new Panel { CssClass = "rightGroup" };
 
@@ -856,22 +857,25 @@ namespace DotNetNuke.Security.Permissions.Controls
                 cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
             }
             divRoleGroups.Controls.Add(cboRoleGroups);
-            divAddRoleControles.Controls.Add(divRoleGroups);
+            addRoleControls.Controls.Add(divRoleGroups);
 
             lblSelectRole = new Label { Text = Localization.GetString("RoleSelect") };
             cboSelectRole = new DropDownList { ID = "cboSelectRole", ViewStateMode = ViewStateMode.Disabled };
             lblSelectRole.AssociatedControlID = cboSelectRole.ID;            
             divSelectRole.Controls.Add(lblSelectRole);
-            
+
             FillSelectRoleComboBox(-1); //Default Role Group is Global Roles
             divSelectRole.Controls.Add(cboSelectRole);
 
             cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
             cmdRole.Click += AddRole;
             divSelectRole.Controls.Add(cmdRole);
-            divAddRoleControles.Controls.Add(divSelectRole);
+            roleField = new HiddenField() {ID = "roleField"};
+            addRoleControls.Controls.Add(roleField);
 
-            pnlPermissions.Controls.Add(divAddRoleControles);
+            addRoleControls.Controls.Add(divSelectRole);
+
+            pnlPermissions.Controls.Add(addRoleControls);
         }
 
         /// <summary>
@@ -1249,9 +1253,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </history>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
-            //UpdatePermissions();
-            var selectedRoleId = Int32.Parse(cboRoleGroups.SelectedValue);
-            FillSelectRoleComboBox(selectedRoleId);
+            FillSelectRoleComboBox(Int32.Parse(cboRoleGroups.SelectedValue));
         }
 
         /// <summary>
@@ -1288,7 +1290,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             UpdatePermissions();
             int selectedRoleId;
-            if (!Int32.TryParse(cboSelectRole.SelectedValue, out selectedRoleId))
+            if (!Int32.TryParse(roleField.Value, out selectedRoleId))
             {
                 //Role not selected
                 SetErrorMessage("InvalidRoleId");
