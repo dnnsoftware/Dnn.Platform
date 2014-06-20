@@ -43,10 +43,14 @@
             var roleId = $('#' + scopeId + '_roleField');
             var roleSelector = $('#' + scopeId + '_cboSelectRole');
             roleSelector.change(function () {
+                updateHiddenField();
+            });
+            updateHiddenField();
+
+            function updateHiddenField() {
                 var Id = roleSelector.val();
                 roleId.val(Id);
-            });
-
+            }
         }
 
         $(document).ready(function() {
