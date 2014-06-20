@@ -38,7 +38,15 @@
 				onError: function (xhr, status) {
 					//displayMessage(composeMessageDialog, opts.autoSuggestErrorText + status);
 				}
-			});
+            });
+
+            var roleId = $('#' + scopeId + '_roleField');
+            var roleSelector = $('#' + scopeId + '_cboSelectRole');
+            roleSelector.change(function () {
+                var Id = roleSelector.val();
+                roleId.val(Id);
+            });
+
         }
 
         $(document).ready(function() {
