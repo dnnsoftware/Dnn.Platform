@@ -655,6 +655,58 @@ AS
     END
 GO
 
+/* DNN-5508: */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+	@PortalID       int,
+	@SettingName    nvarchar(50),
+	@SettingValue   nvarchar(2000),
+	@UserID			int,
+	@CultureCode    nvarchar(50)
+
+AS
+	IF (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}PortalSettings 
+			WHERE PortalID = @PortalID 
+				AND SettingName = @SettingName 
+				AND CultureCode = @CultureCode) 
+		> 0
+		
+		--Update
+		UPDATE  {databaseOwner}{objectQualifier}PortalSettings
+			SET SettingValue = @SettingValue,
+				[LastModifiedByUserID]=@UserID,
+				[LastModifiedOnDate]=getdate()
+			WHERE PortalID = @PortalID
+				AND SettingName = @SettingName
+				AND CultureCode = @CultureCode 
+			
+	ELSE
+		--Add
+		INSERT INTO {databaseOwner}{objectQualifier}PortalSettings ( 
+			PortalID, 
+			SettingName, 
+			SettingValue, 
+			CreatedByUserID, 
+			CreatedOnDate, 
+			LastModifiedByUserID, 
+			LastModifiedOnDate,
+			CultureCode ) 
+		VALUES ( 
+			@PortalID, 
+			@SettingName, 
+			@SettingValue,
+			@UserID,
+			getdate(),
+			@UserID,
+			getdate(),
+			@CultureCode)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
