@@ -267,7 +267,7 @@ namespace DotNetNuke.Framework
             }
 
             //Only insert the header control if a comment is needed
-            if(String.IsNullOrWhiteSpace(Comment))
+            if(!String.IsNullOrWhiteSpace(Comment))
                 Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
 
             if (PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
