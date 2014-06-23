@@ -434,8 +434,10 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         var url = settings.navigateUrl.replace('ControlKey', controlKey);
         params.skinSrc = 'Portals/_default/Skins/_default/popUpSkin';
         for (var p in params) {
-            var charSep = url.indexOf('?') != -1 ? '&' : '?';
-            url += charSep + p + "=" + encodeURIComponent(params[p]);
+            if (params[p]) {
+                var charSep = url.indexOf('?') != -1 ? '&' : '?';
+                url += charSep + p + "=" + encodeURIComponent(params[p]);
+            }
         }
         $("#iPopUp").dialog('option', 'title', '');
         dnnModal.show(url, /*showReturn*/true, height, width, false, null);
