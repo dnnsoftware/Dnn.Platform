@@ -45,7 +45,7 @@
     <Copy SourceFiles="..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\PetaPoco\bin\PetaPoco.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll" DestinationFolder="$(WebsiteBinPath)" />
-    <Copy SourceFiles="..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
+    <Copy SourceFiles="..\Components\SharpZipLib\bin\SharpZipLib.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Telerik\bin\Telerik.Web.UI.Skins.dll" DestinationFolder="$(WebsiteBinPath)" />
     <Copy SourceFiles="..\Components\Lucene.Net\bin\Lucene.Net.dll" DestinationFolder="$(WebsiteBinPath)" />
