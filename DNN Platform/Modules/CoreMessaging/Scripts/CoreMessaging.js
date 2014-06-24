@@ -814,7 +814,6 @@
             var body = $(containerElement + " #replyMessage").val();
             if (body.length == 0) return;
             var conversationId = self.messagethreads()[0].ConversationId;
-            displayMessage("#dnnCoreMessaging", "test", "dnnFormWarning");
             $.ajax({
                 type: "POST",
                 url: baseServicepath + "Reply",
@@ -824,6 +823,8 @@
                 if (typeof data !== "undefined" &&
                     data != null &&
                     typeof data.Conversation !== "undefined") {
+                    displayMessage("#dnnCoreMessaging", settings.messageSentText, "dnnFormSuccess");
+
                     $(containerElement + " #replyMessage").val('');
                     self.messagethreads.push(new messageThreadView(data));
 
