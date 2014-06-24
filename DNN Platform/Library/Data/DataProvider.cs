@@ -935,6 +935,24 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateTabVersion", tabId, versionGuid);
         }
 
+        public virtual void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, string cultureCode, int userId)
+        {
+            ExecuteNonQuery(
+                "AddAdminPages",
+                tabName,
+                description,
+                tabIconFile,
+                tabIconFileLarge,
+                isVisible,
+                moduleDefId,
+                moduleTitle,
+                moduleIconFile,
+                inheritPermissions,
+                cultureCode,
+                userId);
+        }
+
+
         #endregion
 
         #region Module Methods

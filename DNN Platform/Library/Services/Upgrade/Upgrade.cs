@@ -3434,20 +3434,19 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            ArrayList portals = PortalController.Instance.GetPortals();
-
-            //Add Page to Admin Menu of all configured Portals
-            for (var index = 0; index <= portals.Count - 1; index++)
-            {
-                var portal = (PortalInfo)portals[index];
-
-                //Create New Admin Page (or get existing one)
-                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
-
-                //Add Module To Page
-                AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
+            DataProvider.Instance().AddAdminPages(
+                tabName,
+                description,
+                tabIconFile,
+                tabIconFileLarge,
+                isVisible,
+                moduleDefId,
+                moduleTitle,
+                moduleIconFile,
+                inheritPermissions,
+                Localization.Localization.SystemLocale,
+                UserController.GetCurrentUserInfo().UserID);
             }
-        }
 
         ///-----------------------------------------------------------------------------
         ///<summary>
