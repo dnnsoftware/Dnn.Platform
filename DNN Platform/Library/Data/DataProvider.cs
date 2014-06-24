@@ -474,9 +474,9 @@ namespace DotNetNuke.Data
         }
 
         public virtual int UpdateServerActivity(string serverName, string iisAppName, DateTime createdDate,
-                                                 DateTime lastActivityDate, int pingFailureCount)
+                                                 DateTime lastActivityDate, int pingFailureCount, bool enabled)
         {
-            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount);
+            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount, enabled);
         }
 
         #endregion

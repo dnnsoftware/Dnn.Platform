@@ -707,6 +707,57 @@ AS
 			@CultureCode)
 GO
 
+/***** Fix bug Content-2605: update enabled column in sp UpdateServerActivity. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateServerActivity]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+    @ServerName			NVARCHAR(50),
+    @IISAppName			NVARCHAR(200),
+    @CreatedDate		DATETIME,
+    @LastActivityDate	DATETIME,
+    @PingFailureCount   INT,
+    @Enabled            BIT
+AS
+
+	DECLARE @ServerID int
+	SET @ServerID = (SELECT ServerID FROM {databaseOwner}{objectQualifier}WebServers WHERE ServerName = @ServerName AND IISAppName = @IISAppName)
+
+	IF @ServerID IS NULL
+		BEGIN
+			-- Insert
+			INSERT INTO {databaseOwner}{objectQualifier}WebServers (
+				ServerName,
+				IISAppName,
+				CreatedDate,
+				LastActivityDate,
+                PingFailureCount,
+				[Enabled]
+			)
+			VALUES (
+				@ServerName,
+				@IISAppName,
+				@CreatedDate,
+				@LastActivityDate,
+                @PingFailureCount,
+				@Enabled
+			)
+
+            SELECT @ServerID = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			-- Update
+			UPDATE {databaseOwner}{objectQualifier}WebServers 
+				SET 
+					LastActivityDate = @LastActivityDate, PingFailureCount = @PingFailureCount, [Enabled] = @Enabled
+				WHERE  ServerName = @ServerName AND IISAppName = @IISAppName
+		END
+
+    SELECT @ServerID
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
