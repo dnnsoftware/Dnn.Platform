@@ -72,6 +72,11 @@ namespace DesktopModules.Admin.Console
             get { return !Settings.ContainsKey("AllowViewChange") || bool.Parse(Settings["AllowViewChange"].ToString()); }
         }
 
+	    public bool IncludeHiddenPages
+	    {
+            get { return Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(Settings["IncludeHiddenPages"].ToString()); }	        
+	    }
+
         public ConsoleController ConsoleCtrl
 		{
 			get
@@ -207,7 +212,7 @@ namespace DesktopModules.Admin.Console
         {
             bool canShowTab = TabPermissionController.CanViewPage(tab) &&
                                 !tab.IsDeleted &&
-                                tab.IsVisible &&
+                                (IncludeHiddenPages || tab.IsVisible) &&
                                 (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
 
             if (canShowTab)
