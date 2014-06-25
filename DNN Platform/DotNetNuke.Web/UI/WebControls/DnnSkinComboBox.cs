@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -48,8 +49,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool IncludeNoneSpecificItem { get; set; }
 
         public string NoneSpecificText { get; set; }
-
-        public override string SelectedValue { get; set; }
 
         #endregion
 
@@ -93,6 +92,17 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             AttachEvents();
+        }
+
+        protected override void PerformDataBinding(IEnumerable dataSource)
+        {
+            //do not select item during data binding, item will select later
+            var selectedValue = SelectedValue;
+            SelectedValue = string.Empty;
+
+            base.PerformDataBinding(dataSource);
+
+            SelectedValue = selectedValue;
         }
 
         #endregion
