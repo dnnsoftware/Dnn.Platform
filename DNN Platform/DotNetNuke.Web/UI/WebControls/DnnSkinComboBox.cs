@@ -49,6 +49,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string NoneSpecificText { get; set; }
 
+        public override string SelectedValue { get; set; }
+
         #endregion
 
         #region Private Properties
