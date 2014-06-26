@@ -8,6 +8,56 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* DNN-5506. */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePackage]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePackage]
+	@PackageID			      int,            -- PK, Not Null (must exist)
+	@PortalID			        int,            -- unique key column
+	@Name			            nvarchar( 128), -- unique key column, Not Null
+	@FriendlyName	        nvarchar( 250), -- Not Null
+	@Description	        nvarchar(2000),
+	@PackageType	        nvarchar(  50), -- unique key column, Not Null
+	@Version		          nvarchar(  50), -- unique key column, Not Null
+	@License		          ntext,
+	@Manifest		          ntext,
+	@Owner				        nvarchar( 100), -- unique key column
+	@Organization		      nvarchar( 100),
+	@Url				          nvarchar( 250),
+	@Email				        nvarchar( 100),
+	@ReleaseNotes	        ntext,
+	@IsSystemPackage      bit,           -- Not Null
+	@LastModifiedByUserID	int,
+	@FolderName			      nvarchar( 128),
+	@IconFile			        nvarchar( 100)
+AS
+	UPDATE {databaseOwner}{objectQualifier}Packages
+		SET	
+			[PortalID]             = @PortalID,
+			[Name]                 = @Name,
+			[FriendlyName]         = @FriendlyName,
+			[Description]          = @Description,
+			[PackageType]          = @PackageType,
+			[Version]              = @Version,
+			[License]              = @License,
+			[Manifest]             = @Manifest,
+			[Owner]                = @Owner,
+			[Organization]         = @Organization,
+			[Url]                  = @Url,
+			[Email]                = @Email,
+			[ReleaseNotes]         = @ReleaseNotes,
+			[IsSystemPackage]      = @IsSystemPackage,
+			[LastModifiedByUserID] = @LastModifiedByUserID,	
+			[LastModifiedOnDate]   = getdate(),
+			[FolderName]           = @FolderName,
+			[IconFile]             = @IconFile
+		WHERE  PackageID = @PackageID
+GO
+
 
 
 /************************************************************/
