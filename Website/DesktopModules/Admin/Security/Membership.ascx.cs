@@ -26,7 +26,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;
@@ -263,12 +265,20 @@ namespace DotNetNuke.Modules.Admin.Users
             lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000 
                                         ? (object) UserMembership.LastLockoutDate 
                                         : LocalizeString("Never");
-// ReSharper disable SpecifyACultureInStringConversionExplicitly
+            // ReSharper disable SpecifyACultureInStringConversionExplicitly
             isOnLine.Value = LocalizeString(UserMembership.IsOnLine.ToString());
             lockedOut.Value = LocalizeString(UserMembership.LockedOut.ToString());
             approved.Value = LocalizeString(UserMembership.Approved.ToString());
             updatePassword.Value = LocalizeString(UserMembership.UpdatePassword.ToString());
             isDeleted.Value = LocalizeString(UserMembership.IsDeleted.ToString());
+            
+            //show the user folder path without default parent folder, and only visible to admin.
+            userFolder.Visible = UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+            if (userFolder.Visible)
+            {
+                userFolder.Value = FolderManager.Instance.GetUserFolder(User).FolderPath.Substring(6);
+            }
+
             // ReSharper restore SpecifyACultureInStringConversionExplicitly
 
             membershipForm.DataSource = UserMembership;
