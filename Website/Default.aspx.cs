@@ -377,15 +377,23 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots
-	        var allowIndex = true;
-			if ((PortalSettings.ActiveTab.TabSettings.ContainsKey("AllowIndex") && bool.TryParse(PortalSettings.ActiveTab.TabSettings["AllowIndex"].ToString(), out allowIndex) && !allowIndex)
-				|| (Request.QueryString["ctl"] != null && (Request.QueryString["ctl"] == "Login" || Request.QueryString["ctl"] == "Register")))
+            if (!UrlUtils.InPopUp())
             {
-                MetaRobots.Content = "NOINDEX, NOFOLLOW";
-            }
-            else
-            {
-                MetaRobots.Content = "INDEX, FOLLOW";
+                MetaRobots.Visible = true;
+                var allowIndex = true;
+                if ((PortalSettings.ActiveTab.TabSettings.ContainsKey("AllowIndex") &&
+                     bool.TryParse(PortalSettings.ActiveTab.TabSettings["AllowIndex"].ToString(), out allowIndex) &&
+                     !allowIndex)
+                    ||
+                    (Request.QueryString["ctl"] != null &&
+                     (Request.QueryString["ctl"] == "Login" || Request.QueryString["ctl"] == "Register")))
+                {
+                    MetaRobots.Content = "NOINDEX, NOFOLLOW";
+                }
+                else
+                {
+                    MetaRobots.Content = "INDEX, FOLLOW";
+                }
             }
 
             //NonProduction Label Injection
