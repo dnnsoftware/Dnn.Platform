@@ -758,6 +758,17 @@ AS
     SELECT @ServerID
 GO
 
+/***** Fix bug DNN-3245: update the setting name to match AUM format. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingName = 'AUM_' + Upper(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingName = 'AUM_' + UPPER(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
