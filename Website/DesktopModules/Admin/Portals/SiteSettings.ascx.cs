@@ -915,6 +915,14 @@ namespace DesktopModules.Admin.Portals
             RedirectAfterLogin.UndefinedItem = undefinedItem;
             RedirectAfterRegistration.UndefinedItem = undefinedItem;
             RedirectAfterLogout.UndefinedItem = undefinedItem;
+
+            RedirectAfterRegistration.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterRegistration.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogin.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterLogin.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogout.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
