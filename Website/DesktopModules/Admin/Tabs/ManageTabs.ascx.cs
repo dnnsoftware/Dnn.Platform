@@ -184,12 +184,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             cboPositionTab.DataSource = listTabs;
             cboPositionTab.DataBind();
 
-            rbInsertPosition.Items.Clear();
-            rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertBefore", LocalResourceFile), "Before"));
-            rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAfter", LocalResourceFile), "After"));
-            rbInsertPosition.Items.Add(new ListItem(Localization.GetString("InsertAtEnd", LocalResourceFile), "AtEnd"));
-            rbInsertPosition.SelectedValue = "After";
-
             if (parentTab != null && parentTab.IsSuperTab)
             {
                 ShowPermissions(false);
@@ -396,7 +390,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 chkPermanentRedirect.Checked = Tab.PermanentRedirect;
 
                 ShowPermissions(!Tab.IsSuperTab && TabPermissionController.CanAdminPage());
-                ctlAudit.Entity = Tab;
 
                 termsSelector.PortalId = Tab.PortalID;
                 termsSelector.Terms = Tab.Terms;
@@ -782,13 +775,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 return Null.NullInteger;
             }
 
-            //Set Culture Code
+            //Set Tab's position
             var positionTabId = Null.NullInteger;
-            if (cboPositionTab.SelectedItem != null)
+            if (!string.IsNullOrEmpty(cboPositionTab.SelectedValue))
             {
-                positionTabId = Int32.Parse(cboPositionTab.SelectedItem.Value);
+                positionTabId = Int32.Parse(cboPositionTab.SelectedValue);
             }
 
+            //Set Culture Code
             if (strAction != "edit")
             {
                 if (PortalSettings.ContentLocalizationEnabled)
@@ -1522,6 +1516,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 else if (!string.IsNullOrEmpty(UrlUtils.ValidReturnUrl(Request.QueryString["returnurl"])))
                 {
                     cancelHyperLink.NavigateUrl = Request.QueryString["returnurl"];
+                }
+
+                if (ctlAudit.Visible)
+                {
+                    ctlAudit.Entity = Tab;
                 }
             }
             catch (Exception exc)
