@@ -68,8 +68,11 @@ namespace DotNetNuke.Services.FileSystem
                 var fileName = Path.GetFileName(fileNames[i]);
 				if(!fileName.EndsWith(ProtectedExtension))
 				{
-					FileWrapper.Instance.Move(fileNames[i], fileNames[i] + ProtectedExtension);
-				}
+                    var destFileName = fileNames[i] + ProtectedExtension;
+                    if (FileWrapper.Instance.Exists(destFileName))
+                        FileWrapper.Instance.Delete(destFileName);
+                    FileWrapper.Instance.Move(fileNames[i], destFileName);
+                }
 				else
 				{
 					fileName = fileName.Substring(0, fileName.LastIndexOf(ProtectedExtension));
