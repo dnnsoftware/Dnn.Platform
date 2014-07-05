@@ -270,4 +270,7 @@
   <data name="FileUpload.ErrorDialogTitle.Text" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Password Matched</value>
+  </data>
 </root>
