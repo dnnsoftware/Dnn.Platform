@@ -54,8 +54,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         public override void UpdateSettings()
         {
-            var controller = new ModuleController();
-            controller.UpdateModuleSetting(ModuleId, "ScriptFile", scriptList.SelectedValue);
+            ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScriptFile", scriptList.SelectedValue);
         }
     }
 }

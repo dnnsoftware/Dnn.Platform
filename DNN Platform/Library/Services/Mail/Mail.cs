@@ -82,34 +82,37 @@ namespace DotNetNuke.Services.Mail
             {
                 try
                 {
-                    var smtpClient = new SmtpClient();
-
-                    var smtpHostParts = smtpServer.Split(':');
-                    smtpClient.Host = smtpHostParts[0];
-                    if (smtpHostParts.Length > 1)
+                    //to workaround problem in 4.0 need to specify host name
+                    using (var smtpClient = new SmtpClient())
                     {
-                        smtpClient.Port = Convert.ToInt32(smtpHostParts[1]);
-                    }
+                        var smtpHostParts = smtpServer.Split(':');
+                        smtpClient.Host = smtpHostParts[0];
+                        smtpClient.Port = smtpHostParts.Length > 1 ? Convert.ToInt32(smtpHostParts[1]) : 25;
 
-                    switch (smtpAuthentication)
-                    {
-                        case "":
-                        case "0": //anonymous
-                            break;
-                        case "1": //basic
-                            if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
-                            {
-                                smtpClient.UseDefaultCredentials = false;
-                                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                            }
-                            break;
-                        case "2": //NTLM
-                            smtpClient.UseDefaultCredentials = true;
-                            break;
+                        smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
+                        smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
+
+                        switch (smtpAuthentication)
+                        {
+                            case "":
+                            case "0": //anonymous
+                                break;
+                            case "1": //basic
+                                if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
+                                {
+                                    smtpClient.UseDefaultCredentials = false;
+                                    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                                }
+                                break;
+                            case "2": //NTLM
+                                smtpClient.UseDefaultCredentials = true;
+                                break;
+                        }
+                        smtpClient.EnableSsl = smtpEnableSSL;
+                        smtpClient.Send(mailMessage);
+                        smtpClient.Dispose();
+                        retValue = "";
                     }
-                    smtpClient.EnableSsl = smtpEnableSSL;
-                    smtpClient.Send(mailMessage);
-                    retValue = "";
                 }
                 catch (SmtpFailedRecipientException exc)
                 {

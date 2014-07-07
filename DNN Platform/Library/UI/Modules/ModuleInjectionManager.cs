@@ -28,7 +28,7 @@ using System.Linq;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.Internal.Reflection;
+using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.UI.Modules

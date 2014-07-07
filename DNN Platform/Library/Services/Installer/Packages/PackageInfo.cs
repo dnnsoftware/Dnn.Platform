@@ -22,6 +22,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common.Utilities;
@@ -302,6 +304,38 @@ namespace DotNetNuke.Services.Installer.Packages
         public void AttachInstallerInfo(InstallerInfo installer)
         {
             InstallerInfo = installer;
+        }
+
+        /// <summary>
+        /// Clone current object.
+        /// </summary>
+        /// <returns></returns>
+        public PackageInfo Clone()
+        {
+            return new PackageInfo
+                   {
+                       PackageID = PackageID,
+                       PortalID = PortalID,
+                       PackageType = PackageType,
+                       InstallerInfo = InstallerInfo,
+                       Name = Name,
+                       FriendlyName = FriendlyName,
+                       Manifest = Manifest,
+                       Email = Email,
+                       Description = Description,
+                       FolderName = FolderName,
+                       FileName = FileName,
+                       IconFile = IconFile,
+                       IsSystemPackage = IsSystemPackage,
+                       IsValid = IsValid,
+                       Organization = Organization,
+                       Owner = Owner,
+                       License = License,
+                       ReleaseNotes = ReleaseNotes,
+                       Url = Url,
+                       Version = Version,
+                       InstalledVersion = InstalledVersion
+                   };
         }
     }
 }

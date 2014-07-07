@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var rawQueryStringCollection =
                 HttpUtility.ParseQueryString(new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query);
 
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             string[] arrKeys = queryStringCollection.AllKeys;
 
             for (int i = 0; i <= arrKeys.GetUpperBound(0); i++)
@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                                 int.TryParse(queryStringCollection[ModuleIdKey], out moduleID);
                                 int.TryParse(queryStringCollection["tabid"], out tabid);
-                                ModuleInfo localizedModule = new ModuleController().GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
+                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
                                 if (localizedModule != null)
                                 {
                                     if (!string.IsNullOrEmpty(returnValue))
@@ -239,13 +239,13 @@ namespace DotNetNuke.UI.Skins.Controls
             int tabId = objPortal.ActiveTab.TabID;
             bool islocalized = false;
 
-            TabInfo localizedTab = new TabController().GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            TabInfo localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;
                 if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
                 {
-                    PortalInfo localizedPortal = new PortalController().GetPortal(objPortal.PortalId, newLocale.Code);
+                    PortalInfo localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
                     tabId = localizedPortal.HomeTabId;
                 }
                 else

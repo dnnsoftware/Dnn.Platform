@@ -19,6 +19,9 @@
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.PasswordStrength.js"></script>
+    <script type="text/javascript" src="../DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>  
 <body>
@@ -85,7 +88,7 @@
                 <div id="adminInfo" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label ID="lblAdminInfo" runat="server" CssClass="tabSubTitle" ResourceKey="AdminInfo" />
                     <asp:Label ID="lblAdminInfoError" runat="server" CssClass="NormalRed"/>
-                    <div class="dnnFormItem">
+                    <div class="dnnFormItem dnnFormPassword">
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="UserName" CssClass="dnnFormRequired"/>
                             <asp:TextBox ID="txtUsername" runat="server"/>
@@ -93,7 +96,9 @@
                         </div>
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired"/>
-                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"/>
+                            <asp:Panel ID="passwordContainer" runat="server" class="password-strength-container">
+                                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"/>
+                            </asp:Panel>
                             <asp:RequiredFieldValidator ID="valPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Password.Required" Display="Dynamic" ControlToValidate="txtPassword" />
                         </div>
                         <div class="dnnFormItem">
@@ -101,6 +106,12 @@
                             <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" />
                             <asp:RequiredFieldValidator ID="valConfirmPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Confirm.Required" Display="Dynamic" ControlToValidate="txtConfirmPassword" />
                         </div>                      
+                        <div class="dnnFormItem">
+                            <dnn:Label ID="lblEmail" runat="server" ControlName="txtEmail" ResourceKey="Email" CssClass="dnnFormRequired"/>
+                            <asp:TextBox ID="txtEmail" runat="server"/>
+                            <asp:RequiredFieldValidator ID="valEmal" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Email.Required" Display="Dynamic" ControlToValidate="txtEmail" />
+                            <asp:RegularExpressionValidator ID="valEmailValid" runat="server" cssclass="dnnFormMessage dnnFormError dnnRequired" display="Dynamic" resourcekey="Email.Invalid" ControlToValidate="txtEmail" />
+                        </div>
                     </div>
                 </div>
                 <div id="websiteInfo" runat="Server" visible="True" class="dnnForm">                    
@@ -634,6 +645,7 @@
                             username: $('#<%= txtUsername.ClientID %>')[0].value,
                             password: $('#<%= txtPassword.ClientID %>')[0].value,
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
+                            email: $('#<%= txtEmail.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,
                             template: $find('<%= templateList.ClientID %>').get_value(),
                             language: $find('<%= languageList.ClientID %>').get_value(),

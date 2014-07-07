@@ -177,4 +177,37 @@
   <data name="ViewLog.Header" xml:space="preserve">
     <value>Log</value>
   </data>
+  <data name="plSchedulerMode.Text" xml:space="preserve">
+    <value>Scheduler Mode:</value>
+  </data>
+  <data name="plSchedulerMode.Help" xml:space="preserve">
+    <value>The Timer Method maintains a separate thread to execute scheduled tasks while the worker process is alive. Alternatively, the Request Method executes tasks when HTTP Requests are made.  You can also disable the scheduler by selecting Disabled.</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TimerMethod.Text" xml:space="preserve">
+    <value>Timer Method</value>
+  </data>
+  <data name="RequestMethod.Text" xml:space="preserve">
+    <value>Request Method</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="plServers.Text" xml:space="preserve">
+    <value>Server Name:</value>
+  </data>
+  <data name="plServers.Help" xml:space="preserve">
+    <value>The particular server (or All) that a scheduled task will run on.</value>
+  </data>
+  <data name="plScheduleAppStartDelay.Text" xml:space="preserve">
+    <value>Delay Schedule At Start:</value>
+  </data>
+  <data name="plScheduleAppStartDelay.Help" xml:space="preserve">
+    <value>Number of minutes the system should wait before it runs any scheduled jobs after a restart. Default is 1 min.</value>
+  </data>
+  <data name="ScheduleAppStartDelayValidation.Text" xml:space="preserve">
+    <value>Value should be in minutes!</value>
+  </data>
 </root>

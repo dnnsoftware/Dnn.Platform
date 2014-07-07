@@ -28,7 +28,6 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Entities.Users.Social.Data;
@@ -76,7 +75,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             MockComponentProvider.CreateEventLogController();
 
             _portalController = new Mock<IPortalController>();
-            TestablePortalController.SetTestableInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
 
             _portalGroupController = new Mock<IPortalGroupController>();
             PortalGroupController.RegisterInstance(_portalGroupController.Object);

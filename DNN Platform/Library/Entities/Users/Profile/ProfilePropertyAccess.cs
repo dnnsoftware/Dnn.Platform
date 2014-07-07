@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Users
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo(definition.DataType).Value;
+                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
                 DataCache.SetCache(cacheKey, strDataType);
             }
             return strDataType;
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Users
                     //Is Administrator
                     if (String.IsNullOrEmpty(administratorRoleName))
                     {
-                        PortalInfo ps = new PortalController().GetPortal(user.PortalID);
+                        PortalInfo ps = PortalController.Instance.GetPortal(user.PortalID);
                         administratorRoleName = ps.AdministratorRoleName;
                     }
 
@@ -229,11 +229,10 @@ namespace DotNetNuke.Entities.Users
                         result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
                         break;
                     case "page":
-                        var tabCtrl = new TabController();
                         int tabid;
                         if (int.TryParse(property.PropertyValue, out tabid))
                         {
-                            TabInfo tab = tabCtrl.GetTab(tabid, Null.NullInteger, false);
+                            TabInfo tab = TabController.Instance.GetTab(tabid, Null.NullInteger, false);
                             if (tab != null)
                             {
                                 result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);

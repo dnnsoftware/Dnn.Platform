@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Content
             //Argument Contract
             Requires.NotNull("contentItem", contentItem);
 
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.GetCurrentUserInfo().UserID);
+            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
 
             SaveMetadataDelta(contentItem);
 
@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Content
 
             SaveMetadataDelta(contentItem);
             
-            _dataService.UpdateContentItem(contentItem, UserController.GetCurrentUserInfo().UserID);
+            _dataService.UpdateContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public void AddMetaData(ContentItem contentItem, string name, string value)

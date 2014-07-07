@@ -35,9 +35,8 @@ using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Web.Api;
@@ -83,14 +82,13 @@ namespace DotNetNuke.Web.InternalServices
                 var fileIdsList = string.IsNullOrEmpty(postData.FileIds) ? null : postData.FileIds.FromJson<IList<int>>();
 
                 var roles = roleIdsList != null && roleIdsList.Count > 0
-                    ? roleIdsList.Select(id => TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
+                    ? roleIdsList.Select(id => RoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
                     : null;
 
                 List<UserInfo> users = null;
                 if (userIdsList != null)
                 {
-                    var userController = new UserController();
-                    users = userIdsList.Select(id => userController.GetUser(portalId, id)).Where(user => user != null).ToList();
+                    users = userIdsList.Select(id => UserController.Instance.GetUser(portalId, id)).Where(user => user != null).ToList();
                 }
 
                 var message = new Message { Subject = HttpUtility.UrlDecode(postData.Subject), Body = HttpUtility.UrlDecode(postData.Body) };
@@ -117,31 +115,27 @@ namespace DotNetNuke.Web.InternalServices
                 q = q.Replace(",", "").Replace("'", "");
                 if (q.Length == 0) return Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
 
-                var results = TestableUserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
+                var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
                     .Select(user => new SearchResult
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
-                        iconfile = string.Format(Globals.UserProfilePicFormattedUrl(), user.UserID, 32, 32),
+                        iconfile = string.Format(Globals.UserProfilePicRelativeUrl(), user.UserID, 32, 32),
                     }).ToList();
 
                 //Roles should be visible to Administrators or User in the Role.
-                var roles = TestableRoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
+                var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
                 results.AddRange(from roleInfo in roles
                                     where
                                         isAdmin ||
-                                        UserInfo.Social.Roles.SingleOrDefault(
-                                            ur => ur.RoleID == roleInfo.RoleID) != null
+                                        UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID) != null
                                     select new SearchResult
                                     {
                                         id = "role-" + roleInfo.RoleID,
                                         name = roleInfo.RoleName,
-                                        iconfile =
-                                            TestableGlobals.Instance.ResolveUrl(
-                                                string.IsNullOrEmpty(roleInfo.IconFile)
+                                        iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
                                                     ? "~/images/no_avatar.gif"
-                                                    : PortalSettings.HomeDirectory.TrimEnd('/') + "/" +
-                                                    roleInfo.IconFile)
+                                                    : PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile)
                                     });
 
                 return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));

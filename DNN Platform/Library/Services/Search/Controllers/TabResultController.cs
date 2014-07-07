@@ -46,8 +46,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchResult.TabId > 0)
             {
-                var tabController = new TabController();
-                var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
+                var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
                 viewable = tab != null && !tab.IsDeleted && TabPermissionController.CanViewPage(tab);
             }
 
@@ -57,9 +56,8 @@ namespace DotNetNuke.Services.Search.Controllers
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            var tabController = new TabController();
 
-            var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
+            var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
             if (TabPermissionController.CanViewPage(tab))
             {
                 url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);

@@ -364,7 +364,12 @@ namespace DotNetNuke.Services.Install
 
         //Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
-                                        { {upgradeDatabase, 50}, {upgradeExtensions, 49}, {new InstallVersionStep(), 1} };
+                                {
+                                    {new AddFcnModeStep(), 1},
+                                    {upgradeDatabase, 50}, 
+                                    {upgradeExtensions, 49}, 
+                                    {new InstallVersionStep(), 1}
+                                };
 
         static UpgradeWizard()
         {

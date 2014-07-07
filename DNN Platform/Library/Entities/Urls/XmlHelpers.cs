@@ -69,7 +69,6 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    var tc = new TabController();
                     //loop through all specified tab names
                     foreach (string tabName in tabNames.Split(';'))
                     {
@@ -89,7 +88,7 @@ namespace DotNetNuke.Entities.Urls
                             else
                             {
                                 //portal id specified : specific portal
-                                TabInfo tab = tc.GetTabByName(tabName, portalId);
+                                TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId);
                                 if (tab != null)
                                 {
                                     tabIds.Add(tab.TabID);

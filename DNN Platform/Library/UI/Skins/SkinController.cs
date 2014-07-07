@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -84,12 +85,13 @@ namespace DotNetNuke.UI.Skins
 
         private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, bool isPortal)
         {
+            var isSystemFolder = skinFolder.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) >= 0;
             foreach (string skinFile in Directory.GetFiles(skinFolder, "*.ascx"))
             {
                 string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
 
                 string key = ((isPortal) ? "Site: " : "Host: ") + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-                string prefix = (isPortal) ? "[L]" : "[G]";
+                string prefix = (isPortal) ? ((isSystemFolder) ? "[S]" : "[L]") : "[G]"; //to be compliant with all versions
                 string value = prefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
                 skins.Add(new KeyValuePair<string, string>(key, value)); 
             }
@@ -118,17 +120,22 @@ namespace DotNetNuke.UI.Skins
             var skins = new List<KeyValuePair<string, string>>();
 
             if (portalInfo != null)
-            {
-                string rootFolder = portalInfo.HomeDirectoryMapPath + skinRoot;
-                if (Directory.Exists(rootFolder))
-                {
-                    foreach (string skinFolder in Directory.GetDirectories(rootFolder))
-                    {
-                        AddSkinFiles(skins, skinRoot, skinFolder, true);
-                    }
-                }
+            {                
+                ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot);
+                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot); //to be compliant with all versions
             }
             return skins;
+        }
+
+        private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot)
+        {            
+            if (Directory.Exists(skinsFolder))
+            {
+                foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
+                {
+                    AddSkinFiles(skins, skinRoot, skinFolder, true);
+                }
+            }
         }
 
 
@@ -139,9 +146,8 @@ namespace DotNetNuke.UI.Skins
 
         public static int AddSkinPackage(SkinPackageInfo skinPackage)
         {
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_CREATED);
-            return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_CREATED);
+            return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public static bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
@@ -149,17 +155,22 @@ namespace DotNetNuke.UI.Skins
             string skinType;
             string skinFolder;
             bool canDelete = true;
-            if (folderPath.ToLower().IndexOf(Globals.HostMapPath.ToLower()) != -1)
+            if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
                 skinFolder = folderPath.ToLower().Replace(Globals.HostMapPath.ToLower(), "").Replace("\\", "/");
             }
-            else
+            else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
+            {
+                skinType = "S";
+                skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
+            }
+            else //to be compliant with all versions
             {
                 skinType = "L";
                 skinFolder = folderPath.ToLower().Replace(portalHomeDirMapPath.ToLower(), "").Replace("\\", "/");
             }
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
             if (skinFolder.ToLowerInvariant().Contains("skins"))
@@ -194,8 +205,7 @@ namespace DotNetNuke.UI.Skins
         public static void DeleteSkinPackage(SkinPackageInfo skinPackage)
         {
             DataProvider.Instance().DeleteSkinPackage(skinPackage.SkinPackageID);
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_DELETED);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_DELETED);
         }
 
         public static string FormatMessage(string title, string body, int level, bool isError)
@@ -243,7 +253,10 @@ namespace DotNetNuke.UI.Skins
                     case "[g]":
                         strSkinSrc = Regex.Replace(strSkinSrc, "\\[g]", Globals.HostPath, RegexOptions.IgnoreCase);
                         break;
-                    case "[l]":
+                    case "[s]":
+                        strSkinSrc = Regex.Replace(strSkinSrc, "\\[s]", portalSettings.HomeSystemDirectory, RegexOptions.IgnoreCase);
+                        break;
+                    case "[l]": //to be compliant with all versions
                         strSkinSrc = Regex.Replace(strSkinSrc, "\\[l]", portalSettings.HomeDirectory, RegexOptions.IgnoreCase);
                         break;
                 }
@@ -420,9 +433,8 @@ namespace DotNetNuke.UI.Skins
                                                       skinPackage.PortalID,
                                                       skinPackage.SkinName,
                                                       skinPackage.SkinType,
-                                                      UserController.GetCurrentUserInfo().UserID);
-            var eventLogController = new EventLogController();
-            eventLogController.AddLog(skinPackage, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_UPDATED);
+                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_UPDATED);
             foreach (KeyValuePair<int, string> kvp in skinPackage.Skins)
             {
                 UpdateSkin(kvp.Key, kvp.Value);
@@ -552,16 +564,14 @@ namespace DotNetNuke.UI.Skins
 			//log installation event
             try
             {
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
                 Array arrMessage = strMessage.Split(new[] {"<br />"}, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
                 {
-                    objEventLogInfo.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
+                    log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
                 }
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(objEventLogInfo);
+                LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
             {

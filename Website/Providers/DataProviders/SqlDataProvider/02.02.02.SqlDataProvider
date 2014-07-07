@@ -1432,7 +1432,7 @@ if exists (select * from {databaseOwner}sysobjects where id = object_id(N'{datab
 drop table {databaseOwner}{objectQualifier}Search
 GO
 
-INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Search.SearchEngineScheduler, DOTNETNUKE', 5, 'm', 10, 'm', 60, '', 0, 1, 'SearchEngine')
+INSERT INTO {databaseOwner}{objectQualifier}Schedule VALUES ('DotNetNuke.Services.Search.SearchEngineScheduler, DOTNETNUKE', 30, 'm', 15, 'm', 60, '', 0, 1, 'SearchEngine')
 GO
 
 drop procedure {databaseOwner}{objectQualifier}GetPortal

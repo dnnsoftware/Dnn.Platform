@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Knockout" type="JavaScript_Library" version="02.02.01">
+    <package name="Knockout" type="JavaScript_Library" version="03.01.00">
       <friendlyName>Knockout JavaScript Library</friendlyName>
       <description>Knockout is an MVVM library that is used for client side databinding.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
@@ -19,7 +19,7 @@
             <libraryName>Knockout</libraryName>
             <fileName>knockout.js</fileName>
             <objectName>ko</objectName>
-            <CDNPath>http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js</CDNPath>
+            <CDNPath>http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

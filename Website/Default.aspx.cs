@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -147,14 +148,6 @@ namespace DotNetNuke.Framework
                 return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
             }
         }
-
-        private bool IsPopUp
-        {
-            get
-            {
-                return HttpContext.Current.Request.Url.ToString().Contains("popUp=true");
-            }
-        }
         
         #endregion
 
@@ -206,12 +199,10 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
-            var tabController = new TabController();
-
             //redirect to a specific tab based on name
             if (!String.IsNullOrEmpty(Request.QueryString["tabname"]))
             {
-                TabInfo tab = tabController.GetTabByName(Request.QueryString["TabName"], ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).PortalId);
+                TabInfo tab = TabController.Instance.GetTabByName(Request.QueryString["TabName"], ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).PortalId);
                 if (tab != null)
                 {
                     var parameters = new List<string>(); //maximum number of elements
@@ -265,15 +256,13 @@ namespace DotNetNuke.Framework
             if (Host.DisplayCopyright)
             {
                 Comment += string.Concat(Environment.NewLine,
-                                         "<!--************************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine,
-                                         "<!-- DNN Platform - http://www.dnnsoftware.com                                        -->",
+                                         "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2014                                                          -->",
+                                         "<!-- Copyright (c) 2002-2014, by DNN Corporation -->",
                                          Environment.NewLine,
-                                         "<!-- by DNN Corporation                                                               -->",
-                                         Environment.NewLine,
-                                         "<!--**********************************************************************************-->",
+                                         "<!--*********************************************-->",
                                          Environment.NewLine);
             }
             Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
@@ -285,7 +274,7 @@ namespace DotNetNuke.Framework
             
             //set page title
             string strTitle = PortalSettings.PortalName;
-            if (IsPopUp)
+            if (UrlUtils.InPopUp())
             {
                 var slaveModule = UIUtilities.GetSlaveModule(PortalSettings.ActiveTab.TabID);
 
@@ -322,7 +311,7 @@ namespace DotNetNuke.Framework
             Title = strTitle;
 
             //set the background image if there is one selected
-            if (!IsPopUp && FindControl("Body") != null)
+            if (!UrlUtils.InPopUp() && FindControl("Body") != null)
             {
                 if (!string.IsNullOrEmpty(PortalSettings.BackgroundFile))
                 {
@@ -400,7 +389,7 @@ namespace DotNetNuke.Framework
             }
 
             //NonProduction Label Injection
-            if (NonProductionVersion() && Host.DisplayBetaNotice && !IsPopUp)
+            if (NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
                 string versionString = string.Format(" ({0} Version: {1})", DotNetNukeContext.Current.Application.Status,
                                                      DotNetNukeContext.Current.Application.Version);
@@ -408,7 +397,7 @@ namespace DotNetNuke.Framework
             }
 
             //register DNN SkinWidgets Inititialization scripts
-            if (PortalSettings.EnableSkinWidgets)
+            if (PortalSettings.EnableSkinWidgets & !UrlUtils.InPopUp())
             {
                 jQuery.RequestRegistration();
                 // don't use the new API to register widgets until we better understand their asynchronous script loading requirements.
@@ -523,7 +512,7 @@ namespace DotNetNuke.Framework
                 //log visit
                 var objSiteLogs = new SiteLogController();
 
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 objSiteLogs.AddSiteLog(PortalSettings.PortalId, objUserInfo.UserID, urlReferrer, Request.Url.ToString(),
                                        Request.UserAgent, Request.UserHostAddress, Request.UserHostName,
                                        PortalSettings.ActiveTab.TabID, affiliateId, intSiteLogBuffer,
@@ -641,10 +630,10 @@ namespace DotNetNuke.Framework
             UI.Skins.Skin ctlSkin;
             if (PortalSettings.EnablePopUps)
             {
-                ctlSkin = IsPopUp ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
+                ctlSkin = UrlUtils.InPopUp() ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
 
                 //register popup js
-                jQuery.RegisterJQueryUI(Page);
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
@@ -796,30 +785,39 @@ namespace DotNetNuke.Framework
             }
 
             //Set the Head tags
+            metaPanel.Visible = !UrlUtils.InPopUp();
+            if (!UrlUtils.InPopUp())
+            {
+                MetaGenerator.Content = Generator;
+                MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
+                MetaAuthor.Content = PortalSettings.PortalName;
+                MetaCopyright.Content = Copyright;
+                MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                MetaKeywords.Content = KeyWords;
+                MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
+                MetaDescription.Content = Description;
+                MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
+            }
             Page.Header.Title = Title;
-            MetaGenerator.Content = Generator;
-            MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
-            MetaAuthor.Content = PortalSettings.PortalName;
-            MetaCopyright.Content = Copyright;
-            MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-            MetaKeywords.Content = KeyWords;
-            MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
-            MetaDescription.Content = Description;
-            MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
         }
 
 		protected override void Render(HtmlTextWriter writer)
 		{
 			if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
 			{
+			    var editClass = "dnnEditState";
+			    if (!PortalSettings.EnableModuleEffect)
+			    {
+			        editClass += " dnnOpacityDisabled";
+			    }
 				var bodyClass = Body.Attributes["class"];
 				if (!string.IsNullOrEmpty(bodyClass))
 				{
-					Body.Attributes["class"] = string.Format("{0} dnnEditState", bodyClass);
+                    Body.Attributes["class"] = string.Format("{0} {1}", bodyClass, editClass);
 				}
 				else
 				{
-					Body.Attributes["class"] = "dnnEditState";
+                    Body.Attributes["class"] = editClass;
 				}
 			}
 

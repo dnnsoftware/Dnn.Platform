@@ -95,6 +95,7 @@ namespace DotNetNuke.UI.WebControls
 			HelpStyle = new Style();
 			EditControlStyle = new Style();
 			ErrorStyle = new Style();
+            ViewStateMode = ViewStateMode.Disabled;
 		}
 
 		#endregion
@@ -429,6 +430,7 @@ namespace DotNetNuke.UI.WebControls
 		private void BuildDiv(EditorInfo editInfo)
 		{
 			var propLabel = new PropertyLabelControl();
+            propLabel.ViewStateMode = ViewStateMode.Disabled;
 
 			var propEditor = BuildEditor(editInfo);
 			var visibility = BuildVisibility(editInfo);
@@ -490,6 +492,7 @@ namespace DotNetNuke.UI.WebControls
 		private EditControl BuildEditor(EditorInfo editInfo)
 		{
 			EditControl propEditor = EditControlFactory.CreateEditControl(editInfo);
+            propEditor.ViewStateMode = ViewStateMode.Enabled;
 			propEditor.ControlStyle.CopyFrom(EditControlStyle);
 			propEditor.LocalResourceFile = LocalResourceFile;
 		    propEditor.User = User;

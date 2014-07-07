@@ -28,7 +28,6 @@ using System.Text;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
@@ -89,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             _mockMessagingController = new Mock<IMessagingController>();
             MessagingController.SetTestableInstance(_mockMessagingController.Object);
-            TestablePortalController.SetTestableInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
             PortalGroupController.RegisterInstance(_portalGroupController.Object);
 
             _mockInternalMessagingController = new Mock<IInternalMessagingController>();
@@ -113,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             ComponentFactory.Container = null;
             MessagingController.ClearInstance();
-            TestablePortalController.ClearInstance();
+            PortalController.ClearInstance();
             InternalMessagingController.ClearInstance();
         }
 

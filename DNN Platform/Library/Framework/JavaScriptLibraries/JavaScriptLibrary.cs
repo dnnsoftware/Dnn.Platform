@@ -122,7 +122,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             CDNPath = reader.ReadElementContentAsString();
                             break;
                         default:
-                            var content = reader.ReadElementContentAsString();
+                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            {
+                                reader.ReadElementContentAsString();
+                            }
                             break;
                     }
                 }

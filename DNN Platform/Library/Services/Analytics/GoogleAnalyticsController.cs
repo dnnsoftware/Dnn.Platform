@@ -124,14 +124,15 @@ namespace DotNetNuke.Services.Analytics
             catch (Exception ex)
             {
                 //log it
-                var objEventLog = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
-                objEventLogInfo.AddProperty("FilePath", filePath);
-                objEventLogInfo.AddProperty("ExceptionMessage", ex.Message);
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                objEventLog.AddLog(objEventLogInfo);
-                fileReader.Close();
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                log.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
+                log.AddProperty("FilePath", filePath);
+                log.AddProperty("ExceptionMessage", ex.Message);
+                LogController.Instance.AddLog(log);
+                if (fileReader != null)
+                {
+                    fileReader.Close();
+                }
                 Logger.Error(ex);
 
             }

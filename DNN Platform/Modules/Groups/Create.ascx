@@ -16,7 +16,7 @@
                     </div>
                     <asp:TextBox ID="txtGroupName" runat="server" MaxLength="50"/>
                     <asp:RequiredFieldValidator ID="reqGroupName" runat="server" ControlToValidate="txtGroupName" CssClass="dnnFormMessage dnnFormError" ResourceKey="GroupName.Required" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[A-Za-z0-9\.\s_-]*" />
+                    <asp:RegularExpressionValidator ID="valGroupName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="GroupName.Invalid" ControlToValidate="txtGroupName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
                     <asp:Label id="lblInvalidGroupName" runat="server" CssClass="dnnFormMessage dnnFormError" resourcekey="GroupNameDuplicate" Visible="false" />
                 </div>
                 <!--close dnnFormItem-->

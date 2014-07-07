@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 int intUserID = -1;
                 if (Request.IsAuthenticated)
                 {
-                    objUserInfo = UserController.GetCurrentUserInfo();
+                    objUserInfo = UserController.Instance.GetCurrentUserInfo();
                     if (objUserInfo != null)
                     {
                         intUserID = objUserInfo.UserID;
@@ -73,8 +73,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     intRoleId = int.Parse(Request.QueryString["roleid"]);
                 }
                 string strProcessorUserId = "";
-                var objPortalController = new PortalController();
-                PortalInfo objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;
@@ -101,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     else
                     {
                         strPayPalURL += "cmd=_ext-enter";
-                        RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == intRoleId);
+                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == intRoleId);
                         if (objRole.RoleID != -1)
                         {
                             int intTrialPeriod = 1;

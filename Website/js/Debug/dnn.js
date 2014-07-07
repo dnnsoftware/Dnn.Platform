@@ -13,6 +13,48 @@ if (typeof (Sys.Browser.Chrome) == "undefined") {
         Sys.Browser.hasDebuggerStatement = true;
     }
 }
+else if (Sys.Browser.agent === Sys.Browser.InternetExplorer && Sys.Browser.version > 10) {
+    // when browse in IE11, we need add attachEvent/detachEvent handler to make it works with MS AJAX library.
+    HTMLAnchorElement.prototype.attachEvent = function (eventName, handler) {
+        if (eventName.substr(0, 2) == "on") eventName = eventName.substr(2);
+        this.addEventListener(eventName, handler, false);
+    }
+    HTMLAnchorElement.prototype.detachEvent = function (eventName, handler) {
+        if (eventName.substr(0, 2) == "on") eventName = eventName.substr(2);
+        this.removeEventListener(eventName, handler, false);
+    }
+}
+
+//This is temp fix for jQuery UI issue: http://bugs.jqueryui.com/ticket/9315
+//this code can be safe removed after jQuery UI library upgrade to 1.11.
+if ($ && $.ui && $.ui.dialog) {
+    $.extend($.ui.dialog.prototype.options, {
+        open: function(event, ui) {
+            var htmlElement = $(document).find('html');
+            htmlElement.css('overflow', 'hidden');
+            var cacheScrollTop = htmlElement.scrollTop();
+            if (cacheScrollTop > 0) {
+                htmlElement.scrollTop(0);
+                var target = $(this);
+                target.data('cacheScrollTop', cacheScrollTop);
+                //move the dialog up
+                var position = target.closest('.ui-dialog').offset();
+                if (position.top + target.closest('.ui-dialog').height() > htmlElement[0].clientHeight) {
+                    target.dialog('option', 'position', 'center');
+                }
+            }
+        },
+        beforeClose: function(event, ui) {
+            var htmlElement = $(document).find('html');
+            htmlElement.css('overflow', '');
+            var cacheScrollTop = $(this).data('cacheScrollTop');
+            if (cacheScrollTop) {
+                htmlElement.scrollTop(cacheScrollTop);
+                $(this).data('cacheScrollTop', null);
+            }
+        }
+    });
+}
 
 var DNN_HIGHLIGHT_COLOR = '#9999FF';
 var COL_DELIMITER = String.fromCharCode(18);
@@ -295,6 +337,31 @@ dnn.extend(dnn, {
         dnn.isLoaded = true;
         if (dnn._delayedSet)
             dnn.setVar(dnn._delayedSet.key, dnn._delayedSet.val);
+    },
+    
+    addIframeMask: function(ele) { //add an iframe behind the element, so that element will not mask by some special objects.
+        if (dnn.dom.browser.isType('ie') && (ele.previousSibling == null || ele.previousSibling.nodeName.toLowerCase() != "iframe")) {
+            var mask = document.createElement("iframe"); //"$("<iframe src=\"about:blank\" frameborder=\"0\"></iframe>");
+            ele.parentNode.insertBefore(mask, ele);
+            var rect = ele.getBoundingClientRect();
+            mask.style.position = 'absolute';
+            mask.style.left = ele.offsetLeft + "px";
+            mask.style.top = ele.offsetTop + "px";
+            mask.style.width = (rect.right - rect.left) + "px";
+            mask.style.height = (rect.bottom - rect.top) + "px";
+            mask.style.opacity = '0';
+            mask.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+            mask.style.zIndex = "-1";
+
+            return mask;
+        }
+
+        return null;
+    },
+    removeIframeMask: function(ele) {
+        if (dnn.dom.browser.isType('ie') && (ele.previousSibling != null && ele.previousSibling.nodeName.toLowerCase() == "iframe")) {
+            ele.parentNode.removeChild(ele.previousSibling);
+        }
     }
 });
 
@@ -491,7 +558,7 @@ dnn.extend(dnn.dom, {
         /// Reference to the function that will react to event
         /// </param>
         /// <returns type="Boolean" />		
-        if (dnn.dom.browser.isType(dnn.dom.browser.InternetExplorer) == false) {
+        if (ctl.addEventListener) {
             var name = type.substring(2);
             ctl.addEventListener(name, function (evt) { dnn.dom.event = new dnn.dom.eventObject(evt, evt.target); return fHandler(); }, false);
         }

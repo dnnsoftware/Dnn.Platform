@@ -27,7 +27,6 @@ using System.Web.Http.Routing;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 namespace DotNetNuke.Web.Api
 {
@@ -104,13 +103,13 @@ namespace DotNetNuke.Web.Api
                 //prefixCounts are required for each route that is mapped but they only change
                 //when a new portal is added so cache them until that time
 
-                ArrayList portals = TestablePortalController.Instance.GetPortals();
+                ArrayList portals = PortalController.Instance.GetPortals();
 
                 var segmentCounts1 = new List<int>();
 
                 foreach (PortalInfo portal in portals)
                 {
-                    IEnumerable<string> aliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
+                    IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
 
                     aliases = StripApplicationPath(aliases);
 

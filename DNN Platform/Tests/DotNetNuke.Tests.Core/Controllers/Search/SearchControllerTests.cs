@@ -30,7 +30,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Controllers;
@@ -163,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SetupLocaleController();
 
             _mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-            TestableUserController.SetTestableInstance(_mockUserController.Object);
+            UserController.SetTestableInstance(_mockUserController.Object);
 
             DeleteIndexFolder();
             InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());

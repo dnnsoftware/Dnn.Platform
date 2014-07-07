@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs)
         {
-            return ReplyMessage(conversationId, body, fileIDs, UserController.GetCurrentUserInfo());
+            return ReplyMessage(conversationId, body, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender)
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = messageId }))
                 {
-                    _dataService.SaveMessageAttachment(attachment, UserController.GetCurrentUserInfo().UserID);
+                    _dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
 
@@ -375,7 +375,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual UserInfo GetCurrentUserInfo()
         {
-            return UserController.GetCurrentUserInfo();
+            return UserController.Instance.GetCurrentUserInfo();
         }
 
         internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
@@ -390,7 +390,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(TestablePortalSettings.Instance.AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         internal virtual string InputFilter(string input)

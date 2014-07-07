@@ -48,6 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
             Tabs = new List<DnnFormTab>();
 
             FormMode = DnnFormMode.Long;
+            ViewStateMode = ViewStateMode.Disabled;
         }
 
         protected string LocalResourceFile

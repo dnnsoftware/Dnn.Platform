@@ -5,6 +5,7 @@
     dnn.searchResult.defaultSettings = {
         comboAdvancedDates: '',
         comboAdvancedScope: '',
+        defaultText: 'Enter Search Term',
         noresultsText: 'No Results Found',
         advancedText: 'Advanced',
         sourceText: 'Source:',
@@ -284,22 +285,19 @@
             advancedTextClear.addClass('dnnShow');
             var htmlAdvancedTerm = advancedTerm.replace(/\[/g, '[&nbsp;').replace(/\]/g, '&nbsp;]')
                 .replace(/after:/g, '<b>after: </b>').replace(/type:/g, '<b>type: </b>');
-            
             var w = advancedTextCtrl.html(htmlAdvancedTerm).width();
             $('#dnnSearchResult_dnnSearchBox_input').val(term).css({
-                right: w + 165,
+                left: w + 40,
                 width: wrapWidth - w - 165 - 8
             });
-
-            //$('#dnnSearchResult_dnnSearchBox_input').next().css({
-            //    right: w + 150
-            //});
-
+            advancedTextClear.css({
+                left: w + 20
+            });
         } else {
             advancedTextCtrl.html('').hide();
             var w1 = $('#dnnSearchResult_dnnSearchBox_input').next().next().next().width();
             $('#dnnSearchResult_dnnSearchBox_input').css({
-                right: w1 + 50,
+                left: "",
                 width: wrapWidth - w1 - 50 - 8
             });
 
@@ -339,6 +337,7 @@
         // search box
         dnn.searchResult.searchInput = $('#dnnSearchResult_dnnSearchBox').dnnSearchBox({
             id: 'dnnSearchResult_dnnSearchBox',
+            defaultText: dnn.searchResult.defaultSettings.defaultText,
             advancedText: dnn.searchResult.defaultSettings.advancedText,
             showAdvanced: true,
             advancedId: 'dnnSearchResultAdvancedForm',
@@ -451,6 +450,12 @@
                 types: [],
                 exactSearch: false
             };
+
+            var wrapWidth = $('#dnnSearchResult_dnnSearchBox_input').parent().width();
+            $('#dnnSearchResult_dnnSearchBox_input').css({
+                left: "",
+                width: wrapWidth - 165 - 8
+            });
 
             dnn.searchResult.generateAdvancedSearchTerm();
             dnn.searchResult.queryOptions.pageIndex = 1;

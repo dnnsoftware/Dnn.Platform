@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Exceptions
             try
             {
                 var context = HttpContext.Current;
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 var innerException = new Exception(Message, this);
                 while (innerException.InnerException != null)
                 {
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Exceptions
                     ActiveTabName = "";
                 }
 
-                var currentUserInfo = UserController.GetCurrentUserInfo();
+                var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
 
                 if (UserID != -1)

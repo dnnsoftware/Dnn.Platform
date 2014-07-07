@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Caching;
 
 using DotNetNuke.Common;
@@ -95,13 +96,15 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNegative("term", "VocabularyId", term.VocabularyId);
             Requires.PropertyNotNullOrEmpty("term", "Name", term.Name);
 
+		    term.Name = HttpUtility.HtmlEncode(term.Name);
+            
             if ((term.IsHeirarchical))
             {
-                term.TermId = _DataService.AddHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID);
+                term.TermId = _DataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                term.TermId = _DataService.AddSimpleTerm(term, UserController.GetCurrentUserInfo().UserID);
+                term.TermId = _DataService.AddSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //Clear Cache
@@ -260,11 +263,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             if ((term.IsHeirarchical))
             {
-                _DataService.UpdateHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID);
+                _DataService.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
-                _DataService.UpdateSimpleTerm(term, UserController.GetCurrentUserInfo().UserID);
+                _DataService.UpdateSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             //Clear Cache

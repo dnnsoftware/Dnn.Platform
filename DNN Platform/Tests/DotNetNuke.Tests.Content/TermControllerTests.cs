@@ -118,7 +118,7 @@ namespace DotNetNuke.Tests.Content
             int termId = termController.AddTerm(term);
 
             // Assert
-            mockDataService.Verify(ds => ds.AddSimpleTerm(term, UserController.GetCurrentUserInfo().UserID));
+            mockDataService.Verify(ds => ds.AddSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Content
             int termId = termController.AddTerm(term);
 
             // Assert
-            mockDataService.Verify(ds => ds.AddHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID));
+            mockDataService.Verify(ds => ds.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         [Test]
@@ -620,7 +620,7 @@ namespace DotNetNuke.Tests.Content
             termController.UpdateTerm(term);
 
             // Assert
-            mockDataService.Verify(ds => ds.UpdateSimpleTerm(term, UserController.GetCurrentUserInfo().UserID));
+            mockDataService.Verify(ds => ds.UpdateSimpleTerm(term, UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         [Test]
@@ -639,7 +639,7 @@ namespace DotNetNuke.Tests.Content
             termController.UpdateTerm(term);
 
             // Assert
-            mockDataService.Verify(ds => ds.UpdateHeirarchicalTerm(term, UserController.GetCurrentUserInfo().UserID));
+            mockDataService.Verify(ds => ds.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         [Test]

@@ -36,13 +36,12 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
@@ -222,7 +221,7 @@ namespace DesktopModules.Admin.Console
                         canShowTab = (UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == GroupId && ur.IsOwner) != null);
                         break;
                     case "Members":
-                        var group = TestableRoleController.Instance.GetRole(PortalId, (r) => r.RoleID == GroupId);
+                        var group = RoleController.Instance.GetRole(PortalId, (r) => r.RoleID == GroupId);
                         canShowTab = (group != null) && UserInfo.IsInRole(group.RoleName);
                         break;
                     case "Friends":
@@ -266,7 +265,7 @@ namespace DesktopModules.Admin.Console
             {
                 if (UserInfo != null && UserInfo.IsSuperUser)
                 {
-                    var hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
+                    var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
                     if (hostTabs.Keys.Any(key => key == ConsoleTabID))
                     {
                         returnValue = true;
@@ -360,25 +359,25 @@ namespace DesktopModules.Admin.Console
 			base.OnLoad(e);
 			try
 			{
-				if ((!IsPostBack))
+                IconSize.Visible = AllowSizeChange;
+                View.Visible = AllowViewChange;
+
+                foreach (string val in ConsoleController.GetSizeValues())
+                {
+                    IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
+                }
+                foreach (string val in ConsoleController.GetViewValues())
+                {
+                    View.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
+                }
+                IconSize.SelectedValue = DefaultSize;
+                View.SelectedValue = DefaultView;
+                
+                if ((!IsPostBack))
 				{
-					IconSize.Visible = AllowSizeChange;
-					View.Visible = AllowViewChange;
+                    Console.Attributes["class"] = Console.Attributes["class"] + " " + Mode.ToLower(CultureInfo.InvariantCulture);
 
-					foreach (string val in ConsoleController.GetSizeValues())
-					{
-						IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
-                        //IconSize.AddItem(Localization.GetString(val + ".Text", LocalResourceFile), val);
-					}
-					foreach (string val in ConsoleController.GetViewValues())
-					{
-						View.Items.Add(new ListItem(Localization.GetString(val + ".Text", LocalResourceFile), val));
-                        //View.AddItem(Localization.GetString(val + ".Text", LocalResourceFile), val);
-					}
-					IconSize.SelectedValue = DefaultSize;
-					View.SelectedValue = DefaultView;
-
-					SettingsBreak.Visible = (IconSize.Visible && View.Visible);
+                    SettingsBreak.Visible = (AllowSizeChange && AllowViewChange);
 
 				    List<TabInfo> tempTabs = (IsHostTab())
 										? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
@@ -391,7 +390,7 @@ namespace DesktopModules.Admin.Console
 
                     if(IncludeParent)
                     {
-                        TabInfo consoleTab = TestableTabController.Instance.GetTab(ConsoleTabID, PortalId);
+                        TabInfo consoleTab = TabController.Instance.GetTab(ConsoleTabID, PortalId);
                         if (consoleTab != null)
                         {
 							_tabs.Add(consoleTab);

@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -261,14 +261,12 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                var controller = new ModuleController();
                 if (_settings == null)
                 {
-                    //we need to make sure we don't directly modify the ModuleSettings so create new HashTable DNN-8715
-                    _settings = new Hashtable(controller.GetModuleSettings(ModuleId));
+                    _settings = new ModuleController().GetModuleSettings(ModuleId, TabId);
 
                     //add the TabModuleSettings to the ModuleSettings
-                    Hashtable tabModuleSettings = controller.GetTabModuleSettings(TabModuleId);
+                    Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleId, TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
                         _settings[strKey] = tabModuleSettings[strKey];
@@ -666,7 +664,9 @@ namespace DotNetNuke.UI.Modules
 
             //help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) && request.QueryString["ctl"] != "Help")
+            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) 
+                    && request.QueryString["ctl"] != "Help"
+                    && !Globals.IsAdminControl())
             {
                 AddHelpActions();
             }
@@ -677,7 +677,8 @@ namespace DotNetNuke.UI.Modules
                 //print module action available to everyone
                 AddPrintAction();
             }
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration))
+
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration) && !Globals.IsAdminControl())
             {
                 _moduleGenericActions.Actions.Add(GetNextActionID(),
                              Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
@@ -701,8 +702,7 @@ namespace DotNetNuke.UI.Modules
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!Configuration.IsShared)
                     {
-                        var moduleController = new ModuleController();
-                        if (moduleController.GetModuleTabs(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
+                        if (ModuleController.Instance.GetTabModulesByModule(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
                         {
                             confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteSharedModule.Confirm")) + "')";
                         }
@@ -824,7 +824,7 @@ namespace DotNetNuke.UI.Modules
         public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
         {
             var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
             var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
 

@@ -274,8 +274,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
 			if (!IsWizard && !DesktopModule.IsAdmin)
 			{
-				var objPortals = new PortalController();
-				ArrayList arrPortals = objPortals.GetPortals();
+                var arrPortals = PortalController.Instance.GetPortals();
 				Dictionary<int, PortalDesktopModuleInfo> dicPortalDesktopModules = DesktopModuleController.GetPortalDesktopModulesByDesktopModuleID(DesktopModule.DesktopModuleID);
 				foreach (PortalDesktopModuleInfo objPortalDesktopModule in dicPortalDesktopModules.Values)
 				{
@@ -536,10 +535,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected void ctlPortals_AddAllButtonClick(object sender, EventArgs e)
         {
 			//Add all Portals
-            var objPortals = new PortalController();
-            foreach (PortalInfo objPortal in objPortals.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                DesktopModuleController.AddDesktopModuleToPortal(objPortal.PortalID, DesktopModule.DesktopModuleID, true, false);
+                DesktopModuleController.AddDesktopModuleToPortal(portal.PortalID, DesktopModule.DesktopModuleID, true, false);
             }
             DataCache.ClearHostCache(true);
 
@@ -563,8 +561,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         protected void ctlPortals_RemoveAllButtonClick(object sender, EventArgs e)
         {
 			//Add all Portals
-            var objPortals = new PortalController();
-            foreach (PortalInfo objPortal in objPortals.GetPortals())
+            foreach (PortalInfo objPortal in PortalController.Instance.GetPortals())
             {
                 DesktopModuleController.RemoveDesktopModuleFromPortal(objPortal.PortalID, DesktopModule.DesktopModuleID, false);
             }

@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 @import url('./bootstrap/css/bootstrap.min.css');
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -239,7 +239,7 @@ table.tableDefault {
     }
 
     table.tableDefault tr:nth-child(odd) {
-        background: #transparent;
+        background: transparent;
     }
 
     table.tableDefault tr:nth-child(even) {
@@ -1877,8 +1877,8 @@ ul.footerConnect {
 
     .content_team  ul li {
 	    display: inline-block;
-	    width: 110px;
-        margin:0 12px 40px;	
+        width: 14%;
+        margin:0 0 40px 2%;	
 	    text-align: center;
 	    list-style-type: none;
 	}
@@ -1886,16 +1886,11 @@ ul.footerConnect {
     /*.content_team  ul li.last { margin-right: 0; }*/
 
     .content_team  ul li .teampic {
-	    width: 110px;
-	    height: 147px;
-	    margin-bottom: 15px;
 	    background-color: #bfbfbf;
     }
 
     .content_team  ul li img {
-	    width: 110px;
-	    max-width: 110px;
-	    max-height: 147px;
+        width: 100%;
     }
 
     .content_team  ul li span {
@@ -1938,7 +1933,7 @@ ul.footerConnect {
 	    vertical-align: top;
 	    list-style-type: none;
     }
-
+    .content_products ul li p{ min-height: 72px;}
     /*.content_products ul li.last { margin-right: 0; }*/
     .content_products ul li img { margin-bottom: 25px; max-width:100%; width:100%;}
 
@@ -2109,8 +2104,6 @@ ul.footerConnect {
 /* Large desktop */
 @media (min-width: 1200px) {
     select.status-options{display:none;}
-    .content_team  ul{ margin: 0 -19px;}
-    .content_team  ul li { margin:0 19px 40px;}
     .ControlContainer{width:1170px!important;}
 }
 /* Portrait tablet to landscape and larger */
@@ -2198,4 +2191,51 @@ ul.footerConnect {
         .status-expanded-container .profile-topContainer > .dnnRight > ul.profile-statistics > li {width:33%;}
         .status-expanded-container .profile-topContainer > .dnnRight > ul.profile-statistics{ width:200px;}
         .dnnSocialLink .profile-link {margin-top:50px;}
+}
+
+/* Container styles */
+
+.DNNContainer_Title_h2 h2 .TitleH2 {
+	display: block;
+	margin-bottom: 25px;
+}
+
+.DNNContainer_Title_h3 h3 .TitleH3 {
+	display: block;
+	padding-bottom: 10px;
+	margin-bottom: 25px;
+	border-bottom: solid 1px #c0c0c0;
+}
+
+.DNNContainer_Title_h4 h4 .TitleH4 {
+	display: block;
+	margin-bottom: 25px;
+} 
+.copyright-container{
+	margin-bottom: 20px;
+	text-align: center;
+	background: url('images/copyright-background.png') no-repeat center center;
+}
+.copyright-container a{
+	color: #fff;
+	font-family: Arial;
+	font-size: 14px;
+	background: url('Images/icon-btn-sm-circle-arrow.png') no-repeat right 12px center;
+	background-color: #aaaaaa;
+	-webkit-border-radius: 3px;
+    border-radius: 3px;
+	margin: 0 12px;
+	padding: 9px 36px 9px 16px;
+}
+.copyright-container a:hover{
+	background-color: #666666;
+}
+.copyright-container > span.split{
+	border-bottom: 1px solid #d9d9d9;
+	display: inline-block;
+	width: 20px;
+	height: 0px;
+	overflow: hidden;
+	padding-top: 9px;
+	vertical-align: top;
 }

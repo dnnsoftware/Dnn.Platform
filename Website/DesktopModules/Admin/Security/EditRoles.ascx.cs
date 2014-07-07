@@ -160,8 +160,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     _roleID = Int32.Parse(Request.QueryString["RoleID"]);
                 }
-                var objPortalController = new PortalController();
-                var objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                var objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if ((objPortalInfo == null || string.IsNullOrEmpty(objPortalInfo.ProcessorUserId)))
                 {
                     //Warn users about fee based roles if we have a Processor Id
@@ -212,7 +211,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     ctlIcon.FileFilter = Globals.glbImageFileTypes;
                     if (_roleID != -1)
                     {
-                        var role = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID);
+                        var role = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID);
                         if (role != null)
                         {
                             lblRoleName.Visible = role.IsSystemRole;
@@ -403,9 +402,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (_roleID == -1)
                     {
-                        if (TestableRoleController.Instance.GetRole(PortalId, r => r.RoleName == role.RoleName) == null)
+                        if (RoleController.Instance.GetRole(PortalId, r => r.RoleName == role.RoleName) == null)
                         {
-                            TestableRoleController.Instance.AddRole(role, chkAssignToExistUsers.Checked);
+                            RoleController.Instance.AddRole(role, chkAssignToExistUsers.Checked);
                         }
                         else
                         {
@@ -415,7 +414,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        TestableRoleController.Instance.UpdateRole(role, chkAssignToExistUsers.Checked);
+                        RoleController.Instance.UpdateRole(role, chkAssignToExistUsers.Checked);
                     }
 
                     //Clear Roles Cache
@@ -445,9 +444,9 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             try
             {
-                var role = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID);
+                var role = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleID);
 
-                TestableRoleController.Instance.DeleteRole(role);
+                RoleController.Instance.DeleteRole(role);
 
                 //Clear Roles Cache
                 DataCache.RemoveCache("GetRoles");

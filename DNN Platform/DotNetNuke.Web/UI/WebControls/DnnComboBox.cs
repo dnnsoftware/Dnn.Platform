@@ -37,18 +37,23 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
+            OnClientLoad = "$.dnnComboBoxLoaded";
+            OnClientFocus = "$.dnnComboBoxHack";
+            OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            MaxHeight = 240;
+            ZIndex = 100010;
+            Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
             Utilities.ApplySkin(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            this.OnClientLoad = "$.dnnComboBoxLoaded";
-            this.OnClientFocus = "$.dnnComboBoxHack";
-            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            this.MaxHeight = 240;
-            this.ZIndex = 100010;
-            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+            base.OnPreRender(e);
         }
 
         public void AddItem(string text, string value)

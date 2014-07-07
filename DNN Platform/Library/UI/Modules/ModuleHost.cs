@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -324,6 +324,9 @@ namespace DotNetNuke.UI.Modules
                     new ExceptionLogController().AddLog(exc);
                 }
             }
+            
+            //Enable ViewState
+            _control.ViewStateMode = ViewStateMode.Enabled;
         }
 
         private void LoadAjaxPanel()

@@ -65,18 +65,23 @@ namespace DotNetNuke.Web.InternalServices
             public string Culture { get; set; }
         }
 
-        #region private methods
-
-        private readonly ModuleController _moduleController = new ModuleController();
-        private readonly TabController _tabController = new TabController();
-        
-        private static readonly int HtmlModuleDefitionId = GetHtmlModuleDefinitionId();
-
-        private static int GetHtmlModuleDefinitionId()
+        public SearchServiceController()
         {
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
-            return modDef != null ? modDef.ModuleDefID : -1;
+            HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
         }
+
+        //this constructor is for unit tests
+        internal SearchServiceController(int htmlModuleDefitionId)//, TabController newtabController, ModuleController newmoduleController)
+        {
+            HtmlModuleDefitionId = htmlModuleDefitionId;
+            //_tabController = newtabController;
+            //_moduleController = newmoduleController;
+        }
+
+        #region private methods
+
+        private int HtmlModuleDefitionId;
 
         private bool IsWildCardEnabledForModule()
         {
@@ -118,10 +123,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private Hashtable GetSearchModuleSettings()
         {
-			if (ActiveModule != null && ActiveModule.ModuleDefinition.FriendlyName == "Search Results")
-			{
-				return ActiveModule.ModuleSettings;
-			}
+            if (ActiveModule != null && ActiveModule.ModuleDefinition.FriendlyName == "Search Results")
+            {
+                return ActiveModule.ModuleSettings;
+            }
 
             var searchModule = GetSearchModule();
             return searchModule != null ? searchModule.ModuleSettings : null;
@@ -225,8 +230,7 @@ namespace DotNetNuke.Web.InternalServices
         #endregion
 
         #region view models for search results
-
-        private IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, out int totalHits, out bool more)
+        internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId,  out int totalHits, out bool more)
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = searchResults.TotalHits;
@@ -234,7 +238,6 @@ namespace DotNetNuke.Web.InternalServices
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
-            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
            
             foreach (var result in searchResults.Results)
             {
@@ -274,7 +277,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (first.TabId > 0)
                     {
-                        var tab = _tabController.GetTab(first.TabId, first.PortalId, false);
+                        var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
                             group.Title = tab.TabName;
                     }
@@ -319,7 +322,51 @@ namespace DotNetNuke.Web.InternalServices
             return groups;
         }
 
-        private IEnumerable<BasicView> GetBasicViews(SearchQuery searchQuery, out int totalHits)
+        internal List<GroupedBasicView> GetGroupedBasicViews(SearchQuery query, SearchContentSource userSearchSource, int portalId)
+        {
+            int totalHists;
+            var results = new List<GroupedBasicView>();
+            var previews = GetBasicViews(query, out totalHists);
+
+            foreach (var preview in previews)
+            {
+                //if the document type is user, then try to add user pic into preview's custom attributes.
+                if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
+                {
+                    var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
+                    if (match.Success)
+                    {
+                        var userid = Convert.ToInt32(match.Groups[2].Value);
+                        var user = UserController.Instance.GetUserById(portalId, userid); 
+                        if (user != null)
+                        {
+                            preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
+                        }
+                    }
+                }
+
+                var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
+                if (groupedResult != null)
+                {
+                    if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
+                        groupedResult.Results.Add(new BasicView
+                        {
+                            Title = preview.Title,
+                            Snippet = preview.Snippet,
+                            DocumentUrl = preview.DocumentUrl,
+                            Attributes = preview.Attributes
+                        });
+                }
+                else
+                {
+                    results.Add(new GroupedBasicView(preview));
+                }
+            }
+
+            return results;
+        }
+
+        internal IEnumerable<BasicView> GetBasicViews(SearchQuery searchQuery, out int totalHits)
         {
             var sResult = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = sResult.TotalHits;
@@ -363,7 +410,7 @@ namespace DotNetNuke.Web.InternalServices
         private object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
         {
             var moduleId = (int)cacheItemArgs.ParamList[0];
-            var moduleInfo = _moduleController.GetModule(moduleId);
+            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             if (moduleInfo != null)
             {
                 return moduleInfo.ParentTab.TabName;
@@ -385,12 +432,15 @@ namespace DotNetNuke.Web.InternalServices
             var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
             var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
             var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
-
+            
             var contentSources = GetSearchContentSources(searchTypes);
             var settings = GetSearchModuleSettings();
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
             var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
             var portalIds = GetSearchPortalIds(settings, portal);
+
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
+            var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
 
             var results = new List<GroupedBasicView>();
             if (portalIds.Any() && searchTypeIds.Any() &&
@@ -414,44 +464,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 try
                 {
-                    int totalHists;
-                    var previews = GetBasicViews(query, out totalHists);
-                    var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
-                    var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
-                    foreach (var preview in previews)
-                    {
-                        //if the document type is user, then try to add user pic into preview's custom attributes.
-                        if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
-                        {
-                            var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
-                            if (match.Success)
-                            {
-                                var userid = Convert.ToInt32(match.Groups[2].Value);
-                                var user = UserController.GetUserById(PortalSettings.PortalId, userid);
-                                if (user != null)
-                                {
-                                    preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
-                                }
-                            }
-                        }
-
-                        var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
-                        if (groupedResult != null)
-                        {
-                            if(!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
-                            groupedResult.Results.Add(new BasicView
-                            {
-                                Title = preview.Title,
-                                Snippet = preview.Snippet,
-                                DocumentUrl = preview.DocumentUrl,
-                                Attributes = preview.Attributes
-                            });
-                        }
-                        else
-                        {
-                            results.Add(new GroupedBasicView(preview));
-                        }
-                    }
+                    results = GetGroupedBasicViews(query, userSearchSource, PortalSettings.PortalId);
                 }
                 catch (Exception ex)
                 {
@@ -477,6 +490,7 @@ namespace DotNetNuke.Web.InternalServices
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
             var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
             var portalIds = GetSearchPortalIds(settings, -1);
+            var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
             var more = false;
             var totalHits = 0;
@@ -504,7 +518,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 try
                 {
-                    results = GetGroupedDetailViews(query, out totalHits, out more).ToList();
+                    results = GetGroupedDetailViews(query, userSearchTypeId, out totalHits, out more).ToList();
                 }
                 catch (Exception ex)
                 {

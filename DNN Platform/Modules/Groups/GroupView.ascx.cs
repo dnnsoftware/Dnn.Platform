@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Groups
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            RoleInfo role = TestableRoleController.Instance.GetRole(PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == GroupId);
+            RoleInfo role = RoleController.Instance.GetRole(PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == GroupId);
             if (role == null && GroupId > 0)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("GroupIdNotFound", Constants.SharedResourcesPath), ModuleMessage.ModuleMessageType.YellowWarning);

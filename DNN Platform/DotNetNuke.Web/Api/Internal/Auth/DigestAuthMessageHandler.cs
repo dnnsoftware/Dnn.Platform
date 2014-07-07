@@ -24,7 +24,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         {
             if (NeedsAuthentication())
             {
-                var portalSettings = TestablePortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
                 {
                     var isStale = TryToAuthenticate(request, portalSettings.PortalId);

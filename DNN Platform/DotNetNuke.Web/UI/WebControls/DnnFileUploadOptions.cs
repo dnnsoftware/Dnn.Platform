@@ -75,6 +75,15 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "invalidFileExtensions")]
         public string InvalidFileExtensions;
 
+        [DataMember(Name = "unzipFilePromptTitle")]
+        public string UnzipFilePromptTitle;
+
+        [DataMember(Name = "unzipFileFailedPromptBody")]
+        public string UnzipFileFailedPromptBody;
+
+        [DataMember(Name = "unzipFileSuccessPromptBody")]
+        public string UnzipFileSuccessPromptBody;
+
         [DataMember(Name = "errorDialogTitle")]
         public string ErrorDialogTitle;
     }
@@ -82,7 +91,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class DnnFileUploadOptions
     {
-
+        private const int DefaultWidth = 780;
+        private const int DefaultHeight = 630;
         [DataMember(Name = "clientId")]
         public string ClientId;
 
@@ -110,6 +120,12 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "resources")]
         public DnnFileUploadResources Resources;
 
+        [DataMember(Name = "width")]
+        public int Width;
+
+        [DataMember(Name = "height")]
+        public int Height;
+
         private Dictionary<string, string> _parameters;
 
         [DataMember(Name = "parameters")]
@@ -121,11 +137,16 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        [DataMember(Name = "folderPath")]
+        public string FolderPath;
+
         public DnnFileUploadOptions()
         {
             FolderPicker = new DnnDropDownListOptions();
             MaxFileSize = (int)Config.GetMaxUploadSize();
             Extensions = new List<string>();
+            Width = DefaultWidth;
+            Height = DefaultHeight;
             Resources = new DnnFileUploadResources
             {
                 Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),
@@ -151,6 +172,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 UrlTooltip = Utilities.GetLocalizedString("FileUpload.UrlTooltip.Text"),
                 KeepButtonText = Utilities.GetLocalizedString("FileUpload.KeepButton.Text"),
                 ReplaceButtonText = Utilities.GetLocalizedString("FileUpload.ReplaceButton.Text"),
+                UnzipFilePromptTitle = Utilities.GetLocalizedString("FileUpload.UnzipFilePromptTitle.Text"),
+                UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
+                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text")
             };
         }
     }

@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.ControlPanels
 
                 if ((Request.IsAuthenticated))
                 {
-                    UserInfo user = UserController.GetCurrentUserInfo();
+                    UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     if (((user != null)))
                     {
                         bool isAdmin = user.IsInRole(PortalSettings.Current.AdministratorRoleName);
@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.ControlPanels
 
 					if (!Page.IsPostBack)
 					{
-						UserInfo objUser = UserController.GetCurrentUserInfo();
+						UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 						if ((objUser != null))
 						{
 							if (objUser.IsSuperUser)

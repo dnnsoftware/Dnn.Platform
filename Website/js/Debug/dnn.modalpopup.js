@@ -58,6 +58,11 @@
             }
             $(document).find('html').css('overflow', 'hidden');
 
+            //cache the original beforeClose function
+            var beforeCloseEvent;
+            if ($.ui.dialog.prototype.options.beforeClose) {
+                beforeCloseEvent = $.ui.dialog.prototype.options.beforeClose;
+            }
             $modal.dialog({
                 modal: true,
                 autoOpen: true,
@@ -72,6 +77,15 @@
                 refresh: refresh,
                 showReturn: showReturn,
                 closingUrl: closingUrl,
+                beforeClose: function (event, ui) {
+                    if (beforeCloseEvent) {
+                        beforeCloseEvent.call(this, event, ui);
+                    }
+
+                    if ($(".ui-widget-overlay").length > 0) {
+                        dnn.removeIframeMask($(".ui-widget-overlay")[0]);
+                    }
+                },
                 close: function(event, ui) { dnnModal.closePopUp(refresh, closingUrl); }
             })
                 .width(width - 11)
@@ -158,10 +172,6 @@
                 }
                 popup.hide();
             } else {
-                if($(".ui-widget-overlay").length > 0)
-                {
-                    dnn.removeIframeMask($(".ui-widget-overlay")[0]);
-                }
                 popup.dialog('option', 'close', null).dialog('close');
             }
             $(windowTop.document).find('html').css('overflow', '');            

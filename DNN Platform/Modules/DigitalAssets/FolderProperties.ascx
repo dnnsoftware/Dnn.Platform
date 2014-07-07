@@ -106,4 +106,31 @@
             dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
         }
     );
+
+    if (dnn && dnn.controls && dnn.controls.triStateManager) {
+        dnn.controls.triStateManager.updateAdvancedState = function (state, callback) {
+            var $collection = this.parent().parent().find('td input.tristate');
+            if ((this.hasClass('browse') || this.hasClass('read')) && state === 'False') {
+                var $notView = $collection.not('input.browse').not('input.read');
+                $notView.each(function (index, elem) {
+                    var $elem = jQuery(elem);
+                    if (!$elem.hasClass('lockedPerm')) {
+                        elem.value = state;
+                        callback($elem, state);
+                    }
+                });
+            }
+            //if other permissions are set to true must have Read,Browse permission
+            if (!this.hasClass('browse') && !this.hasClass('read') && state === 'True') {
+                var $view = $collection.filter('input.read, input.browse');
+                $view.each(function (index, elem) {
+                    var $elem = jQuery(elem);
+                    if (!$elem.hasClass('lockedPerm')) {
+                        elem.value = state;
+                        callback($elem, state);
+                    }
+                });
+            }
+        };
+    }
 </script>

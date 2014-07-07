@@ -57,6 +57,7 @@ namespace DotNetNuke.ExtensionPoints
                 }
                 else
                 {
+                    extension.ModuleContext = ModuleContext;
                     btnRenderer = new ToolBarButtonRenderer();
                     str.AppendFormat(btnRenderer.GetOutput(extension));
                 }

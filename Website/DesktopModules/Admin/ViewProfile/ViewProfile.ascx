@@ -3,9 +3,9 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <dnn:DnnJsInclude ID="DnnJsInclude" runat="server" FilePath="~/Resources/Shared/scripts/knockout.js" />
 
-<div id="profileOutput" runat="server" style="display:none" data-bind="visible: Visible"></div>
+<div id="profileOutput" runat="server" style="display:none" data-bind="visible: Visible" ViewStateMode="Disabled"></div>
 <asp:Label id="noPropertiesLabel" runat="server" resourcekey="NoProperties" Visible="false" />
-<div id="buttonPanel" runat="server">
+<div id="buttonPanel" runat="server" ViewStateMode="Disabled">
     <ul class="dnnActions dnnClear">
         <li><asp:HyperLink id="editLink" runat="server" resourcekey="Edit" CssClass="dnnPrimaryAction" /></li>
     </ul>

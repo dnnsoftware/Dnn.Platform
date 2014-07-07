@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
@@ -47,6 +48,7 @@ using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -285,7 +287,7 @@ namespace DotNetNuke.UI.Skins
         private void InjectControlPanel()
         {
             //if querystring dnnprintmode=true, controlpanel will not be shown
-            if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true" && Request.QueryString["hidecommandbar"] != "true")
+            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && Request.QueryString["hidecommandbar"] != "true")
             {
                 if ((ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
@@ -370,6 +372,12 @@ namespace DotNetNuke.UI.Skins
                         case "div":
                         case "span":
                         case "p":
+                        case "section":
+                        case "header":
+                        case "footer":
+                        case "main":
+                        case "article":
+                        case "aside":
                             //content pane
                             if (objPaneControl.ID.ToLower() != "controlpanel")
                             {
@@ -574,6 +582,16 @@ namespace DotNetNuke.UI.Skins
             if (Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
+
+                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+                {
+                    ServicesFramework.Instance.RequestAjaxScriptSupport();
+                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                    JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+                    ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                }
             }
 
             if (!TabPermissionController.CanAdminPage() && !success)
@@ -627,7 +645,7 @@ namespace DotNetNuke.UI.Skins
 
             InvokeSkinEvents(SkinEventType.OnSkinPreRender);
 
-            if(TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !UrlUtils.InPopUp())
             {
                 //Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);

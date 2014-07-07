@@ -20,8 +20,8 @@
 #endregion
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         public bool IsHostAdminUser(int portalId)
         {
-            return IsHostAdminUser(portalId, UserController.GetCurrentUserInfo().UserID);
+            return IsHostAdminUser(portalId, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public bool IsHostAdminUser(int portalId, int userId)
@@ -40,13 +40,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return false;
             }
-            var user = TestableUserController.Instance.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalControllerWrapper.Instance.GetPortal(portalId).AdministratorRoleName);
+            var user = UserController.Instance.GetUserById(portalId, userId);
+            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName);
         }
 
         public bool HasFolderPermission(IFolderInfo folder, string permissionKey)
         {
-            return UserController.GetCurrentUserInfo().IsSuperUser ||
+            return UserController.Instance.GetCurrentUserInfo().IsSuperUser ||
                    FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
         }
 

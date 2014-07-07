@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             int TabId = -1;
             int ModuleId = -1;
             try
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.FileSystem
                 if(UrlType == TabType.Tab)
                 {
                     //verify whether the tab is exist, otherwise throw out 404.
-                    if(new TabController().GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
+                    if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
                         Exceptions.Exceptions.ProcessHttpException();
                     }

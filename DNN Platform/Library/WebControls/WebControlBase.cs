@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 		

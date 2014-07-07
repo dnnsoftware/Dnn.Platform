@@ -49,6 +49,12 @@
             } else {
                 showTab(permissionTabId);
             }
+
+            //set active tab
+            var activeTab = '<%= ActiveTab %>';
+            if (activeTab) {
+                $('#' + activeTab + ' a').click();
+            }
         }
         
         function setupDnnTabs(controls, settings) {

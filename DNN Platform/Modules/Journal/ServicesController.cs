@@ -151,7 +151,7 @@ namespace DotNetNuke.Modules.Journal
                     }
                 }
 
-                JournalController.Instance.SaveJournalItem(ji, 1);
+                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
 
                 SendMentionNotifications(mentionedUsers, ji, originalSummary);
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ci.UserId == UserInfo.UserID || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))

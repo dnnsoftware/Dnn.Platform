@@ -24,12 +24,12 @@
     <dnnext:EditPageTabExtensionControl runat="server"  ID="SiteSettingsTabExtensionControl" 
             Module="SiteSettings" Group="SiteSettingsTabExtensions"
             TabControlId="siteSettingsTabs" PanelControlId="siteSettingsPanes" />
-    <ul id="siteSettingsTabs" runat="Server" class="dnnAdminTabNav dnnClear">
-        <li><a href="#ssBasicSettings"><asp:Label id="basicSettingsLink" runat="server" resourcekey="BasicSettings" /></a></li>
-        <li><a href="#ssAdvancedSettings"><asp:Label id="advancedSettingsLink" runat="server" resourcekey="AdvancedSettings" /></a></li>
-        <li><a href="#ssUserAccountSettings"><asp:Label id="userSettingsLink" runat="server" resourcekey="UserAccountSettings" /></a></li>
-        <li><a href="#ssStylesheetEditor"><asp:Label id="stylesheetLink" runat="server" resourcekey="StylesheetEditor" /></a></li>
-    </ul>
+        <ul id="siteSettingsTabs" runat="Server" class="dnnAdminTabNav dnnClear">
+            <li><a href="#ssBasicSettings"><asp:Label id="basicSettingsLink" runat="server" resourcekey="BasicSettings" /></a></li>
+            <li><a href="#ssAdvancedSettings"><asp:Label id="advancedSettingsLink" runat="server" resourcekey="AdvancedSettings" /></a></li>
+            <li><a href="#ssUserAccountSettings"><asp:Label id="userSettingsLink" runat="server" resourcekey="UserAccountSettings" /></a></li>
+            <li><a href="#ssStylesheetEditor"><asp:Label id="stylesheetLink" runat="server" resourcekey="StylesheetEditor" /></a></li>
+        </ul>
         <div class="ssBasicSettings dnnClear" id="ssBasicSettings">
             <div class="dnnFormExpandContent">
                 <a href=""><%=Localization.GetString("ExpandAll", Localization.SharedResourceFile)%></a>
@@ -121,22 +121,22 @@
                     <div id="siteSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalSkin" controlname="portalSkinCombo" runat="server" />
-                            <dnn:DnnComboBox ID="portalSkinCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" />
+                            <dnn:DnnSkinComboBox ID="portalSkinCombo" runat="Server" Width="300px" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:label id="plPortalContainer" controlname="portalContainerCombo" runat="server" />
-                            <dnn:DnnComboBox ID="portalContainerCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" CssClass="dnnFixedSizeComboBox" />
+                            <dnn:DnnSkinComboBox ID="portalContainerCombo" runat="Server" Width="300px" CssClass="dnnFixedSizeComboBox" />
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("SkinPreview")%></a>
                         </div>
                     </div>
                     <div id="editSkinSettings">
                         <div class="dnnFormItem">
                             <dnn:label id="plAdminSkin" controlname="editSkinCombo" runat="server" />
-                            <dnn:DnnComboBox ID="editSkinCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" />
+                            <dnn:DnnSkinComboBox ID="editSkinCombo" runat="Server" Width="300px" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:label id="plAdminContainer" controlname="editContainerCombo" runat="server" />
-                            <dnn:DnnComboBox ID="editContainerCombo" runat="Server" Width="300px" DataTextField="Key" DataValueField="Value" CssClass="dnnFixedSizeComboBox" />
+                            <dnn:DnnSkinComboBox ID="editContainerCombo" runat="Server" Width="300px" CssClass="dnnFixedSizeComboBox" />
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("EditSkinPreview")%></a>
                         </div>
                     </div>
@@ -176,7 +176,14 @@
                         <dnn:label id="plSearchTabId" runat="server" controlname="cboSearchTabId" />
                         <dnn:DnnComboBox ID="cboSearchTabId" runat="server" DataTextField="IndentedTabName" DataValueField="TabId" />
                     </div>
-                    <dnnext:UserControlExtensionControl runat="server" ID="pagesExtensionPoint" Module="SiteSettings" Group="Pages"/>
+                    <div class="dnnFormItem">
+                        <dnn:label id="pl404TabId" runat="server" controlname="cbo404TabId" />
+                        <dnn:DnnPageDropDownList ID="cbo404TabId" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
+                        <dnn:label id="pl500TabId" runat="server" controlname="cbo500TabId" />
+                        <dnn:DnnPageDropDownList ID="cbo500TabId" runat="server" />
+                    </div>
                 </fieldset>
                 <h2 id="dnnSitePanel-SecuritySettings" class="dnnFormSectionHead">
                     <a href=""><%=LocalizeString("SecuritySettings")%></a>
@@ -238,6 +245,10 @@
                         <asp:CheckBox ID="enablePopUpsCheckBox" runat="server" />
                     </div>
                     <div class="dnnFormItem">
+                        <dnn:label id="enableModuleEffectLabel" runat="server" controlname="enableModuleEffectCheckBox" />
+                        <asp:CheckBox ID="enableModuleEffectCheckBox" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
                         <dnn:label id="plInlineEditor" runat="server" controlname="chkInlineEditor" />
                         <asp:CheckBox ID="chkInlineEditor" runat="server" />
                     </div>
@@ -290,6 +301,59 @@
                                 <dnnext:UserControlExtensionControl runat="server" ID="portalAliasesExtensionPoint" runat="server" Module="SiteSettings" Name="PortalAliasesExtensionPoint"/>
                             </div>
                         </div>
+                    </fieldset>
+                    <h2 id="dnnSitePanel-SMTP" class="dnnFormSectionHead"><a href="#" class=""><%=LocalizeString("SMTP")%></a></h2>
+                    <fieldset>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plSMTPMode" controlname="rblSMTPmode" runat="server" />
+                             <asp:RadioButtonList ID="rblSMTPmode" runat="server" AutoPostBack="true" RepeatDirection="Horizontal">
+                                    <asp:ListItem Value="h">Host</asp:ListItem>
+                                    <asp:ListItem Value="p">Portal</asp:ListItem>
+                             </asp:RadioButtonList>
+                        </div>
+                        <div runat="server" id="SmtpSettings">
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPServer" controlname="txtSMTPServer" runat="server" />
+                                <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
+                            </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plConnectionLimit" controlname="ConnectionLimit" runat="server" />
+                            <asp:TextBox ID="txtConnectionLimit" runat="server" MaxLength="256" Width="225" />
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" validationexpression="^\d*" ControlToValidate="txtConnectionLimit"/>
+                            <asp:RangeValidator runat="server" id="rexNumber1" Type="Integer" controltovalidate="txtConnectionLimit" validationexpression="^\d*" MinimumValue="1" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="ConnectionLimitValidation" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plMaxIdleTime" controlname="MaxIdleTime" runat="server" />
+                            <asp:TextBox ID="txtMaxIdleTime" runat="server" MaxLength="256" Width="225" />
+                            <asp:RegularExpressionValidator runat="server" validationexpression="^\d*" ControlToValidate="txtMaxIdleTime"/>
+                            <asp:RangeValidator runat="server" id="rexNumber2" Type="Integer" controltovalidate="txtMaxIdleTime" MinimumValue="0" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="MaxIdleTimeValidation" />
+                        </div>
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPAuthentication" controlname="optSMTPAuthentication" runat="server" />
+                                <asp:RadioButtonList ID="optSMTPAuthentication" CssClass="dnnHSRadioButtons" runat="server"
+                                    RepeatLayout="Flow">
+                                    <asp:ListItem Value="0" resourcekey="SMTPAnonymous" />
+                                    <asp:ListItem Value="1" resourcekey="SMTPBasic" />
+                                    <asp:ListItem Value="2" resourcekey="SMTPNTLM" />
+                                </asp:RadioButtonList>
+                            </div>
+                            <div class="dnnFormItem">
+                                <dnn:label id="plSMTPEnableSSL" controlname="chkSMTPEnableSSL" runat="server" />
+                                <asp:CheckBox ID="chkSMTPEnableSSL" runat="server" />
+                            </div>
+                            <div id="SMTPUserNameRow" class="dnnFormItem">
+                                <dnn:label id="plSMTPUsername" controlname="txtSMTPUsername" runat="server" />
+                                <asp:TextBox ID="txtSMTPUsername" runat="server" MaxLength="256" Width="300" />
+                            </div>
+                            <div id="SMTPPasswordRow" class="dnnFormItem">
+                                <dnn:label id="plSMTPPassword" controlname="txtSMTPPassword" runat="server" />
+                                <asp:TextBox ID="txtSMTPPassword" runat="server" MaxLength="256" Width="300" TextMode="Password" />
+                            </div>
+                        </div>
+                        <ul class="dnnActions dnnClear">
+                            <li>
+                                <asp:LinkButton ID="cmdEmail" resourcekey="EmailTest" runat="server" CssClass="dnnPrimaryAction" /></li>
+                        </ul>
                     </fieldset>
                     <h2 id="dnnSitePanel-SSLSettings" class="dnnFormSectionHead">
                         <a href=""><%=LocalizeString("SSLSettings")%></a>
@@ -500,7 +564,6 @@
                             </Items>
                         </dnn:dnnformeditor>
                     </fieldset>
-                    <dnn:propertyeditorcontrol id="passwordSettings" runat="Server" valuedatafield="PropertyValue" namedatafield="Name" helpstyle-cssclass="dnnFormHelpContent dnnClear" sortmode="SortOrderAttribute" />
                     <fieldset>
                         <dnn:dnnformeditor id="otherRegistrationSettings" runat="Server" formmode="Short">
                             <Items>
@@ -571,6 +634,10 @@
                         </dnn:dnnformeditor>
                     </fieldset>
                     <div class="dnnFormItem">
+                        <dnn:label id="DefaultAuthProviderLabel" runat="server" controlname="authProviderCombo" ResourceKey="DefaultAuthProvider"/>
+                        <dnn:DnnComboBox ID="authProviderCombo" runat="server" />
+                    </div>
+                    <div class="dnnFormItem">
                         <dnn:label id="RedirectAfterLoginLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterLogin"/>
                         <dnn:DnnPageDropDownList ID="RedirectAfterLogin" runat="server" />
                     </div>
@@ -616,16 +683,11 @@
             <div class="ssseContent dnnClear">
                 <fieldset>
                     <div class="editor">
-                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False"
-                            Columns="100" />
+                        <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False" Columns="100" />
                     </div>
                     <ul class="dnnActions dnnClear">
-                        <li>
-                            <asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet"
-                                EnableViewState="False" /></li>
-                        <li>
-                            <asp:LinkButton ID="cmdRestore" CssClass="dnnSecondaryAction" runat="server" resourcekey="RestoreDefaultStyleSheet"
-                                EnableViewState="False" /></li>
+                        <li><asp:LinkButton ID="cmdSave" CssClass="dnnPrimaryAction" runat="server" resourcekey="SaveStyleSheet" EnableViewState="False" /></li>
+                        <li><asp:LinkButton ID="cmdRestore" CssClass="dnnSecondaryAction" runat="server" resourcekey="RestoreDefaultStyleSheet" EnableViewState="False" /></li>
                     </ul>
                 </fieldset>
             </div>
@@ -663,6 +725,16 @@
             animation ? $('#standardRegistration').slideUp('fast') : $('#standardRegistration').hide();
             animation ? $('#passwordRegistrationFieldSet').slideUp('fast') : $('#passwordRegistrationFieldSet').hide();
             animation ? $('#customRegistrationFieldSet').slideDown() : $('#customRegistrationFieldSet').show();
+        }
+    }
+
+    function toggleSmtpCredentials(animation) {
+        var smtpVal = $('#<%= optSMTPAuthentication.ClientID %> input:checked').val(); /*0,1,2*/
+        if (smtpVal == "1") {
+            animation ? $('#SMTPUserNameRow,#SMTPPasswordRow').slideDown() : $('#SMTPUserNameRow,#SMTPPasswordRow').show();
+        }
+        else {
+            animation ? $('#SMTPUserNameRow,#SMTPPasswordRow').slideUp() : $('#SMTPUserNameRow,#SMTPPasswordRow').hide();
         }
     }
 
@@ -748,6 +820,11 @@
         toggleRegistrationFormType(false);
         $('#<%= registrationFormType.ClientID %>').change(function () {
             toggleRegistrationFormType(true);
+        });
+
+        toggleSmtpCredentials(false);
+        $('#<%= optSMTPAuthentication.ClientID %>').change(function () {
+            toggleSmtpCredentials(true);
         });
         
         var serviceFramework = $.ServicesFramework(<%=ModuleContext.ModuleId %>);

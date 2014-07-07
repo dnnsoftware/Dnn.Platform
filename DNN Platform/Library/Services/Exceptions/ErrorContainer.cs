@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Exceptions
 
         public ErrorContainer(PortalSettings _PortalSettings, string strError, Exception exc)
         {
-            UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+            UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)
             {
                 Container = FormatException(strError, exc);

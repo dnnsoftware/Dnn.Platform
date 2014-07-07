@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Vendors
 
         public VendorInfo GetVendor(int VendorID, int PortalId)
         {
-            return (VendorInfo) CBO.FillObject(DataProvider.Instance().GetVendor(VendorID, PortalId), typeof (VendorInfo));
+            return CBO.FillObject<VendorInfo>(DataProvider.Instance().GetVendor(VendorID, PortalId));
         }
 
         public ArrayList GetVendors(int PortalId, string Filter)

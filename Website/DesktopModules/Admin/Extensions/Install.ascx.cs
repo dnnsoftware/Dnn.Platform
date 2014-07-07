@@ -564,7 +564,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             else if (Installer.InstallerInfo.Installed && !chkRepairInstall.Checked)
             {
                 lblWarningMessageWrapper.Visible = true;
-				if (UserController.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
+				if (UserController.Instance.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
                 {
                     pnlRepair.Visible = true;
                 }

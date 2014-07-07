@@ -113,6 +113,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 switch (reader.Name)
                 {
+                    case "portalAlias":
+                        break;
                     case "portalID":
                         PortalID = reader.ReadElementContentAsInt();
                         break;
@@ -134,6 +136,12 @@ namespace DotNetNuke.Entities.Portals
                         break;
                     case "primary":
                         IsPrimary = reader.ReadElementContentAsBoolean();
+                        break;
+                    default:
+                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        {
+                            reader.ReadElementContentAsString();
+                        }
                         break;
                 }
             }

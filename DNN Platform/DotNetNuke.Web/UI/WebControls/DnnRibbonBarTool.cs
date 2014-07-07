@@ -374,7 +374,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 isHostTool = AllTools[toolName].IsHostTool;
             }
 
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return false;
             }
@@ -453,7 +453,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual string BuildToolUrl()
         {
-            if ((ToolInfo.IsHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -555,8 +555,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 additionalParams = new List<string>();
             }
 
-            var moduleCtrl = new ModuleController();
-            var moduleInfo = moduleCtrl.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
 
             if (((moduleInfo != null)))
             {
@@ -596,8 +595,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
         {
-            var moduleCtrl = new ModuleController();
-            return moduleCtrl.GetModuleByDefinition(portalID, friendlyName);
+            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
         }
 
         protected virtual void ClearCache()
@@ -607,10 +605,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void RestartApplication()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            objEventLogInfo.AddProperty("Message", GetString("UserRestart"));
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            log.AddProperty("Message", GetString("UserRestart"));
+            LogController.Instance.AddLog(log);
             Config.Touch();
         }
 

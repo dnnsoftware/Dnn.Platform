@@ -60,8 +60,7 @@ namespace DotNetNuke.Entities.Modules
         public static void DeleteSkinControl(SkinControlInfo skinControl)
         {
             dataProvider.DeleteSkinControl(skinControl.SkinControlID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(skinControl, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_DELETED);
+            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_DELETED);
         }
 
         /// -----------------------------------------------------------------------------
@@ -131,7 +130,6 @@ namespace DotNetNuke.Entities.Modules
         public static int SaveSkinControl(SkinControlInfo skinControl)
         {
             int skinControlID = skinControl.SkinControlID;
-            var eventLogController = new EventLogController();
             if (skinControlID == Null.NullInteger)
             {
 				//Add new Skin Control
@@ -139,8 +137,8 @@ namespace DotNetNuke.Entities.Modules
                                                             skinControl.ControlKey,
                                                             skinControl.ControlSrc,
                                                             skinControl.SupportsPartialRendering,
-                                                            UserController.GetCurrentUserInfo().UserID);
-                eventLogController.AddLog(skinControl, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_CREATED);
+                                                            UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_CREATED);
             }
             else
             {
@@ -150,8 +148,8 @@ namespace DotNetNuke.Entities.Modules
                                                skinControl.ControlKey,
                                                skinControl.ControlSrc,
                                                skinControl.SupportsPartialRendering,
-                                               UserController.GetCurrentUserInfo().UserID);
-                eventLogController.AddLog(skinControl, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_UPDATED);
+                                               UserController.Instance.GetCurrentUserInfo().UserID);
+                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINCONTROL_UPDATED);
             }
             return skinControlID;
         }

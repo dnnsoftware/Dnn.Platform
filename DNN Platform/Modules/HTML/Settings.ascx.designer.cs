@@ -13,6 +13,15 @@ namespace DotNetNuke.Modules.Html {
     public partial class Settings {
         
         /// <summary>
+        /// customJS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude customJS;
+        
+        /// <summary>
         /// plReplaceTokens control.
         /// </summary>
         /// <remarks>

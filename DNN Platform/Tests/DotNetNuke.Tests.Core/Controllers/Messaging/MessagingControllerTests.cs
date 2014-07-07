@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<MessagingController> _mockMessagingController;
         private Mock<InternalMessagingControllerImpl> _mockInternalMessagingController;
         private Mock<DataProvider> _dataProvider;
-        private Mock<IPortalSettings> _portalSettingsWrapper;
+        private Mock<IPortalController> _portalController;
         private Mock<RoleProvider> _mockRoleProvider;
         private Mock<CachingProvider> _mockCacheProvider;
 
@@ -97,8 +97,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockMessagingController = new Mock<MessagingController> { CallBase = true };
             _mockInternalMessagingController = new Mock<InternalMessagingControllerImpl> { CallBase = true };
 
-            _portalSettingsWrapper = new Mock<IPortalSettings>();
-            TestablePortalSettings.RegisterInstance(_portalSettingsWrapper.Object);
+            _portalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(_portalController.Object);
 
             DataService.RegisterInstance(_mockDataService.Object);
 
@@ -146,7 +146,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         private void SetupPortalSettingsWrapper()
         {
-            _portalSettingsWrapper.Setup(ps => ps.AdministratorRoleName).Returns(Constants.RoleName_Administrators);
+            _portalController.Setup(pc => pc.GetCurrentPortalSettings().AdministratorRoleName).Returns(Constants.RoleName_Administrators);
         }
 
         private void SetupCachingProvider()

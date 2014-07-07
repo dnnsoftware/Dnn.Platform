@@ -43,12 +43,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
-            var friendRelationship = RelationshipController.Instance.GetFriendRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            var friendRelationship = RelationshipController.Instance.GetFriendRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
 
             RelationshipController.Instance.AcceptUserRelationship(friendRelationship.UserRelationshipId);
             NotificationsController.Instance.DeleteNotificationRecipient(NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
                 friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), 
-                UserController.GetCurrentUserInfo().UserID);
+                UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void AddFriend(UserInfo targetUser)
         {
-            AddFriend(UserController.GetCurrentUserInfo(), targetUser);
+            AddFriend(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo targetUser)
         {
-            DeleteFriend(UserController.GetCurrentUserInfo(), targetUser);
+            DeleteFriend(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------

@@ -117,10 +117,9 @@ namespace DotNetNuke.Data
                     {
                         var props = new LogProperties { new LogDetailInfo("SQL Script Modified", query) };
 
-                        var elc = new EventLogController();
-                        elc.AddLog(props,
-                                    PortalController.GetCurrentPortalSettings(),
-                                    UserController.GetCurrentUserInfo().UserID,
+                        EventLogController.Instance.AddLog(props,
+                                    PortalController.Instance.GetCurrentPortalSettings(),
+                                    UserController.Instance.GetCurrentUserInfo().UserID,
                                     EventLogController.EventLogType.HOST_ALERT.ToString(),
                                     true);
                     }
@@ -162,7 +161,7 @@ namespace DotNetNuke.Data
             {
                 sql = DataUtil.ReplaceTokens(sql);
                 errorMessage = "";
-                return PetaPocoHelper.ExecuteReader(connectionString, CommandType.Text, sql);
+                return SqlHelper.ExecuteReader(connectionString, CommandType.Text, sql);
             }
             catch (SqlException sqlException)
             {

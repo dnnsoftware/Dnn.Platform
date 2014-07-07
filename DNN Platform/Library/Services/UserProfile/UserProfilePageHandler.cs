@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.UserProfile
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             int UserId = Null.NullInteger;
             int PortalId = _portalSettings.PortalId;
 

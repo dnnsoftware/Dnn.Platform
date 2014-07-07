@@ -98,7 +98,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="result"></param>
         public static void Log404(HttpRequest request, FriendlyUrlSettings settings, UrlAction result)
         {
-            var controller = new LogController();
             var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
@@ -120,7 +119,7 @@ namespace DotNetNuke.Entities.Urls
                 log.LogProperties.Add(new LogDetailInfo("HostName", request.UserHostName));
             }
 
-            controller.AddLog(log);
+            LogController.Instance.AddLog(log);
         }
 
         /// <summary>
@@ -147,27 +146,26 @@ namespace DotNetNuke.Entities.Urls
                     DataCache.SetCache(cacheKey, cacheKey, expire);
                     //just store the cache key - it doesn't really matter
                     //create a log event
-                    var elc = new EventLogController();
-                    var logEntry = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
-                    logEntry.AddProperty("Url Processing Exception", "Exception in Url Rewriting Process");
-                    logEntry.AddProperty("Http Status", status);
+                    var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
+                    log.AddProperty("Url Processing Exception", "Exception in Url Rewriting Process");
+                    log.AddProperty("Http Status", status);
                     if (result != null)
                     {
-                        logEntry.AddProperty("Original Path", result.OriginalPath ?? "null");
-                        logEntry.AddProperty("Raw Url", result.RawUrl ?? "null");
-                        logEntry.AddProperty("Final Url", result.FinalUrl ?? "null");
+                        log.AddProperty("Original Path", result.OriginalPath ?? "null");
+                        log.AddProperty("Raw Url", result.RawUrl ?? "null");
+                        log.AddProperty("Final Url", result.FinalUrl ?? "null");
 
-                        logEntry.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
                                                                      ? result.RewritePath
                                                                      : "[no rewrite]");
-                        logEntry.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
                                                                     ? "[no redirect]"
                                                                     : result.FinalUrl);
-                        logEntry.AddProperty("Action", result.Action.ToString());
-                        logEntry.AddProperty("Reason", result.Reason.ToString());
-                        logEntry.AddProperty("Portal Id", result.PortalId.ToString());
-                        logEntry.AddProperty("Tab Id", result.TabId.ToString());
-                        logEntry.AddProperty("Http Alias", result.PortalAlias != null
+                        log.AddProperty("Action", result.Action.ToString());
+                        log.AddProperty("Reason", result.Reason.ToString());
+                        log.AddProperty("Portal Id", result.PortalId.ToString());
+                        log.AddProperty("Tab Id", result.TabId.ToString());
+                        log.AddProperty("Http Alias", result.PortalAlias != null
                                                                 ? result.PortalAlias.HTTPAlias
                                                                 : "Null");
 
@@ -176,25 +174,25 @@ namespace DotNetNuke.Entities.Urls
                             int i = 1;
                             foreach (string msg in result.DebugMessages)
                             {
-                                logEntry.AddProperty("Debug Message " + i.ToString(), msg);
+                                log.AddProperty("Debug Message " + i.ToString(), msg);
                                 i++;
                             }
                         }
                     }
                     else
                     {
-                        logEntry.AddProperty("Result", "Result value null");
+                        log.AddProperty("Result", "Result value null");
                     }
-                    logEntry.AddProperty("Exception Type", ex.GetType().ToString());
-                    logEntry.AddProperty("Message", ex.Message);
-                    logEntry.AddProperty("Stack Trace", ex.StackTrace);
+                    log.AddProperty("Exception Type", ex.GetType().ToString());
+                    log.AddProperty("Message", ex.Message);
+                    log.AddProperty("Stack Trace", ex.StackTrace);
                     if (ex.InnerException != null)
                     {
-                        logEntry.AddProperty("Inner Exception Message", ex.InnerException.Message);
-                        logEntry.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
+                        log.AddProperty("Inner Exception Message", ex.InnerException.Message);
+                        log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
                     }
-                    logEntry.BypassBuffering = true;
-                    elc.AddLog(logEntry);
+                    log.BypassBuffering = true;
+                    LogController.Instance.AddLog(log);
 
                     //Log this error in lig4net
                     Logger.Error(ex);

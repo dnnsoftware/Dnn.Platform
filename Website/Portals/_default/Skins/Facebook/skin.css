@@ -48,3 +48,11 @@ h3{font-family:TitilliumText22LBold;font-size:18px;}
 
 /* Language Object */
 .language-object { display:inline-block; margin-left: 5px; }
+ul.dnnAdminTabNav{ padding: 0;}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    #Panes{width:760px;}
+}
+@media (min-width: 980px) {
+    #Panes{width:960px;}
+}

@@ -21,6 +21,8 @@
 
 using System;
 using System.Globalization;
+
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
@@ -33,13 +35,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private const string ModeSetting = "Mode";
         private const string FilterConditionSetting = "FilterCondition";
         private const string SubfolderFilterSetting = "SubfolderFilter";
-
-        private readonly ModuleController moduleController;
-
-        public DigitalAssetsSettingsRepository()
-        {
-            this.moduleController = new ModuleController();
-        }
 
         public int? GetDefaultFolderTypeId(int moduleId)
         {
@@ -105,33 +100,46 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
+            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
         }
 
         public void SaveMode(int moduleId, DigitalAssestsMode mode)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, ModeSetting, mode.ToString());
         }
 
         public void SaveRootFolderId(int moduleId, int rootFolderId)
         {
-            this.moduleController.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
+            ModuleController.Instance.UpdateModuleSetting(moduleId, RootFolderIdSetting, rootFolderId.ToString(CultureInfo.InvariantCulture));
         }
 
         public void SaveExcludeSubfolders(int moduleId, SubfolderFilter subfolderFilter)
         {
-            moduleController.UpdateModuleSetting(moduleId, SubfolderFilterSetting, subfolderFilter.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, SubfolderFilterSetting, subfolderFilter.ToString());
         }
 
         public void SaveFilterCondition(int moduleId, FilterCondition filterCondition)
         {
-            moduleController.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
+            ModuleController.Instance.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
         }
 
         private string GetSettingByKey(int moduleId, string key)
         {
-            var settings = this.moduleController.GetModuleSettings(moduleId);
-            return (string)settings[key];               
+            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+            var moduleSettings = module.ModuleSettings; 
+            return (string)moduleSettings[key];               
+        }
+
+        internal bool SettingExists(int moduleId, string settingName)
+        {
+            return !String.IsNullOrEmpty(GetSettingByKey(moduleId, settingName));
+        }
+
+        internal void SetDefaultFilterCondition(int moduleId)
+        {
+            //handle upgrades where FilterCondition didn't exist
+            if (this.SettingExists(moduleId, "RootFolderId") && !this.SettingExists(moduleId, "FilterCondition"))
+                this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
         }
     }
 

@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -85,7 +86,8 @@ namespace DotNetNuke.Modules.Admin.Users
 				Response.Redirect(GetRedirectUrl(), true);
 			}
 
-            jQuery.RegisterJQuery(Page);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
 		/// <summary>

@@ -23,7 +23,6 @@ using System;
 using System.Web.Http;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.Api
@@ -49,7 +48,7 @@ namespace DotNetNuke.Web.Api
         {
             get
             {
-                return TestablePortalController.Instance.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 

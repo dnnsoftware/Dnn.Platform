@@ -55,7 +55,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					string fileContents = string.Empty;
 					FileController fileCtrl = new FileController();
 					FileInfo fileInfo = null;
-					int portalID = PortalController.GetCurrentPortalSettings().PortalId;
+					int portalID = PortalController.Instance.GetCurrentPortalSettings().PortalId;
 
 					if (renderUrl.ToLower().Contains("linkclick.aspx") && renderUrl.ToLower().Contains("fileticket"))
 					{
@@ -160,7 +160,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 		private DotNetNuke.Services.FileSystem.FolderInfo GetDNNFolder(string dbPath)
 		{
-			return new DotNetNuke.Services.FileSystem.FolderController().GetFolder(PortalController.GetCurrentPortalSettings().PortalId, dbPath, false);
+			return new DotNetNuke.Services.FileSystem.FolderController().GetFolder(PortalController.Instance.GetCurrentPortalSettings().PortalId, dbPath, false);
 		}
 
 		private string DNNHomeDirectory
@@ -168,7 +168,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			get
 			{
 				//todo: host directory
-				string homeDir = PortalController.GetCurrentPortalSettings().HomeDirectory;
+				string homeDir = PortalController.Instance.GetCurrentPortalSettings().HomeDirectory;
 				homeDir = homeDir.Replace("\\", "/");
 
 				if (homeDir.EndsWith("/"))

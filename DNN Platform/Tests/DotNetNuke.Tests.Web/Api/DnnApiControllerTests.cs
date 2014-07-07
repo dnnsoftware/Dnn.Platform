@@ -26,8 +26,6 @@ using System.Web.Http.Hosting;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Web.Api;
 using Moq;
 using NUnit.Framework;
@@ -69,7 +67,7 @@ namespace DotNetNuke.Tests.Web.Api
             var mockPortalController = new Mock<IPortalController>();
             var expectedPortalSettings = new PortalSettings();
             mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
-            TestablePortalController.SetTestableInstance(mockPortalController.Object);
+            PortalController.SetTestableInstance(mockPortalController.Object);
 
             //Act
             var result = controller.PortalSettings;

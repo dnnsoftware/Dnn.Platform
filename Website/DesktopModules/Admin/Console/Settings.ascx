@@ -19,8 +19,7 @@
 	</div>
 	<div id="parentTabRow" runat="server" class="dnnFormItem">
 		<dnn:label id="lblParentTab" runat="server" ControlName="ParentTab" ResourceKey="ParentTab" Suffix=":" />
-		<%--<asp:DropDownList ID="ParentTab" runat="server" AutoPostBack="True" />--%>
-        <dnn:DnnComboBox ID="ParentTab" runat="server" AutoPostBack="true" />
+	    <dnn:DnnPageDropDownList runat="server" ID="ParentTab" IncludeHostPages="true" />
 	</div>
 	<div id="includeParentRow" runat="server" class="dnnFormItem">
 		<dnn:label id="lblIncludeParent" runat="server" ControlName="IncludeParent" ResourceKey="IncludeParent" Suffix=":" />

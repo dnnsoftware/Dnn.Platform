@@ -260,7 +260,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 					dataChanged = true;
 				}
 			}
-
+            LoadDateControls();
 			return dataChanged;
 		}
 

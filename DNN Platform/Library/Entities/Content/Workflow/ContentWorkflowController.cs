@@ -74,8 +74,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             AddWorkflowLog(item, ContentWorkflowLogType.WorkflowStarted, userID);            
             AddWorkflowLog(item, ContentWorkflowLogType.StateInitiated, userID);
         }
-        
+
         public void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID)
+        {
+            CompleteState(itemID, subject, body, comment, portalID, userID, string.Empty);
+        }
+
+        public void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID, string source, params string[] parameters)
         {
             var item = contentController.GetContentItem(itemID);
             var workflow = GetWorkflow(item);
@@ -102,7 +107,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     AddWorkflowLog(item, ContentWorkflowLogType.StateInitiated, userID);                    
                 }
             
-                SendNotification(new PortalSettings(portalID), workflow, item, currentState, subject, body, comment, endStateID, userID);
+                SendNotification(new PortalSettings(portalID), workflow, item, currentState, subject, body, comment, endStateID, userID, source, parameters);
             }
         }
 
@@ -125,7 +130,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 int previousStateID = GetPreviousWorkflowStateID(workflow, item.StateID);
                 SetWorkflowState(previousStateID, item);
                 AddWorkflowLog(item, ContentWorkflowLogType.StateInitiated, userID);                
-                SendNotification(new PortalSettings(portalID), workflow, item, currentState, subject, body, comment, previousStateID, userID);
+                SendNotification(new PortalSettings(portalID), workflow, item, currentState, subject, body, comment, previousStateID, userID, null, null);
             }
         }
 
@@ -194,6 +199,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         public IEnumerable<ContentWorkflowState> GetWorkflowStates(int workflowID)
         {
             return CBO.FillCollection<ContentWorkflowState>(DataProvider.Instance().GetContentWorkflowStates(workflowID));            
+        }
+
+        public ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName)
+        {
+            return CBO.FillObject<ContentWorkflowSource>(DataProvider.Instance().GetContentWorkflowSource(workflowId, sourceName));
         }
 
         public void AddWorkflowState(ContentWorkflowState state)
@@ -273,7 +283,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool IsReviewer(int stateID)
         {
             var permissions = GetWorkflowStatePermissionByState(stateID);
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
             return IsReviewer(user, PortalSettings.Current, permissions);
         }
 
@@ -410,7 +420,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var replacedSubject = ReplaceNotificationTokens(subject, null, null, null, settings.PortalId, userID);
             var replacedBody = ReplaceNotificationTokens(body, null, null, null, settings.PortalId, userID);
-            SendNotification(sendEmail, sendMessage, settings, roles, users, replacedSubject, replacedBody, comment, userID);
+            SendNotification(sendEmail, sendMessage, settings, roles, users, replacedSubject, replacedBody, comment, userID, null, null);
         }
 
         public void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId)
@@ -457,7 +467,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             AddWorkflowLog(workflow.WorkflowID, item, GetWorkflowActionText(ContentWorkflowLogType.CommentProvided), logComment, userID);
         }
 
-        private void SendNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID)
+        private void SendNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID, string source, string[] parameters)
         {
             if (sendEmail)
             {
@@ -465,11 +475,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
             if (sendMessage)
             {
-                SendMessageNotifications(settings, roles, users, subject, body, comment, userID);
+                SendMessageNotifications(settings, roles, users, subject, body, comment, userID, source, parameters);
             }
         }
 
-        private void SendNotification(PortalSettings settings, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, string subject, string body, string comment, int destinationStateID, int actionUserID)
+        private void SendNotification(PortalSettings settings, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, string subject, string body, string comment, int destinationStateID, int actionUserID, string source, string[] parameters)
         {
             var permissions = GetWorkflowStatePermissionByState(destinationStateID);
             var users = GetUsersFromPermissions(settings, permissions);
@@ -477,10 +487,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             var replacedSubject = ReplaceNotificationTokens(subject, workflow, item, GetWorkflowStateByID(destinationStateID), settings.PortalId, actionUserID);
             var replacedBody = ReplaceNotificationTokens(body, workflow, item, GetWorkflowStateByID(destinationStateID), settings.PortalId, actionUserID);
             
-            SendNotification(state.SendEmail, state.SendMessage, settings, roles, users, replacedSubject, replacedBody, comment, actionUserID);
+            SendNotification(state.SendEmail, state.SendMessage, settings, roles, users, replacedSubject, replacedBody, comment, actionUserID, source, parameters);
         }
 
-        private void SendMessageNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int actionUserID)
+        private void SendMessageNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int actionUserID, string source, string[] parameters)
         {
             //TODO: Confirm the final body and comment format
             var fullbody = GetFullBody(body, comment);
@@ -499,6 +509,16 @@ namespace DotNetNuke.Entities.Content.Workflow
                 SenderUserID = actionUserID
             };
 
+            //append the context
+            if (!string.IsNullOrEmpty(source))
+            {
+                if (parameters != null && parameters.Length > 0)
+                {
+                    source = string.Format("{0};{1}", source, string.Join(";", parameters));
+                }
+                notification.Context = source;
+            }
+
             NotificationsController.Instance.SendNotification(notification, settings.PortalId, roles.ToList(), users.ToList());
         }
 
@@ -509,13 +529,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendEmailNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment)
         {
-            //TODO: Confirm the final body and comment format
             var fullbody = GetFullBody(body, comment);
-            var roleController = new RoleController();
             var emailUsers = users.ToList();
             foreach (var role in roles)
             {
-                var roleUsers = roleController.GetUsersByRoleName(settings.PortalId, role.RoleName);
+                var roleUsers = RoleController.Instance.GetUsersByRole(settings.PortalId, role.RoleName);
                 emailUsers.AddRange(from UserInfo user in roleUsers select user);
             }
 
@@ -528,19 +546,18 @@ namespace DotNetNuke.Entities.Content.Workflow
         private IEnumerable<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<ContentWorkflowStatePermission> permissions)
         {
             var roles = new List<RoleInfo>();
-            var roleController = new RoleController();
             
             foreach (var permission in permissions)
             {
                 if (permission.AllowAccess && permission.RoleID > Null.NullInteger)
                 {
-                    roles.Add(roleController.GetRole(permission.RoleID, settings.PortalId));
+                    roles.Add(RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID));
                 }
             }
 
             if(!IsAdministratorRoleAlreadyIncluded(settings, roles))
             {
-                var adminRole = roleController.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
+                var adminRole = RoleController.Instance.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
                 roles.Add(adminRole);
             }
             return roles;

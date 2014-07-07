@@ -12,6 +12,9 @@
 {
     opacity:1;
 }
+.dnnEditState.dnnOpacityDisabled .DnnModule {
+    opacity: 1;
+}
 
 
 form .actionMenu ul {z-index:1000 !important;}

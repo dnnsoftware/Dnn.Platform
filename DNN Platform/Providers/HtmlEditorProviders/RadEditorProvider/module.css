@@ -17,4 +17,5 @@
 #dnnProviderConfig .dnnFormExpandContent {position:static;text-align:right;}
 .dnnTreeExpand {position:static;text-align:right;padding-right:8px;}
 	#dnnProviderConfig .dnnCBItem label{width:auto;padding-left:2px;font-weight:normal;text-align:left;}
+#dnnEditorConfig .dnnFormItem > div.languageComboBox{width: 47%;margin-bottom: 18px;max-width: 445px;display: inline-block !important;}
 /* ===========   End Pages Module Styling   =========== */

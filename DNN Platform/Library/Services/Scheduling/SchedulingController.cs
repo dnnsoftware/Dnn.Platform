@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class SchedulingController
     {
-        [Obsolete("Obsoleted in 5.2.1 - use overload that pass's a FriendlyName")]
+        [Obsolete("Obsoleted in 5.2.1 - use alternate overload")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers)
         {
@@ -55,14 +55,32 @@ namespace DotNetNuke.Services.Scheduling
                                Enabled,
                                ObjectDependencies,
                                Servers,
-                               TypeFullName);
+                               TypeFullName,
+                               DateTime.Now);
         }
 
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
-                                      bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
+                              bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
+            return AddSchedule(TypeFullName,
+                               TimeLapse,
+                               TimeLapseMeasurement,
+                               RetryTimeLapse,
+                               RetryTimeLapseMeasurement,
+                               RetainHistoryNum,
+                               AttachToEvent,
+                               CatchUpEnabled,
+                               Enabled,
+                               ObjectDependencies,
+                               Servers,
+                               FriendlyName,
+                               DateTime.Now);
+        }
+        public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
+                                      bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
+        {
+            EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
             return DataProvider.Instance().AddSchedule(TypeFullName,
                                                        TimeLapse,
                                                        TimeLapseMeasurement,
@@ -74,8 +92,9 @@ namespace DotNetNuke.Services.Scheduling
                                                        Enabled,
                                                        ObjectDependencies,
                                                        Servers,
-                                                       UserController.GetCurrentUserInfo().UserID,
-                                                       FriendlyName);
+                                                       UserController.Instance.GetCurrentUserInfo().UserID,
+                                                       FriendlyName,
+                                                       ScheduleStartDate);
         }
 
         public static int AddScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
@@ -91,11 +110,10 @@ namespace DotNetNuke.Services.Scheduling
         public static void DeleteSchedule(int ScheduleID)
         {
             DataProvider.Instance().DeleteSchedule(ScheduleID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("ScheduleID",
+            EventLogController.Instance.AddLog("ScheduleID",
                                ScheduleID.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.SCHEDULE_DELETED);
         }
 
@@ -191,7 +209,27 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
-                                          string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
+                                  string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
+        {
+            UpdateSchedule(ScheduleID,
+                            TypeFullName,
+                            TimeLapse,
+                            TimeLapseMeasurement,
+                            RetryTimeLapse,
+                            RetryTimeLapseMeasurement,
+                            RetainHistoryNum,
+                            AttachToEvent,
+                            CatchUpEnabled,
+                            Enabled,
+                            ObjectDependencies,
+                            Servers,
+                            FriendlyName,
+                            DateTime.Now);
+        }
+
+        [Obsolete("Obsoleted in 7.3.0 - use alternate overload")]
+        public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
+                                          string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
             DataProvider.Instance().UpdateSchedule(ScheduleID,
                                                    TypeFullName,
@@ -205,10 +243,10 @@ namespace DotNetNuke.Services.Scheduling
                                                    Enabled,
                                                    ObjectDependencies,
                                                    Servers,
-                                                   UserController.GetCurrentUserInfo().UserID,
-                                                   FriendlyName);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("TypeFullName", TypeFullName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
+                                                   UserController.Instance.GetCurrentUserInfo().UserID,
+                                                   FriendlyName,
+                                                   ScheduleStartDate);
+            EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
         }
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)

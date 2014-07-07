@@ -28,7 +28,6 @@ using System.Collections;
 namespace DotNetNuke.Entities.Portals
 {
     [Serializable]
-    [Obsolete("Deprecated in DNN 7.1. Use Dictionary<string, PortalLAiasInfo>")]
     public class PortalAliasCollection : DictionaryBase
     {
 		/// <summary>

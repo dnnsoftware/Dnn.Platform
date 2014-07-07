@@ -354,7 +354,7 @@ namespace DotNetNuke.UI
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
                                        int intDepth, int intNavNodeOptions)
         {
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             DNNNodeCollection objRootNodes = objRootNode.DNNNodes;
 
@@ -649,8 +649,7 @@ namespace DotNetNuke.UI
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
             int i;
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
-            bool blnFoundStart = intStartTabId == -1;
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();
@@ -663,7 +662,6 @@ namespace DotNetNuke.UI
                 objBreadCrumbs.Add(((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID, 1);
                 intLastBreadCrumbId = ((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID;
             }
-            var objTabController = new TabController();
             List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
             List<TabInfo> hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
             foreach (TabInfo objTab in portalTabs)

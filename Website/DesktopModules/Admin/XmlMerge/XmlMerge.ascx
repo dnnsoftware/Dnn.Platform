@@ -64,6 +64,9 @@
 
 	    $('#dnnConfigManager').dnnTabs();
 
+	    var $fileUpload = $('#dnnConfigMerge input[type="file"]');
+	    $fileUpload.data("text", '<%=LocalizeSafeJsString("ChooseFile.Text")%>');
+
 	    var configeditor = CodeMirror.fromTextArea($("textarea[id$='txtConfiguration']")[0], {
 	        lineNumbers: true,
 	        matchBrackets: true,

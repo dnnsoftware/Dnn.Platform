@@ -103,6 +103,10 @@
     <Compile Include="Components\Controllers\Models\PermissionViewModel.cs" />
     <Compile Include="Components\ExtensionPoint\IFieldsControl.cs" />
     <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs" />
+    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Components\ExtensionPoint\ToolBarButton\ManageFolderTypesToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\SyncToolBarMenuButtonExtensionPoint.cs" />

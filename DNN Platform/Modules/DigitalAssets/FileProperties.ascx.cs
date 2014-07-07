@@ -70,6 +70,15 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected string ActiveTab
+        {
+            get
+            {
+                return Request.QueryString["activeTab"];
+            }
+        }
+
+
         protected override void OnInit(EventArgs e)
         {
             try

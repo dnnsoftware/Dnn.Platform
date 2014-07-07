@@ -31,20 +31,11 @@ namespace DotNetNuke.Entities.Modules
 {
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
-        private Hashtable _moduleSettings;
-        private Hashtable _settings;
-        private Hashtable _tabModuleSettings;
-
         public Hashtable ModuleSettings
         {
             get
             {
-                if (_moduleSettings == null)
-                {
-					//Get ModuleSettings
-                    _moduleSettings = new ModuleController().GetModuleSettings(ModuleId);
-                }
-                return _moduleSettings;
+                return ModuleContext.Configuration.ModuleSettings;
             }
         }
 
@@ -52,34 +43,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_tabModuleSettings == null)
-                {
-					//Get TabModuleSettings
-                    _tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleId);
-                }
-                return _tabModuleSettings;
-            }
-        }
-
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new Hashtable Settings
-        {
-            get
-            {
-                if (_settings == null)
-                {
-                    _settings = new Hashtable();
-					//Merge the TabModuleSettings and ModuleSettings
-                    foreach (string strKey in TabModuleSettings.Keys)
-                    {
-                        _settings[strKey] = TabModuleSettings[strKey];
-                    }
-                    foreach (string strKey in ModuleSettings.Keys)
-                    {
-                        _settings[strKey] = ModuleSettings[strKey];
-                    }
-                }
-                return _settings;
+                return ModuleContext.Configuration.TabModuleSettings;
             }
         }
 

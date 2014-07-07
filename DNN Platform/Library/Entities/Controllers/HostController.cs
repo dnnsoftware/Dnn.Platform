@@ -275,7 +275,6 @@ namespace DotNetNuke.Entities.Controllers
 		/// <param name="clearCache">if set to <c>true</c> will clear cache after update the setting.</param>
         public void Update(ConfigurationSetting config, bool clearCache)
         {
-            var objEventLog = new EventLogController();
             try
             {
                 var settings = GetSettingsFromDatabase();
@@ -285,21 +284,21 @@ namespace DotNetNuke.Entities.Controllers
                     settings.TryGetValue(config.Key, out currentconfig);
                     if (currentconfig != null && currentconfig.Value != config.Value)
                     {
-                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.GetCurrentUserInfo().UserID);
-                        objEventLog.AddLog(config.Key,
+                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.Instance.AddLog(config.Key,
                                            config.Value,
-                                           PortalController.GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
+                                           PortalController.Instance.GetCurrentPortalSettings(),
+                                           UserController.Instance.GetCurrentUserInfo().UserID,
                                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
-                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.GetCurrentUserInfo().UserID);
-                    objEventLog.AddLog(config.Key,
+                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogController.Instance.AddLog(config.Key,
                                        config.Value,
-                                       PortalController.GetCurrentPortalSettings(),
-                                       UserController.GetCurrentUserInfo().UserID,
+                                       PortalController.Instance.GetCurrentPortalSettings(),
+                                       UserController.Instance.GetCurrentUserInfo().UserID,
                                        EventLogController.EventLogType.HOST_SETTING_CREATED);
                 }
             }

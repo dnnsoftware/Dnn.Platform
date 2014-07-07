@@ -71,8 +71,6 @@ namespace DotNetNuke.Entities.Modules
 
                 string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
                 object controller = Reflection.CreateObject(BusinessControllerClass, "");
-                var eventLogController = new EventLogController();
-                LogInfo eventLogInfo;
                 if (controller is IUpgradeable)
                 {
 					//get the list of applicable versions
@@ -82,15 +80,14 @@ namespace DotNetNuke.Entities.Modules
 						//call the IUpgradeable interface for the module/version
                         string Results = ((IUpgradeable) controller).UpgradeModule(Version);
                         //log the upgrade results
-                        eventLogInfo = new LogInfo();
-                        eventLogInfo.AddProperty("Module Upgraded", BusinessControllerClass);
-                        eventLogInfo.AddProperty("Version", Version);
+                        var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString()};
+                        log.AddProperty("Module Upgraded", BusinessControllerClass);
+                        log.AddProperty("Version", Version);
                         if (!string.IsNullOrEmpty(Results))
                         {
-                            eventLogInfo.AddProperty("Results", Results);
+                            log.AddProperty("Results", Results);
                         }
-                        eventLogInfo.LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString();
-                        eventLogController.AddLog(eventLogInfo);
+                        LogController.Instance.AddLog(log);
                     }
                 }
                 UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
@@ -126,8 +123,7 @@ namespace DotNetNuke.Entities.Modules
                     desktopModule.IsUpgradeable = (objController is IUpgradeable);
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
 
-                    var portalController = new PortalController();
-                    foreach (PortalInfo portal in portalController.GetPortals())
+                    foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                     {
                         DataCache.RemoveCache(String.Format(DataCache.DesktopModuleCacheKey, portal.PortalID));
                         DataCache.RemoveCache(String.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalID));

@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.Modules
                     return Int32.Parse(Request.Params["UserId"]);
                 }
 
-                return UserController.GetCurrentUserInfo().UserID;
+                return UserController.Instance.GetCurrentUserInfo().UserID;
             }
         }
 

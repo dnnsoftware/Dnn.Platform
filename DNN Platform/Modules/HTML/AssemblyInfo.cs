@@ -15,7 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DotNetNuke.Modules.Html")]
 [assembly: AssemblyDescription("HTML Module for Open Source Web Application Framework")]
-[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 

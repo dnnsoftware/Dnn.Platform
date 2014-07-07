@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.Journal.Components
         int ModuleId { get; set; }
 		UserInfo CurrentUser { get; set; }
         int OwnerPortalId { get; set; }
+        public int JournalId { get; set; }
         private readonly string url = "";
         private bool isAdmin;
 	    private bool isUnverifiedUser;
@@ -40,8 +41,7 @@ namespace DotNetNuke.Modules.Journal.Components
 			CurrentUser = userInfo;
             url = PortalSettings.DefaultPortalAlias;
             OwnerPortalId = portalSettings.PortalId;
-            var moduleController = new ModuleController();
-            ModuleInfo moduleInfo = moduleController.GetModule(moduleId);
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, PortalSettings.ActiveTab.TabID, false);
             if (moduleInfo.OwnerPortalID != portalSettings.PortalId)
             {
                 OwnerPortalId = moduleInfo.OwnerPortalID;
@@ -79,11 +79,26 @@ namespace DotNetNuke.Modules.Journal.Components
             string comment = Localization.GetString("comment", ResxPath);
             
             IList<JournalItem> journalList;
-            if (ProfileId > 0) {
+            if (JournalId > 0)
+            {
+                var journal = JournalController.Instance.GetJournalItem(PortalSettings.PortalId, CurrentUser.UserID,
+                                                                        JournalId, false, false, true);
+                journalList = new List<JournalItem>();
+                if (journal != null)
+                {
+                    journalList.Add(journal);
+                }
+            }
+            else if (ProfileId > 0) 
+            {
                 journalList = journalControllerInternal.GetJournalItemsByProfile(OwnerPortalId, ModuleId, CurrentUser.UserID, ProfileId, currentIndex, rows);
-            } else if (SocialGroupId > 0) {
+            } 
+            else if (SocialGroupId > 0) 
+            {
                 journalList = journalControllerInternal.GetJournalItemsByGroup(OwnerPortalId, ModuleId, CurrentUser.UserID, SocialGroupId, currentIndex, rows);
-            } else {
+            } 
+            else 
+            {
                 journalList = journalControllerInternal.GetJournalItems(OwnerPortalId, ModuleId, CurrentUser.UserID, currentIndex, rows);
             }
 
@@ -291,7 +306,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         internal string GetCommentRow(JournalItem journal, CommentInfo comment) {
             var sb = new StringBuilder();
-            string pic = string.Format(Globals.UserProfilePicFormattedUrl(), comment.UserId, 32, 32);
+            string pic = string.Format(Globals.UserProfilePicRelativeUrl(), comment.UserId, 32, 32);
             sb.AppendFormat("<li id=\"cmt-{0}\">", comment.CommentId);
             if (comment.UserId == CurrentUser.UserID || journal.UserId == CurrentUser.UserID || isAdmin) {
                 sb.Append("<div class=\"miniclose\"></div>");

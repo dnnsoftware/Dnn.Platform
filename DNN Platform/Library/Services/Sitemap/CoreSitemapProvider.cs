@@ -57,7 +57,6 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
         {
-            var objTabs = new TabController();
             SitemapUrl pageUrl = null;
             var urls = new List<SitemapUrl>();
 
@@ -67,7 +66,7 @@ namespace DotNetNuke.Services.Sitemap
 
             this.ps = ps;
 
-            foreach (TabInfo objTab in objTabs.GetTabsByPortal(portalId).Values)
+            foreach (TabInfo objTab in TabController.Instance.GetTabsByPortal(portalId).Values)
             {
                 if (!objTab.IsDeleted && !objTab.DisableLink && objTab.TabType == TabType.Normal && (Null.IsNull(objTab.StartDate) || objTab.StartDate < DateTime.Now) &&
                     (Null.IsNull(objTab.EndDate) || objTab.EndDate > DateTime.Now) && IsTabPublic(objTab.TabPermissions))
@@ -97,8 +96,7 @@ namespace DotNetNuke.Services.Sitemap
             pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
-            var modCtrl = new ModuleController();
-            foreach (ModuleInfo m in modCtrl.GetTabModules(objTab.TabID).Values)
+            foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(objTab.TabID).Values)
             {
                 if (m.LastModifiedOnDate > objTab.LastModifiedOnDate)
                 {

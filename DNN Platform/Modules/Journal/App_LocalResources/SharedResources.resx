@@ -560,4 +560,7 @@
   <data name="Notification_MentionType_Post.Text" xml:space="preserve">
     <value>Post</value>
   </data>
+  <data name="product.Text" xml:space="preserve">
+    <value>Product Updated</value>
+  </data>
 </root>

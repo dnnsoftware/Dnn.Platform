@@ -31,6 +31,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem.EventArgs;
 
 namespace DotNetNuke.Services.FileSystem
@@ -126,7 +127,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.FileName);
             
             // Notify File Changed
-            OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
+            OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public int DeleteFileVersion(IFileInfo file, int version)
@@ -150,7 +151,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.FileName);
 
                 // Notify File Changed
-                OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
+                OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {

@@ -31,3 +31,53 @@
 .console-large-detail div div { margin: 2px 2px 2px 44px; padding:0px; clear:none; }
 
 .console-mouseon { background-color:#ebedf0; } /*#f1f6f9*/
+
+/*------------------------------------------------*/
+/* DEFAULT PROFILE STYLE */
+/*------------------------------------------------*/
+
+.UserProfileControls ul li {
+    list-style-type: none;
+}
+
+/*------------------------------------------------*/
+/* PROFILE STYLE */
+/*------------------------------------------------*/
+.console.profile {
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    height: auto;
+    background-color: #484848; /* Menu Background Color */
+}
+
+.console.profile .console-none div {
+    cursor: pointer;
+    cursor: hand;
+    float: left;
+    height: auto;
+    /*width: 250px;*/
+    width:100% !important; /* updated for responsive*/
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+}
+
+.console.profile .console-none h3 {
+    padding: 10px 8px 10px 40px;
+    margin: 0;
+    border-bottom: solid 1px #fff;
+    background: url('../../images/arrow-right-white.png') 18px center no-repeat;
+    color: #eee;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+.console.profile .console-none div div {
+    display: none;
+}
+
+.console.profile .console-mouseon {
+    background-color: #70b1c7; /* Menu Hover Background Color */
+}
+

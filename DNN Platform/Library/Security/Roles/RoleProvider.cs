@@ -147,7 +147,7 @@ namespace DotNetNuke.Security.Roles
         public virtual string[] GetRoleNames(int portalId)
         {
             string[] roles = { };
-            var roleList = TestableRoleController.Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
+            var roleList = RoleController.Instance.GetRoles(portalId, r => r.SecurityMode != SecurityMode.SocialGroup && r.Status == RoleStatus.Approved);
             var strRoles = roleList.Aggregate("", (current, role) => current + (role.RoleName + "|"));
             if (strRoles.IndexOf("|", StringComparison.Ordinal) > 0)
             {
@@ -174,8 +174,7 @@ namespace DotNetNuke.Security.Roles
             UserInfo user;
             if(userId != -1)
             {
-                var userController = new UserController();
-                user = userController.GetUser(portalId, userId);
+                user = UserController.Instance.GetUser(portalId, userId);
             }
             else
             {

@@ -33,7 +33,6 @@
       <jQueryUI Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryUI\*.*" />
       <jQueryMigrate Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\jQueryMigrate\*.*" />
       <KnockoutMapping Include="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping\*.*" />
-      <ExternalModulePackages Include="$(MSBuildProjectDirectory)\..\Externally Sourced\Modules\*.*" />
     </ItemGroup>
   </Target>
   
@@ -84,8 +83,6 @@
 
     <Zip Files="@(KnockoutMapping)" WorkingDirectory="$(MSBuildProjectDirectory)\..\JavaScript Libraries\KnockoutMapping"
         ZipFileName="$(WebsiteInstallPath)\JavaScriptLibrary\KnockoutMapping.zip" />
-
-    <Copy SourceFiles="@(ExternalModulePackages)" DestinationFolder="$(WebsiteInstallPath)\Module"/>
 
     <XmlRead Prefix="n"
             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"

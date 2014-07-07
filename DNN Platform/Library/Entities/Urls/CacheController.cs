@@ -187,14 +187,13 @@ namespace DotNetNuke.Entities.Urls
             else
             {
                 //no portal specific name in the root folder
-                if (portalId > -1) // at this point, only interested if a specific portal is requested
+                if (portalId > Null.NullInteger) // at this point, only interested if a specific portal is requested
                 {
-                    var pc = new PortalController();
-                    PortalInfo portal = pc.GetPortal(portalId);
+                    var portal = PortalController.Instance.GetPortal(portalId);
                     if (portal != null)
                     {
                         //looking for the file in the portal folder
-                        string portalPath = portal.HomeDirectoryMapPath;
+                        var portalPath = portal.HomeDirectoryMapPath;
                         filePath = portalPath + fileName; // just the pathname
                         if (File.Exists(filePath))
                         {
@@ -550,23 +549,22 @@ namespace DotNetNuke.Entities.Urls
 
             if (settings.LogCacheMessages)
             {
-                var elc = new EventLogController();
 
-                var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                logValue.AddProperty("Url Rewriting Caching Message", "Friendly Url Index built and Stored in Cache.");
-                logValue.AddProperty("Build Reason", reason);
-                logValue.AddProperty("Cache Key", UrlDictKey);
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                log.AddProperty("Url Rewriting Caching Message", "Friendly Url Index built and Stored in Cache.");
+                log.AddProperty("Build Reason", reason);
+                log.AddProperty("Cache Key", UrlDictKey);
                 using (urlDict.GetReadLock())
                 {
-                    logValue.AddProperty("Item Count", urlDict.Values.Count.ToString());
+                    log.AddProperty("Item Count", urlDict.Values.Count.ToString());
                 }
-                logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                logValue.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
                 using (customAliasTabs.GetReadLock())
                 {
-                    logValue.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
+                    log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
                 }
-                elc.AddLog(logValue);
+                LogController.Instance.AddLog(log);
             }
         }
 
@@ -626,14 +624,13 @@ namespace DotNetNuke.Entities.Urls
             SetPageCache(key, providersWithTabs.ToArray(), settings);
             if (settings.LogCacheMessages)
             {
-                var elc = new EventLogController();
-                var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                logValue.AddProperty("Url Rewriting Caching Message", "Portal Module Providers Tab List stored in cache");
-                logValue.AddProperty("Cache Item Key", key);
-                logValue.AddProperty("PortalId", portalId.ToString());
-                logValue.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
-                logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                elc.AddLog(logValue);
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                log.AddProperty("Url Rewriting Caching Message", "Portal Module Providers Tab List stored in cache");
+                log.AddProperty("Cache Item Key", key);
+                log.AddProperty("PortalId", portalId.ToString());
+                log.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                LogController.Instance.AddLog(log);
             }
         }
 
@@ -710,14 +707,13 @@ namespace DotNetNuke.Entities.Urls
 
             if (settings.LogCacheMessages)
             {
-                var elc = new EventLogController();
-                var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                logValue.AddProperty("Url Rewriting Caching Message", "Extension Url Providers stored in cache");
-                logValue.AddProperty("PortalId/TabIds", portalId.ToString() + "/" + string.Join(",", tabIdStr.ToArray()));
-                logValue.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString());
-                logValue.AddProperty("Portal Tabs Providers Count", providerCount.ToString());
-                logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                elc.AddLog(logValue);
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                log.AddProperty("Url Rewriting Caching Message", "Extension Url Providers stored in cache");
+                log.AddProperty("PortalId/TabIds", portalId.ToString() + "/" + string.Join(",", tabIdStr.ToArray()));
+                log.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString());
+                log.AddProperty("Portal Tabs Providers Count", providerCount.ToString());
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                LogController.Instance.AddLog(log);
             }
         }
 
@@ -745,18 +741,17 @@ namespace DotNetNuke.Entities.Urls
 
             if (settings.LogCacheMessages)
             {
-                var elc = new EventLogController();
-                var logValue = new LogInfo {LogTypeKey = "HOST_ALERT"};
+                var log = new LogInfo {LogTypeKey = "HOST_ALERT"};
 
-                logValue.AddProperty("Url Rewriting Caching Message", "Page Index built and Stored in Cache");
-                logValue.AddProperty("Reason", reason);
-                logValue.AddProperty("Cache Item Key", PageIndexKey);
+                log.AddProperty("Url Rewriting Caching Message", "Page Index built and Stored in Cache");
+                log.AddProperty("Reason", reason);
+                log.AddProperty("Cache Item Key", PageIndexKey);
                 using (tabDictionary.GetReadLock())
                 {
-                    logValue.AddProperty("Item Count", tabDictionary.Count.ToString());
+                    log.AddProperty("Item Count", tabDictionary.Count.ToString());
                 }
-                logValue.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                elc.AddLog(logValue);
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                LogController.Instance.AddLog(log);
             }
         }
 
@@ -826,15 +821,14 @@ namespace DotNetNuke.Entities.Urls
                     try
                     {
                         //if not found, get from database
-                        var pc = new PortalController();
-                        pi = pc.GetPortal(portalId);
+                        pi = PortalController.Instance.GetPortal(portalId);
 
                         if (pi == null)
                         {
                             // Home page redirect loop when using default language not en-US and first request with secondary language
                             //calls get portal using culture code to support
                             string cultureCode = PortalController.GetActivePortalLanguage(portalId);
-                            pi = pc.GetPortal(portalId, cultureCode);
+                            pi = PortalController.Instance.GetPortal(portalId, cultureCode);
                         }
                         if (pi != null)
                         {
@@ -847,7 +841,7 @@ namespace DotNetNuke.Entities.Urls
                                 //portal culture code and default culture code are not the same.
                                 //this means we will get the incorrect home page tab id
                                 //call back and get the correct one as per the default language
-                                PortalInfo defaultLangPortal = pc.GetPortal(portalId, pi.DefaultLanguage);
+                                PortalInfo defaultLangPortal = PortalController.Instance.GetPortal(portalId, pi.DefaultLanguage);
                                 if (defaultLangPortal != null)
                                 {
                                     pi = defaultLangPortal;
@@ -885,8 +879,7 @@ namespace DotNetNuke.Entities.Urls
 #if (DEBUG)
             if (LogRemovedReason)
             {
-                var elc = new EventLogController();
-                var logValue = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
 
                 string itemName;
                 string count;
@@ -946,21 +939,21 @@ namespace DotNetNuke.Entities.Urls
                         break;
                 }
                 //add log values
-                logValue.AddProperty("Url Rewriting Caching Message", itemName + " Cache item Removed.");
-                logValue.AddProperty("Reason", cacheItemRemovedReason.ToString());
-                logValue.AddProperty("Cache Item Key", k);
-                logValue.AddProperty("Item Count", count);
+                log.AddProperty("Url Rewriting Caching Message", itemName + " Cache item Removed.");
+                log.AddProperty("Reason", cacheItemRemovedReason.ToString());
+                log.AddProperty("Cache Item Key", k);
+                log.AddProperty("Item Count", count);
                 if (portalCounts != null)
                 {
                     int i = 0;
                     foreach (string item in portalCounts)
                     {
-                        logValue.AddProperty("Item " + i.ToString(), item);
+                        log.AddProperty("Item " + i.ToString(), item);
                         i++;
                     }
                 }
                 //System.Diagnostics.Trace.Assert(k != null, "k == " + k);
-                elc.AddLog(logValue);
+                LogController.Instance.AddLog(log);
             }
 #endif
         }

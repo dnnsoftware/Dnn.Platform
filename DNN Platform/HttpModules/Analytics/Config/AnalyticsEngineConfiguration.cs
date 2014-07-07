@@ -105,14 +105,12 @@ namespace DotNetNuke.HttpModules.Config
             catch (Exception ex)
             {
                 //log it
-                var objEventLog = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.AddProperty("Analytics.AnalyticsEngineConfiguration", "GetConfig Failed");
-                objEventLogInfo.AddProperty("FilePath", filePath);
-                objEventLogInfo.AddProperty("ExceptionMessage", ex.Message);
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                objEventLog.AddLog(objEventLogInfo);
-                Logger.Error(objEventLogInfo);
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                log.AddProperty("Analytics.AnalyticsEngineConfiguration", "GetConfig Failed");
+                log.AddProperty("FilePath", filePath);
+                log.AddProperty("ExceptionMessage", ex.Message);
+                LogController.Instance.AddLog(log);
+                Logger.Error(log);
 
             }
             finally

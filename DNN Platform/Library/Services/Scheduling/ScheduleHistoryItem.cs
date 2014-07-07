@@ -76,6 +76,9 @@ namespace DotNetNuke.Services.Scheduling
             _Succeeded = Null.NullBoolean;
             _LogNotes = new StringBuilder();
             _Server = Null.NullString;
+            ScheduleStartDate = objScheduleItem.ScheduleStartDate != Null.NullDate
+                                    ? objScheduleItem.ScheduleStartDate
+                                    : Null.NullDate;
         }
 
         public double ElapsedTime

@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -37,7 +38,7 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Internal;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
 
@@ -97,8 +98,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         // get searchable module definition list
                         var portalId = int.Parse(cacheItem.CacheKey.Split('-')[1]);
-                        var moduleController = new ModuleController();
-                        var modules = moduleController.GetSearchModules(portalId);
+                        var modules = ModuleController.Instance.GetSearchModules(portalId);
                         var modDefIds = new HashSet<int>();
 
                         foreach (ModuleInfo module in modules)
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Search.Internals
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var searchContentSources = GetSearchContentSourceList(portal.PortalID);
                 foreach (var searchContentSource in searchContentSources)
@@ -439,7 +439,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (searchDocument.AuthorUserId > 0)
             {
-                var user = TestableUserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
+                var user = UserController.Instance.GetUserById(searchDocument.PortalId, searchDocument.AuthorUserId);
                 if (user != null && !string.IsNullOrEmpty(user.DisplayName))
                 {
                     var field = new Field(Constants.AuthorNameTag, user.DisplayName, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);

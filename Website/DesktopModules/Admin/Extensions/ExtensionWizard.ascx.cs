@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             get
             {
-                if (_Package == null)
+                if (ViewState["Package"] == null)
                 {
                     if (PackageID == Null.NullInteger)
                     {
@@ -103,8 +103,10 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     {
                         _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
                     }
+
+                    ViewState["Package"] = _Package;
                 }
-                return _Package;
+                return ViewState["Package"] as PackageInfo;
             }
         }
 
@@ -355,7 +357,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     SkinController.AddSkinPackage(skinPackage);
                                     break;
                                 case "CoreLanguagePack":
-                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                                     languagePack = new LanguagePackInfo
                                     {
                                         PackageID = newPackage.PackageID,
@@ -365,7 +367,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     LanguagePackController.SaveLanguagePack(languagePack);
                                     break;
                                 case "ExtensionLanguagePack":
-                                    locale = LocaleController.Instance.GetLocale(PortalController.GetCurrentPortalSettings().DefaultLanguage);
+                                    locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
                                     languagePack = new LanguagePackInfo
                                     {
                                         PackageID = newPackage.PackageID,

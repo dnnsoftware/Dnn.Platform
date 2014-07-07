@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Caching;
 
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -54,8 +55,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static void ClearCache()
         {
-            var portalController = new PortalController();
-            foreach (PortalAliasInfo portal in portalController.GetPortals())
+            foreach (PortalAliasInfo portal in PortalController.Instance.GetPortals())
             {
                 ClearCache(portal.PortalID);
             }
@@ -623,32 +623,31 @@ namespace DotNetNuke.Entities.Urls
                     DataCache.SetCache(cacheKey, cacheKey, expire);
                     //just store the cache key - it doesn't really matter
                     //create a log event
-                    string productVer = Assembly.GetExecutingAssembly().GetName(false).Version.ToString();
-                    var elc = new EventLogController();
-                    var logEntry = new LogInfo {LogTypeKey = "GENERAL_EXCEPTION"};
-                    logEntry.AddProperty("Url Rewriting Extension Url Provider Exception",
+                    string productVer = DotNetNukeContext.Current.Application.Version.ToString();
+                    var log = new LogInfo {LogTypeKey = "GENERAL_EXCEPTION"};
+                    log.AddProperty("Url Rewriting Extension Url Provider Exception",
                                          "Exception in Url Rewriting Process");
-                    logEntry.AddProperty("Provider Name", moduleProviderName);
-                    logEntry.AddProperty("Provider Version", moduleProviderVersion);
-                    logEntry.AddProperty("Http Status", status);
-                    logEntry.AddProperty("Product Version", productVer);
+                    log.AddProperty("Provider Name", moduleProviderName);
+                    log.AddProperty("Provider Version", moduleProviderVersion);
+                    log.AddProperty("Http Status", status);
+                    log.AddProperty("Product Version", productVer);
                     if (result != null)
                     {
-                        logEntry.AddProperty("Original Path", result.OriginalPath ?? "null");
-                        logEntry.AddProperty("Raw Url", result.RawUrl ?? "null");
-                        logEntry.AddProperty("Final Url", result.FinalUrl ?? "null");
+                        log.AddProperty("Original Path", result.OriginalPath ?? "null");
+                        log.AddProperty("Raw Url", result.RawUrl ?? "null");
+                        log.AddProperty("Final Url", result.FinalUrl ?? "null");
 
-                        logEntry.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
+                        log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
                                                                      ? result.RewritePath
                                                                      : "[no rewrite]");
-                        logEntry.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) 
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) 
                                                                     ? "[no redirect]" 
                                                                     : result.FinalUrl);
-                        logEntry.AddProperty("Action", result.Action.ToString());
-                        logEntry.AddProperty("Reason", result.Reason.ToString());
-                        logEntry.AddProperty("Portal Id", result.PortalId.ToString());
-                        logEntry.AddProperty("Tab Id", result.TabId.ToString());
-                        logEntry.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
+                        log.AddProperty("Action", result.Action.ToString());
+                        log.AddProperty("Reason", result.Reason.ToString());
+                        log.AddProperty("Portal Id", result.PortalId.ToString());
+                        log.AddProperty("Tab Id", result.TabId.ToString());
+                        log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
 
                         if (result.DebugMessages != null)
                         {
@@ -660,34 +659,34 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     msg = "[message was null]";
                                 }
-                                logEntry.AddProperty("Debug Message[result] " + i.ToString(), msg);
+                                log.AddProperty("Debug Message[result] " + i.ToString(), msg);
                                 i++;
                             }
                         }
                     }
                     else
                     {
-                        logEntry.AddProperty("Result", "Result value null");
+                        log.AddProperty("Result", "Result value null");
                     }
                     if (messages != null)
                     {
                         int i = 1;
                         foreach (string msg in messages)
                         {
-                            logEntry.AddProperty("Debug Message[raw] " + i.ToString(), msg);
+                            log.AddProperty("Debug Message[raw] " + i.ToString(), msg);
                             i++;
                         }
                     }
-                    logEntry.AddProperty("Exception Type", ex.GetType().ToString());
-                    logEntry.AddProperty("Message", ex.Message);
-                    logEntry.AddProperty("Stack Trace", ex.StackTrace);
+                    log.AddProperty("Exception Type", ex.GetType().ToString());
+                    log.AddProperty("Message", ex.Message);
+                    log.AddProperty("Stack Trace", ex.StackTrace);
                     if (ex.InnerException != null)
                     {
-                        logEntry.AddProperty("Inner Exception Message", ex.InnerException.Message);
-                        logEntry.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
+                        log.AddProperty("Inner Exception Message", ex.InnerException.Message);
+                        log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
                     }
-                    logEntry.BypassBuffering = true;
-                    elc.AddLog(logEntry);
+                    log.BypassBuffering = true;
+                    LogController.Instance.AddLog(log);
                 }
             }
         }

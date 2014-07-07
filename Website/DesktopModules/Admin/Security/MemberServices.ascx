@@ -7,7 +7,8 @@
             <asp:Label ID="lblServicesHelp" runat="server" resourcekey="ServicesHelp" />
         </div>
         <div id="ServicesRow" runat="server" class="dnnFormItem">
- 			<asp:datagrid id="grdServices" runat="server" GridLines="None" enableviewstate="true" autogeneratecolumns="false" cellpadding="4" border="0" summary="Register Design Table">
+ 			<asp:datagrid id="grdServices" runat="server" GridLines="None" ViewStateMode="Disabled" 
+                 autogeneratecolumns="false" cellpadding="4" border="0" summary="Register Design Table">
 	            <headerstyle cssclass="dnnGridHeader" verticalalign="Top" horizontalalign="Center" />
 	            <itemstyle cssclass="dnnGridItem" horizontalalign="Left" />
 	            <alternatingitemstyle cssclass="dnnGridAltItem" />
@@ -62,7 +63,7 @@
             <asp:label id="lblServices" runat="server" visible="False"/>
        </div>
         <div class="dnnFormItem">
-            <asp:Label ID="lblRSVPHelp" runat="server" resourcekey="RSVPHelp" />
+            <asp:Label ID="lblRSVPHelp" runat="server" resourcekey="RSVPHelp" ViewStateMode="Disabled"/>
         </div>
         <div class="dnnFormItem">
             <dnn:label id="plRSVPCode" runat="server" controlname="txtRSVPCode" />

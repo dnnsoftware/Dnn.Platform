@@ -702,7 +702,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 							newTab.ParentId = Null.NullInteger;
 							newTab.PortalID = ModuleContext.PortalId;
 							newTab.IsVisible = true;
-							newTab.TabID = new TabController().AddTabBefore(newTab, ModuleContext.PortalSettings.AdminTabId);
+							newTab.TabID = TabController.Instance.AddTabBefore(newTab, ModuleContext.PortalSettings.AdminTabId);
 							var objModule = new ModuleInfo();
 							objModule.Initialize(ModuleContext.PortalId);
 							objModule.PortalID = ModuleContext.PortalId;
@@ -713,8 +713,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 							objModule.ModuleDefID = moduleDefinition.ModuleDefID;
 							objModule.InheritViewPermissions = true;
 							objModule.AllTabs = false;
-							var moduleCtl = new ModuleController();
-							moduleCtl.AddModule(objModule);
+                            ModuleController.Instance.AddModule(objModule);
 							Response.Redirect(Globals.NavigateURL(newTab.TabID), true);
 						}
 						else

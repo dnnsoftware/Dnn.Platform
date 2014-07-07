@@ -103,7 +103,6 @@ namespace DotNetNuke.Modules.Admin.Languages
         {
             try
             {
-                var tabCtrl = new TabController();
                 RadProgressContext progress = RadProgressContext.Current;
 
                 progress.Speed = "N/A";
@@ -136,11 +135,10 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                     progress.TimeEstimated = (total - stepNo) * 100;
 
-                    tabCtrl.CreateLocalizedCopy(currentTab, locale, false);
+                    TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
 
                 }
-                var portalCtl = new PortalController();
-                portalCtl.MapLocalizedSpecialPages(PortalId, locale.Code);
+                PortalController.Instance.MapLocalizedSpecialPages(PortalId, locale.Code);
 
             }
             catch (Exception exc)
@@ -187,7 +185,6 @@ namespace DotNetNuke.Modules.Admin.Languages
             pageCreationProgressArea.Localization.UploadedFiles = Localization.GetString("Progress", LocalResourceFile);
             pageCreationProgressArea.Localization.CurrentFileName = Localization.GetString("Processing", LocalResourceFile);
 
-            //List<TabInfo> pageList = new TabController().GetCultureTabList(PortalId);
 
             var pageList = GetTabsToLocalize(PortalId, Locale);
             PagesToLocalize.Text = pageList.Count.ToString(CultureInfo.InvariantCulture);
@@ -200,7 +197,7 @@ namespace DotNetNuke.Modules.Admin.Languages
         public List<TabInfo> GetTabsToLocalize(int portalId, string code)
         {
             var results = new List<TabInfo>();
-            var portalTabs = new TabController().GetTabsByPortal(portalId);
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             foreach (var kvp in portalTabs.Where(kvp => kvp.Value.CultureCode == PortalSettings.DefaultLanguage && !kvp.Value.IsDeleted))
             {
                 if (kvp.Value.LocalizedTabs.Count == 0)
@@ -228,8 +225,6 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void updateButton_Click(object sender, EventArgs e)
         {
-            var tabCtrl = new TabController();
-            var portalCtrl = new PortalController();
             var locale = LocaleController.Instance.GetLocale(Locale);
             List<TabInfo> pageList = GetTabsToLocalize(PortalId, Locale);
 
@@ -243,7 +238,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             ProcessLanguage(pageList, locale, 0, 1);
 
             //Map special pages
-            portalCtrl.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
+            PortalController.Instance.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
 
             //clear cache
             DataCache.ClearPortalCache(PortalId, true);

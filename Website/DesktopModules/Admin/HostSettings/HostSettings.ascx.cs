@@ -46,6 +46,7 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
@@ -58,6 +59,7 @@ using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
@@ -131,6 +133,7 @@ namespace DotNetNuke.Modules.Admin.Host
             lblServerTime.Text = DateTime.Now.ToString();
             lblGUID.Text = Entities.Host.Host.GUID;
             chkWebFarm.Checked = CachingProvider.Instance().IsWebFarm();
+
         }
 
         private void BindFriendlyUrlsRequestFilters()
@@ -141,8 +144,7 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindHostDetails()
         {
-            var objPortals = new PortalController();
-            hostPortalsCombo.DataSource = objPortals.GetPortals();
+            hostPortalsCombo.DataSource = PortalController.Instance.GetPortals();
             hostPortalsCombo.DataBind(Entities.Host.Host.HostPortalID.ToString());
 
             txtHostTitle.Text = Entities.Host.Host.HostTitle;
@@ -180,11 +182,11 @@ namespace DotNetNuke.Modules.Admin.Host
         {
             jQueryVersion.Text = jQuery.Version;
             jQueryUIVersion.Text = jQuery.UIVersion;
-            chkJQueryDebugVersion.Checked = jQuery.UseDebugScript;
-            chkJQueryUseHosted.Checked = jQuery.UseHostedScript;
-            txtJQueryHostedUrl.Text = jQuery.HostedUrl;
-	        txtJQueryMigrateHostedUrl.Text = jQuery.HostedMigrateUrl;
-            txtJQueryUIHostedUrl.Text = jQuery.HostedUIUrl;
+            ////chkJQueryDebugVersion.Checked = jQuery.UseDebugScript;
+            ////chkJQueryUseHosted.Checked = jQuery.UseHostedScript;
+            ////txtJQueryHostedUrl.Text = jQuery.HostedUrl;
+            ////txtJQueryMigrateHostedUrl.Text = jQuery.HostedMigrateUrl;
+            ////txtJQueryUIHostedUrl.Text = jQuery.HostedUIUrl;
         }
 
 		private void BindCdnSettings()
@@ -253,21 +255,21 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindSkins()
         {
-            var skins = SkinController.GetSkins(null, SkinController.RootSkin, SkinScope.Host)
-                                                     .ToDictionary(skin => skin.Key, skin => skin.Value);
-            var containers = SkinController.GetSkins(null, SkinController.RootContainer, SkinScope.Host)
-                                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-            hostSkinCombo.DataSource = skins;
-            hostSkinCombo.DataBind(Entities.Host.Host.DefaultPortalSkin);
+            hostSkinCombo.RootPath = SkinController.RootSkin;
+            hostSkinCombo.Scope = SkinScope.Host;
+            hostSkinCombo.SelectedValue = Entities.Host.Host.DefaultPortalSkin;
 
-            hostContainerCombo.DataSource = containers;
-            hostContainerCombo.DataBind(Entities.Host.Host.DefaultPortalContainer);
+            hostContainerCombo.RootPath = SkinController.RootContainer;
+            hostContainerCombo.Scope = SkinScope.Host;
+            hostContainerCombo.SelectedValue = Entities.Host.Host.DefaultPortalContainer;
 
-            editSkinCombo.DataSource = skins;
-            editSkinCombo.DataBind(Entities.Host.Host.DefaultAdminSkin);
+            editSkinCombo.RootPath = SkinController.RootSkin;
+            editSkinCombo.Scope = SkinScope.Host;
+            editSkinCombo.SelectedValue = Entities.Host.Host.DefaultAdminSkin;
 
-            editContainerCombo.DataSource = containers;
-            editContainerCombo.DataBind(Entities.Host.Host.DefaultAdminContainer);
+            editContainerCombo.RootPath = SkinController.RootContainer;
+            editContainerCombo.Scope = SkinScope.Host;
+            editContainerCombo.SelectedValue = Entities.Host.Host.DefaultAdminContainer;
 
             uploadSkinLink.NavigateUrl = Util.InstallURL(ModuleContext.TabId, "");
 
@@ -280,6 +282,9 @@ namespace DotNetNuke.Modules.Admin.Host
         private void BindSmtpServer()
         {
             txtSMTPServer.Text = Entities.Host.Host.SMTPServer;
+            txtConnectionLimit.Text = Entities.Host.Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture);
+            txtMaxIdleTime.Text = Entities.Host.Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture);
+
             if (!string.IsNullOrEmpty(Entities.Host.Host.SMTPAuthentication))
             {
                 optSMTPAuthentication.Items.FindByValue(Entities.Host.Host.SMTPAuthentication).Selected = true;
@@ -367,14 +372,7 @@ namespace DotNetNuke.Modules.Admin.Host
 
             txtFileExtensions.Text = Entities.Host.Host.AllowedExtensionWhitelist.ToStorageString();
 
-            if (cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()) != null)
-            {
-                cboSchedulerMode.FindItemByValue(((int)Entities.Host.Host.SchedulerMode).ToString()).Selected = true;
-            }
-            else
-            {
-                cboSchedulerMode.FindItemByValue("1").Selected = true;
-            }
+            
 
             chkLogBuffer.Checked = Entities.Host.Host.EventLogBuffer;
             txtHelpURL.Text = Entities.Host.Host.HelpURL;
@@ -392,10 +390,10 @@ namespace DotNetNuke.Modules.Admin.Host
             chkIPChecking.Checked = Entities.Host.Host.EnableIPChecking;
             chkEnablePasswordHistory.Checked = Entities.Host.Host.EnablePasswordHistory;
             txtResetLinkValidity.Text = Entities.Host.Host.MembershipResetLinkValidity.ToString();
+            txtAdminResetLinkValidity.Text = Entities.Host.Host.AdminMembershipResetLinkValidity.ToString();
             txtNumberPasswords.Text = Entities.Host.Host.MembershipNumberPasswords.ToString();
 
 
-            ViewState["SelectedSchedulerMode"] = cboSchedulerMode.SelectedItem.Value;
             ViewState["SelectedLogBufferEnabled"] = chkLogBuffer.Checked;
             ViewState["SelectedUsersOnlineEnabled"] = chkUsersOnline.Checked;
 
@@ -580,6 +578,10 @@ namespace DotNetNuke.Modules.Admin.Host
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+            passwordSettings.EditMode = PropertyEditorMode.Edit ;
+            passwordSettings.LocalResourceFile = LocalResourceFile;
+            passwordSettings.DataSource = new PasswordConfig();
+            passwordSettings.DataBind();
         }
 
         private void BindSearchIndex()
@@ -706,10 +708,9 @@ namespace DotNetNuke.Modules.Admin.Host
 
         protected void RestartApplication(object sender, EventArgs e)
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            objEventLogInfo.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
+            LogController.Instance.AddLog(log);
             Config.Touch();
             Response.Redirect(Globals.NavigateURL(), true);
         }
@@ -794,31 +795,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     restartSchedule = true;
                 }
             }
-
-            var originalSchedulerMode = (SchedulerMode)Convert.ToInt32(ViewState["SelectedSchedulerMode"]);
-            var newSchedulerMode = (SchedulerMode) Enum.Parse(typeof (SchedulerMode), cboSchedulerMode.SelectedItem.Value);
-            if(originalSchedulerMode != newSchedulerMode)
-            {
-                switch (newSchedulerMode)
-                {
-                    case SchedulerMode.DISABLED:
-                        SchedulingProvider.Instance().Halt("Host Settings");
-                        break;
-                    case SchedulerMode.TIMER_METHOD:
-                        var newThread = new Thread(SchedulingProvider.Instance().Start) { IsBackground = true };
-                        newThread.Start();
-                        break;
-                    default:
-                        SchedulingProvider.Instance().Halt("Host Settings");
-                        break;
-                }
-            }
-
-
-            if (restartSchedule && newSchedulerMode == SchedulerMode.TIMER_METHOD)
-            {
-                SchedulingProvider.Instance().ReStart("Host Settings");
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -882,6 +858,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("WebRequestTimeout", txtWebRequestTimeout.Text, false);
                     // TODO: Refactor: call smtpServerSettings.Update(); This code/functionality has been copied to ..\AdvancedSettings\SmtpServerSettings.aspx) 
                     HostController.Instance.Update("SMTPServer", txtSMTPServer.Text, false);
+                    HostController.Instance.Update("SMTPConnectionLimit", txtConnectionLimit.Text, false);
+                    HostController.Instance.Update("SMTPMaxIdleTime", txtMaxIdleTime.Text, false);
                     HostController.Instance.Update("SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value, false);
                     HostController.Instance.Update("SMTPUsername", txtSMTPUsername.Text, false);
                     HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());
@@ -891,7 +869,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("UseCustomErrorMessages", chkUseCustomErrorMessages.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("EnableRequestFilters", chkEnableRequestFilters.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("ControlPanel", cboControlPanel.SelectedItem.Value, false);
-                    HostController.Instance.Update("SchedulerMode", cboSchedulerMode.SelectedItem.Value, false);
                     HostController.Instance.Update("PerformanceSetting", cboPerformance.SelectedItem.Value, false);
                     HostController.Instance.Update("AuthenticatedCacheability", cboCacheability.SelectedItem.Value, false);
                     HostController.Instance.Update("PageStatePersister", cboPageState.SelectedItem.Value); 
@@ -913,11 +890,11 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("DefaultAdminSkin", editSkinCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultPortalContainer", hostContainerCombo.SelectedValue, false);
                     HostController.Instance.Update("DefaultAdminContainer", editContainerCombo.SelectedValue, false);
-                    HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
-                    HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
-                    HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
-					HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
-                    HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryDebug", chkJQueryDebugVersion.Checked ? "Y" : "N", false);
+                    ////HostController.Instance.Update("jQueryHosted", chkJQueryUseHosted.Checked ? "Y" : "N", false);
+                    ////HostController.Instance.Update("jQueryUrl", txtJQueryHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryMigrateUrl", txtJQueryMigrateHostedUrl.Text.Trim(), false);
+                    ////HostController.Instance.Update("jQueryUIUrl", txtJQueryUIHostedUrl.Text.Trim(), false);
 					HostController.Instance.Update("EnableMsAjaxCDN", chkMsAjaxCdn.Checked ? "Y" : "N", false);
 					HostController.Instance.Update("EnableTelerikCDN", chkTelerikCdn.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("CDNEnabled", chkEnableCDN.Checked ? "Y" : "N", false);
@@ -943,6 +920,7 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("EnableIPChecking", chkIPChecking.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("EnablePasswordHistory", chkEnablePasswordHistory.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("MembershipResetLinkValidity", txtResetLinkValidity.Text, false);
+                    HostController.Instance.Update("AdminMembershipResetLinkValidity", txtAdminResetLinkValidity.Text, false);
                     HostController.Instance.Update("MembershipNumberPasswords", txtNumberPasswords.Text, false);
 
                     FriendlyUrlsExtensionControl.SaveAction(-1, -1, -1);

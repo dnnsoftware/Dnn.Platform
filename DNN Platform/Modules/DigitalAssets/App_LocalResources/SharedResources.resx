@@ -324,4 +324,10 @@
   <data name="MyFolder.Text" xml:space="preserve">
     <value>My Folder</value>
   </data>
+  <data name="ManageFolderTypesToolBarButtonExtensionPoint.AltText" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
+  <data name="ManageFolderTypesToolBarButtonExtensionPoint.Text" xml:space="preserve">
+    <value>Manage Folder Types</value>
+  </data>
 </root>
