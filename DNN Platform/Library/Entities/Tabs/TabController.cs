@@ -928,10 +928,10 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, true);
+                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
 
                 //Make shallow copies of all modules
-                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true);
+                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, true);
 
                 //Convert these shallow copies to deep copies
                 foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))

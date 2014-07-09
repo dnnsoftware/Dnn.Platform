@@ -984,13 +984,25 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference)
         {
+            CopyModules(sourceTab, destinationTab, asReference, false);
+        }
+
+        /// <summary>
+        /// Copies all modules in source page to a new page.
+        /// </summary>
+        /// <param name="sourceTab">The source tab.</param>
+        /// <param name="destinationTab">The destination tab.</param>
+        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="includeAllTabsMobules">if set to <c>true</c> will include modules which shown on all pages, this is used when create localized copy.</param>
+        public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference, bool includeAllTabsMobules)
+        {
             foreach (KeyValuePair<int, ModuleInfo> kvp in GetTabModules(sourceTab.TabID))
             {
                 ModuleInfo sourceModule = kvp.Value;
 
                 // if the module shows on all pages does not need to be copied since it will
                 // be already added to this page
-                if (!sourceModule.AllTabs && !sourceModule.IsDeleted)
+                if ((includeAllTabsMobules || !sourceModule.AllTabs) && !sourceModule.IsDeleted)
                 {
                     if (!asReference)
                     {
@@ -1545,32 +1557,35 @@ namespace DotNetNuke.Entities.Modules
 
                 if (defaultModule != null)
                 {
+                    ModuleInfo localizedModule;
+                    var alreadyLocalized = defaultModule.LocalizedModules.TryGetValue(locale.Code, out localizedModule)
+                                            && localizedModule.ModuleID != defaultModule.ModuleID;
                     var tabModules = GetTabModulesByModule(defaultModule.ModuleID);
                     if (tabModules.Count > 1)
                     {
                         //default language version is a reference copy
 
-                    //Localize first tabModule
-                    int newModuleID = LocalizeModuleInternal(sourceModule);
+                        //Localize first tabModule
+                        var newModuleId = alreadyLocalized ? localizedModule.ModuleID : LocalizeModuleInternal(sourceModule);
 
-                    //Update Reference Copies
-                    foreach (ModuleInfo tm in tabModules)
-                    {
-                        if (tm.IsDefaultLanguage)
+                        //Update Reference Copies
+                        foreach (ModuleInfo tm in tabModules)
                         {
-                            ModuleInfo localModule;
-                            if (tm.LocalizedModules.TryGetValue(locale.Code, out localModule))
+                            if (tm.IsDefaultLanguage)
                             {
-                                localModule.ModuleID = newModuleID;
-                                UpdateModule(localModule);
+                                ModuleInfo localModule;
+                                if (tm.LocalizedModules.TryGetValue(locale.Code, out localModule))
+                                {
+                                    localModule.ModuleID = newModuleId;
+                                    UpdateModule(localModule);
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    LocalizeModuleInternal(sourceModule);
-				}
+                    else if (!alreadyLocalized)
+                    {
+                        LocalizeModuleInternal(sourceModule);
+				    }
                 }
             }
             catch (Exception ex)

@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                 if (locale.Code == PortalDefault)
                 {
-                    TabController.Instance.LocalizeTab(currentTab, locale, false);
+                    TabController.Instance.LocalizeTab(currentTab, locale, true);
                 }
                 else
                 {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             //Restore Script Timeout
             Server.ScriptTimeout = scriptTimeOut;
             //clear portal cache
-            DataCache.ClearPortalCache(PortalId,true);
+            DataCache.ClearPortalCache(PortalId, true);
             //'Redirect to refresh page (and skinobjects)
             Response.Redirect(Globals.NavigateURL(), true);
         }
