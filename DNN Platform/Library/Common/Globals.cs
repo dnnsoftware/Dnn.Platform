@@ -258,6 +258,12 @@ namespace DotNetNuke.Common
         public const string glbDefaultControlPanel = "Admin/ControlPanel/IconBar.ascx";
 
         /// <summary>
+        /// Default setting to determine if selected control panel is loaded to evaluate visibility
+        /// </summary>
+        /// <value>false</value>
+        public const bool glbAllowControlPanelToDetermineVisibility = false;
+
+        /// <summary>
         /// Default pane name
         /// </summary>
         /// <value>ContentPane</value>

@@ -135,12 +135,20 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                string setting = HostController.Instance.GetString("ControlPanel");
-                if (string.IsNullOrEmpty(setting))
-                {
-                    setting = Globals.glbDefaultControlPanel;
-                }
-                return setting;
+                return HostController.Instance.GetString("ControlPanel", Globals.glbDefaultControlPanel);
+            }
+        }
+
+        /// <summary>
+        /// setting to control where the control panel is loaded by the core and allowed to control it's own visibility.
+        /// this is useful when the control panel needs to be visible for all users regardless of edit page/module permissions.
+        /// it's also for backwards compatibility, prior to 7.2 the control panel was always loaded. 
+        /// </summary>
+        public static bool AllowControlPanelToDetermineVisibility
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("AllowControlPanelToDetermineVisibility", Globals.glbAllowControlPanelToDetermineVisibility);
             }
         }
 
