@@ -1,7 +1,30 @@
-﻿using System;
+﻿#region Copyright
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2014
+// by DotNetNuke Corporation
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+#endregion
+
+#region Usings
+using System;
 
 using DotNetNuke.Data;
 using DotNetNuke.Services.Localization;
+
+#endregion
 
 namespace DotNetNuke.Common.Utilities
 {
@@ -15,17 +38,22 @@ namespace DotNetNuke.Common.Utilities
 
         private static TimeSpan _drift = TimeSpan.MinValue;
 
+        /// <summary>
+        /// Gets the database time.
+        /// </summary>
+        /// <returns>Date/time of the database in UTC</returns>
         public static DateTime GetDatabaseTime()
         {
             DateTime result;
             try
             {
-                //Also We check that drift is not the initial value and it is not out of the maximum UTC offset
+                // Also We check that drift is not the initial value and it is not out of the maximum UTC offset
                 if (DateTime.UtcNow >= _lastUpdate + TimeSpan.FromMinutes(5) || !(TimeSpan.FromHours(-26) <= _drift && _drift <= TimeSpan.FromHours(26)) || _drift == TimeSpan.MinValue)
                 {
                     _lastUpdate = DateTime.UtcNow;
                     _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 }
+
                 result = DateTime.UtcNow + _drift;
             }
             catch (ArgumentOutOfRangeException)
@@ -34,13 +62,15 @@ namespace DotNetNuke.Common.Utilities
                 _drift = DateTime.UtcNow - DataProvider.Instance().GetDatabaseTimeUtc();
                 result = DateTime.UtcNow + _drift;
             }
+
             return result;
         }
 
         /// <summary>
         /// Returns a string with the pretty printed amount of time since the specified date.
         /// </summary>
-        /// <param name="date">DateTime in Utc</param>
+        /// <param name="date">DateTime in UTC</param>
+        /// <returns>String representing the required date for display</returns>
         public static string CalculateDateForDisplay(DateTime date)
         {
             var utcTimeDifference = GetDatabaseTime() - date;
