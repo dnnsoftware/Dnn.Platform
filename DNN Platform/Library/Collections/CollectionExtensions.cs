@@ -853,6 +853,11 @@ namespace DotNetNuke.Collections
             {
                 if (typeof(T).IsValueType)
                 {
+                    if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        return (T)value;
+                    }
+
                     // TODO: this should probably return the default value if called from GetOrDefault...
                     throw new InvalidCastException();
                 }
