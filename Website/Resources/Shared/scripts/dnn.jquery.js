@@ -2299,8 +2299,22 @@
     //fix combobox scroll
     $.dnnComboBoxScroll = function (sender) {
         if ($.support.cssFloat) {
-            $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown')).jScrollPane();
+            var container = $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown'));
+            if (container.data('scrollPane')) {
+                container.data('scrollPane').data('jsp').reinitialise();
+            } else {
+                container.data('scrollPane', container.jScrollPane());
+            }
         }
+    };
+
+    $.dnnComboBoxItemRequested = function (sender) {
+        setTimeout(function() {
+            var container = $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown'));
+            if (container.data('scrollPane')) {
+                container.data('scrollPane').data('jsp').reinitialise();
+            }
+        }, 0);
     };
 
     // fix grid issues 

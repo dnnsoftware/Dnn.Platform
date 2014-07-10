@@ -40,6 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
             OnClientLoad = "$.dnnComboBoxLoaded";
             OnClientFocus = "$.dnnComboBoxHack";
             OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            OnClientItemsRequested = "$.dnnComboBoxItemRequested";
             MaxHeight = 240;
             ZIndex = 100010;
             Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
