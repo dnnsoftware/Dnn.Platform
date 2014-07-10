@@ -556,6 +556,42 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPortalSpaceUsed", GetNull(PortalId));
         }
 
+		/// <summary>
+		/// Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.
+		/// </summary>
+		/// <param name="portalId">The portal identifier.</param>
+		/// <param name="portalGroupId">The portal group identifier.</param>
+		/// <param name="portalName">Name of the portal.</param>
+		/// <param name="logoFile">The logo file.</param>
+		/// <param name="footerText">The footer text.</param>
+		/// <param name="expiryDate">The expiry date.</param>
+		/// <param name="userRegistration">The user registration.</param>
+		/// <param name="bannerAdvertising">The banner advertising.</param>
+		/// <param name="currency">The currency.</param>
+		/// <param name="administratorId">The administrator identifier.</param>
+		/// <param name="hostFee">The host fee.</param>
+		/// <param name="hostSpace">The host space.</param>
+		/// <param name="pageQuota">The page quota.</param>
+		/// <param name="userQuota">The user quota.</param>
+		/// <param name="paymentProcessor">The payment processor.</param>
+		/// <param name="processorUserId">The processor user identifier.</param>
+		/// <param name="processorPassword">The processor password.</param>
+		/// <param name="description">The description.</param>
+		/// <param name="keyWords">The key words.</param>
+		/// <param name="backgroundFile">The background file.</param>
+		/// <param name="siteLogHistory">The site log history.</param>
+		/// <param name="splashTabId">The splash tab identifier.</param>
+		/// <param name="homeTabId">The home tab identifier.</param>
+		/// <param name="loginTabId">The login tab identifier.</param>
+		/// <param name="registerTabId">The register tab identifier.</param>
+		/// <param name="userTabId">The user tab identifier.</param>
+		/// <param name="searchTabId">The search tab identifier.</param>
+		/// <param name="custom404TabId">The custom404 tab identifier.</param>
+		/// <param name="custom500TabId">The custom500 tab identifier.</param>
+		/// <param name="defaultLanguage">The default language.</param>
+		/// <param name="homeDirectory">The home directory.</param>
+		/// <param name="lastModifiedByUserID">The last modified by user identifier.</param>
+		/// <param name="cultureCode">The culture code.</param>
         public virtual void UpdatePortalInfo(int portalId, int portalGroupId, string portalName, string logoFile,
                                              string footerText, DateTime expiryDate, int userRegistration,
                                              int bannerAdvertising, string currency,
