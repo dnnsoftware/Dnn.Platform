@@ -517,7 +517,8 @@
                 } else {
                     this.bannerIndex = 1;
                 }
-                image.src = "../images/branding/DNN_logo.png";
+                if (!/\/images\/branding\/DNN_logo.png$/.test(image.src))
+                    image.src = "../images/branding/DNN_logo.png";
                 $("#bannerLink").attr("href", "");
                 $("#bannerLink").attr("target", "");
                 $("#bannerLink").click(function(){ return false;});
