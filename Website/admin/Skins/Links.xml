@@ -35,4 +35,10 @@
 		<Help>Sets if the links will rendered with Level "Same", if not links are returned</Help>
 		<Value>True, False</Value>
 	</Setting>
+	<Setting>
+		<Name>IncludeActiveTab</Name>
+		<Type>Boolean</Type>
+		<Help>Sets whether link to active tab will be displayed, defaults to True</Help>
+		<Value>True, False</Value>
+	</Setting>
 </Settings>
