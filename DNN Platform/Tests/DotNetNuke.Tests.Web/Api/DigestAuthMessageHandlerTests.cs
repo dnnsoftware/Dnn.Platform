@@ -2,7 +2,10 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.Web.Api.Internal.Auth;
+using Moq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.Api
@@ -10,6 +13,13 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DigestAuthMessageHandlerTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            var mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
+            mockMembership.Setup(m => m.PasswordRetrievalEnabled).Returns(true);
+        }
+
         [Test]
         public void SetsWwwAuthenticateHeaderOn401()
         {
