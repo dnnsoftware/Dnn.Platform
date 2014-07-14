@@ -60,9 +60,6 @@
     <Reference Include="DotNetNuke.Log4Net">
       <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -76,6 +73,9 @@
     </Reference>
     <Reference Include="PetaPoco">
       <HintPath>..\..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpZipLib">
+      <HintPath>..\..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

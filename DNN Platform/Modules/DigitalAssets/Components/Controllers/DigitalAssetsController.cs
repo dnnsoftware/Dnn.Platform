@@ -662,7 +662,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
             catch (FolderAlreadyExistsException)
             {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderAlreadyExists.Error"));
+                throw new DotNetNukeException(string.Format(LocalizationHelper.GetString("FolderAlreadyExists.Error"), filterFolderName));
             }
         }
 

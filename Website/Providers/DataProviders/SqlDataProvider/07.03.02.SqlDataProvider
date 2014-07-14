@@ -758,6 +758,165 @@ AS
     SELECT @ServerID
 GO
 
+/***** Fix bug DNN-3245: update the setting name to match AUM format. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingName = 'AUM_' + Upper(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingName = 'AUM_' + UPPER(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
+/***** Fix bug DNN-3042: add sp *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]
+	@ConversationID INT,
+    @UserID INT
+AS
+    --Remove the User from recipients list
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		WHERE [UserID] = @UserID
+		AND MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = @ConversationID)
+    
+    --Remove Messages which has no recipient
+    DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages]
+        FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m
+        LEFT JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr on MR.MessageID = m.MessageID
+        WHERE ConversationID = @ConversationID AND mr.MessageID IS NULL
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]
+	@UserID INT,
+	@PortalID INT,
+	@AfterMessageId INT,
+	@NumberOfRecords INT,
+	@SortField NVARCHAR(25) = 'CreatedOnDate',
+	@SortAscending BIT = 0
+AS
+BEGIN
+	;WITH RollUpMessageIDs AS
+	(
+		SELECT MAX(m.MessageID) AS TopMessageID
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m ON mr.MessageID = m.MessageID AND mr.UserID = m.SenderUserID --make sure sender haven't delete the message.
+		WHERE SenderUserID = @UserID AND NotificationTypeID IS NULL AND PortalID = @PortalID
+		GROUP BY ConversationID
+	), SentBox AS
+	(
+		SELECT DISTINCT m.[MessageID], [ConversationID], [Subject], CONVERT(NVARCHAR(50), [Body]) AS Body,
+				[To], [From], [ReplyAllAllowed], [SenderUserID],
+				m.[CreatedByUserID], m.[CreatedOnDate],
+				m.[LastModifiedByUserID], m.[LastModifiedOnDate],
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageAttachments WHERE MessageID = m.MessageID) AS AttachmentCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID AND [READ] = 0) AS NewThreadCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID) AS ThreadCount,
+				ROW_NUMBER() OVER(ORDER BY
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 1 THEN m.[CreatedOnDate] END ASC,
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 0 THEN m.[CreatedOnDate] END DESC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 1 THEN [From] END ASC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 0 THEN [From] END DESC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 1 THEN [Subject] END ASC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 0 THEN [Subject] END DESC
+					) AS RowNumber
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages AS m
+		WHERE m.MessageID IN (SELECT TopMessageID FROM RollUpMessageIDs)
+	)
+	SELECT * FROM SentBox
+	WHERE (@AfterMessageID > 0 AND RowNumber BETWEEN (SELECT RowNumber + 1 FROM SentBox WHERE [MessageID] = @AfterMessageID) AND (SELECT RowNumber + @NumberOfRecords FROM SentBox WHERE [MessageID] = @AfterMessageID)) OR
+	(@AfterMessageID = -1 AND RowNumber BETWEEN 1 AND @NumberOfRecords)
+	ORDER BY RowNumber ASC
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]
+	@UserID INT,
+	@PortalID INT,
+	@AfterMessageID INT,
+	@NumberOfRecords INT,
+	@SortField NVARCHAR(25) = 'CreatedOnDate',
+	@SortAscending BIT = 0
+AS
+BEGIN
+	;WITH RollUpMessageIDs AS
+	(
+		SELECT MAX(m.MessageID) AS TopMessageID
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m ON mr.MessageID = m.MessageID
+		WHERE NotificationTypeID IS NULL AND PortalID = @PortalID AND MR.UserID = @UserID AND MR.Archived = 1
+		GROUP BY ConversationID
+	), ArchiveBox AS
+	(
+		SELECT DISTINCT m.[MessageID], [ConversationID], [Subject], convert(nvarchar(50), [Body]) AS Body,
+				[To], [From], [ReplyAllAllowed], [SenderUserID],
+				m.[CreatedByUserID], m.[CreatedOnDate],
+				m.[LastModifiedByUserID], m.[LastModifiedOnDate],
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageAttachments] WHERE MessageID = m.MessageID) AS AttachmentCount,
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = m.ConversationID) AND UserID = @UserID AND [READ] = 0) AS NewThreadCount,
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = m.ConversationID) AND UserID = @UserID) AS ThreadCount,
+				ROW_NUMBER() OVER(ORDER BY
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 1 THEN m.[CreatedOnDate] END ASC,
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 0 THEN m.[CreatedOnDate] END DESC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 1 THEN [From] END ASC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 0 THEN [From] END DESC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 1 THEN [Subject] END ASC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 0 THEN [Subject] END DESC
+					) AS RowNumber
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] AS m
+		WHERE m.MessageID IN (SELECT TopMessageID FROM RollUpMessageIDs)
+	)
+	SELECT * FROM ArchiveBox
+	WHERE (@AfterMessageID > 0 AND RowNumber BETWEEN (SELECT RowNumber + 1 FROM ArchiveBox WHERE [MessageID] = @AfterMessageID) AND (SELECT RowNumber + @NumberOfRecords FROM ArchiveBox WHERE [MessageID] = @AfterMessageID)) OR
+	(@AfterMessageID = -1 AND RowNumber BETWEEN 1 AND @NumberOfRecords)
+	ORDER BY RowNumber ASC
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]
+	@UserID INT,
+	@PortalID INT
+AS
+BEGIN
+	SELECT COUNT(DISTINCT M.ConversationID) AS TotalRecords
+	    FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] M
+	    JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR ON M.MessageID = MR.MessageID
+	    WHERE Archived = 1
+	        AND NotificationTypeID IS NULL AND PortalID = @PortalID AND UserID = @UserID
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]
+	@UserID INT,
+	@PortalID INT
+AS
+BEGIN
+	SELECT COUNT(DISTINCT ConversationID) AS TotalRecords
+	    FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m
+        INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr ON mr.MessageID = m.MessageID AND mr.UserID = m.SenderUserID --make sure sender haven't delete the message.
+	    WHERE SenderUserID = @UserID
+	        AND NotificationTypeID IS NULL AND PortalID = @PortalID
+END
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddAdminPages]') AND type in (N'P', N'PC'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}AddAdminPages]
 GO

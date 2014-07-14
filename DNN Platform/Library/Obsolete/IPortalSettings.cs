@@ -1,4 +1,5 @@
 ﻿#region Copyright
+// 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
@@ -18,34 +19,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-#region Usings
 using System;
-using System.Collections.Generic;
-#endregion
+using System.ComponentModel;
 
-namespace DotNetNuke.Common.Utilities
+namespace DotNetNuke.Entities.Portals.Internal
 {
-    /// <summary>
-    /// Extensions for enumeration of KeyValue Paire
-    /// </summary>
-    public static class EnumExtensions
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalController.Instance.GetCurrentPortalSettings to get a mockable PortalSettings")]
+    public interface IPortalSettings
     {
-        /// <summary>
-        /// To the key value pairs.
-        /// </summary>
-        /// <param name="enumType">Type of the enum defined by GetType.</param>
-        /// <returns>A list of Key Value pairs</returns>
-        public static List<KeyValuePair<int, string>> ToKeyValuePairs(this Enum enumType)
-        {
-            var pairs = new List<KeyValuePair<int, string>>();
-            
-            var names = Enum.GetNames(enumType.GetType());
-            var values = Enum.GetValues(enumType.GetType());
-            for (var i = 0; i < values.Length; i++)
-            {
-                pairs.Add(new KeyValuePair<int, string>((int) values.GetValue(i), names[i]));
-            }
-            return pairs;
-        }
+        string AdministratorRoleName { get; }
     }
 }

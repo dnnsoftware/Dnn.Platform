@@ -31,6 +31,7 @@ using System.Web;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -304,6 +305,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             if (Host.CdnEnabled)
             {
+                //load custom CDN path setting
+                var customCdn = HostController.Instance.GetString("CustomCDN_" + js.LibraryName);
+                if (!string.IsNullOrEmpty(customCdn))
+                {
+                    return customCdn;
+                }
+
                 //cdn enabled but jsl does not have one defined
                 if (!String.IsNullOrEmpty(js.CDNPath))
                 {

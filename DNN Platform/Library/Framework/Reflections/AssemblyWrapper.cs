@@ -22,6 +22,8 @@
 using System;
 using System.Reflection;
 
+using DotNetNuke.Framework.Internal.Reflection;
+
 namespace DotNetNuke.Framework.Reflections
 {
     public class AssemblyWrapper : IAssembly

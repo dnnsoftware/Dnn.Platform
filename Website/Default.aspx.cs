@@ -265,7 +265,10 @@ namespace DotNetNuke.Framework
                                          "<!--*********************************************-->",
                                          Environment.NewLine);
             }
-            Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
+
+            //Only insert the header control if a comment is needed
+            if(!String.IsNullOrWhiteSpace(Comment))
+                Page.Header.Controls.AddAt(0, new LiteralControl(Comment));
 
             if (PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
             {
@@ -273,9 +276,9 @@ namespace DotNetNuke.Framework
             }
             
             //set page title
-            string strTitle = PortalSettings.PortalName;
             if (UrlUtils.InPopUp())
             {
+                var strTitle = new StringBuilder(PortalSettings.PortalName);
                 var slaveModule = UIUtilities.GetSlaveModule(PortalSettings.ActiveTab.TabID);
 
                 //Skip is popup is just a tab (no slave module)
@@ -286,29 +289,35 @@ namespace DotNetNuke.Framework
                                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
                     var title = Localization.LocalizeControlTitle(control);
                     
-                    strTitle += string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName);
-                    strTitle += string.Concat(" > ", title);
+                    strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
+                    strTitle.Append(string.Concat(" > ", title));
                 }
                 else
                 {
-                    strTitle += string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName);
+                    strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
                 }
+
+                //Set to page
+                Title = strTitle.ToString();
             }
             else
             {
-
-                foreach (TabInfo tab in PortalSettings.ActiveTab.BreadCrumbs)
-                {
-                    strTitle += string.Concat(" > ", tab.TabName);
-                }
-
-                //tab title override
+                //If tab is named, use that title, otherwise build it out via breadcrumbs
                 if (!string.IsNullOrEmpty(PortalSettings.ActiveTab.Title))
                 {
-                    strTitle = PortalSettings.ActiveTab.Title;
+                    Title = PortalSettings.ActiveTab.Title;
+                }
+                else
+                {
+                    //Elected for SB over true concatenation here due to potential for long nesting depth
+                    var strTitle = new StringBuilder(PortalSettings.PortalName);
+                    foreach (TabInfo tab in PortalSettings.ActiveTab.BreadCrumbs)
+                    {
+                        strTitle.Append(string.Concat(" > ", tab.TabName));
+                    }
+                    Title = strTitle.ToString();
                 }
             }
-            Title = strTitle;
 
             //set the background image if there is one selected
             if (!UrlUtils.InPopUp() && FindControl("Body") != null)
@@ -377,15 +386,23 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots
-	        var allowIndex = true;
-			if ((PortalSettings.ActiveTab.TabSettings.ContainsKey("AllowIndex") && bool.TryParse(PortalSettings.ActiveTab.TabSettings["AllowIndex"].ToString(), out allowIndex) && !allowIndex)
-				|| (Request.QueryString["ctl"] != null && (Request.QueryString["ctl"] == "Login" || Request.QueryString["ctl"] == "Register")))
+            if (!UrlUtils.InPopUp())
             {
-                MetaRobots.Content = "NOINDEX, NOFOLLOW";
-            }
-            else
-            {
-                MetaRobots.Content = "INDEX, FOLLOW";
+                MetaRobots.Visible = true;
+                var allowIndex = true;
+                if ((PortalSettings.ActiveTab.TabSettings.ContainsKey("AllowIndex") &&
+                     bool.TryParse(PortalSettings.ActiveTab.TabSettings["AllowIndex"].ToString(), out allowIndex) &&
+                     !allowIndex)
+                    ||
+                    (Request.QueryString["ctl"] != null &&
+                     (Request.QueryString["ctl"] == "Login" || Request.QueryString["ctl"] == "Register")))
+                {
+                    MetaRobots.Content = "NOINDEX, NOFOLLOW";
+                }
+                else
+                {
+                    MetaRobots.Content = "INDEX, FOLLOW";
+                }
             }
 
             //NonProduction Label Injection
@@ -707,13 +724,13 @@ namespace DotNetNuke.Framework
             }
 
             //check if running with known account defaults
-            var messageText = "";
             if (Request.IsAuthenticated && string.IsNullOrEmpty(Request.QueryString["runningDefault"]) == false)
             {
                 var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
                 //only show message to default users
                 if ((userInfo.Username.ToLower() == "admin") || (userInfo.Username.ToLower() == "host"))
                 {
+                    var messageText = "";
                     messageText = RenderDefaultsWarning();
                     var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
                     UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
@@ -730,10 +747,7 @@ namespace DotNetNuke.Framework
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            if (PortalSettings.IncludePortalCss)
-            {
-                ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
-            }
+            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
 
             //add Favicon
             ManageFavicon();

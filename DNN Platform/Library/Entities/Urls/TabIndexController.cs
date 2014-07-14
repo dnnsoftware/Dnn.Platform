@@ -913,7 +913,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static OrderedDictionary BuildPortalAliasesRegexDictionary()
         {
-            IDictionary<string, PortalAliasInfo> aliases = PortalAliasController.Instance.GetPortalAliases();
+           var aliases = PortalAliasController.Instance.GetPortalAliases();
             //create a new OrderedDictionary.  We use this because we
             //want to key by the correct regex pattern and return the
             //portalAlias that matches, and we want to preserve the
@@ -937,7 +937,7 @@ namespace DotNetNuke.Entities.Urls
                     if (plainAlias.Length > 4)
                     {
                         string noWWWVersion = plainAlias.Substring(4);
-                        if (!aliases.ContainsKey(noWWWVersion))
+                        if (!aliases.Contains(noWWWVersion))
                         {
                             //there is no no-www version of the alias
                             aliasesToAdd.Add(Regex.Escape(noWWWVersion));
@@ -947,7 +947,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     string wwwVersion = "www." + plainAlias;
-                    if (!aliases.ContainsKey(wwwVersion))
+                    if (!aliases.Contains(wwwVersion))
                     {
                         aliasesToAdd.Add(Regex.Escape(wwwVersion));
                     }

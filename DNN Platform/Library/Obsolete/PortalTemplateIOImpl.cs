@@ -1,4 +1,5 @@
 ﻿#region Copyright
+
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -17,54 +18,71 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-
-using DotNetNuke.Framework;
+using System.IO;
+using System.Linq;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead")]
-    public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
+    [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO")]
+    public class PortalTemplateIOImpl : IPortalTemplateIO
     {
-        protected override Func<IPortalAliasController> GetFactory()
+        #region IPortalTemplateIO Members
+
+        public IEnumerable<string> EnumerateTemplates()
         {
-            return () => new TestablePortalAliasController();
+            string path = Globals.HostMapPath;
+            if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path, "*.template").Where(x => Path.GetFileNameWithoutExtension(x) != "admin");
+            }
+
+            return new string[0];
         }
 
-        public int AddPortalAlias(PortalAliasInfo portalAlias)
+        public IEnumerable<string> EnumerateLanguageFiles()
         {
-            return PortalAliasController.Instance.AddPortalAlias(portalAlias);
+            string path = Globals.HostMapPath;
+            if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path, "*.template.??-??.resx");
+            }
+
+            return new string[0];
         }
 
-        public void DeletePortalAlias(PortalAliasInfo portalAlias)
+        public string GetResourceFilePath(string templateFilePath)
         {
-            PortalAliasController.Instance.DeletePortalAlias(portalAlias);
+            return CheckFilePath(templateFilePath + ".resources");
         }
 
-        public PortalAliasInfo GetPortalAlias(string alias)
+        public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
-            return PortalAliasController.Instance.GetPortalAlias(alias);
+            return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
         }
 
-        public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
+        public TextReader OpenTextReader(string filePath)
         {
-            return PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            return new StreamReader(File.Open(filePath, FileMode.Open));
         }
 
-        public IDictionary<string, PortalAliasInfo> GetPortalAliases()
+        private static string CheckFilePath(string path)
         {
-            var aliasController = new PortalAliasController();
-            return aliasController.GetPortalAliasesInternal();
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            return "";
         }
 
-        public void UpdatePortalAlias(PortalAliasInfo portalAlias)
-        {
-            PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
-        }
+        #endregion
     }
 }

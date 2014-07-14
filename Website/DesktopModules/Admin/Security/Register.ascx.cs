@@ -277,6 +277,11 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void AddField(string dataField, string dataMember, bool required, string regexValidator, TextBoxMode textMode)
         {
+            if (userForm.Items.Any(i => i.ID == dataField))
+            {
+                return;
+            }
+
             var formItem = new DnnFormTextBoxItem
                                {
                                    ID = dataField,
@@ -340,6 +345,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void AddProperty(ProfilePropertyDefinition property)
         {
+            if (userForm.Items.Any(i => i.ID == property.PropertyName))
+            {
+                return;
+            }
             var controller = new ListController();
             ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)

@@ -750,7 +750,6 @@ namespace DesktopModules.Admin.Portals
             if (portal != null)
             {
                 uploadDirectory = portal.HomeDirectoryMapPath;
-                chkIncludePortalCss.Checked = PortalController.GetPortalSettingAsBoolean("IncludePortalCss", portal.PortalID, false);
             }
 
             //read CSS file
@@ -915,6 +914,14 @@ namespace DesktopModules.Admin.Portals
             RedirectAfterLogin.UndefinedItem = undefinedItem;
             RedirectAfterRegistration.UndefinedItem = undefinedItem;
             RedirectAfterLogout.UndefinedItem = undefinedItem;
+
+            RedirectAfterRegistration.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterRegistration.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogin.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterLogin.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogout.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -1398,7 +1405,6 @@ namespace DesktopModules.Admin.Portals
 
 					PortalController.UpdatePortalSetting(_portalId, "HideLoginControl", chkHideLoginControl.Checked.ToString(), false);
 					PortalController.UpdatePortalSetting(_portalId, "EnableRegisterNotification", chkEnableRegisterNotification.Checked.ToString(), false);
-                    PortalController.UpdatePortalSetting(_portalId, "IncludePortalCss", chkIncludePortalCss.Checked.ToString(), false);
 
                     PortalController.UpdatePortalSetting(_portalId, "SMTPmode", rblSMTPmode.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPServer", txtSMTPServer.Text);

@@ -513,14 +513,6 @@ namespace DotNetNuke.Entities.Portals
 
         public string HomeSystemDirectoryMapPath { get; private set; }
 
-        public bool IncludePortalCss
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("IncludePortalCss", PortalId, false);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the Inline Editor is enabled
@@ -1464,7 +1456,8 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in PortalAliasController.Instance.GetPortalAliases())
+            var aliasController = new PortalAliasController();
+            foreach (var kvp in aliasController.GetPortalAliasesInternal())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }

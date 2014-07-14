@@ -23,6 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using DotNetNuke.Framework.Internal.Reflection;
+
 namespace DotNetNuke.Framework.Reflections
 {
     public class TypeLocator : ITypeLocator, IAssemblyLocator

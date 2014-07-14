@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,6 +22,8 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+            Roles = new List<int>();
 
             SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
             Services.GetTreeMethod = "ItemListService/GetPages";
@@ -42,6 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
             Services.Parameters.Add("includeActive", IncludeActiveTab.ToString().ToLowerInvariant());
             Services.Parameters.Add("includeHostPages", (IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
+            Services.Parameters.Add("roles", string.Join(";", Roles.ToArray()));
 
             base.OnPreRender(e);
 
@@ -125,6 +130,11 @@ namespace DotNetNuke.Web.UI.WebControls
                 SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
+
+        /// <summary>
+        /// Specific to only show tabs which have view permission on these roles.
+        /// </summary>
+        public IList<int> Roles { get; set; } 
 
     }
 }

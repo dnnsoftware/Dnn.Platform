@@ -502,6 +502,60 @@
             });
         };
 
+        self.unarchive = function (message) {
+            $.ajax({
+                type: "POST",
+                url: baseServicepath + 'MarkUnArchived',
+                beforeSend: serviceFramework.setModuleHeaders,
+                data: { conversationId: message.ConversationId }
+            }).done(function (data) {
+                if (data.Result === "success") {
+                    if (message.ThreadCount != undefined) {
+                        self.TotalNewThreads(self.TotalNewThreads() - message.NewThreadCount());
+                    }
+
+                    self.messages.remove(message);
+                    self.TotalConversations(self.TotalConversations() - 1);
+                } else {
+                    displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                }
+            }).fail(function (xhr, status) {
+                displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+            });
+        };
+
+        self.delete = function (message) {
+            var opts = {
+                callbackTrue: function() {
+                    $.ajax({
+                        type: "POST",
+                        url: baseServicepath + 'DeleteUserFromConversation',
+                        beforeSend: serviceFramework.setModuleHeaders,
+                        data: { conversationId: message.ConversationId }
+                    }).done(function(data) {
+                        if (data.Result === "success") {
+                            if (message.ThreadCount != undefined) {
+                                self.TotalNewThreads(self.TotalNewThreads() - message.NewThreadCount());
+                            }
+
+                            self.messages.remove(message);
+                            self.TotalConversations(self.TotalConversations() - 1);
+                        } else {
+                            displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                        }
+                    }).fail(function(xhr, status) {
+                        displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+                    });
+                },
+                text: settings.text,
+                yesText: settings.yesText,
+                noText: settings.noText,
+                title: settings.title
+            };
+
+            $.dnnConfirm(opts);
+        };
+
         self.moveSelectedToArchive = function () {
             $.each(self.messages(), function () {
                 if (this.messageSelected()) self.moveToArchive(this);
@@ -898,7 +952,6 @@
                 }
             });
         };
-	    		
     }
 
     this.init = function (element) {
@@ -926,9 +979,13 @@
             viewModel.myinboxHandler();
         }
 
-	    setInterval(function() {
-	    	viewModel.loadBox(inboxpath);
-	    }, refreshInterval);
+        setInterval(function () {
+            var state = History.getState(); // Note: We are using History.getState() instead of event.state
+
+            if (state.data == null || !state.data.view || (state.data.view == "messages" && state.data.action == "inbox")) {
+                viewModel.loadBox(inboxpath);
+            }
+        }, refreshInterval);
 
         viewModel.getTotals();
     };

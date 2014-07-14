@@ -928,10 +928,10 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, true);
+                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
 
                 //Make shallow copies of all modules
-                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true);
+                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, true);
 
                 //Convert these shallow copies to deep copies
                 foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))
@@ -2673,14 +2673,18 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns></returns>
         public static bool IsDuplicateWithPortalAlias(int portalId, string tabPath)
         {
-            IEnumerable<PortalAliasInfo> aliasLookup = PortalAliasController.Instance.GetPortalAliases().Values;
+            var aliasLookup = PortalAliasController.Instance.GetPortalAliases();
 
             foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId))
             {
                 string checkAlias = string.Format("{0}{1}", alias.HTTPAlias, tabPath.Replace("//", "/"));
-                if (aliasLookup.Any(a => a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase)))
+
+                foreach (PortalAliasInfo a in aliasLookup.Values)
                 {
-                    return true;
+                    if (a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return true;
+                    }
                 }
             }
 

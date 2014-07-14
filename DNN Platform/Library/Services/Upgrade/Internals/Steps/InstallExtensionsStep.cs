@@ -45,10 +45,17 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
+            var packages = Upgrade.GetInstallPackages();
+            if (packages.Count == 0)
+            {
+                Percentage = 100;
+                Status = StepStatus.Done;
+                return;
+            }
+
             Percentage = 0;
             Status = StepStatus.Running;
 
-            var packages = Upgrade.GetInstallPackages();
             var percentForEachStep = 100 / packages.Count;
             var counter = 0;
             foreach (var package in packages)
