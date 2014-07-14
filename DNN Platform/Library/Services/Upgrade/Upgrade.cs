@@ -50,6 +50,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
@@ -3470,6 +3471,10 @@ namespace DotNetNuke.Services.Upgrade
             moduleInfo.Content = moduleInfo.ModuleTitle;
 
             DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.GetCurrentUserInfo().UserID);
+
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
+            eventLogController.AddLog(moduleInfo, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
         }
 
         ///-----------------------------------------------------------------------------
