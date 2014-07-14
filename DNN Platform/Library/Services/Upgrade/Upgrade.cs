@@ -3434,19 +3434,43 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            DataProvider.Instance().AddAdminPages(
-                tabName,
-                description,
-                tabIconFile,
-                tabIconFileLarge,
-                isVisible,
-                moduleDefId,
-                moduleTitle,
-                moduleIconFile,
-                inheritPermissions,
-                Localization.Localization.SystemLocale,
-                UserController.GetCurrentUserInfo().UserID);
-            }
+            var tab = new TabInfo
+                      {
+                          TabID = Null.NullInteger,
+                          TabName = tabName,
+                          Title = string.Empty,
+                          Description = description,
+                          KeyWords = string.Empty,
+                          IsVisible = isVisible,
+                          DisableLink = false,
+                          IconFile = tabIconFile,
+                          IconFileLarge = tabIconFileLarge,
+                          IsDeleted = false,
+                          Indexed = false,
+                      };
+
+            tab.Content = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+
+            var moduleInfo = new ModuleInfo
+            {
+                ModuleID = Null.NullInteger,
+                ModuleOrder = -1,
+                ModuleTitle = moduleTitle,
+                PaneName = Globals.glbDefaultPane,
+                ModuleDefID = moduleDefId,
+                CacheTime = 0,
+                IconFile = moduleIconFile,
+                AllTabs = false,
+                Visibility = VisibilityState.None,
+                InheritViewPermissions = inheritPermissions,
+                DisplayTitle = true,
+                Indexed = false,
+            };
+
+            moduleInfo.Content = moduleInfo.ModuleTitle;
+
+            DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.GetCurrentUserInfo().UserID);
+        }
 
         ///-----------------------------------------------------------------------------
         ///<summary>

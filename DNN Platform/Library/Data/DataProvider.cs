@@ -40,6 +40,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data.PetaPoco;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
@@ -935,21 +936,66 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateTabVersion", tabId, versionGuid);
         }
 
-        public virtual void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, string cultureCode, int userId)
+        public virtual void AddAdminPages(TabInfo tab, ModuleInfo module, int createdByUserId)
         {
             ExecuteNonQuery(
                 "AddAdminPages",
-                tabName,
-                description,
-                tabIconFile,
-                tabIconFileLarge,
-                isVisible,
-                moduleDefId,
-                moduleTitle,
-                moduleIconFile,
-                inheritPermissions,
-                cultureCode,
-                userId);
+                tab.TabName,
+                tab.Description,
+                tab.IconFile,
+                tab.IconFileLarge,
+                tab.IsVisible,
+                tab.DisableLink,
+                tab.Title,
+                tab.KeyWords,
+                tab.Url,
+                GetNull(tab.SkinSrc),
+                GetNull(tab.ContainerSrc),
+                GetNull(tab.StartDate),
+                GetNull(tab.EndDate),
+                GetNull(tab.RefreshInterval),
+                GetNull(tab.PageHeadText),
+                tab.IsSecure,
+                tab.PermanentRedirect,
+                tab.SiteMapPriority,
+                GetNull(tab.CultureCode),
+                tab.Content,
+                tab.ContentKey,
+                tab.Indexed,
+                GetNull(tab.StateID),
+                module.ModuleDefID,
+                module.AllTabs,
+                GetNull(module.StartDate),
+                GetNull(module.EndDate),
+                module.InheritViewPermissions,
+                module.IsShareable,
+                module.IsShareableViewOnly,
+                module.IsDeleted,
+                module.Content,
+                module.ContentKey,
+                module.Indexed,
+                GetNull(module.StateID),
+                module.ModuleTitle,
+                GetNull(module.Header),
+                GetNull(module.Footer),
+                module.PaneName,
+                module.CacheTime,
+                GetNull(module.CacheMethod),
+                GetNull(module.Alignment),
+                GetNull(module.Color),
+                GetNull(module.Border),
+                GetNull(module.IconFile),
+                (int)module.Visibility,
+                GetNull(module.ContainerSrc),
+                module.DisplayTitle,
+                module.DisplayPrint,
+                module.DisplaySyndicate,
+                module.IsWebSlice,
+                module.WebSliceTitle,
+                GetNull(module.WebSliceExpiryDate),
+                module.WebSliceTTL,
+                module.CultureCode,
+                createdByUserId);
         }
 
 
