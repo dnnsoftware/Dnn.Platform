@@ -3475,6 +3475,18 @@ namespace DotNetNuke.Services.Upgrade
             var eventLogController = new EventLogController();
             eventLogController.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
             eventLogController.AddLog(moduleInfo, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
+
+            foreach (PortalInfo portal in new PortalController().GetPortals())
+            {
+                DataCache.ClearTabsCache(portal.PortalID);
+                DataCache.ClearPortalCache(portal.PortalID, false);
+
+                var newTab = TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID).Single(t => t.TabName.Equals(tabName));
+                DataCache.ClearModuleCache(newTab.TabID);
+        }
+
+            DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+            CacheController.FlushPageIndexFromCache();
         }
 
         ///-----------------------------------------------------------------------------
