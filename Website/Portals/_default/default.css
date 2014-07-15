@@ -2824,19 +2824,17 @@ span.dnnInputFileWrapper > input[type="file"] { /* force file upload style here,
     top: 0;
     right: 0;
     margin: 0;
-    border: solid transparent;
     opacity: 0;
     filter: alpha(opacity=0);
     direction: ltr;
     cursor: pointer;
-    height: 30px;
+    height: 100%;
 	font-size: 200px;
 }
 
 span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
-    position: relative !important;
     overflow: hidden !important;
-    margin: 0 4px 0 0;
+    margin: 39px 4px 0 0;
     width: auto !important;
     display: block !important;
     float: left !important;
