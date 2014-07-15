@@ -1083,6 +1083,44 @@ namespace DotNetNuke.Entities.Urls
                 int tabId = TabController.GetTabByTabPath(settings.PortalId, "//" + url, settings.CultureCode);
                 isUnique = (tabId == -1 || tabId == validateUrlForTabId);
             }
+
+            if (isUnique) //check whether have a tab which use the url.
+            {
+                var friendlyUrlSettings = new FriendlyUrlSettings(settings.PortalId);
+                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId);
+                foreach (TabInfo tab in tabs.Values)
+                {
+                    if (tab.TabID == validateUrlForTabId)
+                    {
+                        continue;
+                    }
+
+                    if (tab.TabUrls.Count == 0)
+                    {
+                        var baseUrl = Globals.AddHTTP(settings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
+                        var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                                                                                    baseUrl,
+                                                                                    Globals.glbDefaultPage,
+                                                                                    settings.PortalAlias.HTTPAlias,
+                                                                                    false,
+                                                                                    friendlyUrlSettings,
+                                                                                    Guid.Empty);
+
+                        var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), "");
+
+                        if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            isUnique = false;
+                            break;
+                        }
+                    }
+                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        isUnique = false;
+                        break;
+                    }
+                }
+            }
             return isUnique;
         }
 
