@@ -2615,8 +2615,13 @@
                 
                 instance._panel.$element.on("onfileuploadcomplete", function (event, data) {
                     if (typeof data == "string") {
+						// for modern browsers
                         data = JSON.parse(data);
-                    }
+                    }else{
+						// for IE8-9						
+						var b = data[0];
+						data = JSON.parse(b.body.innerText);
+					}
                     if (data && data.fileId) {
                         var folderPicker = instance._panel._folderPicker;
                         dnn[settings.foldersComboId].selectedItem(folderPicker.selectedItem());
