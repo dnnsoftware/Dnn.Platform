@@ -1709,6 +1709,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 ShowWarningMessage(Localization.GetString("UrlPathCleaned.Error", LocalResourceFile));
                 urlTextBox.Text = '/' + urlPath;
+                urlTextBox.CssClass += " um-page-url-modified";
                 return false;
             }
 
@@ -1723,13 +1724,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 ShowWarningMessage(Localization.GetString("UrlPathNotUnique.Error", LocalResourceFile));
                 urlTextBox.Text = '/' + urlPath;
+                urlTextBox.CssClass += " um-page-url-modified";
                 return false;
             }
 
             //update the text field with update value, because space char may replaced but the modified flag will not change to true.
             //in this case we should update the value back so that it can create tab with new path.
             urlTextBox.Text = '/' + urlPath;
-
+            urlTextBox.CssClass = urlTextBox.CssClass.Replace(" um-page-url-modified", string.Empty);
             return true;
         }
 

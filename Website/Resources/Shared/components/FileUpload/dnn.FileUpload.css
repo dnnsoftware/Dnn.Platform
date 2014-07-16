@@ -113,6 +113,7 @@
     height: 65px;
     position: relative;
     transition: box-shadow 200ms ease-in-out 0s;
+    overflow: hidden;
 }
 
 .fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area.dragover {
@@ -120,9 +121,7 @@
 }
 
 .fu-container .fu-dialog-content-fileupload-local .fu-dialog-drag-and-drop-area-message {
-    bottom: 8px;
     font-size: 11px;
-    position: absolute;
     text-align: center;
     width: 100%;
 }
