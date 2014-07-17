@@ -512,6 +512,15 @@ namespace DotNetNuke.Framework
                         image.ToolTip = value;
                     }
                 }
+                if (control is TextBox)
+                {
+                    var textBox = (TextBox)control;
+                    if (!String.IsNullOrEmpty(value))
+                    {
+                        textBox.ToolTip = value;
+                    }
+                } 
+
             }
 
             //Translate listcontrol items here 
