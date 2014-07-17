@@ -1,4 +1,33 @@
 ﻿(function(window, $) {
+	function parseUri (str) {
+		var	o   = parseUri.options,
+			m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+			uri = {},
+			i   = 14;
+
+		while (i--) uri[o.key[i]] = m[i] || "";
+
+		uri[o.q.name] = {};
+		uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+			if ($1) uri[o.q.name][$1] = $2;
+		});
+
+		return uri;
+	};
+	
+	parseUri.options = {
+		strictMode: false,
+		key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+		q:   {
+			name:   "queryKey",
+			parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+		},
+		parser: {
+			strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+			loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+		}
+	};
+				
     window.dnnModal = {
 
         load: function () {
@@ -42,91 +71,38 @@
                         }
                     }
                 }
-                return true;
-            } catch(err) {
                 return false;
+            } catch(err) {
+                return true;
             }
         },
 
         show: function(url, showReturn, height, width, refresh, closingUrl) {
             var $modal = $("#iPopUp");
-            if ($modal.length == 0) {
-                $modal = $("<iframe id=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
-                $(document.body).append($modal);
-            } else {
-                $modal.attr('src', 'about:blank');
-            }
-            $(document).find('html').css('overflow', 'hidden');
-
-            //cache the original beforeClose function
-            var beforeCloseEvent;
-            if ($.ui.dialog.prototype.options.beforeClose) {
-                beforeCloseEvent = $.ui.dialog.prototype.options.beforeClose;
-            }
-            $modal.dialog({
-                modal: true,
-                autoOpen: true,
-                dialogClass: "dnnFormPopup",
-                position: "center",
-                minWidth: width,
-                minHeight: height,
-                maxWidth: 1920,
-                maxHeight: 1080,
-                resizable: true,
-                closeOnEscape: true,
-                refresh: refresh,
-                showReturn: showReturn,
-                closingUrl: closingUrl,
-                beforeClose: function (event, ui) {
-                    if (beforeCloseEvent) {
-                        beforeCloseEvent.call(this, event, ui);
-                    }
-
-                    if ($(".ui-widget-overlay").length > 0) {
-                        dnn.removeIframeMask($(".ui-widget-overlay")[0]);
-                    }
-                },
-                close: function(event, ui) { dnnModal.closePopUp(refresh, closingUrl); }
-            })
-                .width(width - 11)
-                .height(height - 11);
-            var mask = dnn.addIframeMask($(".ui-widget-overlay")[0]);
-            if (mask != null) {
-                mask.style.zIndex = 1;
-            }
-            if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
-                var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
-                $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
-                var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
-                $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
-
-                $dnnToggleMax.click(function(e) {
-                    e.preventDefault();
-
-                    var $window = $(window),
-                        newHeight,
-                        newWidth;
-
-                    if ($modal.data('isMaximized')) {
-                        newHeight = $modal.data('height');
-                        newWidth = $modal.data('width');
-                        $modal.data('isMaximized', false);
-                    } else {
-                        $modal.data('height', $modal.dialog("option", "minHeight"))
-                            .data('width', $modal.dialog("option", "minWidth"))
-                            .data('position', $modal.dialog("option", "position"));
-
-                        newHeight = $window.height() - 46;
-                        newWidth = $window.width() - 40;
-                        $modal.data('isMaximized', true);
-                    }
-
-                    $modal.dialog({ height: newHeight, width: newWidth });
-                    $modal.dialog({ position: 'center' });
-                });
+			
+            if ($modal.length) {
+				// for ie9+
+				$modal[0].src = 'about:blank';
+                $modal.remove();
             }
 
-            var showLoading = function() {
+            $modal = $("<iframe id=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
+            $(document.body).append($modal);
+            $(document).find('html').css('overflow', 'hidden'); 
+			
+			var ss = document.styleSheets;
+			var isAdmin = false;
+			for(var i = 0, max = ss.length; i < max; i++){
+				if(ss[i].href.indexOf('admin.css') > -1){
+					isAdmin = true;
+					break;
+				}
+			}			
+			var isMobile = !isAdmin && ($(window).width() < 601 || "ontouchstart" in document.documentElement);
+			if (isMobile) $('html').addClass('mobileView');	else $('html').removeClass('mobileView');
+			
+			var mobileWidth = 0;
+			var showLoading = function() {
                 var loading = $("<div class=\"dnnLoading\"></div>");
                 loading.css({
                     width: $modal.width(),
@@ -134,20 +110,147 @@
                 });
                 $modal.before(loading);
             };
-
             var hideLoading = function() {
                 $modal.prev(".dnnLoading").remove();
-            };
+            };			
+			var dialogOpened = function(){				
+				$modal.bind("load", function() {
+					hideLoading();
+					var iframe = document.getElementById("iPopUp");
+					var currentHost = window.location.hostname.toLowerCase();
+					var currentPort = window.location.port.toLowerCase();
+					
+					var uri = parseUri(url);
+					var iframeHost = uri.host.toLowerCase();
+					var iframePort = uri.port.toLowerCase();
+					iframeHost = iframeHost? iframeHost : currentHost;	
+					iframePort = iframePort? iframePort : currentPort;
+					var isSameDomain = currentHost === iframeHost && currentPort === iframePort;
+					
+					if(isSameDomain){
+						try{
+							if (isMobile) {		
+								var iframeBody = iframe.contentDocument.body,
+									iframeHtml = iframe.contentDocument.documentElement;
+								iframeHtml.style.width = mobileWidth + 'px';
+								iframeBody.className += 'mobileView dnnFormPopup dnnFormPopupMobileView';	
+								var iframeHeight = Math.max(iframeBody.scrollHeight, iframeBody.offsetHeight, iframeHtml.clientHeight, iframeHtml.scrollHeight, iframeHtml.offsetHeight);
+								$modal.css('height', iframeHeight + 100)
+									  .dialog('option', 'position', 'top');
+							}
+							
+							iframe.contentWindow.dnnModal.show = function (sUrl, sShowReturn, sHeight, sWidth, sRefresh, sClosingUrl) {
+								var windowTop = parent;
+								var popup = windowTop.jQuery("#iPopUp");
+								if (!sClosingUrl) {
+									sClosingUrl = location.href;
+								}
 
+								if (popup.dialog('isOpen')) {
+									popup.dialog("option", {
+										close: function () {
+											parent.dnnModal.show(sUrl, sShowReturn, sHeight, sWidth, sRefresh, sClosingUrl);
+										}
+									}).dialog('close');
+								}
+							};
+						}
+						catch(e){
+						}
+					}
+				});
+				
+				$modal[0].src = url;
+				
+			};
+			
+            if (!isMobile) {
+                $modal.dialog({
+                    modal: true,
+                    autoOpen: true,
+                    dialogClass: "dnnFormPopup",
+                    position: "center",
+                    minWidth: width,
+                    minHeight: height,
+                    maxWidth: 1920,
+                    maxHeight: 1080,
+                    resizable: true,
+                    closeOnEscape: true,
+                    refresh: refresh,
+                    showReturn: showReturn,
+                    closingUrl: closingUrl,
+					open: dialogOpened,
+                    close: function() { window.dnnModal.closePopUp(refresh, closingUrl); }
+                })
+                    .width(width - 11)
+                    .height(height - 11);
+
+                if ($modal.parent().find('.ui-dialog-title').next('a.dnnModalCtrl').length === 0) {
+                    var $dnnModalCtrl = $('<a class="dnnModalCtrl"></a>');
+                    $modal.parent().find('.ui-dialog-titlebar-close').wrap($dnnModalCtrl);
+                    var $dnnToggleMax = $('<a href="#" class="dnnToggleMax"><span>Max</span></a>');
+                    $modal.parent().find('.ui-dialog-titlebar-close').before($dnnToggleMax);
+
+                    $dnnToggleMax.click(function(e) {
+                        e.preventDefault();
+
+                        var $window = $(window),
+                            newHeight,
+                            newWidth;
+
+                        if ($modal.data('isMaximized')) {
+                            newHeight = $modal.data('height');
+                            newWidth = $modal.data('width');
+                            $modal.data('isMaximized', false);
+                        } else {
+                            $modal.data('height', $modal.dialog("option", "minHeight"))
+                                .data('width', $modal.dialog("option", "minWidth"))
+                                .data('position', $modal.dialog("option", "position"));
+
+                            newHeight = $window.height() - 46;
+                            newWidth = $window.width() - 40;
+                            $modal.data('isMaximized', true);
+                        }
+
+                        $modal.dialog({ height: newHeight, width: newWidth });
+                        $modal.dialog({ position: 'center' });
+                    });
+                }
+            } else {
+                mobileWidth = $(window).width() - 100;
+				var originalHeightCss = $('body').css('height');
+                $modal.dialog({
+                    modal: true,
+                    autoOpen: true,
+                    dialogClass: "dnnFormPopup dnnFormPopupMobileView",
+                    resizable: false,
+                    closeOnEscape: true,
+                    refresh: refresh,
+                    showReturn: showReturn,
+                    closingUrl: closingUrl,
+                    position: "top",
+                    draggable: false,
+					open: function() { 
+							$('#Form').hide();
+							$('body').css('height', 'auto');
+							$modal.parent().css({ 'width': 'auto', 'left': '0', 'right': '0', 'top': '0', 'box-shadow': 'none' });
+							window.scrollTo(0, 0);
+							dialogOpened();
+						
+						},
+                    close: function() { 
+							$('#Form').show();
+							if(originalHeightCss)
+								$('body').css('height', originalHeightCss);
+							window.scrollTo(0, 0);
+							window.dnnModal.closePopUp(refresh, closingUrl); 
+						}
+                });
+            }
+			
             showLoading();
-
-            $modal[0].src = url;
-
-            $modal.bind("load", function() {
-                hideLoading();
-            });
-
-            if (showReturn.toString() == "true") {
+			
+            if (showReturn.toString() === "true") {
                 return false;
             }
         },
@@ -166,16 +269,11 @@
                 }
                 
                 windowTop.location.href = url;
-                window.dnnModal.pageUnloaded = true;
-                if($(".ui-widget-overlay").length > 0)
-                {
-                    dnn.removeIframeMask($(".ui-widget-overlay")[0]);
-                }
                 popup.hide();
             } else {
                 popup.dialog('option', 'close', null).dialog('close');
             }
-            $(windowTop.document).find('html').css('overflow', '');            
+            $(windowTop.document).find('html').css('overflow', '');
         },
 
         refreshPopup: function(options) {

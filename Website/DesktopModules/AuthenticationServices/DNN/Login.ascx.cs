@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,7 +30,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
@@ -94,6 +93,61 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				return AuthenticationConfig.GetConfig(PortalId).Enabled;
 			}
 		}
+		
+		protected string RedirectURL
+        {
+            get
+            {
+                string _RedirectURL = "";
+
+                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
+
+                if (Convert.ToInt32(setting) > 0) //redirect to after registration page
+                {
+                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                }
+                else
+                {
+                
+                if (Convert.ToInt32(setting) <= 0)
+                {
+                    if (Request.QueryString["returnurl"] != null)
+                    {
+                        //return to the url passed to register
+                        _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                        if (_RedirectURL.Contains("://") &&
+                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
+                                StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            _RedirectURL = "";
+                        }
+                        if (_RedirectURL.Contains("?returnurl"))
+                        {
+                            string baseURL = _RedirectURL.Substring(0,
+                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                            string returnURL =
+                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                        }
+                    }
+                    if (String.IsNullOrEmpty(_RedirectURL))
+                    {
+                        //redirect to current page 
+                        _RedirectURL = Globals.NavigateURL();
+                    }
+                }
+                else //redirect to after registration page
+                {
+                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                }
+                }
+
+                return _RedirectURL;
+            }
+        
+		}
 
 		#endregion
 
@@ -104,6 +158,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			base.OnLoad(e);
 
 			cmdLogin.Click += OnLoginClick;
+			
+			cmdCancel.Click += OnCancelClick;
 
 			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
 
@@ -149,7 +205,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
             if (!IsPostBack)
             {
-                if (!string.IsNullOrEmpty(Request.QueryString["verificationcode"]) && PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                if (!string.IsNullOrEmpty(Request.QueryString["verificationcode"]) && 
+                    PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     if (Request.IsAuthenticated)
                     {
@@ -157,6 +214,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
 
                     var verificationCode = Request.QueryString["verificationcode"];
+
 
                     try
                     {
@@ -201,7 +259,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 			if (!Request.IsAuthenticated)
 			{
-				if (!Page.IsPostBack)
+				if (Page.IsPostBack == false)
 				{
 					try
 					{
@@ -250,11 +308,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			if ((UseCaptcha && ctlCaptcha.IsValid) || !UseCaptcha)
 			{
 				var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                string userName = new PortalSecurity().InputFilter(txtUsername.Text,
-                                                         PortalSecurity.FilterFlag.NoScripting |
-                                                         PortalSecurity.FilterFlag.NoAngleBrackets |
-                                                         PortalSecurity.FilterFlag.NoMarkup);
-                var objUser = UserController.ValidateUser(PortalId, userName, txtPassword.Text, "DNN", string.Empty, PortalSettings.PortalName, IPAddress, ref loginStatus);
+				var objUser = UserController.ValidateUser(PortalId, HttpUtility.HtmlEncode(txtUsername.Text), txtPassword.Text, "DNN", string.Empty, PortalSettings.PortalName, IPAddress, ref loginStatus);
 				var authenticated = Null.NullBoolean;
 				var message = Null.NullString;
 				if (loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
@@ -267,7 +321,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				}
 				
 				//Raise UserAuthenticated Event
-                var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
+				var eventArgs = new UserAuthenticatedEventArgs(objUser, txtUsername.Text, loginStatus, "DNN")
 				                    {
 				                        Authenticated = authenticated, 
                                         Message = message,
@@ -275,6 +329,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				                    };
 				OnUserAuthenticated(eventArgs);
 			}
+		}
+		
+		private void OnCancelClick(object sender, EventArgs e)
+		{
+			Response.Redirect(RedirectURL, true);
 		}
 
         private bool HasSocialAuthenticationEnabled()
