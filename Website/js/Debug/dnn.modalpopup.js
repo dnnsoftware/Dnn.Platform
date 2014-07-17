@@ -93,7 +93,8 @@
 			var ss = document.styleSheets;
 			var isAdmin = false;
 			for(var i = 0, max = ss.length; i < max; i++){
-				if(ss[i].href.indexOf('admin.css') > -1){
+				var cssHref = ss[i].href;
+				if(typeof cssHref == 'string' && cssHref.indexOf('admin.css') > -1){
 					isAdmin = true;
 					break;
 				}
