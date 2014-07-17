@@ -2838,6 +2838,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
     width: auto !important;
     display: block !important;
     float: left !important;
+	position: relative;
 }
 
     span.dnnInputFileWrapper > span.dnnSecondaryAction {
@@ -2866,7 +2867,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
             margin-bottom: 10px;
         }
 
-    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem>span {
+    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem > span {
         display: block;
         float: left;
         width: 40px;
@@ -3711,5 +3712,10 @@ body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFor
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     margin: 25px 0 15px 0;
+}
+
+.mobileView .dnnFormPopup .ui-dialog-content, 
+.mobileView #iPopUp .ui-dialog-content {
+    max-height: none !important; 
 }
 
