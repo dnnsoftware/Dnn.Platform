@@ -917,6 +917,39 @@ BEGIN
 END
 GO
 
+/***** Localize Countries and Regions DNN-5568, DNN-5567 *****/
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.Value
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Country'
+WHERE pd.PropertyName = 'Country'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.Value
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Region'
+WHERE pd.PropertyName = 'Region'
+GO
+
+/***** Add missing countries *****/
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
+VALUES ('Country','CD','Congo-Kinshasa',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
+VALUES ('Country','ME','Montenegro',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
+VALUES ('Country','RS','Serbia',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
+VALUES ('Country','TL','Timor-Leste',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+UPDATE {databaseOwner}[{objectQualifier}Lists]
+ SET [Text]='Congo - Brazzaville'
+ WHERE [ListName]='Country' AND [Value]='CG';
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
