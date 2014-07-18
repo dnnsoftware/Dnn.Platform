@@ -3714,6 +3714,10 @@ body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFor
     margin: 25px 0 15px 0;
 }
 
+html.mobileView {
+    overflow: auto !important;
+}
+
 .mobileView .dnnFormPopup .ui-dialog-content, 
 .mobileView #iPopUp .ui-dialog-content {
     max-height: none !important; 
