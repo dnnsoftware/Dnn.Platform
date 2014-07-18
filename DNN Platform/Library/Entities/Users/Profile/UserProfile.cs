@@ -156,7 +156,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Country);
+                string _country = GetPropertyValue(USERPROFILE_Country);
+                string retValue = Services.Localization.Localization.GetString(_country + ".Text", "~/App_GlobalResources/Country.resx");
+                if (string.IsNullOrEmpty(retValue)) { retValue = _country; };
+                return retValue;
             }
             set
             {
@@ -490,7 +493,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Region);
+                string _region = GetPropertyValue(USERPROFILE_Region);
+                string retValue = Services.Localization.Localization.GetString(_region + ".Text", "~/App_GlobalResources/Region.resx");
+                if (string.IsNullOrEmpty(retValue)) { retValue = _region; };
+                return retValue;
             }
             set
             {
