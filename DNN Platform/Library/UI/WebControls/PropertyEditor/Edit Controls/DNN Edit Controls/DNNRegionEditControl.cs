@@ -59,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
             AutoPostBack = false;
             TextField = ListBoundField.Text;
             ValueField = ListBoundField.Text;
+            SortAlphabetically = true;
         }
 		
 		#endregion

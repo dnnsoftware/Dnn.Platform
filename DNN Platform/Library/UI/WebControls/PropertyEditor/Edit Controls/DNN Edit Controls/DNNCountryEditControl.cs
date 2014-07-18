@@ -61,6 +61,7 @@ namespace DotNetNuke.UI.WebControls
             TextField = ListBoundField.Text;
             ValueField = ListBoundField.Text;
             ItemChanged += OnItemChanged;
+            SortAlphabetically = true;
         }
 
         void OnItemChanged(object sender, PropertyEditorEventArgs e)
