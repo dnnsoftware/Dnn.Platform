@@ -2986,6 +2986,9 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebFormsMvp.dll", "1.4.1");
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.Data.dll", "2.0.20126");
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
+
+            //update help url
+            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
         }
 
         private static void AddManageUsersModulePermissions()
