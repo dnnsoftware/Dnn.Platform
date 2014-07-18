@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
         {
             AutoPostBack = false;
             TextField = ListBoundField.Text;
-            ValueField = ListBoundField.Text;
+            ValueField = ListBoundField.Value;
             SortAlphabetically = true;
         }
 		
