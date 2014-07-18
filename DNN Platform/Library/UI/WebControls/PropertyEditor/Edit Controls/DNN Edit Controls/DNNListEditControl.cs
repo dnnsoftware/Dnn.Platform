@@ -138,7 +138,7 @@ namespace DotNetNuke.UI.WebControls
                     var listController = new ListController();
                     if (SortAlphabetically)
                     {
-                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).OrderBy(s => s.Text).ToList();
+                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                     }
                     else
                     {
