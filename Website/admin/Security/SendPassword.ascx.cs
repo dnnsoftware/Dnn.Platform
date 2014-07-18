@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                string _RedirectURL = "";
+                var _RedirectURL = "";
 
                 object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
 
@@ -171,17 +171,6 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnInit(e);
 
             var isEnabled = true;
-
-            //if (MembershipProviderConfig.PasswordRetrievalEnabled)
-            //{
-            //    lblHelp.Text = Localization.GetString("SendPasswordHelp", LocalResourceFile);
-            //    cmdSendPassword.Text = Localization.GetString("SendPassword", LocalResourceFile);
-            //}
-            //else if (MembershipProviderConfig.PasswordResetEnabled)
-            //{
-            //    lblHelp.Text = Localization.GetString("ResetPasswordHelp", LocalResourceFile);
-            //    cmdSendPassword.Text = Localization.GetString("ResetPassword", LocalResourceFile);
-            //}
 			
             //both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
@@ -195,10 +184,20 @@ namespace DotNetNuke.Modules.Admin.Security
                 lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
                 divPassword.Visible = false;
             }
+			
+			if (!MembershipProviderConfig.PasswordResetEnabled)
+            {
+                isEnabled = false;
+                lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
+                divPassword.Visible = false;
+            }
+
+			
             if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
             }
+			
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", LocalResourceFile);
@@ -366,6 +365,8 @@ namespace DotNetNuke.Modules.Admin.Security
                         LogFailure(message);
                     }
 
+					//always hide panel so as to not reveal if username exists.
+                    pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
 
                     liLogin.Visible = true;
@@ -391,26 +392,28 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var portalSecurity = new PortalSecurity();
 
-            var objEventLog = new EventLogController();
-            var objEventLogInfo = new LogInfo();
-            
-            objEventLogInfo.AddProperty("IP", _ipAddress);
-            objEventLogInfo.LogPortalID = PortalSettings.PortalId;
-            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-            objEventLogInfo.LogUserID = UserId;
-            objEventLogInfo.LogUserName = portalSecurity.InputFilter(txtUsername.Text,
-                                                                     PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+			var log = new LogInfo
+            {
+                LogPortalID = PortalSettings.PortalId,
+                LogPortalName = PortalSettings.PortalName,
+                LogUserID = UserId,
+                LogUserName = portalSecurity.InputFilter(txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
+            };
+			
             if (string.IsNullOrEmpty(message))
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_SUCCESS";
+                log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
             }
             else
             {
-                objEventLogInfo.LogTypeKey = "PASSWORD_SENT_FAILURE";
-                objEventLogInfo.LogProperties.Add(new LogDetailInfo("Cause", message));
+                log.LogTypeKey = "PASSWORD_SENT_FAILURE";
+                log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
             
-            objEventLog.AddLog(objEventLogInfo);
+			log.AddProperty("IP", _ipAddress);
+            
+            LogController.Instance.AddLog(log);
+
         }
 		
 		

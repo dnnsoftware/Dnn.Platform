@@ -9,7 +9,7 @@
     </div>
     <div class="dnnFormItem">
 		<div class="dnnLabel">
-			<asp:label id="plPassword" AssociatedControlID="txtPassword" runat="server" resourcekey="Password" CssClass="dnnFormLabel" />
+			<asp:label id="plPassword" AssociatedControlID="txtPassword" runat="server" resourcekey="Password" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
 		</div>
         <asp:textbox id="txtPassword" textmode="Password" runat="server" />
     </div>
@@ -17,10 +17,10 @@
         <asp:label id="plCaptcha" AssociatedControlID="ctlCaptcha" runat="server" resourcekey="Captcha" CssClass="dnnFormLabel" />
     </div>
     <div class="dnnFormItem dnnCaptcha" id="divCaptcha2" runat="server" visible="false">
-        <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" runat="server" errorstyle-cssclass="dnnFormMessage dnnFormError dnnCaptcha" />
+        <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" runat="server" errorstyle-cssclass="dnnFormMessage dnnFormError dnnCaptcha" ViewStateMode="Disabled" />
     </div>
     <div class="dnnFormItem">
-        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" />
+        <asp:label id="lblLogin" runat="server" AssociatedControlID="cmdLogin" CssClass="dnnFormLabel" ViewStateMode="Disabled" />
         <asp:LinkButton id="cmdLogin" resourcekey="cmdLogin" cssclass="dnnPrimaryAction" text="Login" runat="server" />
 		<asp:LinkButton id="cmdCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" />
         
@@ -33,8 +33,8 @@
         <label class="dnnFormLabel">&nbsp;</label>
         <div class="dnnLoginActions">
             <ul class="dnnActions dnnClear">
-                <li id="liRegister" runat="server"><asp:HyperLink ID="registerLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRegister" /></li>                
-                <li id="liPassword" runat="server"><asp:HyperLink ID="passwordLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdPassword" /></li>
+                <li id="liRegister" runat="server"><asp:HyperLink ID="registerLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRegister" ViewStateMode="Disabled" /></li>                
+                <li id="liPassword" runat="server"><asp:HyperLink ID="passwordLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdPassword" ViewStateMode="Disabled" /></li>
             </ul>
         </div>
     </div>
@@ -43,7 +43,7 @@
 	/*globals jQuery, window, Sys */
 	(function ($, Sys) {
 		function setUpLogin() {
-			var actionLinks = $("a[id$=cmdLogin]");
+			var actionLinks = $("a[id$=DNN_cmdLogin]");
 			actionLinks.click(function () {
 				if ($(this).hasClass("dnnDisabledAction")) {
 					return false;
