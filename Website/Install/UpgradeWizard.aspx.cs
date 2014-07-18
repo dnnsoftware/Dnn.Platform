@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Install
                 var sslDomain = Entities.Host.Host.SslDomain;
                 if (string.IsNullOrEmpty(sslDomain))
                 {
-                    sslDomain = PortalSettings.PortalAlias.HTTPAlias;
+                    sslDomain = Request.Url.Host;
                 }
                 else if (sslDomain.Contains("://"))
                 {
