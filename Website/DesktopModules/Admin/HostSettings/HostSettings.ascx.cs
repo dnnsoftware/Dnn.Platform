@@ -176,6 +176,9 @@ namespace DotNetNuke.Modules.Admin.Host
             docTypeCombo.DataBind(docTypesetting);
 
             chkRemember.Checked = Entities.Host.Host.RememberCheckbox;
+
+            chkUpgradeForceSSL.Checked = Entities.Host.Host.UpgradeForceSsl;
+            txtSSLDomain.Text = Entities.Host.Host.SslDomain;
         }
 
         private void BindJQuery()
@@ -878,6 +881,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("DebugMode", chkDebugMode.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("ShowCriticalErrors", chkCriticalErrors.Checked ? "Y" : "N", true);
                     HostController.Instance.Update("MessageSchedulerBatchSize", txtBatch.Text, false);
+                    HostController.Instance.Update("UpgradeForceSSL", chkUpgradeForceSSL.Checked ? "Y" : "N", false);
+                    HostController.Instance.Update("SSLDomain", txtSSLDomain.Text, false);
                     
                     HostController.Instance.Update("EventLogBuffer", chkLogBuffer.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("DefaultPortalSkin", hostSkinCombo.SelectedValue, false);

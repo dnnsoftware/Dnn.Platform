@@ -491,6 +491,28 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        /// <summary>
+        /// Whether force upgrade wizard open in ssl channel.
+        /// </summary>
+        public static bool UpgradeForceSsl
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("UpgradeForceSSL", false);
+            }
+        }
+
+        /// <summary>
+        /// The domain used when upgrade wizard forced to shown in ssl channel.
+        /// </summary>
+        public static string SslDomain
+        {
+            get
+            {
+                return HostController.Instance.GetString("SSLDomain");
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether File AutoSync is Enabled
