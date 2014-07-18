@@ -935,14 +935,26 @@ WHERE pd.PropertyName = 'Region'
 GO
 
 /***** Add missing countries *****/
+IF NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE ListName='Country' AND [Value]='CD')
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
 VALUES ('Country','CD','Congo-Kinshasa',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE ListName='Country' AND [Value]='ME')
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
 VALUES ('Country','ME','Montenegro',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE ListName='Country' AND [Value]='RS')
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
 VALUES ('Country','RS','Serbia',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE ListName='Country' AND [Value]='TL')
 INSERT INTO {databaseOwner}[{objectQualifier}Lists] ([ListName],[Value],[Text],[ParentID],[Level],[SortOrder],[DefinitionID],[Description],[PortalID],[SystemList],[CreatedByUserID],[CreatedOnDate],[LastModifiedByUserID],[LastModifiedOnDate]) 
 VALUES ('Country','TL','Timor-Leste',0,0,0,-1,NULL,-1,1,NULL,NULL,NULL,NULL);
+GO
+
 UPDATE {databaseOwner}[{objectQualifier}Lists]
  SET [Text]='Congo - Brazzaville'
  WHERE [ListName]='Country' AND [Value]='CG';
