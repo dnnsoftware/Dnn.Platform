@@ -917,6 +917,78 @@ BEGIN
 END
 GO
 
+
+/*DNN-5628 Journal Type > Create new for challenges */
+
+--Add Journal Type for Challenge Added
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengeadded') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengeadded'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+--Add Journal Type for Challenge Completed
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengecompleted') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengecompleted'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
