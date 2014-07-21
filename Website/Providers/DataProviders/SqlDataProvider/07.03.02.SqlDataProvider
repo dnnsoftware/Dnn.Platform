@@ -983,11 +983,10 @@ AS
 
 	INSERT INTO {databaseOwner}[{objectQualifier}Tabs] ([PortalID], [TabOrder], [Level], [TabPath], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [TabName], [IsVisible], [DisableLink], [ParentId], [IconFile], [IconFileLarge], [Title], [Description], [KeyWords], [IsDeleted], [Url], [SkinSrc], [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [CultureCode])
 	OUTPUT INSERTED.PortalID, INSERTED.TabID INTO @NewTabs
-	SELECT p.PortalID, (SELECT MAX(TabOrder) + 2 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = adminTab.TabId)), adminTab.Level + 1, adminTab.TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''#:*'), NEWID(), NEWID(), NULL, NEWID(), @TabName, @TabIsVisible, @TabDisableLink, adminTab.TabID, @TabIconFile, @TabIconFileLarge, @TabTitle, @TabDescription, @TabKeyWords, 0, @TabUrl, @TabSkinSrc, @TabContainerSrc, @TabStartDate, @TabEndDate, @TabRefreshInterval, @TabPageHeadText, @TabIsSecure, @TabPermanentRedirect, @TabSiteMapPriority, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @TabCultureCode
-	FROM {databaseOwner}[{objectQualifier}vw_Portals] p
+	SELECT DISTINCT p.PortalID, (SELECT MAX(TabOrder) + 2 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = adminTab.TabId)), adminTab.Level + 1, adminTab.TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''#:*'), NEWID(), NEWID(), NULL, NEWID(), @TabName, @TabIsVisible, @TabDisableLink, adminTab.TabID, @TabIconFile, @TabIconFileLarge, @TabTitle, @TabDescription, @TabKeyWords, 0, @TabUrl, @TabSkinSrc, @TabContainerSrc, @TabStartDate, @TabEndDate, @TabRefreshInterval, @TabPageHeadText, @TabIsSecure, @TabPermanentRedirect, @TabSiteMapPriority, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @TabCultureCode
+	FROM {databaseOwner}[{objectQualifier}PortalLocalization] p
 	JOIN {databaseOwner}[{objectQualifier}Tabs] adminTab ON p.PortalID = adminTab.PortalID
-	WHERE adminTab.TabID = p.AdminTabId
-	  AND p.CultureCode = @TabCultureCode;
+	WHERE adminTab.TabID = p.AdminTabId;
 
 	DECLARE @TabContentTypeId Int;
 	SELECT @TabContentTypeId = ContentTypeId FROM {databaseOwner}[{objectQualifier}ContentTypes] WHERE ContentType = 'Tab';
