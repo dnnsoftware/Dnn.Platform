@@ -32,7 +32,6 @@ using System.Web.Http;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.DataStructures;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -1308,11 +1307,6 @@ namespace DotNetNuke.Web.InternalServices
             {
                 searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
                                     && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
-            }
-
-            if (Host.EnableFileAutoSync)
-            {
-                FolderManager.Instance.Synchronize(parentFolder.PortalID, parentFolder.FolderPath, false, true);
             }
 
             return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
