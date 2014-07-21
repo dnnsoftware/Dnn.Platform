@@ -61,8 +61,10 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             PremiumUpload.UploadComplete += UploadComplete;
             cbDetectionEnabled.CheckedChanged += DetectionEnabledChanged;
             cbAutoUpdatesEnabled.CheckedChanged += AutoUpdatesEnabledChanged;
+            cbShareUsageEnabled.CheckedChanged += ShareUsageEnabledChanged;
             cbDetectionEnabledPremium.CheckedChanged += DetectionEnabledChanged;
             cbAutoUpdatesEnabledPremium.CheckedChanged += AutoUpdatesEnabledChanged;
+            cbShareUsageEnabledPremium.CheckedChanged += ShareUsageEnabledChanged;
             
             NoResultsMessage.Visible = false;
             PremiumUploadSuccess.Visible = false;
@@ -156,6 +158,8 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             cbDetectionEnabled.Checked = cbDetectionEnabledPremium.Checked = GetDetectionConfig("enabled", true);
             cbAutoUpdatesEnabled.Checked = cbAutoUpdatesEnabledPremium.Checked = GetDetectionConfig("autoUpdate", true);
+            cbShareUsageEnabled.Checked = cbShareUsageEnabledPremium.Checked = GetDetectionConfig("shareUsage", true);
+
         }
     }
 
@@ -237,6 +241,11 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         private void AutoUpdatesEnabledChanged(object sender, EventArgs e)
         {
             UpdateDetectionConfig("autoUpdate", (sender as CheckBox).Checked);
+        }
+
+        private void ShareUsageEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("shareUsage", (sender as CheckBox).Checked);
         }
 
         private void UpdateDetectionConfig(string attrName, bool enabled)

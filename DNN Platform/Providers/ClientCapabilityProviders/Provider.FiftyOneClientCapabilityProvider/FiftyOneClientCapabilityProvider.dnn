@@ -149,6 +149,7 @@
                         bandwidthMonitoringEnabled="false"
                         featureDetectionEnabled="false"
                         memoryMode="false"
+                        shareUsage="false"
                     />
                   </node>
                 </nodes>
