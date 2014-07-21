@@ -650,3 +650,35 @@ ul.buttonList .windowslive a span
 .dnnProfileDetails .dnnDropDownList.aspNetDisabled {
     display: none;
 }
+
+/*  fixed profile image upload */
+.dnnProfile .dnnFileUploadScope {
+    display: inline-block;
+    background-color: #F0F0F0;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0;
+    width: 500px;
+}
+
+    .dnnProfile .dnnFileUploadScope > div:first-child {
+        float: right;
+        width: 250px;
+    }
+
+    .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem {
+        width: 250px;
+    }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem .dnnDropDownList {
+            width: 80%;
+        }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem input[type="button"] {
+            margin-left: 45px;
+            width: 80%;
+       }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem.dnnFileUploadFolder {
+            display: none !important;
+        }

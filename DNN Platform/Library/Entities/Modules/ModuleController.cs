@@ -1353,10 +1353,10 @@ namespace DotNetNuke.Entities.Modules
         /// Get ModuleInfo object of first module instance with a given friendly name of the module definition
         /// </summary>
         /// <param name="portalId">ID of the portal, where to look for the module</param>
-        /// <param name="friendlyName">friendly name of module definition</param>
+        /// <param name="definitionName">The name of module definition (NOTE: this looks at <see cref="ModuleDefinitionInfo.DefinitionName"/>, not <see cref="ModuleDefinitionInfo.FriendlyName"/>)</param>
         /// <returns>ModuleInfo of first module instance</returns>
         /// <remarks>preferably used for admin and host modules</remarks>
-        public ModuleInfo GetModuleByDefinition(int portalId, string friendlyName)
+        public ModuleInfo GetModuleByDefinition(int portalId, string definitionName)
         {
             //declare return object
             ModuleInfo module;
@@ -1366,9 +1366,9 @@ namespace DotNetNuke.Entities.Modules
 
             //get module dictionary from cache
             var modules = DataCache.GetCache<Dictionary<string, ModuleInfo>>(key) ?? new Dictionary<string, ModuleInfo>();
-            if (modules.ContainsKey(friendlyName))
+            if (modules.ContainsKey(definitionName))
             {
-                module = modules[friendlyName];
+                module = modules[definitionName];
             }
             else
             {
@@ -1376,10 +1376,10 @@ namespace DotNetNuke.Entities.Modules
                 var clonemodules = new Dictionary<string, ModuleInfo>();
                 foreach (ModuleInfo m in modules.Values)
                 {
-                    clonemodules[m.ModuleDefinition.FriendlyName] = m;
+                    clonemodules[m.ModuleDefinition.DefinitionName] = m;
                 }
                 //get from database
-                IDataReader dr = DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName);
+                IDataReader dr = DataProvider.Instance().GetModuleByDefinition(portalId, definitionName);
                 try
                 {
                     //hydrate object
@@ -1434,11 +1434,11 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the modules by definition.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <param name="friendlyName">Name of the friendly.</param>
+        /// <param name="definitionName">The name of the module definition.</param>
         /// <returns>module collection</returns>
-        public ArrayList GetModulesByDefinition(int portalID, string friendlyName)
+        public ArrayList GetModulesByDefinition(int portalID, string definitionName)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, definitionName), typeof(ModuleInfo));
         }
 
         /// <summary>

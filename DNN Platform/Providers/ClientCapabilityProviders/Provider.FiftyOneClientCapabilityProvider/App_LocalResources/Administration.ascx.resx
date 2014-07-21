@@ -355,4 +355,10 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="ManualUpdates.Text" xml:space="preserve">
     <value>Manual Updates:</value>
   </data>
+  <data name="ShareUsageEnabled.Help" xml:space="preserve">
+    <value>Enable/disable share usage data with 51Degrees.</value>
+  </data>
+  <data name="ShareUsageEnabled.Text" xml:space="preserve">
+    <value>Share Usage Enabled?</value>
+  </data>
 </root>

@@ -28,7 +28,7 @@
 ----------------------------------------------- */
 .DnnModule-Device-Detection .deviceMsg{
 	display:block;
-	padding:25px; margin-bottom:25px;
+	padding:0 25px 25px 25px; margin-bottom:25px;
 	width:870px;
 /*
     background:#efefef;

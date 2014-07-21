@@ -110,6 +110,7 @@ namespace DotNetNuke.Services.Install
         private void LocalizePage()
         {
             SetBrowserLanguage();
+            Page.Title = LocalizeString("Title");
             versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
             currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(DatabaseVersion));
         }
@@ -296,6 +297,28 @@ namespace DotNetNuke.Services.Install
             Config.Touch();
             Response.Redirect("../Default.aspx", true);
         }
+
+        private void SslRequiredCheck()
+        {
+            if (Entities.Host.Host.UpgradeForceSsl && !Request.IsSecureConnection)
+            {
+                var sslDomain = Entities.Host.Host.SslDomain;
+                if (string.IsNullOrEmpty(sslDomain))
+                {
+                    sslDomain = Request.Url.Host;
+                }
+                else if (sslDomain.Contains("://"))
+                {
+                    sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
+                }
+
+                var sslUrl = string.Format("https://{0}{1}",
+                    sslDomain, Request.RawUrl);
+
+                Response.Redirect(sslUrl, true);
+            }
+        }
+
         #endregion
 
         #region Protected Methods
@@ -325,6 +348,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            SslRequiredCheck();
             GetInstallerLocales();
         }
 

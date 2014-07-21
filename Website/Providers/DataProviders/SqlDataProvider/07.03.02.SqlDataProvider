@@ -917,6 +917,101 @@ BEGIN
 END
 GO
 
+
+/*DNN-5628 Journal Type > Create new for challenges */
+
+--Add Journal Type for Challenge Added
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengeadded') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengeadded'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+--Add Journal Type for Challenge Completed
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengecompleted') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengecompleted'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+
+/* Update GetModuleByDefinition */
+/********************************/
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+      @PortalId int,
+      @DefinitionName nvarchar(128)
+AS
+	SELECT M.*   
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions as MD ON M.ModuleDefID = MD.ModuleDefID
+		INNER JOIN {databaseOwner}{objectQualifier}Tabs as T ON M.TabID = T.TabID
+	WHERE ((M.PortalId = @PortalId) or (M.PortalId is null and @PortalID is null))
+		AND MD.DefinitionName = @DefinitionName
+		AND M.IsDeleted = 0
+		AND T.IsDeleted = 0
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddAdminPages]') AND type in (N'P', N'PC'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}AddAdminPages]
 GO

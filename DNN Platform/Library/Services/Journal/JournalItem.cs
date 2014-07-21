@@ -66,6 +66,7 @@ namespace DotNetNuke.Services.Journal {
         public bool IsDeleted { get; set; }
         public bool CommentsDisabled { get; set; }
         public bool CommentsHidden { get; set; }
+        public int SimilarCount { get; set; }
 
        /// <summary>
         /// Gets or sets the key ID.
@@ -121,6 +122,7 @@ namespace DotNetNuke.Services.Journal {
             IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
             CommentsDisabled = Null.SetNullBoolean(dr["CommentsDisabled"]);
             CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
+            SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
         public CacheLevel Cacheability {
             get {
