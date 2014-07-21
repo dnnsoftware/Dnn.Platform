@@ -994,6 +994,12 @@ AS
 	INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID])
 	SELECT @TabContent, @TabContentTypeId, newTab.TabId, -1, @TabContentKey, @TabIndexed, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @TabStateId
 	FROM @NewTabs newTab;
+
+	UPDATE t
+	SET ContentItemId = ci.ContentItemId
+	FROM {databaseOwner}[{objectQualifier}Tabs] t
+	JOIN {databaseOwner}[{objectQualifier}ContentItems] ci ON t.TabId = ci.TabId
+	WHERE t.TabId IN (SELECT TabId FROM @NewTabs);
  
 	INSERT INTO {databaseOwner}[{objectQualifier}TabPermission] ([TabID], [PermissionID], [RoleId], [AllowAccess], [UserId], [CreatedByUserId], [CreatedOnDate], [LastModifiedByUserId], [LastModifiedOnDate]) 
 	SELECT newTab.TabId, permission.PermissionID, portal.AdministratorRoleId, 1, NULL, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE()
@@ -1017,6 +1023,12 @@ AS
 	SELECT @ModuleContent, @ModuleContentTypeId, newTab.TabId, newModule.ModuleId, @ModuleContentKey, @ModuleIndexed, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @ModuleStateId
 	FROM @NewModules newModule
 	JOIN @NewTabs newTab ON newModule.PortalId = newTab.PortalId;
+
+	UPDATE m
+	SET ContentItemId = ci.ContentItemId
+	FROM {databaseOwner}[{objectQualifier}Modules] m
+	JOIN {databaseOwner}[{objectQualifier}ContentItems] ci ON m.ModuleId = ci.ModuleId
+	WHERE m.ModuleId IN (SELECT ModuleID FROM @NewModules);
 
 	INSERT INTO {databaseOwner}[{objectQualifier}TabModules] ([TabId], [ModuleId], [ModuleTitle], [Header], [Footer], [ModuleOrder], [PaneName], [CacheTime], [CacheMethod], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [CultureCode], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
 	SELECT newTab.TabId, newModule.ModuleId, @ModuleTitle, @ModuleHeader, @ModuleFooter, 1, @ModulePaneName, @ModuleCacheTime, @ModuleCacheMethod, @ModuleAlignment, @ModuleColor, @ModuleBorder, @ModuleIconFile, @ModuleVisibility, @ModuleContainerSrc, @ModuleDisplayTitle, @ModuleDisplayPrint, @ModuleDisplaySyndicate, @ModuleIsWebSlice, @ModuleWebSliceTitle, @ModuleWebSliceExpiryDate, @ModuleWebSliceTTL, NEWID(), NEWID(), NULL, NEWID(), @ModuleCultureCode, @CreatedByUserID, GETDATE(), @CreatedByUserID, GETDATE()
