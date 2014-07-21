@@ -461,19 +461,19 @@ namespace DotNetNuke.UI.WebControls
 			g = Graphics.FromImage(bmp);
 
 			Brush b = new LinearGradientBrush(rect,
-											  Color.FromArgb(_Rand.Next(192), _Rand.Next(192), _Rand.Next(192)),
-											  Color.FromArgb(_Rand.Next(192), _Rand.Next(192), _Rand.Next(192)),
+                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
 											  Convert.ToSingle(_Rand.NextDouble())*360,
 											  false);
 			g.FillRectangle(b, rectF);
 
 			if (_Rand.Next(2) == 1)
 			{
-				DistortImage(ref bmp, _Rand.Next(5, 10));
+				DistortImage(ref bmp, _Rand.Next(5, 20));
 			}
 			else
 			{
-				DistortImage(ref bmp, -_Rand.Next(5, 10));
+				DistortImage(ref bmp, -_Rand.Next(5, 20));
 			}
 			return bmp;
 		}
