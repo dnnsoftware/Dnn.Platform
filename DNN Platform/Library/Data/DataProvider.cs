@@ -1095,9 +1095,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetModule", moduleId, GetNull(tabId));
         }
 
-        public virtual IDataReader GetModuleByDefinition(int portalId, string friendlyName)
+        public virtual IDataReader GetModuleByDefinition(int portalId, string definitionName)
         {
-            return ExecuteReader("GetModuleByDefinition", GetNull(portalId), friendlyName);
+            return ExecuteReader("GetModuleByDefinition", GetNull(portalId), definitionName);
         }
 
         public virtual IDataReader GetModuleByUniqueID(Guid uniqueId)

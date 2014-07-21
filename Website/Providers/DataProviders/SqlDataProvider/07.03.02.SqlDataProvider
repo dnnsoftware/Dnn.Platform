@@ -989,6 +989,29 @@ IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
     END 
 GO
 
+/* Update GetModuleByDefinition */
+/********************************/
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+      @PortalId int,
+      @DefinitionName nvarchar(128)
+AS
+	SELECT M.*   
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions as MD ON M.ModuleDefID = MD.ModuleDefID
+		INNER JOIN {databaseOwner}{objectQualifier}Tabs as T ON M.TabID = T.TabID
+	WHERE ((M.PortalId = @PortalId) or (M.PortalId is null and @PortalID is null))
+		AND MD.DefinitionName = @DefinitionName
+		AND M.IsDeleted = 0
+		AND T.IsDeleted = 0
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
