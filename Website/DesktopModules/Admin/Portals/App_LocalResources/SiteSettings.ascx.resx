@@ -219,6 +219,12 @@
   <data name="plAdminContainer.Help" xml:space="preserve">
     <value>The selected container will be applied to all edit mode (ctl=) modules on the site.</value>
   </data>
+  <data name="plIconSet.Text" xml:space="preserve">
+    <value>Icon Set:</value>
+  </data>
+  <data name="plIconSet.Help" xml:space="preserve">
+    <value>The selected iconset will be applied to all icons on the site.</value>
+  </data>
   <data name="plBackground.Text" xml:space="preserve">
     <value>Body Background:</value>
   </data>
