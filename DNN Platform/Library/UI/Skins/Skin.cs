@@ -581,7 +581,7 @@ namespace DotNetNuke.UI.Skins
             //Register any error messages on the Skin
             if (Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
-                AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
+                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
 
                 if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                 {
