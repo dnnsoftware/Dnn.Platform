@@ -1451,9 +1451,9 @@ namespace DotNetNuke.Entities.Host
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                if (portalSettings == null)
+                if (portalSettings == null || portalSettings.ActiveTab == null)
                 {
-                    //without portal settings, we can't continue
+                    //without portal settings or active tab, we can't continue
                     return false;
                 }
 
