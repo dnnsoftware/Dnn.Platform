@@ -32,7 +32,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
@@ -788,23 +788,26 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		protected override void LoadViewState(object savedState)
 		{
-			if (savedState != null)
-			{
-				//Load State from the array of objects that was saved at SaveViewState.
-				var myState = (object[]) savedState;
-				
-				//Load the ViewState of the Base Control
-				if (myState[0] != null)
-				{
-					base.LoadViewState(myState[0]);
-				}
-				
-				//Load the CAPTCHA Text from the ViewState
-				if (myState[1] != null)
-				{
-					_CaptchaText = Convert.ToString(myState[1]);
-				}
-			}
+            if (savedState != null)
+            {
+                //Load State from the array of objects that was saved at SaveViewState.
+                var myState = (object[])savedState;
+
+                //Load the ViewState of the Base Control
+                if (myState[0] != null)
+                {
+                    base.LoadViewState(myState[0]);
+                }
+
+                //Load the CAPTCHA Text from the ViewState
+                if (myState[1] != null)
+                {
+                    _CaptchaText = Convert.ToString(myState[1]);
+                }
+            }
+            //var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
+            //_CaptchaText
+                
 		}
 
 		/// <summary>
@@ -929,6 +932,7 @@ namespace DotNetNuke.UI.WebControls
 				_CaptchaText = GetNextCaptcha();
 			}
 			allStates[1] = _CaptchaText;
+     
 			return allStates;
 		}
 
