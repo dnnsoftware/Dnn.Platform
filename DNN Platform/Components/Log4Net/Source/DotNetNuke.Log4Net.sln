@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Log4Net", "DotNetNuke.Log4Net.csproj", "{6EB8513B-1E82-4E61-A4AD-101FA89680BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EB8513B-1E82-4E61-A4AD-101FA89680BB}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{6EB8513B-1E82-4E61-A4AD-101FA89680BB}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{6EB8513B-1E82-4E61-A4AD-101FA89680BB}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{6EB8513B-1E82-4E61-A4AD-101FA89680BB}.Release|AnyCPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
