@@ -133,6 +133,14 @@ namespace DotNetNuke.Services.Upgrade
 
         #region Private Methods
 
+        private static Version ApplicationVersion
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddAdminPages adds an Admin Page and an associated Module to all configured Portals
@@ -1822,7 +1830,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 //attempt to remove "System.Web.Extensions" configuration section
                 string upgradeFile = string.Format("{0}\\Config\\SystemWebExtensions.config", Globals.InstallMapPath);
-                string message = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, "Remove System.Web.Extensions");
+                string message = UpdateConfig(upgradeFile, ApplicationVersion, "Remove System.Web.Extensions");
                 EventLogController.Instance.AddLog("UpgradeConfig",
                                           string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
@@ -4357,8 +4365,8 @@ namespace DotNetNuke.Services.Upgrade
         {
             var scriptFiles = new ArrayList();
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
-
-            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, DotNetNukeContext.Current.Application.Version);
+            
+            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
             foreach (string file in files)
             {
@@ -4369,7 +4377,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
                         // check if script file is relevant for upgrade
-                        if (version > databaseVersion && version <= DotNetNukeContext.Current.Application.Version)
+                        if (version > databaseVersion && version <= ApplicationVersion)
                         {
                             scriptFiles.Add(file);
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
@@ -4906,7 +4914,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         //Upgrade to .NET 3.5
                         string upgradeFile = string.Format("{0}\\Config\\Net35.config", Globals.InstallMapPath);
-                        string message = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, ".NET 3.5 Upgrade");
+                        string message = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 3.5 Upgrade");
                         if (string.IsNullOrEmpty(message))
                         {
                             //Remove old AJAX file
@@ -4928,7 +4936,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         //Upgrade to .NET 4.0
                         string upgradeFile = string.Format("{0}\\Config\\Net40.config", Globals.InstallMapPath);
-                        string strMessage = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, ".NET 4.0 Upgrade");
+                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.0 Upgrade");
                         EventLogController.Instance.AddLog("UpgradeNet",
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
@@ -5304,8 +5312,8 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void UpgradeDNN(string providerPath, Version dataBaseVersion)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version));
-            HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Upgrading to Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "<br/>");
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(ApplicationVersion));
+            HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Upgrading to Version: " + Globals.FormatVersion(ApplicationVersion) + "<br/>");
 
             //Process the Upgrade Script files
             var versions = new List<Version>();
@@ -5401,7 +5409,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpgradeRedirect()
         {
-            return UpgradeRedirect(DotNetNukeContext.Current.Application.Version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
+            return UpgradeRedirect(ApplicationVersion, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
         }
 
         public static string UpgradeRedirect(Version version, string packageType, string packageName, string culture)
