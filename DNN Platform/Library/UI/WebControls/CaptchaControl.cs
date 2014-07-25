@@ -767,6 +767,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		protected virtual string GetNextCaptcha()
 		{
+            
 			var sb = new StringBuilder();
 			var rand = new Random();
 			int n;
@@ -776,7 +777,11 @@ namespace DotNetNuke.UI.WebControls
 			{
 				sb.Append(CaptchaChars.Substring(rand.Next(intMaxLength), 1));
 			}
-			return sb.ToString();
+		    var challenge = sb.ToString();
+            
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
+            DataCache.SetCache(cacheKey, challenge);
+			return challenge;
 		}
 
 		/// <summary>
@@ -949,14 +954,19 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		public bool Validate(string userData)
 		{
-			if (string.Compare(userData, _CaptchaText, false, CultureInfo.InvariantCulture) == 0)
-			{
-				_IsValid = true;
-			}
-			else
-			{
-				_IsValid = false;
-			}
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
+            var cacheObj = DataCache.GetCache(cacheKey);
+
+		    if (cacheObj == null)
+		    {
+                _IsValid = false;
+		    }
+		    else
+		    {
+                _IsValid = true;
+                DataCache.RemoveCache(cacheKey);
+		    }
+            
             OnUserValidated(new ServerValidateEventArgs(_CaptchaText, _IsValid));
 			return _IsValid;
 		}

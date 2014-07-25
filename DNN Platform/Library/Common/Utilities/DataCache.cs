@@ -272,7 +272,7 @@ namespace DotNetNuke.Common.Utilities
 	    public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
 	    public const int JavaScriptLibrariesCacheTimeout = 20;
 
-        public const string CaptchaCacheKey = "Captcha";
+        public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
 
