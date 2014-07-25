@@ -36,7 +36,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
         {
             get
             {
-                return Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return Globals.FormatVersion(version, "00", 3, "");
             }
         }
 

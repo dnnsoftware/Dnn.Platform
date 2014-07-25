@@ -645,35 +645,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        private static string UpgradeRedirect()
-        {
-            //todo: will need to replace DotNetNukeContext.Current.Application.Type with "LanguagePack"
-            return UpgradeRedirect(DotNetNukeContext.Current.Application.Version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
-        }
-
-        private static string UpgradeRedirect(Version version, string packageType, string packageName, string culture)
-        {
-            string url;
-            if (!string.IsNullOrEmpty(Config.GetSetting("UpdateServiceRedirect")))
-            {
-                url = Config.GetSetting("UpdateServiceRedirect");
-            }
-            else
-            {
-                url = DotNetNukeContext.Current.Application.UpgradeUrl + "/redirect.aspx";
-                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
-                url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
-                url += "&type=" + packageType;
-                url += "&name=" + packageName;
-                if (!string.IsNullOrEmpty(culture))
-                {
-                    url += "&culture=" + culture;
-                }
-            }
-            return url;
-        }
-
-
         private void GetLanguagePack(string downloadUrl, string installFolder)
         {
             string myfile = "";

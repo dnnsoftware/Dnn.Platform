@@ -609,18 +609,19 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        if (DotNetNukeContext.Current.Application.Version.Major > DataBaseVersion.Major)
+                        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                        if (version.Major > DataBaseVersion.Major)
                         {
                             //Upgrade Required (Major Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
-                        else if (DotNetNukeContext.Current.Application.Version.Major == DataBaseVersion.Major && DotNetNukeContext.Current.Application.Version.Minor > DataBaseVersion.Minor)
+                        else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
                         {
                             //Upgrade Required (Minor Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
-                        else if (DotNetNukeContext.Current.Application.Version.Major == DataBaseVersion.Major && DotNetNukeContext.Current.Application.Version.Minor == DataBaseVersion.Minor &&
-                                 DotNetNukeContext.Current.Application.Version.Build > DataBaseVersion.Build)
+                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                                 version.Build > DataBaseVersion.Build)
                         {
                             //Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
