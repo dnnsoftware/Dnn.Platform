@@ -780,7 +780,7 @@ namespace DotNetNuke.UI.WebControls
 		    var challenge = sb.ToString();
             
             var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
-            DataCache.SetCache(cacheKey, challenge);
+            DataCache.SetCache(cacheKey, challenge, TimeSpan.FromMinutes(2));
 			return challenge;
 		}
 
