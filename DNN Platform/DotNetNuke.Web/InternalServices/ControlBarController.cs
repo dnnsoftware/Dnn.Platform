@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm)
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "")
         {
             if (string.IsNullOrEmpty(category))
             {
@@ -117,6 +117,14 @@ namespace DotNetNuke.Web.InternalServices
 
             var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct() 
                                             : Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
+
+            if (!string.IsNullOrEmpty(excludeCategories))
+            {
+                var excludeList = excludeCategories.ToLowerInvariant().Split(',');
+                filteredList =
+                    filteredList.Where(kvp => 
+                        !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
+            }
 
             filteredList = filteredList
                 .Skip(loadingStartIndex)
