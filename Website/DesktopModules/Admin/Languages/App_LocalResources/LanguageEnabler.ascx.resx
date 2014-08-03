@@ -238,7 +238,7 @@
     <value>Host User Required</value>
   </data>
   <data name="HostOnlyMessage.Text" xml:space="preserve">
-    <value>DotNetNuke's security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
+    <value>DNN security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
   </data>
   <data name="systemDefaultLabel.Help" xml:space="preserve">
     <value>The SystemDefault Language is language that the application uses if no other language is available.  It is the ultimate fallback.</value>
