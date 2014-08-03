@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (String.IsNullOrEmpty(Filter))
             {
 				//Get Default View
-                var setting = UserModuleBase.GetSetting(UsersPortalId, "Display_Mode");
+                var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, "Display_Mode");
                 var mode = (DisplayMode) setting;
                 switch (mode)
                 {
@@ -442,7 +442,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 else
                 {
                     var settingKey = "Column_" + header;
-                    var setting = UserModuleBase.GetSetting(UsersPortalId, settingKey);
+                    var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, settingKey);
                     isVisible = Convert.ToBoolean(setting);
                 }
 
@@ -509,7 +509,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    var setting = UserModuleBase.GetSetting(UsersPortalId, "Records_PerPage");
+                    var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, "Records_PerPage");
                     grdUsers.PageSize = Convert.ToInt32(setting);   
                 }                
             }
