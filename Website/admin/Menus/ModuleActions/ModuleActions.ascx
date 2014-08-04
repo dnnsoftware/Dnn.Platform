@@ -1,8 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ModuleActions.ascx.cs" Inherits="DotNetNuke.Admin.Containers.ModuleActions" %>
-<%@ Register assembly="DotNetNuke.Web" namespace="DotNetNuke.Web.UI.WebControls" tagPrefix="dnn" %>
 <asp:LinkButton runat="server" ID="actionButton" />
 
-<dnn:DnnScriptBlock runat="server">
 <script language="javascript" type="text/javascript">
     /*globals jQuery, window */
     (function ($) {
@@ -94,4 +92,3 @@
         
     } (jQuery));
 </script>
-</dnn:DnnScriptBlock>
