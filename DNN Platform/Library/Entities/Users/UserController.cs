@@ -1012,6 +1012,12 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static UserInfo GetUserById(int portalId, int userId)
         {
+            // stop any sql calls for guest users
+            if (userId == Null.NullInteger)
+            {
+                return null;
+            }
+
             var lookUp = GetUserLookupDictionary(portalId);
 
             UserInfo user;
