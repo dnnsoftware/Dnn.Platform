@@ -154,7 +154,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange            
 
             //Act, Assert
-            Assert.Throws<ArgumentException>(() => _internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => _internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
         }
 
 
@@ -184,7 +185,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Arrange            
 
             //Act, Assert
-            Assert.Throws<ArgumentException>(() => _internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
         }
 
         [Test]
@@ -207,8 +208,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #endregion
 
+#if false
+        // the rules have changed and these are invalid tests now
         #region Delete Tests
-
         [Test]
         public void SearchController_Delete_Throws_On_Null_Or_Empty_UniqueuKey()
         {
@@ -240,7 +242,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+#endif
 
     }
 }
-

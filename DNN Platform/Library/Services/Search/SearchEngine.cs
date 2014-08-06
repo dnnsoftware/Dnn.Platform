@@ -24,11 +24,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
-
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Scheduling;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -112,7 +113,7 @@ namespace DotNetNuke.Services.Search
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
             var userIndexed =
-                searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_")))
+                searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal)))
                                .Distinct()
                                .Count();
             IndexedSearchDocumentCount += userIndexed;
@@ -136,7 +137,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
-        /// Deletes all old documents when re-index was requested, so we start a fresh search
+        /// Deletes all old documents when re-index was requested, so we start a fresh search.
         /// </summary>
         /// <param name="startDate"></param>
         internal void DeleteOldDocsBeforeReindex(DateTime startDate)
@@ -148,6 +149,22 @@ namespace DotNetNuke.Services.Search
             {
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId);
+            }
+        }
+
+        /// <summary>
+        /// Deletes all deleted items from the system that are added to deletions table.
+        /// </summary>
+        /// <param name="cutoffTime"></param>
+        internal void DeleteRemovedObjects(DateTime cutoffTime)
+        {
+            var controller = InternalSearchController.Instance;
+            var reader = DataProvider.Instance().GetSearchDeletedItems(cutoffTime);
+            while (reader.Read())
+            {
+                // Note: we saved this in the DB as SearchDocumentToDelete but retrieve it as its descendant SearchDocument
+                var document = JsonConvert.DeserializeObject<SearchDocument>(reader["document"] as string);
+                controller.DeleteSearchDocument(document);
             }
         }
 
@@ -187,26 +204,6 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets all the Search Documents within the timeframe for the given portal
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="indexer"></param>
-        /// <param name="startDate"></param>
-        /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/17/2013  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private IEnumerable<SearchDocument> GetSearchDocuments(int portalId, IndexingProvider indexer, DateTime startDate)
-        {
-            var searchDocs = new List<SearchDocument>();
-            var indexSince = FixedIndexingStartDate(portalId, startDate);
-            searchDocs.AddRange(indexer.GetSearchDocuments(portalId, indexSince));
-            return searchDocs;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals
         /// </summary>
         /// <param name="startDate"></param>
@@ -231,28 +228,6 @@ namespace DotNetNuke.Services.Search
             // Include Host Level Items
             indexSince = FixedIndexingStartDate(-1, startDate);
             searchDocs.AddRange(indexer.GetSearchDocuments(-1, indexSince));
-
-            return searchDocs;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for the given portal
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="startDate"></param>
-        /// <returns></returns>
-        /// <history>
-        ///     [vnguyen]   04/17/2013  created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private static IEnumerable<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
-        {
-            var searchDocs = new List<SearchDocument>();
-            var indexer = new ModuleIndexer();
-            var indexSince = FixedIndexingStartDate(portalId, startDate);
-
-            searchDocs.AddRange(indexer.GetModuleMetaData(portalId, indexSince));
 
             return searchDocs;
         }

@@ -563,6 +563,7 @@
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
     <Compile Include="Services\Search\Controllers\UserResultController.cs" />
+    <Compile Include="Services\Search\Entities\SearchDocumentToDelete.cs" />
     <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />
