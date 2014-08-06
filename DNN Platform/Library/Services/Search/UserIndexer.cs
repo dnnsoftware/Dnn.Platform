@@ -21,26 +21,20 @@
 #region Usings
 
 using System;
-using System.Collections;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
-using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 
@@ -73,7 +67,6 @@ namespace DotNetNuke.Services.Search
         private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserIndexer));
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
         #endregion

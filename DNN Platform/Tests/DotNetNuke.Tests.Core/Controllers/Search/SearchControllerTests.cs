@@ -53,12 +53,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     {
 
         #region Constants
-        private const int ModuleSearchTypeId = 1;
-        private const int TabSearchTypeId = 2;
-        private const int DocumentSearchTypeId = 3;
-        private const int UrlSearchTypeId = 4;
-        private const int OtherSearchTypeId = 5;
-        private const int UnknownSearchTypeId = 6;
+
+        public enum SearchTypeIds
+        {
+            ModuleSearchTypeId = 1,
+            TabSearchTypeId,
+            DocumentSearchTypeId,
+            UrlSearchTypeId,
+            OtherSearchTypeId,
+            UnknownSearchTypeId
+        }
+
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+        private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
+        private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
+        private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
         private const int PortalId0 = 0;
         private const int PortalId12 = 12;
         private const int IdeasModuleDefId = 201;
@@ -385,10 +396,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument> {
-                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
-                new SearchDocument { Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
-                new SearchDocument { Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
-                new SearchDocument { Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
             };
 
             var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
@@ -960,12 +971,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
 
             var result = _searchController.SiteSearch(query);
-            var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
+            var ids = result.Results.Select(doc => doc.AuthorUserId).Skip(1).ToArray();
 
             //Assert
-            Assert.AreEqual(30, result.TotalHits);
+            Assert.AreEqual(maxDocs, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(Enumerable.Range(0, 10).ToArray(), ids);
+            Assert.AreEqual(Enumerable.Range(1, 9).ToArray(), ids);
         }
 
         [Test]
@@ -1094,7 +1105,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(4, result.Results.Count);
+            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 26, 27, 28, 29 }, ids);
         }
 
@@ -1172,7 +1183,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(maxDocs - 10 * 6, result.TotalHits);
-            Assert.AreEqual(8, result.Results.Count);
+            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
             Assert.AreEqual(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }, ids);
         }
 
@@ -1246,6 +1257,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var modifiedDateTime = DateTime.UtcNow;
             var doc = new SearchDocument
             {
+                PortalId = PortalId0,
                 Title = "Title",
                 UniqueKey = "key",
                 SearchTypeId = OtherSearchTypeId,
@@ -1257,7 +1269,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert -
             Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(0, search.Results[0].PortalId);
+            Assert.AreEqual(PortalId0, search.Results[0].PortalId);
             Assert.AreEqual(0, search.Results[0].TabId);
             Assert.AreEqual(0, search.Results[0].ModuleDefId);
             Assert.AreEqual(0, search.Results[0].ModuleId);
@@ -1265,7 +1277,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(null, search.Results[0].Description);
             Assert.AreEqual(null, search.Results[0].Body);
             Assert.AreEqual(0, search.Results[0].AuthorUserId);
-            Assert.AreEqual(0, search.Results[0].RoleId);
+            Assert.AreEqual(-1, search.Results[0].RoleId);
             Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
             Assert.AreEqual(null, search.Results[0].Permissions);
             Assert.AreEqual(null, search.Results[0].QueryString);

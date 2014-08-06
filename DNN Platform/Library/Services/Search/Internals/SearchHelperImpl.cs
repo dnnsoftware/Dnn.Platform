@@ -51,14 +51,18 @@ namespace DotNetNuke.Services.Search.Internals
         private const string LastIndexKeyFormat = "{0}_{1}";
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/DesktopModules/Admin/SearchAdmin/App_LocalResources/SearchAdmin.ascx";
-        private readonly IList<string> EmptySynonums = new List<string>(0);
+        private readonly IList<string> _emptySynonums = new List<string>(0);
 
         #region SearchType APIs
 
         public IEnumerable<SearchType> GetSearchTypes()
         {
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SearchType>>(cachArg, GetSearchTypesCallBack);
+            return CBO.GetCachedObject<IList<SearchType>>(cachArg,
+                delegate
+                {
+                    return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
+                });
         }
 
         public SearchType GetSearchTypeByName(string searchTypeName)
@@ -83,7 +87,7 @@ namespace DotNetNuke.Services.Search.Internals
             IList<string> synonyms;
             if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLower(), out synonyms))
             {
-                synonyms = EmptySynonums;
+                synonyms = _emptySynonums;
             }
             return synonyms;
         }
@@ -224,18 +228,10 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime GetSearchReindexRequestTime(int portalId)
         {
             var requestedOn = SqlDateTime.MinValue.Value;
-            string reindexRequest;
 
-            if (portalId < 0)
-            {
-                // host level setting
-                reindexRequest = HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString);
-            }
-            else
-            {
-                // portal level setting
-                reindexRequest = PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString);
-            }
+            var reindexRequest = portalId < 0
+                ? HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString) // host level setting
+                : PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString); // portal level setting
 
             if (reindexRequest != Null.NullString)
             {
@@ -379,7 +375,7 @@ namespace DotNetNuke.Services.Search.Internals
                         insideQuote = !insideQuote;
                         if (!insideQuote)
                         {
-                            newPhraseBulder.Append(currentWord.ToString() + " ");
+                            newPhraseBulder.Append(currentWord + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -398,7 +394,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (insideQuote)
             {
                 currentWord.Append('"');
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
             else if (useWildCard)
             {
@@ -406,7 +402,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else
             {
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
 
             return newPhraseBulder.ToString().Trim().Replace("  ", " ");
@@ -550,11 +546,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return allTerms;
-        }
-
-        private object GetSearchTypesCallBack(CacheItemArgs cacheItem)
-        {
-            return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
         }
 
         private object GetSearchStopWordsCallBack(CacheItemArgs cacheItem)

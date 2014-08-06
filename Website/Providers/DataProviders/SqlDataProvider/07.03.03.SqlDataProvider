@@ -7,3 +7,70 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
+
+/********************************************************
+ * TABLE: SearchDeletedItems
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems]', N'U') IS NULL
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}SearchDeletedItems] (
+		[DateCreated] [datetime] NOT NULL DEFAULT GetUtcDate(),
+		[document] nvarchar(max) NULL
+	);
+
+    CREATE INDEX [IX_{objectQualifier}SearchDeletedItems_DateCreated] ON {databaseOwner}[{objectQualifier}SearchDeletedItems]
+	(
+		[DateCreated]
+	);
+END
+GO
+
+/********************************************************
+ * SPROC: SearchDeletedItems_Add
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Add]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Add]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Add]
+	@document nvarchar(max)
+AS
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}SearchDeletedItems_Add
+		   (  document )
+	VALUES ( @document )
+END
+GO
+
+/********************************************************
+ * SPROC: SearchDeletedItems_DeleteProcessed
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_DeleteProcessed]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_DeleteProcessed]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SearchDeletedItems_DeleteProcessed
+    @CutoffTime	DATETIME
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}SearchDeletedItems
+	WHERE [DateCreated] < @CutoffTime
+END
+GO
+
+/********************************************************
+ * SPROC: SearchDeletedItems_Select
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Select]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+    @CutoffTime	DATETIME
+AS
+BEGIN
+	SELECT document
+	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
+	WHERE [DateCreated] < @CutoffTime
+END
+GO

@@ -58,10 +58,10 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string KeywordsPrefixTag = "kw-";
         internal const string RoleIdTag = "role";
 
-        internal const string FolderIdTag = "folderid";
-        internal const string FileIdTag = "fileid";
-        internal const string FolderNameTag = "foldername";
-        internal const string FileNameTag = "filename";
+        //internal const string FolderIdTag = "folderid";
+        //internal const string FileIdTag = "fileid";
+        //internal const string FolderNameTag = "foldername";
+        //internal const string FileNameTag = "filename";
 
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
         internal const string ReinsdexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
