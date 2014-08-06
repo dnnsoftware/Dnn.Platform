@@ -1787,11 +1787,11 @@ namespace DotNetNuke.Services.FileSystem
                                                file.EnablePublishPeriod,
                                                file.ContentItemID);
 
-            OnFileMetadataChanged(file, GetCurrentUserID());
-
             DataCache.RemoveCache("GetFileById" + file.FileId);
+            var updatedFile = GetFile(file.FileId);
 
-            return file;
+            OnFileMetadataChanged(updatedFile, GetCurrentUserID());
+            return updatedFile;
         }
 
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
