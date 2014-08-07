@@ -32,12 +32,15 @@ using System.Web;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Services.Journal
 {
@@ -129,6 +132,21 @@ namespace DotNetNuke.Services.Journal
             {
                 UpdateGroupStats(portalId, groupId);
             }
+
+            // queue remove journal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+                AuthorUserId = currentUserId,
+                UniqueKey = ji.ContentItemId.ToString("D"),
+                //QueryString = "journalid=" + journalId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            };
+
+            if (groupId > 0)
+                document.RoleId = groupId;
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
         
         private Stream GetJournalImageContent(Stream fileContent)
@@ -713,6 +731,7 @@ namespace DotNetNuke.Services.Journal
         public void DeleteComment(int journalId, int commentId)
         {
             _dataService.Journal_Comment_Delete(journalId, commentId);
+            //UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
         public void LikeComment(int journalId, int commentId, int userId, string displayName)

@@ -49,6 +49,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.OutputCache;
+using DotNetNuke.Services.Search.Entities;
 
 #endregion
 
@@ -1100,6 +1101,14 @@ namespace DotNetNuke.Entities.Modules
 
             //Log deletion
             EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
+
+            // queue remove module from search index
+            var document = new SearchDocumentToDelete
+            {
+                ModuleId = moduleId
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         /// <summary>

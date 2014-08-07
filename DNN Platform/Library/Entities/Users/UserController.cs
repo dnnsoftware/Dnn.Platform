@@ -29,6 +29,7 @@ using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -846,6 +847,7 @@ namespace DotNetNuke.Entities.Users
                 DeleteUserPermissions(user);
                 canDelete = MembershipProvider.Instance().DeleteUser(user);
             }
+
             if (canDelete)
             {
                 //Obtain PortalSettings from Current Context
@@ -864,6 +866,16 @@ namespace DotNetNuke.Entities.Users
 					DataCache.ClearPortalCache(portalSettings.PortalId, false);
 					DataCache.ClearUserCache(portalSettings.PortalId, user.Username);
 				}
+
+                // queue remove user contributions from search index
+                var document = new Services.Search.Entities.SearchDocumentToDelete
+                {
+                    PortalId = portalId,
+                    AuthorUserId = user.UserID,
+                    SearchTypeId = Services.Search.Internals.SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId
+                };
+
+                DataProvider.Instance().AddSearchDeletedItems(document);
             }
 
             FixMemberPortalId(user, portalId);

@@ -51,6 +51,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Search.Entities;
 
 #endregion
 
@@ -571,6 +572,14 @@ namespace DotNetNuke.Entities.Tabs
                             PortalController.Instance.GetCurrentPortalSettings(),
                             UserController.Instance.GetCurrentUserInfo().UserID,
                             EventLogController.EventLogType.TAB_DELETED);
+
+            // queue remove tab/page from search index
+            var document = new SearchDocumentToDelete
+            {
+                TabId = tabId
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)
