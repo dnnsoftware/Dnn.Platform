@@ -60,6 +60,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 //using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Web.Client;
 using ICSharpCode.SharpZipLib.Zip;
 using Assembly = System.Reflection.Assembly;
@@ -547,6 +548,14 @@ namespace DotNetNuke.Entities.Portals
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
+
+            // queue remove portal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         private static bool DoesLogTypeExists(string logTypeKey)

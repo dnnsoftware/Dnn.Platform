@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Search
                 ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
                 searchEngine.DeleteOldDocsBeforeReindex(lastSuccessFulDateTime);
-                searchEngine.DeleteRemovedObjects(lastSuccessFulDateTime);
+                searchEngine.DeleteRemovedObjects(lastSuccessFulDateTime.ToUniversalTime());
                 searchEngine.IndexContent(lastSuccessFulDateTime);
                 foreach (var result in searchEngine.Results)
                 {

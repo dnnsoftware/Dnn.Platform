@@ -155,17 +155,20 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Deletes all deleted items from the system that are added to deletions table.
         /// </summary>
-        /// <param name="cutoffTime"></param>
+        /// <param name="cutoffTime">UTC time for items to tprocess that are created before this time</param>
         internal void DeleteRemovedObjects(DateTime cutoffTime)
         {
-            var controller = InternalSearchController.Instance;
-            var reader = DataProvider.Instance().GetSearchDeletedItems(cutoffTime);
+            var searchController = InternalSearchController.Instance;
+            var dataProvider = DataProvider.Instance();
+            var reader = dataProvider.GetSearchDeletedItems(cutoffTime);
             while (reader.Read())
             {
-                // Note: we saved this in the DB as SearchDocumentToDelete but retrieve it as its descendant SearchDocument
+                // Note: we saved this in the DB as SearchDocumentToDelete but retrieve as the descendant SearchDocument class
                 var document = JsonConvert.DeserializeObject<SearchDocument>(reader["document"] as string);
-                controller.DeleteSearchDocument(document);
+                searchController.DeleteSearchDocument(document);
             }
+
+            dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
 
         #endregion

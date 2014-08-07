@@ -36,7 +36,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Add]
 	@document nvarchar(max)
 AS
 BEGIN
-	INSERT INTO {databaseOwner}{objectQualifier}SearchDeletedItems_Add
+	INSERT INTO {databaseOwner}{objectQualifier}SearchDeletedItems
 		   (  document )
 	VALUES ( @document )
 END
