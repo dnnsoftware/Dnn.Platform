@@ -35,6 +35,8 @@ using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 #endregion
 
@@ -77,14 +79,22 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
+            var searrchDoc = new SearchDocumentToDelete
+            {
+                UniqueKey = contentItem.ContentItemId.ToString("D"),
+                ModuleId = contentItem.ModuleID,
+                TabId = contentItem.TabID,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            };
+            DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
+
             _dataService.DeleteContentItem(contentItem.ContentItemId);
         }
 
         public void DeleteContentItem(int contentItemId)
         {
-            Requires.NotNegative("contentItemId", contentItemId);
-
-            _dataService.DeleteContentItem(contentItemId);
+            var contentItem = GetContentItem(contentItemId);
+            DeleteContentItem(contentItem);
         }
         
         public ContentItem GetContentItem(int contentItemId)
