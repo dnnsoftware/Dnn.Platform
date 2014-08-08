@@ -280,8 +280,8 @@ namespace DotNetNuke.Security.Roles
             // queue remove role/group from search index
             var document = new SearchDocumentToDelete
             {
-                PortalId = role.PortalID,
-                RoleId = role.RoleID,
+                //PortalId = role.PortalID,
+                RoleId = role.RoleID, // this is unique and sufficient
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);

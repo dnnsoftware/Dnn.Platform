@@ -58,6 +58,8 @@ namespace DotNetNuke.Services.Search
         
         public Dictionary<string, int> Results { get; private set; }
 
+        public int DeletedCount { get; private set; }
+
         #endregion
 
         #region internal
@@ -158,6 +160,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="cutoffTime">UTC time for items to tprocess that are created before this time</param>
         internal void DeleteRemovedObjects(DateTime cutoffTime)
         {
+            DeletedCount = 0;
             var searchController = InternalSearchController.Instance;
             var dataProvider = DataProvider.Instance();
             var reader = dataProvider.GetSearchDeletedItems(cutoffTime);
@@ -166,11 +169,19 @@ namespace DotNetNuke.Services.Search
                 // Note: we saved this in the DB as SearchDocumentToDelete but retrieve as the descendant SearchDocument class
                 var document = JsonConvert.DeserializeObject<SearchDocument>(reader["document"] as string);
                 searchController.DeleteSearchDocument(document);
+                DeletedCount += 1;
             }
 
             dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
 
+        /// <summary>
+        /// Commits (flushes) all added and deleted content to search engine's disk file
+        /// </summary>
+        internal void Commit()
+        {
+            InternalSearchController.Instance.Commit();
+        }
         #endregion
 
         #region Private

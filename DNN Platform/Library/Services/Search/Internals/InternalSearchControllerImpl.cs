@@ -270,16 +270,16 @@ namespace DotNetNuke.Services.Search.Internals
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
             if (searchDocs.Any())
             {
-                const int commitBatchSize = 1024;
+                const int commitBatchSize = 1024 * 16;
                 var idx = 0;
-                var added = false;
+                //var added = false;
 
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         AddSearchDocumentInternal(searchDoc, (++idx%commitBatchSize) == 0);
-                        added = true;
+                        //added = true;
                     }
                     catch (Exception ex)
                     {
@@ -287,11 +287,12 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                 }
 
+                //Note: modified to do commit only once at the end of scheduler job
                 // check so we don't commit again
-                if (added && (idx % commitBatchSize) != 0)
-                {
-                    Commit();
-                }
+                //if (added && (idx % commitBatchSize) != 0)
+                //{
+                //    Commit();
+                //}
             }
         }
 

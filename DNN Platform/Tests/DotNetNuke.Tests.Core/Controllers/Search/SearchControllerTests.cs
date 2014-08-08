@@ -1,4 +1,4 @@
-﻿#region Copyright
+﻿ #region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -175,11 +175,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             _mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(_mockUserController.Object);
 
-            DeleteIndexFolder();
-            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
 
-            _internalSearchController = InternalSearchController.Instance;
-            _searchController = new SearchControllerImpl();
             CreateNewLuceneControllerInstance();
         }
 
@@ -190,6 +186,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             DeleteIndexFolder();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
+            SearchHelper.ClearInstance();
+	        LuceneController.ClearInstance();
+	        _luceneController = null;
         }
 
         #endregion
@@ -198,6 +197,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void CreateNewLuceneControllerInstance()
         {
+            DeleteIndexFolder();
+            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
+            _internalSearchController = InternalSearchController.Instance;
+            _searchController = new SearchControllerImpl();
             if (_luceneController != null)
             {
                 LuceneController.ClearInstance();
@@ -223,7 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupLocaleController()
         {
-            _mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = Null.NullInteger, Code = string.Empty });
+            _mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
             _mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
             _mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
             _mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
@@ -256,9 +259,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IDataReader GetPortalCallBack(int portalId, string culture)
         {
-            DataTable table = new DataTable("Portal");
+            var table = new DataTable("Portal");
 
-            var cols = new string[]
+            var cols = new[]
 			           	{
 			           		"PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
 			           		"HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
@@ -271,8 +274,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 table.Columns.Add(col);
             }
 
-            var homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "-1", "-1", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
+                    "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
+                    "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0",
+                    null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
 
             return table.CreateDataReader();
         }
@@ -281,17 +287,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             _mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
             _mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(GetSynonymsCallBack);
-            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>()))
-                              .Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
+            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
             _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(GetSearchTypeByNameCallback);
             _mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(GetSearchTypes());
-            /*_mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEnUs,
-                    StopWords = "the,over",
-                });*/
             _mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
                 new SearchStopWords
                 {
