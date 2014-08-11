@@ -102,7 +102,7 @@
                 });
             }
 
-            var htmlStringContainer;
+            var htmlStringContainer = "";
 
             //Add move to pane entries
             for (i = 0; i < panes.length; i++) {
@@ -117,7 +117,8 @@
             if (htmlStringContainer) {
                 // loop is done, append the HTML and add moveToPane function on click event
                 parent.append(htmlStringContainer);
-                parent.find("li").click(function() {
+                parent.find("li").click(function () {
+                    console.log($(this).attr("id").replace(moduleId, ""));
                     moveToPane($(this).data("paneName"));
                 });
             }
