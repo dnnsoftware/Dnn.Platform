@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Web.Caching;
 using System.Web.Http;
 
 using DotNetNuke.Common.Utilities;
@@ -62,26 +61,14 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private const int ModuleSearchTypeId = 1;
         private const int TabSearchTypeId = 2;
         private const int UserSearchTypeId = 3;
-        private const int DocumentSearchTypeId = 4;
         private const int UrlSearchTypeId = 5;
-        private const int OtherSearchTypeId = 6;
         private const int PortalId0 = 0;
-        private const int PortalId12 = 12;
-        private const int IdeasModuleDefId = 201;
-        private const int BlogsoduleDefId = 202;
-        private const int AnswersModuleDefId = 203;
         private const int HtmlModuleDefId = 20;
         private const int HtmlModuleId = 25;
-        private const int IdeasModuleId = 301;
-        private const int BlogsModuleId = 302;
-        private const int AnswersModuleId = 303;
         private const int RoleId731 = 731;
-        private const int RoleId532 = 532;
         private const int RoleId0 = 0;
         private const int HtmlModDefId = 116;
         private const int TabId1 = 56;
-        private const string TabName1 = "Home";
-        private const string TabNameUrl = "/Home.aspx";
         private const int HtmlModuleId1 = 367;
         private const int HtmlModuleId2 = 368;
         private const int HtmlModuleId3 = 370;
@@ -89,39 +76,18 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private const string HtmlModuleTitle2 = "TitleProducts";
         private const string HtmlModuleTitle3 = "TitleServices";
         private const int TabId2 = 57;
-        private const string TabName2 = "About Us";
-        private const string TabNameUrl2 = "/AboutUs.aspx";
         private const string HtmlModuleTitle4 = "TitleAboutUs";
         private const int HtmlModuleId4 = 378;
         private const int UserId1 = 1;
         private const string UserName1 = "User1";
-        private const string Tag0 = "tag0";
-        private const string Tag0WithSpace = "tag0 hello";
-        private const string Tag1 = "tag1";
-        private const string Tag2 = "tag2";
-        private const string Tag3 = "tag3";
-        private const string Tag4 = "tag4";
-        private const string TagTootsie = "tootsie";
-        private const string TagLatest = "latest";
-        private const string TagOldest = "oldest";
-        private const string TagIt = "IT";
-        private const string TagNeutral = "Neutral";
         
-        private const string ModuleSearchTypeName = "module";
         private const string UserSearchTypeName = "user";
-        private const string OtherSearchTypeName = "other";
         private const string TabSearchTypeName = "tab";
-        private const string DocumentSearchTypeName = "document";
         private const string UrlSearchTypeName = "url";
 
-        private const string ModuleResultControllerClass = "DotNetNuke.Tests.Web.InternalServices.FakeResultController, DotNetNuke.Tests.Web";
         private const string FakeResultControllerClass = "DotNetNuke.Tests.Web.InternalServices.FakeResultController, DotNetNuke.Tests.Web";
-        private const string NoPermissionFakeResultControllerClass = "DotNetNuke.Tests.Web.InternalServices.NoPermissionFakeResultController, DotNetNuke.Tests.Web";
         
         private const string CultureEnUs = "en-US";
-        private const string CultureEnCa = "en-CA";
-        private const string CultureItIt = "it-IT";
-        private const string CultureEsEs = "es-ES";
         
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
@@ -562,18 +528,19 @@ namespace DotNetNuke.Tests.Web.InternalServices
         #endregion
 
         private IEnumerable<GroupedBasicView> GetGroupBasicViewResults(SearchQuery query)
-       {
-           var userSearchContentSource = new SearchContentSource
-                                             {
-                                                 SearchTypeId = UrlSearchTypeId,
-                                                 SearchTypeName = UrlSearchTypeName,
-                                                 SearchResultClass = FakeResultControllerClass,
-                                                 LocalizedName = UserSearchTypeName,
-                                                 ModuleDefinitionId = 0
-                                             };
-           var results = _searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
-           return results;
-       }
+        {
+            var userSearchContentSource = new SearchContentSource
+            {
+                SearchTypeId = UrlSearchTypeId,
+                SearchTypeName = UrlSearchTypeName,
+                SearchResultClass = FakeResultControllerClass,
+                LocalizedName = UserSearchTypeName,
+                ModuleDefinitionId = 0
+            };
+            var results = _searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
+            return results;
+        }
+
         private IEnumerable<GroupedDetailView> GetGroupedDetailViewResults(SearchQuery searchQuery)
         {
             bool more = false;
@@ -634,6 +601,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             //UserUrl has 1 DetailViews 
             Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results.Count());
         }
+
         [Test]
         public void GetSearchResultsBasic()
         {
@@ -642,34 +610,34 @@ namespace DotNetNuke.Tests.Web.InternalServices
             const string tabUrl1 = "mysite/Home";
             const string tabUrl2 = "mysite/AboutUs";
 
-            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
-            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
-            var userdoc = new SearchDocument { UniqueKey = "key03", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
+            var now = DateTime.UtcNow;
+            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId731 };
+            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0 };
+            var userdoc = new SearchDocument { UniqueKey = "key03", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0 };
+
             _internalSearchController.AddSearchDocument(doc1);
             _internalSearchController.AddSearchDocument(doc2);
             _internalSearchController.AddSearchDocument(userdoc);
+            _internalSearchController.Commit();
 
             var query = new SearchQuery
             {
                 KeyWords = keyword,
                 PortalIds = new List<int> { PortalId0 },
                 SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
-                ModuleDefIds = new List<int> { HtmlModDefId },
-                BeginModifiedTimeUtc = DateTime.Now.AddHours(-1.00),
-                EndModifiedTimeUtc = DateTime.Now > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
+                BeginModifiedTimeUtc = now.AddMinutes(-1),
+                EndModifiedTimeUtc = now.AddMinutes(+1),
                 PageIndex = 1,
                 PageSize = 15,
                 SortField = 0,
                 TitleSnippetLength = 120,
                 BodySnippetLength = 300,
-                CultureCode = CultureEnUs,
                 WildCardSearch = true
             };
 
             //Run 
             var search = GetGroupBasicViewResults(query);
-            //Assert
-            //Overal 2 groups - tabs and users
+            //Assert - overall 2 groups: tabs and users
             var groupedBasicViews = search as List<GroupedBasicView> ?? search.ToList();
             Assert.AreEqual(2, groupedBasicViews.Count());
 
