@@ -118,8 +118,7 @@
                 // loop is done, append the HTML and add moveToPane function on click event
                 parent.append(htmlStringContainer);
                 parent.find("li").click(function () {
-                    console.log($(this).attr("id").replace(moduleId, ""));
-                    moveToPane($(this).data("paneName"));
+                    moveToPane($(this).attr("id").replace(moduleId, ""));
                 });
             }
         }
