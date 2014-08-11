@@ -14,11 +14,14 @@
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems]', N'U') IS NULL
 BEGIN
 	CREATE TABLE {databaseOwner}[{objectQualifier}SearchDeletedItems] (
+		[SearchDeletedID] Int Identity (1,1),
 		[DateCreated] [datetime] NOT NULL DEFAULT GetUtcDate(),
 		[document] nvarchar(max) NULL
+		CONSTRAINT [PK_{objectQualifier}SearchDeletedItems] PRIMARY KEY NONCLUSTERED ([SearchDeletedID])
 	);
 
-    CREATE INDEX [IX_{objectQualifier}SearchDeletedItems_DateCreated] ON {databaseOwner}[{objectQualifier}SearchDeletedItems]
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}SearchDeletedItems_DateCreated] 
+       ON {databaseOwner}[{objectQualifier}SearchDeletedItems]
 	(
 		[DateCreated]
 	);
@@ -72,5 +75,6 @@ BEGIN
 	SELECT document
 	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
 	WHERE [DateCreated] < @CutoffTime
+	ORDER BY [DateCreated]
 END
 GO
