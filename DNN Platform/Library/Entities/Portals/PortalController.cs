@@ -84,9 +84,19 @@ namespace DotNetNuke.Entities.Portals
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
+        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
+        }
+
+        public PortalController()
+        {
+            foreach (var value in PortalEventHandlersContainer.Instance.PortalEventHandlers.Select(e => e.Value))
+            {
+                PortalCreated += value.PortalCreated;
+            }
         }
 
         #region Private Methods
@@ -390,6 +400,11 @@ namespace DotNetNuke.Entities.Portals
                     catch (Exception exc)
                     {
                         Logger.Error(exc);
+                    }
+
+                    if (PortalCreated != null)
+                    {
+                        PortalCreated(this, new PortalCreatedEventArgs { PortalId = portalId});
                     }
                 }
                 else

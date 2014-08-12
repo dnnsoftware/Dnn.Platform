@@ -25,7 +25,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -33,7 +32,7 @@ namespace DotNetNuke.Entities.Portals
     /// Do not implement.  This interface is meant for reference and unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
-    public interface IPortalController
+    public interface IPortalController    
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
