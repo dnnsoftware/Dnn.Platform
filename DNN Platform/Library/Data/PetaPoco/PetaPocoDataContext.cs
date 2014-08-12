@@ -73,6 +73,12 @@ namespace DotNetNuke.Data.PetaPoco
             _database.CompleteTransaction();
         }
 
+        public bool EnableAutoSelect
+        {
+            get { return _database.EnableAutoSelect; }
+            set { _database.EnableAutoSelect = value; }
+        }
+
         public void Execute(CommandType type, string sql, params object[] args)
         {
             if (type == CommandType.StoredProcedure)

@@ -175,6 +175,13 @@ namespace DotNetNuke.Entities.Tabs
             var portalId = GetPortalId(tabId, -1);
             string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
+
+            //aslo clear the settings from tab object in cache.
+            var tab = GetTab(tabId, portalId, false);
+            if (tab != null)
+            {
+                tab.ClearSettingsCache();
+            }
         }
 
         private void CreateTabRedirect(TabInfo tab)
@@ -892,9 +899,18 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Copy Permissions from original Tab for Admins only
+                //If original tab is user tab or its parent tab is user tab, then copy full permission
+                //from original tab.
                 PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
-                localizedCopy.TabPermissions.AddRange(
+                if (originalTab.TabID == portal.UserTabId || originalTab.ParentId == portal.UserTabId)
+                {
+                    localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions);
+                }
+                else
+                {
+                    localizedCopy.TabPermissions.AddRange(
                     originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
+                }
 
                 //Get the original Tabs Parent
                 //check the original whether have parent.
@@ -912,10 +928,10 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, true);
+                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
 
                 //Make shallow copies of all modules
-                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true);
+                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, true);
 
                 //Convert these shallow copies to deep copies
                 foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))

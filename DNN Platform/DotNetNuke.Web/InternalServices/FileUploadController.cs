@@ -55,7 +55,7 @@ using DotNetNuke.Web.Api.Internal;
 
 namespace DotNetNuke.Web.InternalServices
 {
-    [DnnAuthorize]
+    [DnnAuthorize]    
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
@@ -535,6 +535,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
+        [AllowAnonymous]
         public Task<HttpResponseMessage> UploadFromLocal()
         {
             var request = Request;
@@ -628,6 +629,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public HttpResponseMessage UploadFromUrl(UploadByUrlDto dto)
         {
             FileUploadDto result;

@@ -250,7 +250,7 @@ namespace DotNetNuke.Entities.Users
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<Dictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, 
-                                                            DataCache.UserLookupCachePriority), (c) => new Dictionary<int, string>());
+                                                            DataCache.UserLookupCachePriority), (c) => new Dictionary<int, string>(),true);
         }
 
         internal static Hashtable GetUserSettings(int portalId, Hashtable settings)

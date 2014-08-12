@@ -93,6 +93,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _folderManager = new FolderManager();
 
             _folderInfo = new Mock<IFolderInfo>();
+
         }
 
         [TearDown]
@@ -100,6 +101,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             UserSecurityController.ClearInstance();
             FileLockingController.ClearInstance();
+            MockComponentProvider.ResetContainer();
+            CBO.ClearInstance();
+            FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
         }
 
@@ -213,6 +217,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFolder_Throws_OnNullFolder_WhenRecursive()
         {
+            //Arrange
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
             //Act
             var notDeletedSubfolders = new List<IFolderInfo>();
             _folderManager.DeleteFolder(null, notDeletedSubfolders);
@@ -228,6 +236,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             _mockFolder.Setup(mf => mf.DeleteFolder(folderInfo)).Verifiable();
 
@@ -271,6 +280,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             _mockFolder.Setup(mf => mf.DeleteFolder(folderInfo)).Verifiable();
             _mockFolder.Setup(mf => mf.DeleteFolder(subfolder1)).Verifiable();
@@ -318,6 +328,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             _mockFolder.Setup(mf => mf.DeleteFolder(subfolder1));
             
@@ -362,6 +373,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             //_mockFolder.Setup(mf => mf.DeleteFolder(folderInfo));
 

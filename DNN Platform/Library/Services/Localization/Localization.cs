@@ -1896,7 +1896,7 @@ namespace DotNetNuke.Services.Localization
                         // check to see if this is the last extra language being added to the portal
                         var lastLanguage = LocaleController.Instance.GetLocales(portalID).Count == 2;
 
-                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID);
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
                         foreach (var portalAliasInfo in portalAliases)
                         {
                             if (portalAliasInfo.CultureCode == language.Code)
@@ -1907,6 +1907,17 @@ namespace DotNetNuke.Services.Localization
                             if (lastLanguage && portalAliasInfo.CultureCode == portalInfo.DefaultLanguage)
                             {
                                 PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
+
+                                //Fix PortalSettings for the rest of this request
+                                var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == String.Empty);
+                                if (newDefaultAlias != null)
+                                {
+                                    var settings = PortalController.Instance.GetCurrentPortalSettings();
+                                    if (settings != null)
+                                    {
+                                        settings.PortalAlias = newDefaultAlias;
+                                    }
+                                }
                             }
                         }
                     }

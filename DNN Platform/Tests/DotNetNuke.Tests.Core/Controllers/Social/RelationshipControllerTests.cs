@@ -84,10 +84,22 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("0");
             HostController.RegisterInstance(mockHostController.Object);
 
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(c => c.GetCurrentUserInfo()).Returns(new UserInfo() { UserID = 1});
+            UserController.SetTestableInstance(mockUserController.Object);
+
             CreateLocalizationProvider();
 
             SetupDataTables();						
 		}
+
+        [TearDown]
+        public void TearDown()
+        {
+            ComponentFactory.Container = null;
+            PortalController.ClearInstance();
+            UserController.ClearInstance();
+        }
 
 		#endregion
 

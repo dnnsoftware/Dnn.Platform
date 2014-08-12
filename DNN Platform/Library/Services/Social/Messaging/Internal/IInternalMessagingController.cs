@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         MessageRecipient GetMessageRecipient(int messageId, int userId);
         IList<MessageRecipient> GetMessageRecipients(int messageId);
         void DeleteMessageRecipient(int messageId, int userId);
-
+        void DeleteUserFromConversation(int conversationId, int userId);
 
         void MarkRead(int conversationId, int userId);
         void MarkUnRead(int conversationId, int userId);
@@ -133,6 +133,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         int CountSentMessages(int userId, int portalId);
 
         int CountArchivedMessages(int userId, int portalId);
+
+        int CountSentConversations(int userId, int portalId);
+
+        int CountArchivedConversations(int userId, int portalId);
 
         #endregion
     }

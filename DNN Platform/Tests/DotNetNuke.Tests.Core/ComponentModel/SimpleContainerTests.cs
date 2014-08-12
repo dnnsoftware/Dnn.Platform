@@ -40,6 +40,17 @@ namespace DotNetNuke.Tests.Core.ComponentModel
             var retrieved = container.GetComponentList(typeof(IList));
 
             CollectionAssert.AreEqual(new List<string> {"payload"}, retrieved);
-        } 
+        }
+
+        [Test]
+        public void RegisterComponentInstance_Must_Register_In_ComponentsList()
+        {
+            var container = new SimpleContainer();
+            ComponentFactory.Container = container;
+
+            container.RegisterComponentInstance("test", typeof(IList<string>), new List<string>());
+
+            Assert.Contains("test", ComponentFactory.GetComponents<IList<string>>().Keys);
+        }
     }
 }

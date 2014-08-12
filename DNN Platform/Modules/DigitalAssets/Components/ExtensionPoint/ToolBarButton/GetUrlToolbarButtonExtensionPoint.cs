@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public int Order
         {
-            get { return 6; }
+            get { return 8; }
         }
 
         public bool Enabled

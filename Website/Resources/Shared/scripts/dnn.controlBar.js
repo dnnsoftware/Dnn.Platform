@@ -73,7 +73,7 @@ dnn.controlBar.init = function (settings) {
                                 forceScrollX,
                                 searchTerm
                             ].join('|');
-        dnn.dom.setCookie('ControlBarInitStatus', persistValue);
+        dnn.dom.setCookie('ControlBarInitStatus', persistValue, 0, dnn.controlBar.getSiteRoot());
         dnn.controlBar.status = null;
     };
     dnn.controlBar.loadStatus = function () {
@@ -98,11 +98,11 @@ dnn.controlBar.init = function (settings) {
         else {
             dnn.controlBar.status = null;
         }
-        dnn.dom.setCookie('ControlBarInitStatus', '', -1);
+        dnn.dom.setCookie('ControlBarInitStatus', '', -1, dnn.controlBar.getSiteRoot());
     };
     dnn.controlBar.removeStatus = function () {
         dnn.controlBar.status = null;
-        dnn.dom.setCookie('ControlBarInitStatus', '', -1);
+        dnn.dom.setCookie('ControlBarInitStatus', '', -1, dnn.controlBar.getSiteRoot());
     };
     dnn.controlBar.responseError = function (xhr) {
         if (xhr) {
@@ -454,7 +454,7 @@ dnn.controlBar.init = function (settings) {
             beforeSend: service.setModuleHeaders,
             success: function (d) {
                 dnn.controlBar.addingModule = false;
-                dnn.dom.setCookie('FadeModuleID', d.TabModuleID);
+                dnn.dom.setCookie('FadeModuleID', d.TabModuleID, 0, dnn.controlBar.getSiteRoot());
                 // save status to restore add module panel when page refresh
                 dnn.controlBar.saveStatus();
                 window.location.href = window.location.href.split('#')[0];
@@ -1310,7 +1310,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'CreateModule');
+                    dnn.dom.setCookie('ControlBarInit', 'CreateModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -1321,6 +1321,7 @@ dnn.controlBar.init = function (settings) {
             return false;
         }
 
+        dnn.controlBar.forceCategorySelection = true;
         $find(settings.categoryComboId).findItemByValue("Developer").select();
         addModule();
     }
@@ -1335,7 +1336,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'AddNewModule');
+                    dnn.dom.setCookie('ControlBarInit', 'AddNewModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -1374,7 +1375,7 @@ dnn.controlBar.init = function (settings) {
                 data: { UserMode: 'EDIT' },
                 beforeSend: service.setModuleHeaders,
                 success: function () {
-                    dnn.dom.setCookie('ControlBarInit', 'AddExistingModule');
+                    dnn.dom.setCookie('ControlBarInit', 'AddExistingModule', 0, dnn.controlBar.getSiteRoot());
                     window.location.href = window.location.href.split('#')[0];
                 },
                 error: function (xhr) {
@@ -1741,7 +1742,7 @@ dnn.controlBar.init = function (settings) {
     // initialize -- this action is between page mode toggle
     var initAction = dnn.dom.getCookie('ControlBarInit');
     if (initAction) {
-        dnn.dom.setCookie('ControlBarInit', '', -1);
+        dnn.dom.setCookie('ControlBarInit', '', -1, dnn.controlBar.getSiteRoot());
         // load status
         dnn.controlBar.loadStatus();
         switch (initAction) {
@@ -1768,7 +1769,7 @@ dnn.controlBar.init = function (settings) {
     // fade module if needed
     var fadeModule = dnn.dom.getCookie('FadeModuleID');
     if (fadeModule) {
-        dnn.dom.setCookie('FadeModuleID', '', -1);
+        dnn.dom.setCookie('FadeModuleID', '', -1, dnn.controlBar.getSiteRoot());
         var anchorLink = $('a[name="' + fadeModule + '"]');
         var module = anchorLink.parent();
         if (module && module.length > 0) {

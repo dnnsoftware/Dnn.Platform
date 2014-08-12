@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Portals
             if (portal != null)
             {
                 portal.PortalGroupID = portalGroup.PortalGroupId;
-                PortalController.Instance.UpdatePortalInfo(portal);
+                _portalController.UpdatePortalInfo(portal);
             }
 
             ClearCache();
@@ -378,6 +378,12 @@ namespace DotNetNuke.Entities.Portals
             _dataService.UpdatePortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearCache();
+        }
+        
+        public bool IsModuleShared(int moduleId, PortalInfo portal)
+        {
+            if (portal == null) return false;
+            return GetSharedModulesWithPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted) || GetSharedModulesByPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted);
         }
 
         #endregion

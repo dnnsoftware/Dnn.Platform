@@ -8,8 +8,8 @@
     <ProjectGuid>{0E8502FD-DE8B-46A5-AB96-B1BE39777917}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetNuke.Tests.Content</RootNamespace>
-    <AssemblyName>DotNetNuke.Tests.Content</AssemblyName>
+    <RootNamespace>DotNetNuke.Tests.Authentication</RootNamespace>
+    <AssemblyName>DotNetNuke.Tests.Authentication</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

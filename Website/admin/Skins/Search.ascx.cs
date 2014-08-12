@@ -23,6 +23,8 @@
 using System;
 using System.Collections;
 
+using ClientDependency.Core;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -466,7 +468,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
                         
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Search/SearchSkinObjectPreview.js");
             
 

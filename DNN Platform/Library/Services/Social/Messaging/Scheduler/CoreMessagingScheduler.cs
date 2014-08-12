@@ -398,7 +398,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         private static string GetNotificationUrl(PortalSettings portalSettings, int userId)
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}", portalSettings.PortalId);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", portalSettings.PortalId, portalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId <= 0)
             {

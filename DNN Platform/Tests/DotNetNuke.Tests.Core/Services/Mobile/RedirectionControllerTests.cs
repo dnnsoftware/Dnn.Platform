@@ -26,6 +26,7 @@ using System.Data;
 using System.Reflection;
 using System.Web;
 
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -107,6 +108,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		public void SetUp()
 		{
 			ComponentFactory.Container = new SimpleContainer();
+            UnitTestHelper.ClearHttpContext();
 			_dataProvider = MockComponentProvider.CreateDataProvider();
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
@@ -960,7 +962,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private HttpApplication GenerateApplication()
 		{
-			UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
+
 			var app = new HttpApplication();
 
 			var requestProp = typeof(NameValueCollection).GetProperty("IsReadOnly", BindingFlags.Instance | BindingFlags.NonPublic);

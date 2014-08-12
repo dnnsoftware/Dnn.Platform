@@ -136,7 +136,7 @@
     <value>Delete</value>
   </data>
   <data name="FolderAlreadyExists.Error" xml:space="preserve">
-    <value>A folder with that name already exists. Please choose a different name.</value>
+    <value>Cannot create folder ({0}), folder already exists in this location.</value>
   </data>
   <data name="FolderFileNameHasInvalidcharacters.Error" xml:space="preserve">
     <value>The name contains invalid character(s). Please specify a name without {0}</value>
@@ -329,5 +329,14 @@
   </data>
   <data name="ManageFolderTypesToolBarButtonExtensionPoint.Text" xml:space="preserve">
     <value>Manage Folder Types</value>
+  </data>
+  <data name="UnlinkToolBarButtonExtensionPoint.AltText" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkToolBarButtonExtensionPoint.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UserHasNoPermissionToUnlinkFolder.Error" xml:space="preserve">
+    <value>The user has no permission to unlink this folder</value>
   </data>
 </root>

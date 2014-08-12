@@ -29,7 +29,8 @@
                 noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                 confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
                 rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
-                supportsMove: <% = SupportsMove.ToString().ToLower() %>
+                supportsMove: <% = SupportsMove.ToString().ToLower() %>,
+                IsShared : <% = IsShared.ToString().ToLower() %>
             });
 
             $('.dnn_mact > li.actionMenuMove > ul').jScrollPane();

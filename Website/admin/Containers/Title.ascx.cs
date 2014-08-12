@@ -89,8 +89,8 @@ namespace DotNetNuke.UI.Containers
             {
                 moduleTitle = " ";
             }
-            var ps = new PortalSecurity();
-            titleLabel.Text = ps.InputFilter(moduleTitle,PortalSecurity.FilterFlag.NoScripting);
+
+            titleLabel.Text = moduleTitle;
             titleLabel.EditEnabled = false;
             titleToolbar.Visible = false;
 
@@ -108,7 +108,10 @@ namespace DotNetNuke.UI.Containers
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
 
-                moduleInfo.ModuleTitle = e.Text;
+                var ps = new PortalSecurity();
+                var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
+                moduleInfo.ModuleTitle = mt;
+
                 ModuleController.Instance.UpdateModule(moduleInfo);
             }
         }

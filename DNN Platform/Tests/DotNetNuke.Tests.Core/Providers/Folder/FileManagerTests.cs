@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -117,9 +118,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TearDown]
         public void TearDown()
         {
+            TestableGlobals.ClearInstance();
+            CBO.ClearInstance();
+
+            FolderPermissionController.ClearInstance();
             FileLockingController.ClearInstance();
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
+            PortalController.ClearInstance();
+
         }
 
         #endregion
@@ -210,6 +217,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
+
 
             _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
 
@@ -268,6 +277,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
+            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
             _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
 
@@ -1037,7 +1047,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
-                It.IsAny<string>(),
                 It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
@@ -1071,6 +1080,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
 
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 
             _fileInfo.VerifySet(fi => fi.Width = 10);
@@ -1088,6 +1100,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
 
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
+
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 
             _fileInfo.VerifySet(fi => fi.SHA1Hash = Constants.FOLDER_UnmodifiedFileHash);
@@ -1103,6 +1118,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.GetHash(_fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
+
+            _folderMappingController.Setup(mp => mp.GetFolderMapping(It.IsAny<int>())).Returns(new FolderMappingInfo() { FolderProviderType = Constants.FOLDER_ValidFolderProviderType });
+            _mockFolder.Setup(fp => fp.GetHashCode(It.IsAny<IFileInfo>(), It.IsAny<Stream>())).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             _mockFileManager.Object.UpdateFile(_fileInfo.Object, stream);
 
@@ -1153,6 +1171,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void GetContentType_Returns_Known_Value_When_Extension_Is_Not_Managed()
         {
             const string notManagedExtension = "asdf609vas21AS:F,l/&%/(%$";
+            _mockFileManager.Setup(mfm => mfm.ContentTypes).Returns(new Dictionary<string, string>());
 
             var contentType = _fileManager.GetContentType(notManagedExtension);
 

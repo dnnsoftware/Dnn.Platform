@@ -106,6 +106,7 @@
     <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\ExtensionPoint\ToolBarButton\UnlinkToolbarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\ManageFolderTypesToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="Services\ContentServiceController.cs" />
     <Compile Include="Services\DamExceptionFilterAttribute.cs" />
     <Compile Include="Services\DownloadServiceController.cs" />
+    <Compile Include="Services\Models\MappedPathSubFoldersCountRequest.cs" />
+    <Compile Include="Services\Models\UnlinkFolderRequest.cs" />
     <Compile Include="Services\Models\SearchFolderContentRequest.cs" />
     <Compile Include="Services\Models\GetUrlRequest.cs" />
     <Compile Include="Services\Models\SynchronizeFolderRequest.cs" />

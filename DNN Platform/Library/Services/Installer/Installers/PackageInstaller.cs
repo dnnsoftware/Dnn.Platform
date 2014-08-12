@@ -478,11 +478,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (packageType.SupportsSideBySideInstallation)
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.Version == Package.Version);                
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name
+                                                                                                            && p.PackageType == Package.PackageType
+                                                                                                            && p.Version == Package.Version);                
             }
             else
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.PackageType == Package.PackageType);
             }
 
             if (_installedPackage != null)

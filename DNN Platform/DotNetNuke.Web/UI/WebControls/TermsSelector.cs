@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
 using Telerik.Web.UI;
 
@@ -65,6 +66,8 @@ namespace DotNetNuke.Web.UI.WebControls
             ItemTemplate = new TreeViewTemplate();
             Items.Add(new RadComboBoxItem());
             base.OnInit(e);
+
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
 			OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
 			if (!string.IsNullOrEmpty(CssClass))

@@ -388,13 +388,13 @@
     <value>How often you will receive emails informing you of messages from users on the site.</value>
   </data>
   <data name="lblMessageFreq.Text" xml:space="preserve">
-    <value>Message Frequency:</value>
+    <value>Message Digest Frequency:</value>
   </data>
   <data name="lblNotificationFreq.Help" xml:space="preserve">
     <value>How often you will receive emails informing you of site notifications.</value>
   </data>
   <data name="lblNotificationFreq.Text" xml:space="preserve">
-    <value>Notification Frequency:</value>
+    <value>Notification Digest Frequency:</value>
   </data>
   <data name="EmailDeliverySchedule.Text" xml:space="preserve">
     <value>Email Delivery Schedule</value>

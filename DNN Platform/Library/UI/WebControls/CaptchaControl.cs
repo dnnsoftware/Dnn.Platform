@@ -32,7 +32,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
@@ -461,19 +461,19 @@ namespace DotNetNuke.UI.WebControls
 			g = Graphics.FromImage(bmp);
 
 			Brush b = new LinearGradientBrush(rect,
-											  Color.FromArgb(_Rand.Next(192), _Rand.Next(192), _Rand.Next(192)),
-											  Color.FromArgb(_Rand.Next(192), _Rand.Next(192), _Rand.Next(192)),
+                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
 											  Convert.ToSingle(_Rand.NextDouble())*360,
 											  false);
 			g.FillRectangle(b, rectF);
 
 			if (_Rand.Next(2) == 1)
 			{
-				DistortImage(ref bmp, _Rand.Next(5, 10));
+				DistortImage(ref bmp, _Rand.Next(5, 20));
 			}
 			else
 			{
-				DistortImage(ref bmp, -_Rand.Next(5, 10));
+				DistortImage(ref bmp, -_Rand.Next(5, 20));
 			}
 			return bmp;
 		}
@@ -767,6 +767,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		protected virtual string GetNextCaptcha()
 		{
+            
 			var sb = new StringBuilder();
 			var rand = new Random();
 			int n;
@@ -776,7 +777,11 @@ namespace DotNetNuke.UI.WebControls
 			{
 				sb.Append(CaptchaChars.Substring(rand.Next(intMaxLength), 1));
 			}
-			return sb.ToString();
+		    var challenge = sb.ToString();
+            
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
+            DataCache.SetCache(cacheKey, challenge, TimeSpan.FromMinutes(2));
+			return challenge;
 		}
 
 		/// <summary>
@@ -788,23 +793,26 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		protected override void LoadViewState(object savedState)
 		{
-			if (savedState != null)
-			{
-				//Load State from the array of objects that was saved at SaveViewState.
-				var myState = (object[]) savedState;
-				
-				//Load the ViewState of the Base Control
-				if (myState[0] != null)
-				{
-					base.LoadViewState(myState[0]);
-				}
-				
-				//Load the CAPTCHA Text from the ViewState
-				if (myState[1] != null)
-				{
-					_CaptchaText = Convert.ToString(myState[1]);
-				}
-			}
+            if (savedState != null)
+            {
+                //Load State from the array of objects that was saved at SaveViewState.
+                var myState = (object[])savedState;
+
+                //Load the ViewState of the Base Control
+                if (myState[0] != null)
+                {
+                    base.LoadViewState(myState[0]);
+                }
+
+                //Load the CAPTCHA Text from the ViewState
+                if (myState[1] != null)
+                {
+                    _CaptchaText = Convert.ToString(myState[1]);
+                }
+            }
+            //var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
+            //_CaptchaText
+                
 		}
 
 		/// <summary>
@@ -929,6 +937,7 @@ namespace DotNetNuke.UI.WebControls
 				_CaptchaText = GetNextCaptcha();
 			}
 			allStates[1] = _CaptchaText;
+     
 			return allStates;
 		}
 
@@ -945,14 +954,19 @@ namespace DotNetNuke.UI.WebControls
 		/// </history>
 		public bool Validate(string userData)
 		{
-			if (string.Compare(userData, _CaptchaText, false, CultureInfo.InvariantCulture) == 0)
-			{
-				_IsValid = true;
-			}
-			else
-			{
-				_IsValid = false;
-			}
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
+            var cacheObj = DataCache.GetCache(cacheKey);
+
+		    if (cacheObj == null)
+		    {
+                _IsValid = false;
+		    }
+		    else
+		    {
+                _IsValid = true;
+                DataCache.RemoveCache(cacheKey);
+		    }
+            
             OnUserValidated(new ServerValidateEventArgs(_CaptchaText, _IsValid));
 			return _IsValid;
 		}

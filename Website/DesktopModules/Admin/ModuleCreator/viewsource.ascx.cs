@@ -358,14 +358,20 @@ namespace DotNetNuke.Modules.Admin.Modules
                 tr.Close();
 
                 //replace tokens
-                sourceCode = sourceCode.Replace("[OWNER]", objPackage.Owner.Replace(" ", ""));
-                sourceCode = sourceCode.Replace("[MODULE]", objDesktopModule.FriendlyName.Replace(" ", ""));
-                sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
-                sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
+                var owner = objPackage.Owner.Replace(" ", "");
+                if (string.IsNullOrEmpty(owner))
+                {
+                    owner = "DNN";
+                }
+                sourceCode = sourceCode.Replace("_OWNER_", owner);
+                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
+                sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
                 {

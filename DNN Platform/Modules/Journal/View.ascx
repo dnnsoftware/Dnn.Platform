@@ -1,4 +1,5 @@
 <%@ Control language="C#" Inherits="DotNetNuke.Modules.Journal.View" AutoEventWireup="false"  Codebehind="View.ascx.cs" %>
+<%@ Import Namespace="System.Web.Configuration" %>
 <%@ Register Namespace="DotNetNuke.Modules.Journal.Controls" Assembly="DotNetNuke.Modules.Journal" TagPrefix="dnnj" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 
@@ -127,6 +128,7 @@
     journalOptions.yesText = '<%= LocalizeSafeJsString("Yes.Text") %>';
     journalOptions.noText = '<%= LocalizeSafeJsString("No.Text") %>';
     journalOptions.title = '<%= LocalizeSafeJsString("Confirm.Text") %>';
+    journalOptions.imageTypes = '<%= DotNetNuke.Common.Globals.glbImageFileTypes %>';
 
     var commentOpts = {};
     commentOpts.servicesFramework = $.ServicesFramework(<%=ModuleId %>);

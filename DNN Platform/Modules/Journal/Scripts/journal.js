@@ -133,7 +133,8 @@ function getItems(sf) {
 
 function IsImage(value) {
     if (value != null) {
-        return value.match(/^((jpg|png|gif|jpe|jpeg|tiff))$/i) != null;
+        var imageTypesArray = journalOptions.imageTypes.split(",");
+        return $.inArray(value, imageTypesArray) >= 0;
     } else {
         return false;
     }
@@ -416,7 +417,7 @@ function pluginInit() {
                 if ($contentShow == false) {
                     showContent();
                 }
-                $userFileManager.userFileManager.setFileExtensions('jpg,png,gif,jpe,jpeg,tiff');
+                $userFileManager.userFileManager.setFileExtensions(journalOptions.imageTypes);
                 $photoTool.addClass('selected');
                 $attachTool.unbind('click');
                 $attachTool.bind('click', clickDisable);
@@ -432,7 +433,7 @@ function pluginInit() {
                 $attachTool.removeClass('selected');
                 $photoTool.unbind('click');
                 $photoTool.click(function () {
-                    photoToolClick()
+                    photoToolClick();
                 });
                 $attachArea.hide();
                 $optionsArea.hide();

@@ -16,6 +16,8 @@
 // // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // // DEALINGS IN THE SOFTWARE.
 
+using System.Reflection;
+
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -41,6 +43,10 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         [SetUp]
         public void Setup()
         {
+            //fix Globals.Status
+            var status = typeof(Globals).GetField("_status", BindingFlags.Static | BindingFlags.NonPublic);
+            status.SetValue(null, Globals.UpgradeStatus.None);
+
             var httpContextMock = new Mock<HttpContextBase> { DefaultValue = DefaultValue.Mock, };
             httpContextMock.Setup(c => c.Items).Returns(new Dictionary<object, object>());
             this._httpContext = httpContextMock.Object;
@@ -56,6 +62,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void TearDown()
         {
             UnitTestHelper.ClearHttpContext();
+            JavaScriptLibraryController.ClearInstance();
         }
 
         [Test]

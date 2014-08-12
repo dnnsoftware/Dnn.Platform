@@ -167,6 +167,10 @@ namespace DesktopModules.Admin.Console
 					{
 						OrderTabsByHierarchy.Checked = Convert.ToBoolean(Settings["OrderTabsByHierarchy"]);
 					}
+                    if (Settings.ContainsKey("IncludeHiddenPages"))
+                    {
+                        IncludeHiddenPages.Checked = Convert.ToBoolean(Settings["IncludeHiddenPages"]);
+                    }
                     if (Settings.ContainsKey("ConsoleWidth"))
                     {
                         ConsoleWidth.Text = Convert.ToString(Settings["ConsoleWidth"]);
@@ -217,6 +221,7 @@ namespace DesktopModules.Admin.Console
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowViewChange", AllowViewChange.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowTooltip", ShowTooltip.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "OrderTabsByHierarchy", OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeHiddenPages", IncludeHiddenPages.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeParent", IncludeParent.Checked.ToString(CultureInfo.InvariantCulture));
                 ModuleController.Instance.UpdateModuleSetting(ModuleId, "ConsoleWidth", wdth);
 

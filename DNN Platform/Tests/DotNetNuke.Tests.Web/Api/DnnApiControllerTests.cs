@@ -37,6 +37,12 @@ namespace DotNetNuke.Tests.Web.Api
     {
         internal class DnnApiControllerHelper : DnnApiController {}
 
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+        }
+
         [Test]
         public void GetsModuleInfoViaTheTabModuleInfoProviders()
         {

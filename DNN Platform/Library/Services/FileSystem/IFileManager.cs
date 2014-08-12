@@ -83,6 +83,11 @@ namespace DotNetNuke.Services.FileSystem
         IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder);
 
         /// <summary>
+        /// Gets the system defined content types
+        /// </summary>
+        IDictionary<string, string> ContentTypes { get; }
+
+        /// <summary>
         /// Deletes the specified file.
         /// </summary>
         /// <param name="file">The file to delete.</param>
@@ -189,6 +194,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The file to get the Url.</param>
         /// <returns>The direct Url to the file.</returns>
         string GetUrl(IFileInfo file);
+
+        /// <summary>
+        /// Gets a flag that dertermines if the file is an Image
+        /// </summary>
+        /// <param name="file">The file to test.</param>
+        /// <returns>The flag as a boolean value.</returns>
+        bool IsImageFile(IFileInfo file);
 
         /// <summary>
         /// Moves the specified file into the specified folder.

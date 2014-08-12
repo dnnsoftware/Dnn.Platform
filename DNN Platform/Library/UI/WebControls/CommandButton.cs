@@ -25,6 +25,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -353,12 +354,20 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 EnsureChildControls();
-                icon.AlternateText = value;
-                icon.ToolTip = value;
                 link.Text = value;
-                link.ToolTip = value;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the tooltip resource key used for the Control
+        /// </summary>
+        /// <value>A String</value>
+        /// <history>
+        /// 	[Ben]	03/07/2014	Created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        public string ToolTipKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -383,6 +392,8 @@ namespace DotNetNuke.UI.WebControls
                 link.ValidationGroup = value;
             }
         }
+
+        public string LocalResourceFile { get; set; }
 
         public event EventHandler Click;
         public event CommandEventHandler Command;
@@ -476,6 +487,24 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
             EnsureChildControls();
             separator.Visible = DisplayLink && DisplayIcon;
+
+            LocalResourceFile = UIUtilities.GetLocalResourceFile(this);
+
+            var tooltipText = string.Empty;
+            if (!string.IsNullOrEmpty(ToolTipKey))
+            {
+                tooltipText = Localization.GetString(ToolTipKey, LocalResourceFile);
+            }
+
+            if (string.IsNullOrEmpty(tooltipText) && !string.IsNullOrEmpty(ToolTip))
+            {
+                tooltipText = ToolTip;
+            }
+
+            if (!string.IsNullOrEmpty(tooltipText))
+            {
+                icon.ToolTip = link.ToolTip = icon.AlternateText = tooltipText;
+            }
         }
 
         public void RegisterForPostback()

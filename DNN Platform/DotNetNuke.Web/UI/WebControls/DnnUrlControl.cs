@@ -581,7 +581,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 string TrackingUrl = _Url;
 
                 _Urltype = Globals.GetURLType(_Url).ToString("g").Substring(0, 1);
-                if (_Urltype == "U" && (_Url.StartsWith("~/" + IconController.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
+                if (_Urltype == "U" && (_Url.StartsWith("~/" + PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     _Urltype = "I";
                 }
@@ -846,11 +846,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         cboImages.Items.Clear();
 
-                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, IconController.DefaultIconLocation.Replace('/', '\\'));
+                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
-                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", IconController.DefaultIconLocation, img).ToLower()));
+                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", PortalSettings.DefaultIconLocation, img).ToLower()));
                         }
 
                         ListItem selecteItem = cboImages.Items.FindByValue(_Url.ToLower());

@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
@@ -42,7 +42,7 @@ namespace DotNetNuke.Admin.Containers
     public partial class ModuleActions : ActionBase
     {
         private List<int> validIDs = new List<int>();
-
+        
         protected string AdminActionsJSON { get; set; }
 
         protected string AdminText
@@ -65,6 +65,8 @@ namespace DotNetNuke.Admin.Containers
         protected string Panes { get; set; }
 
         protected bool SupportsMove { get; set; }
+
+        protected bool IsShared { get; set; }
 
         protected string LocalizeString(string key)
         {
@@ -153,6 +155,7 @@ namespace DotNetNuke.Admin.Containers
                                 }
                             }
                         }
+                        IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
                     }
                 }
 

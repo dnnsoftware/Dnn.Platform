@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var messageBoxView = InternalMessagingController.Instance.GetRecentSentbox(UserInfo.UserID, afterMessageId, numberOfRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentMessages(UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentConversations(UserInfo.UserID, portalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var messageBoxView = InternalMessagingController.Instance.GetArchivedMessages(UserInfo.UserID, afterMessageId, numberOfRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedMessages(UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedConversations(UserInfo.UserID, portalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
@@ -208,6 +208,22 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, UserInfo.UserID);
                 return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteUserFromConversation(ConversationDTO postData)
+        {
+            try
+            {
+                InternalMessagingController.Instance.DeleteUserFromConversation(postData.ConversationId, UserInfo.UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {

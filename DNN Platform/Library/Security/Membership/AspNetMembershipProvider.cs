@@ -26,7 +26,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -73,6 +75,7 @@ namespace DotNetNuke.Security.Membership
         #region Private Members
 
         private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly IEnumerable<string> _socialAuthProviders = new  List<string>() {"Facebook", "Google", "Twitter", "LiveID"}; 
 
         #endregion
 
@@ -1742,16 +1745,26 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
-                    //Check Verification code
-                    var ps = new PortalSecurity();
-                    if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                    //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
+                    if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
                     {
+                        user.Membership.Approved = true;
+                        UserController.UpdateUser(portalId, user);
                         UserController.ApproveUser(user);
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        var ps = new PortalSecurity();
+                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                        {
+                            UserController.ApproveUser(user);
+                        }
+                        else
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        }
                     }
+
                 }
 
                 //Verify User Credentials

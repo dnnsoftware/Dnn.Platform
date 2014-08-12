@@ -54,6 +54,20 @@ namespace DotNetNuke.Services.FileSystem.Internal
             DeleteFileData(file);
         }
 
+        public void UnlinkFile(IFileInfo file)
+        {
+            string lockReason;
+            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
+            {
+                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
+            }
+
+            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            
+            DeleteFileData(file);
+        }
+
+
         public void DeleteFileData(IFileInfo file)
         {
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);

@@ -2759,8 +2759,9 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
             }
 
-            //ensure old codeplex module is uninstalled
+            //ensure old codeplex module is uninstalled - need to check for both variants of package name
             UninstallPackage("DotNetNuke.Module Creator");
+            UninstallPackage("DNNCorp.ModuleCreator");
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
@@ -2958,6 +2959,36 @@ namespace DotNetNuke.Services.Upgrade
                 JavaScriptLibraryController.Instance.SaveLibrary(jquerymigrate);
             }
 #pragma warning restore 612,618
+        }
+
+        private static void UpgradeToVersion732()
+        {
+            //Register System referenced 3rd party assemblies.
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.FastVectorHighlighter.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.Analyzers.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.ApplicationBlocks.Data.dll", "2.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Web.Helpers.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Web.Infrastructure.dll", "1.0.20105");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Newtonsoft.Json.dll", "4.5.7");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "PetaPoco.dll", "5.0.1");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "SharpZipLib.dll", "0.81.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.dll", "1.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.Formatting.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.WebRequest.dll", "1.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Helpers.dll", "2.0.20216");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Http.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Http.WebHost.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Razor.dll", "2.0.20216");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.Deployment.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.Razor.dll", "2.0.20126");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebFormsMvp.dll", "1.4.1");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.Data.dll", "2.0.20126");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
+
+            //update help url
+            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
         }
 
         private static void AddManageUsersModulePermissions()
@@ -5102,6 +5133,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.3.0":
                         UpgradeToVersion730();
+                        break;
+                    case "7.3.2":
+                        UpgradeToVersion732();
                         break;
                 }
             }

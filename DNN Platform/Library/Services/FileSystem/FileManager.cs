@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -69,48 +70,26 @@ namespace DotNetNuke.Services.FileSystem
 
         private IDictionary<string, string> _contentTypes;
 
-        protected IDictionary<string, string> ContentTypes
+        public virtual IDictionary<string, string> ContentTypes
         {
             get
             {
                 if (_contentTypes == null)
                 {
+                    var listController = new ListController();
+                    var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+                    if (listEntries == null || !listEntries.Any())
+                    {
+                        _contentTypes = GetDefaultContentTypes();
+                    }
                     _contentTypes = new Dictionary<string, string>();
-                    _contentTypes.Add("txt", "text/plain");
-                    _contentTypes.Add("htm", "text/html");
-                    _contentTypes.Add("html", "text/html");
-                    _contentTypes.Add("rtf", "text/richtext");
-                    _contentTypes.Add("jpg", "image/jpeg");
-                    _contentTypes.Add("jpeg", "image/jpeg");
-                    _contentTypes.Add("gif", "image/gif");
-                    _contentTypes.Add("bmp", "image/bmp");
-                    _contentTypes.Add("png", "image/png");
-                    _contentTypes.Add("ico", "image/x-icon");
-                    _contentTypes.Add("svg", "image/svg+xml");
-                    _contentTypes.Add("ttf", "font/ttf");
-                    _contentTypes.Add("eot", "application/vnd.ms-fontobject");
-                    _contentTypes.Add("woff", "application/font-woff");
-                    _contentTypes.Add("mp3", "audio/mpeg");
-                    _contentTypes.Add("wma", "audio/x-ms-wma");
-                    _contentTypes.Add("mpg", "video/mpeg");
-                    _contentTypes.Add("mpeg", "video/mpeg");
-                    _contentTypes.Add("avi", "video/avi");
-                    _contentTypes.Add("mp4", "video/mp4");
-                    _contentTypes.Add("wmv", "video/x-ms-wmv");
-                    _contentTypes.Add("pdf", "application/pdf");
-                    _contentTypes.Add("doc", "application/msword");
-                    _contentTypes.Add("dot", "application/msword");
-                    _contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                    _contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
-                    _contentTypes.Add("csv", "text/csv");
-                    _contentTypes.Add("xls", "application/x-msexcel");
-                    _contentTypes.Add("xlt", "application/x-msexcel");
-                    _contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                    _contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
-                    _contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
-                    _contentTypes.Add("pps", "application/vnd.ms-powerpoint");
-                    _contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-                    _contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+                    if (listEntries != null)
+                    {
+                        foreach (var contentTypeEntry in listEntries)
+                        {
+                            _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                        }
+                    }
                 }
 
                 return _contentTypes;
@@ -138,6 +117,49 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Private Methods
+
+        private Dictionary<string, string> GetDefaultContentTypes()
+        {
+            var contentTypes = new Dictionary<string, string>();
+            contentTypes.Add("txt", "text/plain");
+            contentTypes.Add("htm", "text/html");
+            contentTypes.Add("html", "text/html");
+            contentTypes.Add("rtf", "text/richtext");
+            contentTypes.Add("jpg", "image/jpeg");
+            contentTypes.Add("jpeg", "image/jpeg");
+            contentTypes.Add("gif", "image/gif");
+            contentTypes.Add("bmp", "image/bmp");
+            contentTypes.Add("png", "image/png");
+            contentTypes.Add("ico", "image/x-icon");
+            contentTypes.Add("svg", "image/svg+xml");
+            contentTypes.Add("ttf", "font/ttf");
+            contentTypes.Add("eot", "application/vnd.ms-fontobject");
+            contentTypes.Add("woff", "application/font-woff");
+            contentTypes.Add("mp3", "audio/mpeg");
+            contentTypes.Add("wma", "audio/x-ms-wma");
+            contentTypes.Add("mpg", "video/mpeg");
+            contentTypes.Add("mpeg", "video/mpeg");
+            contentTypes.Add("avi", "video/avi");
+            contentTypes.Add("mp4", "video/mp4");
+            contentTypes.Add("wmv", "video/x-ms-wmv");
+            contentTypes.Add("pdf", "application/pdf");
+            contentTypes.Add("doc", "application/msword");
+            contentTypes.Add("dot", "application/msword");
+            contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
+            contentTypes.Add("csv", "text/csv");
+            contentTypes.Add("xls", "application/x-msexcel");
+            contentTypes.Add("xlt", "application/x-msexcel");
+            contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
+            contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pps", "application/vnd.ms-powerpoint");
+            contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+            contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
+
+            return contentTypes;
+        }
+
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
             try
@@ -934,6 +956,16 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
+        /// Gets a flag that dertermines if the file is an Image
+        /// </summary>
+        /// <param name="file">The file to test.</param>
+        /// <returns>The flag as a boolean value.</returns>
+        public virtual bool IsImageFile(IFileInfo file)
+        {
+            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLower().Replace(".", "") + ",") > -1;
+        }
+
+        /// <summary>
         /// Moves the specified file into the specified folder.
         /// </summary>
         /// <param name="file">The file to move.</param>
@@ -1648,12 +1680,6 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        internal virtual bool IsImageFile(IFileInfo file)
-        {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLower().Replace(".", "") + ",") > -1;
-        }
-
-        /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void WriteFileToHttpContext(IFileInfo file, ContentDisposition contentDisposition)
         {
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
@@ -1751,7 +1777,6 @@ namespace DotNetNuke.Services.FileSystem
                                                updateLazyload ? file.Width : Null.NullInteger,
                                                updateLazyload ? file.Height : Null.NullInteger,
                                                file.ContentType,
-                                               file.Folder,
                                                file.FolderId,
                                                GetCurrentUserID(),
                                                updateLazyload ? file.SHA1Hash : Null.NullString,

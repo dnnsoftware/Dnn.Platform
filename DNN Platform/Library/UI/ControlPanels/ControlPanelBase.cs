@@ -502,7 +502,6 @@ namespace DotNetNuke.UI.ControlPanels
 				this.Page.Items[typeof(ControlPanelBase)] = this;
 				base.OnInit(e);
 			}
-			
 		}
 		
 		#endregion

@@ -474,9 +474,9 @@ namespace DotNetNuke.Data
         }
 
         public virtual int UpdateServerActivity(string serverName, string iisAppName, DateTime createdDate,
-                                                 DateTime lastActivityDate, int pingFailureCount)
+                                                 DateTime lastActivityDate, int pingFailureCount, bool enabled)
         {
-            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount);
+            return ExecuteScalar<int>("UpdateServerActivity", serverName, iisAppName, createdDate, lastActivityDate, pingFailureCount, enabled);
         }
 
         #endregion
@@ -556,6 +556,42 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetPortalSpaceUsed", GetNull(PortalId));
         }
 
+		/// <summary>
+		/// Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.
+		/// </summary>
+		/// <param name="portalId">The portal identifier.</param>
+		/// <param name="portalGroupId">The portal group identifier.</param>
+		/// <param name="portalName">Name of the portal.</param>
+		/// <param name="logoFile">The logo file.</param>
+		/// <param name="footerText">The footer text.</param>
+		/// <param name="expiryDate">The expiry date.</param>
+		/// <param name="userRegistration">The user registration.</param>
+		/// <param name="bannerAdvertising">The banner advertising.</param>
+		/// <param name="currency">The currency.</param>
+		/// <param name="administratorId">The administrator identifier.</param>
+		/// <param name="hostFee">The host fee.</param>
+		/// <param name="hostSpace">The host space.</param>
+		/// <param name="pageQuota">The page quota.</param>
+		/// <param name="userQuota">The user quota.</param>
+		/// <param name="paymentProcessor">The payment processor.</param>
+		/// <param name="processorUserId">The processor user identifier.</param>
+		/// <param name="processorPassword">The processor password.</param>
+		/// <param name="description">The description.</param>
+		/// <param name="keyWords">The key words.</param>
+		/// <param name="backgroundFile">The background file.</param>
+		/// <param name="siteLogHistory">The site log history.</param>
+		/// <param name="splashTabId">The splash tab identifier.</param>
+		/// <param name="homeTabId">The home tab identifier.</param>
+		/// <param name="loginTabId">The login tab identifier.</param>
+		/// <param name="registerTabId">The register tab identifier.</param>
+		/// <param name="userTabId">The user tab identifier.</param>
+		/// <param name="searchTabId">The search tab identifier.</param>
+		/// <param name="custom404TabId">The custom404 tab identifier.</param>
+		/// <param name="custom500TabId">The custom500 tab identifier.</param>
+		/// <param name="defaultLanguage">The default language.</param>
+		/// <param name="homeDirectory">The home directory.</param>
+		/// <param name="lastModifiedByUserID">The last modified by user identifier.</param>
+		/// <param name="cultureCode">The culture code.</param>
         public virtual void UpdatePortalInfo(int portalId, int portalGroupId, string portalName, string logoFile,
                                              string footerText, DateTime expiryDate, int userRegistration,
                                              int bannerAdvertising, string currency,
@@ -1059,9 +1095,9 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetModule", moduleId, GetNull(tabId));
         }
 
-        public virtual IDataReader GetModuleByDefinition(int portalId, string friendlyName)
+        public virtual IDataReader GetModuleByDefinition(int portalId, string definitionName)
         {
-            return ExecuteReader("GetModuleByDefinition", GetNull(portalId), friendlyName);
+            return ExecuteReader("GetModuleByDefinition", GetNull(portalId), definitionName);
         }
 
         public virtual IDataReader GetModuleByUniqueID(Guid uniqueId)
@@ -1585,8 +1621,32 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetFiles", folderId, retrieveUnpublishedFiles);
         }
 
+		/// <summary>
+        /// This is an internal method for communication between DNN business layer and SQL database.
+        /// Do not use in custom modules, please use API (DotNetNuke.Services.FileSystem.FileManager.UpdateFile)
+        /// 
+        /// Stores information about a specific file, stored in DNN filesystem
+		/// calling petapoco method to call the underlying stored procedure "UpdateFile"
+		/// </summary>
+		/// <param name="fileId">ID of the (already existing) file</param>
+		/// <param name="versionGuid">GUID of this file version  (should usually not be modified)</param>
+		/// <param name="fileName">Name of the file in the file system (including extension)</param>
+		/// <param name="extension">File type - should meet extension in FileName</param>
+		/// <param name="size">Size of file (bytes)</param>
+		/// <param name="width">Width of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file sync)</param>
+        /// <param name="height">Height of images/video (lazy load: pass Null, might be retrieved by DNN platform on db file snyc)</param>
+		/// <param name="contentType">MIME type of the file</param>
+		/// <param name="folderId">ID of the folder, the file resides in</param>
+		/// <param name="lastModifiedByUserID">ID of the user, who performed last update of file or file info</param>
+        /// <param name="hash">SHa1 hash of the file content, used for file versioning (lazy load: pass Null, will be generated by DNN platform on db file sync)</param>
+		/// <param name="lastModificationTime">timestamp, when last update of file or file info happened</param>
+		/// <param name="title">Display title of the file - optional (pass Null if not provided)</param>
+		/// <param name="startDate">date and time (server TZ), from which the file should be displayed/accessible (according to folder permission)</param>
+		/// <param name="endDate">date and time (server TZ), until which the file should be displayed/accessible (according to folder permission)</param>
+		/// <param name="enablePublishPeriod">shall startdate/end date be used?</param>
+		/// <param name="contentItemId">ID of the associated contentitem with description etc. (optional)</param>
         public virtual void UpdateFile(int fileId, Guid versionGuid, string fileName, string extension, long size, 
-                                        int width, int height, string contentType, string folder, int folderId,
+                                        int width, int height, string contentType, int folderId,
                                         int lastModifiedByUserID, string hash, DateTime lastModificationTime, 
                                         string title, DateTime startDate, DateTime endDate, bool enablePublishPeriod, int contentItemId)
         {
@@ -1599,7 +1659,6 @@ namespace DotNetNuke.Data
                                       GetNull(width),
                                       GetNull(height),
                                       contentType,
-                                      folder,
                                       folderId,
                                       lastModifiedByUserID,
                                       hash,

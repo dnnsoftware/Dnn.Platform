@@ -121,23 +121,12 @@ namespace DotNetNuke.Entities.Host
         {
             DataProvider.Instance().UpdateServer(server.ServerID, server.Url, server.UniqueId, server.Enabled, server.ServerGroup);
             ClearCachedServers();
-            
-            if (!string.IsNullOrEmpty(server.Url) 
-                    && PortalAliasController.Instance.GetPortalAlias(server.Url) == null)
-            {
-                PortalAliasController.Instance.AddPortalAlias(new PortalAliasInfo
-                                                              {
-                                                                  HTTPAlias = server.Url,
-                                                                  PortalID = Host.HostPortalID,
-                                                                  IsPrimary = false
-                                                              });
-            } 
         }
 
         public static void UpdateServerActivity(ServerInfo server)
         {
             var existServer = GetServers().FirstOrDefault(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
-            var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount);
+            var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount, server.Enabled);
             
             server.ServerID = serverId;
             if (existServer == null

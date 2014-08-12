@@ -79,6 +79,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing Getting ClientCapabilities based on clientID
 
         [Test]
+        [Ignore("The current version of Fifty One Degress does not support this")]
         public void FiftyOneClientCapabilityProvider_GetClientCapabilityById_Returns_ClientCapability_For_ClientId()
         {
             //Arrange
@@ -128,6 +129,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing GetAllClientCapabilities
 
         [Test]
+        [Ignore("The current version of Fifty One Degress does not support this")]
         public void FiftyOneClientCapabilityProvider_GetAllClientCapabilities_Returns_MoreThanZero_Records()
         {
             //Arrange

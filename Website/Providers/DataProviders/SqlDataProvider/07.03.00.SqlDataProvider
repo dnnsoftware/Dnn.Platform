@@ -678,8 +678,8 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileHashCode]
-    @FileId                  Int,         -- Not Null
-    @HashCode VARCHAR(40)  -- Not NULL
+	@FileId				  Int, 		-- Not Null
+	@HashCode VARCHAR(40)  -- Not NULL
 AS
 BEGIN
     UPDATE {databaseOwner}[{objectQualifier}Files]

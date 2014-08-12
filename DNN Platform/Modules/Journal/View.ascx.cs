@@ -11,7 +11,7 @@
 */
 
 using System;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
@@ -59,7 +59,8 @@ namespace DotNetNuke.Modules.Journal {
 			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/json2.js");
 
-            if (!Request.IsAuthenticated || (!UserInfo.IsSuperUser && UserInfo.IsInRole("Unverified Users")))
+            var isAdmin = UserInfo.IsInRole(RoleController.Instance.GetRoleById(PortalId, PortalSettings.AdministratorRoleId).RoleName);
+            if (!Request.IsAuthenticated || (!UserInfo.IsSuperUser && !isAdmin && UserInfo.IsInRole("Unverified Users")))
             {
                 ShowEditor = false;
             } 
@@ -117,11 +118,11 @@ namespace DotNetNuke.Modules.Journal {
                                 CanComment = false;
                             }
                             
-                            if (roleInfo.IsPublic == false && ShowEditor == false) 
+                            if (!roleInfo.IsPublic && !ShowEditor) 
                             {
                                 ctlJournalList.Enabled = false;                               
                             }
-                            if (roleInfo.IsPublic && ShowEditor == false) 
+                            if (roleInfo.IsPublic && !ShowEditor) 
                             {
                                 ctlJournalList.Enabled = true;
                             }
@@ -143,7 +144,7 @@ namespace DotNetNuke.Modules.Journal {
             if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
             {
                 ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
-                if (!UserInfo.IsSuperUser && ctlJournalList.ProfileId != UserId)
+                if (!UserInfo.IsSuperUser && !isAdmin && ctlJournalList.ProfileId != UserId)
                 {
                     ShowEditor = ShowEditor && AreFriends(UserController.GetUserById(PortalId, ctlJournalList.ProfileId), UserInfo);                    
                 }
@@ -175,7 +176,7 @@ namespace DotNetNuke.Modules.Journal {
         private void Page_Load(object sender, EventArgs e) {
             try 
             {
-                BaseUrl = Common.Globals.ApplicationPath;
+                BaseUrl = Globals.ApplicationPath;
                 BaseUrl = BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/";
                 BaseUrl += "DesktopModules/Journal/";
 
@@ -184,18 +185,14 @@ namespace DotNetNuke.Modules.Journal {
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
                 {
                     Pid = Convert.ToInt32(Request.QueryString["userId"]);
-                    ctlJournalList.ProfileId = Pid;
-                    ctlJournalList.PageSize = PageSize;
+                    ctlJournalList.ProfileId = Pid;                    
                 } 
                 else if (GroupId > 0) 
                 {
                     Gid = GroupId;
-                    ctlJournalList.SocialGroupId = GroupId;
-                    ctlJournalList.PageSize = PageSize;
-                } 
-                else 
-                {
+                    ctlJournalList.SocialGroupId = GroupId;                    
                 }
+                ctlJournalList.PageSize = PageSize;
             } 
             catch (Exception exc) //Module failed to load
             {

@@ -19,31 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Tests.Utilities;
+using System.Collections.Generic;
+using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 
-using NUnit.Framework;
-
-namespace DotNetNuke.Tests.Core.Services.Mail
+namespace DotNetNuke.Modules.DigitalAssets.Services.Models
 {
-    [TestFixture]
-    public class MailTests
+    public class MappedPathSubFoldersCountRequest
     {
-        //[SetUp]
-        //public void SetUp()
-        //{
-        //}
-
-        //[TearDown]
-        //public void TearDown()
-        //{
-
-        //}
-
-        //[Test]
-        //public void Mail_SendMail_Sends_Mail()
-        //{
-
-            
-        //}
+        public IEnumerable<ItemBaseViewModel> Items { get; set; }
     }
 }

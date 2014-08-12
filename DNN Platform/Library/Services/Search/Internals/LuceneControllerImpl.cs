@@ -223,10 +223,16 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void CheckValidIndexFolder()
         {
-            if (!System.IO.Directory.Exists(IndexFolder) || System.IO.Directory.GetFiles(IndexFolder, "*.*").Length == 0)
+            if (!ValidateIndexFolder())
             {
                 throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid","Search indexing directory is either empty or does not exist"));
             }
+        }
+
+        private bool ValidateIndexFolder()
+        {
+            return System.IO.Directory.Exists(IndexFolder) &&
+                   System.IO.Directory.GetFiles(IndexFolder, "*.*").Length > 0;
         }
 
         private FastVectorHighlighter FastHighlighter
@@ -254,6 +260,13 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", searchContext.LuceneQuery.PageIndex, 0);
 
             var luceneResults = new LuceneResults();
+
+            //validate whether index folder is exist and contains index files, otherwise return null.
+            if (!ValidateIndexFolder())
+            {
+                return luceneResults;
+            }
+
             //TODO - Explore simple highlighter as it does not give partial words
             var highlighter = FastHighlighter;
             var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);

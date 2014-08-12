@@ -13,6 +13,7 @@
         <dnn:DnnFormLiteralItem ID="approved" runat="server" ResourceKey="Approved" />
         <dnn:DnnFormLiteralItem ID="updatePassword" runat="server" ResourceKey="UpdatePassword" />
         <dnn:DnnFormLiteralItem ID="isDeleted" runat="server" ResourceKey="IsDeleted" />
+        <dnn:DnnFormLiteralItem ID="userFolder" runat="server" ResourceKey="UserFolder" />
    </Items>
 </dnn:DnnFormEditor>
 <ul id="actionsRow" runat="server" class="dnnActions dnnClear" ViewStateMode="Disabled" >

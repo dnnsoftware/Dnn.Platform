@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                                     break;
                             }
                             PackageController.Instance.SaveExtensionPackage(newPackage);
-
+                            PackageID = newPackage.PackageID;
                             Locale locale;
                             LanguagePackInfo languagePack;
                             switch (newPackage.PackageType)

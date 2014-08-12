@@ -328,7 +328,7 @@
     <value>You do not have access to view this module within the website.</value>
   </data>
   <data name="CriticalError.Error" xml:space="preserve">
-    <value>A critical error has occurred.</value>
+    <value>A critical error has occurred. Please check the Event Viewer for further details.</value>
   </data>
   <data name="ModuleLoad.Error" xml:space="preserve">
     <value>Unhandled error loading module.</value>
@@ -965,6 +965,9 @@
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>Username:</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name:</value>
   </data>
   <data name="PageDisabled.Header" xml:space="preserve">
     <value>Page Disabled</value>

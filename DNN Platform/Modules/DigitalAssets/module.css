@@ -1205,3 +1205,7 @@ div.EditFolderMappingContent .dnnFormItem .dnnLeft {
     margin-bottom: 0;
     width: 98%;
 }
+
+.dialogNote {
+    margin: 5px 0 5px 0;
+}

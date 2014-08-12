@@ -1168,8 +1168,8 @@ Sincerely,
   <data name="//NewsPromotions.String" xml:space="preserve">
     <value>News &amp; Promotions</value>
   </data>
-  <data name="//OurServices.String" xml:space="preserve">
-    <value>Our Services</value>
+  <data name="//OurProducts.String" xml:space="preserve">
+    <value>Our Products</value>
   </data>
   <data name="//Modules.Text" xml:space="preserve">
     <value>Modules</value>
@@ -1480,9 +1480,6 @@ Please do not reply to this email.</value>
                                         &lt;tr&gt;
                                             &lt;td align="center"&gt;
                                                 &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.twitter.com/" &gt; Follow us on Twitter&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.facebook.com/" &gt; Become a fan on Facebook&lt;/a&gt;
-
                                             &lt;/td&gt;
                                         &lt;/tr&gt;
                                     &lt;/table&gt;

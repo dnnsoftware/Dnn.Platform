@@ -254,6 +254,9 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy language package (that is based on manifest xml file)
+        /// </summary> 
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
@@ -371,6 +374,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy module version 3 .dnn install file
+        /// </summary>
+        /// <param name="desktopModule"></param> 
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             //Get the Module folder
@@ -452,6 +459,9 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy skinobject version 3 .dnn install package
+        /// </summary> 
         public static void ProcessLegacySkinControls()
         {
             foreach (SkinControlInfo skinControl in SkinControlController.GetSkinControls().Values)

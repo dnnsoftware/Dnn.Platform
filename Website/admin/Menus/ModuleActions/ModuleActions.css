@@ -157,3 +157,26 @@ form .dnn_mact > li.actionMenuMove:hover > a {
 .dnn_mact > li.actionMenuMove > ul li:hover {
     background-color: #e8f1fa;
 }
+
+form .dnn_mact li.dnn_shared {
+    display: inline-block;
+    width: 20px;
+    height: 100px;
+    background-color: #000;
+    /*background-image: url(images/dnnActionMenu.png);*/
+}
+
+    form .dnn_mact li.dnn_shared > div
+    {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        writing-mode:tb-rl;
+        -webkit-transform:rotate(90deg);
+        -moz-transform:rotate(90deg);
+        -o-transform: rotate(90deg);
+	    white-space:nowrap;
+        color: white;
+        background-color: #000;
+        background-image: none !important;
+    }

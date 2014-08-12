@@ -295,7 +295,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode != null)
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return Math.Min(maxRequestLength, maxAllowedContentLength);
             }
 
@@ -321,7 +321,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (httpNode != null)
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return maxAllowedContentLength / 1024 / 1024;
             }
             return defaultRequestFilter;

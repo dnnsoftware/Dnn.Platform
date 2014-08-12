@@ -295,7 +295,9 @@ namespace DotNetNuke.Web.InternalServices
                     var tabTitle = GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
-                        group.Title = tabTitle + " > " + first.Title;
+                        group.Title = tabTitle;
+                        if (first.Title != "Enter Title" && first.Title != "Text/HTML")
+                            group.Title += " > " + first.Title;
                         first.Title = group.Title;
                     }
                 }
@@ -388,7 +390,9 @@ namespace DotNetNuke.Web.InternalServices
                 var tabTitle = GetTabTitleFromModuleId(result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))
                 {
-                    return tabTitle + " > " + result.Title;
+                    if (result.Title != "Enter Title" && result.Title != "Text/HTML")
+                        return tabTitle + " > " + result.Title;
+                    return tabTitle;
                 }
             }
 
