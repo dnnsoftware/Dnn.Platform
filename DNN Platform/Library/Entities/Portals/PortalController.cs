@@ -93,9 +93,9 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalController()
         {
-            foreach (var value in PortalEventHandlersContainer.Instance.PortalEventHandlers.Select(e => e.Value))
+            foreach (var handlers in PortalEventHandlersContainer.Instance.PortalEventHandlers)
             {
-                PortalCreated += value.PortalCreated;
+                PortalCreated += handlers.Value.PortalCreated;
             }
         }
 
