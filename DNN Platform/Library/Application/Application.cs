@@ -56,6 +56,19 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
+        /// Gets the version of the currently installed DotNetNuke framework/application
+        /// Can be prior to Version, if the application is pending to be upgraded.
+        /// </summary>
+        /// <value>The version as retreieved from the database version table.</value>
+        public virtual Version CurrentVersion
+        {
+            get
+            {
+                return DataProvider.Instance().GetVersion();
+            }
+        }
+
+        /// <summary>
         /// Gets the description of the application
         /// </summary>
         /// <value>Fixed result: DotNetNuke Community Edition</value>
@@ -218,19 +231,6 @@ namespace DotNetNuke.Application
             get
             {
                 return Assembly.GetExecutingAssembly().GetName().Version;
-            }
-        }
-
-        /// <summary>
-        /// Gets the version of the currently installed DotNetNuke framework/application
-        /// Can be prior to Version, if the application is pending to be upgraded.
-        /// </summary>
-        /// <value>The version as retreieved from the database version table.</value>
-        public virtual Version CurrentVersion
-        {
-            get
-            {
-                return DataProvider.Instance().GetVersion();
             }
         }
 
