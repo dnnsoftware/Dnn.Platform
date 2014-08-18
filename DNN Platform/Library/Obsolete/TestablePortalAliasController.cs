@@ -58,7 +58,8 @@ namespace DotNetNuke.Entities.Portals.Internal
 
         public IDictionary<string, PortalAliasInfo> GetPortalAliases()
         {
-            return PortalAliasController.Instance.GetPortalAliases();
+            var aliasController = new PortalAliasController();
+            return aliasController.GetPortalAliasesInternal();
         }
 
         public void UpdatePortalAlias(PortalAliasInfo portalAlias)

@@ -56,12 +56,18 @@
 				</div>    
 				<div id="insertPositionRow" class="dnnFormItem" runat="server" ViewStateMode="Disabled">
                     <div>
-					<dnn:Label ID="plInsertPosition" runat="server" ResourceKey="InsertPosition" ControlName="cboPositionTab" />
-					<asp:RadioButtonList ID="rbInsertPosition" runat="server" CssClass="dnnFormRadioButtons" RepeatDirection="Horizontal" RepeatLayout="Flow" ViewStateMode="Disabled" />
+					    <dnn:Label ID="plInsertPosition" runat="server" ResourceKey="InsertPosition" ControlName="cboPositionTab" />
+					    <asp:RadioButtonList ID="rbInsertPosition" runat="server" CssClass="dnnFormRadioButtons" RepeatDirection="Horizontal" RepeatLayout="Flow" ViewStateMode="Disabled">
+                            <Items>
+                                <asp:ListItem Value="Before" Text="InsertBefore" resourcekey="InsertBefore"></asp:ListItem>
+                                <asp:ListItem Value="After" Text="InsertAfter" resourcekey="InsertAfter" Selected="True"></asp:ListItem>
+                                <asp:ListItem Value="AtEnd" Text="InsertAtEnd" resourcekey="InsertAtEnd"></asp:ListItem>
+                            </Items>
+                        </asp:RadioButtonList>
                     </div>
                     <div class="dnnFormItem">
-                    <div class="dnnLabel"></div>
-                    <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Disabled" />
+                        <div class="dnnLabel"></div>
+                        <dnn:DnnComboBox ID="cboPositionTab" CssClass="dnnPositionTab" runat="server" DataTextField="LocalizedTabName" DataValueField="TabId" ViewStateMode="Disabled" />
                     </div>
 				</div>    
 				<div id="templateRow1" class="dnnFormItem" runat="server" visible="false">

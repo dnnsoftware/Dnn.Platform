@@ -141,6 +141,16 @@
                         runat="server" />
                     <asp:CheckBox ID="chkUseCustomModuleCssClass" runat="server" />
                 </div>
+                <div class="dnnFormItem">
+                    <dnn:label id="plUpgradeForceSSL" controlname="chkUseCustomModuleCssClass"
+                        runat="server" />
+                    <asp:CheckBox ID="chkUpgradeForceSSL" runat="server" />
+                </div>
+                <div id="sslDomainRow" class="dnnFormItem">
+                    <dnn:label id="plSSLDomain" controlname="chkUseCustomModuleCssClass"
+                        runat="server" />
+                    <asp:TextBox ID="txtSSLDomain" runat="server" MaxLength="256" />
+                </div>
                 <div id="hostSkinSettings">
                     <div class="dnnFormItem">
                         <dnn:label id="plHostSkin" controlname="hostSkinCombo" runat="server" />
@@ -722,6 +732,11 @@
             toggleSection('requestFiltersRow', $("#<%=chkEnableRequestFilters.ClientID %>")[0].checked);
             $("#<%=chkEnableRequestFilters.ClientID %>").change(function (e) {
                 toggleSection('requestFiltersRow', this.checked);
+            });
+
+            toggleSection('sslDomainRow', $("#<%=chkUpgradeForceSSL.ClientID %>")[0].checked);
+            $("#<%=chkUpgradeForceSSL.ClientID %>").change(function (e) {
+                toggleSection('sslDomainRow', this.checked);
             });
 
             $("#<%=chkTelerikCdn.ClientID %>").change(function (e) {

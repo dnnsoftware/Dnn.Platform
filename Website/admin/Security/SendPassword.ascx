@@ -29,7 +29,7 @@
 		</div>
 		<ul class="dnnActions dnnClear">
 			<li><asp:LinkButton id="cmdSendPassword" cssclass="dnnPrimaryAction" runat="server" /></li>
-			<li id="liLogin" runat="server"><asp:HyperLink ID="hlLogin" CssClass="dnnSecondaryAction" runat="server" resourcekey="cmdCancel" /></li>
+			<li id="liLogin" runat="server"><asp:LinkButton id="cancelButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
 		</ul>
 	</div>
         </asp:panel>

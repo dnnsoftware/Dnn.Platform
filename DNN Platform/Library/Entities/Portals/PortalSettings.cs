@@ -329,6 +329,14 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        public string DefaultIconLocation
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("DefaultIconLocation", PortalId, "icons/sigma");
+            }
+        }
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Default Module Id
@@ -512,14 +520,6 @@ namespace DotNetNuke.Entities.Portals
         public string HomeDirectoryMapPath { get; private set; }
 
         public string HomeSystemDirectoryMapPath { get; private set; }
-
-        public bool IncludePortalCss
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("IncludePortalCss", PortalId, false);
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1464,7 +1464,8 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasCollection GetPortalAliasLookup()
         {
             var portalAliasCollection = new PortalAliasCollection();
-            foreach (var kvp in PortalAliasController.Instance.GetPortalAliases())
+            var aliasController = new PortalAliasController();
+            foreach (var kvp in aliasController.GetPortalAliasesInternal())
             {
                 portalAliasCollection.Add(kvp.Key, kvp.Value);
             }

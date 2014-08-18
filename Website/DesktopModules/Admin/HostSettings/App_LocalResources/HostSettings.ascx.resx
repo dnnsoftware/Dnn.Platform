@@ -1223,4 +1223,16 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
     <value>Password Expiry Reminder (in days):</value>
   </data>
+  <data name="plSSLDomain.Help" xml:space="preserve">
+    <value>The domain used when upgrade wizard forced to shown in SSL channel.</value>
+  </data>
+  <data name="plSSLDomain.Text" xml:space="preserve">
+    <value>SSL Domain</value>
+  </data>
+  <data name="plUpgradeForceSSL.Help" xml:space="preserve">
+    <value>Whether force upgrade wizard shown in SSL channel.</value>
+  </data>
+  <data name="plUpgradeForceSSL.Text" xml:space="preserve">
+    <value>Require SSL for Upgrade wizard</value>
+  </data>
 </root>

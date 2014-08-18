@@ -2299,8 +2299,22 @@
     //fix combobox scroll
     $.dnnComboBoxScroll = function (sender) {
         if ($.support.cssFloat) {
-            $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown')).jScrollPane();
+            var container = $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown'));
+            if (container.data('scrollPane')) {
+                container.data('scrollPane').data('jsp').reinitialise();
+            } else {
+                container.data('scrollPane', container.jScrollPane());
+            }
         }
+    };
+
+    $.dnnComboBoxItemRequested = function (sender) {
+        setTimeout(function() {
+            var container = $(('#' + sender._clientStateFieldID + ' .rcbScroll').replace('ClientState', 'DropDown'));
+            if (container.data('scrollPane')) {
+                container.data('scrollPane').data('jsp').reinitialise();
+            }
+        }, 0);
     };
 
     // fix grid issues 
@@ -2601,8 +2615,13 @@
                 
                 instance._panel.$element.on("onfileuploadcomplete", function (event, data) {
                     if (typeof data == "string") {
+						// for modern browsers
                         data = JSON.parse(data);
-                    }
+                    }else{
+						// for IE8-9						
+						var b = data[0];
+						data = JSON.parse(b.body.innerText);
+					}
                     if (data && data.fileId) {
                         var folderPicker = instance._panel._folderPicker;
                         dnn[settings.foldersComboId].selectedItem(folderPicker.selectedItem());

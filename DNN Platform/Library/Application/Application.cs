@@ -24,6 +24,7 @@ using System;
 using System.Reflection;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 
 #endregion
 
@@ -51,6 +52,19 @@ namespace DotNetNuke.Application
             get
             {
                 return "DNN Corporation";
+            }
+        }
+
+        /// <summary>
+        /// Gets the version of the currently installed DotNetNuke framework/application
+        /// Can be prior to Version, if the application is pending to be upgraded.
+        /// </summary>
+        /// <value>The version as retreieved from the database version table.</value>
+        public virtual Version CurrentVersion
+        {
+            get
+            {
+                return DataProvider.Instance().GetVersion();
             }
         }
 

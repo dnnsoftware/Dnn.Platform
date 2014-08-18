@@ -18,22 +18,7 @@
 	zoom:1; /* quicks mode fix to make z-index work */
 	z-index:10;
 }
-/* Search Box */
-.dnnMemberDirectory .mdSearchBar {float:left;}
 
-/*
-.dnnMemberDirectory .searchWrapper{
-	width:500px;
-	float:left;
-	position: relative;
-	margin:0 7px 0 0; padding:5px 0 0 5px;
-    background: url("Images/input-bg.png") no-repeat scroll left top #FFFFFF;
-    border: 1px solid #BBBBBB;
-    border-radius: 3px 3px 3px 3px;
-    text-shadow: 0 0 1px #FFFFFF;
-    z-index: 2;
-}
-*/
 .dnnMemberDirectory .mdSearchBar #refreshResults{
 	display:block;
 	float:left;

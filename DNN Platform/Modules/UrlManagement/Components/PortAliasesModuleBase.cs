@@ -346,18 +346,15 @@ namespace DotNetNuke.Modules.UrlManagement.Components
                 {
                     message = Localization.GetString("InvalidAlias", LocalResourceFile);
                 }
-
             }
 
             if (string.IsNullOrEmpty(message) && AddMode)
             {
-                PortalAliasInfo existingPortal;
-                PortalAliasController.Instance.GetPortalAliases().TryGetValue(strAlias, out existingPortal);
-                if (existingPortal != null)
+                var aliases = PortalAliasController.Instance.GetPortalAliases();
+                if (aliases.Contains(strAlias))
                 {
                     message = Localization.GetString("DuplicateAlias", LocalResourceFile);
                 }
-
             }
 
             if (string.IsNullOrEmpty(message))

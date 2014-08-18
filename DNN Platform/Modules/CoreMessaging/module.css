@@ -248,7 +248,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
 	.DnnModule-Messaging-Notifications .smListings .ListCol-1{width:1%; padding-left:2%; min-width:25px;}
 	.DnnModule-Messaging-Notifications .smListings .ListCol-2{width:8%; min-width:65px;}
 	.DnnModule-Messaging-Notifications .smListings .ListCol-3{width:56%;}
-	.DnnModule-Messaging-Notifications .smListings .ListCol-4{width:25%; max-width:110px;float:right;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4{width:25%; max-width:160px;float:right;}
 	
 	.DnnModule-Messaging-Details .smListings .ListCol-1{width:6%; padding-left:2%;}
 	.DnnModule-Messaging-Details .smListings .ListCol-2{width:61%;}

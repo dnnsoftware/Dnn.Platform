@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Scheduling
 
             internal static ServerInfo GetServer(string executingServer)
             {
-                return ServerController.GetServers().Single(s => s.ServerName.Equals(executingServer,  StringComparison.OrdinalIgnoreCase));
+                return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer,  StringComparison.OrdinalIgnoreCase));
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
@@ -721,7 +721,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 //Get the servers
                 var servers = ServerController.GetEnabledServers().Where(s =>  s.ServerGroup == thisServer.ServerGroup);
-                return servers.Aggregate(string.Empty, (current, serverInfo) => current + serverInfo.ServerName + ",");
+                return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
 
             public static void PurgeScheduleHistory()

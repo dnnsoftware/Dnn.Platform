@@ -38,6 +38,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
@@ -179,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return _RedirectURL;
             }
         
-    }
+		}
 
         protected string RegistrationFields
         {
@@ -277,6 +278,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void AddField(string dataField, string dataMember, bool required, string regexValidator, TextBoxMode textMode)
         {
+			if(userForm.Items.Any(i => i.ID == dataField)){
+				return;
+			}
+			
             var formItem = new DnnFormTextBoxItem
                                {
                                    ID = dataField,
@@ -321,10 +326,12 @@ namespace DotNetNuke.Modules.Admin.Users
             formItem.Required = required;
 
             userForm.Items.Add(formItem);
+		
         }
 
         private void AddPasswordConfirmField(string dataField, string dataMember, bool required)
         {
+		
             var formItem = new DnnFormTextBoxItem
             {
                 ID = dataField,
@@ -336,10 +343,15 @@ namespace DotNetNuke.Modules.Admin.Users
                 TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
             };
             userForm.Items.Add(formItem);
+		
         }
 
         private void AddProperty(ProfilePropertyDefinition property)
         {
+			if(userForm.Items.Any(i => i.ID == property.PropertyName)){
+				return;
+			}
+			
             var controller = new ListController();
             ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)

@@ -135,12 +135,20 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                string setting = HostController.Instance.GetString("ControlPanel");
-                if (string.IsNullOrEmpty(setting))
-                {
-                    setting = Globals.glbDefaultControlPanel;
-                }
-                return setting;
+                return HostController.Instance.GetString("ControlPanel", Globals.glbDefaultControlPanel);
+            }
+        }
+
+        /// <summary>
+        /// setting to control where the control panel is loaded by the core and allowed to control it's own visibility.
+        /// this is useful when the control panel needs to be visible for all users regardless of edit page/module permissions.
+        /// it's also for backwards compatibility, prior to 7.2 the control panel was always loaded. 
+        /// </summary>
+        public static bool AllowControlPanelToDetermineVisibility
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("AllowControlPanelToDetermineVisibility", Globals.glbAllowControlPanelToDetermineVisibility);
             }
         }
 
@@ -480,6 +488,28 @@ namespace DotNetNuke.Entities.Host
             get
             {
                 return HostController.Instance.GetBoolean("EnableCustomModuleCssClass", true);
+            }
+        }
+
+        /// <summary>
+        /// Whether force upgrade wizard open in ssl channel.
+        /// </summary>
+        public static bool UpgradeForceSsl
+        {
+            get
+            {
+                return HostController.Instance.GetBoolean("UpgradeForceSSL", false);
+            }
+        }
+
+        /// <summary>
+        /// The domain used when upgrade wizard forced to shown in ssl channel.
+        /// </summary>
+        public static string SslDomain
+        {
+            get
+            {
+                return HostController.Instance.GetString("SSLDomain");
             }
         }
 
@@ -1421,9 +1451,9 @@ namespace DotNetNuke.Entities.Host
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                if (portalSettings == null)
+                if (portalSettings == null || portalSettings.ActiveTab == null)
                 {
-                    //without portal settings, we can't continue
+                    //without portal settings or active tab, we can't continue
                     return false;
                 }
 

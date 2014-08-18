@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Portals
 
 	    private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
 	    {
-            return GetPortalAliases().SingleOrDefault(pa => pa.Key == alias).Value;
+            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
         }
 
         private PortalAliasInfo GetPortalAliasInternal(string httpAlias)
@@ -122,7 +122,8 @@ namespace DotNetNuke.Entities.Portals
             if (portalAlias == null)
             {
                 //check if this is a fresh install ( no alias values in collection )
-                var portalAliases = Instance.GetPortalAliases();
+                var controller = new PortalAliasController();
+                var portalAliases = controller.GetPortalAliasesInternal();
                 if (portalAliases.Keys.Count == 0 || (portalAliases.Count == 1 && portalAliases.ContainsKey("_default")))
                 {
                     //relate the PortalAlias to the default portal on a fresh database installation
@@ -214,7 +215,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal Alias Info.</returns>
         public PortalAliasInfo GetPortalAlias(string alias, int portalId)
         {
-            return GetPortalAliases().SingleOrDefault(pa => pa.Key == alias && pa.Value.PortalID == portalId).Value;
+            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias && pa.Value.PortalID == portalId).Value;
         }
 
         /// <summary>
@@ -224,10 +225,10 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal alias info.</returns>
         public PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId)
         {
-            return GetPortalAliases().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
+            return GetPortalAliasesInternal().SingleOrDefault(pa => pa.Value.PortalAliasID == portalAliasId).Value;
         }
 
-        public IDictionary<string, PortalAliasInfo> GetPortalAliases()
+	    internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
         {
             return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(new CacheItemArgs(DataCache.PortalAliasCacheKey,
                                                                                         DataCache.PortalAliasCacheTimeOut,
@@ -241,9 +242,20 @@ namespace DotNetNuke.Entities.Portals
                                                                 true);
         }
 
+	    public PortalAliasCollection GetPortalAliases()
+	    {
+	        var aliasCollection = new PortalAliasCollection();
+	        foreach (var alias in GetPortalAliasesInternal().Values)
+	        {
+	            aliasCollection.Add(alias.HTTPAlias, alias);
+	        }
+
+            return aliasCollection;
+        }
+
         public IEnumerable<PortalAliasInfo> GetPortalAliasesByPortalId(int portalId)
         {
-            return GetPortalAliases().Values.Where(alias => alias.PortalID == portalId).ToList();
+            return GetPortalAliasesInternal().Values.Where(alias => alias.PortalID == portalId).ToList();
         }
 
         /// <summary>
@@ -300,7 +312,9 @@ namespace DotNetNuke.Entities.Portals
                 //searching from longest to shortest alias ensures that the most specific portal is matched first
                 //In some cases this method has been called with "portalaliases" that were not exactly the real portal alias
                 //the startswith behaviour is preserved here to support those non-specific uses
-                var portalAliasCollection = Instance.GetPortalAliases().OrderByDescending(k => k.Key.Length);
+                var controller = new PortalAliasController();
+                var portalAliases = controller.GetPortalAliasesInternal();
+                var portalAliasCollection = portalAliases.OrderByDescending(k => k.Key.Length);
 
                 foreach (var currentAlias in portalAliasCollection)
                 {

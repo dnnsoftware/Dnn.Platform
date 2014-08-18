@@ -2287,8 +2287,9 @@ namespace DotNetNuke.Entities.Urls
             rootPath = rootPath.Substring(rootPath.IndexOf("://", StringComparison.Ordinal) + 3);
                 
             //Check if this is a WebServer and not a portalalias.
+            //if can auto add portal alias enabled, then return false, alias will add later.
             var alias = PortalAliasController.Instance.GetPortalAlias(rootPath);
-            if (alias != null)
+            if (alias != null || CanAutoAddPortalAlias())
             {
                 return false;
             }

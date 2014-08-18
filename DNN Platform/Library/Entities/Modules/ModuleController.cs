@@ -49,6 +49,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.OutputCache;
+using DotNetNuke.Services.Search.Entities;
 
 #endregion
 
@@ -984,13 +985,25 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference)
         {
+            CopyModules(sourceTab, destinationTab, asReference, false);
+        }
+
+        /// <summary>
+        /// Copies all modules in source page to a new page.
+        /// </summary>
+        /// <param name="sourceTab">The source tab.</param>
+        /// <param name="destinationTab">The destination tab.</param>
+        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="includeAllTabsMobules">if set to <c>true</c> will include modules which shown on all pages, this is used when create localized copy.</param>
+        public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference, bool includeAllTabsMobules)
+        {
             foreach (KeyValuePair<int, ModuleInfo> kvp in GetTabModules(sourceTab.TabID))
             {
                 ModuleInfo sourceModule = kvp.Value;
 
                 // if the module shows on all pages does not need to be copied since it will
                 // be already added to this page
-                if (!sourceModule.AllTabs && !sourceModule.IsDeleted)
+                if ((includeAllTabsMobules || !sourceModule.AllTabs) && !sourceModule.IsDeleted)
                 {
                     if (!asReference)
                     {
@@ -1088,6 +1101,14 @@ namespace DotNetNuke.Entities.Modules
 
             //Log deletion
             EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
+
+            // queue remove module from search index
+            var document = new SearchDocumentToDelete
+            {
+                ModuleId = moduleId
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         /// <summary>
@@ -1341,10 +1362,10 @@ namespace DotNetNuke.Entities.Modules
         /// Get ModuleInfo object of first module instance with a given friendly name of the module definition
         /// </summary>
         /// <param name="portalId">ID of the portal, where to look for the module</param>
-        /// <param name="friendlyName">friendly name of module definition</param>
+        /// <param name="definitionName">The name of module definition (NOTE: this looks at <see cref="ModuleDefinitionInfo.DefinitionName"/>, not <see cref="ModuleDefinitionInfo.FriendlyName"/>)</param>
         /// <returns>ModuleInfo of first module instance</returns>
         /// <remarks>preferably used for admin and host modules</remarks>
-        public ModuleInfo GetModuleByDefinition(int portalId, string friendlyName)
+        public ModuleInfo GetModuleByDefinition(int portalId, string definitionName)
         {
             //declare return object
             ModuleInfo module;
@@ -1354,9 +1375,9 @@ namespace DotNetNuke.Entities.Modules
 
             //get module dictionary from cache
             var modules = DataCache.GetCache<Dictionary<string, ModuleInfo>>(key) ?? new Dictionary<string, ModuleInfo>();
-            if (modules.ContainsKey(friendlyName))
+            if (modules.ContainsKey(definitionName))
             {
-                module = modules[friendlyName];
+                module = modules[definitionName];
             }
             else
             {
@@ -1364,10 +1385,10 @@ namespace DotNetNuke.Entities.Modules
                 var clonemodules = new Dictionary<string, ModuleInfo>();
                 foreach (ModuleInfo m in modules.Values)
                 {
-                    clonemodules[m.ModuleDefinition.FriendlyName] = m;
+                    clonemodules[m.ModuleDefinition.DefinitionName] = m;
                 }
                 //get from database
-                IDataReader dr = DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName);
+                IDataReader dr = DataProvider.Instance().GetModuleByDefinition(portalId, definitionName);
                 try
                 {
                     //hydrate object
@@ -1422,11 +1443,11 @@ namespace DotNetNuke.Entities.Modules
         /// Gets the modules by definition.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <param name="friendlyName">Name of the friendly.</param>
+        /// <param name="definitionName">The name of the module definition.</param>
         /// <returns>module collection</returns>
-        public ArrayList GetModulesByDefinition(int portalID, string friendlyName)
+        public ArrayList GetModulesByDefinition(int portalID, string definitionName)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, definitionName), typeof(ModuleInfo));
         }
 
         /// <summary>
@@ -1545,32 +1566,35 @@ namespace DotNetNuke.Entities.Modules
 
                 if (defaultModule != null)
                 {
+                    ModuleInfo localizedModule;
+                    var alreadyLocalized = defaultModule.LocalizedModules.TryGetValue(locale.Code, out localizedModule)
+                                            && localizedModule.ModuleID != defaultModule.ModuleID;
                     var tabModules = GetTabModulesByModule(defaultModule.ModuleID);
                     if (tabModules.Count > 1)
                     {
                         //default language version is a reference copy
 
-                    //Localize first tabModule
-                    int newModuleID = LocalizeModuleInternal(sourceModule);
+                        //Localize first tabModule
+                        var newModuleId = alreadyLocalized ? localizedModule.ModuleID : LocalizeModuleInternal(sourceModule);
 
-                    //Update Reference Copies
-                    foreach (ModuleInfo tm in tabModules)
-                    {
-                        if (tm.IsDefaultLanguage)
+                        //Update Reference Copies
+                        foreach (ModuleInfo tm in tabModules)
                         {
-                            ModuleInfo localModule;
-                            if (tm.LocalizedModules.TryGetValue(locale.Code, out localModule))
+                            if (tm.IsDefaultLanguage)
                             {
-                                localModule.ModuleID = newModuleID;
-                                UpdateModule(localModule);
+                                ModuleInfo localModule;
+                                if (tm.LocalizedModules.TryGetValue(locale.Code, out localModule))
+                                {
+                                    localModule.ModuleID = newModuleId;
+                                    UpdateModule(localModule);
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    LocalizeModuleInternal(sourceModule);
-				}
+                    else if (!alreadyLocalized)
+                    {
+                        LocalizeModuleInternal(sourceModule);
+				    }
                 }
             }
             catch (Exception ex)

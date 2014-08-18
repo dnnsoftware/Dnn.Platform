@@ -63,6 +63,15 @@ namespace DotNetNuke.Entities.Modules
         void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference);
 
         /// <summary>
+        /// Copies all modules in source page to a new page.
+        /// </summary>
+        /// <param name="sourceTab">The source tab.</param>
+        /// <param name="destinationTab">The destination tab.</param>
+        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="includeAllTabsMobules">if set to <c>true</c> will include modules which shown on all pages, this is used when create localized copy.</param>
+        void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference, bool includeAllTabsMobules);
+
+        /// <summary>
         /// This method provides two functions:
         /// 1. Check and ensure that the "Module" content item type exists - if not create it
         /// 2. add a content item

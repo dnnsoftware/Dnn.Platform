@@ -67,6 +67,11 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             _provider.ExecuteNonQuery("CoreMessaging_DeleteMessage", messageId);
         }
 
+        public void DeleteUserFromConversation(int conversationId, int userId)
+        {
+            _provider.ExecuteNonQuery("CoreMessaging_DeleteUserFromConversation", conversationId, userId);
+        }
+
         public int CreateMessageReply(int conversationId, int portalId,string body, int senderUserId, string from, int createUpdateUserId)
         {
             return _provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId,body, senderUserId, from, createUpdateUserId);
@@ -175,6 +180,16 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public int CountArchivedMessages(int userId, int portalId)
         {
             return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
+        }
+
+        public int CountSentConversations(int userId, int portalId)
+        {
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
+        }
+
+        public int CountArchivedConversations(int userId, int portalId)
+        {
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
         #endregion

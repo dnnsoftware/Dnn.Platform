@@ -37,6 +37,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -557,6 +558,10 @@ namespace DesktopModules.Admin.Portals
             editContainerCombo.Scope = SkinScope.All;
             editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer);
 
+            iconSetCombo.DataSource = IconController.GetIconSets();
+            iconSetCombo.DataBind();
+            iconSetCombo.SelectedValue = PortalController.GetPortalSetting("DefaultIconLocation", portal.PortalID, "Sigma").Replace("icons/","");
+
             if (ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
                 uploadSkinLink.NavigateUrl = Util.InstallURL(ModuleContext.TabId, "");
@@ -750,7 +755,6 @@ namespace DesktopModules.Admin.Portals
             if (portal != null)
             {
                 uploadDirectory = portal.HomeDirectoryMapPath;
-                chkIncludePortalCss.Checked = PortalController.GetPortalSettingAsBoolean("IncludePortalCss", portal.PortalID, false);
             }
 
             //read CSS file
@@ -915,6 +919,14 @@ namespace DesktopModules.Admin.Portals
             RedirectAfterLogin.UndefinedItem = undefinedItem;
             RedirectAfterRegistration.UndefinedItem = undefinedItem;
             RedirectAfterLogout.UndefinedItem = undefinedItem;
+
+            RedirectAfterRegistration.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterRegistration.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogin.Roles.Add(PortalSettings.RegisteredRoleId);
+            RedirectAfterLogin.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
+
+            RedirectAfterLogout.Roles.Add(int.Parse(Globals.glbRoleAllUsers));
         }
 
         private void EnableCompositeFilesChanged(object sender, EventArgs e)
@@ -1377,6 +1389,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalSkin", portalSkinCombo.SelectedValue, false);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalContainer", portalContainerCombo.SelectedValue, false);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultIconLocation", "icons/" + iconSetCombo.SelectedValue, false);
                     PortalController.UpdatePortalSetting(_portalId, "EnablePopups", enablePopUpsCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "EnableModuleEffect", enableModuleEffectCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "InlineEditorEnabled", chkInlineEditor.Checked.ToString(), false);
@@ -1398,7 +1411,6 @@ namespace DesktopModules.Admin.Portals
 
 					PortalController.UpdatePortalSetting(_portalId, "HideLoginControl", chkHideLoginControl.Checked.ToString(), false);
 					PortalController.UpdatePortalSetting(_portalId, "EnableRegisterNotification", chkEnableRegisterNotification.Checked.ToString(), false);
-                    PortalController.UpdatePortalSetting(_portalId, "IncludePortalCss", chkIncludePortalCss.Checked.ToString(), false);
 
                     PortalController.UpdatePortalSetting(_portalId, "SMTPmode", rblSMTPmode.SelectedValue);
                     PortalController.UpdatePortalSetting(_portalId, "SMTPServer", txtSMTPServer.Text);

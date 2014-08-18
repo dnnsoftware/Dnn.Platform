@@ -2824,22 +2824,21 @@ span.dnnInputFileWrapper > input[type="file"] { /* force file upload style here,
     top: 0;
     right: 0;
     margin: 0;
-    border: solid transparent;
     opacity: 0;
     filter: alpha(opacity=0);
     direction: ltr;
     cursor: pointer;
-    height: 30px;
+    height: 100%;
 	font-size: 200px;
 }
 
 span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
-    position: relative !important;
     overflow: hidden !important;
-    margin: 0 4px 0 0;
+    margin: 0px 4px 0 0;
     width: auto !important;
     display: block !important;
     float: left !important;
+	position: relative;
 }
 
     span.dnnInputFileWrapper > span.dnnSecondaryAction {
@@ -2868,7 +2867,7 @@ span.dnnInputFileWrapper { /* Notes(by Richard): here must set !important */
             margin-bottom: 10px;
         }
 
-    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem>span {
+    .dnnFileUploadScope .dnnFormItem span, .urlControlTab .dnnFormItem > span {
         display: block;
         float: left;
         width: 40px;
@@ -3393,3 +3392,334 @@ input[type="button"].rspCollapseBarSpacer
     background-color: #70b1c7; /* Menu Hover Background Color */
 }
 /*-------------------------------------------------*/
+
+/* Login/register/reset paswsword controls in mobile view */
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: inherit !important;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage{
+	margin: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	padding: 10px 0 10px 0;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage.dnnFormValidationSummary{
+	padding: 10px;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .LoginPanel,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnSendPasswordContent,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm {
+    width: 100%;
+	padding: 18px 0 0 0;
+    margin: 0;
+    float: none;	
+	min-width: inherit !important;	
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm{
+	width: 100%;
+	margin: 0;
+	float: none;
+	min-width: inherit !important;
+}
+
+
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel {
+    display: block;
+    text-align: left;
+    float: none;
+    width: 100% !important;
+    font-size: 14px;
+    margin: 0 0 7px 0;
+    vertical-align: top;
+	padding: 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnSocialRegistration{
+	display: none;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnCaptcha{
+	width: 100%;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnLeft img{
+	display: block;
+	margin: 0 0 5px 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel a.dnnFormHelp{
+	display: none !important;
+	width: 0 !important;
+	margin: 0 !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel div.dnnTooltip{
+	display: none !important;
+	width: 0 !important;
+	position: static !important;
+	right: 0 !important;
+	margin: 0 !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem input[type="text"],
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > input[type="password"]{
+    display: block;
+    box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: 100% !important;
+	margin-bottom: 18px;
+	min-width: 100% !important;	
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > label#dnn_ctr_Login_Login_DNN_lblLogin{
+	display: none !important;
+	width: 0;
+	margin: 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem span.dnnFormMessage.dnnFormError{
+	border-radius: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	right: 0;
+	width: auto;
+	max-width: 100%;
+	padding: 10px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm.dnnLoginService a.dnnPrimaryAction,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm.dnnLoginService a.dnnSecondaryAction{
+	width: 45%;
+	padding: 18px 0 18px 0;
+	display: block;
+	float: left;
+	margin: 0 5px 0 0;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnLoginRememberMe{
+	display: block;
+	float: left;
+	margin: 10px 0 0 5px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnLoginActions {
+	display: block;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions a.dnnSecondaryAction,
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions a.dnnPrimaryAction{
+	width: 100%;
+	padding: 18px 0 18px 0;
+	display: block;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions{
+	padding: 0;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnActions li{
+	width: 45%;
+}
+
+/* password strength control in iPopup */
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .password-strength-container{
+	width: 100%;
+	margin: 0 0 12px 0;
+	padding: 8px 0 8px 0;
+	display: block;
+	max-width: inherit !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container input[type="password"]{
+	display: block;
+	margin: 0 8px 0 8px;
+	width: calc(100% - 20px);
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container span.min-length-text{
+	display: block;	
+	margin: 5px 0 5px 8px;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-container div.meter{
+	float: none;	
+	width: 90%;
+	margin: 0 0 0 8px;
+}
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnFormItem input.unmatched{
+	background: none !important;
+}
+
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .password-strength-tooltip, 
+body.mobileView.dnnFormPopup.dnnFormPopupMobileView .dnnRegistrationForm .dnnFormItem .confirm-password-tooltip{
+	display: none !important;
+}
+
+.mobileView .dnnFormPopup .ui-dialog-content, .mobileVie #iPopUp .ui-dialog-content {
+    max-height: none !important; 
+}
+
+.mobileView .ui-widget-overlay {
+    display: none;
+}
+.dnnFormPopup.dnnFormPopupMobileView {
+    width: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    box-shadow: none !important;
+}
+.dnnFormPopup.dnnFormPopupMobileView div.ui-dialog-titlebar > .ui-dialog-titlebar-close {
+    display: none;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-titlebar {
+    border-bottom: none;
+    cursor: inherit;
+    font-size: 22px;
+    color: #000;
+    padding: 5px 0 0 0;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel {
+    display: block;
+    text-align: left;
+    float: none;
+    width: auto !important;
+    font-size: 14px;
+    margin: 0 0 7px 0;
+    vertical-align: top;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > input[type="text"] {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > textarea,
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .redactor_box {
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > select {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnTagsInput {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100% !important;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-bottom: 18px;
+    max-width: inherit !important;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnForm .dnnFormItem > .dnnLabel > input[type="checkbox"].normalCheckBox {
+    display: inline-block;
+    margin: 0 5px 0 12px;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnFormItem span.dnnFormMessage.dnnFormError {
+    right: 0;
+    width: auto;
+    border-radius: 0;
+    text-align: right;
+    max-width: 100%;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView a.dnnSecondaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnSecondaryAction {
+    width: 49%;
+    margin: 0;
+    padding: 20px 0 20px 0;
+    display: block;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnPrimaryAction {
+    float: left;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView a.dnnSecondaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane button.dnnSecondaryAction {
+    float: right;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane {
+    border-top: none;
+}
+
+    .dnnFormPopup.dnnFormPopupMobileView .ui-dialog-buttonpane .ui-dialog-buttonset {
+        float: none;
+    }
+
+.dnnFormPopup.dnnFormPopupMobileView .four-btn-panel a.dnnPrimaryAction,
+.dnnFormPopup.dnnFormPopupMobileView .four-btn-panel a.dnnSecondaryAction {
+    width: 24%;
+    display: inline-block;
+    margin-right: 1%;
+    float: none;
+}
+
+.dnnFormPopup.dnnFormPopupMobileView .dnnFormMessage {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 25px 0 15px 0;
+}
+
+html.mobileView {
+    overflow: auto !important;
+}
+
+.mobileView .dnnFormPopup .ui-dialog-content, 
+.mobileView #iPopUp .ui-dialog-content {
+    max-height: none !important; 
+}
+

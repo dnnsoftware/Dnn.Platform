@@ -75,33 +75,56 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                var redirectURL = "";
+                var _RedirectURL = "";
 
-                if (Request.QueryString["returnurl"] != null)
+                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
+
+                if (Convert.ToInt32(setting) > 0) //redirect to after registration page
                 {
-                    //return to the url passed
-                    redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                    if (redirectURL.Contains("://"))
+                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                }
+                else
+                {
+                
+                if (Convert.ToInt32(setting) <= 0)
+                {
+                    if (Request.QueryString["returnurl"] != null)
                     {
-                        redirectURL = "";
-                    }
-                    if (redirectURL.Contains("?returnurl"))
-                    {
-                        var baseURL = redirectURL.Substring(0, redirectURL.IndexOf("?returnurl"));
-                        var returnURL = redirectURL.Substring(redirectURL.IndexOf("?returnurl") + 11);
+                        //return to the url passed to register
+                        _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                        if (_RedirectURL.Contains("://") &&
+                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
+                                StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            _RedirectURL = "";
+                        }
+                        if (_RedirectURL.Contains("?returnurl"))
+                        {
+                            string baseURL = _RedirectURL.Substring(0,
+                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                            string returnURL =
+                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
 
-                        redirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                        }
+                    }
+                    if (String.IsNullOrEmpty(_RedirectURL))
+                    {
+                        //redirect to current page 
+                        _RedirectURL = Globals.NavigateURL();
                     }
                 }
-                if (String.IsNullOrEmpty(redirectURL))
+                else //redirect to after registration page
                 {
-                    //redirect to current page 
-                    redirectURL = Globals.NavigateURL();
+                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
                 }
-                return redirectURL;
+                }
+
+                return _RedirectURL;
             }
-        }
+        
+		}
 
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
@@ -148,7 +171,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnInit(e);
 
             var isEnabled = true;
-
+			
             //both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
@@ -161,18 +184,20 @@ namespace DotNetNuke.Modules.Admin.Security
                 lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
                 divPassword.Visible = false;
             }
-
-            if (MembershipProviderConfig.PasswordResetEnabled == false)
+			
+			if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 isEnabled = false;
                 lblHelp.Text = Localization.GetString("DisabledPasswordHelp", LocalResourceFile);
                 divPassword.Visible = false;
             }
 
+			
             if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresUniqueEmail", LocalResourceFile);
             }
+			
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && isEnabled)
             {
                 lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", LocalResourceFile);
@@ -192,6 +217,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
 
             cmdSendPassword.Click += OnSendPasswordClick;
+			cancelButton.Click += cancelButton_Click;
 
             if (Request.UserHostAddress != null)
             {
@@ -205,17 +231,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", LocalResourceFile);
                 ctlCaptcha.Text = Localization.GetString("CaptchaText", LocalResourceFile);
             }
-
-            var returnUrl = Request.QueryString["returnurl"] ?? string.Empty;
-            if (returnUrl.IndexOf("?returnurl=") != -1)
-            {
-                returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl="));
-            }
-            returnUrl = HttpUtility.UrlEncode(returnUrl);
-
-            var url = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
-            hlLogin.NavigateUrl = PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger ? UrlUtils.PopUpUrl(url,this, PortalSettings, false,false): url;
-
         }
 
         /// <summary>
@@ -349,7 +364,8 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         LogFailure(message);
                     }
-                    //always hide panel so as to not reveal if username exists.
+
+					//always hide panel so as to not reveal if username exists.
                     pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
 
@@ -376,14 +392,14 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var portalSecurity = new PortalSecurity();
 
-            var log = new LogInfo
+			var log = new LogInfo
             {
                 LogPortalID = PortalSettings.PortalId,
                 LogPortalName = PortalSettings.PortalName,
                 LogUserID = UserId,
                 LogUserName = portalSecurity.InputFilter(txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
             };
-
+			
             if (string.IsNullOrEmpty(message))
             {
                 log.LogTypeKey = "PASSWORD_SENT_SUCCESS";
@@ -393,9 +409,17 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogTypeKey = "PASSWORD_SENT_FAILURE";
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
-            log.AddProperty("IP", _ipAddress);
+            
+			log.AddProperty("IP", _ipAddress);
             
             LogController.Instance.AddLog(log);
+
+        }
+		
+		
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect(RedirectURL, true);
         }
 
         #endregion

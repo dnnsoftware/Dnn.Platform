@@ -140,6 +140,12 @@
                             <a href="#" class="dnnSecondaryAction"><%=LocalizeString("EditSkinPreview")%></a>
                         </div>
                     </div>
+                    <div id="iconSetSettings">
+                        <div class="dnnFormItem">
+                            <dnn:label id="plIconSet" controlname="iconSetCombo" runat="server" />
+                            <asp:DropDownList ID="iconSetCombo" runat="server" Width="300px" CssClass="dnnFixedSizeComboBox" />
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </div>
@@ -682,10 +688,6 @@
         <div class="ssStylesheetEditor dnnClear" id="ssStylesheetEditor">
             <div class="ssseContent dnnClear">
                 <fieldset>
-                    <div class="dnnFormItem">
-                        <dnn:label id="IncludePortalCssLabel" runat="server" controlname="chkIncludePortalCss" />
-                        <asp:CheckBox runat="server" ID="chkIncludePortalCss" />
-                    </div>
                     <div class="editor">
                         <asp:TextBox ID="txtStyleSheet" runat="server" Rows="30" TextMode="MultiLine" Wrap="False" Columns="100" />
                     </div>

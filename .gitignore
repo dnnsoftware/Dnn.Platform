@@ -87,6 +87,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/*/[Dd]efault.aspx
 
+[Ww]ebsite/[Aa]dmin/[Pp]ersonabar
+
 [Ww]ebsite/[Aa]pp_[Cc]ode
 
 [Ww]ebsite/[Aa]pp_[Dd]ata
@@ -180,6 +182,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 ![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.it-IT.resx
 ![Ww]ebsite/[Ii]nstall/[Aa]pp_[Ll]ocal[Rr]esources/*.nl-NL.resx
 
+*.zip.manifest
 
 ############
 ## Windows

@@ -133,6 +133,14 @@ namespace DotNetNuke.Services.Upgrade
 
         #region Private Methods
 
+        private static Version ApplicationVersion
+        {
+            get
+            {
+                return Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddAdminPages adds an Admin Page and an associated Module to all configured Portals
@@ -1822,7 +1830,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 //attempt to remove "System.Web.Extensions" configuration section
                 string upgradeFile = string.Format("{0}\\Config\\SystemWebExtensions.config", Globals.InstallMapPath);
-                string message = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, "Remove System.Web.Extensions");
+                string message = UpdateConfig(upgradeFile, ApplicationVersion, "Remove System.Web.Extensions");
                 EventLogController.Instance.AddLog("UpgradeConfig",
                                           string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
@@ -2959,6 +2967,36 @@ namespace DotNetNuke.Services.Upgrade
                 JavaScriptLibraryController.Instance.SaveLibrary(jquerymigrate);
             }
 #pragma warning restore 612,618
+        }
+
+        private static void UpgradeToVersion732()
+        {
+            //Register System referenced 3rd party assemblies.
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.FastVectorHighlighter.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Lucene.Net.Contrib.Analyzers.dll", "3.0.3");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.ApplicationBlocks.Data.dll", "2.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Web.Helpers.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Microsoft.Web.Infrastructure.dll", "1.0.20105");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "Newtonsoft.Json.dll", "4.5.7");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "PetaPoco.dll", "5.0.1");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "SharpZipLib.dll", "0.81.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.dll", "1.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.Formatting.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Net.Http.WebRequest.dll", "1.0.0");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Helpers.dll", "2.0.20216");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Http.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Http.WebHost.dll", "4.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.Razor.dll", "2.0.20216");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.Deployment.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.dll", "2.0.20710");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "System.Web.WebPages.Razor.dll", "2.0.20126");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebFormsMvp.dll", "1.4.1");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.Data.dll", "2.0.20126");
+            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
+
+            //update help url
+            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
         }
 
         private static void AddManageUsersModulePermissions()
@@ -4327,8 +4365,8 @@ namespace DotNetNuke.Services.Upgrade
         {
             var scriptFiles = new ArrayList();
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
-
-            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, DotNetNukeContext.Current.Application.Version);
+            
+            Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
             foreach (string file in files)
             {
@@ -4339,7 +4377,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
                         // check if script file is relevant for upgrade
-                        if (version > databaseVersion && version <= DotNetNukeContext.Current.Application.Version)
+                        if (version > databaseVersion && version <= ApplicationVersion)
                         {
                             scriptFiles.Add(file);
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
@@ -4876,7 +4914,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         //Upgrade to .NET 3.5
                         string upgradeFile = string.Format("{0}\\Config\\Net35.config", Globals.InstallMapPath);
-                        string message = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, ".NET 3.5 Upgrade");
+                        string message = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 3.5 Upgrade");
                         if (string.IsNullOrEmpty(message))
                         {
                             //Remove old AJAX file
@@ -4898,7 +4936,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         //Upgrade to .NET 4.0
                         string upgradeFile = string.Format("{0}\\Config\\Net40.config", Globals.InstallMapPath);
-                        string strMessage = UpdateConfig(upgradeFile, DotNetNukeContext.Current.Application.Version, ".NET 4.0 Upgrade");
+                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.0 Upgrade");
                         EventLogController.Instance.AddLog("UpgradeNet",
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
@@ -5104,6 +5142,9 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.3.0":
                         UpgradeToVersion730();
                         break;
+                    case "7.3.2":
+                        UpgradeToVersion732();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -5271,8 +5312,8 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void UpgradeDNN(string providerPath, Version dataBaseVersion)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version));
-            HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Upgrading to Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "<br/>");
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(ApplicationVersion));
+            HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Upgrading to Version: " + Globals.FormatVersion(ApplicationVersion) + "<br/>");
 
             //Process the Upgrade Script files
             var versions = new List<Version>();
@@ -5368,7 +5409,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpgradeRedirect()
         {
-            return UpgradeRedirect(DotNetNukeContext.Current.Application.Version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
+            return UpgradeRedirect(ApplicationVersion, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
         }
 
         public static string UpgradeRedirect(Version version, string packageType, string packageName, string culture)

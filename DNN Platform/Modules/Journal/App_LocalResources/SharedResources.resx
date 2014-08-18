@@ -297,10 +297,10 @@
 	&lt;/div&gt;</value>
   </data>
   <data name="groupcreate.Text" xml:space="preserve">
-    <value>Group Created</value>
+    <value>Groups Created</value>
   </data>
   <data name="groupjoin.Text" xml:space="preserve">
-    <value>Group Joined</value>
+    <value>Groups Joined</value>
   </data>
   <data name="journal_groupcreate.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
@@ -330,7 +330,7 @@
     <value>has earned the achievement</value>
   </data>
   <data name="achievement.Text" xml:space="preserve">
-    <value>Achievement Earned</value>
+    <value>Achievements Earned</value>
   </data>
   <data name="answer.Action" xml:space="preserve">
     <value>answered the question</value>
@@ -339,10 +339,10 @@
     <value>Answers</value>
   </data>
   <data name="articleadd.Action" xml:space="preserve">
-    <value>added a new article</value>
+    <value>added an article</value>
   </data>
   <data name="articleadd.Text" xml:space="preserve">
-    <value>Added an Article</value>
+    <value>Articles</value>
   </data>
   <data name="comment.Action" xml:space="preserve">
     <value>commented on</value>
@@ -351,25 +351,25 @@
     <value>added the document</value>
   </data>
   <data name="documentadd.Text" xml:space="preserve">
-    <value>Added a Document</value>
+    <value>Documents</value>
   </data>
   <data name="documentupdate.Action" xml:space="preserve">
     <value>updated the document</value>
   </data>
   <data name="documentupdate.Text" xml:space="preserve">
-    <value>Updated a Document</value>
+    <value>Documents Updated</value>
   </data>
   <data name="eventattend.Action" xml:space="preserve">
     <value>is attending the event</value>
   </data>
   <data name="eventattend.Text" xml:space="preserve">
-    <value>Attending Event</value>
+    <value>Attending Events</value>
   </data>
   <data name="eventcreate.Action" xml:space="preserve">
     <value>created the event</value>
   </data>
   <data name="eventcreate.Text" xml:space="preserve">
-    <value>Created Event</value>
+    <value>Events</value>
   </data>
   <data name="friend.Text" xml:space="preserve">
     <value>Friends</value>
@@ -378,13 +378,13 @@
     <value>added the idea</value>
   </data>
   <data name="ideaadd.Text" xml:space="preserve">
-    <value>Added Idea</value>
+    <value>Ideas</value>
   </data>
   <data name="ideaupdate.Action" xml:space="preserve">
     <value>updated the idea</value>
   </data>
   <data name="ideaupdate.Text" xml:space="preserve">
-    <value>Updated Idea</value>
+    <value>Updated Ideas</value>
   </data>
   <data name="journal_generic.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
@@ -403,7 +403,7 @@
     <value>has earned the privilege</value>
   </data>
   <data name="privilege.Text" xml:space="preserve">
-    <value>Privilege Earned</value>
+    <value>Privileges Earned</value>
   </data>
   <data name="projectcreated.Action" xml:space="preserve">
     <value>created a new project</value>
@@ -427,13 +427,13 @@
     <value>added review for</value>
   </data>
   <data name="reviewadd.Text" xml:space="preserve">
-    <value>Added Review</value>
+    <value>Reviews</value>
   </data>
   <data name="reviewupdate.Action" xml:space="preserve">
     <value>updated review for</value>
   </data>
   <data name="reviewupdate.Text" xml:space="preserve">
-    <value>Updated Review</value>
+    <value>Updated Reviews</value>
   </data>
   <data name="survey.Action" xml:space="preserve">
     <value>completed survey</value>
@@ -445,19 +445,19 @@
     <value>created a new task</value>
   </data>
   <data name="taskadd.Text" xml:space="preserve">
-    <value>Created Task</value>
+    <value>Tasks</value>
   </data>
   <data name="taskupdate.Action" xml:space="preserve">
     <value>updated the task</value>
   </data>
   <data name="taskupdate.Text" xml:space="preserve">
-    <value>Updated Task</value>
+    <value>Updated Tasks</value>
   </data>
   <data name="videoadd.Action" xml:space="preserve">
     <value>added the video</value>
   </data>
   <data name="videoadd.Text" xml:space="preserve">
-    <value>Added a Video</value>
+    <value>Videos</value>
   </data>
   <data name="vote.Action" xml:space="preserve">
     <value>voted for</value>
@@ -466,13 +466,13 @@
     <value>Votes</value>
   </data>
   <data name="wikiadd.Action" xml:space="preserve">
-    <value>added the wiki page</value>
+    <value>added the wiki item</value>
   </data>
   <data name="wikiadd.Text" xml:space="preserve">
-    <value>Added to Wiki</value>
+    <value>Wiki</value>
   </data>
   <data name="wikiupdate.Action" xml:space="preserve">
-    <value>updated the wiki page</value>
+    <value>updated the wiki item</value>
   </data>
   <data name="wikiupdate.Text" xml:space="preserve">
     <value>Updated Wiki</value>
@@ -481,7 +481,7 @@
     <value>received the badge</value>
   </data>
   <data name="badge.Text" xml:space="preserve">
-    <value>badge</value>
+    <value>Badges Received</value>
   </data>
   <data name="journal_badge.Text" xml:space="preserve">
     <value>&lt;div class="author"&gt;&lt;img src="[BaseUrl]/profilepic.ashx?userId=[JournalAuthor:Id]&amp;h=32&amp;w=32" /&gt;&lt;/div&gt;
@@ -561,6 +561,18 @@
     <value>Post</value>
   </data>
   <data name="product.Text" xml:space="preserve">
-    <value>Product Updated</value>
+    <value>Products</value>
+  </data>
+  <data name="challengeadded.Action" xml:space="preserve">
+    <value>issued the challenge</value>
+  </data>
+  <data name="challengeadded.Text" xml:space="preserve">
+    <value>Challenges Added</value>
+  </data>
+  <data name="challengecompleted.Action" xml:space="preserve">
+    <value>completed the challenge</value>
+  </data>
+  <data name="challengecompleted.Text" xml:space="preserve">
+    <value>Challenges Completed</value>
   </data>
 </root>

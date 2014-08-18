@@ -14,6 +14,8 @@
                         <asp:CheckBox runat="server" ID="cbDetectionEnabled" AutoPostBack="True" /></p>
                     <p class="bold"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
                         <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabled" AutoPostBack="True" /></p>
+                    <p class="bold"><dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                        <asp:CheckBox runat="server" ID="cbShareUsageEnabled" AutoPostBack="True" /></p>
                     <h2><%= LocalizeString("Lite.Header")%></h2>
                     <fieldset class="upgradePremium">
                         <h5><%= LocalizeString("LiteUpgrade.Label")%></h5>
@@ -36,8 +38,19 @@
                         </ul>
                     </fieldset>
                 <% } else { %>
-                    <div class="bold dnnFormItem"><dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
-                        <asp:CheckBox runat="server" ID="cbDetectionEnabledPremium" AutoPostBack="True" /></div>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
+                        <asp:CheckBox runat="server" ID="cbDetectionEnabledPremium" AutoPostBack="True" />
+                    </div>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
+                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabledPremium" AutoPostBack="True" />
+                    </div>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                        <asp:CheckBox runat="server" ID="cbShareUsageEnabledPremium" AutoPostBack="True" />
+                    </div>
+
                     <h2><%= GetLicenseFormatString("Premium.Header") %></h2>
                     <fieldset>
                         <p><%= GetLicenseFormatString("PremiumIntro.Text") %></p>
@@ -47,8 +60,6 @@
                         <dnn:label runat="server" resourcekey="ManualUpdates" /><fiftyOne:Upload runat="server" ID="PremiumUpload" FooterEnabled="False" 
                             LogoEnabled="False" ButtonCssClass="dnnSecondaryAction" CssClass="dnnUploadActions" />
                     </fieldset>
-                    <div class="bold bottom dnnFormItem"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
-                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabledPremium" AutoPostBack="True" /></div>
                 <% } %>
             </div>
             <% if (this.IsPremium) { %>

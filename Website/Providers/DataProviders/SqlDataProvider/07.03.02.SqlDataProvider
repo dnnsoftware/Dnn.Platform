@@ -707,6 +707,568 @@ AS
 			@CultureCode)
 GO
 
+/***** Fix bug Content-2605: update enabled column in sp UpdateServerActivity. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateServerActivity]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+    @ServerName			NVARCHAR(50),
+    @IISAppName			NVARCHAR(200),
+    @CreatedDate		DATETIME,
+    @LastActivityDate	DATETIME,
+    @PingFailureCount   INT,
+    @Enabled            BIT
+AS
+
+	DECLARE @ServerID int
+	SET @ServerID = (SELECT ServerID FROM {databaseOwner}{objectQualifier}WebServers WHERE ServerName = @ServerName AND IISAppName = @IISAppName)
+
+	IF @ServerID IS NULL
+		BEGIN
+			-- Insert
+			INSERT INTO {databaseOwner}{objectQualifier}WebServers (
+				ServerName,
+				IISAppName,
+				CreatedDate,
+				LastActivityDate,
+                PingFailureCount,
+				[Enabled]
+			)
+			VALUES (
+				@ServerName,
+				@IISAppName,
+				@CreatedDate,
+				@LastActivityDate,
+                @PingFailureCount,
+				@Enabled
+			)
+
+            SELECT @ServerID = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			-- Update
+			UPDATE {databaseOwner}{objectQualifier}WebServers 
+				SET 
+					LastActivityDate = @LastActivityDate, PingFailureCount = @PingFailureCount, [Enabled] = @Enabled
+				WHERE  ServerName = @ServerName AND IISAppName = @IISAppName
+		END
+
+    SELECT @ServerID
+GO
+
+/***** Fix bug DNN-3245: update the setting name to match AUM format. *****/
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+    SET SettingName = 'AUM_' + Upper(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+    SET SettingName = 'AUM_' + UPPER(SUBSTRING(SettingName,1,1)) + SUBSTRING(SettingName, 2, DATALENGTH(SettingName))
+    WHERE SettingName IN ('includePageName', 'redirectDefaultPage', 'sslClientRedirect', 'illegalChars', 'replaceDoubleChars', 'regex404', 'url404', 'url500', 'useBaseFriendlyUrls', 'internalAliases', 'processRequests', 'cacheTime')
+GO
+
+/***** Fix bug DNN-3042: add sp *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserFromConversation]
+	@ConversationID INT,
+    @UserID INT
+AS
+    --Remove the User from recipients list
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+		WHERE [UserID] = @UserID
+		AND MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = @ConversationID)
+    
+    --Remove Messages which has no recipient
+    DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages]
+        FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m
+        LEFT JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr on MR.MessageID = m.MessageID
+        WHERE ConversationID = @ConversationID AND mr.MessageID IS NULL
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetSentBox]
+	@UserID INT,
+	@PortalID INT,
+	@AfterMessageId INT,
+	@NumberOfRecords INT,
+	@SortField NVARCHAR(25) = 'CreatedOnDate',
+	@SortAscending BIT = 0
+AS
+BEGIN
+	;WITH RollUpMessageIDs AS
+	(
+		SELECT MAX(m.MessageID) AS TopMessageID
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m ON mr.MessageID = m.MessageID AND mr.UserID = m.SenderUserID --make sure sender haven't delete the message.
+		WHERE SenderUserID = @UserID AND NotificationTypeID IS NULL AND PortalID = @PortalID
+		GROUP BY ConversationID
+	), SentBox AS
+	(
+		SELECT DISTINCT m.[MessageID], [ConversationID], [Subject], CONVERT(NVARCHAR(50), [Body]) AS Body,
+				[To], [From], [ReplyAllAllowed], [SenderUserID],
+				m.[CreatedByUserID], m.[CreatedOnDate],
+				m.[LastModifiedByUserID], m.[LastModifiedOnDate],
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageAttachments WHERE MessageID = m.MessageID) AS AttachmentCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID AND [READ] = 0) AS NewThreadCount,
+				(SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages WHERE ConversationID = m.ConversationID) AND UserID = @UserID) AS ThreadCount,
+				ROW_NUMBER() OVER(ORDER BY
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 1 THEN m.[CreatedOnDate] END ASC,
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 0 THEN m.[CreatedOnDate] END DESC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 1 THEN [From] END ASC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 0 THEN [From] END DESC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 1 THEN [Subject] END ASC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 0 THEN [Subject] END DESC
+					) AS RowNumber
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages AS m
+		WHERE m.MessageID IN (SELECT TopMessageID FROM RollUpMessageIDs)
+	)
+	SELECT * FROM SentBox
+	WHERE (@AfterMessageID > 0 AND RowNumber BETWEEN (SELECT RowNumber + 1 FROM SentBox WHERE [MessageID] = @AfterMessageID) AND (SELECT RowNumber + @NumberOfRecords FROM SentBox WHERE [MessageID] = @AfterMessageID)) OR
+	(@AfterMessageID = -1 AND RowNumber BETWEEN 1 AND @NumberOfRecords)
+	ORDER BY RowNumber ASC
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetArchiveBox]
+	@UserID INT,
+	@PortalID INT,
+	@AfterMessageID INT,
+	@NumberOfRecords INT,
+	@SortField NVARCHAR(25) = 'CreatedOnDate',
+	@SortAscending BIT = 0
+AS
+BEGIN
+	;WITH RollUpMessageIDs AS
+	(
+		SELECT MAX(m.MessageID) AS TopMessageID
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr
+		INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m ON mr.MessageID = m.MessageID
+		WHERE NotificationTypeID IS NULL AND PortalID = @PortalID AND MR.UserID = @UserID AND MR.Archived = 1
+		GROUP BY ConversationID
+	), ArchiveBox AS
+	(
+		SELECT DISTINCT m.[MessageID], [ConversationID], [Subject], convert(nvarchar(50), [Body]) AS Body,
+				[To], [From], [ReplyAllAllowed], [SenderUserID],
+				m.[CreatedByUserID], m.[CreatedOnDate],
+				m.[LastModifiedByUserID], m.[LastModifiedOnDate],
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageAttachments] WHERE MessageID = m.MessageID) AS AttachmentCount,
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = m.ConversationID) AND UserID = @UserID AND [READ] = 0) AS NewThreadCount,
+				(SELECT COUNT(*) FROM {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] WHERE MessageID IN (SELECT MessageID FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] WHERE ConversationID = m.ConversationID) AND UserID = @UserID) AS ThreadCount,
+				ROW_NUMBER() OVER(ORDER BY
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 1 THEN m.[CreatedOnDate] END ASC,
+					 CASE WHEN @SortField = 'CreatedOnDate' AND @SortAscending = 0 THEN m.[CreatedOnDate] END DESC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 1 THEN [From] END ASC,
+					 CASE WHEN @SortField = 'From' AND @SortAscending = 0 THEN [From] END DESC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 1 THEN [Subject] END ASC,
+					 CASE WHEN @SortField = 'Subject' AND @SortAscending = 0 THEN [Subject] END DESC
+					) AS RowNumber
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] AS m
+		WHERE m.MessageID IN (SELECT TopMessageID FROM RollUpMessageIDs)
+	)
+	SELECT * FROM ArchiveBox
+	WHERE (@AfterMessageID > 0 AND RowNumber BETWEEN (SELECT RowNumber + 1 FROM ArchiveBox WHERE [MessageID] = @AfterMessageID) AND (SELECT RowNumber + @NumberOfRecords FROM ArchiveBox WHERE [MessageID] = @AfterMessageID)) OR
+	(@AfterMessageID = -1 AND RowNumber BETWEEN 1 AND @NumberOfRecords)
+	ORDER BY RowNumber ASC
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountArchivedConversations]
+	@UserID INT,
+	@PortalID INT
+AS
+BEGIN
+	SELECT COUNT(DISTINCT M.ConversationID) AS TotalRecords
+	    FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] M
+	    JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR ON M.MessageID = MR.MessageID
+	    WHERE Archived = 1
+	        AND NotificationTypeID IS NULL AND PortalID = @PortalID AND UserID = @UserID
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CountSentConversations]
+	@UserID INT,
+	@PortalID INT
+AS
+BEGIN
+	SELECT COUNT(DISTINCT ConversationID) AS TotalRecords
+	    FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] m
+        INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] mr ON mr.MessageID = m.MessageID AND mr.UserID = m.SenderUserID --make sure sender haven't delete the message.
+	    WHERE SenderUserID = @UserID
+	        AND NotificationTypeID IS NULL AND PortalID = @PortalID
+END
+GO
+
+
+/*DNN-5628 Journal Type > Create new for challenges */
+
+--Add Journal Type for Challenge Added
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengeadded') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengeadded'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+--Add Journal Type for Challenge Completed
+IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}Journal_Types
+            WHERE [JournalType] = 'challengecompleted') 
+   BEGIN
+		DECLARE @JournalTypeId INT
+		SELECT @JournalTypeId = COALESCE(max(JournalTypeId),0) FROM {databaseOwner}{objectQualifier}Journal_Types
+		SET @JournalTypeId = @JournalTypeId + 1
+
+         INSERT INTO  {databaseOwner}{objectQualifier}Journal_Types
+           ([JournalTypeID]
+		   ,[JournalType]
+           ,[icon]
+           ,[PortalId]
+           ,[IsEnabled]
+           ,[AppliesToProfile]
+           ,[AppliesToGroup]
+           ,[AppliesToStream]
+           ,[Options]
+           ,[SupportsNotify]
+           ,[EnableComments])
+         VALUES  
+		   (@JournalTypeId--<JournalTypeId, int,>
+		   ,'challengecompleted'--<JournalType, nvarchar(25),>
+           ,''--<icon, nvarchar(25),>
+           ,-1--<PortalId, int,>
+           ,1--<IsEnabled, bit,>
+           ,1--<AppliesToProfile, bit,>
+           ,1--<AppliesToGroup, bit,>
+           ,1--<AppliesToStream, bit,>
+           ,NULL--<Options, nvarchar(max),>
+           ,1--<SupportsNotify, bit,>
+           ,0)--<EnableComments, bit,>
+    END 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId INT,
+    @CurrentUserId INT,
+    @JournalId INT,
+    @IncludeAllItems INT = 0,
+    @IsDeleted INT = 0,
+    @SecurityCheck BIT = 0
+    AS
+    SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+                j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+                "JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+                "JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+                "JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+                 jt.Icon, jt.JournalType,
+                "Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+                jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+    FROM        {databaseOwner}[{objectQualifier}Journal] AS j
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE       ((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+                OR 
+                ((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_GetByKey]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_GetByKey]
+	@PortalId INT,
+	@ObjectKey NVARCHAR(255),
+	@IncludeAllItems INT = 0,
+	@IsDeleted INT = 0
+	AS
+	SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM       	{databaseOwner}[{objectQualifier}Journal] AS j INNER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> '' AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (j.ObjectKey = @ObjectKey AND j.ObjectKey IS NOT NULL AND @ObjectKey <> ''))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_ListForGroup]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForGroup]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@GroupId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+		DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+					INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t 
+					ON t.seckey = js.SecurityKey AND (js.SecurityKey = 'R' + CAST(@GroupId as nvarchar(100)) OR js.SecurityKey = 'E')
+					WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId AND jt.GroupId = @GroupId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(r.RoleId as nvarchar(150)) + '</id><name><![CDATA[' + r.RoleName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+		{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId INNER JOIN
+		{databaseOwner}[{objectQualifier}Roles] as r ON j.GroupId = r.RoleId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE		((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+				OR 
+				((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow))
+	ORDER BY RowNumber ASC;
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_ListForProfile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForProfile]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@ProfileId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0
+	AS
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows;
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.ProfileId = @ProfileId AND j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId AND j.ProfileId = @ProfileId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+			OR 
+			((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow))	
+	ORDER BY RowNumber ASC;
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_ListForSummary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_ListForSummary]
+	@PortalId int,
+	@ModuleId int,
+	@CurrentUserId int,
+	@RowIndex int,
+	@MaxRows int,
+	@IncludeAllItems int = 0,
+	@IsDeleted int = 0	
+	AS
+	IF @RowIndex = 0
+	BEGIN
+		SET @RowIndex = 1
+	END
+	DECLARE @EndRow int
+	SET @EndRow = @RowIndex + @MaxRows - 1;
+	DECLARE @j TABLE(id int IDENTITY, journalid int, datecreated datetime)
+	IF EXISTS(SELECT * from {databaseOwner}[{objectQualifier}Journal_TypeFilters] WHERE ModuleId = @ModuleId)
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			INNER JOIN {databaseOwner}[{objectQualifier}Journal_TypeFilters] as jf ON jf.JournalTypeId = jt.JournalTypeId AND jf.ModuleId = @ModuleId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	ELSE
+	INSERT INTO @j 
+		SELECT j.journalid, jt.datecreated from (
+			SELECT DISTINCT js.JournalId from {databaseOwner}[{objectQualifier}Journal] as j
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] as js ON js.JournalId = j.JournalId
+				INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey
+				WHERE j.PortalId = @PortalId
+			) as j INNER JOIN {databaseOwner}[{objectQualifier}Journal] jt ON jt.JournalId = j.JournalId AND jt.PortalId = @PortalId
+			ORDER BY jt.DateCreated DESC, jt.JournalId DESC;
+	WITH journalItems  AS
+	(
+		SELECT	j.JournalId,
+				ROW_NUMBER() OVER (ORDER BY j.JournalId DESC) AS RowNumber
+		FROM	{databaseOwner}[{objectQualifier}Journal] as j INNER JOIN @j as jtmp ON jtmp.JournalId = j.JournalId
+		WHERE j.PortalId = @PortalId
+	)
+	SELECT	j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+				j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+				"JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+				"JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+				"JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+				 jt.Icon, jt.JournalType,
+				"Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+				"SimilarCount" = (SELECT COUNT(JournalId) FROM {databaseOwner}{objectQualifier}Journal WHERE ContentItemId = j.ContentItemId AND JournalTypeId = j.JournalTypeId),
+				jd.JournalXML, j.ContentItemId, j.ItemData, RowNumber, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+	FROM	journalItems as ji INNER JOIN 
+		{databaseOwner}[{objectQualifier}Journal] as j ON j.JournalId = ji.JournalId INNER JOIN
+	{databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID LEFT OUTER JOIN
+				{databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+	WHERE	((@IncludeAllItems = 0) AND (RowNumber BETWEEN @RowIndex AND @EndRow AND j.IsDeleted = @IsDeleted)) 
+			OR 
+			((@IncludeAllItems = 1) AND (RowNumber BETWEEN @RowIndex AND @EndRow ))
+	ORDER BY RowNumber ASC;
+GO
+
+/* Update GetModuleByDefinition */
+/********************************/
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}GetModuleByDefinition]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleByDefinition]
+      @PortalId int,
+      @DefinitionName nvarchar(128)
+AS
+	SELECT M.*   
+	FROM {databaseOwner}{objectQualifier}vw_Modules M
+		INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions as MD ON M.ModuleDefID = MD.ModuleDefID
+		INNER JOIN {databaseOwner}{objectQualifier}Tabs as T ON M.TabID = T.TabID
+	WHERE ((M.PortalId = @PortalId) or (M.PortalId is null and @PortalID is null))
+		AND MD.DefinitionName = @DefinitionName
+		AND M.IsDeleted = 0
+		AND T.IsDeleted = 0
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

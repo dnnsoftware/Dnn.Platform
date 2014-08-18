@@ -5,7 +5,7 @@
 
 <div class="dnnForm dnnRegistrationForm">
     <div class="dnnFormItem">
-        <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" ViewStateMode="Disabled" /></div>
+        <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" ViewStateMode="Disabled"/></div>
     </div>
     <br/>
     <div class="dnnFormItem dnnClear">
@@ -34,5 +34,12 @@
             if (next.hasClass('dnnFormRequired'))
                 $(this).find('span').addClass('dnnFormRequired');
         });
+		
+		// SOCIAL-2069: fix for WP8
+		if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+			$(window.parent).resize(function () {				
+				$('.dnnFormItem .dnnFormMessage.dnnFormError').hide();
+			});
+		}		
     });
 </script>
