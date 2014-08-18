@@ -74,3 +74,58 @@ BEGIN
 	WHERE [DateCreated] < @CutoffTime
 END
 GO
+
+
+/********************************************************
+ * SPROC: GetPortalSetting (fixing CultureCode use, DNN-5742
+ ********************************************************/
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		-- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- Not Null
+AS
+BEGIN
+	SELECT
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	   AND IsNull(CultureCode, @CultureCode) = @CultureCode
+END
+GO
+
+/********************************************************
+ * SPROC: GetPortalSettings (fixing CultureCode use, DNN-5742
+ ********************************************************/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- totally ignored
+AS
+BEGIN
+	SELECT
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE PS.SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] 
+	 WHERE PortalID = @PortalId
+           AND IsNull(CultureCode, @CultureCode) = @CultureCode
+END
+GO
+
