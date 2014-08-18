@@ -137,3 +137,34 @@ BEGIN
 END
 GO
 
+
+/********************************************************
+ * Table: PortalSettings (allow CultureCode Null, DNN-5743
+ ********************************************************/
+IF EXISTS(SELECT * FROM sys.key_constraints WHERE name = 'PK_{objectQualifier}PortalSettings' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
+	DROP CONSTRAINT [PK_{objectQualifier}PortalSettings]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}PortalSettings' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	DROP INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings] 
+	
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}PasswordHistory' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	DROP INDEX [PK_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings] 
+GO
+
+IF NOT Exists (SELECT * FROM sys.all_columns WHERE Name = 'PortalSettingsID' and Object_id = object_id(N'{databaseOwner}[{objectQualifier}PortalSettings]')) 
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings]
+	  ADD PortalSettingsID int NOT NULL IDENTITY (1, 1);
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] ADD CONSTRAINT
+	[PK_{objectQualifier}PortalSettings] PRIMARY KEY NONCLUSTERED 
+	(PortalSettingsID)
+GO
+
+CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
+	(PortalID, CultureCode, SettingName)
+GO
