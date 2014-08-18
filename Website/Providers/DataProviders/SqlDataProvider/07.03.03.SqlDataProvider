@@ -79,6 +79,10 @@ GO
 /********************************************************
  * SPROC: GetPortalSetting (fixing CultureCode use, DNN-5742
  ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
     @PortalID    Int,		-- Not Null
@@ -107,6 +111,10 @@ GO
 /********************************************************
  * SPROC: GetPortalSettings (fixing CultureCode use, DNN-5742
  ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
     @PortalId    Int,            -- not Null!
     @CultureCode nVarChar(20)    -- totally ignored
