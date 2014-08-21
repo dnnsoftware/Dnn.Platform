@@ -37,7 +37,7 @@ using DotNetNuke.Application;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyStatus(ReleaseMode.Stable)]
+[assembly: AssemblyStatus(ReleaseMode.Alpha)]
 
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]
@@ -49,6 +49,7 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.HttpModules")]
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.MemberDirectory")]
 [assembly: InternalsVisibleTo("DotNetNuke.Provider.AspNetProvider")]
+[assembly: InternalsVisibleTo("Evoq.Content.Library")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]

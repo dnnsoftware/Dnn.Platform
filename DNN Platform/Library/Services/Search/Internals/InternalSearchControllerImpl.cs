@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -62,7 +61,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
-        private static readonly string[] HtmlAttributesToRetain = new[] { "alt", "title" };
+        private static readonly string[] HtmlAttributesToRetain = { "alt", "title" };
         private readonly int _titleBoost;
         private readonly int _tagBoost;
         private readonly int _contentBoost;
@@ -227,8 +226,8 @@ namespace DotNetNuke.Services.Search.Internals
             var doc = new Document();
             var sb = new StringBuilder();
 
-            //TODO Set setOmitTermFreqAndPositions
-            //TODO Check if Numeric fields need to have Store.YES or Store.NO
+            //TODO - Set setOmitTermFreqAndPositions
+            //TODO - Check if Numeric fields need to have Store.YES or Store.NO
             //TODO - Should ModifiedTime be mandatory
             //TODO - Is Locale needed for a single-language site
             //TODO - Sorting
@@ -271,16 +270,16 @@ namespace DotNetNuke.Services.Search.Internals
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
             if (searchDocs.Any())
             {
-                const int commitBatchSize = 1024;
+                const int commitBatchSize = 1024 * 16;
                 var idx = 0;
-                var added = false;
+                //var added = false;
 
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         AddSearchDocumentInternal(searchDoc, (++idx%commitBatchSize) == 0);
-                        added = true;
+                        //added = true;
                     }
                     catch (Exception ex)
                     {
@@ -288,38 +287,63 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                 }
 
+                //Note: modified to do commit only once at the end of scheduler job
                 // check so we don't commit again
-                if (added && (idx % commitBatchSize) != 0)
-                {
-                    Commit();
-                }
+                //if (added && (idx % commitBatchSize) != 0)
+                //{
+                //    Commit();
+                //}
             }
         }
 
         public void DeleteSearchDocument(SearchDocument searchDocument)
         {
-            Requires.NotNullOrEmpty("UniqueKey", searchDocument.UniqueKey);
-            Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
-            Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
-
             DeleteSearchDocumentInternal(searchDocument, false);
         }
 
         private void DeleteSearchDocumentInternal(SearchDocument searchDocument, bool autoCommit)
         {
-            var query = new BooleanQuery
-                {
-                    {new TermQuery(new Term(Constants.UniqueKeyTag, searchDocument.UniqueKey)), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, searchDocument.PortalId, searchDocument.PortalId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchDocument.SearchTypeId, searchDocument.SearchTypeId, true, true), Occur.MUST}
-                };
+            var query = new BooleanQuery();
 
-            //ModuleCrawler Type
-            if (searchDocument.SearchTypeId == _moduleSearchTypeId)
+            if (searchDocument.SearchTypeId > -1)
+                query.Add(NumericValueQuery(Constants.SearchTypeTag, searchDocument.SearchTypeId), Occur.MUST);
+
+            if (searchDocument.PortalId > -1)
+                query.Add(NumericValueQuery(Constants.PortalIdTag, searchDocument.PortalId), Occur.MUST);
+
+            if (searchDocument.RoleId > -1)
+                query.Add(NumericValueQuery(Constants.RoleIdTag, searchDocument.RoleId), Occur.MUST);
+
+            if (searchDocument.ModuleDefId > 0)
+                query.Add(NumericValueQuery(Constants.ModuleDefIdTag, searchDocument.ModuleDefId), Occur.MUST);
+
+            if (searchDocument.ModuleId > 0)
+                query.Add(NumericValueQuery(Constants.ModuleIdTag, searchDocument.ModuleId), Occur.MUST);
+
+            if (searchDocument.TabId > 0)
+                query.Add(NumericValueQuery(Constants.TabIdTag, searchDocument.TabId), Occur.MUST);
+
+            if (searchDocument.AuthorUserId > 0)
+                query.Add(NumericValueQuery(Constants.AuthorIdTag, searchDocument.AuthorUserId), Occur.MUST);
+
+            if (!string.IsNullOrEmpty(searchDocument.UniqueKey))
+                query.Add(new TermQuery(new Term(Constants.UniqueKeyTag, searchDocument.UniqueKey)), Occur.MUST);
+
+            if (!string.IsNullOrEmpty(searchDocument.QueryString))
+                query.Add(new TermQuery(new Term(Constants.QueryStringTag, searchDocument.QueryString)), Occur.MUST);
+
+            if (!string.IsNullOrEmpty(searchDocument.CultureCode))
+                query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
+
+            foreach (var kvp in searchDocument.Keywords)
             {
-                if (searchDocument.ModuleId > 0)
-                    query.Add(NumericRangeQuery.NewIntRange(Constants.ModuleIdTag, searchDocument.ModuleId, searchDocument.ModuleId, true, true), Occur.MUST);
-                query.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, searchDocument.ModuleDefId, searchDocument.ModuleDefId, true, true), Occur.MUST);
+                query.Add(new TermQuery(new Term(
+                    StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), kvp.Value)), Occur.MUST);
+            }
+
+            foreach (var kvp in searchDocument.NumericKeys)
+            {
+                query.Add(NumericValueQuery(Constants.NumericKeyPrefixTag + kvp.Key, searchDocument.TabId), Occur.MUST);
             }
 
             LuceneController.Instance.Delete(query);
@@ -330,28 +354,33 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        private static Query NumericValueQuery(string numericName, int numericVal)
+        {
+            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
+        }
+
         public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
-            var query = new BooleanQuery
-                {
-                    {NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.ModuleIdTag, moduleId, moduleId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.MUST}
-                };
+            Requires.NotNegative("PortalId", portalId);
 
-            LuceneController.Instance.Delete(query);
+            DeleteSearchDocument(new SearchDocument
+            {
+                PortalId = portalId,
+                ModuleId = moduleId,
+                ModuleDefId = moduleDefId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            });
         }
 
         public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
-            var query = new BooleanQuery
-                {
-                    {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.MUST}
-                };
+            Requires.NotNegative("SearchTypeId", searchTypeId);
 
-            LuceneController.Instance.Delete(query);
+            DeleteSearchDocument(new SearchDocument
+            {
+                PortalId = portalId,
+                SearchTypeId = searchTypeId
+            });
         }
 
         public void Commit()
@@ -492,7 +521,6 @@ namespace DotNetNuke.Services.Search.Internals
         private static string StripTagsRetainAttributes(string html, IEnumerable<string> attributes, bool decoded, bool retainSpace)
         {
             var attributesList = attributes as IList<string> ?? attributes.ToList();
-            var attributeStr = string.Join("|", attributesList);
             var strippedString = html;
             var emptySpace = retainSpace ? " " : "";
 

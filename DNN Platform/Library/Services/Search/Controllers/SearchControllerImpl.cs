@@ -53,8 +53,6 @@ namespace DotNetNuke.Services.Search.Controllers
         #region Private Properties
 
         private const string SeacrchContollersCacheKey = "SearchControllers";
-        private const int MaxLucenceRefetches = 10;
-        private const int MaxLucenceLookBacks = 10;
         
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
@@ -152,8 +150,6 @@ namespace DotNetNuke.Services.Search.Controllers
                 localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, Null.NullInteger, Null.NullInteger, true, true), Occur.SHOULD);
                 query.Add(localeQuery, Occur.MUST);
             }
-
-
 
             var luceneQuery = new LuceneQuery
             {
@@ -306,7 +302,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         result.Description = field.StringValue;
                         break;
                     case Constants.Tag:
-                        result.Tags = result.Tags.Concat(new string[] { field.StringValue });
+                        result.Tags = result.Tags.Concat(new[] { field.StringValue });
                         break;
                     case Constants.PermissionsTag:
                         result.Permissions = field.StringValue;
@@ -367,7 +363,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
         }
 
-        private string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
+        private static string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
         {
             var sb = new StringBuilder();
 

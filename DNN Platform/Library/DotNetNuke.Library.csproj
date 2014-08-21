@@ -274,6 +274,9 @@
     <Compile Include="Entities\IPFilter\IIPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterController.cs" />
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
+    <Compile Include="Entities\Portals\PortalCreatedEventArgs.cs" />
+    <Compile Include="Entities\Portals\IPortalEventHandlers.cs" />
+    <Compile Include="Entities\Portals\PortalEventHandlersContainer.cs" />
     <Compile Include="Obsolete\IPortalSettings.cs" />
     <Compile Include="Obsolete\IUserController.cs" />
     <Compile Include="Obsolete\IModuleController.cs" />
@@ -550,6 +553,7 @@
     <Compile Include="Services\FileSystem\Internal\IFileLockingController.cs" />
     <Compile Include="Services\FileSystem\Internal\IUserSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Entities\Portals\IPortalEventHandlersContainer.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
@@ -563,6 +567,7 @@
     <Compile Include="Services\Search\Controllers\TabResultController.cs" />
     <Compile Include="Services\Search\Controllers\ModuleResultController.cs" />
     <Compile Include="Services\Search\Controllers\UserResultController.cs" />
+    <Compile Include="Services\Search\Entities\SearchDocumentToDelete.cs" />
     <Compile Include="Services\Search\Entities\SortDirections.cs" />
     <Compile Include="Services\Search\Entities\SearchResults.cs" />
     <Compile Include="Services\Search\Entities\SortFields.cs" />

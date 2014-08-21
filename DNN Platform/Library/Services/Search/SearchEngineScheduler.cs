@@ -72,20 +72,32 @@ namespace DotNetNuke.Services.Search
         {
             try
             {
-                var searchEngine = new SearchEngine();
                 var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
                 Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
                 ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                searchEngine.DeleteOldDocsBeforeReindex(lastSuccessFulDateTime);
-                searchEngine.IndexContent(lastSuccessFulDateTime);
-                foreach (var result in searchEngine.Results)
+                var searchEngine = new SearchEngine();
+                try
                 {
-                    ScheduleHistoryItem.AddLogNote("<br/>&nbsp&nbsp " + result.Key + " Indexed: " + result.Value);
-                }
-                ScheduleHistoryItem.AddLogNote("<br/><b>Total Items Indexed: " + searchEngine.IndexedSearchDocumentCount + "</b>");
+                    searchEngine.DeleteOldDocsBeforeReindex(lastSuccessFulDateTime);
+                    searchEngine.DeleteRemovedObjects(ScheduleHistoryItem.StartDate.ToUniversalTime());
+                    searchEngine.IndexContent(lastSuccessFulDateTime);
 
-                searchEngine.CompactSearchIndexIfNeeded(ScheduleHistoryItem);
+                    foreach (var result in searchEngine.Results)
+                    {
+                        ScheduleHistoryItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0} Indexed: {1}", result.Key, result.Value));
+                    }
+
+                    ScheduleHistoryItem.AddLogNote("<br/>&nbsp;&nbsp;Deleted Objects: " + searchEngine.DeletedCount);
+                    ScheduleHistoryItem.AddLogNote("<br/><b>Total Items Indexed: " + searchEngine.IndexedSearchDocumentCount + "</b>");
+
+                    searchEngine.CompactSearchIndexIfNeeded(ScheduleHistoryItem);
+                }
+                finally
+                {
+                    searchEngine.Commit();
+                }
+
                 ScheduleHistoryItem.Succeeded = true;
                 ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
                 SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);

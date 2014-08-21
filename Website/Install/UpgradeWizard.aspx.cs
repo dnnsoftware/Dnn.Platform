@@ -62,7 +62,6 @@ namespace DotNetNuke.Services.Install
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
-        private Version _dataBaseVersion;        
         private static string _culture;
         private static string[] _supportedLanguages;
 
@@ -81,11 +80,12 @@ namespace DotNetNuke.Services.Install
                 return DotNetNukeContext.Current.Application.Version;
             }
         }
-        protected Version DatabaseVersion
+
+        protected Version CurrentVersion
         {
             get
             {
-                return _dataBaseVersion ?? (_dataBaseVersion = DataProvider.Instance().GetVersion());
+                return DotNetNukeContext.Current.Application.CurrentVersion;
             }
         }
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Install
             SetBrowserLanguage();
             Page.Title = LocalizeString("Title");
             versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
-            currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(DatabaseVersion));
+            currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));
         }
 
         private static void GetInstallerLocales()

@@ -60,6 +60,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 //using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Web.Client;
 using ICSharpCode.SharpZipLib.Zip;
 using Assembly = System.Reflection.Assembly;
@@ -83,9 +84,19 @@ namespace DotNetNuke.Entities.Portals
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
+        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
+        }
+
+        public PortalController()
+        {
+            foreach (var handlers in PortalEventHandlersContainer.Instance.PortalEventHandlers)
+            {
+                PortalCreated += handlers.Value.PortalCreated;
+            }
         }
 
         #region Private Methods
@@ -390,6 +401,11 @@ namespace DotNetNuke.Entities.Portals
                     {
                         Logger.Error(exc);
                     }
+
+                    if (PortalCreated != null)
+                    {
+                        PortalCreated(this, new PortalCreatedEventArgs { PortalId = portalId});
+                    }
                 }
                 else
                 {
@@ -547,6 +563,14 @@ namespace DotNetNuke.Entities.Portals
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
+
+            // queue remove portal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         private static bool DoesLogTypeExists(string logTypeKey)
