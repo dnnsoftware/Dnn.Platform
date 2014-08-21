@@ -72,6 +72,14 @@ namespace DotNetNuke.Modules.Journal
             public int UserId { get; set; }
         }
 
+        private static bool IsImageFile(string relativePath)
+        {
+            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff","bmp" };
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".",
+            StringComparison.Ordinal) + 1).ToLower();
+            return acceptedExtensions.Contains(extension);
+        }
+
         [HttpPost]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Create(CreateDTO postData)
@@ -140,6 +148,8 @@ namespace DotNetNuke.Modules.Journal
                 if (!string.IsNullOrEmpty(postData.ItemData))
                 {
                     ji.ItemData = postData.ItemData.FromJson<ItemData>();
+                    if (!IsImageFile(ji.ItemData.ImageUrl))
+                        ji.ItemData.ImageUrl = string.Empty;
                     ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
 
                     if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))

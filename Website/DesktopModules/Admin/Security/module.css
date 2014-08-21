@@ -152,12 +152,13 @@ p.dnnFormRequired span
     margin-left: 10px;
     margin-right: 10px;
 }
-.dnnProfile .dnnFormItem input[type="text"], .dnnProfile .dnnFormItem select
+.dnnProfile .dnnFormItem input[type="text"], .dnnProfile .dnnFormItem select, .dnnProfile .dnnFormItem textarea
 {
     margin-right: 10px;
 }
 
 .dnnProfileDetails .dnnFormItem input[type="text"],
+.dnnProfileDetails .dnnFormItem textarea,
 .dnnProfileDetails .dnnFormItem select,
 .dnnProfileDetails .RadPicker{
     display: block;

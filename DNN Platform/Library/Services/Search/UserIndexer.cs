@@ -156,6 +156,13 @@ namespace DotNetNuke.Services.Search
                             searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
                         }
 
+
+                        //log the userid so that it can get the correct user collection next time.
+                        if (userId > startUserId)
+                        {
+                            startUserId = userId;
+                        }
+
                         foreach (var definition in profileDefinitions)
                         {
                             var propertyName = definition.PropertyName;
@@ -182,12 +189,6 @@ namespace DotNetNuke.Services.Search
                             if (string.IsNullOrEmpty(propertyValue))
                             {
                                 continue;
-                            }
-
-                            //log the userid so that it can get the correct user collection next time.
-                            if (userId > startUserId)
-                            {
-                                startUserId = userId;
                             }
 
                             var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode).ToLowerInvariant();

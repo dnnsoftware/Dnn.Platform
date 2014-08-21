@@ -261,7 +261,7 @@ namespace DotNetNuke.Services.Mail
                     {
                         custom = new ArrayList
                                      {
-                                         HttpContext.Current.Server.UrlEncode(user.Username),
+                                         HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
                                          HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null, user, Scope.SystemMessages, ref propertyNotFound))
                                      };
                     }
