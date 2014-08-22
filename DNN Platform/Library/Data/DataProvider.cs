@@ -4156,12 +4156,26 @@ namespace DotNetNuke.Data
 
         public void AddSearchDeletedItems(SearchDocumentToDelete deletedIDocument)
         {
-            ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToString());
+            try
+            {
+                ExecuteNonQuery("SearchDeletedItems_Add", deletedIDocument.ToString());
+            }
+            catch (SqlException ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         public void DeleteProcessedSearchDeletedItems(DateTime cutoffTime)
         {
-            ExecuteNonQuery("SearchDeletedItems_DeleteProcessed", cutoffTime);
+            try
+            {
+                ExecuteNonQuery("SearchDeletedItems_DeleteProcessed", cutoffTime);
+            }
+            catch (SqlException ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         public IDataReader GetSearchDeletedItems(DateTime cutoffTime)
