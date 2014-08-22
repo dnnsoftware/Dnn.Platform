@@ -277,6 +277,10 @@
     <Compile Include="Entities\Portals\PortalCreatedEventArgs.cs" />
     <Compile Include="Entities\Portals\IPortalEventHandlers.cs" />
     <Compile Include="Entities\Portals\PortalEventHandlersContainer.cs" />
+    <Compile Include="Entities\Users\IUserEventHandlers.cs" />
+    <Compile Include="Common\Internal\IEventHandlersContainer.cs" />
+    <Compile Include="Common\Internal\EventHandlersContainer.cs" />
+    <Compile Include="Entities\Users\UserCreatedEventArgs.cs" />
     <Compile Include="Obsolete\IPortalSettings.cs" />
     <Compile Include="Obsolete\IUserController.cs" />
     <Compile Include="Obsolete\IModuleController.cs" />

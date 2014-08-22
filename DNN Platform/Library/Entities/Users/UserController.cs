@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -46,7 +47,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Messaging.Data;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-using System.Globalization;
 
 namespace DotNetNuke.Entities.Users
 {
@@ -89,6 +89,16 @@ namespace DotNetNuke.Entities.Users
         public int PortalId { get; set; }
 
         #endregion
+
+        private static event EventHandler<UserCreatedEventArgs> UserCreated;
+
+        static UserController()
+        {            
+            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)            
+            {
+                UserCreated += handlers.Value.UserCreated;
+            }
+        }
 
         #region Private Methods
 
@@ -791,6 +801,11 @@ namespace DotNetNuke.Entities.Users
                 {
                     //autoassign user to portal roles
                     AutoAssignUsersToRoles(user, portalId);
+                }
+
+                if (UserCreated != null)
+                {
+                    UserCreated(null, new UserCreatedEventArgs { User = user });
                 }
             }
 
