@@ -33,6 +33,7 @@ using System.Threading;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -89,13 +90,13 @@ namespace DotNetNuke.Services.FileSystem
 
         private void RegisterEventHandlers()
         {
-            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
-                FolderDeleted += value.FolderDeleted;
-                FolderRenamed += value.FolderRenamed;
-                FolderMoved += value.FolderMoved;
-                FolderAdded += value.FolderAdded;
-                FileDeleted += value.FileDeleted;
+                FolderDeleted += events.Value.FolderDeleted;
+                FolderRenamed += events.Value.FolderRenamed;
+                FolderMoved += events.Value.FolderMoved;
+                FolderAdded += events.Value.FolderAdded;
+                FileDeleted += events.Value.FileDeleted;
             }
         }
 

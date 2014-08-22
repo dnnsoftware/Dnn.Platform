@@ -199,14 +199,14 @@ namespace DotNetNuke.Services.FileSystem
 
         private void RegisterEventHandlers()
         {
-            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
-                FileDeleted += value.FileDeleted;
-                FileRenamed += value.FileRenamed;
-                FileMoved += value.FileMoved;
-                FileAdded += value.FileAdded;
-                FileOverwritten += value.FileOverwritten;
-                FileMetadataChanged += value.FileMetadataChanged;
+                FileDeleted += events.Value.FileDeleted;
+                FileRenamed += events.Value.FileRenamed;
+                FileMoved += events.Value.FileMoved;
+                FileAdded += events.Value.FileAdded;
+                FileOverwritten += events.Value.FileOverwritten;
+                FileMetadataChanged += events.Value.FileMetadataChanged;
             }
         }
 
