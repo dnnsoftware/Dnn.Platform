@@ -74,3 +74,125 @@ BEGIN
 	WHERE [DateCreated] < @CutoffTime
 END
 GO
+
+/********************************************************
+ * SPROC: AddAdminPages
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddAdminPages]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddAdminPages]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddAdminPages] (
+    @TabName nVarChar(200),
+    @TabDescription nVarChar(500),
+    @TabIconFile nVarChar(100),
+    @TabIconFileLarge nVarChar(100),
+    @TabIsVisible Bit,
+    @TabDisableLink Bit,
+    @TabTitle nVarChar(200),
+    @TabKeyWords nVarChar(500),
+    @TabUrl nVarChar(255),
+    @TabSkinSrc nVarChar(200),
+    @TabContainerSrc nVarChar(200),
+    @TabStartDate DateTime,
+    @TabEndDate DateTime,
+    @TabRefreshInterval Int,
+    @TabPageHeadText nVarChar(max),
+    @TabIsSecure Bit,
+    @TabPermanentRedirect Bit,
+    @TabSiteMapPriority Float,
+    @TabCultureCode nVarChar(50),
+    @TabContent nVarChar(max),
+    @TabContentKey nVarChar(250),
+    @TabIndexed Bit,
+    @TabStateId Int = NULL,
+    @ModuleDefId Int,
+    @ModuleAllTabs Bit,
+    @ModuleStartDate DateTime,
+    @ModuleEndDate DateTime,
+    @ModuleInheritViewPermissions Bit,
+    @ModuleIsShareable Bit,
+    @ModuleIsShareableViewOnly Bit,
+    @ModuleIsDeleted Bit,
+    @ModuleContent nVarChar(max),
+    @ModuleContentKey nVarChar(250),
+    @ModuleIndexed Bit,
+    @ModuleStateId Int = NULL,
+    @ModuleTitle nVarChar(256),
+    @ModuleHeader nVarChar(max),
+    @ModuleFooter nVarChar(max),
+    @ModulePaneName nvarchar(50),
+    @ModuleCacheTime Int,
+    @ModuleCacheMethod VarChar(50),
+    @ModuleAlignment nVarChar(10),
+    @ModuleColor nVarChar(20),
+    @ModuleBorder nVarChar(1),
+    @ModuleIconFile nVarChar(100),
+    @ModuleVisibility Int,
+    @ModuleContainerSrc nVarChar(200),
+    @ModuleDisplayTitle Bit,
+    @ModuleDisplayPrint Bit,
+    @ModuleDisplaySyndicate Bit,
+    @ModuleIsWebSlice Bit,
+    @ModuleWebSliceTitle nVarChar(256),
+    @ModuleWebSliceExpiryDate DateTime,
+    @ModuleWebSliceTTL Int,
+    @ModuleCultureCode nVarChar(10),
+    @CreatedByUserId Int)
+AS
+	DECLARE @NewTabs table (PortalId Int, TabId Int);
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Tabs] ([PortalID], [TabOrder], [Level], [TabPath], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [TabName], [IsVisible], [DisableLink], [ParentId], [IconFile], [IconFileLarge], [Title], [Description], [KeyWords], [IsDeleted], [Url], [SkinSrc], [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [CultureCode])
+	OUTPUT INSERTED.PortalID, INSERTED.TabID INTO @NewTabs
+	SELECT DISTINCT p.PortalID, (SELECT MAX(TabOrder) + 2 FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = adminTab.TabId)), adminTab.Level + 1, adminTab.TabPath + '//' + {databaseOwner}[{objectQualifier}RemoveStringCharacters](@TabName, '&? ./''#:*'), NEWID(), NEWID(), NULL, NEWID(), @TabName, @TabIsVisible, @TabDisableLink, adminTab.TabID, @TabIconFile, @TabIconFileLarge, @TabTitle, @TabDescription, @TabKeyWords, 0, @TabUrl, @TabSkinSrc, @TabContainerSrc, @TabStartDate, @TabEndDate, @TabRefreshInterval, @TabPageHeadText, @TabIsSecure, @TabPermanentRedirect, @TabSiteMapPriority, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @TabCultureCode
+	FROM {databaseOwner}[{objectQualifier}PortalLocalization] p
+	JOIN {databaseOwner}[{objectQualifier}Tabs] adminTab ON p.PortalID = adminTab.PortalID
+	WHERE adminTab.TabID = p.AdminTabId;
+
+	DECLARE @TabContentTypeId Int;
+	SELECT @TabContentTypeId = ContentTypeId FROM {databaseOwner}[{objectQualifier}ContentTypes] WHERE ContentType = 'Tab';
+
+	INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID])
+	SELECT @TabContent, @TabContentTypeId, newTab.TabId, -1, @TabContentKey, @TabIndexed, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @TabStateId
+	FROM @NewTabs newTab;
+
+	UPDATE t
+	SET ContentItemId = ci.ContentItemId
+	FROM {databaseOwner}[{objectQualifier}Tabs] t
+	JOIN {databaseOwner}[{objectQualifier}ContentItems] ci ON t.TabId = ci.TabId
+	WHERE t.TabId IN (SELECT TabId FROM @NewTabs);
+ 
+	INSERT INTO {databaseOwner}[{objectQualifier}TabPermission] ([TabID], [PermissionID], [RoleId], [AllowAccess], [UserId], [CreatedByUserId], [CreatedOnDate], [LastModifiedByUserId], [LastModifiedOnDate]) 
+	SELECT newTab.TabId, permission.PermissionID, portal.AdministratorRoleId, 1, NULL, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE()
+	FROM @NewTabs newTab
+	JOIN {databaseOwner}[{objectQualifier}Portals] portal ON newTab.PortalId = portal.PortalID
+	CROSS APPLY {databaseOwner}[{objectQualifier}Permission] permission
+	WHERE permission.PermissionCode = 'SYSTEM_TAB'
+	  AND permission.PermissionKey IN ('View', 'Edit');
+
+	DECLARE @NewModules table (PortalId Int, ModuleId Int);
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Modules] ([PortalId], [ModuleDefId], [AllTabs], [StartDate], [EndDate], [InheritViewPermissions], [IsShareable], [IsShareableViewOnly], [IsDeleted], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+	OUTPUT INSERTED.PortalID, INSERTED.ModuleID INTO @NewModules
+	SELECT newTab.PortalId, @ModuleDefId, @ModuleAllTabs, @ModuleStartDate, @ModuleEndDate, @ModuleInheritViewPermissions, @ModuleIsShareable, @ModuleIsShareableViewOnly, @ModuleIsDeleted, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE()
+	FROM @NewTabs newTab;
+  
+  	DECLARE @ModuleContentTypeId Int;
+	SELECT @ModuleContentTypeId = ContentTypeId FROM {databaseOwner}[{objectQualifier}ContentTypes] WHERE ContentType = 'Module';
+
+	INSERT INTO {databaseOwner}[{objectQualifier}ContentItems] ([Content], [ContentTypeID], [TabID], [ModuleID], [ContentKey], [Indexed], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [StateID])
+	SELECT @ModuleContent, @ModuleContentTypeId, newTab.TabId, newModule.ModuleId, @ModuleContentKey, @ModuleIndexed, @CreatedByUserId, GETDATE(), @CreatedByUserId, GETDATE(), @ModuleStateId
+	FROM @NewModules newModule
+	JOIN @NewTabs newTab ON newModule.PortalId = newTab.PortalId;
+
+	UPDATE m
+	SET ContentItemId = ci.ContentItemId
+	FROM {databaseOwner}[{objectQualifier}Modules] m
+	JOIN {databaseOwner}[{objectQualifier}ContentItems] ci ON m.ModuleId = ci.ModuleId
+	WHERE m.ModuleId IN (SELECT ModuleID FROM @NewModules);
+
+	INSERT INTO {databaseOwner}[{objectQualifier}TabModules] ([TabId], [ModuleId], [ModuleTitle], [Header], [Footer], [ModuleOrder], [PaneName], [CacheTime], [CacheMethod], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [CultureCode], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+	SELECT newTab.TabId, newModule.ModuleId, @ModuleTitle, @ModuleHeader, @ModuleFooter, 1, @ModulePaneName, @ModuleCacheTime, @ModuleCacheMethod, @ModuleAlignment, @ModuleColor, @ModuleBorder, @ModuleIconFile, @ModuleVisibility, @ModuleContainerSrc, @ModuleDisplayTitle, @ModuleDisplayPrint, @ModuleDisplaySyndicate, @ModuleIsWebSlice, @ModuleWebSliceTitle, @ModuleWebSliceExpiryDate, @ModuleWebSliceTTL, NEWID(), NEWID(), NULL, NEWID(), @ModuleCultureCode, @CreatedByUserID, GETDATE(), @CreatedByUserID, GETDATE()
+	FROM @NewModules newModule
+	JOIN @NewTabs newTab ON newModule.PortalId = newTab.PortalId;
+GO

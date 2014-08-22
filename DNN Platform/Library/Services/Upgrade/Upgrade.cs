@@ -50,6 +50,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
@@ -3472,19 +3473,58 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            ArrayList portals = PortalController.Instance.GetPortals();
+            var tab = new TabInfo
+                      {
+                          TabID = Null.NullInteger,
+                          TabName = tabName,
+                          Title = string.Empty,
+                          Description = description,
+                          KeyWords = string.Empty,
+                          IsVisible = isVisible,
+                          DisableLink = false,
+                          IconFile = tabIconFile,
+                          IconFileLarge = tabIconFileLarge,
+                          IsDeleted = false,
+                          Indexed = false,
+                      };
 
-            //Add Page to Admin Menu of all configured Portals
-            for (var index = 0; index <= portals.Count - 1; index++)
+            tab.Content = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+
+            var moduleInfo = new ModuleInfo
             {
-                var portal = (PortalInfo)portals[index];
+                ModuleID = Null.NullInteger,
+                ModuleOrder = -1,
+                ModuleTitle = moduleTitle,
+                PaneName = Globals.glbDefaultPane,
+                ModuleDefID = moduleDefId,
+                CacheTime = 0,
+                IconFile = moduleIconFile,
+                AllTabs = false,
+                Visibility = VisibilityState.None,
+                InheritViewPermissions = inheritPermissions,
+                DisplayTitle = true,
+                Indexed = false,
+            };
 
-                //Create New Admin Page (or get existing one)
-                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+            moduleInfo.Content = moduleInfo.ModuleTitle;
 
-                //Add Module To Page
-                AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
-            }
+            DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.GetCurrentUserInfo().UserID);
+
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
+            eventLogController.AddLog(moduleInfo, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
+
+            foreach (PortalInfo portal in new PortalController().GetPortals())
+            {
+                DataCache.ClearTabsCache(portal.PortalID);
+                DataCache.ClearPortalCache(portal.PortalID, false);
+
+                var newTab = TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID).Single(t => t.TabName.Equals(tabName));
+                DataCache.ClearModuleCache(newTab.TabID);
+        }
+
+            DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+            CacheController.FlushPageIndexFromCache();
         }
 
         ///-----------------------------------------------------------------------------
@@ -4365,7 +4405,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var scriptFiles = new ArrayList();
             string[] files = Directory.GetFiles(providerPath, "*." + DefaultProvider);
-            
+
             Logger.TraceFormat("GetUpgradedScripts databaseVersion:{0} applicationVersion:{1}", databaseVersion, ApplicationVersion);
 
             foreach (string file in files)
