@@ -498,7 +498,11 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (Request.QueryString["pagesize"] != null)
             {
-                grdUsers.PageSize = Convert.ToInt32(Request.QueryString["pagesize"]);
+                int pageSize;
+                if (Int32.TryParse(Request.QueryString["pagesize"], out pageSize))
+                {
+                    grdUsers.PageSize = pageSize;    
+                }
             }            
             else
             {
