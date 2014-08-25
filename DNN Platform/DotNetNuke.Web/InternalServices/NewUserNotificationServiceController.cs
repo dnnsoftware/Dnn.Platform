@@ -21,6 +21,7 @@
 
 #endregion
 
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -42,14 +43,14 @@ namespace DotNetNuke.Web.InternalServices
             var user = GetUser(postData);
             if (user == null)
             {
-                DeleteNotification(postData);
+                NotificationsController.Instance.DeleteNotification(postData.NotificationId);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
             }
 
             user.Membership.Approved = true;
             UserController.UpdateUser(PortalSettings.PortalId, user);
 
-            DeleteNotification(postData);
+            DeleteAllNotifications(user.UserID);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
@@ -61,13 +62,13 @@ namespace DotNetNuke.Web.InternalServices
             var user = GetUser(postData);
             if (user == null)
             {
-                DeleteNotification(postData);
+                NotificationsController.Instance.DeleteNotification(postData.NotificationId);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
             }
 
             UserController.RemoveUser(user);
 
-            DeleteNotification(postData);
+            DeleteAllNotifications(user.UserID);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
@@ -85,9 +86,15 @@ namespace DotNetNuke.Web.InternalServices
             return UserController.GetUserById(PortalSettings.PortalId, userId);            
         }
 
-        private void DeleteNotification(NotificationDTO notificationDto)
+        private void DeleteAllNotifications(int userId)
         {
-            NotificationsController.Instance.DeleteNotification(notificationDto.NotificationId);
+            var nt = NotificationsController.Instance.GetNotificationType("NewUnauthorizedUserRegistration");
+            var notifications = NotificationsController.Instance.GetNotificationByContext(nt.NotificationTypeId, userId.ToString(CultureInfo.InvariantCulture));
+
+            foreach (var notification in notifications)
+            {
+                NotificationsController.Instance.DeleteNotification(notification.NotificationID);
+            }
         }
     }
 }
