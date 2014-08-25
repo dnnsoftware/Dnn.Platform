@@ -23,7 +23,7 @@ using System;
 
 namespace DotNetNuke.Entities.Users
 {
-    public class UserCreatedEventArgs : EventArgs
+    public class UserEventArgs : EventArgs
     {
         public UserInfo User { get; set; }
     }
