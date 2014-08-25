@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Web.Caching;
 
@@ -36,7 +37,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Vendors;
@@ -424,20 +424,22 @@ namespace DotNetNuke.Entities.Modules
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
         {
-            string strMessage = "";
-            ModuleMessage.ModuleMessageType message = ModuleMessage.ModuleMessageType.RedError;
+            var strMessage = "";
+            var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
 				//send notification to portal administrator of new user registration
 				//check the receive notification setting first, but if register type is Private, we will always send the notification email.
 				//because the user need administrators to do the approve action so that he can continue use the website.
 				if (PortalSettings.EnableRegisterNotification || PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-	            {
-		            strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
-	                SendAdminNotification(newUser, "NewUserRegistration", PortalSettings);
-	            }
+				{
+				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
 
-	            var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                    var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+				    SendAdminNotification(newUser, notificationType, PortalSettings);
+				}
+
+                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
                 //complete registration
                 switch (PortalSettings.UserRegistration)
@@ -520,32 +522,27 @@ namespace DotNetNuke.Entities.Modules
         }
 
         #region Private methods
+
         private void SendAdminNotification(UserInfo newUser, string notificationType, PortalSettings portalSettings)
         {
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
             var notification = new Notification
             {
                 NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,                
                 IncludeDismissAction = true,
-                SenderUserID = portalSettings.AdministratorId
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = GetNotificationSubject(locale, newUser, portalSettings),
+                Body = GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
             };
-            notification.Subject = GetNotificationSubject(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
-            notification.Body = GetNotificationBody(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
             var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
-            var roles = new List<RoleInfo>();
-            roles.Add(adminrole);
+            var roles = new List<RoleInfo> { adminrole };
             NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
-
         }
 
-        private string GetNotificationBody(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
@@ -555,17 +552,12 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
         }
 
-        private string GetNotificationSubject(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
+
         #endregion
     }
 }

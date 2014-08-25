@@ -38,10 +38,6 @@ namespace DotNetNuke.Web.InternalServices
     public class RelationshipServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RelationshipServiceController));
-        public class NotificationDTO
-        {
-            public int NotificationId { get; set; }
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

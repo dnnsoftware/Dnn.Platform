@@ -1893,4 +1893,16 @@
   <data name="FileUpload.UnzipFileSuccessPromptBody.Text" xml:space="preserve">
     <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) files were extracted successfully.&lt;/div&gt;</value>
   </data>
+  <data name="AuthorizeUser.Text" xml:space="preserve">
+    <value>Authorize</value>
+  </data>
+  <data name="AuthorizeUserDescription.Text" xml:space="preserve">
+    <value>Authorize the user registration.</value>
+  </data>
+  <data name="RejectUser.Text" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="RejectUserDescription.Text" xml:space="preserve">
+    <value>Reject the user registration. Removes the user.</value>
+  </data>
 </root>

@@ -2999,6 +2999,30 @@ namespace DotNetNuke.Services.Upgrade
             HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
         }
 
+        private static void UpgradeToVersion733()
+        {
+            var notificationType = new NotificationType { Name = "NewUnauthorizedUserRegistration", Description = "New Unauthorized User Registration Notification" };
+            NotificationsController.Instance.CreateNotificationType(notificationType);
+
+            var actions = new List<NotificationTypeAction>
+                              {
+                                  new NotificationTypeAction
+                                      {
+                                          NameResourceKey = "AuthorizeUser",
+                                          DescriptionResourceKey = "AuthorizeUserDescription",
+                                          APICall = "DesktopModules/InternalServices/API/NewUserNotificationService/Authorize"
+                                      },
+                                  new NotificationTypeAction
+                                      {
+                                          NameResourceKey = "RejectUser",
+                                          DescriptionResourceKey = "RejectUserDescription",
+                                          APICall = "DesktopModules/InternalServices/API/NewUserNotificationService/Reject"
+                                      }
+                              };
+
+            NotificationsController.Instance.SetNotificationTypeActions(actions, notificationType.NotificationTypeId);
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -5144,6 +5168,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.3.2":
                         UpgradeToVersion732();
+                        break;
+                    case "7.3.3":
+                        UpgradeToVersion733();
                         break;
                 }
             }
