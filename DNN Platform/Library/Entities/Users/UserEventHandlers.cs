@@ -1,5 +1,5 @@
 ﻿#region Copyright
-// 
+
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
@@ -17,16 +17,42 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
+
+using System.ComponentModel.Composition;
+using System.Globalization;
+
+using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Entities.Users
 {
-    public interface IUserEventHandlers
+    [Export(typeof(IUserEventHandlers))]
+    public class UserEventHandlers : IUserEventHandlers
     {
-        void UserCreated(object sender, UserEventArgs args);
+        public void UserCreated(object sender, UserEventArgs args)
+        {
+        }
 
-        void UserRemoved(object sender, UserEventArgs args);
+        public void UserRemoved(object sender, UserEventArgs args)
+        {
+            DeleteAllNotifications(args.User.UserID);
+        }
 
-        void UserApproved(object sender, UserEventArgs args);
+        public void UserApproved(object sender, UserEventArgs args)
+        {
+            DeleteAllNotifications(args.User.UserID);
+        }
+
+        private void DeleteAllNotifications(int userId)
+        {
+            var nt = NotificationsController.Instance.GetNotificationType("NewUnauthorizedUserRegistration");
+            var notifications = NotificationsController.Instance.GetNotificationByContext(nt.NotificationTypeId, userId.ToString(CultureInfo.InvariantCulture));
+
+            foreach (var notification in notifications)
+            {
+                NotificationsController.Instance.DeleteNotification(notification.NotificationID);
+            }
+        }
     }
 }

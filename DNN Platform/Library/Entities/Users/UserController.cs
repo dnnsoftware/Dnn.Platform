@@ -90,13 +90,19 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
-        private static event EventHandler<UserCreatedEventArgs> UserCreated;
+        private static event EventHandler<UserEventArgs> UserCreated;
+
+        private static event EventHandler<UserEventArgs> UserRemoved;
+
+        private static event EventHandler<UserEventArgs> UserApproved;
 
         static UserController()
         {            
             foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)            
             {
                 UserCreated += handlers.Value.UserCreated;
+                UserRemoved += handlers.Value.UserRemoved;
+                UserApproved += handlers.Value.UserApproved;
             }
         }
 
@@ -805,7 +811,7 @@ namespace DotNetNuke.Entities.Users
 
                 if (UserCreated != null)
                 {
-                    UserCreated(null, new UserCreatedEventArgs { User = user });
+                    UserCreated(null, new UserEventArgs { User = user });
                 }
             }
 
@@ -1535,6 +1541,11 @@ namespace DotNetNuke.Entities.Users
 
                 DataCache.ClearPortalCache(portalId, false);
                 DataCache.ClearUserCache(portalId, user.Username);
+
+                if (UserRemoved != null)
+                {
+                    UserRemoved(null, new UserEventArgs { User = user });
+                }
             }
 
             //Reset PortalId
@@ -1743,6 +1754,15 @@ namespace DotNetNuke.Entities.Users
 			{
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
+
+            if (user.Membership.Approving)
+            {
+                user.Membership.ConfirmApproved();
+                if (UserApproved != null)
+                {
+                    UserApproved(null, new UserEventArgs { User = user });
+                }                    
+            }
 		}
 
         /// -----------------------------------------------------------------------------

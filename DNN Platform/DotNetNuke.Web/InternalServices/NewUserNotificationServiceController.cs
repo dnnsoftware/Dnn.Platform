@@ -21,7 +21,6 @@
 
 #endregion
 
-using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -49,9 +48,7 @@ namespace DotNetNuke.Web.InternalServices
 
             user.Membership.Approved = true;
             UserController.UpdateUser(PortalSettings.PortalId, user);
-
-            DeleteAllNotifications(user.UserID);
-
+            
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -68,8 +65,6 @@ namespace DotNetNuke.Web.InternalServices
 
             UserController.RemoveUser(user);
 
-            DeleteAllNotifications(user.UserID);
-
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
@@ -84,17 +79,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return UserController.GetUserById(PortalSettings.PortalId, userId);            
-        }
-
-        private void DeleteAllNotifications(int userId)
-        {
-            var nt = NotificationsController.Instance.GetNotificationType("NewUnauthorizedUserRegistration");
-            var notifications = NotificationsController.Instance.GetNotificationByContext(nt.NotificationTypeId, userId.ToString(CultureInfo.InvariantCulture));
-
-            foreach (var notification in notifications)
-            {
-                NotificationsController.Instance.DeleteNotification(notification.NotificationID);
-            }
         }
     }
 }
