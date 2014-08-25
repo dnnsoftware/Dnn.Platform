@@ -27,11 +27,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
@@ -41,11 +38,6 @@ namespace DotNetNuke.Web.InternalServices
     public class ContentWorkflowServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentWorkflowServiceController));
-        
-        public class NotificationDTO
-        {
-            public int NotificationId { get; set; }
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
