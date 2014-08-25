@@ -468,6 +468,7 @@ namespace DotNetNuke.Framework
         public static void RegisterScript(Page page, string script)
         {
             ClientResourceManager.RegisterScript(page, script);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
