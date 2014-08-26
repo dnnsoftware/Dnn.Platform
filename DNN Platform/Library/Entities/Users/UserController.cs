@@ -92,6 +92,8 @@ namespace DotNetNuke.Entities.Users
 
         private static event EventHandler<UserEventArgs> UserCreated;
 
+        private static event EventHandler<UserEventArgs> UserDeleted;
+
         private static event EventHandler<UserEventArgs> UserRemoved;
 
         private static event EventHandler<UserEventArgs> UserApproved;
@@ -101,6 +103,7 @@ namespace DotNetNuke.Entities.Users
             foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)            
             {
                 UserCreated += handlers.Value.UserCreated;
+                UserDeleted += handlers.Value.UserDeleted;
                 UserRemoved += handlers.Value.UserRemoved;
                 UserApproved += handlers.Value.UserApproved;
             }
@@ -897,10 +900,15 @@ namespace DotNetNuke.Entities.Users
                 };
 
                 DataProvider.Instance().AddSearchDeletedItems(document);
+
+                if (UserDeleted != null)
+                {
+                    UserDeleted(null, new UserEventArgs { User = user });
+                }
             }
 
             FixMemberPortalId(user, portalId);
-
+            
             return canDelete;
         }
 

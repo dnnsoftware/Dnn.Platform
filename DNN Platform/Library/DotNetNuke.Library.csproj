@@ -276,6 +276,8 @@
     <Compile Include="Entities\IPFilter\IPFilterInfo.cs" />
     <Compile Include="Entities\Portals\PortalCreatedEventArgs.cs" />
     <Compile Include="Entities\Portals\IPortalEventHandlers.cs" />
+    <Compile Include="Entities\Profile\IProfileEventHandlers.cs" />
+    <Compile Include="Entities\Profile\ProfileEventArgs.cs" />
     <Compile Include="Entities\Users\IUserEventHandlers.cs" />
     <Compile Include="Common\Internal\IEventHandlersContainer.cs" />
     <Compile Include="Common\Internal\EventHandlersContainer.cs" />
