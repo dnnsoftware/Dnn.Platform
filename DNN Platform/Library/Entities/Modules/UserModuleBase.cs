@@ -434,9 +434,7 @@ namespace DotNetNuke.Entities.Modules
 				if (PortalSettings.EnableRegisterNotification || PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
 				{
 				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
-
-                    var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
-				    SendAdminNotification(newUser, notificationType, PortalSettings);
+				    SendAdminNotification(newUser, PortalSettings);
 				}
 
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
@@ -523,13 +521,14 @@ namespace DotNetNuke.Entities.Modules
 
         #region Private methods
 
-        private void SendAdminNotification(UserInfo newUser, string notificationType, PortalSettings portalSettings)
+        private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
             var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
             var notification = new Notification
             {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,                
-                IncludeDismissAction = true,
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
                 SenderUserID = portalSettings.AdministratorId,
                 Subject = GetNotificationSubject(locale, newUser, portalSettings),
                 Body = GetNotificationBody(locale, newUser, portalSettings),

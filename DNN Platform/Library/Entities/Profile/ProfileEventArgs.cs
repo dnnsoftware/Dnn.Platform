@@ -19,16 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Entities.Users
+using System;
+using DotNetNuke.Entities.Users;
+
+namespace DotNetNuke.Entities.Profile
 {
-    public interface IUserEventHandlers
+    public class ProfileEventArgs : EventArgs
     {
-        void UserCreated(object sender, UserEventArgs args);
-
-        void UserDeleted(object sender, UserEventArgs args);
-
-        void UserRemoved(object sender, UserEventArgs args);
-
-        void UserApproved(object sender, UserEventArgs args);
+        public UserInfo User { get; set; }
     }
 }

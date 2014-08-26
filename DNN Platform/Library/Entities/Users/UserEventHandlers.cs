@@ -39,6 +39,10 @@ namespace DotNetNuke.Entities.Users
             DeleteAllNotifications(args.User.UserID);
         }
 
+        public void UserDeleted(object sender, UserEventArgs args)
+        {
+        }
+
         public void UserApproved(object sender, UserEventArgs args)
         {
             DeleteAllNotifications(args.User.UserID);
