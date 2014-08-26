@@ -552,7 +552,20 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-				txtPortalAlias.Text = optType.SelectedValue == "C" ? Globals.GetDomainName(Request) + @"/" : "";
+                if (optType.SelectedValue == "C")
+                {
+                    txtPortalAlias.Text = Globals.GetDomainName(Request) + @"/" + txtPortalAlias.Text;
+                }
+                else
+                {
+                    var indexFirstSeparator = txtPortalAlias.Text.IndexOf(@"/");
+
+                    if (indexFirstSeparator >= 0)
+                    {
+                        txtPortalAlias.Text = txtPortalAlias.Text.Substring(indexFirstSeparator + 1,
+                            txtPortalAlias.Text.Length - indexFirstSeparator - 1);
+                    }
+                }
             }
             catch (Exception exc) //Module failed to load
             {
