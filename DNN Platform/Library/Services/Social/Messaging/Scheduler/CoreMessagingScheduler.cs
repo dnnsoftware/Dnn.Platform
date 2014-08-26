@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             template = template.Replace("[RECIPIENTUSERID]", recipientUser.UserID.ToString());
             template = template.Replace("[RECIPIENTDISPLAYNAME]", recipientUser.DisplayName);
             template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());
-            template = template.Replace("[RECIPIENTVANITYURL]", recipientUser.VanityUrl);        
+            template = template.Replace("[RECIPIENTPROFILEURL]", Globals.UserProfileURL(recipientUser.UserID));        
             template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
             template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
