@@ -23,6 +23,8 @@
 using System.ComponentModel.Composition;
 using System.Globalization;
 
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Entities.Users
@@ -45,6 +47,7 @@ namespace DotNetNuke.Entities.Users
 
         public void UserApproved(object sender, UserEventArgs args)
         {
+            Mail.SendMail(args.User, MessageType.UserRegistrationPublic, PortalSettings.Current);
             DeleteAllNotifications(args.User.UserID);
         }
 

@@ -692,7 +692,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     UserInfo user = User;
                     User.Membership.Password = UserController.GetPassword(ref user, "");
                 }
-                Mail.SendMail(User, MessageType.UserRegistrationPublic, PortalSettings);
+
                 BindMembership();
             }
             catch (Exception exc) //Module failed to load
