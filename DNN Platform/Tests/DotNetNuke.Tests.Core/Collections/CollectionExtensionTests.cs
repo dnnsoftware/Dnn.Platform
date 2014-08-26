@@ -181,6 +181,36 @@ namespace DotNetNuke.Tests.Core.Collections
         }
 
         [Test]
+        public void get_null_string_without_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValue<string>("app id");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_null_string_with_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValueOrDefault("app id", "a default value");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_nullable_datetime()
+        {
+            var collection = new Dictionary<string, DateTime?> { { "startDate", null } };
+
+            var value = collection.GetValue<DateTime?>("startDate");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
         [SetCulture("nl-NL")]
         public void get_datetime_from_other_culture()
         {
