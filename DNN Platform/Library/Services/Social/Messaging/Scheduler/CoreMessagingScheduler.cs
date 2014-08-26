@@ -229,12 +229,17 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         private static string GetEmailBody(string template, string messageBody, PortalSettings portalSettings, UserInfo recipientUser)
         {
+
+            template = template.Replace("[MESSAGEBODY]", messageBody); //moved to top since that we we can replace tokens in there too...
+            template = template.Replace("[RECIPIENTUSERID]", recipientUser.UserID.ToString());
+            template = template.Replace("[RECIPIENTDISPLAYNAME]", recipientUser.DisplayName);
+            template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());
+            template = template.Replace("[RECIPIENTVANITYURL]", recipientUser.VanityUrl);        
             template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
             template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
             template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
-            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));
-            template = template.Replace("[MESSAGEBODY]", messageBody);
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));            
             template = template.Replace("href=\"/", "href=\"http://" + portalSettings.DefaultPortalAlias + "/");
             template = template.Replace("src=\"/", "src=\"http://" + portalSettings.DefaultPortalAlias + "/");
 
