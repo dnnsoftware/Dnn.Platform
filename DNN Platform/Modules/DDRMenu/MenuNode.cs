@@ -131,6 +131,28 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
+        public List<MenuNode> FlattenChildren(MenuNode root)
+        {
+
+            var flattened = new List<MenuNode>();
+            if (root.TabId != 0)
+            {
+                flattened.Add(root);
+            }
+
+            var children = root.Children;
+
+            if (children != null)
+            {
+                foreach (var child in children)
+                {
+                    flattened.AddRange(FlattenChildren(child));
+                }
+            }
+
+            return flattened;
+        }
+
         public MenuNode FindByNameOrId(string tabNameOrId)
         {
             if (tabNameOrId.Equals(Text, StringComparison.InvariantCultureIgnoreCase))
