@@ -264,7 +264,16 @@ namespace DotNetNuke.Security.Roles
                 JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
             }
 
+            //Get users before deleting role
+            var users = role.UserCount > 0 ? GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
+
             provider.DeleteRole(role);
+
+            //Remove the UserInfo objects of users that have been members of the group from the cache, as they have been modified
+            foreach (var user in users)
+            {
+                DataCache.ClearUserCache(role.PortalID, user.Username);
+            }
 
             ClearRoleCache(role.PortalID);
 
