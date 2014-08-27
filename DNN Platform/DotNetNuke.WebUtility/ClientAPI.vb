@@ -290,6 +290,11 @@ Namespace DotNetNuke.UI.Utilities
                 'Dim objJSON As Script.Serialization.JavaScriptSerializer = New Script.Serialization.JavaScriptSerializer()
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
+                        'fix serialization issues with invalid json objects
+                        If strValue.IndexOf("`") = 0 Then
+                            strValue = strValue.Substring(1).Replace("`", """")
+                        End If
+
                         objDict = MSAJAX.Deserialize(Of Generic.Dictionary(Of String, String))(strValue) 'objJSON.Deserialize(Of Generic.Dictionary(Of String, String))(strValue)
                     Catch
                         'ignore error
