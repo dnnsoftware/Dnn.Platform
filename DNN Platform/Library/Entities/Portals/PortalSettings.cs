@@ -538,6 +538,30 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>
+        /// Get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
+        /// </summary>
+        public bool IsLocked
+        {
+            get { return IsThisPortalLocked || Host.Host.IsLocked; }
+        }
+
+        /// <summary>
+        /// Get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
+        /// </summary>
+        public bool IsThisPortalLocked
+        {
+            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false); }
+        }
+
+        /// <summary>
+        /// Get the ID of the user who locked this portal
+        /// </summary>
+        public int LockedByUserId
+        {
+            get { return PortalController.GetPortalSettingAsInteger("LockedByUserId", PortalId, Null.NullInteger); }
+        }
+
 		public TimeZoneInfo TimeZone
 		{
 			get { return _timeZone; }

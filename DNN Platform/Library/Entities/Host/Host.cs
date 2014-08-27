@@ -1674,6 +1674,23 @@ namespace DotNetNuke.Entities.Host
 			}
 		}
 
+        /// <summary>
+        /// Get a value indicating whether to put the entire instance into maintenance mode
+        /// </summary>
+        public static bool IsLocked
+        {
+            get { return HostController.Instance.GetBoolean("IsLocked", false); }
+        }
+
+        /// <summary>
+        /// Get the ID of the user that locked the entire instance
+        /// </summary>
+        public static int LockedByUserId
+        {
+            get { return HostController.Instance.GetInteger("LockedByUserId", Null.NullInteger); }
+        }
+
+
         #endregion
     }
 }

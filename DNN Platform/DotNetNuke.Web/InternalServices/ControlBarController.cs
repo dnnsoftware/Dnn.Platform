@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,6 +31,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -488,6 +490,31 @@ namespace DotNetNuke.Web.InternalServices
             Controller.SaveBookMark(PortalSettings.PortalId, UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
             return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+        }
+
+        public class LockingDTO
+        {
+            public bool Lock { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage LockInstance(LockingDTO lockingRequest)
+        {
+            HostController.Instance.Update("IsLocked", lockingRequest.Lock.ToString(), true);
+            HostController.Instance.Update("LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage LockSite(LockingDTO lockingRequest)
+        {
+            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "IsLocked", lockingRequest.Lock.ToString(), true);
+            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "LockedByUserId", this.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         private void ToggleUserMode(string mode)

@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.Modules
                 //role lookup on every property access (instead caching the result)
                 if (!_isEditable.HasValue)
                 {
-                    bool blnPreview = (PortalSettings.UserMode == PortalSettings.Mode.View);
+                    bool blnPreview = (PortalSettings.UserMode == PortalSettings.Mode.View) || PortalSettings.IsLocked;
                     if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                     {
                         blnPreview = false;
@@ -507,6 +507,11 @@ namespace DotNetNuke.UI.Modules
         private void LoadActions(HttpRequest request)
         {
             _actions = new ModuleActionCollection();
+            if (PortalSettings.IsLocked)
+            {
+                return;
+            }
+
             _moduleGenericActions = new ModuleAction(GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
             int maxActionId = Null.NullInteger;
 
