@@ -33,7 +33,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -94,9 +94,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>Dependencies\DotNetNuke.Web.Client\DotNetNuke.Web.Client.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -196,9 +193,13 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildProjectDirectory)\..\lib\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
-  <Import Project="$(MSBuildProjectDirectory)\WebUtilityDeploy.Targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
@@ -206,9 +207,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Target Name="BeforeBuild">
-    <CallTarget Targets="SetVersionInfo" />
   </Target>
   <Target Name="AfterBuild">
-    <CallTarget Targets="DeployFiles" />
   </Target>
 </Project>
