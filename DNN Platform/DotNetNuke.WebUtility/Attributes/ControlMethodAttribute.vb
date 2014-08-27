@@ -1,5 +1,4 @@
 Imports System
-Imports System.Attribute
 
 Namespace DotNetNuke.UI.Utilities
     <AttributeUsage(AttributeTargets.Method, AllowMultiple:=False, Inherited:=True)> _

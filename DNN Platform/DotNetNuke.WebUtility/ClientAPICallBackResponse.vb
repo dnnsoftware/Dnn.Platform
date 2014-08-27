@@ -20,8 +20,6 @@
 
 Imports System.Web
 Imports System.Web.UI
-Imports System.Web.UI.HtmlControls
-Imports System.Web.UI.WebControls
 
 Namespace DotNetNuke.UI.Utilities
 

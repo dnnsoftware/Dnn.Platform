@@ -18,12 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 
-Imports System.Web
 Imports System.Web.UI
 Imports System.Web.UI.HtmlControls
 Imports System.Web.UI.WebControls
-Imports System.IO
-Imports System.Reflection
 
 Namespace DotNetNuke.UI.Utilities
 	Public Class Globals
