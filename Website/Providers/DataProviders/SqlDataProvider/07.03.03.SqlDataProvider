@@ -127,6 +127,21 @@ AS
 		WHERE  PackageID = @PackageID
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}CoreMessaging_DeleteSubscriptionsByObjectKey') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteSubscriptionsByObjectKey
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteSubscriptionsByObjectKey
+	@PortalId int,
+	@ObjectKey NVARCHAR(255)
+AS
+BEGIN
+	DELETE
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+	WHERE PortalId = @PortalId
+		AND ObjectKey = @ObjectKey
+END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

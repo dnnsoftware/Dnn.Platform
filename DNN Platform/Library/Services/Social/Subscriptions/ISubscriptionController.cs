@@ -76,5 +76,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <param name="newDescription">New Subscription Description</param>
         int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription);
 
+        /// <summary>
+        /// Deletes all subscriptions matching the specified object key
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="objectKey">Object Key</param>
+        void DeleteSubscriptionsByObjectKey(int portalId, string objectKey);
     }
 }
