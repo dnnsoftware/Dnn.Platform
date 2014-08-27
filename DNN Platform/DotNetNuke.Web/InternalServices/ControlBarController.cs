@@ -47,13 +47,15 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using DotNetNuke.Entities.Controllers;
+
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ControlBarController));
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
         private readonly Components.Controllers.IControlBarController Controller;
-        private IDictionary<string, string> _nameDics;
+		private IDictionary<string, string> _nameDics;
 
         public ControlBarController()
         {
@@ -149,7 +151,7 @@ namespace DotNetNuke.Web.InternalServices
             }).ToList();
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
-
+        
         [HttpGet]
         [DnnPageEditor]
         public HttpResponseMessage GetPageList(string portal)
@@ -166,12 +168,12 @@ namespace DotNetNuke.Web.InternalServices
                 var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
 
                 var mygroup = (from @group in groups
-                               select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                              select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                                   into portals
-                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                               select portals.ToArray()).FirstOrDefault();
+                                  where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                                  select portals.ToArray()).FirstOrDefault();
 
-                if (mygroup != null && mygroup.Any(p => p.PortalID == portalSettings.PortalId))
+                if(mygroup != null && mygroup.Any(p=>p.PortalID == portalSettings.PortalId))
                 {
                     tabList = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, false, string.Empty, true, false, false, false, false);
                 }
@@ -208,16 +210,15 @@ namespace DotNetNuke.Web.InternalServices
                     var pageModules = GetModules(tabID);
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
-                    result.AddRange(from kvp in resultDict
-                                    let imageUrl = GetTabModuleImage(tabID, kvp.Key)
-                                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl }
+                    result.AddRange(from kvp in resultDict let imageUrl = GetTabModuleImage(tabID, kvp.Key) 
+                                    select new ModuleDefDTO {ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl}
                                     );
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
-        }
+        } 
 
         private IList<ModuleInfo> GetModules(int tabID)
         {
@@ -475,6 +476,47 @@ namespace DotNetNuke.Web.InternalServices
             return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
+        [HttpGet]
+        public HttpResponseMessage LockInstance(bool LockingFlag)
+        {
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                if (LockingFlag)
+                {
+                    // we are locking
+                    HostController.Instance.Update("IsLocked", true.ToString(), true);
+                }
+                else
+                {
+                    //we are unlocking
+                    HostController.Instance.Update("IsLocked", false.ToString(), true);
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+        }
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [RequireHost]
+        public HttpResponseMessage LockSite(bool LockingFlag)
+        {
+            if (LockingFlag)
+            {
+                // we are locking
+                PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "IsLocked", true.ToString(), true);
+            }
+            else
+            {
+                //we are unlocking
+                PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "IsLocked", false.ToString(), true);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         private void ToggleUserMode(string mode)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
@@ -550,7 +592,7 @@ namespace DotNetNuke.Web.InternalServices
                                where tabMods.Value.ModuleID == moduleId
                                select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl; 
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 
@@ -729,12 +771,12 @@ namespace DotNetNuke.Web.InternalServices
 
             items.Sort();
 
-            if (items.Count > sort)
+            if(items.Count > sort)
             {
                 var itemOrder = items[sort];
                 return itemOrder - 1;
             }
-            else if (items.Count > 0)
+            else if(items.Count > 0)
             {
                 return items.Last() + 1;
             }
@@ -757,7 +799,7 @@ namespace DotNetNuke.Web.InternalServices
                 Exceptions.LogException(ex);
             }
 
-            var tabModuleId = Null.NullInteger;
+	        var tabModuleId = Null.NullInteger;
             foreach (ModuleDefinitionInfo objModuleDefinition in
                 ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
@@ -801,27 +843,27 @@ namespace DotNetNuke.Web.InternalServices
 
                 ModuleController.Instance.AddModule(objModule);
 
-                if (tabModuleId == Null.NullInteger)
-                {
-                    tabModuleId = objModule.ModuleID;
-                }
-                //update the position to let later modules with add after previous one.
+				if (tabModuleId == Null.NullInteger)
+				{
+					tabModuleId = objModule.ModuleID;
+				}
+				//update the position to let later modules with add after previous one.
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
 
-            return tabModuleId;
+			return tabModuleId;
         }
 
-        private string GetModuleName(string moduleName)
-        {
-            if (_nameDics == null)
-            {
-                _nameDics = new Dictionary<string, string> {{"SearchCrawlerAdmin", "SearchCrawler Admin"},
-                                                             {"SearchCrawlerInput", "SearchCrawler Input"},
-                                                             {"SearchCrawlerResults", "SearchCrawler Results"}};
-            }
+		private string GetModuleName(string moduleName)
+		{
+			 if (_nameDics == null)
+			 {
+				 _nameDics = new Dictionary<string, string> {{"SearchCrawlerAdmin", "SearchCrawler Admin"}, 
+															 {"SearchCrawlerInput", "SearchCrawler Input"}, 
+															 {"SearchCrawlerResults", "SearchCrawler Results"}};
+			 }
 
-            return _nameDics.ContainsKey(moduleName) ? _nameDics[moduleName] : moduleName;
-        }
+			return _nameDics.ContainsKey(moduleName) ? _nameDics[moduleName] : moduleName;
+		}
     }
 }

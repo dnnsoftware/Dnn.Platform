@@ -28,9 +28,9 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Security;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
 
@@ -48,35 +48,35 @@ namespace DotNetNuke.Entities.Portals
 	[Serializable]
 	public partial class PortalSettings : BaseEntityInfo, IPropertyAccess
 	{
-		#region ControlPanelPermission enum
+        #region ControlPanelPermission enum
 
-		public enum ControlPanelPermission
-		{
-			TabEditor,
-			ModuleEditor
-		}
+        public enum ControlPanelPermission
+        {
+            TabEditor,
+            ModuleEditor
+        }
 
-		#endregion
+        #endregion
 
-		#region Mode enum
+        #region Mode enum
 
-		public enum Mode
-		{
-			View,
-			Edit,
-			Layout
-		}
+        public enum Mode
+        {
+            View,
+            Edit,
+            Layout
+        }
 
-		#endregion
+        #endregion
 
-		#region PortalAliasMapping enum
+        #region PortalAliasMapping enum
 
-		public enum PortalAliasMapping
-		{
-			None,
-			CanonicalUrl,
-			Redirect
-		}
+        public enum PortalAliasMapping
+        {
+            None,
+            CanonicalUrl,
+            Redirect
+        }
 
 		#endregion
 
@@ -94,13 +94,6 @@ namespace DotNetNuke.Entities.Portals
 		{
 		}
 
-		public PortalSettings(int tabId, int portalId)
-		{
-		    PortalId = portalId;
-            var portal = PortalController.Instance.GetPortal(portalId);
-            BuildPortalSettings(tabId, portal);
-        }
-
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// The PortalSettings Constructor encapsulates all of the logic
@@ -117,6 +110,13 @@ namespace DotNetNuke.Entities.Portals
 		    PortalId = portalAliasInfo.PortalID;
 			PortalAlias = portalAliasInfo;
 			var portal = PortalController.Instance.GetPortal(portalAliasInfo.PortalID);
+            BuildPortalSettings(tabId, portal);
+        }
+
+		public PortalSettings(int tabId, int portalId)
+		{
+		    PortalId = portalId;
+            var portal = PortalController.Instance.GetPortal(portalId);
             BuildPortalSettings(tabId, portal);
         }
 
@@ -160,87 +160,50 @@ namespace DotNetNuke.Entities.Portals
         #region Auto-Properties
 
         public TabInfo ActiveTab { get; set; }
-
-		public int AdministratorId { get; set; }
-
-		public int AdministratorRoleId { get; set; }
-
-		public string AdministratorRoleName { get; set; }
-
-		public int AdminTabId { get; set; }
-
-		public string BackgroundFile { get; set; }
-
-		public int BannerAdvertising { get; set; }
-
-		public string CultureCode { get; set; }
-
-		public string Currency { get; set; }
-
-		public string DefaultLanguage { get; set; }
-
-		public string Description { get; set; }
-
-		public string Email { get; set; }
-
+        public int AdministratorId { get; set; }
+        public int AdministratorRoleId { get; set; }
+        public string AdministratorRoleName { get; set; }
+        public int AdminTabId { get; set; }
+        public string BackgroundFile { get; set; }
+        public int BannerAdvertising { get; set; }
+        public string CultureCode { get; set; }
+        public string Currency { get; set; }
+        public string DefaultLanguage { get; set; }
+        public string Description { get; set; }
+        public string Email { get; set; }
         public DateTime ExpiryDate { get; set; }
-
-		public string FooterText { get; set; }
-
-		public Guid GUID { get; set; }
-
-		public string HomeDirectory { get; set; }
-
-		public string HomeSystemDirectory { get; set; }
-
-		public int HomeTabId { get; set; }
-
-		public float HostFee { get; set; }
-
-		public int HostSpace { get; set; }
-
-		public string KeyWords { get; set; }
-
-		public int LoginTabId { get; set; }
-
-		public string LogoFile { get; set; }
-
-		public int PageQuota { get; set; }
-
-		public int Pages { get; set; }
-
-		public int PortalId { get; set; }
-
-		public PortalAliasInfo PortalAlias { get; set; }
-
-		public PortalAliasInfo PrimaryAlias { get; set; }
-
-		public string PortalName { get; set; }
-
-		public int RegisteredRoleId { get; set; }
-
-		public string RegisteredRoleName { get; set; }
-
-		public int RegisterTabId { get; set; }
+        public string FooterText { get; set; }
+        public Guid GUID { get; set; }
+        public string HomeDirectory { get; set; }
+        
+        public string HomeSystemDirectory { get; set; }
+        public int HomeTabId { get; set; }
+        public float HostFee { get; set; }
+        public int HostSpace { get; set; }
+        public string KeyWords { get; set; }
+        public int LoginTabId { get; set; }
+        public string LogoFile { get; set; }
+        public int PageQuota { get; set; }
+        public int Pages { get; set; }
+        public int PortalId { get; set; }
+        public PortalAliasInfo PortalAlias { get; set; }
+        public PortalAliasInfo PrimaryAlias { get; set; }
+        public string PortalName { get; set; }
+        public int RegisteredRoleId { get; set; }
+        public string RegisteredRoleName { get; set; }
+        public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
-
         public int SearchTabId { get; set; }
 
         [Obsolete("Deprecated in 8.0.0")]
         public int SiteLogHistory { get; set; }
-
-		public int SplashTabId { get; set; }
-
-		public int SuperTabId { get; set; }
-
-		public int UserQuota { get; set; }
-
-		public int UserRegistration { get; set; }
-
-		public int Users { get; set; }
-
-		public int UserTabId { get; set; }
+        public int SplashTabId { get; set; }
+        public int SuperTabId { get; set; }
+        public int UserQuota { get; set; }
+        public int UserRegistration { get; set; }
+        public int Users { get; set; }
+        public int UserTabId { get; set; }
 
 		#endregion
 
@@ -264,9 +227,9 @@ namespace DotNetNuke.Entities.Portals
 
         public string DefaultAdminContainer { get; internal set; }
 
-        public string DefaultAdminSkin { get; internal set; }
-
         public string DefaultAuthProvider { get; internal set; }
+
+        public string DefaultAdminSkin { get; internal set; }
 
         public Mode DefaultControlPanelMode { get; internal set; }
 
@@ -313,19 +276,6 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in Platform 7.4.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets whether to use the popup.
-        /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// -----------------------------------------------------------------------------
-        public bool EnablePopUps { get; internal set; }
-
-        /// <summary>
-        /// Website Administrator whether receive the notification email when new user register.
-        /// </summary>
-        public bool EnableRegisterNotification { get; internal set; }
-
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// Gets whether the Skin Widgets are enabled/supported
@@ -342,10 +292,6 @@ namespace DotNetNuke.Entities.Portals
 		/// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
-        public int ErrorPage404 { get; internal set; }
-
-        public int ErrorPage500 { get; internal set; }
-
         /// -----------------------------------------------------------------------------
 		/// <summary>
 		///   Gets whether folders which are hidden or whose name begins with underscore
@@ -357,17 +303,26 @@ namespace DotNetNuke.Entities.Portals
 		/// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
 
+        /// <summary>
+        /// Website Administrator whether receive the notification email when new user register.
+        /// </summary>
+        public bool EnableRegisterNotification { get; internal set; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether hide the login link.
+        /// Gets whether to use the popup.
         /// </summary>
-        /// <remarks>Defaults to False.</remarks>
+        /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
-        public bool HideLoginControl { get; internal set; }
+        public bool EnablePopUps { get; internal set; }
 
         public string HomeDirectoryMapPath { get; internal set; }
 
+        public int ErrorPage404 { get; internal set; }
+
         public string HomeSystemDirectoryMapPath { get; internal set; }
+
+        public int ErrorPage500 { get; internal set; }
 
         /// -----------------------------------------------------------------------------
 		/// <summary>
@@ -376,6 +331,14 @@ namespace DotNetNuke.Entities.Portals
 		/// <remarks>Defaults to True</remarks>
 		/// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether hide the login link.
+        /// </summary>
+        /// <remarks>Defaults to False.</remarks>
+        /// -----------------------------------------------------------------------------
+        public bool HideLoginControl { get; internal set; }
 
 		/// -----------------------------------------------------------------------------
 		/// <summary>
@@ -427,10 +390,6 @@ namespace DotNetNuke.Entities.Portals
 
         public string STDURL { get; internal set; }
 
-        public int SMTPConnectionLimit { get; internal set; }
-
-        public int SMTPMaxIdleTime { get; internal set; }
-
 		#endregion
 
 		#region Public Properties
@@ -443,42 +402,14 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
-		public bool ControlPanelVisible
-		{
-			get
-			{
-				var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + PortalId));
-				return String.IsNullOrEmpty(setting) ? DefaultControlPanelVisibility : Convert.ToBoolean(setting);
-			}
-		}
-
-		public static PortalSettings Current
-		{
-			get
-			{
-				return PortalController.Instance.GetCurrentPortalSettings();
-			}
-		}
-
-		public string DefaultPortalAlias
-		{
-			get
-			{
-				foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
-				{
-					return alias.HTTPAlias;
-				}
-				return String.Empty;
-			}
-		}
-
-		public PortalAliasMapping PortalAliasMappingMode
-		{
-			get
-			{
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(PortalId);
-			}
-		}
+        public bool ControlPanelVisible
+        {
+            get
+            {
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + PortalId));
+                return String.IsNullOrEmpty(setting) ? DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+            }
+        }
 
         /// <summary>Gets the currently logged in user identifier.</summary>
         /// <value>The user identifier.</value>
@@ -494,6 +425,18 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        public int SMTPConnectionLimit { get; internal set; }
+
+        public int SMTPMaxIdleTime { get; internal set; }
+
+        public static PortalSettings Current
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
         /// <summary>Gets the currently logged in user.</summary>
         /// <value>The current user information.</value>
 		public UserInfo UserInfo
@@ -504,35 +447,82 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
-		public Mode UserMode
+		public PortalAliasMapping PortalAliasMappingMode
 		{
 			get
 			{
-				Mode mode;
-				if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-				{
-					mode = DefaultControlPanelMode;
-					string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalId));
-					switch (setting.ToUpper())
-					{
-						case "VIEW":
-							mode = Mode.View;
-							break;
-						case "EDIT":
-							mode = Mode.Edit;
-							break;
-						case "LAYOUT":
-							mode = Mode.Layout;
-							break;
-					}
-				}
-				else
-				{
-					mode = Mode.View;
-				}
-				return mode;
+                return PortalSettingsController.Instance().GetPortalAliasMappingMode(PortalId);
 			}
 		}
+
+        public string DefaultPortalAlias
+        {
+            get
+            {
+                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
+                {
+                    return alias.HTTPAlias;
+                }
+                return String.Empty;
+            }
+        }
+
+        public Mode UserMode
+        {
+            get
+            {
+                Mode mode;
+				if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
+                {
+                    mode = DefaultControlPanelMode;
+                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalId));
+                    switch (setting.ToUpper())
+                    {
+                        case "VIEW":
+                            mode = Mode.View;
+                            break;
+                        case "EDIT":
+                            mode = Mode.Edit;
+                            break;
+                        case "LAYOUT":
+                            mode = Mode.Layout;
+                            break;
+                    }
+                }
+                else
+                {
+                    mode = Mode.View;
+                }
+                return mode;
+            }
+        }
+
+        /// <summary>
+        /// Get the IsLocked value, used to put the current portal into maintenance mode. This is a flag which can be used to disable any actions which update the database.
+        /// </summary>
+        public bool IsLocked
+        {
+            get
+            {
+                return this.IsThisPortalLocked || Host.Host.IsLocked;
+            }
+        }
+
+        public bool IsThisPortalLocked
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false);
+            }
+        }
+
+        public int LockedByUserId
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsInteger("LockedByUserId", PortalId, Null.NullInteger);
+            }
+        }
 
 		public TimeZoneInfo TimeZone
 		{
@@ -541,82 +531,6 @@ namespace DotNetNuke.Entities.Portals
 			{
 				_timeZone = value;
 				PortalController.UpdatePortalSetting(PortalId, "TimeZone", value.Id, true);
-			}
-		}
-
-
-        public string PageHeadText 
-        {
-            get
-            {
-                // For New Install
-                string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
-                string setting;
-                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
-                {
-                    // Hack to store empty string portalsetting with non empty default value
-                    pageHead = (setting == "false") ? "" : setting;
-                }
-                return pageHead;
-            }
-        }
-
-        /*
-         * add <a name="[moduleid]"></a> on the top of the module
-         * 
-         * Desactivate this remove the html5 compatibility warnings
-         * (and make the output smaller)
-         * 
-         */
-        public bool InjectModuleHyperLink
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", PortalId, true);
-            }
-        }
-        /*
-         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
-         * 
-         
-         */
-        public string AddCompatibleHttpHeader
-        {
-            get
-            {
-                string CompatibleHttpHeader = "IE=edge";
-                string setting;
-                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
-                {
-                    // Hack to store empty string portalsetting with non empty default value
-                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
-                }
-                return CompatibleHttpHeader;
-            }
-        }
-
-        /*
-         * add a cachebuster parameter to generated file URI's
-         * 
-         * of the form ver=[file timestame] ie ver=2015-02-17-162255-735
-         * 
-         */
-        public bool AddCachebusterToResourceUris
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", PortalId, true);
-            }
-        }
-
-		/// <summary>
-		/// If this is true, then regular users can't send message to specific user/group.
-		/// </summary>
-		public bool DisablePrivateMessage
-		{
-			get
-			{
-				return PortalController.GetPortalSetting("DisablePrivateMessage", PortalId, "N") == "Y";
 			}
 		}
 
@@ -816,6 +730,82 @@ namespace DotNetNuke.Entities.Portals
 				result = PropertyAccess.ContentLocked;
 			}
 			return result;
+		}
+
+
+        public string PageHeadText 
+        {
+            get
+            {
+                // For New Install
+                string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
+                string setting;
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    pageHead = (setting == "false") ? "" : setting;
+                }
+                return pageHead;
+            }
+        }
+
+        /*
+         * add <a name="[moduleid]"></a> on the top of the module
+         * 
+         * Desactivate this remove the html5 compatibility warnings
+         * (and make the output smaller)
+         * 
+         */
+        public bool InjectModuleHyperLink
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", PortalId, true);
+            }
+        }
+        /*
+         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
+         * 
+         
+         */
+        public string AddCompatibleHttpHeader
+        {
+            get
+            {
+                string CompatibleHttpHeader = "IE=edge";
+                string setting;
+                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
+                }
+                return CompatibleHttpHeader;
+            }
+        }
+
+        /*
+         * add a cachebuster parameter to generated file URI's
+         * 
+         * of the form ver=[file timestame] ie ver=2015-02-17-162255-735
+         * 
+         */
+        public bool AddCachebusterToResourceUris
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", PortalId, true);
+            }
+        }
+
+		/// <summary>
+		/// If this is true, then regular users can't send message to specific user/group.
+		/// </summary>
+		public bool DisablePrivateMessage
+		{
+			get
+			{
+				return PortalController.GetPortalSetting("DisablePrivateMessage", PortalId, "N") == "Y";
+			}
 		}
 
         #endregion
