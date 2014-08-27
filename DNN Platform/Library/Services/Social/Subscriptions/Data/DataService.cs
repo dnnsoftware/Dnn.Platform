@@ -108,6 +108,11 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 newDescription);
         }
 
+        public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
+        {
+            provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
+        }
+
         #endregion
     }
 }
