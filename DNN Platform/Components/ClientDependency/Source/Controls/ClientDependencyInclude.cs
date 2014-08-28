@@ -13,7 +13,6 @@ namespace ClientDependency.Core.Controls
             Group = Constants.DefaultGroup;
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
-	        AddTag = true;
 		}
 
         protected ClientDependencyInclude(IClientDependencyFile file)
@@ -23,7 +22,6 @@ namespace ClientDependency.Core.Controls
 			FilePath = file.FilePath;
 			DependencyType = file.DependencyType;
             Group = file.Group;
-			AddTag = true;
             HtmlAttributes = new Dictionary<string, string>();
 		}
         
@@ -33,13 +31,17 @@ namespace ClientDependency.Core.Controls
         public string PathNameAlias { get; set; }
         public int Priority { get; set; }
         public int Group { get; set; }
-		public bool AddTag { get; set; }
+        public bool AddTag { get; set; }
 
 		/// <summary>
 		/// This can be empty and will use default provider
 		/// </summary>
 		public string ForceProvider { get; set; }
 
+        /// <summary>
+        /// If the resources is an external resource then normally it will be rendered as it's own download unless
+        /// this is set to true. In that case the system will download the external resource and include it in the local bundle.
+        /// </summary>
 		public bool ForceBundle { get; set; }
 
         /// <summary>
@@ -65,14 +67,42 @@ namespace ClientDependency.Core.Controls
 				throw new NullReferenceException("Both File and Type properties must be set");
 		}
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			if (AddTag)
-			{
-				writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
-			}
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (AddTag)
+            {
+                writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
+            }
 
-			base.Render(writer);
-		}
+            base.Render(writer);
+        }
+
+        protected bool Equals(ClientDependencyInclude other)
+        {
+            return string.Equals(FilePath, other.FilePath, StringComparison.InvariantCultureIgnoreCase) && DependencyType == other.DependencyType && Priority == other.Priority && Group == other.Group && string.Equals(PathNameAlias, other.PathNameAlias, StringComparison.InvariantCultureIgnoreCase) && string.Equals(ForceProvider, other.ForceProvider) && Equals(HtmlAttributes, other.HtmlAttributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ClientDependencyInclude)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = (FilePath != null ? FilePath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)DependencyType;
+                hashCode = (hashCode * 397) ^ Priority;
+                hashCode = (hashCode * 397) ^ Group;
+                hashCode = (hashCode * 397) ^ (PathNameAlias != null ? PathNameAlias.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ForceProvider != null ? ForceProvider.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (HtmlAttributes != null ? HtmlAttributes.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
 	}
 }

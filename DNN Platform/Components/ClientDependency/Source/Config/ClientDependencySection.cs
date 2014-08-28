@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using System.Configuration;
 using System.Linq;
@@ -19,6 +20,16 @@ namespace ClientDependency.Core.Config
         {
             get { return (int)base["version"]; }
             set { base["version"] = value; }
+        }
+
+        /// <summary>
+        /// explicitly sets the machine name if it cannot be resolved
+        /// </summary>
+        [ConfigurationProperty("machineName", DefaultValue = "")]
+        public string MachineName
+        {
+            get { return (string)base["machineName"]; }
+            set { base["machineName"] = value; }
         }
        
 		[ConfigurationProperty("compositeFiles")]
@@ -57,6 +68,7 @@ namespace ClientDependency.Core.Config
             }
         }
 
+        private ProviderSettingsCollection _filters;
         /// <summary>
         /// Not really supposed to be used by public, but can implement at your own risk!
         /// This by default assigns the MvcFilter and RogueFileFilter.
@@ -66,19 +78,23 @@ namespace ClientDependency.Core.Config
         {
             get
             {
-                var obj = base["filters"];
+                if (_filters == null)
+                {
+                    var obj = base["filters"];
 
-                if (obj == null || ((obj is ConfigurationElementCollection) && ((ConfigurationElementCollection)obj).Count == 0))
-                {
-                    var col = new ProviderSettingsCollection();
-                    col.Add(new ProviderSettings("MvcFilter", "ClientDependency.Core.Mvc.MvcFilter, ClientDependency.Core.Mvc"));
-                    col.Add(new ProviderSettings("RogueFileFilter", "ClientDependency.Core.Module.RogueFileFilter, ClientDependency.Core"));                    
-                    return col;
+                    if (obj == null || ((obj is ConfigurationElementCollection) && ((ConfigurationElementCollection)obj).Count == 0))
+                    {
+                        var col = new ProviderSettingsCollection();
+                        col.Add(new ProviderSettings("MvcFilter", "ClientDependency.Core.Mvc.MvcFilter, ClientDependency.Core.Mvc"));
+                        col.Add(new ProviderSettings("RogueFileFilter", "ClientDependency.Core.Module.RogueFileFilter, ClientDependency.Core"));
+                        _filters = col;
+                    }
+                    else
+                    {
+                        _filters = (ProviderSettingsCollection)obj;
+                    }
                 }
-                else
-                {
-                    return (ProviderSettingsCollection)obj;
-                }
+                return _filters;
             }
         }
 
@@ -89,10 +105,24 @@ namespace ClientDependency.Core.Config
         /// If this is not explicitly set, then the extensions 'js' and 'css' are the defaults.
         /// </remarks>
         [ConfigurationProperty("fileDependencyExtensions", DefaultValue = ".js,.css")]
-        protected string FileBasedDepdendenyExtensions
+        public string FileBasedDepdendenyExtensions
         {
             get { return (string)base["fileDependencyExtensions"]; }
             set { base["fileDependencyExtensions"] = value; }
+        }
+
+        /// <summary>
+        /// Indicates whether CDF should enforce the policy to create only Federal Information Processing Standard (FIPS) certified algorithms.
+        /// </summary>
+        [Obsolete("Use the built in .Net CryptoConfig.AllowOnlyFipsAlgorithms")]
+        [ConfigurationProperty("allowOnlyFipsAlgorithms", DefaultValue = false)]
+        public bool AllowOnlyFipsAlgorithms
+        {
+            get { return CryptoConfig.AllowOnlyFipsAlgorithms; }
+            set
+            {
+                //this does nothing now                
+            }
         }
 
         /// <summary>

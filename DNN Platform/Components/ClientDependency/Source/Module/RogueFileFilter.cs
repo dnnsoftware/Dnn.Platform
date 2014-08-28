@@ -187,7 +187,7 @@ namespace ClientDependency.Core.Module
                             var resolved = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
                                 file,
                                 type,
-                                http).Single();
+								http).Single();
 
                             return m.ToString().Replace(grp.ToString(), resolved.Replace("&", "&amp;"));
                         }

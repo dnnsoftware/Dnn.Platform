@@ -132,6 +132,34 @@ namespace ClientDependency.Core
         /// </summary>
         /// <value>The type of the dependency.</value>
         public ClientDependencyType DependencyType { get; set; }
+
+        protected bool Equals(ClientDependencyAttribute other)
+        {
+            return string.Equals(FilePath, other.FilePath, StringComparison.InvariantCultureIgnoreCase) && DependencyType == other.DependencyType && Priority == other.Priority && Group == other.Group && string.Equals(PathNameAlias, other.PathNameAlias, StringComparison.InvariantCultureIgnoreCase) && string.Equals(ForceProvider, other.ForceProvider) && Equals(HtmlAttributes, other.HtmlAttributes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ClientDependencyAttribute)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = (FilePath != null ? FilePath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)DependencyType;
+                hashCode = (hashCode * 397) ^ Priority;
+                hashCode = (hashCode * 397) ^ Group;
+                hashCode = (hashCode * 397) ^ (PathNameAlias != null ? PathNameAlias.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ForceProvider != null ? ForceProvider.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (HtmlAttributes != null ? HtmlAttributes.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
 	}
 
 	

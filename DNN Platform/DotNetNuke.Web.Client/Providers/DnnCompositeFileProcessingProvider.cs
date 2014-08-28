@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using ClientDependency.Core.Config;
+
 namespace DotNetNuke.Web.Client.Providers
 {
     using System;
@@ -33,13 +36,12 @@ namespace DotNetNuke.Web.Client.Providers
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();
 
-        public override int GetVersion()
+        public int GetVersion()
         {
-            var settingsVersion = clientResourceSettings.GetVersion();
-            return settingsVersion.HasValue ? settingsVersion.Value : base.GetVersion();
+            return ClientDependencySettings.Instance.Version;
         }
 
-        protected override string MinifyFile(string fileContents, ClientDependencyType type)
+        public override string MinifyFile(string fileContents, ClientDependencyType type)
         {
             switch (type)
             {

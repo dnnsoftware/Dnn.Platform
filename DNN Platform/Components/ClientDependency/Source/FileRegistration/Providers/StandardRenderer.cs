@@ -22,6 +22,22 @@ namespace ClientDependency.Core.FileRegistration.Providers
             base.Initialize(name, config);
         }
 
+        /// <summary>
+        /// Override because we need to ensure the & is replaced with &amp; This is only required for this one w3c compliancy, the URL itself is a valid URL.
+        /// </summary>
+        /// <param name="allDependencies"></param>
+        /// <param name="paths"></param>
+        /// <param name="jsOutput"></param>
+        /// <param name="cssOutput"></param>
+        /// <param name="http"></param>
+        public override void RegisterDependencies(List<IClientDependencyFile> allDependencies, HashSet<IClientDependencyPath> paths, out string jsOutput, out string cssOutput, HttpContextBase http)
+        {
+            base.RegisterDependencies(allDependencies, paths, out jsOutput, out cssOutput, http);
+
+            jsOutput = jsOutput.Replace("&", "&amp;");
+            cssOutput = cssOutput.Replace("&", "&amp;");
+        }
+
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
@@ -38,7 +54,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             }
             else
             {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http);
+				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http, GetCompositeFileHandlerPath(http));
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleJsFile(s, htmlAttributes));
@@ -64,7 +80,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             }
             else
             {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http);
+				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http, GetCompositeFileHandlerPath(http));
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleCssFile(s, htmlAttributes));

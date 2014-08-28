@@ -310,6 +310,14 @@ namespace ClientDependency.Core.Module
         public override void Close()
         {
             _stream.Close();
+            _cacheStream.Close();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            _stream.Dispose();
+            _cacheStream.Dispose();
         }
 
         /// <summary>

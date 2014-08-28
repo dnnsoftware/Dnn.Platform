@@ -31,15 +31,13 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.UI.WebControls;
-using ClientDependency.Core;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -254,7 +252,7 @@ namespace DotNetNuke.Web.InternalServices
             var savedFileDto = new SavedFileDTO();
             try
             {
-                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
@@ -424,7 +422,7 @@ namespace DotNetNuke.Web.InternalServices
             Stream fileContent = null;
             try
             {
-                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
@@ -659,7 +657,7 @@ namespace DotNetNuke.Web.InternalServices
 
                     var segments = dto.Url.Split('/');
                     var fileName = segments[segments.Length - 1];
-                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                         fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                     /* Response Content Type cannot be application/json 

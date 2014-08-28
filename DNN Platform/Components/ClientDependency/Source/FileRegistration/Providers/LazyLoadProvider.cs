@@ -41,7 +41,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
 			}
 			else
 			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http);
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http, GetCompositeFileHandlerPath(http));
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", s, string.Empty), htmlAttributes));
@@ -53,6 +53,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
         
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
 		{
+            if(!js.StartsWith("'"))
+                js = string.Format("'{0}'", js);
+
             var strClientLoader = new StringBuilder("CDLazyLoader");
 			strClientLoader.AppendFormat(".AddJs({0})", js);
 			strClientLoader.Append(';');
@@ -75,7 +78,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
 			}
 			else
 			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http);
+				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http, GetCompositeFileHandlerPath(http));
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleCssFile(s, htmlAttributes));

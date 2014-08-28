@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Text;
 using System.Web.UI;
 using System.Configuration.Provider;
@@ -24,33 +25,87 @@ namespace ClientDependency.Core.FileRegistration.Providers
             EnableCompositeFiles = true;
         }
 
-        //protected HashSet<IClientDependencyPath> FolderPaths { get; set; }
-        //protected List<IClientDependencyFile> AllDependencies { get; set; }
-
         /// <summary>
         /// By default this is true but can be overriden (in either config or code). 
         /// Composite files are never enabled with compilation debug="true" however.
         /// </summary>
-        public virtual bool EnableCompositeFiles { get; set; }
-
-        ///// <summary>
-        ///// By default this is empty, but if you want to explicity define a base url for dependencies you can
-        ///// </summary>
-        //public string WebsiteBaseUrl { get; set; }
+        public bool EnableCompositeFiles { get; set; }
 
         #region Abstract methods/properties
 
+        /// <summary>
+        /// This is called when rendering many js dependencies
+        /// </summary>
+        /// <param name="jsDependencies"></param>
+        /// <param name="http"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         protected abstract string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes);
+
+        /// <summary>
+        /// This is called when rendering many css dependencies
+        /// </summary>
+        /// <param name="cssDependencies"></param>
+        /// <param name="http"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         protected abstract string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes);
 
+        /// <summary>
+        /// Called to render a single js file
+        /// </summary>
+        /// <param name="js"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         protected abstract string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes);
+
+        /// <summary>
+        /// Called to render a single css file
+        /// </summary>
+        /// <param name="css"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         protected abstract string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes);
 
         #endregion
 
-        #region Provider Initialization
+		#region CompositeFileHandlerPath config
 
-        public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
+        //set the default
+        private string _compositeFileHandlerPath = "~/DependencyHandler.axd";
+        private volatile bool _compositeFileHandlerPathInitialized = false;
+
+		protected internal string GetCompositeFileHandlerPath(HttpContextBase http)
+		{
+		    if (!_compositeFileHandlerPathInitialized)
+		    {
+                lock (this)
+                {
+                    //double check
+                    if (!_compositeFileHandlerPathInitialized)
+                    {
+                        if (string.IsNullOrWhiteSpace(_compositeFileHandlerPath))
+                        {
+                            throw new InvalidOperationException("The compositeFileHandlerPath cannot be empty");
+                        }
+                        //we may need to convert this to a real path
+                        if (_compositeFileHandlerPath.StartsWith("~/"))
+                        {
+                            _compositeFileHandlerPath = VirtualPathUtility.ToAbsolute(_compositeFileHandlerPath, http.Request.ApplicationPath);    
+                        }
+                        //set the flag, we're done
+                        _compositeFileHandlerPathInitialized = true;
+                    }                    
+                }
+		    }
+            return _compositeFileHandlerPath;
+		}
+
+		#endregion
+
+		#region Provider Initialization
+
+		public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(name, config);
 
@@ -65,11 +120,49 @@ namespace ClientDependency.Core.FileRegistration.Providers
             //    if (!string.IsNullOrEmpty(WebsiteBaseUrl))
             //        WebsiteBaseUrl = WebsiteBaseUrl.TrimEnd('/');
             //}
-        }
+
+            if (config != null && config["compositeFileHandlerPath"] != null)
+            {
+                _compositeFileHandlerPath = config["compositeFileHandlerPath"];
+            }
+            
+		}
 
         #endregion
 
         #region Protected Methods
+
+        private void StaggerOnDifferentAttributes(
+            HttpContextBase http,
+            StringBuilder builder,
+            IEnumerable<IClientDependencyFile> list,
+            Func<IEnumerable<IClientDependencyFile>, HttpContextBase, IDictionary<string, string>, string> renderCompositeFiles)
+        {
+            var sameAttributes = new List<IClientDependencyFile>();
+            var currHtmlAttr = GetHtmlAttributes(list.ElementAt(0));
+            foreach (var c in list)
+            {
+                if (!currHtmlAttr.IsEqualTo(GetHtmlAttributes(c)))
+                {
+                    //if the attributes are different we need to stagger
+                    if (sameAttributes.Any())
+                    {
+                        //render the current buffer
+                        builder.Append(renderCompositeFiles(sameAttributes, http, currHtmlAttr));
+                        //clear the buffer
+                        sameAttributes.Clear();
+                    }
+                }
+
+                //add the item to the buffer and set the current html attributes
+                sameAttributes.Add(c);
+                currHtmlAttr = GetHtmlAttributes(c);
+            }
+
+            //if there's anything in the buffer then write the remaining
+            if (sameAttributes.Any())
+                builder.Append(renderCompositeFiles(sameAttributes, http, currHtmlAttr));
+        }
 
         /// <summary>
         /// Because we can have both internal and external dependencies rendered, we need to stagger the script tag output... if they are external, we need to stop the compressing/combining
@@ -87,54 +180,40 @@ namespace ClientDependency.Core.FileRegistration.Providers
             Func<IEnumerable<IClientDependencyFile>, HttpContextBase, IDictionary<string, string>, string> renderCompositeFiles,
             Func<string, IDictionary<string, string>, string> renderSingle)
         {
-
-
-            //This action will stagger the output based on whether or not the html attribute declarations are the same for each dependency
-            Action<IEnumerable<IClientDependencyFile>> staggerOnDifferentAttributes = (list) =>
-            {
-                var sameAttributes = new List<IClientDependencyFile>();
-                var currHtmlAttr = GetHtmlAttributes(list.ElementAt(0));
-                foreach (var c in list)
-                {
-                    if (!currHtmlAttr.IsEqualTo(GetHtmlAttributes(c)))
-                    {
-                        //if the attributes are different we need to stagger
-                        if (sameAttributes.Any())
-                        {
-                            //render the current buffer
-                            builder.Append(renderCompositeFiles(sameAttributes, http, currHtmlAttr));
-                            //clear the buffer
-                            sameAttributes.Clear();
-                        }
-                    }
-
-                    //add the item to the buffer and set the current html attributes
-                    sameAttributes.Add(c);
-                    currHtmlAttr = GetHtmlAttributes(c);
-                }
-
-                //if there's anything in the buffer then write the remaining
-                if (sameAttributes.Any())
-                    builder.Append(renderCompositeFiles(sameAttributes, http, currHtmlAttr));
-            };
+            var fileBasedExtensions = ClientDependencySettings.Instance.FileBasedDependencyExtensionList
+                                                              .Union(FileWriters.GetRegisteredExtensions())
+                                                              .ToArray();
 
             var currNonRemoteFiles = new List<IClientDependencyFile>();
             foreach (var f in dependencies)
             {
-                //if it is an external resource, then we need to break the sequence
+                //need to parse out the request's extensions and remove query strings
+                //need to force non-bundled lines for items with query parameters or a hash value.
+                var extension = f.FilePath.Contains('?') || f.FilePath.Contains('#') ? "" : Path.GetExtension(f.FilePath);
+                var stringExt = "";
+                if (!string.IsNullOrWhiteSpace(extension))
+                {
+                    stringExt = extension.ToUpper().Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries)[0];
+                }
+
+                // if it is an external resource OR
+                // if it is a non-standard JS/CSS resource (i.e. a server request)
+                // then we need to break the sequence
                 // unless it has been explicitely required that the dependency be bundled
-                if (http.IsAbsolutePath(f.FilePath)
-                    //remote dependencies aren't local
-                    && !new Uri(f.FilePath, UriKind.RelativeOrAbsolute).IsLocalUri(http)
-                    // not required to be bundled
-                    && !f.ForceBundle)
+                if (!http.IsAbsolutePath(f.FilePath) && !fileBasedExtensions.Contains(stringExt)
+                    //now check for external resources
+                    || (http.IsAbsolutePath(f.FilePath)
+                        //remote dependencies aren't local
+                        && !new Uri(f.FilePath, UriKind.RelativeOrAbsolute).IsLocalUri(http)
+                        // not required to be bundled
+                        && !f.ForceBundle))
                 {
                     //we've encountered an external dependency, so we need to break the sequence and restart it after
                     //we output the raw script tag
                     if (currNonRemoteFiles.Count > 0)
                     {
                         //render the current buffer
-                        staggerOnDifferentAttributes(currNonRemoteFiles);
+                        StaggerOnDifferentAttributes(http, builder, currNonRemoteFiles, renderCompositeFiles);
                         //clear the buffer
                         currNonRemoteFiles.Clear();
                     }
@@ -151,7 +230,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             if (currNonRemoteFiles.Count > 0)
             {
                 //render the current buffer
-                staggerOnDifferentAttributes(currNonRemoteFiles);
+                StaggerOnDifferentAttributes(http, builder, currNonRemoteFiles, renderCompositeFiles);
             }
         }
 
@@ -165,11 +244,11 @@ namespace ClientDependency.Core.FileRegistration.Providers
         protected virtual void UpdateFilePaths(IEnumerable<IClientDependencyFile> dependencies,
             HashSet<IClientDependencyPath> folderPaths, HttpContextBase http)
         {
+            var paths = folderPaths.ToList();
             foreach (var dependency in dependencies)
             {
                 if (!string.IsNullOrEmpty(dependency.PathNameAlias))
-                {
-                    var paths = folderPaths.ToList();
+                {                    
                     var d = dependency;
                     var path = paths.Find(
                         (p) => p.Name == d.PathNameAlias);
@@ -213,9 +292,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
             foreach (var d in dependencies)
             {
                 //check if it is a duplicate
-                if (dependencies
-                    .Where(x => x.FilePath.ToUpper().Trim().Equals(d.FilePath.ToUpper().Trim()))
-                    .Any())
+                if (dependencies.Count(x => x.FilePath.ToUpper().Trim().Equals(d.FilePath.ToUpper().Trim())) > 1)
                 {
                     //find the dups and return an object with the associated index
                     var dups = dependencies
@@ -229,18 +306,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     //instead of by index
                     if (priorities.Count() > 1)
                     {
-                        toKeep.Add(dups
-                            .Where(x => x.File.Priority == priorities.Min())
-                            .First().File);
+                        toKeep.Add(dups.First(x => x.File.Priority == priorities.Min()).File);
                     }
                     else
                     {
                         //if not by priority, we just need to keep the first on in the list
-                        toKeep.Add(dups
-                            .Where(x => x.Index == dups
-                                .Select(p => p.Index)
-                                .Min())
-                            .First().File);
+                        toKeep.Add(dups.First(x => x.Index == dups.Select(p => p.Index).Min()).File);
                     }
                 }
                 else
@@ -248,8 +319,6 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     //if there's only one found, then just add it to our output
                     toKeep.Add(d);
                 }
-
-
             }
 
             dependencies.Clear();
@@ -260,54 +329,37 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
         private string AppendVersion(string url, HttpContextBase http)
         {
-            var version = this.GetVersion();
-            if (version == 0)
+            if (ClientDependencySettings.Instance.Version == 0)
                 return url;
             if ((http.IsDebuggingEnabled || !EnableCompositeFiles)
                 || ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.UrlType == CompositeUrlType.Base64QueryStrings)
             {
+                //don't append if it is already there!
+                if (url.Contains("cdv=" + ClientDependencySettings.Instance.Version))
+                    return url;
+
+                //move hash to the end of the file name if present. Eg: /s/myscript.js?cdv=3#myhash
+                var hash = url.Contains("#") ? "#" + url.Split(new[] { '#' }, 2)[1] : "";
+                if (!String.IsNullOrEmpty(hash))
+                    url = url.Split(new[] { '#' }, 2)[0];
+
                 //ensure there's not duplicated query string syntax
                 url += url.Contains('?') ? "&" : "?";
                 //append a version
-                url += "cdv=" + version;
+                url += "cdv=" + ClientDependencySettings.Instance.Version + hash;
             }
             else
             {
+                if (url.EndsWith(ClientDependencySettings.Instance.Version.ToString()))
+                    return url;
+
                 //the URL should end with a '0'
-                url = url.TrimEnd('0') + version;
+                url = url.TrimEnd('0') + ClientDependencySettings.Instance.Version;
             }
             return url;
         }
 
-        public virtual int GetVersion()
-        {
-            return ClientDependencySettings.Instance.Version;
-        }
-
         #endregion        
-
-        ///// <summary>
-        ///// Checks if the "website" config param has been passed in, if so this formats the url
-        ///// to be an absolute URL with the pre-pended domain
-        ///// </summary>
-        ///// <param name="url"></param>
-        ///// <returns></returns>
-        //protected string MapToWebsiteBaseUrl(string url)
-        //{
-        //    if (!string.IsNullOrEmpty(WebsiteBaseUrl))
-        //    {
-        //        if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase)
-        //            || url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
-        //            return url;
-
-        //        // make sure the url begins with a /
-        //        string slashedUrl = (url[0] != '/' ? "/" : string.Empty) + url;
-
-        //        return WebsiteBaseUrl + slashedUrl;
-        //    }
-        //    return url;
-        //}
-
 
         /// <summary>
         /// Checks if the current file implements the html attribute interfaces and returns the appropriate html attributes
@@ -318,15 +370,17 @@ namespace ClientDependency.Core.FileRegistration.Providers
         {
             IDictionary<string, string> attributes = new Dictionary<string, string>();
 
-            if (file is IHaveHtmlAttributes)
+            var htmlAttributes = file as IHaveHtmlAttributes;
+            if (htmlAttributes != null)
             {
-                var fileWithAttributes = (IHaveHtmlAttributes)file;
+                var fileWithAttributes = htmlAttributes;
                 attributes = fileWithAttributes.HtmlAttributes;
 
-                if (file is IRequiresHtmlAttributesParsing)
+                var parsing = file as IRequiresHtmlAttributesParsing;
+                if (parsing != null)
                 {
                     //we need to parse the attributes into the dictionary
-                    HtmlAttributesStringParser.ParseIntoDictionary(((IRequiresHtmlAttributesParsing)file).HtmlAttributesAsString, attributes);                    
+                    HtmlAttributesStringParser.ParseIntoDictionary(parsing.HtmlAttributesAsString, attributes);                    
                 }                
             }
 
@@ -353,6 +407,71 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
             //just return an empty dictionary
             return attributes;
+        }
+
+        
+
+        /// <summary>
+        /// Called to write the js and css to string output
+        /// </summary>
+        /// <param name="allDependencies"></param>
+        /// <param name="paths"></param>
+        /// <param name="jsOutput"></param>
+        /// <param name="cssOutput"></param>
+        /// <param name="http"></param>
+        internal void WriteDependencies(List<IClientDependencyFile> allDependencies,
+            HashSet<IClientDependencyPath> paths,
+            out string jsOutput,
+            out string cssOutput,
+            HttpContextBase http)
+        {
+            //create the hash to see if we've already stored it
+            var hashCodeCombiner = new HashCodeCombiner();
+            foreach (var d in allDependencies)
+            {
+                hashCodeCombiner.AddObject(d);
+            }
+            var hash = hashCodeCombiner.GetCombinedHashCode();
+            
+            //we may have already processed this so don't do it again
+            if (http.Items["BaseRenderer.RegisterDependencies." + hash] == null)
+            {
+                var folderPaths = paths;
+                UpdateFilePaths(allDependencies, folderPaths, http);
+                EnsureNoDuplicates(allDependencies, folderPaths);
+
+                //now we regenerate the hash since dependencies have been removed/etc.. 
+                // and update the context items so it's not run again
+                hashCodeCombiner = new HashCodeCombiner();
+                foreach (var d in allDependencies)
+                {
+                    hashCodeCombiner.AddObject(d);
+                }
+                hash = hashCodeCombiner.GetCombinedHashCode();
+                http.Items["BaseRenderer.RegisterDependencies." + hash] = true;
+            }
+
+            var cssBuilder = new StringBuilder();
+            var jsBuilder = new StringBuilder();
+
+            //group by the group and order by the value
+            foreach (var group in allDependencies.GroupBy(x => x.Group).OrderBy(x => x.Key))
+            {
+                //sort both the js and css dependencies properly
+
+                var jsDependencies = DependencySorter.SortItems(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Javascript).ToList());
+
+                var cssDependencies = DependencySorter.SortItems(
+                    group.Where(x => x.DependencyType == ClientDependencyType.Css).ToList());
+
+                //render
+                WriteStaggeredDependencies(cssDependencies, http, cssBuilder, RenderCssDependencies, RenderSingleCssFile);
+                WriteStaggeredDependencies(jsDependencies, http, jsBuilder, RenderJsDependencies, RenderSingleJsFile);
+            }
+
+            cssOutput = cssBuilder.ToString();
+            jsOutput = jsBuilder.ToString();
         }
     }
 }
