@@ -175,13 +175,16 @@ namespace DotNetNuke.Entities.Users
                 {
                     if (CheckAccessLevel(property, accessingUser))
                     {
-                        if (property.PropertyName.ToLower() == "photo")
+                        switch (property.PropertyName.ToLower())
                         {
-                            return user.Profile.PhotoURL;
-                        }
-                        else
-                        {
-                            return GetRichValue(property, format, formatProvider);
+                            case "photo":
+                                return user.Profile.PhotoURL;
+                            case "country":
+                                return user.Profile.Country;
+                            case "region":
+                                return user.Profile.Region;
+                            default:
+                                return GetRichValue(property, format, formatProvider);
                         }
                     }
                 }

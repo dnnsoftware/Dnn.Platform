@@ -59,8 +59,9 @@ namespace DotNetNuke.UI.WebControls
             ListName = "Country";
             ParentKey = "";
             TextField = ListBoundField.Text;
-            ValueField = ListBoundField.Text;
+            ValueField = ListBoundField.Value;
             ItemChanged += OnItemChanged;
+            SortAlphabetically = true;
         }
 
         void OnItemChanged(object sender, PropertyEditorEventArgs e)
@@ -75,10 +76,10 @@ namespace DotNetNuke.UI.WebControls
                     var countries = listController.GetListEntryInfoItems("Country");
                     foreach (var checkCountry in countries)
                     {
-                        if (checkCountry.Text == e.StringValue)
+                        if (checkCountry.Value == e.StringValue)
                         {
                             var attributes = new object[1];
-                            attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Text, ListBoundField.Text);
+                            attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Value, ListBoundField.Text);
                             regionControl.CustomAttributes = attributes;
                             break;
                         }
