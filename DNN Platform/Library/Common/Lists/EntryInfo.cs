@@ -70,7 +70,25 @@ namespace DotNetNuke.Common.Lists
 
         public string Value { get; set; }
 
-        public string Text { get; set; }
+        private string _Text = Null.NullString;
+        public string Text
+        {
+            get
+            {
+                string res = null;
+                try
+                {
+                    res = Services.Localization.Localization.GetString(Value + ".Text", "~/App_GlobalResources/" + ListName + ".resx");
+                }
+                catch { }
+                if (string.IsNullOrEmpty(res)) { res = _Text; };
+                return res;
+            }
+            set
+            {
+                _Text = value;
+            }
+        }
 
         public string Description { get; set; }
 

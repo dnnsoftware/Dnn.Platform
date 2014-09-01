@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Services.FileSystem;
 
 using System.Xml.Serialization;
+using DotNetNuke.Common.Lists;
 
 #endregion
 
@@ -157,9 +158,16 @@ namespace DotNetNuke.Entities.Users
             get
             {
                 string _country = GetPropertyValue(USERPROFILE_Country);
-                string retValue = Services.Localization.Localization.GetString(_country + ".Text", "~/App_GlobalResources/Country.resx");
-                if (string.IsNullOrEmpty(retValue)) { retValue = _country; };
-                return retValue;
+                ListController lc = new ListController();
+                ListEntryInfo item = lc.GetListEntryInfo(USERPROFILE_Country, _country);
+                if (item == null)
+                {
+                    return _country;
+                }
+                else
+                {
+                    return item.Text;
+                }
             }
             set
             {
@@ -494,9 +502,16 @@ namespace DotNetNuke.Entities.Users
             get
             {
                 string _region = GetPropertyValue(USERPROFILE_Region);
-                string retValue = Services.Localization.Localization.GetString(_region + ".Text", "~/App_GlobalResources/Region.resx");
-                if (string.IsNullOrEmpty(retValue)) { retValue = _region; };
-                return retValue;
+                ListController lc = new ListController();
+                ListEntryInfo item = lc.GetListEntryInfo(USERPROFILE_Region, _region);
+                if (item == null)
+                {
+                    return _region;
+                }
+                else
+                {
+                    return item.Text;
+                }
             }
             set
             {

@@ -108,7 +108,9 @@
     <Compile Include="Components\DnnEditor.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="Components\DialogParams.cs" />
-    <Compile Include="Components\EditorProvider.cs" />
+    <Compile Include="Components\EditorProvider.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\ErrorCodes.cs" />
     <Compile Include="Components\FileManagerException.cs" />
     <Compile Include="Components\FileSystemValidation.cs" />
@@ -130,6 +132,7 @@
     </Compile>
     <Compile Include="Dialogs\SaveTemplate.aspx.cs">
       <DependentUpon>SaveTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DotNetNukeDialogHandler.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -150,6 +153,7 @@
     </Compile>
     <Compile Include="ProviderConfig.ascx.cs">
       <DependentUpon>ProviderConfig.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
