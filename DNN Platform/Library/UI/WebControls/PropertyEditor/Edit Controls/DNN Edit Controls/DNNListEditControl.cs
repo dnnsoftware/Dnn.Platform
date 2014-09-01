@@ -61,6 +61,7 @@ namespace DotNetNuke.UI.WebControls
             ValueField = ListBoundField.Value;
             TextField = ListBoundField.Text;
             ParentKey = "";
+            SortAlphabetically = false;
         }
 
         /// -----------------------------------------------------------------------------
@@ -73,7 +74,17 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected bool AutoPostBack { get; set; }
 
-		#region "Protected Properties"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// If true the list will be sorted on the value of Text before rendering
+        /// </summary>
+        /// <history>
+        ///     [pdonker]	07/18/2014	created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        protected bool SortAlphabetically { get; set; }
+        
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -125,7 +136,14 @@ namespace DotNetNuke.UI.WebControls
                 if(_listEntries == null)
                 {
                     var listController = new ListController();
-                    _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).ToList();
+                    if (SortAlphabetically)
+                    {
+                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                    }
+                    else
+                    {
+                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).ToList();
+                    }
                 }
 
                 return _listEntries;
