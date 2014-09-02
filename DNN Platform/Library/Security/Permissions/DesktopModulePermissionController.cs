@@ -51,14 +51,8 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionController
     {
-		#region Private Members
+        private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
-        private static readonly DataProvider provider = DataProvider.Instance();
-		
-		#endregion
-		
-		#region Private Shared Methods
-		
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ClearPermissionCache clears the DesktopModule Permission Cache
@@ -72,87 +66,6 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearDesktopModulePermissionsCache();
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
-        /// dataReader
-        /// </summary>
-        /// <param name="dr">The IDataReader</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
-        {
-            var dic = new Dictionary<int, DesktopModulePermissionCollection>();
-            try
-            {
-                while (dr.Read())
-                {
-                    //fill business object
-                    var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
-
-                    //add DesktopModule Permission to dictionary
-                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
-                    {
-                        //Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
-                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
-                    }
-                    else
-                    {
-                        //Create new DesktopModulePermission Collection for DesktopModulePermissionID
-                        var collection = new DesktopModulePermissionCollection {desktopModulePermissionInfo};
-
-                        //Add Collection to Dictionary
-                        dic.Add(desktopModulePermissionInfo.PortalDesktopModuleID, collection);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-				//close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-            return dic;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule.
-        /// </summary>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
-        {
-            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
-                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
-        /// <history>
-        /// 	[cnurse]	01/15/2008   Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return FillDesktopModulePermissionDictionary(provider.GetDesktopModulePermissions());
-        }
-		
-		#endregion
-		
 		#region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
@@ -166,7 +79,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            int Id = provider.AddDesktopModulePermission(objDesktopModulePermission.PortalDesktopModuleID,
+            int Id = DataProvider.Instance().AddDesktopModulePermission(objDesktopModulePermission.PortalDesktopModuleID,
                                                          objDesktopModulePermission.PermissionID,
                                                          objDesktopModulePermission.RoleID,
                                                          objDesktopModulePermission.AllowAccess,
@@ -192,7 +105,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermission(int DesktopModulePermissionID)
         {
-            provider.DeleteDesktopModulePermission(DesktopModulePermissionID);
+            DataProvider.Instance().DeleteDesktopModulePermission(DesktopModulePermissionID);
             EventLogController.Instance.AddLog("DesktopModulePermissionID",
                                DesktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
@@ -213,7 +126,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
         {
-            provider.DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
+            DataProvider.Instance().DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
             EventLogController.Instance.AddLog("PortalDesktopModuleID",
                                portalDesktopModuleID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
@@ -233,7 +146,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
         {
-            provider.DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
+            DataProvider.Instance().DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
             EventLogController.Instance.AddLog("UserID",
                                objUser.UserID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
@@ -253,7 +166,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
         {
-            return CBO.FillObject<DesktopModulePermissionInfo>(provider.GetDesktopModulePermission(DesktopModulePermissionID));
+            return _provider.GetDesktopModulePermission(DesktopModulePermissionID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -267,18 +180,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleID)
         {
-            //Get the Tab DesktopModulePermission Dictionary
-            Dictionary<int, DesktopModulePermissionCollection> dicDesktopModulePermissions = GetDesktopModulePermissions();
-
-            //Get the Collection from the Dictionary
-            DesktopModulePermissionCollection DesktopModulePermissions;
-            bool bFound = dicDesktopModulePermissions.TryGetValue(portalDesktopModuleID, out DesktopModulePermissions);
-            if (!bFound)
-            {
-                //Return empty collection
-                DesktopModulePermissions = new DesktopModulePermissionCollection();
-            }
-            return DesktopModulePermissions;
+            return _provider.GetDesktopModulePermissions(portalDesktopModuleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -293,7 +195,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static bool HasDesktopModulePermission(DesktopModulePermissionCollection objDesktopModulePermissions, string permissionKey)
         {
-            return PortalSecurity.IsInRoles(objDesktopModulePermissions.ToString(permissionKey));
+            return _provider.HasDesktopModulePermission(objDesktopModulePermissions, permissionKey);
         }
 
         /// -----------------------------------------------------------------------------
@@ -307,7 +209,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            provider.UpdateDesktopModulePermission(objDesktopModulePermission.DesktopModulePermissionID,
+            DataProvider.Instance().UpdateDesktopModulePermission(objDesktopModulePermission.DesktopModulePermissionID,
                                                    objDesktopModulePermission.PortalDesktopModuleID,
                                                    objDesktopModulePermission.PermissionID,
                                                    objDesktopModulePermission.RoleID,
