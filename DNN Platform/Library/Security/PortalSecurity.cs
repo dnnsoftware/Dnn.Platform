@@ -185,7 +185,7 @@ namespace DotNetNuke.Security
                 if (roleName.StartsWith("!"))
                 {
                     //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                    if (!(settings.PortalId == user.PortalID && settings.AdministratorId == user.UserID))
+                    if (settings != null && !(settings.PortalId == user.PortalID && settings.AdministratorId == user.UserID))
                     {
                         string denyRole = roleName.Replace("!", "");
                         if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
@@ -857,7 +857,7 @@ namespace DotNetNuke.Security
                         if (role.StartsWith("!"))
                         {
                             //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
-                            if (!(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
+                            if (settings != null && !(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
                             {
                                 string denyRole = role.Replace("!", "");
                                 if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
