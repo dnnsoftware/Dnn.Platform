@@ -384,6 +384,8 @@
 	    if ($("ul.dnnAdminTabNav > li.ui-tabs-active").attr("id").indexOf("propertiesTab") > -1) {
 	    	$("ul.dnnMainActions, div.dnnModuleAuditControl").hide();
 	    }
+
+        $('#<%=urlTextBox.ClientID%>').prefixInput({ prefix: "/" });
     }
 
     $(document).ready(function () {
