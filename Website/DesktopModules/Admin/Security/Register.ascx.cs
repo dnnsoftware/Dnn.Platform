@@ -753,7 +753,8 @@ namespace DotNetNuke.Modules.Admin.Users
             //Verify that the current user has access to this page
             if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
             {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
+                Response.Redirect(Globals.NavigateURL("Access Denied"), false);
+                Context.ApplicationInstance.CompleteRequest();
             }
 
             cancelButton.Click += cancelButton_Click;
