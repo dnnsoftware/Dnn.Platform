@@ -541,26 +541,26 @@ namespace DesktopModules.Admin.Portals
             portalSkinCombo.PortalId = PortalId;
             portalSkinCombo.RootPath = SkinController.RootSkin;
             portalSkinCombo.Scope = SkinScope.All;
-            portalSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin);
+            portalSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin, SelectedCultureCode);
 
             portalContainerCombo.PortalId = PortalId;
             portalContainerCombo.RootPath = SkinController.RootContainer;
             portalContainerCombo.Scope = SkinScope.All;
-            portalContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer);
+            portalContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer, SelectedCultureCode);
 
             editSkinCombo.PortalId = PortalId;
             editSkinCombo.RootPath = SkinController.RootSkin;
             editSkinCombo.Scope = SkinScope.All;
-            editSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin);
+            editSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin, SelectedCultureCode);
 
             editContainerCombo.PortalId = PortalId;
             editContainerCombo.RootPath = SkinController.RootContainer;
             editContainerCombo.Scope = SkinScope.All;
-            editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer);
+            editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer, SelectedCultureCode);
 
             iconSetCombo.DataSource = IconController.GetIconSets();
             iconSetCombo.DataBind();
-            iconSetCombo.SelectedValue = PortalController.GetPortalSetting("DefaultIconLocation", portal.PortalID, "Sigma").Replace("icons/","");
+            iconSetCombo.SelectedValue = PortalController.GetPortalSetting("DefaultIconLocation", portal.PortalID, "Sigma", SelectedCultureCode).Replace("icons/", "");
 
             if (ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
@@ -675,7 +675,7 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataBind();
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0);
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0, SelectedCultureCode);
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -683,7 +683,7 @@ namespace DesktopModules.Admin.Portals
                 RedirectAfterLogin.PortalId = portal.PortalID;
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0);
+                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0, SelectedCultureCode);
 
                 if (redirectTab > 0)
                 {
@@ -1385,11 +1385,11 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.MinifyJsKey, chkMinifyJs.Checked.ToString(CultureInfo.InvariantCulture), false);
 
                     PortalController.UpdatePortalSetting(_portalId, "EnableSkinWidgets", chkSkinWidgestEnabled.Checked.ToString(), false);
-                    PortalController.UpdatePortalSetting(_portalId, "DefaultAdminSkin", editSkinCombo.SelectedValue, false);
-                    PortalController.UpdatePortalSetting(_portalId, "DefaultPortalSkin", portalSkinCombo.SelectedValue, false);
-                    PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false);
-                    PortalController.UpdatePortalSetting(_portalId, "DefaultPortalContainer", portalContainerCombo.SelectedValue, false);
-                    PortalController.UpdatePortalSetting(_portalId, "DefaultIconLocation", "icons/" + iconSetCombo.SelectedValue, false);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultAdminSkin", editSkinCombo.SelectedValue, false, SelectedCultureCode);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultPortalSkin", portalSkinCombo.SelectedValue, false, SelectedCultureCode);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false, SelectedCultureCode);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultPortalContainer", portalContainerCombo.SelectedValue, false, SelectedCultureCode);
+                    PortalController.UpdatePortalSetting(_portalId, "DefaultIconLocation", "icons/" + iconSetCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "EnablePopups", enablePopUpsCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "EnableModuleEffect", enableModuleEffectCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "InlineEditorEnabled", chkInlineEditor.Checked.ToString(), false);
@@ -1502,7 +1502,7 @@ namespace DesktopModules.Admin.Portals
                     var redirectTabId = !String.IsNullOrEmpty(RedirectAfterRegistration.SelectedItem.Value) ?
                                         RedirectAfterRegistration.SelectedItem.Value
                                         : "-1";
-                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterRegistration", redirectTabId);
+                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterRegistration", redirectTabId, SelectedCultureCode);
 
                     foreach (DnnFormItemBase item in loginSettings.Items)
                     {
@@ -1511,7 +1511,7 @@ namespace DesktopModules.Admin.Portals
                     redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogin.SelectedItem.Value) ?
                                         RedirectAfterLogin.SelectedItem.Value
                                         : "-1";
-                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogin", redirectTabId);
+                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogin", redirectTabId, SelectedCultureCode);
                     redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogout.SelectedItem.Value) ?
                                         RedirectAfterLogout.SelectedItem.Value
                                         : "-1";
