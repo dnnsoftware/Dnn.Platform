@@ -340,3 +340,85 @@ BEGIN
 END
 GO
 
+/********************************************************
+ * SPROC: EnsureLocalizationExists (create localized settings, DNN-5759)
+ ********************************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+	@PortalID       Int,
+	@CultureCode	nvarchar(10)
+AS
+BEGIN
+	DECLARE @MasterLanguage nvarchar(10) = Null;
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Languages L 
+			                JOIN {databaseOwner}{objectQualifier}PortalLanguages P ON L.LanguageID = P.LanguageID 
+					       WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
+		RETURN; -- language does not exist for this portal - maybe should raise an error?
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
+		SET @MasterLanguage = @CultureCode
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+							  JOIN {databaseOwner}[{objectQualifier}Portals             P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+							 WHERE P.PortalID = @PortalID)
+		SELECT @MasterLanguage = DefaultLanguage FROM Portals WHERE PortalID = @PortalID
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE CultureCode = 'en-us' and PortalID = @PortalID)
+		SET @MasterLanguage = 'en-us'
+	 ELSE -- neither default nor system language available: take the language that was assigned first
+		SELECT TOP (1) CultureCode FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalID = @PortalID ORDER BY PortalID ASC;
+
+	IF NOT (@MasterLanguage Is Null OR @MasterLanguage LIKE @CultureCode) 
+	BEGIN  -- copy localized values from (existing and different) master language:					
+		INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization]
+		(	PortalId,
+			CultureCode,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserID,
+			LastModifiedOnDate
+		) SELECT
+			PortalId,
+			@MasterLanguage,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			-1,
+			GetDate(),
+			-1,
+			GetDate()
+		 FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+		 WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage;
+	
+		-- copy missing localized settings:
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+		       WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage) Q 
+		ON (S.PortalID = Q.PortalID AND S.CultureCode = Q.CultureCode AND S.SettingName = Q.SettingName)
+		WHEN NOT MATCHED THEN 
+		INSERT (  PortalID,   CultureCode,   SettingName,   SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate) 
+		VALUES (Q.PortalID, Q.CultureCode, Q.SettingName, Q.SettingValue,              -1,     GetDate(),                   -1,          GetDate())
+	END;
+END;
+GO
