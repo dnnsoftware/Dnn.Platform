@@ -353,16 +353,16 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
 AS
 BEGIN
 	DECLARE @MasterLanguage nvarchar(10) = Null;
-	IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}Languages L 
-			                JOIN {databaseOwner}{objectQualifier}PortalLanguages P ON L.LanguageID = P.LanguageID 
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Languages] L 
+			                JOIN {databaseOwner}[{objectQualifier}PortalLanguages] P ON L.LanguageID = P.LanguageID 
 					       WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
 		RETURN; -- language does not exist for this portal - maybe should raise an error?
-	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
 		SET @MasterLanguage = @CultureCode
 	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
-							  JOIN {databaseOwner}[{objectQualifier}Portals             P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+							  JOIN {databaseOwner}[{objectQualifier}Portals]            P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
 							 WHERE P.PortalID = @PortalID)
-		SELECT @MasterLanguage = DefaultLanguage FROM Portals WHERE PortalID = @PortalID
+		SELECT @MasterLanguage = DefaultLanguage FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalID
 	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE CultureCode = 'en-us' and PortalID = @PortalID)
 		SET @MasterLanguage = 'en-us'
 	 ELSE -- neither default nor system language available: take the language that was assigned first
@@ -418,7 +418,7 @@ BEGIN
 		ON (S.PortalID = Q.PortalID AND S.CultureCode = Q.CultureCode AND S.SettingName = Q.SettingName)
 		WHEN NOT MATCHED THEN 
 		INSERT (  PortalID,   CultureCode,   SettingName,   SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate) 
-		VALUES (Q.PortalID, Q.CultureCode, Q.SettingName, Q.SettingValue,              -1,     GetDate(),                   -1,          GetDate())
+		VALUES (Q.PortalID, Q.CultureCode, Q.SettingName, Q.SettingValue,              -1,     GetDate(),                   -1,          GetDate());
 	END;
 END;
 GO
