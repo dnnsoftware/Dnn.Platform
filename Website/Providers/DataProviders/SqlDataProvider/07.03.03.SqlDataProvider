@@ -4617,6 +4617,283 @@ WHERE NOT EXISTS
 END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabToEnd]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabToEnd] 
+	@ContentItemID			Int,
+    @PortalID				Int,
+    @UniqueId				UniqueIdentifier,
+    @VersionGuid			UniqueIdentifier,
+    @DefaultLanguageGuid	UniqueIdentifier,
+    @LocalizedVersionGuid	UniqueIdentifier,
+    @TabName				nVarChar(200),
+    @IsVisible				Bit,
+    @DisableLink			Bit,
+    @ParentId				Int,
+    @IconFile				nVarChar(100),
+    @IconFileLarge			nVarChar(100),
+    @Title					nVarChar(200),
+    @Description			nVarChar(500),
+    @KeyWords				nVarChar(500),
+    @Url					nVarChar(255),
+    @SkinSrc				nVarChar(200),
+    @ContainerSrc			nVarChar(200),
+    @StartDate				DateTime,
+    @EndDate				DateTime,
+    @RefreshInterval		Int,
+    @PageHeadText			nVarChar(Max),
+    @IsSecure				Bit,
+    @PermanentRedirect		Bit,
+    @SiteMapPriority		Float,
+    @CreatedByUserID		Int,
+    @CultureCode			nVarChar(50)
+AS
+BEGIN
+	DECLARE @TabId    Int;
+	DECLARE @TabOrder Int  = (SELECT Max(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] 
+	                          WHERE (ParentId = @ParentId OR (ParentId IS Null AND @ParentID IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1))));
+	
+	IF @TabOrder IS Null
+		SET @TabOrder = 1
+	ELSE
+		SET @TabOrder += 2;
+
+	-- Create Tab
+	EXECUTE @TabId = {databaseOwner}[{objectQualifier}AddTab]
+						@ContentItemID,
+						@PortalID,
+						@TabOrder,
+						@UniqueId,
+						@VersionGuid,
+						@DefaultLanguageGuid,
+						@LocalizedVersionGuid,
+						@TabName,
+						@IsVisible,
+						@DisableLink,
+						@ParentId,
+						@IconFile,
+						@IconFileLarge,
+						@Title,
+						@Description,
+						@KeyWords,
+						@Url,
+						@SkinSrc,
+						@ContainerSrc,
+						@StartDate,
+						@EndDate,
+						@RefreshInterval,
+						@PageHeadText,
+						@IsSecure,
+						@PermanentRedirect,
+						@SiteMapPriority,
+						@CreatedByUserID,
+						@CultureCode;
+	
+	-- Update Content Item
+	UPDATE {databaseOwner}[{objectQualifier}ContentItems]
+	 SET   TabID = @TabId
+	 WHERE ContentItemID = @ContentItemID;
+	SELECT @TabId;
+END
+G
+
+/************************************************************/
+/* DNN-5800: Incorrect TabOrder (missing PortalId)          */
+/* fixed version by Sebastian Leupold 2014-09-03            */
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}MoveTabAfter]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabAfter]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabAfter] 
+	@TabId					Int,
+	@AfterTabId				Int,
+	@LastModifiedByUserID	Int
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @OldParentId Int = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @NewParentId Int = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @AfterTabId);
+	DECLARE @TabOrder    Int = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @PortalId    Int = (SELECT PortalId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	
+	IF (@OldParentId <> @NewParentId OR NOT (@OldParentId IS Null AND @NewParentId IS Null)) BEGIN -- Parent has changed
+		-- update TabOrder of Tabs with same original Parent
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder -= 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder > @TabOrder;
+
+		-- Get TabOrder of AfterTab
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @AfterTabId);
+				
+		-- update TabOrder of Tabs with same new Parent
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET TabOrder += 2
+		 WHERE (ParentId = @NewParentId OR (ParentId IS Null AND @NewParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder > @TabOrder;
+
+		-- Update Tab with new TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   ParentId				= @NewParentId,
+			   TabOrder				= @TabOrder + 2,
+			   LastModifiedByUserID	= @LastModifiedByUserID,
+			   LastModifiedOnDate	= GetDate()					
+		 WHERE TabID = @TabId;
+		EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @TabId, 1;
+	END
+	ELSE BEGIN -- Parent has not changed
+		-- Remove Tab from TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder = -1
+		 WHERE TabID = @TabId;
+			
+		-- Reorder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder -= 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder  > @TabOrder
+		   AND TabId    <> @TabId;
+				
+		-- Get TabOrder of AfterTab
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @AfterTabId);
+								
+		-- Reorder					
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder += 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder > @TabOrder;
+
+		-- Update Tab with new TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder				= @TabOrder + 2,
+			   LastModifiedByUserID	= @LastModifiedByUserID,
+			   LastModifiedOnDate	= GetDate()					
+		 WHERE TabID = @TabId;
+		EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @TabId;
+	END;
+	SET NOCOUNT OFF;
+END
+GO
+
+
+/************************************************************/
+/* DNN-5801: Moving tabs affected other Portals             */
+/* fixed and completed version by S. Leupold 2014-09-03     */
+/************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}MoveTabBefore]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabBefore]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabBefore] 
+	@TabId					Int,
+	@BeforeTabId			Int,
+	@LastModifiedByUserID	Int
+AS
+BEGIN
+	DECLARE @OldParentId Int = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @NewParentId Int = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @BeforeTabId);
+	DECLARE @TabOrder    Int = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @PortalId    Int = (SELECT PortalId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	
+	IF (@OldParentId <> @NewParentId OR NOT (@OldParentId IS Null AND @NewParentId IS Null)) BEGIN -- Parent has changed
+		-- update TabOrder of Tabs with same original Parent
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder -= 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder > @TabOrder;
+
+		-- Get TabOrder of AfterTab
+		SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @BeforeTabId);
+				
+		-- update TabOrder of Tabs with same new Parent
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET TabOrder += 2
+		 WHERE (ParentId = @NewParentId OR (ParentId IS Null AND @NewParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+		   AND TabOrder >= @TabOrder;
+
+		-- Update Tab with new TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   ParentId				= @NewParentId,
+			   TabOrder				= @TabOrder,
+			   LastModifiedByUserID	= @LastModifiedByUserID,
+			   LastModifiedOnDate	= GetDate()					
+		 WHERE TabID = @TabId;
+		EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @TabId, 1;
+	END
+	ELSE BEGIN -- Parent has not changed
+		-- Remove Tab FROM TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder = -1
+		 WHERE TabID = @TabId;
+			
+		-- Reorder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder -= 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1))) 
+		   AND TabOrder  > @TabOrder
+		   AND TabId    <> @TabId;
+				
+		-- Get TabOrder of BeforeTab
+		SET @TabOrder = (SELECT TabOrder FROM {objectQualifier}Tabs WHERE TabID = @BeforeTabId);
+								
+		-- Reorder					
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder += 2
+		 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1))) 
+		   AND TabOrder >= @TabOrder;
+
+		-- Update Tab with new TabOrder
+		UPDATE {databaseOwner}[{objectQualifier}Tabs]
+		 SET   TabOrder				= @TabOrder,
+			   LastModifiedByUserID	= @LastModifiedByUserID,
+			   LastModifiedOnDate	= GetDate()					
+		 WHERE TabID = @TabId;
+		EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @TabId, 0;
+	END
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}MoveTabToParent]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}MoveTabToParent] 
+	@TabId					Int, -- Not Null
+	@NewParentId			Int, -- Not Null
+	@LastModifiedByUserID	Int  -- Should be not Null
+AS
+BEGIN
+	DECLARE @OldParentId Int = (SELECT ParentId      FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @TabOrder    Int = (SELECT TabOrder      FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	DECLARE @NewTabOrder Int = (SELECT Max(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE IsNull(ParentId, -1) = IsNull(@NewParentId, -1);
+	DECLARE @PortalId    Int = (SELECT PortalId      FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId);
+	
+	SET @NewTabOrder = CASE WHEN @NewTabOrder IS Null THEN 1 ELSE @NewTabOrder + 2 END;
+			
+	-- update TabOrder of Tabs with same original Parent
+	UPDATE {databaseOwner}[{objectQualifier}Tabs]
+	 SET   TabOrder -= 2
+	 WHERE (ParentId = @OldParentId OR (ParentId IS Null AND @OldParentId IS Null AND IsNull(PortalID, -1) = IsNull(@PortalID, -1)))
+	   AND TabOrder  > @TabOrder;
+
+	-- Update Tab with new TabOrder
+	UPDATE {databaseOwner}[{objectQualifier}Tabs]
+	 SET   ParentId				= @NewParentId,
+		   TabOrder				= @NewTabOrder,
+		   LastModifiedByUserID	= @LastModifiedByUserID,
+		   LastModifiedOnDate	= GetDate()					
+	 WHERE TabID = @TabId;
+	
+	EXEC {databaseOwner}[{objectQualifier}BuildTabLevelAndPath] @TabId, CASE WHEN IsNull(@OldParentId, -1) <> IsNull(@NewParentId, -1) THEN 1 ELSE 0 END;
+END
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
