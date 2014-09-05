@@ -183,9 +183,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     var clientName = Localization.GetSafeJSString(property.PropertyName);
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
-                    value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-                    value = value.Replace("\r", string.Empty).Replace("\n",  " ");
-                    value = value.Replace(";", string.Empty).Replace("//",string.Empty);
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        value = Localization.GetSafeJSString(Server.HtmlDecode(value));
+                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
+                        value = value.Replace(";", string.Empty).Replace("//", string.Empty);
+                    }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");
