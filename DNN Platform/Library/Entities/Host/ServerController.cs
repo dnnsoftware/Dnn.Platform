@@ -108,6 +108,7 @@ namespace DotNetNuke.Entities.Host
             {
                 serverName += "-" + webServer.IISAppName;
             }
+            Logger.Debug("GetServerName:" + serverName);
             return serverName;
         }
 
