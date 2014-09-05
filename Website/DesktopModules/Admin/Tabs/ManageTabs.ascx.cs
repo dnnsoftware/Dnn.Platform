@@ -1903,11 +1903,22 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             CLControl1.SaveData();
 
-            // saved data may have impact on current page, so we need to reload the current controls
-            BindTab();
+            var returnPath = Globals.NavigateURL();
 
-            // reload localization control
-            BindCLControl();
+            if (Request.QueryString["returntabid"] != null)
+            {
+                // return to admin tab
+                var navigateUrl = Globals.NavigateURL(Convert.ToInt32(Request.QueryString["returntabid"]));
+                // add location hash to let it select in admin tab intially
+                var hash = "#" + (Tab.PortalID == Null.NullInteger ? "H" : "P") + "&" + Tab.TabID;
+                returnPath = navigateUrl + hash;
+            }
+            else if (!string.IsNullOrEmpty(UrlUtils.ValidReturnUrl(Request.QueryString["returnurl"])))
+            {
+                returnPath = Request.QueryString["returnurl"];
+            }
+            Response.Redirect(returnPath);
+         
         }
 
 
