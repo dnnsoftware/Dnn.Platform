@@ -233,8 +233,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             template = template.Replace("[MESSAGEBODY]", messageBody); //moved to top since that we we can replace tokens in there too...
             template = template.Replace("[RECIPIENTUSERID]", recipientUser.UserID.ToString());
             template = template.Replace("[RECIPIENTDISPLAYNAME]", recipientUser.DisplayName);
-            template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());
-            template = template.Replace("[RECIPIENTPROFILEURL]", Globals.UserProfileURL(recipientUser.UserID));        
+            template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());    
             template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
             template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
