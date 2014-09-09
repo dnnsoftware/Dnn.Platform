@@ -1309,6 +1309,10 @@ namespace DesktopModules.Admin.Portals
                     {
                         expiryDate = datepickerExpiryDate.SelectedDate.Value;
                     }
+                    else
+                    {
+                        expiryDate = DateTime.MinValue;
+                    }
 
                     var intSplashTabId = cboSplashTabId.SelectedItemValueAsInt;
 
