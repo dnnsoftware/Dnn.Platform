@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Web.Hosting;
+using System.Xml;
 using System.Xml.XPath;
 
 using DotNetNuke.Collections.Internal;
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.Localization
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
         #region Nested type: CustomizedLocale
 
-        private enum CustomizedLocale
+        public enum CustomizedLocale
         {
             None = 0,
             Portal = 1,
@@ -98,7 +99,82 @@ namespace DotNetNuke.Services.Localization
             return resourceValue;
         }
 
+        public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool addFile, bool addKey)
+        {
+            try
+            {
+                string resourceFileName = GetResourceFileName(resourceFileRoot, language);
+                switch (resourceType)
+                {
+                    case CustomizedLocale.Host:
+                        resourceFileName = resourceFileName.Replace(".resx", ".Host.resx");
+                        break;
+                    case CustomizedLocale.Portal:
+                        resourceFileName = resourceFileName.Replace(".resx", ".Portal-" + portalSettings.PortalId + ".resx");
+                        break;
+                }
+                resourceFileName = resourceFileName.TrimStart('~', '/', '\\').Replace('/', '\\');
+                string filePath = HostingEnvironment.MapPath(Globals.ApplicationPath + resourceFileName);
+                XmlDocument doc = null;
+                if (File.Exists(filePath))
+                {
+                    doc = new XmlDocument();
+                    doc.Load(filePath);
+                }
+                else
+                {
+                    if (addFile)
+                    {
+                        doc = new System.Xml.XmlDocument();
+                        XmlNode root = doc.CreateElement("root");
+                        doc.AppendChild(root);
+                        AddResourceFileNode(ref root, "resheader", "resmimetype", "text/microsoft-resx");
+                        AddResourceFileNode(ref root, "resheader", "version", "2.0");
+                        AddResourceFileNode(ref root, "resheader", "reader", "System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+                        AddResourceFileNode(ref root, "resheader", "writer", "System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+                    }
+                }
+                if (doc == null) { return false; }
+                XmlNode reskeyNode = doc.SelectSingleNode("root/data[@name=\"" + key + "\"]");
+                if (reskeyNode != null)
+                {
+                    reskeyNode.SelectSingleNode("value").InnerText = value;
+                }
+                else
+                {
+                    if (addKey)
+                    {
+                        XmlNode root = doc.SelectSingleNode("root");
+                        AddResourceFileNode(ref root, "data", key, value);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                doc.Save(filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Error while trying to create resource in {0}", resourceFileRoot), ex);
+            }
+        }
+
         #endregion
+
+        private static void AddResourceFileNode(ref XmlNode resxRoot, string elementName, string nodeName, string nodeValue)
+        {
+            XmlElement newNode = resxRoot.OwnerDocument.CreateElement(elementName);
+            resxRoot.AppendChild(newNode);
+            XmlUtils.CreateAttribute(resxRoot.OwnerDocument, resxRoot, "name", nodeName);
+            if (elementName == "name") {
+                XmlUtils.CreateAttribute(resxRoot.OwnerDocument, resxRoot, "xml:space", "preserve");
+            }
+            XmlElement valueNode = resxRoot.OwnerDocument.CreateElement("value");
+            valueNode.InnerText = nodeValue;
+            newNode.AppendChild(valueNode);
+        }
 
         private static object GetResourceFileCallBack(CacheItemArgs cacheItemArgs)
         {

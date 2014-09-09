@@ -33,5 +33,6 @@ namespace DotNetNuke.Services.Localization
         string GetString(string key, string resourceFileRoot, string language);
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings);
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys);
+        bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, DotNetNuke.Services.Localization.LocalizationProvider.CustomizedLocale resourceType, bool addFile, bool addKey);
     }
 }
