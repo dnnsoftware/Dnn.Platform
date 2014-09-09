@@ -105,7 +105,7 @@ namespace DotNetNuke.Common.Lists
                 Exceptions.LogException(exc);
             }
             finally
-			{
+            {
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
@@ -115,8 +115,8 @@ namespace DotNetNuke.Common.Lists
         private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
             string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey, 
-                                                                        DataCache.ListsCacheTimeOut, 
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey,
+                                                                        DataCache.ListsCacheTimeOut,
                                                                         DataCache.ListsCachePriority),
                                                                 c => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
@@ -162,17 +162,17 @@ namespace DotNetNuke.Common.Lists
             DeleteList(listName, parentKey, Null.NullInteger);
         }
 
-		public void DeleteList(string listName, string parentKey, int portalId)
-		{
-			ListInfo list = GetListInfo(listName, parentKey, portalId);
+        public void DeleteList(string listName, string parentKey, int portalId)
+        {
+            ListInfo list = GetListInfo(listName, parentKey, portalId);
             EventLogController.Instance.AddLog("ListName", listName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
-			DataProvider.Instance().DeleteList(listName, parentKey);
-		    if (list != null)
-		    {
+            DataProvider.Instance().DeleteList(listName, parentKey);
+            if (list != null)
+            {
                 ClearListCache(list.PortalID);
                 ClearEntriesCache(list.Name, list.PortalID);
             }
-		}
+        }
 
         public void DeleteList(ListInfo list, bool includeChildren)
         {
@@ -197,7 +197,7 @@ namespace DotNetNuke.Common.Lists
             //Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
-				DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
+                DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
             }
         }
 
@@ -261,7 +261,7 @@ namespace DotNetNuke.Common.Lists
         {
             return ListEntryInfoItemsToDictionary(GetListEntryInfoItems(listName, parentKey, portalId));
         }
-        
+
         private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
         {
             var dict = new Dictionary<string, ListEntryInfo>();
@@ -332,12 +332,21 @@ namespace DotNetNuke.Common.Lists
                     lists.Add(list);
                 }
             }
-            return (ListInfoCollection) lists;
+            return (ListInfoCollection)lists;
         }
 
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale)
+            {
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+                ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID);
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.Text, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+            }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
