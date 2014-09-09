@@ -236,7 +236,9 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (Request.QueryString["userid"] != null)
                     {
-                        _UserId = Int32.Parse(Request.QueryString["userid"]);
+                        int userId;
+                        // Use Int32.MaxValue as invalid UserId
+                        _UserId = Int32.TryParse(Request.QueryString["userid"], out userId) ? userId : Int32.MaxValue;
                         ViewState["UserId"] = _UserId;
                     }
                 }
