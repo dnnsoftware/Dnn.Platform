@@ -348,7 +348,7 @@ namespace DotNetNuke.Common.Lists
             else
             {
                 ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID);
-                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
                 DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.TextNonLocalized, "App_GlobalResources/List_" + oldItem.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
             }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
