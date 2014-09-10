@@ -356,15 +356,15 @@ namespace DotNetNuke.Common.Lists
         /// <param name="listEntry">The list entry info item to update.</param>
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to retrieve the list name which is not always set (you cannot move an entry to another list)
-            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale || NonLocalizedLists.Contains(oldItem.ListName))
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale || NonLocalizedLists.Contains(listEntry.ListName))
             {
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
+                ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to be able to just update the value or description and not touch the en-US text value
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
-                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.TextNonLocalized, "App_GlobalResources/List_" + oldItem.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
             }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
