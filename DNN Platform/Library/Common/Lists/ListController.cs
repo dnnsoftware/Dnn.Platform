@@ -153,6 +153,10 @@ namespace DotNetNuke.Common.Lists
             {
                 EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name != DotNetNuke.Services.Localization.Localization.SystemLocale)
+            {
+                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+            }
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
