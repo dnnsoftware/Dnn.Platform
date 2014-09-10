@@ -139,7 +139,7 @@ namespace DotNetNuke.Common.Lists
             ClearListCache(listEntry.PortalID);
             int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
                                                         listEntry.Value,
-                                                        listEntry.Text,
+                                                        listEntry.TextNonLocalized,
                                                         listEntry.ParentID,
                                                         listEntry.Level,
                                                         EnableSortOrder,
@@ -339,13 +339,13 @@ namespace DotNetNuke.Common.Lists
         {
             if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale)
             {
-                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
                 ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID);
                 DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
-                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.Text, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+                DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value, listEntry.TextNonLocalized, "App_GlobalResources/List_" + oldItem.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
             }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
