@@ -99,7 +99,20 @@ namespace DotNetNuke.Services.Localization
             return resourceValue;
         }
 
-        public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool addFile, bool addKey)
+        /// <summary>
+        /// Saves a string to a resource file.
+        /// </summary>
+        /// <param name="key">The key to save (e.g. "MyWidget.Text").</param>
+        /// <param name="value">The text value for the key.</param>
+        /// <param name="resourceFileRoot">Relative path for the resource file root (e.g. "DesktopModules/Admin/Lists/App_LocalResources/ListEditor.ascx.resx").</param>
+        /// <param name="language">The locale code in lang-region format (e.g. "fr-FR").</param>
+        /// <param name="portalSettings">The current portal settings.</param>
+        /// <param name="resourceType">Specifies whether to save as portal, host or system resource file.</param>
+        /// <param name="createFile">if set to <c>true</c> a new file will be created if it is not found.</param>
+        /// <param name="createKey">if set to <c>true</c> a new key will be created if not found.</param>
+        /// <returns>If the value could be saved then true will be returned, otherwise false.</returns>
+        /// <exception cref="System.Exception">Any file io error or similar will lead to exceptions</exception>
+        public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool createFile, bool createKey)
         {
             try
             {
@@ -128,7 +141,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    if (addFile)
+                    if (createFile)
                     {
                         doc = new System.Xml.XmlDocument();
                         doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
@@ -148,7 +161,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    if (addKey)
+                    if (createKey)
                     {
                         XmlNode root = doc.SelectSingleNode("root");
                         AddResourceFileNode(ref root, "data", key, value);
@@ -170,6 +183,14 @@ namespace DotNetNuke.Services.Localization
 
         #endregion
 
+        /// <summary>
+        /// Adds one of either a "resheader" or "data" element to resxRoot (which should be the root element of the resx file). 
+        /// This function is used to construct new resource files and to add resource keys to an existing file.
+        /// </summary>
+        /// <param name="resxRoot">The RESX root.</param>
+        /// <param name="elementName">Name of the element ("resheader" or "data").</param>
+        /// <param name="nodeName">Name of the node (in case of "data" specify the localization key here, e.g. "MyWidget.Text").</param>
+        /// <param name="nodeValue">The node value (text value to use).</param>
         private static void AddResourceFileNode(ref XmlNode resxRoot, string elementName, string nodeName, string nodeValue)
         {
             XmlElement newNode = resxRoot.OwnerDocument.CreateElement(elementName);
