@@ -5305,6 +5305,38 @@ AS
 	END
 GO
 
+-- DNN-5839:
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetServices]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetServices]
+    @PortalId  Int, -- pass Null for roles of all sites
+    @UserId    Int  -- not null!
+AS
+BEGIN
+    SELECT
+        R.*,
+        UR.IsOwner,
+        UR.UserRoleID,
+        UR.UserID,
+        UR.ExpiryDate,
+        UR.IsTrialUsed,
+        UR.EffectiveDate,
+        U.DisplayName,
+        U.Email
+    FROM         {databaseOwner}[{objectQualifier}Users]      U
+     INNER JOIN  {databaseOwner}[{objectQualifier}UserRoles] UR ON UR.UserID = U.UserID
+     RIGHT JOIN  {databaseOwner}[{objectQualifier}Roles]      R ON UR.RoleID = R.RoleID  AND UR.UserID = @UserId
+    WHERE (R.PortalId = @PortalId OR IsNull(@PortalId, -1) = -1)
+      AND  R.IsPublic = 1
+      AND  R.RoleId  >= 0
+	  AND U.UserID = @UserId
+    ORDER BY R.RoleName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN))
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
