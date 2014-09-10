@@ -90,6 +90,14 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
+        public string TextNonLocalized
+        {
+            get
+            {
+                return _Text;
+            }
+        }
+
         public string Description { get; set; }
 
         public int ParentID { get; set; }
