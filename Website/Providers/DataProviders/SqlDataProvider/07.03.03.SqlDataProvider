@@ -4617,6 +4617,189 @@ WHERE NOT EXISTS
 END
 GO
 
+/***** Add missing currencies *****/
+BEGIN
+ DECLARE @Currencies TABLE ([Code] [varchar](10) NULL, [Name] [nvarchar](100) NULL);
+
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AFN', 'Afghani (AFN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('EUR', 'Euro (EUR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ALL', 'Lek (ALL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('DZD', 'Algerian Dinar (DZD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('USD', 'US Dollar (USD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AOA', 'Kwanza (AOA)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XCD', 'East Caribbean Dollar (XCD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ARS', 'Argentine Peso (ARS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AMD', 'Armenian Dram (AMD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AWG', 'Aruban Florin (AWG)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AUD', 'Australian Dollar (AUD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AZN', 'Azerbaijanian Manat (AZN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BSD', 'Bahamian Dollar (BSD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BHD', 'Bahraini Dinar (BHD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BDT', 'Taka (BDT)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BBD', 'Barbados Dollar (BBD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BYR', 'Belarussian Ruble (BYR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BZD', 'Belize Dollar (BZD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XOF', 'CFA Franc BCEAO (XOF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BMD', 'Bermudian Dollar (BMD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BTN', 'Ngultrum (BTN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('INR', 'Indian Rupee (INR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BOB', 'Boliviano (BOB)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BOV', 'Mvdol (BOV)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BAM', 'Convertible Mark (BAM)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BWP', 'Pula (BWP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NOK', 'Norwegian Krone (NOK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BRL', 'Brazilian Real (BRL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BND', 'Brunei Dollar (BND)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BGN', 'Bulgarian Lev (BGN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('BIF', 'Burundi Franc (BIF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KHR', 'Riel (KHR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XAF', 'CFA Franc BEAC (XAF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CAD', 'Canadian Dollar (CAD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CVE', 'Cape Verde Escudo (CVE)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KYD', 'Cayman Islands Dollar (KYD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CLF', 'Unidad de Fomento (CLF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CLP', 'Chilean Peso (CLP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CNY', 'Yuan Renminbi (CNY)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('COP', 'Colombian Peso (COP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('COU', 'Unidad de Valor Real (COU)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KMF', 'Comoro Franc (KMF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CDF', 'Congolese Franc (CDF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NZD', 'New Zealand Dollar (NZD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CRC', 'Costa Rican Colon (CRC)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('HRK', 'Croatian Kuna (HRK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CUC', 'Peso Convertible (CUC)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CUP', 'Cuban Peso (CUP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ANG', 'Netherlands Antillean Guilder (ANG)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CZK', 'Czech Koruna (CZK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('DKK', 'Danish Krone (DKK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('DJF', 'Djibouti Franc (DJF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('DOP', 'Dominican Peso (DOP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('EGP', 'Egyptian Pound (EGP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SVC', 'El Salvador Colon (SVC)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ERN', 'Nakfa (ERN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ETB', 'Ethiopian Birr (ETB)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('FKP', 'Falkland Islands Pound (FKP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('FJD', 'Fiji Dollar (FJD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XPF', 'CFP Franc (XPF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GMD', 'Dalasi (GMD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GEL', 'Lari (GEL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GHS', 'Ghana Cedi (GHS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GIP', 'Gibraltar Pound (GIP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GTQ', 'Quetzal (GTQ)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GBP', 'Pound Sterling (GBP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GNF', 'Guinea Franc (GNF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('GYD', 'Guyana Dollar (GYD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('HTG', 'Gourde (HTG)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('HNL', 'Lempira (HNL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('HKD', 'Hong Kong Dollar (HKD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('HUF', 'Forint (HUF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ISK', 'Iceland Krona (ISK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('IDR', 'Rupiah (IDR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XDR', 'SDR (Special Drawing Right) (XDR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('IRR', 'Iranian Rial (IRR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('IQD', 'Iraqi Dinar (IQD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ILS', 'New Israeli Sheqel (ILS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('JMD', 'Jamaican Dollar (JMD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('JPY', 'Yen (JPY)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('JOD', 'Jordanian Dinar (JOD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KZT', 'Tenge (KZT)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KES', 'Kenyan Shilling (KES)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KPW', 'North Korean Won (KPW)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KRW', 'Won (KRW)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KWD', 'Kuwaiti Dinar (KWD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('KGS', 'Som (KGS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LAK', 'Kip (LAK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LBP', 'Lebanese Pound (LBP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LSL', 'Loti (LSL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ZAR', 'Rand (ZAR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LRD', 'Liberian Dollar (LRD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LYD', 'Libyan Dinar (LYD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CHF', 'Swiss Franc (CHF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LTL', 'Lithuanian Litas (LTL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MOP', 'Pataca (MOP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MKD', 'Denar (MKD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MGA', 'Malagasy Ariary (MGA)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MWK', 'Kwacha (MWK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MYR', 'Malaysian Ringgit (MYR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MVR', 'Rufiyaa (MVR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MRO', 'Ouguiya (MRO)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MUR', 'Mauritius Rupee (MUR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('XUA', 'ADB Unit of Account (XUA)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MXN', 'Mexican Peso (MXN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MXV', 'Mexican Unidad de Inversion (UDI) (MXV)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MDL', 'Moldovan Leu (MDL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MNT', 'Tugrik (MNT)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MAD', 'Moroccan Dirham (MAD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MZN', 'Mozambique Metical (MZN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('MMK', 'Kyat (MMK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NAD', 'Namibia Dollar (NAD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NPR', 'Nepalese Rupee (NPR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NIO', 'Cordoba Oro (NIO)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('NGN', 'Naira (NGN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('OMR', 'Rial Omani (OMR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PKR', 'Pakistan Rupee (PKR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PAB', 'Balboa (PAB)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PGK', 'Kina (PGK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PYG', 'Guarani (PYG)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PEN', 'Nuevo Sol (PEN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PHP', 'Philippine Peso (PHP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('PLN', 'Zloty (PLN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('QAR', 'Qatari Rial (QAR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('RON', 'New Romanian Leu (RON)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('RUB', 'Russian Ruble (RUB)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('RWF', 'Rwanda Franc (RWF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SHP', 'Saint Helena Pound (SHP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('WST', 'Tala (WST)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('STD', 'Dobra (STD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SAR', 'Saudi Riyal (SAR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('RSD', 'Serbian Dinar (RSD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SCR', 'Seychelles Rupee (SCR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SLL', 'Leone (SLL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SGD', 'Singapore Dollar (SGD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SBD', 'Solomon Islands Dollar (SBD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SOS', 'Somali Shilling (SOS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SSP', 'South Sudanese Pound (SSP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('LKR', 'Sri Lanka Rupee (LKR)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SDG', 'Sudanese Pound (SDG)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SRD', 'Surinam Dollar (SRD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SZL', 'Lilangeni (SZL)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SEK', 'Swedish Krona (SEK)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CHE', 'WIR Euro (CHE)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('CHW', 'WIR Franc (CHW)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('SYP', 'Syrian Pound (SYP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TWD', 'New Taiwan Dollar (TWD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TJS', 'Somoni (TJS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TZS', 'Tanzanian Shilling (TZS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('THB', 'Baht (THB)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TOP', 'Pa’anga (TOP)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TTD', 'Trinidad and Tobago Dollar (TTD)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TND', 'Tunisian Dinar (TND)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TRY', 'Turkish Lira (TRY)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('TMT', 'Turkmenistan New Manat (TMT)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('UGX', 'Uganda Shilling (UGX)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('UAH', 'Hryvnia (UAH)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('AED', 'UAE Dirham (AED)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('USN', 'US Dollar (Next day) (USN)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('UYI', 'Uruguay Peso en Unidades Indexadas (URUIURUI) (UYI)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('UYU', 'Peso Uruguayo (UYU)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('UZS', 'Uzbekistan Sum (UZS)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('VUV', 'Vatu (VUV)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('VEF', 'Bolivar (VEF)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('VND', 'Dong (VND)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('YER', 'Yemeni Rial (YER)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ZMW', 'Zambian Kwacha (ZMW)');
+ INSERT INTO @Currencies ([Code], [Name]) VALUES ('ZWL', 'Zimbabwe Dollar (ZWL)');
+
+ INSERT INTO {databaseOwner}[{objectQualifier}Lists]
+  (ListName, [Value], [Text], ParentID, Level, SortOrder, DefinitionID, PortalID, SystemList)
+ SELECT
+  'Currency', c.[Code], c.[Name], 0, 0, 0, -1, -1, 1
+ FROM @Currencies c
+ WHERE NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE ListName='Currency' AND ([Text]=c.[Name] OR [Value]=c.[Code]));
+
+END
+GO
+
 
 /********************************************************
   DNN-5800: Incorrect tab order on new portals
