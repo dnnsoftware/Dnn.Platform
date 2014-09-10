@@ -133,6 +133,12 @@ namespace DotNetNuke.Common.Lists
 
         #endregion
 
+        /// <summary>
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be 
+        /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
+        /// </summary>
+        /// <param name="listEntry">The list entry.</param>
+        /// <returns></returns>
         public int AddListEntry(ListEntryInfo listEntry)
         {
             bool EnableSortOrder = (listEntry.SortOrder > 0);
@@ -339,6 +345,12 @@ namespace DotNetNuke.Common.Lists
             return (ListInfoCollection)lists;
         }
 
+        /// <summary>
+        /// Updates the list entry in the database using the values set on the listEntry. Note that if the current thread locale is not "en-US" then the
+        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value 
+        /// will *not* be written to the database in this case (i.e. we expect the text value in the database to be the en-US text value).
+        /// </summary>
+        /// <param name="listEntry">The list entry info item to update.</param>
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
             if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale)

@@ -71,6 +71,13 @@ namespace DotNetNuke.Common.Lists
         public string Value { get; set; }
 
         private string _Text = Null.NullString;
+        /// <summary>
+        /// Localized text value of the list entry item. An attempt is made to look up the key "[Value].Text" in the resource file 
+        /// "App_GlobalResources/List_[ListName]". If not found the original (database) value is used.
+        /// </summary>
+        /// <value>
+        /// Localized text value
+        /// </value>
         public string Text
         {
             get
@@ -90,6 +97,12 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
+        /// <summary>
+        /// Gets the text value bypassing localization.
+        /// </summary>
+        /// <value>
+        /// The text value of the list entry item as it was set originally.
+        /// </value>
         public string TextNonLocalized
         {
             get
