@@ -103,7 +103,12 @@ namespace DotNetNuke.Services.Localization
         {
             try
             {
+                if (key.IndexOf(".", StringComparison.Ordinal) < 1)
+                {
+                    key += ".Text";
+                }
                 string resourceFileName = GetResourceFileName(resourceFileRoot, language);
+                resourceFileName = resourceFileName.Replace("." + language.ToLower() + ".", "." + language + ".");
                 switch (resourceType)
                 {
                     case CustomizedLocale.Host:
@@ -113,8 +118,8 @@ namespace DotNetNuke.Services.Localization
                         resourceFileName = resourceFileName.Replace(".resx", ".Portal-" + portalSettings.PortalId + ".resx");
                         break;
                 }
-                resourceFileName = resourceFileName.TrimStart('~', '/', '\\').Replace('/', '\\');
-                string filePath = HostingEnvironment.MapPath(Globals.ApplicationPath + resourceFileName);
+                resourceFileName = resourceFileName.TrimStart('~', '/', '\\');
+                string filePath = HostingEnvironment.MapPath("~/" + Globals.ApplicationPath + resourceFileName);
                 XmlDocument doc = null;
                 if (File.Exists(filePath))
                 {
@@ -126,6 +131,7 @@ namespace DotNetNuke.Services.Localization
                     if (addFile)
                     {
                         doc = new System.Xml.XmlDocument();
+                        doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
                         XmlNode root = doc.CreateElement("root");
                         doc.AppendChild(root);
                         AddResourceFileNode(ref root, "resheader", "resmimetype", "text/microsoft-resx");
@@ -153,6 +159,7 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
                 doc.Save(filePath);
+                DataCache.RemoveCache("/" + resourceFileName.ToLower());
                 return true;
             }
             catch (Exception ex)
@@ -167,9 +174,13 @@ namespace DotNetNuke.Services.Localization
         {
             XmlElement newNode = resxRoot.OwnerDocument.CreateElement(elementName);
             resxRoot.AppendChild(newNode);
-            XmlUtils.CreateAttribute(resxRoot.OwnerDocument, resxRoot, "name", nodeName);
-            if (elementName == "name") {
-                XmlUtils.CreateAttribute(resxRoot.OwnerDocument, resxRoot, "xml:space", "preserve");
+            XmlAttribute nameAtt = resxRoot.OwnerDocument.CreateAttribute("name");
+            nameAtt.InnerText = nodeName;
+            newNode.Attributes.Append(nameAtt);
+            if (elementName == "data") {
+                XmlAttribute spaceAtt = resxRoot.OwnerDocument.CreateAttribute("xml:space");
+                spaceAtt.InnerText = "preserve";
+                newNode.Attributes.Append(spaceAtt);
             }
             XmlElement valueNode = resxRoot.OwnerDocument.CreateElement("value");
             valueNode.InnerText = nodeValue;
