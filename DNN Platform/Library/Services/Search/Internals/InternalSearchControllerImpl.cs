@@ -444,7 +444,36 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var kvp in searchDocument.Keywords)
             {
-                doc.Add(new Field(StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                var field = new Field(StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, Field.Index.ANALYZED);
+                switch (kvp.Key)
+                {
+                    case Constants.TitleTag:
+                        if (_titleBoost > 0 && _titleBoost != Constants.StandardLuceneBoost)
+                        {
+                            field.Boost = _titleBoost / 10f;
+                        }
+                        break;
+                    case Constants.SubjectTag:
+                        if (_contentBoost > 0 && _contentBoost != Constants.StandardLuceneBoost)
+                        {
+                            field.Boost = _contentBoost / 10f;
+                        }
+                        break;
+                    case Constants.CommentsTag:
+                        if (_descriptionBoost > 0 && _descriptionBoost != Constants.StandardLuceneBoost)
+                        {
+                            field.Boost = _descriptionBoost / 10f;
+                        }
+                        break;
+                    case Constants.AuthorNameTag:
+                        if (_authorBoost > 0 && _authorBoost != Constants.StandardLuceneBoost)
+                        {
+                            field.Boost = _authorBoost / 10f;
+                        }
+                        break;
+                }
+
+                doc.Add(field);
                 sb.Append(StripTagsNoAttributes(kvp.Value, true)).Append(" ");
             }
 

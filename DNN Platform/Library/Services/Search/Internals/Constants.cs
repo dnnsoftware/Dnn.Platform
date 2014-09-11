@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string QueryStringTag = "querystring";
         internal const string NumericKeyPrefixTag = "nk-";
         internal const string KeywordsPrefixTag = "kw-";
+        internal const string SubjectTag = "subject";
         internal const string RoleIdTag = "role";
 
         //internal const string FolderIdTag = "folderid";
@@ -86,7 +87,15 @@ namespace DotNetNuke.Services.Search.Internals
         //If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
-        internal static string[] KeyWordSearchFields =  new[] {TitleTag, Tag, DescriptionTag, BodyTag, ContentTag };
+        internal static string[] KeyWordSearchFields = new[] { TitleTag, 
+                                                                Tag, 
+                                                                DescriptionTag, 
+                                                                BodyTag, 
+                                                                ContentTag, 
+                                                                KeywordsPrefixTag + TitleTag,
+                                                                KeywordsPrefixTag + SubjectTag,
+                                                                KeywordsPrefixTag + CommentsTag,
+                                                                KeywordsPrefixTag + AuthorNameTag};
         
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;
