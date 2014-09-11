@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.InternalServices
 
         [HttpGet]
         [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "")
+        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "", bool sortBookmarks = false, string topModule = "")
         {
             if (string.IsNullOrEmpty(category))
             {
@@ -122,6 +122,14 @@ namespace DotNetNuke.Web.InternalServices
                 filteredList =
                     filteredList.Where(kvp => 
                         !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
+            }
+            if(sortBookmarks)
+            {
+                //sort bookmarked modules
+                filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
+                //move Html on top
+                filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
+                                Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
             }
 
             filteredList = filteredList
