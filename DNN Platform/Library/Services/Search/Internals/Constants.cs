@@ -57,6 +57,8 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string NumericKeyPrefixTag = "nk-";
         internal const string KeywordsPrefixTag = "kw-";
         internal const string SubjectTag = "subject";
+        internal const string CatagoryTag = "catagory";
+        internal const string StatusTag = "status";
         internal const string RoleIdTag = "role";
 
         //internal const string FolderIdTag = "folderid";
