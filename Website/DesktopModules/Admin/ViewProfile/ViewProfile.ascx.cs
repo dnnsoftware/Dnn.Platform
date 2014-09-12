@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -80,10 +80,10 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnInit(e);
 
-			//redirect to home page if the user has been deleted
+			//throw 404 so that deleted profile is not reindexed
 			if(ProfileUser == null || ProfileUser.IsDeleted)
 			{
-				Response.Redirect(GetRedirectUrl(), true);
+    		    throw new HttpException(404, "Not Found");
 			}
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
