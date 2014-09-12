@@ -64,6 +64,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc]</param>
         /// <returns>The sorted and paged list of subscriptions</returns>
         [HttpGet]
+        public HttpResponseMessage CheckAuthorized()
+        {
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { success = true });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+            }
+        }
+
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {
             try
