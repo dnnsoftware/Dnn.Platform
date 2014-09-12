@@ -1185,6 +1185,7 @@ The host-level settings are currently set as follows:
     <value>Enter the Password for the SMTP Server</value>
   </data>
   <data name="plSMTPServer.Help" xml:space="preserve">
+    <value>Please enter name (address) and port of the SMTP server to be used for sending mails from this website.</value>
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
     <value>SMTP Server and port:</value>
