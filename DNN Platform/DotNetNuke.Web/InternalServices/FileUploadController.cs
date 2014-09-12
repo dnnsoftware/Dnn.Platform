@@ -495,11 +495,18 @@ namespace DotNetNuke.Web.InternalServices
                 var path = GetUrl(result.FileId);
                 using (reader = new BinaryReader(fileContent))
                 {
-                    var size = IsImage(fileName) ?
-                        ImageHeader.GetDimensions(reader) :
-                        new Size(32, 32);
+                    try
+                    {
+                        var size = IsImage(fileName) ?
+                            ImageHeader.GetDimensions(reader) :
+                            new Size(32, 32);
 
-                    result.Orientation = size.Orientation();
+                        result.Orientation = size.Orientation();
+                    }
+                    catch (ArgumentException exc)
+                    {
+                        Logger.Warn("Unable to get image dimensions for image file", exc);
+                    }
                 }
 
                 result.Path = result.FileId > 0 ? path : string.Empty;
