@@ -224,6 +224,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\Utilities\UrlUtils.cs" />
+    <Compile Include="Common\Utilities\XmlExtensions.cs" />
     <Compile Include="Common\Utilities\XmlUtils.cs">
       <SubType>Code</SubType>
     </Compile>
