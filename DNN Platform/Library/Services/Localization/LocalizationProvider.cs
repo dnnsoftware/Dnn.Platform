@@ -193,19 +193,12 @@ namespace DotNetNuke.Services.Localization
         /// <param name="nodeValue">The node value (text value to use).</param>
         private static void AddResourceFileNode(ref XmlNode resxRoot, string elementName, string nodeName, string nodeValue)
         {
-            XmlElement newNode = resxRoot.OwnerDocument.CreateElement(elementName);
-            resxRoot.AppendChild(newNode);
-            XmlAttribute nameAtt = resxRoot.OwnerDocument.CreateAttribute("name");
-            nameAtt.InnerText = nodeName;
-            newNode.Attributes.Append(nameAtt);
-            if (elementName == "data") {
-                XmlAttribute spaceAtt = resxRoot.OwnerDocument.CreateAttribute("xml:space");
-                spaceAtt.InnerText = "preserve";
-                newNode.Attributes.Append(spaceAtt);
+            XmlNode newNode = resxRoot.AddElement(elementName, "").AddAttribute("name", nodeName);
+            if (elementName == "data")
+            {
+                newNode = newNode.AddAttribute("xml:space", "preserve");
             }
-            XmlElement valueNode = resxRoot.OwnerDocument.CreateElement("value");
-            valueNode.InnerText = nodeValue;
-            newNode.AppendChild(valueNode);
+            newNode.AddElement("value", nodeValue);
         }
 
         private static object GetResourceFileCallBack(CacheItemArgs cacheItemArgs)
