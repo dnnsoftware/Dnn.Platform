@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         private string GetUnlinkAllowedStatus(IFolderInfo folder)
         {
-            if (AreMappedPathsSupported(folder.FolderMappingID) && GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
+            if (AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
             {
                 return "onlyUnlink";
             }
