@@ -88,6 +88,13 @@ namespace ClientDependency.Core.Config
                         {
                             _settings = new ClientDependencySettings();
                             _loadProviders();
+
+                            //grab any settings from dnn
+                            var dnnConfig = new DnnConfiguration();
+
+                            var version = dnnConfig.GetVersion();
+                            if (version != null) _settings.Version = version.Value;
+
                         }
                     }
                 }

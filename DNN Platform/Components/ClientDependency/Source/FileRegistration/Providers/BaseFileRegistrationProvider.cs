@@ -29,7 +29,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// By default this is true but can be overriden (in either config or code). 
         /// Composite files are never enabled with compilation debug="true" however.
         /// </summary>
-        public bool EnableCompositeFiles { get; set; }
+        public virtual bool EnableCompositeFiles { get; set; }
+
+        public virtual int GetVersion()
+        {
+            return ClientDependencySettings.Instance.Version;
+        }
 
         #region Abstract methods/properties
 

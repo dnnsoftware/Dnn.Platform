@@ -13,6 +13,7 @@ namespace ClientDependency.Core.Controls
             Group = Constants.DefaultGroup;
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
+            AddTag = true;
 		}
 
         protected ClientDependencyInclude(IClientDependencyFile file)
@@ -23,6 +24,7 @@ namespace ClientDependency.Core.Controls
 			DependencyType = file.DependencyType;
             Group = file.Group;
             HtmlAttributes = new Dictionary<string, string>();
+            AddTag = true;
 		}
         
 		public ClientDependencyType DependencyType { get; internal set; }
@@ -69,7 +71,7 @@ namespace ClientDependency.Core.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (AddTag)
+            if (AddTag || this.Context.IsDebuggingEnabled)
             {
                 writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
             }

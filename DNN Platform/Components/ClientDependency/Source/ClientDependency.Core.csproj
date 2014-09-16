@@ -117,6 +117,7 @@
     <Compile Include="CompositeFiles\DefaultFileWriter.cs" />
     <Compile Include="CompositeFiles\IFileWriter.cs" />
     <Compile Include="CompressionType.cs" />
+    <Compile Include="Config\DnnConfiguration.cs" />
     <Compile Include="Config\MimeTypeCompressionCollection.cs" />
     <Compile Include="Config\MimeTypeCompressionElement.cs" />
     <Compile Include="Config\MvcSection.cs" />

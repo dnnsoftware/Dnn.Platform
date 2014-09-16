@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Client.Providers
 
     public abstract class DnnFileRegistrationProvider : WebFormsFileRegistrationProvider
     {
-        public int GetVersion()
+        public override int GetVersion()
         {
             return ClientDependencySettings.Instance.Version;
         }
@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// Checks if the composite files option is set for the current portal (DNN site settings).
         /// If not enabled at the portal level it defers to the core CDF setting (web.config).
         /// </summary>
-        public new bool EnableCompositeFiles
+        public override bool EnableCompositeFiles
         {
             get
             {
