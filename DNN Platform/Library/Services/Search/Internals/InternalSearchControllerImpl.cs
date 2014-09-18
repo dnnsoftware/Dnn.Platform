@@ -445,7 +445,7 @@ namespace DotNetNuke.Services.Search.Internals
             foreach (var kvp in searchDocument.Keywords)
             {
                 var key = kvp.Key.ToLower();
-                var needAnalyzed = Constants.FieldsNeedAnalysis.Contains();
+                var needAnalyzed = Constants.FieldsNeedAnalysis.Contains(key);
                 var field = new Field(StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, needAnalyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
                 switch (key)
                 {
