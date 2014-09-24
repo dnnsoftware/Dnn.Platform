@@ -233,16 +233,24 @@ namespace DotNetNuke.Modules.Admin.Portals
                     XmlNode tabNode = null;
                     if (string.IsNullOrEmpty(tab.CultureCode) || tab.CultureCode == portal.DefaultLanguage)
                     {
-                        // page in default culture and checked
-                        if (ctlPages.CheckedNodes.Any(p => p.Value == tab.TabID.ToString(CultureInfo.InvariantCulture)))
+                        // page in default culture and checked or page doesn't exist in tree(which should always export).
+                        var tabId = tab.TabID.ToString(CultureInfo.InvariantCulture);
+                        if (ctlPages.FindNodeByValue(tabId) == null || ctlPages.CheckedNodes.Any(p => p.Value == tabId))
+                        {
                             tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent.Checked);
+                        }
                     }
                     else
                     {
-                        // check if default culture page is selected
+                        // check if default culture page is selected or default page doesn't exist in tree(which should always export).
                         TabInfo defaultTab = tab.DefaultLanguageTab;
-                        if (defaultTab == null || ctlPages.CheckedNodes.Count(p => p.Value == defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) > 0)
+                        var tabId = defaultTab.TabID.ToString(CultureInfo.InvariantCulture);
+                        if (defaultTab == null
+                            || ctlPages.FindNodeByValue(tabId) == null
+                            || ctlPages.CheckedNodes.Count(p => p.Value == defaultTab.TabID.ToString(CultureInfo.InvariantCulture)) > 0)
+                        {
                             tabNode = TabController.SerializeTab(new XmlDocument(), tabs, tab, portal, chkContent.Checked);
+                        }
                     }
 
                     if (tabNode != null)
@@ -716,7 +724,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             foreach (var tab in tabs) //.Values)
             {
-                if (tab.Level == 0)
+                if (tab.Level == 0 && tab.TabID != portal.AdminTabId)
                 {
                     string tooltip;
                     var nodeIcon = GetNodeIcon(tab, out tooltip);
