@@ -41,6 +41,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -77,6 +78,8 @@ namespace DotNetNuke.Entities.Tabs
         private List<TabAliasSkinInfo> _aliasSkins;
         private Dictionary<string, string> _customAliases;
         private List<TabUrlInfo> _tabUrls;
+        private ArrayList _modules;
+
 
         #endregion
 
@@ -123,7 +126,9 @@ namespace DotNetNuke.Entities.Tabs
             DefaultLanguageGuid = Null.NullGuid;
 
             IsVisible = true;
+            HasBeenPublished = true;
             DisableLink = false;
+           
         }
 
         #endregion
@@ -166,6 +171,21 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("visible")]
         public bool IsVisible { get; set; }
 
+        [XmlElement("hasBeenPublished")]
+        public bool HasBeenPublished { get; set; }
+
+        [XmlIgnore]
+        public bool HasAVisibleVersion {
+            get
+            {
+                if (PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(PortalID))
+                {
+                    return true;
+                }
+			    return HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+            }
+        }
+
         [XmlElement("keywords")]
         public string KeyWords { get; set; }
 
@@ -175,8 +195,19 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("localizedVersionGuid")]
         public Guid LocalizedVersionGuid { get; set; }
 
+
         [XmlIgnore]
-        public ArrayList Modules { get; set; }
+        public ArrayList Modules 
+        {
+            get
+            {
+                return _modules ?? (_modules = TabModulesController.Instance.GetTabModules(this));
+            }
+            set
+            {
+                _modules = value;
+            } 
+        }
 
         [XmlElement("pageheadtext")]
         public string PageHeadText { get; set; }
@@ -770,7 +801,7 @@ namespace DotNetNuke.Entities.Tabs
         #endregion
 
         #region Private Methods
-
+        
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
@@ -864,6 +895,7 @@ namespace DotNetNuke.Entities.Tabs
                 PortalID = PortalID,
                 TabName = TabName,
                 IsVisible = IsVisible,
+                HasBeenPublished = HasBeenPublished,
                 ParentId = ParentId,
                 Level = Level,
                 IconFile = _iconFileRaw,
@@ -908,7 +940,7 @@ namespace DotNetNuke.Entities.Tabs
             clonedTab.CultureCode = CultureCode;
 
             clonedTab.Panes = new ArrayList();
-            clonedTab.Modules = new ArrayList();
+            clonedTab.Modules = _modules;
 
             return clonedTab;
         }
@@ -936,6 +968,7 @@ namespace DotNetNuke.Entities.Tabs
             PortalID = Null.SetNullInteger(dr["PortalID"]);
             TabName = Null.SetNullString(dr["TabName"]);
             IsVisible = Null.SetNullBoolean(dr["IsVisible"]);
+            HasBeenPublished = Null.SetNullBoolean(dr["HasBeenPublished"]);
             ParentId = Null.SetNullInteger(dr["ParentId"]);
             Level = Null.SetNullInteger(dr["Level"]);
             IconFile = Null.SetNullString(dr["IconFile"]);

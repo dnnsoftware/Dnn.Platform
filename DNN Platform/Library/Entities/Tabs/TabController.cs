@@ -41,6 +41,7 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -161,6 +162,12 @@ namespace DotNetNuke.Entities.Tabs
             if (includeAllTabsModules && tab.PortalID != Null.NullInteger)
             {
                 AddAllTabsModules(tab);
+            }
+
+            //Check Tab Versioning
+            if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            {
+                MarkAsPublished(tab);
             }
 
             return tab.TabID;
@@ -1617,7 +1624,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Publishes the tab.
+        /// Publishes the tab. Set the VIEW permission
         /// </summary>
         /// <param name="publishTab">The publish tab.</param>
         public void PublishTab(TabInfo publishTab)
@@ -1903,6 +1910,18 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear Tab Caches
             ClearCache(localizedTab.PortalID);
+        }
+
+        /// <summary>
+        /// It marks a page as published at least once
+        /// </summary>
+        /// <param name="tab">The Tab to be marked</param>
+        public void MarkAsPublished(TabInfo tab)
+        {
+            Provider.MarkAsPublished(tab.TabID);
+            
+            //Clear Tab Caches
+            ClearCache(tab.PortalID);            
         }
 
         #endregion
@@ -2320,33 +2339,33 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = new TabInfo { TabID = -1, TabName = noneSpecifiedText, TabOrder = 0, ParentId = -2 };
                 listTabs.Add(tab);
             }
-            foreach (TabInfo objTab in tabs)
+            foreach (TabInfo tab in tabs)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                if (((excludeTabId < 0) || (objTab.TabID != excludeTabId)) &&
-                    (!objTab.IsSuperTab || objUserInfo.IsSuperUser))
+                if (((excludeTabId < 0) || (tab.TabID != excludeTabId)) &&
+                    (!tab.IsSuperTab || objUserInfo.IsSuperUser))
                 {
-                    if ((objTab.IsVisible || includeHidden) && (objTab.IsDeleted == false || includeDeleted) &&
-                        (objTab.TabType == TabType.Normal || includeURL))
+                    if ((tab.IsVisible || includeHidden) && tab.HasAVisibleVersion && (tab.IsDeleted == false || includeDeleted) &&
+                        (tab.TabType == TabType.Normal || includeURL))
                     {
                         //Check if User has View/Edit Permission for this tab
                         if (checkEditPermission || checkViewPermisison)
                         {
                             const string permissionList = "ADD,COPY,EDIT,MANAGE";
                             if (checkEditPermission &&
-                                TabPermissionController.HasTabPermission(objTab.TabPermissions, permissionList))
+                                TabPermissionController.HasTabPermission(tab.TabPermissions, permissionList))
                             {
-                                listTabs.Add(objTab);
+                                listTabs.Add(tab);
                             }
-                            else if (checkViewPermisison && TabPermissionController.CanViewPage(objTab))
+                            else if (checkViewPermisison && TabPermissionController.CanViewPage(tab))
                             {
-                                listTabs.Add(objTab);
+                                listTabs.Add(tab);
                             }
                         }
                         else
                         {
                             //Add Tab to List
-                            listTabs.Add(objTab);
+                            listTabs.Add(tab);
                         }
                     }
                 }

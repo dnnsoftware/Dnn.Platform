@@ -333,4 +333,22 @@
   <data name="PublishPagePermissionsNotMet" xml:space="preserve">
     <value>Permissions are not met. The page has not been published.</value>
   </data>
+  <data name="TabHasNotAnUnpublishedVersion.Text" xml:space="preserve">
+    <value>Tha tab {0} has not an unpublished version</value>
+  </data>
+  <data name="TabVersionAlreadyPublished.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} is already published</value>
+  </data>
+  <data name="TabVersionCannotBeDeleted_UnpublishedVersionExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be deleted because an unpublished version exists</value>
+  </data>
+  <data name="TabVersionCannotBeDiscarded_OnlyOneVersion.Text" xml:space="preserve">
+    <value>The tab {0} has only one version created. It cannot be discarded</value>
+  </data>
+  <data name="TabVersionCannotBeRolledBack_UnpublishedVersionExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be rolled back because an unpublished version exists</value>
+  </data>
+  <data name="TabVersioningNotEnabled.Text" xml:space="preserve">
+    <value>Tab Versioning is not enabled</value>
+  </data>
 </root>

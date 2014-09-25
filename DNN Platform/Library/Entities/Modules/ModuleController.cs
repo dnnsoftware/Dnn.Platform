@@ -39,6 +39,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -785,6 +786,8 @@ namespace DotNetNuke.Entities.Modules
                     //Restore Module
                     RestoreModule(module);
 
+                    TabVersionTracker.Instance.TrackModuleAddition(module.TabID, UserController.Instance.GetCurrentUserInfo().UserID, module, 1);
+
                     //Set Module Order as expected
                     UpdateModuleOrder(module.TabID, module.ModuleID, order, pane);
                     UpdateTabModuleOrder(module.TabID);
@@ -832,6 +835,9 @@ namespace DotNetNuke.Entities.Modules
                 log.LogProperties.Add(new LogDetailInfo("TabId", module.TabID.ToString()));
                 log.LogProperties.Add(new LogDetailInfo("ModuleID", module.ModuleID.ToString()));
                 LogController.Instance.AddLog(log);
+
+                TabVersionTracker.Instance.TrackModuleAddition(module.TabID, UserController.Instance.GetCurrentUserInfo().UserID, module, 1);
+
                 if (module.ModuleOrder == -1)
                 {
                     //position module at bottom of pane
@@ -854,6 +860,7 @@ namespace DotNetNuke.Entities.Modules
                 module.TabModuleID = tmpModule.TabModuleID;
             }
             UpdateTabModuleSettings(module);
+
             ClearCache(module.TabID);
             return module.ModuleID;
         }
@@ -1161,6 +1168,7 @@ namespace DotNetNuke.Entities.Modules
                     //hard delete the module
                     DeleteModule(moduleId);
                 }
+                TabVersionTracker.Instance.TrackModuleDeletion(tabId, UserController.Instance.GetCurrentUserInfo().UserID, objModule, Null.NullInteger);
             }
             ClearCache(tabId);
         }
@@ -1482,7 +1490,19 @@ namespace DotNetNuke.Entities.Modules
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
                                                                             DataCache.TabModuleCacheTimeOut,
                                                                             DataCache.TabModuleCachePriority),
-                                                                    c => CBO.FillDictionary("ModuleID", dataProvider.GetTabModules(tabId), new Dictionary<int, ModuleInfo>()));
+                                                                    c => GetModulesCurrentPage(tabId));
+        }
+
+        private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
+        {
+            var modules = TabVersionMaker.Instance.GetCurrentModules(tabId);
+            
+            var dictionary = new Dictionary<int, ModuleInfo>();
+            foreach (var module in modules)
+            {
+                dictionary[module.ModuleID] = module;
+            }
+            return dictionary;
         }
 
         /// <summary>
@@ -1825,7 +1845,7 @@ namespace DotNetNuke.Entities.Modules
                     ModuleOrder += 2;
                 }
                 dataProvider.UpdateModuleOrder(TabId, ModuleId, ModuleOrder, PaneName);
-
+                TabVersionTracker.Instance.TrackModuleModification(TabId, UserController.Instance.GetCurrentUserInfo().UserID, GetModule(ModuleId, TabId, true), Null.NullInteger);
                 //clear cache
                 ClearCache(TabId);
             }
@@ -1862,6 +1882,10 @@ namespace DotNetNuke.Entities.Modules
                         {
                             moduleCounter += 1;
                             dataProvider.UpdateModuleOrder(TabId, Convert.ToInt32(dr2["ModuleID"]), (moduleCounter * 2) - 1, Convert.ToString(dr["PaneName"]));
+                            if (!Convert.ToBoolean(dr2["IsDeleted"]))
+                            {
+                                TabVersionTracker.Instance.TrackModuleModification(TabId, UserController.Instance.GetCurrentUserInfo().UserID, Convert.ToInt32(dr2["ModuleID"]), Convert.ToString(dr["PaneName"]), (moduleCounter * 2) - 1, Null.NullInteger);                                
+                            }
                         }
                     }
                     catch (Exception ex2)

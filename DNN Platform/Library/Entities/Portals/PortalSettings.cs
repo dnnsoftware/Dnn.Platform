@@ -30,17 +30,14 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
@@ -1028,29 +1025,9 @@ namespace DotNetNuke.Entities.Portals
             ActiveTab.ContainerPath = SkinController.FormatSkinPath(ActiveTab.ContainerSrc);
 
             ActiveTab.Panes = new ArrayList();
-            ActiveTab.Modules = new ArrayList();
             var crumbs = new ArrayList();
             GetBreadCrumbsRecursively(ref crumbs, ActiveTab.TabID);
             ActiveTab.BreadCrumbs = crumbs;
-        }
-
-        private void ConfigureModule(ModuleInfo cloneModule)
-        {
-            if (Null.IsNull(cloneModule.StartDate))
-            {
-                cloneModule.StartDate = DateTime.MinValue;
-            }
-            if (Null.IsNull(cloneModule.EndDate))
-            {
-                cloneModule.EndDate = DateTime.MaxValue;
-            }
-            if (String.IsNullOrEmpty(cloneModule.ContainerSrc))
-            {
-                cloneModule.ContainerSrc = ActiveTab.ContainerSrc;
-            }
-
-            cloneModule.ContainerSrc = SkinController.FormatSkinSrc(cloneModule.ContainerSrc, this);
-            cloneModule.ContainerPath = SkinController.FormatSkinPath(cloneModule.ContainerSrc);
         }
 
         private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
@@ -1151,33 +1128,8 @@ namespace DotNetNuke.Entities.Portals
                     ConfigureActiveTab();
                 }
             }
-            if (ActiveTab != null)
-            {
-                var objPaneModules = new Dictionary<string, int>();
-                foreach (ModuleInfo cloneModule in ActiveTab.ChildModules.Select(kvp => kvp.Value.Clone()))
-                {
-                    ConfigureModule(cloneModule);
-
-                    if (objPaneModules.ContainsKey(cloneModule.PaneName) == false)
-                    {
-                        objPaneModules.Add(cloneModule.PaneName, 0);
-                    }
-                    cloneModule.PaneModuleCount = 0;
-                    if (!cloneModule.IsDeleted)
-                    {
-                        objPaneModules[cloneModule.PaneName] = objPaneModules[cloneModule.PaneName] + 1;
-                        cloneModule.PaneModuleIndex = objPaneModules[cloneModule.PaneName] - 1;
-                    }
-
-                    ActiveTab.Modules.Add(cloneModule);
-                }
-                foreach (ModuleInfo module in ActiveTab.Modules)
-                {
-                    module.PaneModuleCount = objPaneModules[module.PaneName];
-                }
-            }
         }
-
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The VerifyPortalTab method verifies that the TabId/PortalId combination
@@ -1219,7 +1171,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (!isVerified)
             {
-                TabInfo tab = (from TabInfo t in portalTabs.AsList() where !t.IsDeleted && t.IsVisible select t).FirstOrDefault();
+                TabInfo tab = (from TabInfo t in portalTabs.AsList() where !t.IsDeleted && t.IsVisible && t.HasAVisibleVersion select t).FirstOrDefault();
 
                 if (tab != null)
                 {

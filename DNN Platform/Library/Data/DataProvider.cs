@@ -795,6 +795,16 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeleteTabUrl", tabId, seqNum);
         }
 
+        public virtual void DeleteTabVersion(int tabVersionId)
+        {
+            ExecuteNonQuery("DeleteTabVersion", tabVersionId);
+        }
+
+        public virtual void DeleteTabVersionDetail(int tabVersionDetailId)
+        {
+            ExecuteNonQuery("DeleteTabVersionDetail", tabVersionDetailId);
+        }
+
         public virtual void DeleteTranslatedTabs(int tabId, string cultureCode)
         {
             ExecuteNonQuery("DeleteTranslatedTabs", tabId, cultureCode);
@@ -880,6 +890,21 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetTabUrls", GetNull(portalId));
         }
 
+        public virtual IDataReader GetTabVersions(int tabId)
+        {
+            return ExecuteReader("GetTabVersions", GetNull(tabId));
+        }
+
+        public virtual IDataReader GetTabVersionDetails(int tabVersionId)
+        {
+            return ExecuteReader("GetTabVersionDetails", GetNull(tabVersionId));
+        }
+
+        public virtual IDataReader GetTabVersionDetailsHistory(int tabId, int version)
+        {
+            return ExecuteReader("GetTabVersionDetailsHistory", GetNull(tabId), GetNull(version));
+        }
+
         public virtual IDataReader GetCustomAliasesForTabs()
         {
             return ExecuteReader("GetCustomAliasesForTabs");
@@ -908,6 +933,16 @@ namespace DotNetNuke.Data
         public virtual void SaveTabUrl(int tabId, int seqNum, int portalAliasId, int portalAliasUsage, string url, string queryString, string cultureCode, string httpStatus, bool isSystem, int modifiedByUserID)
         {
             ExecuteNonQuery("SaveTabUrl", tabId, seqNum, GetNull(portalAliasId), portalAliasUsage, url, queryString, cultureCode, httpStatus, isSystem, modifiedByUserID);
+        }
+
+        public virtual int SaveTabVersion(int tabVersionId, int tabId, DateTime timeStamp, int version, bool isPublished, int createdByUserID, int modifiedByUserID)
+        {
+            return ExecuteScalar<int>("SaveTabVersion", tabVersionId, tabId, timeStamp, version, isPublished, createdByUserID, modifiedByUserID);
+        }
+
+        public virtual int SaveTabVersionDetail(int tabVersionDetailId, int tabVersionId, int moduleId, int moduleVersion, string paneName, int moduleOrder, int action, int createdByUserID, int modifiedByUserID)
+        {
+            return ExecuteScalar<int>("SaveTabVersionDetail", tabVersionDetailId, tabVersionId, moduleId, moduleVersion, paneName, moduleOrder, action, createdByUserID, modifiedByUserID);
         }
 
         public virtual void UpdateTab(int tabId, int contentItemId, int portalId, Guid versionGuid,
@@ -965,6 +1000,11 @@ namespace DotNetNuke.Data
         public virtual void UpdateTabTranslationStatus(int tabId, Guid localizedVersionGuid, int lastModifiedByUserID)
         {
             ExecuteNonQuery("UpdateTabTranslationStatus", tabId, localizedVersionGuid, lastModifiedByUserID);
+        }
+
+        public virtual void MarkAsPublished(int tabId)
+        {
+            ExecuteNonQuery("PublishTab", tabId);
         }
 
         public virtual void UpdateTabVersion(int tabId, Guid versionGuid)
