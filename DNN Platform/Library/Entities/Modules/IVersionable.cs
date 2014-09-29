@@ -48,5 +48,12 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="moduleId">Module Id</param>
         /// <param name="version">Version number</param>
         void PublishVersion(int moduleId, int version);
+
+        /// <summary>
+        /// This method returns the version number of the current published module version
+        /// </summary>
+        /// <param name="moduleId">Module Id</param>
+        /// <returns>Version number of the current published content version</returns>
+        int GetPublishedVersion(int moduleId);
     }
 }

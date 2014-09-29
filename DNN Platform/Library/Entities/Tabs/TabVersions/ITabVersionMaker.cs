@@ -78,5 +78,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// Deletes an existing Tab Version
         /// </summary>
         void DeleteVersion(int tabId, int createdByUserId, int version);
+
+        /// <summary>
+        /// Setup a first version for existing tab with modules. This method is used to create version 1 for pages created when versioning was not enabled
+        /// </summary>
+        /// <param name="portalId">portalId</param>
+        /// <param name="tabId">tabId</param>
+        void SetupFirstVersionForExistingTab(int portalId, int tabId);
     }
 }

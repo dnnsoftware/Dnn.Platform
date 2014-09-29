@@ -39,6 +39,32 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionMaker));
 
         #region Public Methods
+
+        public void SetupFirstVersionForExistingTab(int portalId, int tabId)
+        {
+            if (!TabVersionSettings.Instance.IsVersioningEnabled(portalId))
+            {
+                return;
+            }
+
+            // Check if already exist at least one version for the tab
+            if (TabVersionController.Instance.GetTabVersions(tabId).Any())
+            {
+                return;
+            }
+
+            var tab = TabController.Instance.GetTab(tabId, portalId);
+            var modules = ModuleController.Instance.GetTabModules(tabId).Where(m => m.Value.IsDeleted == false).Select(m => m.Value).ToArray();
+            
+            // Check if the page has modules
+            if (!modules.Any())
+            {
+                return;
+            }
+
+            CreateFirstTabVersion(tabId, tab, modules);
+        }
+        
         public void Publish(int portalId, int tabId, int createdByUserID)
         {
             CheckVersioningEnabled();
@@ -233,6 +259,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public TabVersion CreateNewVersion(int tabId, int createdByUserID)
         {
             CheckVersioningEnabled();
+
+            SetupFirstVersionForExistingTab(GetCurrentPortalId(), tabId);
 
             DeleteOldestVersionIfTabHasMaxNumberOfVersions(tabId);
 
@@ -545,6 +573,35 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             return newVersionDetail;
+        }
+
+        private void CreateFirstTabVersion(int tabId, TabInfo tab, IEnumerable<ModuleInfo> modules)
+        {
+            var tabVersion = TabVersionController.Instance.CreateTabVersion(tabId, tab.CreatedByUserID, true);
+            foreach (var module in modules)
+            {
+                var moduleVersion = GetModuleContentPublishedVersion(module);
+                TabVersionDetailController.Instance.SaveTabVersionDetail(new TabVersionDetail
+                {
+                    Action = TabVersionDetailAction.Added,
+                    ModuleId = module.ModuleID,
+                    ModuleOrder = module.ModuleOrder,
+                    ModuleVersion = moduleVersion,
+                    PaneName = module.PaneName,
+                    TabVersionId = tabVersion.TabVersionId
+                }, module.CreatedByUserID);
+            }
+        }
+
+        private int GetModuleContentPublishedVersion(ModuleInfo module)
+        {
+            var moduleVersion = Null.NullInteger;
+            var versionableController = GetVersionableController(module);
+            if (versionableController != null)
+            {
+                moduleVersion = versionableController.GetPublishedVersion(module.ModuleID);
+            }
+            return moduleVersion;
         }
         #endregion
 
