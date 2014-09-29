@@ -80,6 +80,7 @@ namespace DotNetNuke.HttpModules
             
             //First check if we are upgrading/installing
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
+                    || app.Request.HttpMethod == "POST"
                     || ServicesModule.ServiceApi.IsMatch(app.Request.RawUrl) 
                     || IsSpecialPage(app.Request.RawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(app.Request.RawUrl, app, portalSettings)))

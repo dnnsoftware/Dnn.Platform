@@ -396,8 +396,7 @@ namespace DotNetNuke.Common
                     || request.Url.LocalPath.ToLower().Contains("installwizard.aspx")
                     || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
                     || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                    || request.Url.LocalPath.ToLower().EndsWith("webresource.axd")
-                    || request.HttpMethod == "POST")
+                    || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
             {
                 canProcess = false;
             }
