@@ -35,10 +35,9 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// <summary>
         /// Construct a new CacheableAttribute
         /// </summary>
-        public CacheableAttribute()
+        public CacheableAttribute() : this(string.Empty, CacheItemPriority.Default, 20)
         {
-            CachePriority = CacheItemPriority.Default;
-            CacheTimeOut = 20;
+            
         }
 
         /// <summary>
