@@ -26,13 +26,18 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions.Exceptions;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
+using log4net.Core;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     public class TabVersionMaker : ServiceLocator<ITabVersionMaker, TabVersionMaker>, ITabVersionMaker
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionMaker));
+
         #region Public Methods
         public void Publish(int portalId, int tabId, int createdByUserID)
         {
@@ -193,7 +198,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             foreach (var rollbackDetail in rollbackDetails)
             {
                 rollbackDetail.TabVersionId = newVersion.TabVersionId;
-                rollbackDetail.ModuleVersion = RollBackDetail(tabId, rollbackDetail);
+                try
+                {
+                    rollbackDetail.ModuleVersion = RollBackDetail(tabId, rollbackDetail);
+                }
+                catch (DnnTabVersionException e)
+                {
+                    Logger.Error(string.Format("There was a problem making rollbak of the module {0}. Message: {1}.", rollbackDetail.ModuleId, e.Message));
+                    continue;
+                }
                 TabVersionDetailController.Instance.SaveTabVersionDetail(rollbackDetail, createdByUserID);
 
                 //Check if restoring version contains modules to restore

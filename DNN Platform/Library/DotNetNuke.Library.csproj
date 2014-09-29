@@ -283,6 +283,7 @@
     <Compile Include="Entities\Profile\ProfileEventArgs.cs" />
     <Compile Include="Entities\Tabs\ITabModulesController.cs" />
     <Compile Include="Entities\Tabs\TabModulesController.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\Exceptions\DnnTabVersionException.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionController.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionDetailController.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionMaker.cs" />
