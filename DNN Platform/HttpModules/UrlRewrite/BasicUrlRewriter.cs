@@ -68,12 +68,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             //'Carry out first time initialization tasks
             Initialize.Init(app);
-            if (request.Url.LocalPath.ToLower().EndsWith("/install/install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/installwizard.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            if (!Initialize.ProcessHttpModule(request, false, false))
             {
                 return;
             }

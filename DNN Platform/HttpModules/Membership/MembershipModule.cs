@@ -27,6 +27,7 @@ using System.Security.Principal;
 using System.Web;
 
 using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -118,25 +119,13 @@ namespace DotNetNuke.HttpModules.Membership
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensinons">if set to <c>true</c> to allow unknown extensinons.</param>
-        public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensinons)
+        public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
 
             //First check if we are upgrading/installing
-            if (request == null || request.Url == null
-                || request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("installwizard.aspx"))
-            {
-                return;
-            }
-
-            //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-            if (allowUnknownExtensinons == false
-                && request.Url.LocalPath.ToLower().EndsWith(".aspx") == false
-                && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false
-                && request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
+            if (!Initialize.ProcessHttpModule(context.ApplicationInstance.Request, allowUnknownExtensions, false))
             {
                 return;
             }

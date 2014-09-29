@@ -18,13 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-
+using DotNetNuke.Common;
 using DotNetNuke.Framework;
 using DotNetNuke.HttpModules.Config;
 using DotNetNuke.Instrumentation;
@@ -36,22 +37,14 @@ using DotNetNuke.Services.Log.EventLog;
 namespace DotNetNuke.HttpModules.Analytics
 {
     /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.HttpModules.Analytics
-    /// Project:    HttpModules
-    /// Module:     AnalyticsModule
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// This module contains functionality for injecting web analytics scripts into the page
     /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <history>
-    ///		[cniknet]	05/03/2009	created
-    /// </history>
     /// -----------------------------------------------------------------------------
     public class AnalyticsModule : IHttpModule
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AnalyticsModule));
+
         public string ModuleName
         {
             get
@@ -81,20 +74,11 @@ namespace DotNetNuke.HttpModules.Analytics
                 var app = (HttpApplication) sender;
                 HttpRequest request = app.Request;
 
-                //First check if we are upgrading/installing
-                if (request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                        || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                        || request.Url.LocalPath.ToLower().Contains("installwizard.aspx"))
+                if (!Initialize.ProcessHttpModule(request, false, false))
                 {
                     return;
                 }
-				
-                //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-                if (request.Url.LocalPath.ToLower().EndsWith(".aspx") == false && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false &&
-                    request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
-                {
-                    return;
-                }
+
                 if (HttpContext.Current != null)
                 {
                     HttpContext context = HttpContext.Current;
