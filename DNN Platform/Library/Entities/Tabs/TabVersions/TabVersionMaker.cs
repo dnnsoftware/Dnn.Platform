@@ -471,6 +471,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
 
                 var cloneModule = module.Clone();
+                cloneModule.IsDeleted = false;
                 cloneModule.ModuleVersion = detail.ModuleVersion;
                 cloneModule.PaneName = detail.PaneName;
                 cloneModule.ModuleOrder = detail.ModuleOrder;
