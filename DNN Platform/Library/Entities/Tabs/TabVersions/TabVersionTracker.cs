@@ -66,6 +66,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 {
                     tabVersionDetail.ModuleVersion = existingTabVersionDetail.ModuleVersion;
                 }
+
+                // If the operation is done over a just created module, the Added operation is kept.
+                if (existingTabVersionDetail.Action == TabVersionDetailAction.Added)
+                {
+                    tabVersionDetail.Action = TabVersionDetailAction.Added;
+                }
             }
 
             TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, createdByUserID);
