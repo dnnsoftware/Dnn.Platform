@@ -236,8 +236,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersion = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
             var publishedDetails = GetVersionModulesDetails(tabId, tabVersion.Version);
 
-            var newVersion = CreateNewVersion(tabId, createdByUserID);
             var rollbackDetails = CopyVersionDetails(GetVersionModulesDetails(tabId, version));
+            var newVersion = CreateNewVersion(tabId, createdByUserID);
             
             //Save Reset detail
             TabVersionDetailController.Instance.SaveTabVersionDetail(GetResetTabVersionDetail(newVersion), createdByUserID);
