@@ -216,7 +216,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 {
                     if (tabVersions.ElementAt(i).Version == version)
                     {
-                        CreateSnapshotOverVersion(tabId, tabVersions.ElementAtOrDefault(i-1));
+                        CreateSnapshotOverVersion(tabId, tabVersions.ElementAtOrDefault(i-1), tabVersions.ElementAt(i));
                         TabVersionController.Instance.DeleteTabVersion(tabId, tabVersions.ElementAt(i).TabVersionId);
                         return;
                     }
@@ -443,10 +443,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return PortalSettings.Current == null ? Null.NullInteger : PortalSettings.Current.PortalId;
         }
 
-        private void CreateSnapshotOverVersion(int tabId, TabVersion snapshoTabVersion)
+        private void CreateSnapshotOverVersion(int tabId, TabVersion snapshotTabVersion, TabVersion deletedTabVersion = null)
         {
-            var snapShotTabVersionDetails = GetVersionModulesDetails(tabId, snapshoTabVersion.Version).ToArray();
-            var existingTabVersionDetails = TabVersionDetailController.Instance.GetTabVersionDetails(snapshoTabVersion.TabVersionId).ToArray();
+            var snapShotTabVersionDetails = GetVersionModulesDetails(tabId, snapshotTabVersion.Version).ToArray();
+            var existingTabVersionDetails = TabVersionDetailController.Instance.GetTabVersionDetails(snapshotTabVersion.TabVersionId).ToArray();
 
             for (var i = existingTabVersionDetails.Count(); i > 0; i--)
             {
@@ -457,9 +457,26 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
             }
 
-            foreach (var tabVersionDetail in snapShotTabVersionDetails)
+            UpdateDeletedTabDetails(snapshotTabVersion, deletedTabVersion, snapShotTabVersionDetails);
+        }
+
+        private static void UpdateDeletedTabDetails(TabVersion snapshotTabVersion, TabVersion deletedTabVersion,
+            TabVersionDetail[] snapShotTabVersionDetails)
+        {
+            IEnumerable<TabVersionDetail> tabVersionDetailsToBeUpdated = null;
+            if (deletedTabVersion != null)
             {
-                tabVersionDetail.TabVersionId = snapshoTabVersion.TabVersionId;
+                tabVersionDetailsToBeUpdated =
+                    TabVersionDetailController.Instance.GetTabVersionDetails(deletedTabVersion.TabVersionId).ToArray();
+            }
+            else
+            {
+                tabVersionDetailsToBeUpdated = snapShotTabVersionDetails;
+            }
+
+            foreach (var tabVersionDetail in tabVersionDetailsToBeUpdated)
+            {
+                tabVersionDetail.TabVersionId = snapshotTabVersion.TabVersionId;
                 TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail);
             }
         }
