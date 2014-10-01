@@ -39,26 +39,31 @@ if ($ && $.ui && $.ui.dialog) {
                 target.data('cacheScrollTop', cacheScrollTop);
             }
 
-            //fix jquery ui dialog center issue
             var uiDialog = $(this).closest('.ui-dialog');
             if (!$('html').hasClass('mobileView')) {
-                uiDialog.css({
-                    position: 'fixed',
-                    left: '50%',
-                    top: '50%'
-                }).css({
-                    marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
-                    marginTop: '-' + (uiDialog.outerHeight() / 2) + 'px'
-                });
-            } else {
-                uiDialog.css({
-                    position: 'static',
-                    left: '0',
-                    top: '0'
-                }).css({
-                    marginLeft: '0',
-                    marginTop: '0'
-                });
+                var maxHeight = $(window).height();
+                var dialogHeight = uiDialog.outerHeight();
+                if (maxHeight - 20 >= dialogHeight) {
+                    uiDialog.css({
+                        position: 'fixed',
+                        left: '50%',
+                        top: '50%',
+                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
+                        marginTop: '-' + (uiDialog.outerHeight() / 2) + 'px',
+                        maxHeight: 'inherit',
+                        overflow: 'initial'
+                    });
+                } else {
+                    uiDialog.css({
+                        position: 'fixed',
+                        left: '50%',
+                        top: '0',
+                        marginLeft: '-' + (uiDialog.outerWidth() / 2) + 'px',
+                        marginTop: '0',
+                        maxHeight: (maxHeight - 20) + 'px',
+                        overflow: 'auto'
+                    });
+                }
             }
         },
 
