@@ -302,7 +302,7 @@ namespace DotNetNuke.Entities.Urls
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                         response.AddHeader("Location", result.FinalUrl);
                         finished = true;
-                        response.End();
+                        //response.End();
                     }
                     if (!finished)
                     {
@@ -420,7 +420,7 @@ namespace DotNetNuke.Entities.Urls
                                 response.Status = "301 Moved Permanently";
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                 response.AddHeader("Location", result.FinalUrl);
-                                response.End();
+                                //response.End();
                             }
                         }
                     }
@@ -453,7 +453,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.Status = "301 Moved Permanently";
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
-                                    response.End();
+                                    //response.End();
                                     break;
                                 case ActionType.Redirect302:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
@@ -590,7 +590,7 @@ namespace DotNetNuke.Entities.Urls
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                             response.AddHeader("Location", result.FinalUrl);
                                             finished = true;
-                                            response.End();
+                                            //response.End();
                                         }
                                         else if (result.Action == ActionType.Redirect302)
                                         {
@@ -1432,7 +1432,7 @@ namespace DotNetNuke.Entities.Urls
                                     response.AppendHeader("X-Redirect-Reason",
                                                           result.Reason.ToString().Replace("_", " ") + " Requested");
                                     response.AddHeader("Location", result.FinalUrl);
-                                    response.End();
+                                    //response.End();
                                 }
                             }
                             else
