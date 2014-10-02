@@ -35,67 +35,89 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             Requires.NotNull("module", module);
 
-            if (!IsVersioningEnabled(module))
+            try
             {
-                return;
-            }
+                if (!IsVersioningEnabled(module))
+                {
+                    return;
+                }
 
-            var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
-            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module, moduleVersion, TabVersionDetailAction.Added);
-            TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module,
+                    moduleVersion, TabVersionDetailAction.Added);
+                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
         }
 
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
 
-            if (!IsVersioningEnabled(module))
+            try
             {
-                return;
-            }
-
-            var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
-            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module.ModuleID, module.PaneName, module.ModuleOrder, moduleVersion, TabVersionDetailAction.Modified);
-
-            var existingTabVersionDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
-            if (existingTabVersionDetail != null)
-            {
-                tabVersionDetail.TabVersionDetailId = existingTabVersionDetail.TabVersionDetailId;
-                if (moduleVersion == Null.NullInteger)
+                if (!IsVersioningEnabled(module))
                 {
-                    tabVersionDetail.ModuleVersion = existingTabVersionDetail.ModuleVersion;
+                    return;
                 }
 
-                // If the operation is done over a just created module, the Added operation is kept.
-                if (existingTabVersionDetail.Action == TabVersionDetailAction.Added)
-                {
-                    tabVersionDetail.Action = TabVersionDetailAction.Added;
-                }
-            }
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module.ModuleID, module.PaneName, module.ModuleOrder, moduleVersion, TabVersionDetailAction.Modified);
 
-            TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+                var existingTabVersionDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
+                if (existingTabVersionDetail != null)
+                {
+                    tabVersionDetail.TabVersionDetailId = existingTabVersionDetail.TabVersionDetailId;
+                    if (moduleVersion == Null.NullInteger)
+                    {
+                        tabVersionDetail.ModuleVersion = existingTabVersionDetail.ModuleVersion;
+                    }
+
+                    // If the operation is done over a just created module, the Added operation is kept.
+                    if (existingTabVersionDetail.Action == TabVersionDetailAction.Added)
+                    {
+                        tabVersionDetail.Action = TabVersionDetailAction.Added;
+                    }
+                }
+
+                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
         }
 
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
-
-            if (!IsVersioningEnabled(module))
-            {
-                return;
-            }
-
-            var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
             
-            var existingTabDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
-            if (existingTabDetail != null)
+            try
             {
-                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId, existingTabDetail.TabVersionDetailId); 
+                if (!IsVersioningEnabled(module))
+                {
+                    return;
+                }
+
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+            
+                var existingTabDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
+                if (existingTabDetail != null)
+                {
+                    TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId, existingTabDetail.TabVersionDetailId); 
+                }
+                else
+                {  
+                    var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module, moduleVersion, TabVersionDetailAction.Deleted);
+                    TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+                }
             }
-            else
-            {  
-                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module, moduleVersion, TabVersionDetailAction.Deleted);
-                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
             }
         }
         #endregion
