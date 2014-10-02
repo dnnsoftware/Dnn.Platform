@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -441,6 +442,18 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+
+        private bool IsVesionableModule(ModuleInfo moduleInfo)
+        {
+             if (String.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            {
+                return false;
+            }
+            
+            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            return controller is IVersionable;
+        }
+
         #endregion
 
         #region Public Methods
@@ -460,12 +473,17 @@ namespace DotNetNuke.UI.Skins
             PaneControl.Controls.Add(_containerWrapperControl);
 
             //inject module classes
-            const string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
+            string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
             string sanitizedModuleName = Null.NullString;
 
             if (!String.IsNullOrEmpty(module.DesktopModule.ModuleName))
             {
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
+            }
+
+            if (IsVesionableModule(module))
+            {
+                classFormatString += " DnnVersionableControl";
             }
 
             _containerWrapperControl.Attributes["class"] = String.Format(classFormatString, sanitizedModuleName, module.ModuleID);
