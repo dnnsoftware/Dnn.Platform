@@ -30,7 +30,6 @@ using DotNetNuke.Entities.Tabs.TabVersions.Exceptions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
-using log4net.Core;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
@@ -634,13 +633,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private int GetModuleContentPublishedVersion(ModuleInfo module)
         {
-            var moduleVersion = Null.NullInteger;
             var versionableController = GetVersionableController(module);
-            if (versionableController != null)
-            {
-                moduleVersion = versionableController.GetPublishedVersion(module.ModuleID);
-            }
-            return moduleVersion;
+            return versionableController != null ? versionableController.GetPublishedVersion(module.ModuleID) : Null.NullInteger;
         }
         #endregion
 

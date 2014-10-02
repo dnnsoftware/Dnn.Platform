@@ -28,23 +28,16 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <summary>
         /// Tracks an added module into a Tab Version
         /// </summary>
-        void TrackModuleAddition(int tabId, int createdByUserID, ModuleInfo module, int moduleVersion);
+        void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId);
 
         /// <summary>
         /// Tracks a modified module into a Tab Version
         /// </summary>
-        void TrackModuleModification(int tabId, int createdByUserID, ModuleInfo module, int moduleVersion);
-
-        /// <summary>
-        /// Tracks a modified module into a Tab Version
-        /// </summary>
-        void TrackModuleModification(int tabId, int createdByUserID, int moduleId, string paneName, int moduleOrder, int moduleVersion);
-
-
+        void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId);
+        
         /// <summary>
         ///  Tracks a deleted module into a Tab Version
         /// </summary>
-        void TrackModuleDeletion(int tabId, int createdByUserID, ModuleInfo module, int moduleVersion);
-        
+        void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId);
     }
 }
