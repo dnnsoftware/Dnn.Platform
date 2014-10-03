@@ -1905,4 +1905,7 @@
   <data name="RejectUserDescription.Text" xml:space="preserve">
     <value>Reject the user registration. Removes the user.</value>
   </data>
+  <data name="DefaultWorkflowMigrationPrefix.Text" xml:space="preserve">
+    <value>Folders:</value>
+  </data>
 </root>
