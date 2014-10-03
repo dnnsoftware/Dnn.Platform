@@ -385,8 +385,8 @@ namespace DotNetNuke.Framework
                 Generator = "";
             }
 
-            //META Robots
-            if (!UrlUtils.InPopUp())
+            //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
+            if (!UrlUtils.InPopUp() && !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline))
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
