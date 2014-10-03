@@ -233,9 +233,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var tabVersion = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
-            var publishedDetails = GetVersionModulesDetails(tabId, tabVersion.Version);
+            var publishedDetails = GetVersionModulesDetails(tabId, tabVersion.Version).ToArray();
 
-            var rollbackDetails = CopyVersionDetails(GetVersionModulesDetails(tabId, version));
+            var rollbackDetails = CopyVersionDetails(GetVersionModulesDetails(tabId, version)).ToArray();
             var newVersion = CreateNewVersion(tabId, createdByUserID);
             
             //Save Reset detail
@@ -256,7 +256,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 TabVersionDetailController.Instance.SaveTabVersionDetail(rollbackDetail, createdByUserID);
 
                 //Check if restoring version contains modules to restore
-
                 if (publishedDetails.All(tv => tv.ModuleId != rollbackDetail.ModuleId))
                 {
                     RestoreModuleInfo(tabId, rollbackDetail);
@@ -273,7 +272,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleController.Instance.DeleteTabModule(tabId, publishedDetail.ModuleId, true);
             }
             
-            return newVersion;
+            // Publish Version
+            return PublishVersion(GetCurrentPortalId(), tabId, createdByUserID, newVersion);
         }
 
         public TabVersion CreateNewVersion(int tabId, int createdByUserID)
@@ -395,7 +395,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return GetSnapShot(tabVersionDetails);
         }
 
-        private void PublishVersion(int portalId, int tabId, int createdByUserID, TabVersion tabVersion)
+        private TabVersion PublishVersion(int portalId, int tabId, int createdByUserID, TabVersion tabVersion)
         {
             var unPublishedDetails = TabVersionDetailController.Instance.GetTabVersionDetails(tabVersion.TabVersionId);
             foreach (var unPublishedDetail in unPublishedDetails)
@@ -414,6 +414,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 TabController.Instance.MarkAsPublished(tab);
             }
             ModuleController.Instance.ClearCache(tabId);
+            return tabVersion;
         }
 
         private IEnumerable<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
