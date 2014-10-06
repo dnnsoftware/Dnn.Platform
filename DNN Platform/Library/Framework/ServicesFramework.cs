@@ -18,6 +18,7 @@
 
 using System;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Framework
 {
@@ -29,6 +30,25 @@ namespace DotNetNuke.Framework
         protected override Func<IServicesFramework> GetFactory()
         {
             return () => new ServicesFrameworkImpl();
+        }
+
+        public static string GetServiceFrameworkRoot()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (portalSettings == null) return;
+            var path = portalSettings.PortalAlias.HTTPAlias;
+            int index = path.IndexOf('/');
+            if (index > 0)
+            {
+                path = path.Substring(index);
+            }
+            else
+            {
+                path = "/";
+            }
+            path = path.EndsWith("/") ? path : path + "/";
+
+            return path;
         }
     }
 }
