@@ -190,7 +190,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                     }
 
                     //lookup user roles specific config file
-                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, false))
+                    foreach (var role in RoleController.Instance.GetUserRoles(objUserInfo, true))
                     {
                         var rolePart = ".RoleId." + role.RoleID;
                         rolepath = path.Replace(".xml", rolePart + ".xml");
