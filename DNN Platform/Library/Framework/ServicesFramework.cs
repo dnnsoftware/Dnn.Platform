@@ -35,7 +35,7 @@ namespace DotNetNuke.Framework
         public static string GetServiceFrameworkRoot()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null) return;
+            if (portalSettings == null) return String.Empty;
             var path = portalSettings.PortalAlias.HTTPAlias;
             int index = path.IndexOf('/');
             if (index > 0)
