@@ -16,6 +16,7 @@
 // // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Globalization;
 using System.Web.Helpers;
 using System.Web.UI;
@@ -66,6 +67,10 @@ namespace DotNetNuke.Framework
         public void RegisterAjaxScript(Page page)
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();
+            if (String.IsNullOrEmpty(path))
+            {
+                return;
+            }
 
             JavaScript.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
             ClientAPI.RegisterClientVariable(page, "sf_siteRoot", path, /*overwrite*/ true);
