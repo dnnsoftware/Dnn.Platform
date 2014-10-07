@@ -8,6 +8,345 @@
 /*****                                                  *****/
 /************************************************************/
 
+/***** Tab Versioning table and Sprocs *****/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersions]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}TabVersions](
+	    [TabVersionId] [INT] IDENTITY(1,1) NOT NULL,
+        [TabId] [INT] NOT NULL,
+		[Version] [INT] NOT NULL,
+		[TimeStamp] [DATETIME] NOT NULL,
+		[IsPublished] [BIT] NOT NULL,
+	    [CreatedByUserID] [INT] NOT NULL,
+		[CreatedOnDate] [DATETIME] NOT NULL,
+		[LastModifiedByUserID] [INT] NOT NULL,
+		[LastModifiedOnDate] [DATETIME] NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}TabVersions] PRIMARY KEY CLUSTERED ([TabVersionId] ASC)
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}TabVersions] 
+        WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}TabVersions_{objectQualifier}TabId] FOREIGN KEY([TabId])
+        REFERENCES {databaseOwner}[{objectQualifier}Tabs] ([TabID])
+    ON DELETE CASCADE
+
+    CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabVersions_TabId ON {databaseOwner}[{objectQualifier}TabVersions](TabId) 
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersions]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersions]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersions]
+	@TabId INT
+AS
+BEGIN
+	SELECT   
+		[TabVersionId],
+		[TabId],
+		[Version],
+		[TimeStamp],
+		[IsPublished],
+	    [CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersions]
+	WHERE [TabId] = @TabId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveTabVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersion]
+    @Id INT,
+    @TabId INT,
+    @TimeStamp DATETIME,
+    @Version INT,
+	@IsPublished BIT,
+    @CreatedByUserID [INT] = -1,
+	@LastModifiedByUserID [INT] = -1
+AS
+BEGIN
+    IF ISNULL(@Id, 0) = 0
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}TabVersions](            
+            [TabId],
+            [TimeStamp],
+            [Version],
+			[IsPublished],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+        ) VALUES (
+            @TabId,
+            @TimeStamp,
+            @Version,      
+			@IsPublished,      
+            @CreatedByUserID,
+            GETDATE(),
+            @LastModifiedByUserID,
+            GETDATE()
+        )
+
+        SELECT @Id = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}TabVersions] SET            
+            [TabId] = @TabId,
+            [Version] = @Version,
+            [TimeStamp] = @TimeStamp,
+			[IsPublished] = @IsPublished,
+            [LastModifiedByUserID] = @LastModifiedByUserID,
+            [LastModifiedOnDate] = GETDATE()
+        WHERE TabVersionId = @Id
+    END
+	SELECT @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTabVersion]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersion]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersion]
+    @Id INT
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}TabVersions] WHERE TabVersionId = @Id
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersionDetails]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}TabVersionDetails](
+	    [TabVersionDetailId] [INT] IDENTITY(1,1) NOT NULL,
+        [TabVersionId] [INT] NOT NULL,
+		[ModuleId] [INT] NOT NULL,
+		[ModuleVersion] [INT] NOT NULL,
+		[PaneName] NVARCHAR(50) NOT NULL,
+		[ModuleOrder] [INT] NOT NULL,
+		[Action] [INT] NOT NULL,
+	    [CreatedByUserID] [INT] NOT NULL,
+		[CreatedOnDate] [DATETIME] NOT NULL,
+		[LastModifiedByUserID] [INT] NOT NULL,
+		[LastModifiedOnDate] [DATETIME] NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}TabVersionDetails] PRIMARY KEY CLUSTERED ([TabVersionDetailId] ASC)
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] 
+        WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}TabVersionDetails_{objectQualifier}TabVersionId] FOREIGN KEY([TabVersionId])
+        REFERENCES {databaseOwner}[{objectQualifier}TabVersions] ([TabVersionId])
+    ON DELETE CASCADE
+
+    CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabVersionDetails_TabVersionId ON {databaseOwner}[{objectQualifier}TabVersionDetails](TabVersionId) 
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersionDetails]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetails]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetails]
+	@TabVersionId INT
+AS
+BEGIN
+	SELECT   
+		[TabVersionDetailId] ,
+        [TabVersionId] ,
+		[ModuleId] ,
+		[ModuleVersion] ,
+		[PaneName] ,
+		[ModuleOrder] ,
+		[Action],
+	    [CreatedByUserID] ,
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersionDetails]
+	WHERE [TabVersionId] = @TabVersionId
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveTabVersionDetail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersionDetail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveTabVersionDetail]
+    @Id INT,
+    @TabVersionId INT,
+    @ModuleId INT,
+    @ModuleVersion INT,
+	@PaneName NVARCHAR(50),
+	@ModuleOrder INT,
+	@Action INT,
+    @CreatedByUserID [INT] = -1,
+	@LastModifiedByUserID [INT] = -1
+AS
+BEGIN
+    IF ISNULL(@Id, 0) = 0
+    BEGIN
+        INSERT INTO {databaseOwner}[{objectQualifier}TabVersionDetails](
+            [TabVersionId],
+            [ModuleId],
+            [ModuleVersion],
+			[PaneName],
+            [ModuleOrder],
+			[Action],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+        ) VALUES (
+            @TabVersionId,
+			@ModuleId,            
+            @ModuleVersion,            
+			@PaneName,
+			@ModuleOrder,
+			@Action,
+            @CreatedByUserID,
+            GETDATE(),
+            @LastModifiedByUserID,
+            GETDATE()
+        )
+
+        SELECT @Id = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        UPDATE {databaseOwner}[{objectQualifier}TabVersionDetails] SET            
+            [TabVersionId] = @TabVersionId,
+			[ModuleId] = @ModuleId,
+            [ModuleVersion] = @ModuleVersion,            
+            [PaneName] = @PaneName,
+			[ModuleOrder] = @ModuleOrder,
+			[Action] = @Action,
+            [LastModifiedByUserID] = @LastModifiedByUserID,
+            [LastModifiedOnDate] = GETDATE()
+        WHERE TabVersionDetailId = @Id
+    END
+	SELECT @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTabVersionDetail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTabVersionDetail]
+    @Id INT
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}TabVersionDetails] WHERE TabVersionDetailId = @Id
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabVersionDetailsHistory]
+	@TabID iNT,
+    @Version INT
+AS
+BEGIN    
+	SELECT tvd.[TabVersionDetailId]
+		  ,tvd.[TabVersionId]
+		  ,tvd.[ModuleId]
+		  ,tvd.[ModuleVersion]
+		  ,tvd.[PaneName]
+		  ,tvd.[ModuleOrder]
+		  ,tvd.[Action]
+		  ,tvd.[CreatedByUserID]
+		  ,tvd.[CreatedOnDate]
+		  ,tvd.[LastModifiedByUserID]
+		  ,tvd.[LastModifiedOnDate]
+	FROM {databaseOwner}[{objectQualifier}TabVersionDetails] tvd
+	INNER JOIN {databaseOwner}[{objectQualifier}TabVersions] tv ON tvd.TabVersionId = tv.TabVersionId
+	WHERE tv.Version <= @Version
+		AND tv.TabId = @TabID
+	ORDER BY tvd.CreatedOnDate 
+END
+GO
+
+ALTER TABLE {databaseOwner}{objectQualifier}Tabs ADD [HasBeenPublished] [bit] NOT NULL CONSTRAINT [DF_Tabs_HasBeenPublished] DEFAULT (0) 
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Tabs SET HasBeenPublished = 1;
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Tabs]') and OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+GO
+
+-- updated view to use new function
+-- note comment regarding signature modification
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFile)      AS IconFile,
+        {databaseOwner}{objectQualifier}FilePath(T.IconFileLarge) AS IconFileLarge,
+        T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate
+    FROM       {databaseOwner}{objectQualifier}Tabs         AS T
+    LEFT  JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PublishTab]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PublishTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PublishTab]
+	@TabID INT
+AS
+BEGIN 
+        UPDATE {databaseOwner}[{objectQualifier}Tabs] SET            
+            [HasBeenPublished] = 1
+        WHERE TabID = @TabID
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
