@@ -75,6 +75,8 @@ if ($ && $.ui && $.ui.dialog) {
                 htmlElement.find('body').scrollTop(cacheScrollTop);
                 $(this).data('cacheScrollTop', null);
             }
+			var uiDialog = $(this).closest('.ui-dialog');
+            uiDialog.css({ overflow: 'initial' });
         }
     });
 }
