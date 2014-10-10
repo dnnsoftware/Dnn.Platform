@@ -782,6 +782,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
             var dicSettings = new Dictionary<string, string>();
+            string key = null;
 
             if (portalId > -1)
             {
@@ -798,7 +799,20 @@ namespace DotNetNuke.Entities.Portals
                     {
                         if (!dr.IsDBNull(1))
                         {
-                            dicSettings.Add(dr.GetString(0), dr.GetString(1));
+                            key = dr.GetString(0);
+                            if (dicSettings.ContainsKey(key))
+                            {
+                                dicSettings[key] = dr.GetString(1);
+                                var log = new LogInfo { 
+                                    LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() 
+                                };
+                                log.AddProperty("Duplicate PortalSettings Key", key);
+                                LogController.Instance.AddLog(log);
+                            } 
+                            else
+                            {
+                                dicSettings.Add(key, dr.GetString(1));
+                            }                           
                         }
                     }
                 }
