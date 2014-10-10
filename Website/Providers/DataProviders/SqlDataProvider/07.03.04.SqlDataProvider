@@ -1,4 +1,4 @@
-﻿/************************************************************/
+/************************************************************/
 /*****              SqlDataProvider                     *****/
 /*****                                                  *****/
 /*****                                                  *****/
@@ -8,7 +8,71 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* ******************************************************** *
+ *  DNN-5791: handle duplicate keys (interim solution)
+ * ******************************************************** */
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+ SET   LastModifiedOnDate = '2000-01-01' 
+ WHERE LastModifiedOnDate is Null
+GO
 
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- not Null
+AS
+BEGIN
+	SELECT TOP (1)
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	 ORDER BY LastModifiedOnDate DESC
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- not Null!
+AS
+BEGIN
+	SELECT
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] P
+	 JOIN  (SELECT PortalID, SettingName SN, Max(LastModifiedOnDate) MD
+	        FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			WHERE PortalID = @PortalId
+			GROUP BY PortalID, SettingName) S 
+	   ON P.PortalID = S.PortalID AND P.SettingName = S.SN AND P.LastModifiedOnDate = S.MD;
+END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
