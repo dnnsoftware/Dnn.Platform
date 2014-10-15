@@ -439,6 +439,10 @@ namespace DotNetNuke.UI.WebControls
             ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+			writer.AddAttribute("data-name", Name);
+			writer.AddAttribute("data-list", ListName);
+			writer.AddAttribute("data-category", Category);
+			writer.AddAttribute("data-editor", "DNNListEditControl");
             if (AutoPostBack)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, Page.ClientScript.GetPostBackEventReference(this, ID));
