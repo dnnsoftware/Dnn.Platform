@@ -94,6 +94,7 @@ namespace DotNetNuke.UI.WebControls
             }
             propEditor.ID = editorInfo.Name;
             propEditor.Name = editorInfo.Name;
+			propEditor.Category = editorInfo.Category;
 
             propEditor.EditMode = editorInfo.EditMode;
             propEditor.Required = editorInfo.Required;
