@@ -493,7 +493,7 @@
                             <asp:CheckBox runat="server" ID="chkMinifyJs" />
                         </div>
                     </fieldset>
-                    <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="DigitalAssets" Group="SiteSettingsAdvancedSettingsExtensions"/>
+                    <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="SiteSettings" Group="SiteSettingsAdvancedSettingsExtensions"/>
                 </div>
             </div>
         </div>
