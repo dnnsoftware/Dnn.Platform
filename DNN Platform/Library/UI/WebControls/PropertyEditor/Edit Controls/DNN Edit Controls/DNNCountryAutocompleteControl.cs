@@ -27,6 +27,7 @@ using System.Web.UI;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
 
@@ -162,7 +163,7 @@ namespace DotNetNuke.UI.WebControls
 		#region " Page Events "
 		private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
 		{
-			// DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Albatros/Registration/js/countryregionbox.js"), 70);
+			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.CountriesRegions.js");
 			JavaScript.RequestRegistration(CommonJs.jQuery);
 			JavaScript.RequestRegistration(CommonJs.jQueryUI);
 		}

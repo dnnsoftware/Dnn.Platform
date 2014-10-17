@@ -168,6 +168,7 @@
     <Compile Include="Common\Internal\IGlobals.cs" />
     <Compile Include="Common\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\Internal\TestableGlobals.cs" />
+    <Compile Include="Common\Lists\CachedCountryList.cs" />
     <Compile Include="Common\Lists\ListEntryInfo.cs" />
     <Compile Include="Common\Lists\ListController.cs" />
     <Compile Include="Common\Lists\ListEntryCollection.cs" />
@@ -1574,6 +1575,7 @@
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\CheckEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateTimeEditControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNCountryAutocompleteControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNCountryEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNListEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DNN Edit Controls\DNNLocaleEditControl.cs" />
