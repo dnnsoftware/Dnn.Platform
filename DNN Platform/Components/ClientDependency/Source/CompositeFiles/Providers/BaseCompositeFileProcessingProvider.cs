@@ -364,6 +364,12 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             }            
         }
 
+        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
+        public virtual int GetVersion()
+        {
+            return ClientDependencySettings.Instance.Version;
+        }
+
         /// <summary>
         /// Returns the url for the composite file handler for the filePath specified.
         /// </summary>

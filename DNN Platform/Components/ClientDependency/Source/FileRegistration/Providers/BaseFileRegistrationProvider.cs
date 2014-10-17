@@ -31,6 +31,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// </summary>
         public virtual bool EnableCompositeFiles { get; set; }
 
+        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
         public virtual int GetVersion()
         {
             return ClientDependencySettings.Instance.Version;

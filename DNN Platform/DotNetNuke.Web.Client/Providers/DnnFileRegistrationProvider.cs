@@ -19,19 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using ClientDependency.Core.Config;
 
 namespace DotNetNuke.Web.Client.Providers
 {
-    using System.Web;
     using ClientDependency.Core.FileRegistration.Providers;
 
     public abstract class DnnFileRegistrationProvider : WebFormsFileRegistrationProvider
     {
-        public override int GetVersion()
-        {
-            return ClientDependencySettings.Instance.Version;
-        }
+        private readonly ClientResourceSettings dnnSettingsHelper = new ClientResourceSettings();
 
         /// <summary>
         /// Checks if the composite files option is set for the current portal (DNN site settings).
@@ -41,7 +38,6 @@ namespace DotNetNuke.Web.Client.Providers
         {
             get
             {
-                var dnnSettingsHelper = new ClientResourceSettings();
                 var settingsVersion = dnnSettingsHelper.AreCompositeFilesEnabled();
                 return settingsVersion.HasValue ? settingsVersion.Value : base.EnableCompositeFiles;
             }

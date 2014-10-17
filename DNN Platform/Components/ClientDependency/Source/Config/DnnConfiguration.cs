@@ -173,12 +173,19 @@ namespace ClientDependency.Core.Config
             try
             {
                 var method = _portalAliasControllerType.GetMethod("GetPortalAliasInfo");
-                var portalAliasInfo = method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host });
-                if (portalAliasInfo != null)
+                var requestedDomainNameMethod = _commonGlobalsType.GetMethod("GetDomainName", new[] { typeof(HttpRequest) });
+                if (requestedDomainNameMethod != null)
                 {
-                    object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
-                    return (int)portalId;
+                    var requestedDomainName = requestedDomainNameMethod.Invoke(null, new object[] { HttpContext.Current.Request });
+
+                    var portalAliasInfo = method.Invoke(null, new object[] { requestedDomainName });
+                    if (portalAliasInfo != null)
+                    {
+                        object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
+                        return (int)portalId;
+                    }
                 }
+                
             }
             catch (Exception)
             {
