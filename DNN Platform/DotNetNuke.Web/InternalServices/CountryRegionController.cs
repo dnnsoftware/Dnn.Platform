@@ -12,11 +12,11 @@ using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
 {
-	class CountryRegionController : DnnApiController
+	[DnnAuthorize]
+	public class CountryRegionController : DnnApiController
 	{
 
 		[HttpGet()]
-		[DnnModuleAuthorize(AccessLevel = DotNetNuke.Security.SecurityAccessLevel.View)]
 		public HttpResponseMessage Countries()
 		{
 			string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
@@ -31,7 +31,6 @@ namespace DotNetNuke.Web.InternalServices
 		}
 
 		[HttpGet()]
-		[DnnModuleAuthorize(AccessLevel = DotNetNuke.Security.SecurityAccessLevel.View)]
 		public HttpResponseMessage Regions(string country)
 		{
 			List<Region> res = new List<Region>();
@@ -47,7 +46,6 @@ namespace DotNetNuke.Web.InternalServices
 		}
 
 		[HttpGet()]
-		[DnnModuleAuthorize(AccessLevel = DotNetNuke.Security.SecurityAccessLevel.View)]
 		public HttpResponseMessage SiblingRegions(string region)
 		{
 			List<Region> res = new List<Region>();

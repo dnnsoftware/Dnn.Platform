@@ -109,12 +109,12 @@ function setupCountryAutoComplete() {
 			})
 		},
 		select: function (event, ui) {
-			$('#' + dnnCountryBoxId + '_code').val(ui.item.id);
-			$('#' + dnnCountryBoxId + '_name').attr('data-text', ui.item.name);
+			$('#' + $(this).attr('id') + '_code').val(ui.item.id);
+			$(this).attr('data-text', ui.item.name);
 		},
 		close: function () {
-			$('#' + dnnCountryBoxId + '_name').val($('#' + dnnCountryBoxId + '_name').attr('data-text'));
-			setRegionList();
+			$(this).val($(this).attr('data-text'));
+			// setRegionList();
 		}
 	})
 }

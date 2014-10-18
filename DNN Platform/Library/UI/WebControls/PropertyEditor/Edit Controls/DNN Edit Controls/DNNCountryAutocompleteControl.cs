@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.WebControls
 			base.CreateChildControls();
 
 			CountryName.ControlStyle.CopyFrom(ControlStyle);
-			CountryName.ID = ID + "_name";
+			CountryName.ID = ID;
 			CountryName.Attributes.Add("data-name", Name);
 			CountryName.Attributes.Add("data-list", "Country");
 			CountryName.Attributes.Add("data-category", Category);
