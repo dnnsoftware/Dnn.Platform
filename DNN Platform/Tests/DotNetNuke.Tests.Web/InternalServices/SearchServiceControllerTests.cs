@@ -650,5 +650,77 @@ namespace DotNetNuke.Tests.Web.InternalServices
             //2 Tabs results
             Assert.AreEqual(2, groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results.Count());
         }
+
+        [Test]
+        public void ModifyingDocumentsDoesNotCreateDuplicates()
+        {
+            //Arrange
+            const string tabUrl = "mysite/ContentUrl";
+            const string title = "content title";
+            const string contentBody = "content body";
+            const string titleModified = title + " modified";
+            var uniqueKey = Guid.NewGuid().ToString();
+            var now = DateTime.UtcNow;
+
+            var originalDocument = new SearchDocument
+            {
+                UniqueKey = uniqueKey,
+                TabId = TabId1,
+                Url = tabUrl,
+                Title = title,
+                Body = contentBody,
+                SearchTypeId = TabSearchTypeId,
+                ModifiedTimeUtc = now,
+                PortalId = PortalId0,
+                RoleId = RoleId731,
+                Keywords = { { "description", "mycontent" } },
+                NumericKeys = { {"points", 5} }
+            };
+
+            _internalSearchController.AddSearchDocument(originalDocument);
+            _internalSearchController.Commit();
+
+            var modifiedDocument = new SearchDocument
+            {
+                UniqueKey = uniqueKey,
+                TabId = TabId1,
+                Url = tabUrl,
+                Title = titleModified,
+                Body = contentBody + " modified",
+                SearchTypeId = TabSearchTypeId,
+                ModifiedTimeUtc = now,
+                PortalId = PortalId0,
+                RoleId = RoleId731,
+                Keywords = { { "description", "mycontent_modified" }, { "description2", "mycontent_modified" } },
+                NumericKeys = { { "points", 8 }, {"point2", 7 } }
+            };
+
+            _internalSearchController.AddSearchDocument(modifiedDocument);
+            _internalSearchController.Commit();
+
+            var query = new SearchQuery
+            {
+                KeyWords = title,
+                PortalIds = new List<int> { PortalId0 },
+                SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
+                BeginModifiedTimeUtc = now.AddMinutes(-1),
+                EndModifiedTimeUtc = now.AddMinutes(+1),
+                PageIndex = 1,
+                PageSize = 15,
+                SortField = 0,
+                TitleSnippetLength = 120,
+                BodySnippetLength = 300,
+                WildCardSearch = true
+            };
+
+            //Run 
+            var searchResults = GetGroupBasicViewResults(query).ToList();
+
+            //Assert
+            Assert.AreEqual(1, searchResults.Count());
+            Assert.AreEqual(1, searchResults.First().Results.Count);
+            Assert.AreEqual(tabUrl, searchResults.First().Results.First().DocumentUrl);
+            Assert.AreEqual(titleModified, searchResults.First().Results.First().Title);
+        }
     }
 }
