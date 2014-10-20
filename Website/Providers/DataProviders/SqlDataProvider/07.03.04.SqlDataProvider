@@ -71,6 +71,70 @@ BEGIN
 END
 GO
 
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddSchedule]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+	 @TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@CreatedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}AddSchedule]
+		(TypeFullName
+		,TimeLapse
+		,TimeLapseMeasurement
+		,RetryTimeLapse
+		,RetryTimeLapseMeasurement
+		,RetainHistoryNum
+		,AttachToEvent
+		,CatchUpEnabled
+		,Enabled
+		,ObjectDependencies
+		,Servers
+		,FriendlyName
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,ScheduleStartDate
+		)
+	VALUES
+		(@TypeFullName
+		,@TimeLapse
+		,@TimeLapseMeasurement
+		,@RetryTimeLapse
+		,@RetryTimeLapseMeasurement
+		,@RetainHistoryNum
+		,@AttachToEvent
+		,@CatchUpEnabled
+		,@Enabled
+		,@ObjectDependencies
+		,@Servers
+		,@FriendlyName
+		,@CreatedByUserID
+		,getdate()
+		,@CreatedByUserID
+		,getdate()
+		,@ScheduleStartDate
+		)
+		
+	SELECT (CAST SCOPE_IDENTITY() AS int);
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
