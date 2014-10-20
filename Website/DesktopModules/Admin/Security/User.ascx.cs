@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -630,7 +630,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         if (!displayNameIsUnique && Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName")))
                         {
-                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("UserNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                         }
                         else
                         {
