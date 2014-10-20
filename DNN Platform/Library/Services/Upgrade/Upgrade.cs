@@ -84,6 +84,7 @@ using Assembly = System.Reflection.Assembly;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
 using Util = DotNetNuke.Entities.Content.Common.Util;
+using DotNetNuke.Entities.Urls;
 
 #endregion
 
@@ -3531,11 +3532,11 @@ namespace DotNetNuke.Services.Upgrade
 
             moduleInfo.Content = moduleInfo.ModuleTitle;
 
-            DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.GetCurrentUserInfo().UserID);
+            DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.Instance.GetCurrentUserInfo().UserID);
 
             var eventLogController = new EventLogController();
-            eventLogController.AddLog(tab, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
-            eventLogController.AddLog(moduleInfo, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
+            eventLogController.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
+            eventLogController.AddLog(moduleInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
 
             foreach (PortalInfo portal in new PortalController().GetPortals())
             {
