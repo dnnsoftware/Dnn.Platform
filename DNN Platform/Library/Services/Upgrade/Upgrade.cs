@@ -1,5 +1,4 @@
 
-
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
@@ -5208,9 +5207,6 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.3.2":
                         UpgradeToVersion732();
-                        break;
-                    case "7.3.3":
-                        UpgradeToVersion733();
                         break;
                     case "7.3.3":
                         UpgradeToVersion733();
