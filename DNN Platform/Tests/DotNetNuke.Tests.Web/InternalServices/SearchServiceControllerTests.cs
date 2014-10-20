@@ -714,7 +714,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             };
 
             //Run 
-            var searchResults = GetGroupBasicViewResults(query).ToList();
+            var searchResults = GetGroupedDetailViewResults(query).ToList();
 
             //Assert
             Assert.AreEqual(1, searchResults.Count());
