@@ -22,75 +22,189 @@
 
 using System;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Web.UI;
+using DotNetNuke.Common.Utilities;
 
 #endregion
 
 namespace DotNetNuke.UI.WebControls
-{
-    /// -----------------------------------------------------------------------------
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNRegionEditControl
-    /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The DNNRegionEditControl control provides a standard UI component for editing
-    /// Regions
-    /// </summary>
-    /// <history>
-    ///     [cnurse]	05/04/2006	created
-    /// </history>
-    /// -----------------------------------------------------------------------------
-    [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
-    public class DNNRegionEditControl : DNNListEditControl
-    {
-		#region "Constructors"
+{	/// -----------------------------------------------------------------------------
+	/// Project:    DotNetNuke
+	/// Namespace:  DotNetNuke.UI.WebControls
+	/// Class:      DNNRegionEditControl
+	/// -----------------------------------------------------------------------------
+	/// <summary>
+	/// The DNNRegionEditControl control provides a standard UI component for editing
+	/// Regions
+	/// </summary>
+	/// <history>
+	///     [cnurse]	05/04/2006	created
+	/// </history>
+	/// -----------------------------------------------------------------------------
+	[ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
+	public class DNNRegionEditControl : EditControl
+	{
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Constructs a DNNRegionEditControl
-        /// </summary>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public DNNRegionEditControl()
-        {
-            AutoPostBack = false;
-            TextField = ListBoundField.Text;
-            ValueField = ListBoundField.Id;
-            SortAlphabetically = true;
-        }
-		
+		#region Controls
+		private DropDownList _Regions;
+		private DropDownList Regions
+		{
+			get
+			{
+				if (_Regions == null)
+				{
+					_Regions = new DropDownList();
+				}
+				return _Regions;
+			}
+		}
+
+		private TextBox _Region;
+		private TextBox Region
+		{
+			get
+			{
+				if (_Region == null)
+				{
+					_Region = new TextBox();
+				}
+				return _Region;
+			}
+		}
+
+		private HiddenField _InitialValue;
+		private HiddenField RegionCode
+		{
+			get
+			{
+				if (_InitialValue == null)
+				{
+					_InitialValue = new HiddenField();
+				}
+				return _InitialValue;
+			}
+		}
 		#endregion
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
-        /// </summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
-        /// <history>
-        ///     [cnurse]	05/04/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        protected override void RenderEditMode(HtmlTextWriter writer)
-        {
-            if (ListEntries == null || !ListEntries.Any())
-            {
-				//No List so use a Text Box
-                string propValue = Convert.ToString(Value);
-                ControlStyle.AddAttributesToRender(writer);
-                writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, propValue);
-                writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-                writer.RenderBeginTag(HtmlTextWriterTag.Input);
-                writer.RenderEndTag();
-            }
-            else
-            {
-				//Render the standard List
-                base.RenderEditMode(writer);
-            }
-        }
-    }
+		#region Properties
+		protected override string StringValue
+		{
+			get
+			{
+				string strValue = Null.NullString;
+				if (Value != null)
+				{
+					strValue = Convert.ToString(Value);
+				}
+				return strValue;
+			}
+			set { this.Value = value; }
+		}
+
+		protected string OldStringValue
+		{
+			get { return Convert.ToString(OldValue); }
+		}
+		#endregion
+
+		#region Constructors
+		public DNNRegionEditControl()
+		{
+			Load += DnnRegionControl_Load;
+			Init += DnnRegionControl_Init;
+		}
+		public DNNRegionEditControl(string type)
+		{
+			Load += DnnRegionControl_Load;
+			Init += DnnRegionControl_Init;
+			SystemType = type;
+		}
+		#endregion
+
+		#region Overrides
+		protected override void OnDataChanged(EventArgs e)
+		{
+			PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name);
+			args.Value = StringValue;
+			args.OldValue = OldStringValue;
+			args.StringValue = StringValue;
+			base.OnValueChanged(args);
+		}
+
+		protected override void CreateChildControls()
+		{
+			base.CreateChildControls();
+
+			Regions.ControlStyle.CopyFrom(ControlStyle);
+			Regions.ID = ID + "_dropdown";
+			Controls.Add(Regions);
+
+			Region.ControlStyle.CopyFrom(ControlStyle);
+			Region.ID = ID + "_text";
+			Controls.Add(Region);
+
+			RegionCode.ID = ID + "_value";
+			Controls.Add(RegionCode);
+
+		}
+
+		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+		{
+			EnsureChildControls();
+			bool dataChanged = false;
+			string presentValue = StringValue;
+			string postedValue = postCollection[postDataKey + "_value"];
+			if (!presentValue.Equals(postedValue))
+			{
+				Value = postedValue;
+				dataChanged = true;
+			}
+			return dataChanged;
+		}
+
+		protected override void OnPreRender(System.EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			LoadControls();
+
+			if (Page != null & EditMode == PropertyEditorMode.Edit)
+			{
+				Page.RegisterRequiresPostBack(this);
+				Page.RegisterRequiresPostBack(RegionCode);
+			}
+
+		}
+
+		protected override void RenderEditMode(HtmlTextWriter writer)
+		{
+			RenderChildren(writer);
+		}
+		#endregion
+
+		#region Page Events
+		private void DnnRegionControl_Init(object sender, System.EventArgs e)
+		{
+			//DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Albatros/Registration/js/countryregionbox.js"), 70);
+			//DotNetNuke.Framework.jQuery.RequestRegistration();
+			//DotNetNuke.Framework.jQuery.RequestUIRegistration();
+		}
+
+
+		private void DnnRegionControl_Load(object sender, System.EventArgs e)
+		{
+			//string script = string.Format(new XCData("\r\n  <script type='text/javascript'>\r\n   var dnnRegionBoxId = '{0}';\r\n  </script>\r\n  ").Value, this.ClientID);
+			//DotNetNuke.UI.Utilities.ClientAPI.RegisterStartUpScript(Page, "DnnRegionControl", script);
+		}
+		#endregion
+
+		#region Private Methods
+		private void LoadControls()
+		{
+			RegionCode.Value = StringValue;
+		}
+		#endregion
+
+	}
 }
