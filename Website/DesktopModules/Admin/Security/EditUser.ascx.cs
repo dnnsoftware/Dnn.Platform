@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     bool UniqueDisplayNamesRequired = Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName"));
                     if (!displayNameIsUnique && Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName")))
                     {
-                        throw new Exception("User Name must be unique");
+                        throw new Exception("Display Name must be unique");
                     }
                     else
                     {
@@ -514,9 +514,9 @@ namespace DotNetNuke.Modules.Admin.Users
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    if (exc.Message == "User Name must be unique")
+                    if (exc.Message == "Display Name must be unique")
                     {
-                        AddModuleMessage("UserNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {

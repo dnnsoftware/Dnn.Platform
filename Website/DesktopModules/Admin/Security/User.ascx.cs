@@ -630,7 +630,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         if (!displayNameIsUnique && Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName")))
                         {
-                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("UserNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                         }
                         else
                         {
