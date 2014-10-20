@@ -125,7 +125,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #region Private Statics Methods
         private static bool IsVersioningEnabled(ModuleInfo module)
         {
-            return module.PortalID != Null.NullInteger && TabVersionSettings.Instance.IsVersioningEnabled(module.PortalID);
+            return module.PortalID != Null.NullInteger && TabVersionSettings.Instance.IsVersioningEnabled(module.PortalID, module.TabID);
         }
 
         private static TabVersion GetOrCreateUnPublishedTabVersion(int tabId, int createdByUserID)

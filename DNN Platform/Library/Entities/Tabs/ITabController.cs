@@ -291,6 +291,21 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="publishTab">The tab that is checked</param>
         /// <returns>true if tab is published</returns>
         bool IsTabPublished(TabInfo publishTab);
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns></returns>
+        bool IsHostOrAdminPage(int tabId, int portalId);
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tab">The tab info.</param>
+        /// <returns></returns>
+        bool IsHostOrAdminPage(TabInfo tab);
         
         /// <summary>
         /// Localizes the tab.

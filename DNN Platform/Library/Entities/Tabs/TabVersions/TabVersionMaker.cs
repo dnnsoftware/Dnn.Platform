@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void SetupFirstVersionForExistingTab(int portalId, int tabId)
         {
-            if (!TabVersionSettings.Instance.IsVersioningEnabled(portalId))
+            if (!TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId))
             {
                 return;
             }
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public void Publish(int portalId, int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled();
+            CheckVersioningEnabled(tabId);
 
             var tabVersion = GetUnPublishedVersion(tabId);            
             if (tabVersion == null)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void Discard(int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled();
+            CheckVersioningEnabled(tabId);
 
             var tabVersion = GetUnPublishedVersion(tabId);            
             if (tabVersion == null)
@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void DeleteVersion(int tabId, int createdByUserID, int version)
         {
-            CheckVersioningEnabled();
+            CheckVersioningEnabled(tabId);
 
             if (GetUnPublishedVersion(tabId) != null)
             {                
@@ -225,7 +225,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public TabVersion RollBackVesion(int tabId, int createdByUserID, int version)
         {
-            CheckVersioningEnabled();
+            CheckVersioningEnabled(tabId);
 
             if (GetUnPublishedVersion(tabId) != null)
             {                
@@ -278,7 +278,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public TabVersion CreateNewVersion(int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled();
+            CheckVersioningEnabled(tabId);
 
             SetupFirstVersionForExistingTab(GetCurrentPortalId(), tabId);
 
@@ -429,10 +429,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                                                                 }).ToList();
         }
 
-        private static void CheckVersioningEnabled()
+        private static void CheckVersioningEnabled(int tabId)
         {
             var portalId = GetCurrentPortalId();
-            if (portalId == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(portalId))
+            if (portalId == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId))
             {
                 throw new InvalidOperationException(Localization.GetString("TabVersioningNotEnabled", Localization.ExceptionsResourceFile));
             }

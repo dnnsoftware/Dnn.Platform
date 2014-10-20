@@ -53,9 +53,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public bool IsVersioningEnabled(int portalId)
         {
-            Requires.NotNegative("portalId", portalId);
-            return Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, Boolean.FalseString));
+            return IsVersioningEnabled(portalId, Null.NullInteger);
         }
+
+        public bool IsVersioningEnabled(int portalId, int tabId)
+        {
+            Requires.NotNegative("portalId", portalId);
+            var isVersioningEnabledForPortal =
+                Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, Boolean.FalseString));
+            var isVersioningEnabledForTab = tabId == Null.NullInteger 
+                                                || !TabController.Instance.IsHostOrAdminPage(tabId, portalId);
+
+            return isVersioningEnabledForPortal && isVersioningEnabledForTab;
+        }
+
 
         public string GetTabVersionQueryStringParameter(int portalId)
         {

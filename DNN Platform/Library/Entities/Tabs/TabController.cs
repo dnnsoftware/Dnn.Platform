@@ -94,6 +94,33 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         #region Private Methods
+        private bool IsAdminTab(TabInfo tab)
+        {
+            var portal = PortalController.Instance.GetPortal(tab.PortalID);
+            return portal.AdminTabId == tab.TabID || IsAdminTabRecursive(tab, portal.AdminTabId);
+        }
+
+        private bool IsAdminTabRecursive(TabInfo tab, int adminTabId)
+        {
+            if (tab.ParentId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            if (tab.ParentId == adminTabId)
+            {
+                return true;
+            }
+
+            var parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID);
+            return IsAdminTabRecursive(parentTab, adminTabId);
+        }
+
+        private bool IsHostTab(TabInfo tab)
+        {
+            return tab.PortalID == Null.NullInteger;
+        }
+
 
         private static void AddAllTabsModules(TabInfo tab)
         {
@@ -165,7 +192,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             //Check Tab Versioning
-            if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID, tab.TabID))
             {
                 MarkAsPublished(tab);
             }
@@ -2468,6 +2495,28 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return isSpecial;
+        }
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns></returns>
+        public bool IsHostOrAdminPage(int tabId, int portalId)
+        {
+            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
+            return IsHostOrAdminPage(tabInfo);
+        }
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tab">The tab info.</param>
+        /// <returns></returns>
+        public bool IsHostOrAdminPage(TabInfo tab)
+        {
+            return IsHostTab(tab) || IsAdminTab(tab);
         }
 
         /// <summary>
