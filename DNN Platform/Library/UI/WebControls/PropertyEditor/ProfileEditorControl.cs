@@ -102,8 +102,11 @@ namespace DotNetNuke.UI.WebControls
                     {
                         if (checkEditor.Editor is DNNCountryEditControl)
                         {
-                            var countryEdit = (DNNCountryEditControl) checkEditor.Editor;
-                            country = Convert.ToString(countryEdit.Value);
+							if (editor.Editor.Category == checkEditor.Editor.Category)
+							{
+								var countryEdit = (DNNCountryEditControl)checkEditor.Editor;
+								country = Convert.ToString(countryEdit.Value);
+							}
                         }
                     }
 					

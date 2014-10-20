@@ -128,7 +128,7 @@ namespace DotNetNuke.Web.InternalServices
                 results.AddRange(from roleInfo in roles
                                     where
                                         isAdmin ||
-                                        UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID) != null
+                                        UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
                                     select new SearchResult
                                     {
                                         id = "role-" + roleInfo.RoleID,

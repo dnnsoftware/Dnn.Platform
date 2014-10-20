@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string NumericKeyPrefixTag = "nk-";
         internal const string KeywordsPrefixTag = "kw-";
         internal const string SubjectTag = "subject";
-        internal const string CatagoryTag = "catagory";
+        internal const string CategoryTag = "category";
         internal const string StatusTag = "status";
         internal const string RoleIdTag = "role";
 
@@ -89,7 +89,9 @@ namespace DotNetNuke.Services.Search.Internals
         //If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
-        internal static string[] KeyWordSearchFields = new[] { TitleTag, 
+        internal readonly static string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
+
+        internal readonly static string[] KeyWordSearchFields = { TitleTag, 
                                                                 Tag, 
                                                                 DescriptionTag, 
                                                                 BodyTag, 

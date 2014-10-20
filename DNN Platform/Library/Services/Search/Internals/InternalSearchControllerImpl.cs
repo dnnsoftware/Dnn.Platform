@@ -334,18 +334,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.CultureCode))
                 query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
-
-            foreach (var kvp in searchDocument.Keywords)
-            {
-                query.Add(new TermQuery(new Term(
-                    StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), kvp.Value)), Occur.MUST);
-            }
-
-            foreach (var kvp in searchDocument.NumericKeys)
-            {
-                query.Add(NumericValueQuery(Constants.NumericKeyPrefixTag + kvp.Key, searchDocument.TabId), Occur.MUST);
-            }
-
+            
             LuceneController.Instance.Delete(query);
 
             if (autoCommit)
@@ -444,15 +433,10 @@ namespace DotNetNuke.Services.Search.Internals
 
             foreach (var kvp in searchDocument.Keywords)
             {
-                bool needAnalyzed = kvp.Key == Constants.TitleTag
-                                    || kvp.Key == Constants.SubjectTag
-                                    || kvp.Key == Constants.CommentsTag
-                                    || kvp.Key == Constants.AuthorNameTag
-                                    || kvp.Key == Constants.StatusTag
-                                    || kvp.Key == Constants.CatagoryTag;
-
+                var key = kvp.Key.ToLower();
+                var needAnalyzed = Constants.FieldsNeedAnalysis.Contains(key);
                 var field = new Field(StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, needAnalyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
-                switch (kvp.Key)
+                switch (key)
                 {
                     case Constants.TitleTag:
                         if (_titleBoost > 0 && _titleBoost != Constants.StandardLuceneBoost)
