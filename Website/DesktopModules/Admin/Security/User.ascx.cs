@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -618,10 +618,26 @@ namespace DotNetNuke.Modules.Admin.Users
                         {
                             UserController.ChangeUsername(User.UserID, renameUserName.Value.ToString());
                         }
-
-                        UserController.UpdateUser(UserPortalID, User);
-                        OnUserUpdated(EventArgs.Empty);
-                        OnUserUpdateCompleted(EventArgs.Empty);
+                        //DNN-5874 Check if unique display name is required
+                        bool displayNameIsUnique = true;
+                        System.Collections.Generic.List<UserInfo> usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                        foreach (UserInfo user in usersWithSameDisplayName)
+                        {
+                            if (user.UserID != User.UserID)
+                            {
+                                displayNameIsUnique = false;
+                            }
+                        }
+                        if (!displayNameIsUnique && Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName")))
+                        {
+                            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                        }
+                        else
+                        {
+                            UserController.UpdateUser(UserPortalID, User);
+                            OnUserUpdated(EventArgs.Empty);
+                            OnUserUpdateCompleted(EventArgs.Empty);
+                        }
                     }
                     catch (Exception exc)
                     {
