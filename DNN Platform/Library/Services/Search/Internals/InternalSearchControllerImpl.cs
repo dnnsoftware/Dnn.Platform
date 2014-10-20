@@ -334,18 +334,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.CultureCode))
                 query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
-
-            foreach (var kvp in searchDocument.Keywords)
-            {
-                query.Add(new TermQuery(new Term(
-                    StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), kvp.Value)), Occur.MUST);
-            }
-
-            foreach (var kvp in searchDocument.NumericKeys)
-            {
-                query.Add(NumericValueQuery(Constants.NumericKeyPrefixTag + kvp.Key, searchDocument.TabId), Occur.MUST);
-            }
-
+            
             LuceneController.Instance.Delete(query);
 
             if (autoCommit)

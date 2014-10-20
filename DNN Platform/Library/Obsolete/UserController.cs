@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.3. Replaced bu UserController.Instance.GetCurrentUserInfo()")]
+        [Obsolete("Deprecated in DNN 7.3. Replaced by UserController.Instance.GetCurrentUserInfo()")]
         public static UserInfo GetCurrentUserInfo()
         {
             return GetCurrentUserInternal();
