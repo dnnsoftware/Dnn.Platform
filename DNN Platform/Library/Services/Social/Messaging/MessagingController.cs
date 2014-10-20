@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (roles != null && roles.Count > 0 && !IsAdminOrHost(sender))
             {
-                if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID)))
+                if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID && userRoleInfo.IsOwner)))
                 {
                     throw new ArgumentException(Localization.Localization.GetString("MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError", Localization.Localization.ExceptionsResourceFile));
                 }

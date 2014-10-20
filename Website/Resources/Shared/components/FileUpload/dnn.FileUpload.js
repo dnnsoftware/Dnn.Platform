@@ -183,7 +183,7 @@
                 success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
                 error: $.onAjaxError
             };
-            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "" };
+            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "", IsHostMenu: this.options.parameters.isHostPortal };
             $.extend(serviceSettings.data, this.options.parameters);
             $.ajax(serviceSettings);
         },
