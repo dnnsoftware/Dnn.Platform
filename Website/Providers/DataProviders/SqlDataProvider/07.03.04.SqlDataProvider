@@ -71,8 +71,8 @@ BEGIN
 END
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermission]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermission]
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFoldersByPermissions]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFoldersByPermissions]
 GO
 
 --DNN-5909 - Removed un-needed joins from query
