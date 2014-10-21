@@ -162,7 +162,8 @@ namespace DotNetNuke.UI.WebControls
 		#region " Page Events "
 		private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
 		{
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.CountriesRegions.js");
+			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
+			ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
 			JavaScript.RequestRegistration(CommonJs.jQuery);
 			JavaScript.RequestRegistration(CommonJs.jQueryUI);
 		}
