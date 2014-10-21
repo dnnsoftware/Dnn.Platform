@@ -201,6 +201,7 @@ namespace DotNetNuke.UI.WebControls
 			Regions.ControlStyle.CopyFrom(ControlStyle);
 			Regions.ID = ID + "_dropdown";
 			Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
+			Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
 			Controls.Add(Regions);
 
 			Region.ControlStyle.CopyFrom(ControlStyle);
@@ -245,7 +246,6 @@ namespace DotNetNuke.UI.WebControls
 		{
 			if (ListEntries != null && ListEntries.Any())
 			{
-				Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
 				foreach (ListEntryInfo item in ListEntries)
 				{
 					Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.Value });

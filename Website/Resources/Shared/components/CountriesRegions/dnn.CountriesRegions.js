@@ -36,7 +36,7 @@ function CountryRegionService($) {
 function setupRegionLists() {
 	$('div[data-list="Region"]').each(function (index, value) {
 		var stringValue = $(value).children('input[data-editor="DNNRegionEditControl_Hidden"]').val();
-		if ($(value).children('select').children('option').length == 0) {
+		if ($(value).children('select').children('option').length < 2) {
 			$(value).children('select').hide();
 			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').show();
 			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').val(stringValue);
@@ -54,7 +54,7 @@ function setupRegionLists() {
 function loadRegionList(category, country) {
 	$('div[data-list="Region"][data-category="' + category + '"]').each(function (index, value) {
 		var dd = $(value).children('select');
-		$(dd).empty();
+		$(dd).children().not(':first').remove();
 		if (country != '') {
 			if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
 			dnnCountryRegionService.listRegions(country, function (data) {
