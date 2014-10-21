@@ -119,6 +119,7 @@ namespace DotNetNuke.UI.WebControls
 			CountryName.Attributes.Add("data-list", "Country");
 			CountryName.Attributes.Add("data-category", Category);
 			CountryName.Attributes.Add("data-editor", "DnnCountryAutocompleteControl");
+			CountryName.Attributes.Add("data-required", Required.ToString().ToLower());
 			Controls.Add(CountryName);
 
 			CountryCode.ID = ID + "_code";
