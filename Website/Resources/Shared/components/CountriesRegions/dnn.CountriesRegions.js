@@ -21,7 +21,7 @@ function CountryRegionService($) {
 		$.ajax({
 			type: "GET",
 			url: baseServicepath + 'Regions',
-			data: {country: country}
+			data: { country: country }
 		}).done(function (data) {
 			if (success != undefined) {
 				success(data);
@@ -55,16 +55,25 @@ function loadRegionList(category, country) {
 	$('div[data-list="Region"][data-category="' + category + '"]').each(function (index, value) {
 		var dd = $(value).children('select');
 		$(dd).empty();
-		if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
-		dnnCountryRegionService.listRegions(country, function (data) {
-			$.each(data, function (index, value) {
-				$(dd).append($('<option>').text(value.Text).attr('value', value.Value));
+		if (country != '') {
+			if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
+			dnnCountryRegionService.listRegions(country, function (data) {
+				$.each(data, function (index, value) {
+					$(dd).append($('<option>').text(value.Text).attr('value', value.Value));
+				});
+				setupRegionLists();
 			});
-			setupRegionLists();
-		});
+		}
 	});
 }
 
+function clearCountryValue(countryControl) {
+	$('#' + $(countryControl).attr('id') + '_code').val('');
+	$(countryControl).attr('data-value', '');
+	$(countryControl).attr('value', '');
+	loadRegionList($(countryControl).attr('data-category'), '');
+	setupRegionLists();
+}
 
 function setupCountryAutoComplete() {
 	$('input[data-editor="DnnCountryAutocompleteControl"]').autocomplete({
@@ -72,6 +81,9 @@ function setupCountryAutoComplete() {
 		source: function (request, response) {
 			if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
 			dnnCountryRegionService.listCountries(request.term, function (data) {
+				if (data.length == 0) {
+					clearCountryValue(this);
+				};
 				response($.map(data, function (item) {
 					return {
 						label: item.FullName,
@@ -88,10 +100,19 @@ function setupCountryAutoComplete() {
 			$(this).attr('data-text', ui.item.name);
 		},
 		close: function () {
-			$(this).val($(this).attr('data-text'));
-			loadRegionList($(this).attr('data-category'), $(this).attr('data-value'));
+			if ($(this).attr('data-text') != undefined) {
+				$(this).val($(this).attr('data-text'));
+				loadRegionList($(this).attr('data-category'), $(this).attr('data-value'));
+			} else {
+				clearCountryValue(this);
+			}
 		}
-	})
+	});
+	$('input[data-editor="DnnCountryAutocompleteControl"]').change(function () {
+		if ($(this).val().length < 2) {
+			clearCountryValue(this);
+		}
+	});
 }
 
 function initCountryRegionControls() {
