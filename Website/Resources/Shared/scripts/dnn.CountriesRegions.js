@@ -20,24 +20,8 @@ function CountryRegionService($) {
 	this.listRegions = function (country, success) {
 		$.ajax({
 			type: "GET",
-			url: baseServicepath + 'Country/' + country + '/Regions',
-			beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-			data: {}
-		}).done(function (data) {
-			if (success != undefined) {
-				success(data);
-			}
-		}).fail(function (xhr, status) {
-			alert(eval("(" + xhr.responseText + ")").ExceptionMessage);
-		});
-	};
-
-	this.listSiblingRegions = function (region, success) {
-		$.ajax({
-			type: "GET",
-			url: baseServicepath + 'Region/' + region + '/Siblings',
-			beforeSend: $.dnnSF(moduleId).setModuleHeaders,
-			data: { searchString: searchString }
+			url: baseServicepath + 'Regions',
+			data: {country: country}
 		}).done(function (data) {
 			if (success != undefined) {
 				success(data);
@@ -49,48 +33,38 @@ function CountryRegionService($) {
 
 }
 
-function setRegionList() {
-	if (typeof dnnRegionBoxId !== 'undefined') {
-		$('#' + dnnRegionBoxId + '_dropdown').hide();
-		$('#' + dnnRegionBoxId + '_text').show();
-		var initVal = $('#' + dnnRegionBoxId + '_value').attr('value');
-		if (typeof dnnCountryBoxId !== 'undefined') {
-			dnnCountryRegionService.listRegions($('#' + dnnCountryBoxId + '_code').val(), function (data) {
-				setRegionDropdown(data);
-			});
+function setupRegionLists() {
+	$('div[data-list="Region"]').each(function (index, value) {
+		var stringValue = $(value).children('input[data-editor="DNNRegionEditControl_Hidden"]').val();
+		if ($(value).children('select').children('option').length == 0) {
+			$(value).children('select').hide();
+			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').show();
+			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').val(stringValue);
 		} else {
-			if (initVal != '') {
-				dnnCountryRegionService.listSiblingRegions(initVal, function (data) {
-					setRegionDropdown(data);
-				});
-			}
-		}
-		$('#' + dnnRegionBoxId + '_dropdown').change(function () {
-			$('#' + dnnRegionBoxId + '_value').val($('#' + dnnRegionBoxId + '_dropdown option:selected').val());
-		});
-		$('#' + dnnRegionBoxId + '_text').change(function () {
-			$('#' + dnnRegionBoxId + '_value').val($('#' + dnnRegionBoxId + '_text').val());
-		});
-	}
+			$(value).children('select').show();
+			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').hide();
+			$(value).children('select').children('option[value="' + stringValue + '"]').prop('selected', true);
+		};
+	});
+	$('select[data-editor="DNNRegionEditControl_DropDown"]').change(function () {
+		$(this).parent().children('input[data-editor="DNNRegionEditControl_Hidden"]').val($(this).val());
+	});
 }
 
-function setRegionDropdown(data) {
-	if (typeof dnnRegionBoxId == 'undefined') { return };
-	var dd = $('#' + dnnRegionBoxId + '_dropdown');
-	$(dd).empty();
-	$.each(data, function (index, value) {
-		$(dd).append($('<option>').text(value.Text).attr('value', value.Value));
+function loadRegionList(category, country) {
+	$('div[data-list="Region"][data-category="' + category + '"]').each(function (index, value) {
+		var dd = $(value).children('select');
+		$(dd).empty();
+		if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
+		dnnCountryRegionService.listRegions(country, function (data) {
+			$.each(data, function (index, value) {
+				$(dd).append($('<option>').text(value.Text).attr('value', value.Value));
+			});
+			setupRegionLists();
+		});
 	});
-	if ($(dd).children().length == 0) {
-		$(dd).hide();
-		$('#' + dnnRegionBoxId + '_text').show();
-		$('#' + dnnRegionBoxId + '_text').val($('#' + dnnRegionBoxId + '_value').val());
-	} else {
-		$(dd).show();
-		$('#' + dnnRegionBoxId + '_text').hide();
-		$(dd).children('option[value="' + $('#' + dnnRegionBoxId + '_value').val() + '"]').attr('selected', '1');
-	}
 }
+
 
 function setupCountryAutoComplete() {
 	$('input[data-editor="DnnCountryAutocompleteControl"]').autocomplete({
@@ -110,28 +84,26 @@ function setupCountryAutoComplete() {
 		},
 		select: function (event, ui) {
 			$('#' + $(this).attr('id') + '_code').val(ui.item.id);
+			$(this).attr('data-value', ui.item.id);
 			$(this).attr('data-text', ui.item.name);
 		},
 		close: function () {
 			$(this).val($(this).attr('data-text'));
-			// setRegionList();
+			loadRegionList($(this).attr('data-category'), $(this).attr('data-value'));
 		}
 	})
 }
 
-function resetCountryRegionControls() {
-	alert('here');
+function initCountryRegionControls() {
 	setupCountryAutoComplete();
-	setRegionList();
+	setupRegionLists();
 }
 
-Sys.WebForms.PageRequestManager.getInstance().add_endRequest(resetCountryRegionControls);
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(initCountryRegionControls);
 
 
 (function ($) {
 	$(document).ready(function () {
-		// alert($('input[data-editor="DnnCountryAutocompleteControl"]').length);
-		// alert($.dnnSF(-1).getServiceRoot('InternalServices') + 'CountryRegion/')
-		setupCountryAutoComplete();
+		initCountryRegionControls();
 	});
 })(jQuery);

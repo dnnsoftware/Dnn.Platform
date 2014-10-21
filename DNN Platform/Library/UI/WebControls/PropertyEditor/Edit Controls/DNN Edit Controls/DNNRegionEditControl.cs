@@ -25,6 +25,13 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using DotNetNuke.Common.Utilities;
+using System.Web.UI.HtmlControls;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using System.Collections.Generic;
+using DotNetNuke.Common.Lists;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -73,14 +80,14 @@ namespace DotNetNuke.UI.WebControls
 			}
 		}
 
-		private HiddenField _InitialValue;
-		private HiddenField RegionCode
+		private HtmlInputHidden _InitialValue;
+		private HtmlInputHidden RegionCode
 		{
 			get
 			{
 				if (_InitialValue == null)
 				{
-					_InitialValue = new HiddenField();
+					_InitialValue = new HtmlInputHidden();
 				}
 				return _InitialValue;
 			}
@@ -106,23 +113,78 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get { return Convert.ToString(OldValue); }
 		}
+
+		/// <summary>
+		/// The parent key of the List to display
+		/// </summary>
+		public string ParentKey { get; set; }
+
+		private List<ListEntryInfo> _listEntries;
+		/// <summary>
+		/// Gets the ListEntryInfo objects associated witht the control
+		/// </summary>
+		protected IEnumerable<ListEntryInfo> ListEntries
+		{
+			get
+			{
+				if (_listEntries == null)
+				{
+					var listController = new ListController();
+					_listEntries = listController.GetListEntryInfoItems("Region", ParentKey, PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+				}
+
+				return _listEntries;
+			}
+		}
+
+		protected int PortalId
+		{
+			get
+			{
+				return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+			}
+		}
 		#endregion
 
 		#region Constructors
 		public DNNRegionEditControl()
 		{
-			Load += DnnRegionControl_Load;
 			Init += DnnRegionControl_Init;
 		}
 		public DNNRegionEditControl(string type)
 		{
-			Load += DnnRegionControl_Load;
 			Init += DnnRegionControl_Init;
 			SystemType = type;
 		}
 		#endregion
 
 		#region Overrides
+		/// -----------------------------------------------------------------------------
+		/// <summary>
+		/// OnAttributesChanged runs when the CustomAttributes property has changed.
+		/// </summary>
+		/// <history>
+		///     [cnurse]	06/08/2006	created
+		/// </history>
+		/// -----------------------------------------------------------------------------
+		protected override void OnAttributesChanged()
+		{
+			//Get the List settings out of the "Attributes"
+			if ((CustomAttributes != null))
+			{
+				foreach (Attribute attribute in CustomAttributes)
+				{
+					if (attribute is ListAttribute)
+					{
+						var listAtt = (ListAttribute)attribute;
+						ParentKey = listAtt.ParentKey;
+						_listEntries = null;
+						break;
+					}
+				}
+			}
+		}
+
 		protected override void OnDataChanged(EventArgs e)
 		{
 			PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name);
@@ -138,20 +200,22 @@ namespace DotNetNuke.UI.WebControls
 
 			Regions.ControlStyle.CopyFrom(ControlStyle);
 			Regions.ID = ID + "_dropdown";
+			Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
 			Controls.Add(Regions);
 
 			Region.ControlStyle.CopyFrom(ControlStyle);
 			Region.ID = ID + "_text";
+			Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
 			Controls.Add(Region);
 
 			RegionCode.ID = ID + "_value";
+			RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
 			Controls.Add(RegionCode);
 
 		}
 
 		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
 		{
-			EnsureChildControls();
 			bool dataChanged = false;
 			string presentValue = StringValue;
 			string postedValue = postCollection[postDataKey + "_value"];
@@ -179,24 +243,32 @@ namespace DotNetNuke.UI.WebControls
 
 		protected override void RenderEditMode(HtmlTextWriter writer)
 		{
+			if (ListEntries != null && ListEntries.Any())
+			{
+				Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
+				foreach (ListEntryInfo item in ListEntries)
+				{
+					Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.Value });
+				}
+			}
+			ControlStyle.AddAttributesToRender(writer);
+			writer.AddAttribute("data-name", Name);
+			writer.AddAttribute("data-list", "Region");
+			writer.AddAttribute("data-category", Category);
+			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 			RenderChildren(writer);
+			writer.RenderEndTag();
 		}
 		#endregion
 
 		#region Page Events
 		private void DnnRegionControl_Init(object sender, System.EventArgs e)
 		{
-			//DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, ResolveUrl("~/DesktopModules/Albatros/Registration/js/countryregionbox.js"), 70);
-			//DotNetNuke.Framework.jQuery.RequestRegistration();
-			//DotNetNuke.Framework.jQuery.RequestUIRegistration();
+			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.CountriesRegions.js");
+			JavaScript.RequestRegistration(CommonJs.jQuery);
+			JavaScript.RequestRegistration(CommonJs.jQueryUI);
 		}
 
-
-		private void DnnRegionControl_Load(object sender, System.EventArgs e)
-		{
-			//string script = string.Format(new XCData("\r\n  <script type='text/javascript'>\r\n   var dnnRegionBoxId = '{0}';\r\n  </script>\r\n  ").Value, this.ClientID);
-			//DotNetNuke.UI.Utilities.ClientAPI.RegisterStartUpScript(Page, "DnnRegionControl", script);
-		}
 		#endregion
 
 		#region Private Methods

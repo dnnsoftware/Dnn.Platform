@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.InternalServices
 		public HttpResponseMessage Regions(string country)
 		{
 			List<Region> res = new List<Region>();
-			foreach (ListEntryInfo r in (new ListController()).GetListEntryInfoItems("Region", "Country." + country, ActiveModule.PortalID))
+			foreach (ListEntryInfo r in (new ListController()).GetListEntryInfoItems("Region", "Country." + country, -1))
 			{
 				res.Add(new Region
 				{
@@ -44,28 +44,6 @@ namespace DotNetNuke.Web.InternalServices
 			}
 			return Request.CreateResponse(HttpStatusCode.OK, res);
 		}
-
-		[HttpGet()]
-		public HttpResponseMessage SiblingRegions(string region)
-		{
-			List<Region> res = new List<Region>();
-			foreach (ListEntryInfo r in GetSiblingRegions(ActiveModule.PortalID, region))
-			{
-				res.Add(new Region
-				{
-					Text = r.Text,
-					Value = r.Value
-				});
-			}
-			return Request.CreateResponse(HttpStatusCode.OK, res);
-		}
-
-		public static List<ListEntryInfo> GetSiblingRegions(int portalId, string region)
-		{
-			// return DotNetNuke.Common.Utilities.CBO.FillCollection<ListEntryInfo>(Albatros.DNN.Modules.Registration.Data.DataProvider.Instance().GetSiblingRegions(portalId, region));
-			return new List<ListEntryInfo>();
-		}
-
 
 	}
 }

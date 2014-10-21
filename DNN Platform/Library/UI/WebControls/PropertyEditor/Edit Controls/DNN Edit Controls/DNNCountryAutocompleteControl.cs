@@ -128,7 +128,6 @@ namespace DotNetNuke.UI.WebControls
 
 		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
 		{
-			EnsureChildControls();
 			bool dataChanged = false;
 			string presentValue = StringValue;
 			string postedValue = postCollection[postDataKey + "_code"];
@@ -173,6 +172,7 @@ namespace DotNetNuke.UI.WebControls
 		#region " Private Methods "
 		private void LoadControls()
 		{
+
 			CountryName.Text = StringValue;
 			CachedCountryList countries = CachedCountryList.GetCountryList(System.Threading.Thread.CurrentThread.CurrentCulture.Name);
 			if (countries.ContainsKey(StringValue))
@@ -180,6 +180,26 @@ namespace DotNetNuke.UI.WebControls
 				CountryName.Text = countries[StringValue].Name;
 			}
 			CountryCode.Value = StringValue;
+
+			var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(Page, c => IsCoupledRegionControl(c));
+			if (regionControl2 != null)
+			{
+				regionControl2.ParentKey = "Country." + StringValue;
+			}
+
+		}
+
+		private bool IsCoupledRegionControl(Control ctr)
+		{
+			if (ctr is DNNRegionEditControl)
+			{
+				var c = (DNNRegionEditControl)ctr;
+				if (c.Category == this.Category)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		#endregion
 
