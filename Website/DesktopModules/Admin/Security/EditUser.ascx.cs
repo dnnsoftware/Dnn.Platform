@@ -489,39 +489,15 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     //Update DisplayName to conform to Format
                     UpdateDisplayName();
-                    //DNN-5874 Check if unique display name is required
-                    bool displayNameIsUnique = true;
-                    System.Collections.Generic.List<UserInfo> usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
-                    foreach (UserInfo user in usersWithSameDisplayName)
-                    {
-                        if (user.UserID != User.UserID)
-                        {
-                            displayNameIsUnique = false;
-                        }
-                    }
-                    bool UniqueDisplayNamesRequired = Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName"));
-                    if (!displayNameIsUnique && Convert.ToBoolean(GetSetting(PortalId, "Registration_RequireUniqueDisplayName")))
-                    {
-                        throw new Exception("Display Name must be unique");
-                    }
-                    else
-                    {
-                        UserController.UpdateUser(UserPortalID, User);
-                    }
+
+                    UserController.UpdateUser(UserPortalID, User);
+
                     Response.Redirect(Request.RawUrl);
-                    
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    if (exc.Message == "Display Name must be unique")
-                    {
-                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
-                    }
-                    else
-                    {
-                        AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
-                    }
+                    AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
 
