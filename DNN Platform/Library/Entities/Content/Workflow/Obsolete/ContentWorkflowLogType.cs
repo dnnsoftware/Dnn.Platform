@@ -23,16 +23,20 @@ using System;
 
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    /// <summary>
+    /// This enum represents the possible list of WorkflowLogType
+    /// </summary>
+    [Obsolete("Obsoleted in Platform 7.4.0")]   
     public enum ContentWorkflowLogType
     {
-        WorkflowStarted,
-        StateCompleted,
-        DraftCompleted,
-        StateDiscarded,
-        StateInitiated,
-        WorkflowApproved,
-        WorkflowDiscarded,
-        CommentProvided,
-        WorkflowError
+        WorkflowStarted = 0,
+        StateCompleted = 1,
+        DraftCompleted = 2,
+        StateDiscarded = 3,
+        StateInitiated = 4,
+        WorkflowApproved = 5,
+        WorkflowDiscarded = 6,
+        CommentProvided = 10,
+        WorkflowError = 500
     }
 }

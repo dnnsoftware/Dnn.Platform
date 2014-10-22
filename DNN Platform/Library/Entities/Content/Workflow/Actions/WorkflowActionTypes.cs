@@ -19,35 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Xml.Serialization;
-
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    public class ContentWorkflowState 
+    /// <summary>
+    /// This enum represents the workflow action types
+    /// </summary>
+    public enum WorkflowActionTypes
     {
-        public int StateID { get; set; }
-
-        public int WorkflowID { get; set; }
-
-        public string StateName { get; set; }
-
-        public int Order { get; set; }
-
-        public bool IsActive { get; set; }
-
-        public bool SendEmail { get; set; }
-
-        public bool SendMessage { get; set; }
-
-        public bool IsDisposalState { get; set; }
-
-        public string OnCompleteMessageSubject { get; set; }
-
-        public string OnCompleteMessageBody { get; set; }
-
-        public string OnDiscardMessageSubject { get; set; }
-
-        public string OnDiscardMessageBody { get; set; }
+        DiscardWorkflow,
+        CompleteWorkflow,
+        DiscardState,
+        CompleteState
     }
 }

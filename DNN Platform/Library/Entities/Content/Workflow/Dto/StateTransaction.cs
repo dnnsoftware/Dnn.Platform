@@ -19,18 +19,31 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow.Dto
 {
-    public class ContentWorkflowLog
+    /// <summary>
+    /// This Dto class represents the workflow state transaction on complete state or discard state.
+    /// </summary>
+    public class StateTransaction
     {
-        public int WorkflowLogID { get; set; }
-        public int WorkflowID { get; set; }
-        public int ContentItemID { get; set; }
-        public string Action { get; set; }
-        public string Comment { get; set; }
-        public DateTime Date { get; set; }
-        public int User { get; set; }
+        /// <summary>
+        /// The content item id that represent the element that is going to change workflow state
+        /// </summary>
+        public int ContentItemId { get; set; }
+
+        /// <summary>
+        /// The current state of the element
+        /// </summary>
+        public int CurrentStateId { get; set; }
+
+        /// <summary>
+        /// This property represents the user that performs the state transaction
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// This property represents the message attached to the state transaction
+        /// </summary>
+        public StateTransactionMessage Message { get; set; }
     }
 }

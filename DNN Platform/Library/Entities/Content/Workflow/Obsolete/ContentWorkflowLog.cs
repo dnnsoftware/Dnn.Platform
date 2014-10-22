@@ -19,25 +19,49 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Entities.Modules;
+using System;
 
-namespace DotNetNuke.Entities.Tabs.TabVersions
+namespace DotNetNuke.Entities.Content.Workflow
 {
-    public interface ITabVersionTracker
+    /// <summary>
+    /// This entity represents a Workflow Log
+    /// </summary>
+    [Obsolete("Obsoleted in Platform 7.4.0")]   
+    public class ContentWorkflowLog
     {
         /// <summary>
-        /// Tracks an added module into a Tab Version
+        /// Workflow log Id
         /// </summary>
-        void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId);
+        public int WorkflowLogID { get; set; }
 
         /// <summary>
-        /// Tracks a modified module into a Tab Version
+        /// Workflow associated to the log entry
         /// </summary>
-        void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId);
+        public int WorkflowID { get; set; }
+
+        /// <summary>
+        /// Content Item associated to the log entry
+        /// </summary>
+        public int ContentItemID { get; set; }
         
         /// <summary>
-        ///  Tracks a deleted module into a Tab Version
+        /// Action name (usually is a localized representation of the ContentWorkflowLogType)
         /// </summary>
-        void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId);
+        public string Action { get; set; }
+
+        /// <summary>
+        /// Comment
+        /// </summary>
+        public string Comment { get; set; }
+
+        /// <summary>
+        /// Log date
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
+        /// User Id associated to the log
+        /// </summary>
+        public int User { get; set; }
     }
 }

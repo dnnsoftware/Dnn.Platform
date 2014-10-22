@@ -39,6 +39,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -197,6 +198,12 @@ namespace DotNetNuke.Entities.Tabs
                 MarkAsPublished(tab);
             }
 
+            // Workflow initialization.
+            if (WorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
+            {
+                var defaultWorkflow = WorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
+                WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
             return tab.TabID;
         }
 

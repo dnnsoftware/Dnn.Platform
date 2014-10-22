@@ -19,19 +19,36 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
+using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    public class ContentWorkflowSource
+    /// <summary>
+    /// This entity represents a workflow action implementation
+    /// </summary>
+    [PrimaryKey("ActionId")]
+    [TableName("ContentWorkflowActions")]
+    public class WorkflowAction
     {
-        public int WorkflowId { get; set; }
+        /// <summary>
+        /// Action Id
+        /// </summary>
+        public int ActionId { get; set; }
 
-        public int SourceId { get; set; }
+        /// <summary>
+        /// Content item type Id
+        /// </summary>
+        public int ContentTypeId { get; set; }
 
-        public string SourceName { get; set; }
+        /// <summary>
+        /// Action type. This is a string representation of the enum <see cref="WorkflowActionTypes"/>
+        /// </summary>
+        public string ActionType { get; set; }
 
-        public string SourceType { get; set; }
+        /// <summary>
+        /// Action Source. This property represents the path to the class that implement the IWorkflowAction interface
+        /// i.e.: "MyProject.WorkflowActions.WorkflowDiscardction, MyProject"
+        /// </summary>
+        public string ActionSource { get; set; }
     }
 }

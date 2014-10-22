@@ -278,11 +278,16 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public TabVersion CreateNewVersion(int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled(tabId);
+            return CreateNewVersion(GetCurrentPortalId(), tabId, createdByUserID);
+        }
 
-            SetupFirstVersionForExistingTab(GetCurrentPortalId(), tabId);
+        public TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserID)
+        {
+            CheckVersioningEnabled(portalid, tabId);
 
-            DeleteOldestVersionIfTabHasMaxNumberOfVersions(tabId);
+            SetupFirstVersionForExistingTab(portalid, tabId);
+
+            DeleteOldestVersionIfTabHasMaxNumberOfVersions(portalid, tabId);
 
             return TabVersionController.Instance.CreateTabVersion(tabId, createdByUserID);
         }
@@ -340,7 +345,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private void DeleteOldestVersionIfTabHasMaxNumberOfVersions(int tabId)
         {
-            var maxVersionsAllowed = GetMaxNumberOfVersions();
+            DeleteOldestVersionIfTabHasMaxNumberOfVersions(GetCurrentPortalId(), tabId);
+        }
+
+        private void DeleteOldestVersionIfTabHasMaxNumberOfVersions(int portalId, int tabId)
+        {
+            var maxVersionsAllowed = GetMaxNumberOfVersions(portalId);
             var tabVersionsOrdered = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version);
 
             if (tabVersionsOrdered.Count() < maxVersionsAllowed) return;
@@ -350,10 +360,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             CreateSnapshotOverVersion(tabId, snapShotTabVersion);
             DeleteOldVersions(tabVersionsOrdered, snapShotTabVersion);
         }
-
-        private static int GetMaxNumberOfVersions()
-        {
-            var portalId = GetCurrentPortalId();
+      
+        private static int GetMaxNumberOfVersions(int portalId)
+        {            
             return TabVersionSettings.Instance.GetMaxNumberOfVersions(portalId);
         }
 
@@ -431,7 +440,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static void CheckVersioningEnabled(int tabId)
         {
-            var portalId = GetCurrentPortalId();
+            CheckVersioningEnabled(GetCurrentPortalId(), tabId);
+        }
+
+        private static void CheckVersioningEnabled(int portalId, int tabId)
+        {            
             if (portalId == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId))
             {
                 throw new InvalidOperationException(Localization.GetString("TabVersioningNotEnabled", Localization.ExceptionsResourceFile));

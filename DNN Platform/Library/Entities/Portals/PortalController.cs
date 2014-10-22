@@ -153,6 +153,16 @@ namespace DotNetNuke.Entities.Portals
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
                                  string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
+            // Add default workflows
+            try
+            {
+                SystemWorkflowManager.Instance.CreateSystemWorkflows(portalId);                
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
             string templatePath, templateFile;
             PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
             string mergedTemplatePath = Path.Combine(templatePath, templateFile);
@@ -360,17 +370,7 @@ namespace DotNetNuke.Entities.Portals
                     catch (Exception Exc)
                     {
                         Logger.Error(Exc);
-                    }
-
-                    // Add default workflows
-                    try
-                    {
-                        ContentWorkflowController.Instance.CreateDefaultWorkflows(portalId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
+                    }                    
 
                     ServicesRoutingManager.ReRegisterServiceRoutesWhileSiteIsRunning();
 

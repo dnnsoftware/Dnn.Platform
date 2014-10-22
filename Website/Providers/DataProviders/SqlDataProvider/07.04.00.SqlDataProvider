@@ -347,6 +347,241 @@ BEGIN
         WHERE TabID = @TabID
 END
 GO
+
+/**************************/
+/** Workflow API Changes **/
+/**************************/
+
+/* Added IsSystem column to define System Workflows (i.e.: Default Workflows) */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD [IsSystem] [bit] NOT NULL DEFAULT (0) 
+GO
+
+/* Added a default value to IsDeleted column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_IsDeleted DEFAULT 0 FOR IsDeleted
+GO
+
+/* Added a default value to StartAfterCreating column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterCreating DEFAULT 1 FOR StartAfterCreating
+GO
+
+/* Added a default value to StartAfterEditing column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterEditing DEFAULT 1 FOR StartAfterEditing
+GO
+
+/* Added a default value to DispositionEnabled column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_DispositionEnabled DEFAULT 0 FOR DispositionEnabled
+GO
+
+/* Added WorkflowKey column to define Workflows string key (i.e.: Default Workflows keys) */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD [WorkflowKey] NVARCHAR(40) NOT NULL DEFAULT (N'') 
+GO
+
+/* Added a default value to column IsActive */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsActive DEFAULT 1 FOR IsActive
+GO
+
+/* Added a default value to column SendEmail */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendEmail DEFAULT 0 FOR SendEmail
+GO
+
+/* Added a default value to column SendMessage */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendMessage DEFAULT 0 FOR SendMessage
+GO
+
+/* Added a default value to column IsDisposalState */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsDisposalState DEFAULT 0 FOR IsDisposalState
+GO
+
+/* Added a default value to column OnCompleteMessageSubject */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageSubject DEFAULT N'' FOR OnCompleteMessageSubject
+GO
+
+/* Added a default value to column OnCompleteMessageBody */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageBody DEFAULT N'' FOR OnCompleteMessageBody
+GO
+
+/* Added a default value to column OnDiscardMessageSubject */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageSubject DEFAULT N'' FOR OnDiscardMessageSubject
+GO
+
+/* Added a default value to column OnDiscardMessageBody */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageBody DEFAULT N'' FOR OnDiscardMessageBody
+GO
+
+/* Added IsSystem column to define System Workflow States (i.e.: Draft, Published) */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [IsSystem] [bit] NOT NULL DEFAULT (0) 
+GO
+
+/* Added SendNotification column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotification] [bit] NOT NULL DEFAULT (0) 
+GO
+
+/* Added SendNotificationToAdministrators column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotificationToAdministrators] [bit] NOT NULL DEFAULT (0) 
+GO
+
+/* Added WorkflowLogKey column */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowLogs ADD [Type] [int] NOT NULL DEFAULT -1 
+GO
+
+/* Set is System Workflows */
+UPDATE {databaseOwner}[{objectQualifier}ContentWorkflows] SET IsSystem = 1 where IsSystem = 0
+GO
+
+/* Set is System States */
+UPDATE {databaseOwner}[{objectQualifier}ContentWorkflowStates] SET IsSystem = 1
+  WHERE StateID IN (  
+	  SELECT StateID
+	  FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates] cf JOIN 
+	  (SELECT WorkflowId, MAX([order]) as 'LastState', MIN([Order]) as 'FirstState' 
+	  FROM {databaseOwner}[{objectQualifier}ContentWorkflowStates]
+	  GROUP BY WorkflowID) a ON cf.WorkflowID = a.WorkflowID
+	  WHERE [Order] = a.FirstState OR [Order] = a.LastState) 
+  AND IsSystem = 0;
+GO
+
+/* Get Workflow Usage */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+	@WorkflowId INT,
+	@PageIndex INT,
+	@PageSize INT
+AS
+	DECLARE @StartIndex INT = ((@PageIndex - 1) * @PageSize) + 1
+	DECLARE @EndIndex INT = (@PageIndex * @PageSize)
+	
+	;WITH ContentItemSet AS
+    (
+		SELECT ci.*, ROW_NUMBER() OVER (Order BY ci.ContentItemId) AS [Index]
+		FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws ON ci.StateID = ws.StateID
+		WHERE ws.WorkflowID = @WorkflowId
+    )
+   SELECT * FROM ContentItemSet WHERE [Index] BETWEEN @StartIndex AND @EndIndex 
+GO
+
+/* Get Workflow Usage Count */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+	@WorkflowId INT
+AS
+	SELECT COUNT(ci.ContentItemID)
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
+	INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws ON ci.StateID = ws.StateID
+	WHERE ws.WorkflowID = @WorkflowId
+GO
+
+/* Add Content Workflow Notification with no action (only dismiss) */
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'ContentWorkflowNoActionNotification' )
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+		[Name]
+		,[Description]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+	) VALUES (
+		'ContentWorkflowNoActionNotification',
+		'Content Workflow No Action Notification',
+		-1,
+		GETDATE(),
+		-1,
+		GETDATE()
+	)
+END
+GO
+
+/* Add ContentWorkflowActions table */
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflowActions]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions](
+	    [ActionId] [INT] IDENTITY(1,1) NOT NULL,
+        [ContentTypeId] [INT] NOT NULL,
+		[ActionType] NVARCHAR(50) NOT NULL,
+		[ActionSource] NVARCHAR(256) NOT NULL,
+        CONSTRAINT [PK_{objectQualifier}ContentWorkflowActions] PRIMARY KEY CLUSTERED ([ActionId] ASC)
+    ) ON [PRIMARY]
+
+    ALTER TABLE {databaseOwner}[{objectQualifier}ContentWorkflowActions] 
+        WITH CHECK ADD  CONSTRAINT [FK_{objectQualifier}ContentWorkflowActions_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeId])
+        REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+    ON DELETE CASCADE
+
+	CREATE UNIQUE NONCLUSTERED INDEX [ContentTypeId_ActionType] ON {databaseOwner}[{objectQualifier}ContentWorkflowActions] 
+	(
+		[ContentTypeId] ASC,
+		[ActionType] ASC
+	)
+END
+GO
+
+/* Remove Review action and add Approve, Reject */
+DECLARE @NotificationTypeId INT
+SELECT @NotificationTypeId = NotificationTypeId
+    FROM    {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
+    WHERE   Name = 'ContentWorkflowNotification'
+IF @NotificationTypeId IS NOT NULL
+BEGIN
+	/* Delete Review notification action added int 7.3.0 */
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions WHERE NotificationTypeId = @NotificationTypeId AND NameResourceKey = 'Review'
+
+	/* Add Approve notification action */
+    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+        [NotificationTypeID],
+        [NameResourceKey],
+        [DescriptionResourceKey],
+        [ConfirmResourceKey],
+        [Order],
+        [APICall],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate])
+    VALUES(
+        @NotificationTypeId,
+        'Approve',
+        'Approve',
+        NULL,
+        1,
+        'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+        -1,
+        GETDATE(),
+        -1,
+        GETDATE()
+        )
+		
+	/* Add Reject notification action */
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+        [NotificationTypeID],
+        [NameResourceKey],
+        [DescriptionResourceKey],
+        [ConfirmResourceKey],
+        [Order],
+        [APICall],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate])
+    VALUES(
+        @NotificationTypeId,
+        'Reject',
+        'Reject',
+        NULL,
+        1,
+        'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+        -1,
+        GETDATE(),
+        -1,
+        GETDATE()
+        )
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

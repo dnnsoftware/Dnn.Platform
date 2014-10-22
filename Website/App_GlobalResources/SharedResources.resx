@@ -1908,4 +1908,16 @@
   <data name="DefaultWorkflowMigrationPrefix.Text" xml:space="preserve">
     <value>Folders:</value>
   </data>
+  <data name="DefaultDirectPublishWorkflowDescription.Text" xml:space="preserve">
+    <value>Allows an author to directly publish content to the site</value>
+  </data>
+  <data name="DefaultDirectPublishWorkflowName.Text" xml:space="preserve">
+    <value>Direct Publish</value>
+  </data>
+  <data name="DefaultSaveDraftWorkflowDescription.Text" xml:space="preserve">
+    <value>Allows author to save a draft copy before the content is published</value>
+  </data>
+  <data name="DefaultSaveDraftWorkflowName.Text" xml:space="preserve">
+    <value>Save Draft</value>
+  </data>
 </root>

@@ -28,7 +28,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionTracker: ServiceLocator<ITabVersionTracker, TabVersionTracker>, ITabVersionTracker
+    public class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
     {
         #region Public Methods
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     return;
                 }
 
-                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId);
                 var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module,
                     moduleVersion, TabVersionDetailAction.Added);
                 TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     return;
                 }
 
-                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId);
                 var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module.ModuleID, module.PaneName, module.ModuleOrder, moduleVersion, TabVersionDetailAction.Modified);
 
                 var existingTabVersionDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
-            
+
             try
             {
                 if (!IsVersioningEnabled(module))
@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     return;
                 }
 
-                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.TabID, userId);
+                var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId);
             
                 var existingTabDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
                 if (existingTabDetail != null)
@@ -123,16 +123,17 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #endregion
 
         #region Private Statics Methods
+
         private static bool IsVersioningEnabled(ModuleInfo module)
         {
             return module.PortalID != Null.NullInteger && TabVersionSettings.Instance.IsVersioningEnabled(module.PortalID, module.TabID);
         }
 
-        private static TabVersion GetOrCreateUnPublishedTabVersion(int tabId, int createdByUserID)
+        private static TabVersion GetOrCreateUnPublishedTabVersion(int portalId, int tabId, int createdByUserID)
         {
             var unPublishedVersion = TabVersionMaker.Instance.GetUnPublishedVersion(tabId);
-            return unPublishedVersion == null ? 
-                TabVersionMaker.Instance.CreateNewVersion(tabId, createdByUserID) : 
+            return unPublishedVersion == null ?
+                TabVersionMaker.Instance.CreateNewVersion(portalId, tabId, createdByUserID) :
                 TabVersionController.Instance.GetTabVersions(tabId).SingleOrDefault(tv => !tv.IsPublished);
         }
 
@@ -165,9 +166,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
         #endregion
 
-        protected override Func<ITabVersionTracker> GetFactory()
+        #region Service Locator
+        protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabVersionTracker();
         }
+        #endregion
     }
 }

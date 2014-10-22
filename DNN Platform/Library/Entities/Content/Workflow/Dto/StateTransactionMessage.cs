@@ -19,16 +19,26 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
-using DotNetNuke.Security.Permissions;
-
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow.Dto
 {
-    public class ContentWorkflowStatePermission : PermissionInfoBase
+    /// <summary>
+    /// This class represents the message that will be notified on workflow state transaction
+    /// </summary>
+    public class StateTransactionMessage
     {
-        public int WorkflowStatePermissionID { get; set; }
+        public StateTransactionMessage()
+        {
+            Params = new string[]{};
+        }
 
-        public int StateID { get; set; }
+        /// <summary>
+        /// Params of the message
+        /// </summary>
+        public string[] Params { get; set; }
+
+        /// <summary>
+        /// User comment
+        /// </summary>
+        public string UserComment { get; set; }
     }
 }

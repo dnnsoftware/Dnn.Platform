@@ -19,29 +19,16 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
+using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 {
-    public class ContentWorkflow
+    public class WorkflowNameAlreadyExistsException : WorkflowException
     {
-        public int WorkflowID { get; set; }
-
-        public int PortalID { get; set; }
-
-        public string WorkflowName { get; set; }
-
-        public string Description { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public bool StartAfterCreating { get; set; }
-
-        public bool StartAfterEditing { get; set; }
-
-        public bool DispositionEnabled { get; set; }
-
-        public IEnumerable<ContentWorkflowState> States { get; set; }
+        public WorkflowNameAlreadyExistsException()
+            : base(Localization.GetString("WorkflowNameAlreadyExistsException", Localization.ExceptionsResourceFile))
+        {
+            
+        }
     }
 }

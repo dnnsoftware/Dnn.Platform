@@ -27,9 +27,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     public interface ITabVersionMaker
     {
         /// <summary>
-        /// Creates a new Tab Version 
+        /// Creates a new Tab Version checking current portal versioning settings
         /// </summary>        
         TabVersion CreateNewVersion(int tabId, int createdByUserId);
+
+        /// <summary>
+        /// Creates a new Tab Version 
+        /// </summary>        
+        TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserID);
+
 
         /// <summary>
         /// Publish a Tab Version

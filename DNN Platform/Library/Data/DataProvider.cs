@@ -33,7 +33,6 @@ using System.Data.SqlTypes;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Web;
 using System.Web.Hosting;
 
 using DotNetNuke.Common;
@@ -41,14 +40,11 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Search.Entities;
 using Microsoft.ApplicationBlocks.Data;
-using Newtonsoft.Json;
 
 #endregion
 
@@ -3967,7 +3963,18 @@ namespace DotNetNuke.Data
         #endregion
 
         #region Content Workflow
-        
+
+        public virtual int GetContentWorkflowUsageCount(int workflowId)
+        {
+            return ExecuteScalar<int>("GetContentWorkflowUsageCount", workflowId);
+        }
+
+        public virtual IDataReader GetContentWorkflowUsage(int workflowId, int pageIndex, int pageSize)
+        {
+            return ExecuteReader("GetContentWorkflowUsage", workflowId, pageIndex, pageSize);
+        }
+
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             return ExecuteScalar<int>("AddContentWorkflow",
@@ -3980,16 +3987,19 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual IDataReader GetContentWorkflow(int workflowId)
         {
             return ExecuteReader("GetContentWorkflow", workflowId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual IDataReader GetContentWorkflows(int portalId)
         {
             return ExecuteReader("GetContentWorkflows", portalId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual void UpdateContentWorkflow(int workflowId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
             ExecuteNonQuery("UpdateContentWorkflow",
@@ -4002,6 +4012,7 @@ namespace DotNetNuke.Data
                 dispositionEnabled);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual int AddContentWorkflowState(int workflowId, string stateName, int order, 
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState, 
             string onCompleteMessageSubject, string onCompleteMessageBody, 
@@ -4021,11 +4032,13 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual void DeleteContentWorkflowState(int stateId)
         {
             ExecuteNonQuery("DeleteContentWorkflowState", stateId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual void UpdateContentWorkflowState(int stateId, string stateName, int order, 
             bool isActive, bool sendEmail, bool sendMessage, bool isDisposalState,
             string onCompleteMessageSubject, string onCompleteMessageBody,
@@ -4045,16 +4058,19 @@ namespace DotNetNuke.Data
                 onDiscardMessageBody);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual IDataReader GetContentWorkflowState(int stateId)
         {
             return ExecuteReader("GetContentWorkflowState", stateId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual IDataReader GetContentWorkflowStates(int workflowId)
         {
             return ExecuteReader("GetContentWorkflowStates", workflowId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowLogger.AddWorkflowLog")]
         public virtual int AddContentWorkflowLog(string action, string comment, int user, int workflowId, int contentItemId)
         {
             return ExecuteScalar<int>("AddContentWorkflowLog",
@@ -4065,11 +4081,13 @@ namespace DotNetNuke.Data
                 contentItemId);
         }
 
-        public virtual IDataReader GetContentWorkflowLogs(int workflowId, int contentItemId)
+        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowLogger.GetWorkflowLogs")]
+        public virtual IDataReader GetContentWorkflowLogs(int contentItemId, int workflowId)
         {
-            return ExecuteReader("GetContentWorkflowLogs", workflowId, contentItemId);
+            return ExecuteReader("GetContentWorkflowLogs", contentItemId, workflowId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual int DeleteContentWorkflowLogs(int contentItemId, int workflowId)
         {
             return ExecuteScalar<int>("DeleteContentWorkflowLogs", contentItemId, workflowId);
@@ -4118,11 +4136,13 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetContentWorkflowStatePermissionsByStateID", stateId);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual IDataReader GetContentWorkflowSource(int workflowId, string sourceName)
         {
             return ExecuteReader("GetContentWorkflowSource", workflowId, sourceName);
         }
 
+        [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual int AddContentWorkflowSource(int workflowId, string sourceName, string sourceType)
         {
             return ExecuteScalar<int>("AddContentWorkflowSource", workflowId, sourceName, sourceType);
