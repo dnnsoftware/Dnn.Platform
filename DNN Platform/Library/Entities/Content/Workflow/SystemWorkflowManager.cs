@@ -28,7 +28,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Content.Workflow
 {
-    internal class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
+    public class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
     {
         #region Public Constants
         public const string DirectPublishWorkflowKey = "DirectPublish";
@@ -168,9 +168,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state;
         }
         #endregion
-
         
-
         #region Service Locator
         protected override Func<ISystemWorkflowManager> GetFactory()
         {

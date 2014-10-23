@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow
     /// This class is responsible to manage the system workflows of the portal. 
     /// It provides creation operation methods and methods to get specifically all system workflows
     /// </summary>
-    internal interface ISystemWorkflowManager
+    public interface ISystemWorkflowManager
     {
         /// <summary>
         /// Creates predefined system workflows
