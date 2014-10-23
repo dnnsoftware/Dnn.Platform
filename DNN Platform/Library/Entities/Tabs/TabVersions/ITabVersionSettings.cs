@@ -45,7 +45,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>
         /// <param name="portalId">Portal Id</param>
         /// <param name="enabled">true for enable it, false otherwise</param>
-        void SetVersioningEnabled(int portalId, bool enabled);
+        void SetEnabledVersioningForPortal(int portalId, bool enabled);
+
+        /// <summary>
+        /// Set the status of the tab versioning for a tab
+        /// </summary>
+        /// <param name="tabId">Tab Id</param>
+        /// <param name="enabled">true for enable it, false otherwise</param>
+        void SetEnabledVersioningForTab(int tabId, bool enabled);
 
         /// <summary>
         /// Get the status of the tab versioning for the portal
@@ -55,9 +62,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         bool IsVersioningEnabled(int portalId);
 
         /// <summary>
-        /// Get the status of the tab versioning for an specific tab of the portal. This is due to some tabs (host and admin tabs) 
-        /// are not handled by this mechanism.
+        /// Get the status of the tab versioning for an specific tab of the portal.
         /// </summary>
+        /// <remarks>
+        /// If versioning is disabled at portal level, the versioning for tabs will be disabled too.
+        /// </remarks>
         /// <param name="portalId">Portal Id</param>
         /// <param name="tabId">Tab Id to be checked</param>
         /// <returns>Returns true if tab versioning is enabled for the portal and for the tab, false otherwise</returns>

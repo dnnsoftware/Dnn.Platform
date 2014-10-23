@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Tabs
                 return true;
             }
 
-            var parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID);
+            var parentTab = GetTab(tab.ParentId, tab.PortalID);
             return IsAdminTabRecursive(parentTab, adminTabId);
         }
 
@@ -2512,7 +2512,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns></returns>
         public bool IsHostOrAdminPage(int tabId, int portalId)
         {
-            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
+            var tabInfo = GetTab(tabId, portalId);
             return IsHostOrAdminPage(tabInfo);
         }
 

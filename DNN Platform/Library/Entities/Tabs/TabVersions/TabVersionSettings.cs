@@ -30,8 +30,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     public class TabVersionSettings : ServiceLocator<ITabVersionSettings, TabVersionSettings>, ITabVersionSettings
     {
+        #region Constants
         private const int TabVersionsMaxNumber = 5;
         private const string TabVersionQueryStringParam = "DnnTabVersion";
+        private const string TabVersioningSettingKey = "TabVersioningSettingKey";
+        #endregion
 
         public int GetMaxNumberOfVersions(int portalId)
         {
@@ -45,26 +48,47 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             PortalController.UpdatePortalSetting(portalId, "TabVersionsMaxNumber", maxNumberOfVersions.ToString(CultureInfo.InvariantCulture));
         }
 
-        public void SetVersioningEnabled(int portalId, bool enabled)
+        public void SetEnabledVersioningForPortal(int portalId, bool enabled)
         {
             Requires.NotNegative("portalId", portalId);
             PortalController.UpdatePortalSetting(portalId, "TabVersionsEnabled", enabled.ToString(CultureInfo.InvariantCulture));
         }
 
+        public void SetEnabledVersioningForTab(int tabId, bool enabled)
+        {
+            Requires.NotNegative("tabId", tabId);
+
+            TabController.Instance.UpdateTabSetting(tabId, TabVersioningSettingKey, enabled.ToString(CultureInfo.InvariantCulture));
+        }
+
         public bool IsVersioningEnabled(int portalId)
         {
-            return IsVersioningEnabled(portalId, Null.NullInteger);
+            Requires.NotNegative("portalId", portalId);
+            return
+                Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, Boolean.FalseString));
         }
 
         public bool IsVersioningEnabled(int portalId, int tabId)
         {
             Requires.NotNegative("portalId", portalId);
-            var isVersioningEnabledForPortal =
-                Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, Boolean.FalseString));
-            var isVersioningEnabledForTab = tabId == Null.NullInteger 
-                                                || !TabController.Instance.IsHostOrAdminPage(tabId, portalId);
+            Requires.NotNegative("tabId", tabId);
 
-            return isVersioningEnabledForPortal && isVersioningEnabledForTab;
+            if (!IsVersioningEnabled(portalId))
+            {
+                return false;
+            }
+
+            var isHostOrAdminPage = TabController.Instance.IsHostOrAdminPage(tabId, portalId);
+            if (isHostOrAdminPage)
+            {
+                return false;
+            }
+
+            var settings = TabController.Instance.GetTabSettings(tabId);
+            var isVersioningEnableForTab = settings[TabVersioningSettingKey] == null 
+                || Convert.ToBoolean(settings[TabVersioningSettingKey]);
+
+            return isVersioningEnableForTab;
         }
 
 
