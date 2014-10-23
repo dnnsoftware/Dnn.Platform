@@ -2507,18 +2507,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>
         /// Determines whether is host or admin tab.
         /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns></returns>
-        public bool IsHostOrAdminPage(int tabId, int portalId)
-        {
-            var tabInfo = GetTab(tabId, portalId);
-            return IsHostOrAdminPage(tabInfo);
-        }
-
-        /// <summary>
-        /// Determines whether is host or admin tab.
-        /// </summary>
         /// <param name="tab">The tab info.</param>
         /// <returns></returns>
         public bool IsHostOrAdminPage(TabInfo tab)

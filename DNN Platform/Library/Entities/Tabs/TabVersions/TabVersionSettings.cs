@@ -78,7 +78,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return false;
             }
 
-            var isHostOrAdminPage = TabController.Instance.IsHostOrAdminPage(tabId, portalId);
+            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
+            var isHostOrAdminPage = TabController.Instance.IsHostOrAdminPage(tabInfo);
             if (isHostOrAdminPage)
             {
                 return false;
