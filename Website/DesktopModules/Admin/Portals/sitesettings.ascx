@@ -284,6 +284,7 @@
                         </asp:RadioButtonList>
                     </div>
                 </fieldset>
+                <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="SiteSettings" Group="SiteSettingsAdvancedSettingsExtensions"/>
                 <div id="hostSections" runat="server">
                     <h2 id="dnnSitePanel-PortalAliases" class="dnnFormSectionHead">
                         <a href=""><%=LocalizeString("PortalAliases")%></a>
@@ -493,7 +494,6 @@
                             <asp:CheckBox runat="server" ID="chkMinifyJs" />
                         </div>
                     </fieldset>
-                    <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="SiteSettings" Group="SiteSettingsAdvancedSettingsExtensions"/>
                 </div>
             </div>
         </div>
