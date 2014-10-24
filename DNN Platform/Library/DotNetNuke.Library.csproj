@@ -291,7 +291,6 @@
     <Compile Include="Entities\Content\Workflow\IWorkflowLogger.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowStateManager.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowManager.cs" />
-    <Compile Include="Entities\Content\Workflow\IWorkflowSettings.cs" />
     <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLogType.cs" />
     <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowLog.cs" />
     <Compile Include="Entities\Content\Workflow\Obsolete\ContentWorkflowStatePermission.cs" />
@@ -312,7 +311,6 @@
     <Compile Include="Entities\Content\Workflow\WorkflowManager.cs" />
     <Compile Include="Entities\Content\Workflow\WorkflowSecurity.cs" />
     <Compile Include="Entities\Content\Workflow\IWorkflowSecurity.cs" />
-    <Compile Include="Entities\Content\Workflow\WorkflowSettings.cs" />
     <Compile Include="Entities\DataStructures\NTree.cs" />
     <Compile Include="Entities\Host\IServerWebRequestAdapter.cs" />
     <Compile Include="Entities\Host\ServerWebRequestAdapter.cs" />

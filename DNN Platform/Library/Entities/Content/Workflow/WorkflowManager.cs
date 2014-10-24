@@ -25,6 +25,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Content.Workflow.Exceptions;
 using DotNetNuke.Entities.Content.Workflow.Repositories;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
@@ -95,7 +96,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 return GetWorkflow(item);
             }
                
-            var defaultWorkflow = WorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
+            var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
             return GetWorkflow(defaultWorkflow);
         }
 
