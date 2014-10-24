@@ -323,8 +323,10 @@
     <Compile Include="Entities\Portals\IPortalEventHandlers.cs" />
     <Compile Include="Entities\Profile\IProfileEventHandlers.cs" />
     <Compile Include="Entities\Profile\ProfileEventArgs.cs" />
+    <Compile Include="Entities\Tabs\ITabChangeSettings.cs" />
     <Compile Include="Entities\Tabs\ITabModulesController.cs" />
     <Compile Include="Entities\Tabs\ITabWorkflowSettings.cs" />
+    <Compile Include="Entities\Tabs\TabChangeSettings.cs" />
     <Compile Include="Entities\Tabs\TabChangeTracker.cs" />
     <Compile Include="Entities\Tabs\TabModulesController.cs" />
     <Compile Include="Entities\Tabs\TabVersions\Exceptions\DnnTabVersionException.cs" />

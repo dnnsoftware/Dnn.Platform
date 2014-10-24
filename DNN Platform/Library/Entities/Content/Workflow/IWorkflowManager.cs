@@ -88,8 +88,5 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <returns>Workflow Entity</returns>
         Entities.Workflow GetWorkflow(ContentItem contentItem);
 
-        // TODO: review method scope. This method probably need to go to a new class speficic to Tab
-        Entities.Workflow GetCurrentOrDefaultWorkflow(ContentItem contentItem, int portalId);
-
     }
 }

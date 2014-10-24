@@ -21,15 +21,8 @@
 
 namespace DotNetNuke.Entities.Tabs
 {
-    //TODO Add documentation info
-    public interface ITabWorkflowSettings
+    public interface ITabChangeSettings
     {
-
-        int GetDefaultTabWorkflowId(int portalId);
-        void SetDefaultTabWorkflowId(int portalId, int workflowId);
-
-        void SetWorkflowEnabled(int portalId, bool enabled);
-
-        bool IsWorkflowEnabled(int portalId, int tabId);
+        bool IsChangeControlEnabled(int portalId, int tabId);
     }
 }

@@ -18,18 +18,29 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+using System;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    //TODO Add documentation info
-    public interface ITabWorkflowSettings
+    public class TabChangeSettings : ServiceLocator<ITabChangeSettings, TabChangeSettings>, ITabChangeSettings
     {
 
-        int GetDefaultTabWorkflowId(int portalId);
-        void SetDefaultTabWorkflowId(int portalId, int workflowId);
+        #region Public Methods
+        public bool IsChangeControlEnabled(int portalId, int tabId)
+        {
+            var isVersioningEnabled =  TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
+            var isWorkflowEnable = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId);
+            return isVersioningEnabled || isWorkflowEnable;
+        }
+        #endregion
 
-        void SetWorkflowEnabled(int portalId, bool enabled);
-
-        bool IsWorkflowEnabled(int portalId, int tabId);
+        #region Service Locator
+        protected override Func<ITabChangeSettings> GetFactory()
+        {
+            return () => new TabChangeSettings();
+        }
+        #endregion
     }
 }

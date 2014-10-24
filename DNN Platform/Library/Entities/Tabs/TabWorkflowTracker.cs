@@ -20,7 +20,10 @@
 #endregion
 
 using System;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 
@@ -53,18 +56,24 @@ namespace DotNetNuke.Entities.Tabs
         #region Private Statics Methods
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)
         {
-            if (!TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId))
-            {
-                return;
-            }
-
             var tabInfo = TabController.Instance.GetTab(tabId, portalId);
             if (WorkflowEngine.Instance.IsWorkflowCompleted(tabInfo))
             {
-                var workflow = WorkflowManager.Instance.GetCurrentOrDefaultWorkflow(tabInfo, portalId);
+                var workflow = GetCurrentOrDefaultWorkflow(tabInfo, portalId);
                 WorkflowEngine.Instance.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
                 TabController.Instance.ClearCache(portalId);
             }
+        }
+
+        private Workflow GetCurrentOrDefaultWorkflow(ContentItem item, int portalId)
+        {
+            if (item.StateID != Null.NullInteger)
+            {
+                return WorkflowManager.Instance.GetWorkflow(item);
+            }
+
+            var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
+            return WorkflowManager.Instance.GetWorkflow(defaultWorkflow);
         }
         #endregion
     }

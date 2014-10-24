@@ -89,17 +89,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state == null ? null : GetWorkflow(state.WorkflowID);
         }
 
-        public Entities.Workflow GetCurrentOrDefaultWorkflow(ContentItem item, int portalId)
-        {
-            if (item.StateID != Null.NullInteger)
-            {
-                return GetWorkflow(item);
-            }
-               
-            var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
-            return GetWorkflow(defaultWorkflow);
-        }
-
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             return _workflowRepository.GetWorkflows(portalId);

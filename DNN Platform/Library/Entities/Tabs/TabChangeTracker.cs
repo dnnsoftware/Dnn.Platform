@@ -29,20 +29,39 @@ namespace DotNetNuke.Entities.Tabs
     {
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
-            TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
-            TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
+            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            {
+                TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            {
+                TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
+            }
         }
 
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
-            TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
-            TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
+            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            {
+                TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
+            }
+
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            {
+                TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
+            }
         }
 
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
-            TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
-            TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
+            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            {
+                TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            {
+                TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
+            }
         }
 
         protected override Func<ITabChangeTracker> GetFactory()

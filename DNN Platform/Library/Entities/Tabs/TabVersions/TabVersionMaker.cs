@@ -66,8 +66,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public void Publish(int portalId, int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled(tabId);
-
             var tabVersion = GetUnPublishedVersion(tabId);            
             if (tabVersion == null)
             {                
@@ -77,13 +75,19 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
+
+            var previousPublishVersion = GetCurrentVersion(tabId);
             PublishVersion(portalId, tabId, createdByUserID, tabVersion);
+
+            if (!TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId)
+                && previousPublishVersion != null)
+            {
+                ForceDeleteVersion(tabId, previousPublishVersion.Version);
+            }
         }
 
         public void Discard(int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled(tabId);
-
             var tabVersion = GetUnPublishedVersion(tabId);            
             if (tabVersion == null)
             {
@@ -142,87 +146,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             CheckVersioningEnabled(tabId);
 
-            if (GetUnPublishedVersion(tabId) != null)
-            {                
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersionExists", Localization.ExceptionsResourceFile), tabId, version));
-            }
-            
-            var tabVersions = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version);
-            if (tabVersions.Count() <= 1)
-            {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile), tabId, version));
-            }
-
-            var versionToDelete = tabVersions.ElementAt(0);
-
-            // check if the version to delete if the latest published one
-            if (versionToDelete.Version == version)
-            {
-                var restoreMaxNumberOfVersions = false;
-                var portalId = PortalSettings.Current.PortalId;
-                var maxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(portalId);
-
-                // If we already have reached the maxNumberOfVersions we need to extend to 1 this limit to allow the tmp version
-                if (tabVersions.Count() == maxNumberOfVersions)
-                {
-                    TabVersionSettings.Instance.SetMaxNumberOfVersions(portalId, maxNumberOfVersions + 1);
-                    restoreMaxNumberOfVersions = true;
-                }
-
-                try
-                {
-                    var previousVersion = tabVersions.ElementAt(1);
-                    var previousVersionDetails = GetVersionModulesDetails(tabId, previousVersion.Version).ToArray();
-                    var versionToDeleteDetails = TabVersionDetailController.Instance.GetTabVersionDetails(versionToDelete.TabVersionId);
-
-                    foreach (var versionToDeleteDetail in versionToDeleteDetails)
-                    {
-                        switch (versionToDeleteDetail.Action)
-                        {
-                            case TabVersionDetailAction.Added:
-                                ModuleController.Instance.DeleteTabModule(tabId, versionToDeleteDetail.ModuleId, true);
-                                break;
-                            case TabVersionDetailAction.Modified:
-                                var peviousVersionDetail = previousVersionDetails.SingleOrDefault(tv => tv.ModuleId == versionToDeleteDetail.ModuleId);
-                                if (peviousVersionDetail.PaneName != versionToDeleteDetail.PaneName ||
-                                    peviousVersionDetail.ModuleOrder != versionToDeleteDetail.ModuleOrder)
-                                {
-                                    ModuleController.Instance.UpdateModuleOrder(tabId, peviousVersionDetail.ModuleId,
-                                        peviousVersionDetail.ModuleOrder, peviousVersionDetail.PaneName);
-                                }
-
-                                if (versionToDeleteDetail.ModuleVersion != Null.NullInteger)
-                                {
-                                    DiscardDetail(tabId, versionToDeleteDetail);
-                                }
-                                break;
-                        }
-                    }
-                    DeleteTmpVersionIfExists(tabId, versionToDelete);
-                    TabVersionController.Instance.DeleteTabVersion(tabId, versionToDelete.TabVersionId);
-                }
-                finally
-                {
-                    if (restoreMaxNumberOfVersions)
-                    {
-                        TabVersionSettings.Instance.SetMaxNumberOfVersions(portalId, maxNumberOfVersions);
-                    }
-                }
-            }
-            else
-            {
-                for (var i = 1; i < tabVersions.Count(); i++)
-                {
-                    if (tabVersions.ElementAt(i).Version == version)
-                    {
-                        CreateSnapshotOverVersion(tabId, tabVersions.ElementAtOrDefault(i-1), tabVersions.ElementAt(i));
-                        TabVersionController.Instance.DeleteTabVersion(tabId, tabVersions.ElementAt(i).TabVersionId);
-                        return;
-                    }
-                }
-            }
+            ForceDeleteVersion(tabId, version);
         }
 
+        
         public TabVersion RollBackVesion(int tabId, int createdByUserID, int version)
         {
             CheckVersioningEnabled(tabId);
@@ -283,7 +210,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserID)
         {
-            CheckVersioningEnabled(portalid, tabId);
+            if (portalid == Null.NullInteger)
+            {
+                throw new InvalidOperationException(Localization.GetString("TabVersioningNotEnabled", Localization.ExceptionsResourceFile));
+            }
 
             SetupFirstVersionForExistingTab(portalid, tabId);
 
@@ -334,6 +264,97 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #endregion
 
         #region Private Methods
+        private void ForceDeleteVersion(int tabId, int version)
+        {
+            if (GetUnPublishedVersion(tabId) != null)
+            {
+                throw new InvalidOperationException(
+                    String.Format(
+                        Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersionExists",
+                            Localization.ExceptionsResourceFile), tabId, version));
+            }
+
+            var tabVersions = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version);
+            if (tabVersions.Count() <= 1)
+            {
+                throw new InvalidOperationException(
+                    String.Format(
+                        Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile),
+                        tabId, version));
+            }
+
+            var versionToDelete = tabVersions.ElementAt(0);
+
+            // check if the version to delete if the latest published one
+            if (versionToDelete.Version == version)
+            {
+                var restoreMaxNumberOfVersions = false;
+                var portalId = PortalSettings.Current.PortalId;
+                var maxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(portalId);
+
+                // If we already have reached the maxNumberOfVersions we need to extend to 1 this limit to allow the tmp version
+                if (tabVersions.Count() == maxNumberOfVersions)
+                {
+                    TabVersionSettings.Instance.SetMaxNumberOfVersions(portalId, maxNumberOfVersions + 1);
+                    restoreMaxNumberOfVersions = true;
+                }
+
+                try
+                {
+                    var previousVersion = tabVersions.ElementAt(1);
+                    var previousVersionDetails = GetVersionModulesDetails(tabId, previousVersion.Version).ToArray();
+                    var versionToDeleteDetails =
+                        TabVersionDetailController.Instance.GetTabVersionDetails(versionToDelete.TabVersionId);
+
+                    foreach (var versionToDeleteDetail in versionToDeleteDetails)
+                    {
+                        switch (versionToDeleteDetail.Action)
+                        {
+                            case TabVersionDetailAction.Added:
+                                ModuleController.Instance.DeleteTabModule(tabId, versionToDeleteDetail.ModuleId, true);
+                                break;
+                            case TabVersionDetailAction.Modified:
+                                var peviousVersionDetail =
+                                    previousVersionDetails.SingleOrDefault(tv => tv.ModuleId == versionToDeleteDetail.ModuleId);
+                                if (peviousVersionDetail.PaneName != versionToDeleteDetail.PaneName ||
+                                    peviousVersionDetail.ModuleOrder != versionToDeleteDetail.ModuleOrder)
+                                {
+                                    ModuleController.Instance.UpdateModuleOrder(tabId, peviousVersionDetail.ModuleId,
+                                        peviousVersionDetail.ModuleOrder, peviousVersionDetail.PaneName);
+                                }
+
+                                if (versionToDeleteDetail.ModuleVersion != Null.NullInteger)
+                                {
+                                    DiscardDetail(tabId, versionToDeleteDetail);
+                                }
+                                break;
+                        }
+                    }
+                    DeleteTmpVersionIfExists(tabId, versionToDelete);
+                    TabVersionController.Instance.DeleteTabVersion(tabId, versionToDelete.TabVersionId);
+                }
+                finally
+                {
+                    if (restoreMaxNumberOfVersions)
+                    {
+                        TabVersionSettings.Instance.SetMaxNumberOfVersions(portalId, maxNumberOfVersions);
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 1; i < tabVersions.Count(); i++)
+                {
+                    if (tabVersions.ElementAt(i).Version == version)
+                    {
+                        CreateSnapshotOverVersion(tabId, tabVersions.ElementAtOrDefault(i - 1), tabVersions.ElementAt(i));
+                        TabVersionController.Instance.DeleteTabVersion(tabId, tabVersions.ElementAt(i).TabVersionId);
+                        return;
+                    }
+                }
+            }
+        }
+
         private static void DeleteTmpVersionIfExists(int tabId, TabVersion versionToDelete)
         {
             var tmpVersion = TabVersionController.Instance.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();

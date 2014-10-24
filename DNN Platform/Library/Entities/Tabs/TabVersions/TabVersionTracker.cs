@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                if (!IsVersioningEnabled(module))
+                if (IsHostModule(module))
                 {
                     return;
                 }
@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                if (!IsVersioningEnabled(module))
+                if (IsHostModule(module))
                 {
                     return;
                 }
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                if (!IsVersioningEnabled(module))
+                if (IsHostModule(module))
                 {
                     return;
                 }
@@ -124,9 +124,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         #region Private Statics Methods
 
-        private static bool IsVersioningEnabled(ModuleInfo module)
+        private static bool IsHostModule(ModuleInfo module)
         {
-            return module.PortalID != Null.NullInteger && TabVersionSettings.Instance.IsVersioningEnabled(module.PortalID, module.TabID);
+            return module.PortalID == Null.NullInteger;
         }
 
         private static TabVersion GetOrCreateUnPublishedTabVersion(int portalId, int tabId, int createdByUserID)
