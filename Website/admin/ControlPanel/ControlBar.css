@@ -53,7 +53,7 @@
     }
 
     #ControlBar dl {
-        margin: 0;
+        margin-bottom: 11px;
         line-height: 18px;
     }
 
@@ -145,8 +145,7 @@
 }
 
     .subNav.advanced {
-        /* width: 540px; */ /* 3 Column Width */
-        width: 675px; /* 4 Column Width */
+        width: 671px;
     }
 
     .subNav.tools {
@@ -159,8 +158,6 @@
     float: left;
     margin: 0;
     padding: 10px 0 10px 10px !important;
-    -webkit-box-shadow: inset -3px 0px 2px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: inset -3px 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
     .subNavToggle li {
@@ -224,11 +221,21 @@
 
 .subNav.advanced dl {
     display: none;
-    /* width: 450px; */ /* 3 column width */
-    width: 585px; /* 4 column width */
+    width: 588px;
     float: left;
-    border-left: 1px solid #333;
+    border: 1px solid #444;
     padding-right: 0;
+    background-color: #444;
+    margin-top: 10px;
+    padding: 10px;
+    margin-bottom: 11px;
+    padding-bottom: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
 }
 
 .subNav dl.active {
@@ -236,7 +243,7 @@
 }
 
 .subNav.advanced dl {
-    min-height: 140px;
+    min-height: 150px;
 }
 
 .subNav dl dd {
@@ -1249,7 +1256,7 @@ ul#ControlBar_Module_ModulePosition {
 
 #ControlBar .subNav.advanced dl ul li {
     padding-top: 10px;
-    margin: 2px;
+    margin: 1px;
     background: #5e5e5e;
 }
 
