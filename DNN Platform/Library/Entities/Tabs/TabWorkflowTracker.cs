@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Tabs
         #region Private Statics Methods
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)
         {
-            if (!WorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId))
+            if (!TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId))
             {
                 return;
             }

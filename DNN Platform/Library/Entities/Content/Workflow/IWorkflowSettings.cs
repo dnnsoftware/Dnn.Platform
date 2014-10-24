@@ -30,6 +30,6 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         void SetWorkflowEnabled(int portalId, bool enabled);
 
-        bool IsWorkflowEnabled(int portalId, int tabId);
+        bool IsWorkflowEnabled(int portalId);
     }
 }

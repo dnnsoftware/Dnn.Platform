@@ -58,21 +58,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             PortalController.UpdatePortalSetting(portalId, WorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture), true);
         }
 
-        public bool IsWorkflowEnabled(int portalId, int tabId)
+        public bool IsWorkflowEnabled(int portalId)
         {
             if (portalId == Null.NullInteger)
             {
                 return false;
             }
 
-            var isWorkflowEnabledForPortal =
-                Convert.ToBoolean(PortalController.GetPortalSetting(WorkflowEnableKey, portalId, Boolean.TrueString));
-            var isWorkflowEnabledForTab = true;
-                            // TODO: uncomment when merging with development branch:
-                            // tabId == Null.NullInteger 
-                            //                    || !TabController.Instance.IsHostOrAdminPage(tabId, portalId);
-
-            return isWorkflowEnabledForPortal && isWorkflowEnabledForTab;
+            return Convert.ToBoolean(PortalController.GetPortalSetting(WorkflowEnableKey, portalId, Boolean.TrueString));
         }
         #endregion
 

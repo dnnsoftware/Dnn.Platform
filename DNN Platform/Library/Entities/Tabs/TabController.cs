@@ -199,7 +199,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             // Workflow initialization.
-            if (WorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
             {
                 var defaultWorkflow = WorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
                 WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);
