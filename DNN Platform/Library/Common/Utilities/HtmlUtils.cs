@@ -760,10 +760,10 @@ namespace DotNetNuke.Common.Utilities
                 {
                     searchAlias = string.Format("{0}/", portalAlias);
                 }
-            	string protocol = PortalSettings.Current.SSLEnabled ? "https://" : "http://";
-                Regex exp = new Regex(string.Format("((?:href|src)=&quot;){0}{1}(.*?&quot;)", protocol, searchAlias), RegexOptions.IgnoreCase);
 
-                if(portalAlias.Contains("/"))
+                Regex exp = new Regex(string.Format("((?:href|src)=&quot;)https?://{0}(.*?&quot;)", searchAlias), RegexOptions.IgnoreCase);
+
+                if (portalAlias.Contains("/"))
                 {
                     html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase)) + "/$2");
                 }
