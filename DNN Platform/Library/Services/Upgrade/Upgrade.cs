@@ -84,6 +84,7 @@ using Assembly = System.Reflection.Assembly;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
 using Util = DotNetNuke.Entities.Content.Common.Util;
+using DotNetNuke.Entities.Urls;
 
 #endregion
 
@@ -3496,19 +3497,58 @@ namespace DotNetNuke.Services.Upgrade
         ///-----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
-            ArrayList portals = PortalController.Instance.GetPortals();
+            var tab = new TabInfo
+                      {
+                          TabID = Null.NullInteger,
+                          TabName = tabName,
+                          Title = string.Empty,
+                          Description = description,
+                          KeyWords = string.Empty,
+                          IsVisible = isVisible,
+                          DisableLink = false,
+                          IconFile = tabIconFile,
+                          IconFileLarge = tabIconFileLarge,
+                          IsDeleted = false,
+                          Indexed = false,
+                      };
 
-            //Add Page to Admin Menu of all configured Portals
-            for (var index = 0; index <= portals.Count - 1; index++)
+            tab.Content = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+
+            var moduleInfo = new ModuleInfo
             {
-                var portal = (PortalInfo)portals[index];
+                ModuleID = Null.NullInteger,
+                ModuleOrder = -1,
+                ModuleTitle = moduleTitle,
+                PaneName = Globals.glbDefaultPane,
+                ModuleDefID = moduleDefId,
+                CacheTime = 0,
+                IconFile = moduleIconFile,
+                AllTabs = false,
+                Visibility = VisibilityState.None,
+                InheritViewPermissions = inheritPermissions,
+                DisplayTitle = true,
+                Indexed = false,
+            };
 
-                //Create New Admin Page (or get existing one)
-                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+            moduleInfo.Content = moduleInfo.ModuleTitle;
 
-                //Add Module To Page
-                AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
+            DataProvider.Instance().AddAdminPages(tab, moduleInfo, UserController.Instance.GetCurrentUserInfo().UserID);
+
+            var eventLogController = new EventLogController();
+            eventLogController.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TAB_CREATED);
+            eventLogController.AddLog(moduleInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABMODULE_CREATED);
+
+            foreach (PortalInfo portal in new PortalController().GetPortals())
+            {
+                DataCache.ClearTabsCache(portal.PortalID);
+                DataCache.ClearPortalCache(portal.PortalID, false);
+
+                var newTab = TabController.GetTabsByParent(portal.AdminTabId, portal.PortalID).Single(t => t.TabName.Equals(tabName));
+                DataCache.ClearModuleCache(newTab.TabID);
             }
+
+            DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+            CacheController.FlushPageIndexFromCache();
         }
 
         ///-----------------------------------------------------------------------------
