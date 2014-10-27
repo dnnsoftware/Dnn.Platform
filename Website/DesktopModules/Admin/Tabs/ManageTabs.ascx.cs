@@ -335,6 +335,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             if (Tab != null)
             {
                 BindPageDetails();
+                PageDetailsExtensionControl.BindAction(PortalId, Tab.TabID, ModuleId);
 
                 ctlURL.Url = Tab.Url;
                 bool newWindow = false;
@@ -1072,6 +1073,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     }
                 }
             }
+
+            PageDetailsExtensionControl.SaveAction(PortalId, Tab.TabID, ModuleId);
 
             // url tracking
             var objUrls = new UrlController();

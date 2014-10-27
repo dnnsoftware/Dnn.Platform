@@ -50,6 +50,7 @@
 					<dnn:Label ID="plTags" runat="server" ControlName="termsSelector" />
 					<dnn:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>    
+               <dnnext:UserControlExtensionControl  runat="server" ID="PageDetailsExtensionControl" Module="ManageTabs" Group="PageSettingsPageDetails"/>
 				<div class="dnnFormItem">
 					<dnn:Label ID="plParentTab" runat="server" ResourceKey="ParentTab" ControlName="cboParentTab" />
                     <dnn:DnnPageDropDownList ID="cboParentTab" runat="server" IncludeAllTabTypes="True" IncludeDisabledTabs="True" IncludeActiveTab="true"/>
@@ -232,7 +233,8 @@
 				<div class="dnnFormItem">
 					<dnn:Label ID="plPageHeadText" runat="server" ResourceKey="PageHeadText" Suffix=":" HelpKey="PageHeadText.Help" ControlName="txtPageHeadText" />
 					<asp:TextBox ID="txtPageHeadText" runat="server" TextMode="MultiLine" Rows="4" Columns="50" />
-				</div>       
+				</div>   
+                
 			</fieldset>
 			<h2 id="dnnPanel-TabsCacheSettings"  class="dnnFormSectionHead"><a href="" class=""><%=LocalizeString("CacheSettings")%></a></h2>
 			<fieldset>
