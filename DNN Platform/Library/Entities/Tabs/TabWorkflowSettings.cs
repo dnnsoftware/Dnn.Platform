@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Tabs
     {
         #region Constants
         private const string DefaultTabWorkflowKey = "DefaultTabWorkflowKey";
-        private const string WorkflowEnableKey = "WorkflowEnabledKey";
+        private const string TabWorkflowEnableKey = "TabWorkflowEnabledKey";
         #endregion
 
         #region Public Methods
@@ -55,7 +55,13 @@ namespace DotNetNuke.Entities.Tabs
         public void SetWorkflowEnabled(int portalId, bool enabled)
         {
             Requires.NotNegative("portalId", portalId);
-            PortalController.UpdatePortalSetting(portalId, WorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture), true);
+            PortalController.UpdatePortalSetting(portalId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture), true);
+        }
+
+        public void SetWorkflowEnabled(int portalId, int tabId, bool enabled)
+        {
+            Requires.NotNegative("tabId", tabId);
+            TabController.Instance.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
         }
 
         public bool IsWorkflowEnabled(int portalId, int tabId)
@@ -65,10 +71,13 @@ namespace DotNetNuke.Entities.Tabs
                 return false;
             }
 
-            var isWorkflowEnabledForPortal = Convert.ToBoolean(PortalController.GetPortalSetting(WorkflowEnableKey, portalId, Boolean.TrueString));
+            var isWorkflowEnabledForPortal = Convert.ToBoolean(PortalController.GetPortalSetting(TabWorkflowEnableKey, portalId, Boolean.FalseString));
 
             var tabInfo = TabController.Instance.GetTab(tabId, portalId);
-            var isWorkflowEnabledForTab = !TabController.Instance.IsHostOrAdminPage(tabInfo);
+            var settings = TabController.Instance.GetTabSettings(tabId);
+
+            var isWorkflowEnabledForTab = !TabController.Instance.IsHostOrAdminPage(tabInfo) && 
+                (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
 
             return isWorkflowEnabledForPortal && isWorkflowEnabledForTab;
         }
