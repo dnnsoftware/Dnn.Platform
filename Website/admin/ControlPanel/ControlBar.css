@@ -1262,9 +1262,8 @@ ul#ControlBar_Module_ModulePosition {
 
 #ControlBar .subNavToggle li:hover a,
 #ControlBar .subNavToggle li.active a {
-    border: 1px solid #1f5c9e;
+    border: 1px solid #167afb;
     border-right: 0;
-    border-top: none;
     background: #167afb;
 }
 
