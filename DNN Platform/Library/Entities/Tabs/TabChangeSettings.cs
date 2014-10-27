@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 
@@ -30,6 +31,10 @@ namespace DotNetNuke.Entities.Tabs
         #region Public Methods
         public bool IsChangeControlEnabled(int portalId, int tabId)
         {
+            if (portalId == Null.NullInteger)
+            {
+                return false;
+            }
             var isVersioningEnabled =  TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
             var isWorkflowEnable = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId);
             return isVersioningEnabled || isWorkflowEnable;
