@@ -60,6 +60,39 @@ namespace DotNetNuke.Modules.SearchResults
             get { return Request.QueryString["Tag"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Tag"].Replace("\"", "")) : string.Empty; }
         }
 
+        protected string SearchScopeParam
+        {
+            get { return Request.QueryString["Scope"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Scope"]) : string.Empty; }
+        }
+
+        protected string [] SearchScope
+        {
+            get
+            {
+                var searchScopeParam = SearchScopeParam;
+                return string.IsNullOrEmpty(searchScopeParam) ? new string[0] : searchScopeParam.Split(',');
+            }
+        }
+
+        protected string LastModifiedParam
+        {
+            get { return Request.QueryString["LastModified"] != null ? HttpUtility.HtmlEncode(Request.QueryString["LastModified"]) : string.Empty; }
+        }
+
+        protected string CheckedExactSearch
+        {
+            get
+            {
+                var paramExactSearch = Request.QueryString["ExactSearch"];
+
+                if (!string.IsNullOrEmpty(paramExactSearch) && paramExactSearch.ToLowerInvariant() == "y")
+                {
+                    return "checked=\"true\"";
+                }
+                return "";
+            }
+        }
+
         protected string LinkTarget
         {
             get
@@ -266,12 +299,34 @@ namespace DotNetNuke.Modules.SearchResults
 
             foreach (string o in SearchContentSources)
             {
-                var item = new RadComboBoxItem(o, o) {Checked = true};
+                var item = new RadComboBoxItem(o, o) {Checked = CheckedScopeItem(o)};
                 SearchScopeList.Items.Add(item);
             }
 
             SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
+
+            SetLastModifiedFilter();
+        }
+
+        private bool CheckedScopeItem(string scopeItemName)
+        {
+            var searchScope = SearchScope;
+            return searchScope.Length == 0 || searchScope.Any(x => x == scopeItemName);
+        }
+
+        private void SetLastModifiedFilter()
+        {
+            var lastModifiedParam = LastModifiedParam;
+
+            if (!string.IsNullOrEmpty(lastModifiedParam))
+            {
+                var item = AdvnacedDatesList.Items.FirstOrDefault(x => x.Value == lastModifiedParam);
+                if (item != null)
+                {
+                    item.Selected = true;
+                }
+            }
         }
     }
 }

@@ -76,7 +76,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
-        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" />
+        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" <%= CheckedExactSearch %> />
     </div>
     <ul class="dnnActions dnnClear">
         <li>
