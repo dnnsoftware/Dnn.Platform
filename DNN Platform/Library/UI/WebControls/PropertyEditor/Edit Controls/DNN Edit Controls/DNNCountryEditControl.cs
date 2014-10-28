@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
             ListName = "Country";
             ParentKey = "";
             TextField = ListBoundField.Text;
-            ValueField = ListBoundField.Value;
+            ValueField = ListBoundField.Id;
             ItemChanged += OnItemChanged;
             SortAlphabetically = true;
         }
