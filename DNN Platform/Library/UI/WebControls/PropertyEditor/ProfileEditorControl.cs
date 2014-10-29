@@ -111,17 +111,20 @@ namespace DotNetNuke.UI.WebControls
                     }
 					
                     //Create a ListAttribute for the Region
-                    string countryKey;
-                    if (country != null)
-                    {
-                        countryKey = "Country." + country;
-                    }
-                    else
-                    {
-                        countryKey = "Country.Unknown";
-                    }
+					string countryKey = "Unknown";
+					int entryId;
+					if (int.TryParse(country, out entryId))
+					{
+						ListController lc = new ListController();
+						ListEntryInfo item = lc.GetListEntryInfo(entryId);
+						if (item != null)
+						{
+							countryKey = item.Value;
+						}
+					}
+					countryKey = "Country." + countryKey;
                     var attributes = new object[1];
-                    attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Value, ListBoundField.Text);
+                    attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Id, ListBoundField.Text);
                     editor.Editor.CustomAttributes = attributes;
                 }
             }
