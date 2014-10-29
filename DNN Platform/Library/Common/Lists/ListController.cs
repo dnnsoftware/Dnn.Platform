@@ -343,7 +343,7 @@ namespace DotNetNuke.Common.Lists
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
             IList lists = new ListInfoCollection();
-            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId))
+            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;
                 if ((list.Name == listName || string.IsNullOrEmpty(listName)) && (list.ParentKey == parentKey || string.IsNullOrEmpty(parentKey)) &&
