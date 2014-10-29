@@ -76,10 +76,10 @@ namespace DotNetNuke.UI.WebControls
                     var countries = listController.GetListEntryInfoItems("Country");
                     foreach (var checkCountry in countries)
                     {
-                        if (checkCountry.Value == e.StringValue)
+                        if (checkCountry.EntryID.ToString() == e.StringValue)
                         {
                             var attributes = new object[1];
-                            attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Value, ListBoundField.Text);
+                            attributes[0] = new ListAttribute("Region", "Country." + checkCountry.Value, ListBoundField.Id, ListBoundField.Text);
                             regionControl.CustomAttributes = attributes;
                             break;
                         }
