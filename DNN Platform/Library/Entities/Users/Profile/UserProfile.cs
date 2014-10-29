@@ -159,15 +159,16 @@ namespace DotNetNuke.Entities.Users
             {
                 string _country = GetPropertyValue(USERPROFILE_Country);
                 ListController lc = new ListController();
-                ListEntryInfo item = lc.GetListEntryInfo(USERPROFILE_Country, _country);
-                if (item == null)
-                {
-                    return _country;
-                }
-                else
-                {
-                    return item.Text;
-                }
+				int entryId;
+				if (int.TryParse(_country, out entryId))
+				{
+					ListEntryInfo item = lc.GetListEntryInfo(entryId);
+					if (item != null)
+					{
+						return item.Text;
+					}
+				}
+				return _country;
             }
             set
             {
@@ -503,15 +504,16 @@ namespace DotNetNuke.Entities.Users
             {
                 string _region = GetPropertyValue(USERPROFILE_Region);
                 ListController lc = new ListController();
-                ListEntryInfo item = lc.GetListEntryInfo(USERPROFILE_Region, _region);
-                if (item == null)
-                {
-                    return _region;
-                }
-                else
-                {
-                    return item.Text;
-                }
+				int entryId;
+				if (int.TryParse(_region, out entryId))
+				{
+					ListEntryInfo item = lc.GetListEntryInfo(entryId);
+					if (item != null)
+					{
+						return item.Text;
+					}
+				}
+				return _region;
             }
             set
             {
