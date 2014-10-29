@@ -71,6 +71,32 @@ BEGIN
 END
 GO
 
+/***** DNN-6031 Change binding from Value to ID for Country and Region in profile and use short version of region code for value again *****/
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.EntryID
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Value = up.PropertyValue AND l.ListName = 'Country'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Country'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}UserProfile]
+SET PropertyValue = l.EntryID
+FROM {databaseOwner}[{objectQualifier}UserProfile] up
+ INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Value = up.PropertyValue AND l.ListName = 'Region'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Region'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}Lists]
+SET [Value] = SUBSTRING([Value], 4, 10)
+WHERE
+ [ListName] = 'Region'
+ AND [Value] LIKE '%-%'
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
