@@ -149,7 +149,8 @@ SET PropertyValue = l.Value
 FROM {databaseOwner}[{objectQualifier}UserProfile] up
  INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
  INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Country'
-WHERE pd.PropertyName = 'Country'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Country'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}UserProfile]
@@ -157,7 +158,8 @@ SET PropertyValue = l.Value
 FROM {databaseOwner}[{objectQualifier}UserProfile] up
  INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = up.PropertyDefinitionID
  INNER JOIN {databaseOwner}[{objectQualifier}Lists] l ON l.Text = up.PropertyValue AND l.ListName = 'Region'
-WHERE pd.PropertyName = 'Region'
+ INNER JOIN {databaseOwner}[{objectQualifier}Lists] dt ON dt.EntryID = pd.DataType
+WHERE dt.Value = 'Region'
 GO
 
 /***** Add missing countries *****/
