@@ -659,7 +659,7 @@ namespace DotNetNuke.Common.Lists
 			{
 				entry.DefinitionID = Null.NullInteger;
 				entry.PortalID = ListPortalID;
-				entry.ListName = ListName;
+				entry.ListName = (string.IsNullOrEmpty(ListName)) ? txtEntryName.Text : ListName;
                 entry.Value = entryValue;
                 entry.Text = entryText;
 			}
