@@ -112,15 +112,31 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var logs = _workflowLogRepository.GetWorkflowLogs(contentItemId, workflow.WorkflowID);
 
+            var type = GetWorkflowLogTypeForDraft(workflow);
+
             var logDraftCompleted = logs
                 .OrderByDescending(l => l.Date)
-                .FirstOrDefault(l => l.Type == (int)WorkflowLogType.DraftCompleted); 
+                .FirstOrDefault(l => l.Type == (int)type); 
 
             if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
             {
                 return _userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
             }
             return null;
+        }
+
+        private WorkflowLogType GetWorkflowLogTypeForDraft(Entities.Workflow workflow)
+        {
+            WorkflowLogType type;
+            if (workflow.IsSystem && workflow.States.Count() == 1)
+            {
+                type = WorkflowLogType.WorkflowStarted;
+            }
+            else
+            {
+                type = WorkflowLogType.DraftCompleted;
+            }
+            return type;
         }
 
         #region Notification utilities
