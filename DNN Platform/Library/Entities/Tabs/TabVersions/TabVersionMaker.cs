@@ -316,8 +316,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                             case TabVersionDetailAction.Modified:
                                 var peviousVersionDetail =
                                     previousVersionDetails.SingleOrDefault(tv => tv.ModuleId == versionToDeleteDetail.ModuleId);
-                                if (peviousVersionDetail.PaneName != versionToDeleteDetail.PaneName ||
-                                    peviousVersionDetail.ModuleOrder != versionToDeleteDetail.ModuleOrder)
+                                if (peviousVersionDetail != null &&
+                                    (peviousVersionDetail.PaneName != versionToDeleteDetail.PaneName ||
+                                      peviousVersionDetail.ModuleOrder != versionToDeleteDetail.ModuleOrder))
                                 {
                                     ModuleController.Instance.UpdateModuleOrder(tabId, peviousVersionDetail.ModuleId,
                                         peviousVersionDetail.ModuleOrder, peviousVersionDetail.PaneName);
