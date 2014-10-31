@@ -333,6 +333,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     }
                     DeleteTmpVersionIfExists(tabId, versionToDelete);
                     TabVersionController.Instance.DeleteTabVersion(tabId, versionToDelete.TabVersionId);
+                    ModuleController.Instance.ClearCache(tabId);
                 }
                 finally
                 {
