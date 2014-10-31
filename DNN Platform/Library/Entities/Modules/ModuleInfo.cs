@@ -90,6 +90,7 @@ namespace DotNetNuke.Entities.Modules
             DesktopModuleID = Null.NullInteger;
             ModuleDefID = Null.NullInteger;
             ModuleTitle = Null.NullString;
+            ModuleVersion = Null.NullInteger;
             _authorizedEditRoles = Null.NullString;
             _authorizedViewRoles = Null.NullString;
             Alignment = Null.NullString;
@@ -331,6 +332,9 @@ namespace DotNetNuke.Entities.Modules
 
         [XmlElement("title")]
         public string ModuleTitle { get; set; }
+
+        [XmlIgnore]
+        public int ModuleVersion { get; set; }
 
         [XmlIgnore]
         public int OwnerPortalID { get; set; }

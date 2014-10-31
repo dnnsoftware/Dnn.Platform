@@ -39,6 +39,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -785,6 +786,8 @@ namespace DotNetNuke.Entities.Modules
                     //Restore Module
                     RestoreModule(module);
 
+                    TabChangeTracker.Instance.TrackModuleAddition(module, 1, UserController.Instance.GetCurrentUserInfo().UserID);
+
                     //Set Module Order as expected
                     UpdateModuleOrder(module.TabID, module.ModuleID, order, pane);
                     UpdateTabModuleOrder(module.TabID);
@@ -832,6 +835,9 @@ namespace DotNetNuke.Entities.Modules
                 log.LogProperties.Add(new LogDetailInfo("TabId", module.TabID.ToString()));
                 log.LogProperties.Add(new LogDetailInfo("ModuleID", module.ModuleID.ToString()));
                 LogController.Instance.AddLog(log);
+
+                TabChangeTracker.Instance.TrackModuleAddition(module, 1, UserController.Instance.GetCurrentUserInfo().UserID);
+
                 if (module.ModuleOrder == -1)
                 {
                     //position module at bottom of pane
@@ -854,6 +860,7 @@ namespace DotNetNuke.Entities.Modules
                 module.TabModuleID = tmpModule.TabModuleID;
             }
             UpdateTabModuleSettings(module);
+
             ClearCache(module.TabID);
             return module.ModuleID;
         }
@@ -1141,9 +1148,9 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteTabModule(int tabId, int moduleId, bool softDelete)
         {
             //save moduleinfo
-            ModuleInfo objModule = GetModule(moduleId, tabId, false);
+            ModuleInfo moduleInfo = GetModule(moduleId, tabId, false);
 
-            if (objModule != null)
+            if (moduleInfo != null)
             {
                 //delete the module instance for the tab
                 dataProvider.DeleteTabModule(tabId, moduleId, softDelete);
@@ -1161,6 +1168,7 @@ namespace DotNetNuke.Entities.Modules
                     //hard delete the module
                     DeleteModule(moduleId);
                 }
+                TabChangeTracker.Instance.TrackModuleDeletion(moduleInfo, Null.NullInteger, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             ClearCache(tabId);
         }
@@ -1482,7 +1490,19 @@ namespace DotNetNuke.Entities.Modules
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
                                                                             DataCache.TabModuleCacheTimeOut,
                                                                             DataCache.TabModuleCachePriority),
-                                                                    c => CBO.FillDictionary("ModuleID", dataProvider.GetTabModules(tabId), new Dictionary<int, ModuleInfo>()));
+                                                                    c => GetModulesCurrentPage(tabId));
+        }
+
+        private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
+        {
+            var modules = TabVersionMaker.Instance.GetCurrentModules(tabId);
+            
+            var dictionary = new Dictionary<int, ModuleInfo>();
+            foreach (var module in modules)
+            {
+                dictionary[module.ModuleID] = module;
+            }
+            return dictionary;
         }
 
         /// <summary>
@@ -1793,25 +1813,25 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// set/change the module position within a pane on a page
         /// </summary>
-        /// <param name="TabId">ID of the page</param>
-        /// <param name="ModuleId">ID of the module on the page</param>
-        /// <param name="ModuleOrder">position within the controls list on page, -1 if to be added at the end</param>
-        /// <param name="PaneName">name of the pane, the module is placed in on the page</param>
-        public void UpdateModuleOrder(int TabId, int ModuleId, int ModuleOrder, string PaneName)
+        /// <param name="tabId">ID of the page</param>
+        /// <param name="moduleId">ID of the module on the page</param>
+        /// <param name="moduleOrder">position within the controls list on page, -1 if to be added at the end</param>
+        /// <param name="paneName">name of the pane, the module is placed in on the page</param>
+        public void UpdateModuleOrder(int tabId, int moduleId, int moduleOrder, string paneName)
         {
-            ModuleInfo objModule = GetModule(ModuleId, TabId, false);
-            if (objModule != null)
+            ModuleInfo moduleInfo = GetModule(moduleId, tabId, false);
+            if (moduleInfo != null)
             {
                 //adding a module to a new pane - places the module at the bottom of the pane 
-                if (ModuleOrder == -1)
+                if (moduleOrder == -1)
                 {
                     IDataReader dr = null;
                     try
                     {
-                        dr = dataProvider.GetTabModuleOrder(TabId, PaneName);
+                        dr = dataProvider.GetTabModuleOrder(tabId, paneName);
                         while (dr.Read())
                         {
-                            ModuleOrder = Convert.ToInt32(dr["ModuleOrder"]);
+                            moduleOrder = Convert.ToInt32(dr["ModuleOrder"]);
                         }
                     }
                     catch (Exception ex)
@@ -1822,12 +1842,12 @@ namespace DotNetNuke.Entities.Modules
                     {
                         CBO.CloseDataReader(dr, true);
                     }
-                    ModuleOrder += 2;
+                    moduleOrder += 2;
                 }
-                dataProvider.UpdateModuleOrder(TabId, ModuleId, ModuleOrder, PaneName);
-
+                dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
+                TabChangeTracker.Instance.TrackModuleModification(GetModule(moduleId, tabId, true), Null.NullInteger, UserController.Instance.GetCurrentUserInfo().UserID);
                 //clear cache
-                ClearCache(TabId);
+                ClearCache(tabId);
             }
         }
 
@@ -1846,22 +1866,35 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// set/change all module's positions within a page
         /// </summary>
-        /// <param name="TabId">ID of the page</param>
-        public void UpdateTabModuleOrder(int TabId)
+        /// <param name="tabId">ID of the page</param>
+        public void UpdateTabModuleOrder(int tabId)
         {
-            IDataReader dr = dataProvider.GetTabPanes(TabId);
+            IDataReader dr = dataProvider.GetTabPanes(tabId);
             try
             {
                 while (dr.Read())
                 {
                     int moduleCounter = 0;
-                    IDataReader dr2 = dataProvider.GetTabModuleOrder(TabId, Convert.ToString(dr["PaneName"]));
+                    IDataReader dr2 = dataProvider.GetTabModuleOrder(tabId, Convert.ToString(dr["PaneName"]));
                     try
                     {
                         while (dr2.Read())
                         {
                             moduleCounter += 1;
-                            dataProvider.UpdateModuleOrder(TabId, Convert.ToInt32(dr2["ModuleID"]), (moduleCounter * 2) - 1, Convert.ToString(dr["PaneName"]));
+
+                            var moduleId = Convert.ToInt32(dr2["ModuleID"]);
+                            var paneName = Convert.ToString(dr["PaneName"]);
+                            var isDeleted = Convert.ToBoolean(dr2["IsDeleted"]);
+                            var moduleOrder = (moduleCounter * 2) - 1;
+
+                            dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
+
+                            if (!isDeleted)
+                            {
+                                var moduleInfo = GetModule(moduleId, tabId, true);
+                                var userInfo = UserController.Instance.GetCurrentUserInfo();
+                                TabChangeTracker.Instance.TrackModuleModification(moduleInfo, Null.NullInteger, userInfo.UserID);                                
+                            }
                         }
                     }
                     catch (Exception ex2)
@@ -1883,7 +1916,7 @@ namespace DotNetNuke.Entities.Modules
                 CBO.CloseDataReader(dr, true);
             }
             //clear module cache
-            ClearCache(TabId);
+            ClearCache(tabId);
         }
 
         /// <summary>

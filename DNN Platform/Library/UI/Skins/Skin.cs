@@ -38,9 +38,13 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -455,6 +459,28 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                // Versioning checks.
+                if (!TabController.CurrentPage.HasAVisibleVersion)
+                {
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                }
+
+                int urlVersion;
+                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+                {
+                    if (!TabVersionUtils.CanSeeVersionedPages())
+                    {
+                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
+                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        return true;
+                    }
+
+                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
+                    {
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    }
+                }
+
                 //check portal expiry date
                 if (!CheckExpired())
                 {

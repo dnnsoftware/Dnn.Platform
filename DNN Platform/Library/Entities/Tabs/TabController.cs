@@ -39,8 +39,10 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -93,6 +95,33 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         #region Private Methods
+        private bool IsAdminTab(TabInfo tab)
+        {
+            var portal = PortalController.Instance.GetPortal(tab.PortalID);
+            return portal.AdminTabId == tab.TabID || IsAdminTabRecursive(tab, portal.AdminTabId);
+        }
+
+        private bool IsAdminTabRecursive(TabInfo tab, int adminTabId)
+        {
+            if (tab.ParentId == Null.NullInteger)
+            {
+                return false;
+            }
+
+            if (tab.ParentId == adminTabId)
+            {
+                return true;
+            }
+
+            var parentTab = GetTab(tab.ParentId, tab.PortalID);
+            return IsAdminTabRecursive(parentTab, adminTabId);
+        }
+
+        private bool IsHostTab(TabInfo tab)
+        {
+            return tab.PortalID == Null.NullInteger;
+        }
+
 
         private static void AddAllTabsModules(TabInfo tab)
         {
@@ -163,6 +192,18 @@ namespace DotNetNuke.Entities.Tabs
                 AddAllTabsModules(tab);
             }
 
+            //Check Tab Versioning
+            if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID, tab.TabID))
+            {
+                MarkAsPublished(tab);
+            }
+
+            // Workflow initialization.
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
+            {
+                var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
+                WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
             return tab.TabID;
         }
 
@@ -1617,7 +1658,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Publishes the tab.
+        /// Publishes the tab. Set the VIEW permission
         /// </summary>
         /// <param name="publishTab">The publish tab.</param>
         public void PublishTab(TabInfo publishTab)
@@ -1903,6 +1944,18 @@ namespace DotNetNuke.Entities.Tabs
 
             //Clear Tab Caches
             ClearCache(localizedTab.PortalID);
+        }
+
+        /// <summary>
+        /// It marks a page as published at least once
+        /// </summary>
+        /// <param name="tab">The Tab to be marked</param>
+        public void MarkAsPublished(TabInfo tab)
+        {
+            Provider.MarkAsPublished(tab.TabID);
+            
+            //Clear Tab Caches
+            ClearCache(tab.PortalID);            
         }
 
         #endregion
@@ -2320,33 +2373,33 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = new TabInfo { TabID = -1, TabName = noneSpecifiedText, TabOrder = 0, ParentId = -2 };
                 listTabs.Add(tab);
             }
-            foreach (TabInfo objTab in tabs)
+            foreach (TabInfo tab in tabs)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                if (((excludeTabId < 0) || (objTab.TabID != excludeTabId)) &&
-                    (!objTab.IsSuperTab || objUserInfo.IsSuperUser))
+                if (((excludeTabId < 0) || (tab.TabID != excludeTabId)) &&
+                    (!tab.IsSuperTab || objUserInfo.IsSuperUser))
                 {
-                    if ((objTab.IsVisible || includeHidden) && (objTab.IsDeleted == false || includeDeleted) &&
-                        (objTab.TabType == TabType.Normal || includeURL))
+                    if ((tab.IsVisible || includeHidden) && tab.HasAVisibleVersion && (tab.IsDeleted == false || includeDeleted) &&
+                        (tab.TabType == TabType.Normal || includeURL))
                     {
                         //Check if User has View/Edit Permission for this tab
                         if (checkEditPermission || checkViewPermisison)
                         {
                             const string permissionList = "ADD,COPY,EDIT,MANAGE";
                             if (checkEditPermission &&
-                                TabPermissionController.HasTabPermission(objTab.TabPermissions, permissionList))
+                                TabPermissionController.HasTabPermission(tab.TabPermissions, permissionList))
                             {
-                                listTabs.Add(objTab);
+                                listTabs.Add(tab);
                             }
-                            else if (checkViewPermisison && TabPermissionController.CanViewPage(objTab))
+                            else if (checkViewPermisison && TabPermissionController.CanViewPage(tab))
                             {
-                                listTabs.Add(objTab);
+                                listTabs.Add(tab);
                             }
                         }
                         else
                         {
                             //Add Tab to List
-                            listTabs.Add(objTab);
+                            listTabs.Add(tab);
                         }
                     }
                 }
@@ -2449,6 +2502,16 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return isSpecial;
+        }
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tab">The tab info.</param>
+        /// <returns></returns>
+        public bool IsHostOrAdminPage(TabInfo tab)
+        {
+            return IsHostTab(tab) || IsAdminTab(tab);
         }
 
         /// <summary>

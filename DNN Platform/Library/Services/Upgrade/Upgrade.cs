@@ -2794,8 +2794,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
-
-                AddDefaultContentWorkflows();
             }
             
             //fixes issue introduced by eventlog's being defined in upgrade.cs
@@ -3083,14 +3081,6 @@ namespace DotNetNuke.Services.Upgrade
                    //suppress
                }
             
-        }
-
-        private static void AddDefaultContentWorkflows()
-        {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                ContentWorkflowController.Instance.CreateDefaultWorkflows(portal.PortalID);
-            }
         }
 
         private static ContentItem CreateFileContentItem()
