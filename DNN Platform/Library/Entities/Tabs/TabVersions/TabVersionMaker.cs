@@ -510,8 +510,17 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             foreach (var tabVersionDetail in tabVersionDetailsToBeUpdated)
             {
-                tabVersionDetail.TabVersionId = snapshotTabVersion.TabVersionId;
-                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail);
+                var detailInSnapshot =
+                    snapShotTabVersionDetails.Any(
+                        snapshotDetail => snapshotDetail.TabVersionDetailId == tabVersionDetail.TabVersionDetailId);
+                var deleteOrResetAction = tabVersionDetail.Action == TabVersionDetailAction.Deleted || tabVersionDetail.Action == TabVersionDetailAction.Reset;
+                if (detailInSnapshot
+                    || deleteOrResetAction)
+                {
+                    tabVersionDetail.TabVersionId = snapshotTabVersion.TabVersionId;
+                    TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail);
+                }
+                
             }
         }
 
