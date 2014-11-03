@@ -475,6 +475,18 @@ AS
 	WHERE ws.WorkflowID = @WorkflowId
 GO
 
+/* Get Workflow State Usage Count */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]
+	@StateId INT
+AS
+	SELECT COUNT(ci.ContentItemID)
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
+	WHERE ci.StateId = @StateId
+GO
+
 /* Add Content Workflow Notification with no action (only dismiss) */
 IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'ContentWorkflowNoActionNotification' )
 BEGIN

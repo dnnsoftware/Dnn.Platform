@@ -37,6 +37,13 @@ namespace DotNetNuke.Entities.Content.Workflow
         IEnumerable<WorkflowState> GetWorkflowStates(int workflowId);
 
         /// <summary>
+        /// This method returns the total number of Content Items that are associated with the State
+        /// </summary>
+        /// <param name="stateId">Workflow Id</param>
+        /// <returns>Total count of Content Items that are using the specified state</returns>
+        int GetContentWorkflowStateUsageCount(int stateId);
+
+        /// <summary>
         /// This method returns a workflow State by Id
         /// </summary>
         /// <param name="stateId">State Id</param>
@@ -67,7 +74,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// </summary>
         /// <remarks>This method takes care of state reordering.</remarks>
         /// <param name="state">State entity</param>
-        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when deleting a system state workflow (i.e.: Draft, Published) or if the workflow is beign used</exception>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when deleting a system state workflow (i.e.: Draft, Published) or if the workflow state is beign used</exception>
         void DeleteWorkflowState(WorkflowState state);
 
         /// <summary>

@@ -94,9 +94,9 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException("System workflow state cannot be deleted"); // TODO: Localize error message
             }
 
-            if (_dataProvider.GetContentWorkflowUsageCount(stateToDelete.WorkflowID) > 0)
+            if (_dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
             {
-                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowInUsageException", Localization.ExceptionsResourceFile));   
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateInUsageException", Localization.ExceptionsResourceFile));
             }
             
             _workflowStateRepository.DeleteWorkflowState(stateToDelete);
@@ -129,11 +129,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
-            }
-
-            if (_dataProvider.GetContentWorkflowUsageCount(state.WorkflowID) > 0)
-            {
-                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowInUsageException", Localization.ExceptionsResourceFile));
             }
 
             var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
@@ -180,11 +175,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
-            }
-
-            if (_dataProvider.GetContentWorkflowUsageCount(state.WorkflowID) > 0)
-            {
-                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowInUsageException", Localization.ExceptionsResourceFile));
             }
 
             var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
@@ -240,6 +230,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             _workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
         }
 
+        public int GetContentWorkflowStateUsageCount(int stateId)
+        {
+            return _dataProvider.GetContentWorkflowStateUsageCount(stateId);
+        }
         #endregion
 
         #region Service Locator

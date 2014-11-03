@@ -3974,6 +3974,11 @@ namespace DotNetNuke.Data
             return ExecuteReader("GetContentWorkflowUsage", workflowId, pageIndex, pageSize);
         }
 
+        public virtual int GetContentWorkflowStateUsageCount(int stateId)
+        {
+            return ExecuteScalar<int>("GetContentWorkflowStateUsageCount", stateId);
+        }
+
         [Obsolete("Obsoleted in Platform 7.4.0")]
         public virtual int AddContentWorkflow(int portalId, string workflowName, string description, bool isDeleted, bool startAfterCreating, bool startAfterEditing, bool dispositionEnabled)
         {
