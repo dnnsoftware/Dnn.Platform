@@ -83,7 +83,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <remarks>This method takes care of state reordering.</remarks>
         /// <param name="stateId">State Id</param>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowDoesNotExistException">Thrown when moving a state that does not exist</exception>
-        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when state cannot be moved (i.e.: workflow is beign used, is the first/last state, etc...)</exception>
         void MoveWorkflowStateDown(int stateId);
 
         /// <summary>
@@ -92,7 +91,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <remarks>This method takes care of state reordering.</remarks>
         /// <param name="stateId">State Id</param>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowDoesNotExistException">Thrown when moving a state that does not exist</exception>
-        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when state cannot be moved (i.e.: workflow is beign used, is the first/last state, etc...)</exception>
         void MoveWorkflowStateUp(int stateId);
         
         /// <summary>
