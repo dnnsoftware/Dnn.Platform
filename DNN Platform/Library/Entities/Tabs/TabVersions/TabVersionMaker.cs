@@ -333,6 +333,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     }
                     DeleteTmpVersionIfExists(tabId, versionToDelete);
                     TabVersionController.Instance.DeleteTabVersion(tabId, versionToDelete.TabVersionId);
+                    ManageModulesToBeRestored(tabId, previousVersionDetails);
                     ModuleController.Instance.ClearCache(tabId);
                 }
                 finally
@@ -351,8 +352,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     {
                         CreateSnapshotOverVersion(tabId, tabVersions.ElementAtOrDefault(i - 1), tabVersions.ElementAt(i));
                         TabVersionController.Instance.DeleteTabVersion(tabId, tabVersions.ElementAt(i).TabVersionId);
-                        return;
+                        break;
                     }
+                }
+            }
+        }
+
+        private void ManageModulesToBeRestored(int tabId, TabVersionDetail[] versionDetails)
+        {
+            foreach (var detail in versionDetails)
+            {
+                var module = ModuleController.Instance.GetModule(detail.ModuleId, tabId, true);
+                if (module.IsDeleted)
+                {
+                    ModuleController.Instance.RestoreModule(module);    
                 }
             }
         }
