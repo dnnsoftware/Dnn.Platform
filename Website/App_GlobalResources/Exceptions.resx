@@ -381,4 +381,7 @@
   <data name="WorkflowCannotDiscard.Text" xml:space="preserve">
     <value>Cannot discard on last workflow state</value>
   </data>
+  <data name="WorkflowStateInUsageException.Text" xml:space="preserve">
+    <value>You cannot delete a state in use</value>
+  </data>
 </root>
