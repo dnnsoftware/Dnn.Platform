@@ -496,13 +496,31 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var snapShotTabVersionDetails = GetVersionModulesDetails(tabId, snapshotTabVersion.Version).ToArray();
             var existingTabVersionDetails = TabVersionDetailController.Instance.GetTabVersionDetails(snapshotTabVersion.TabVersionId).ToArray();
-
+            
             for (var i = existingTabVersionDetails.Count(); i > 0; i--)
             {
                 var existingDetail = existingTabVersionDetails.ElementAtOrDefault(i - 1);
-                if (snapShotTabVersionDetails.All(tvd => tvd.TabVersionDetailId != existingDetail.TabVersionDetailId))
+
+                if (deletedTabVersion == null)
                 {
-                    TabVersionDetailController.Instance.DeleteTabVersionDetail(existingDetail.TabVersionId, existingDetail.TabVersionDetailId);
+                    if (snapShotTabVersionDetails.All(tvd => tvd.TabVersionDetailId != existingDetail.TabVersionDetailId))
+                    {
+                        TabVersionDetailController.Instance.DeleteTabVersionDetail(existingDetail.TabVersionId,
+                            existingDetail.TabVersionDetailId);
+                    }
+                }
+                else if (existingDetail.Action == TabVersionDetailAction.Deleted) 
+                {
+                    IEnumerable<TabVersionDetail> deletedTabVersionDetails = TabVersionDetailController.Instance.GetTabVersionDetails(deletedTabVersion.TabVersionId);
+                    var moduleAddedAndDeleted = deletedTabVersionDetails.Any(
+                        deleteDetail =>
+                            deleteDetail.ModuleId == existingDetail.ModuleId &&
+                            deleteDetail.Action == TabVersionDetailAction.Added);
+                    if (moduleAddedAndDeleted)
+                    {
+                        TabVersionDetailController.Instance.DeleteTabVersionDetail(existingDetail.TabVersionId,
+                            existingDetail.TabVersionDetailId);
+                    }
                 }
             }
 
