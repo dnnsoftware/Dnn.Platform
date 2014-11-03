@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var unPublishedVersion = GetUnPublishedVersion(tabId);
             if (unPublishedVersion == null)
             {
-                return ModuleController.Instance.GetTabModules(tabId).Select(t => t.Value.Clone());
+                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId)).Select(t => t.Clone());
             }
 
             return GetVersionModules(tabId, unPublishedVersion.TabVersionId);
