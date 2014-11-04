@@ -248,8 +248,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
             var currentVersion = GetCurrentVersion(tabId);
-
-            if (currentVersion == null) //Only when a tab is on a first version and it is not published, the currentVersion object can be null
+            var portalId = PortalSettings.Current.PortalId;
+            if (currentVersion == null //Only when a tab is on a first version and it is not published, the currentVersion object can be null
+                || !TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId))
             {
                 return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId)).Select(t => t.Clone());
             }
