@@ -619,6 +619,13 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
+            //check for existing file
+            var existingFile = GetFile(destinationFolder, file.FileName, true);
+            if (existingFile != null)
+            {
+                DeleteFile(existingFile);
+            }
+
             if (file.FolderMappingID == destinationFolder.FolderMappingID)
             {
                 if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
