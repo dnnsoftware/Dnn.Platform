@@ -571,6 +571,7 @@
                     <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
                     <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
                     <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
+                    <asp:RangeValidator runat="server" id="valSiteLogBuffer" Type="Integer" controltovalidate="txtSiteLogBuffer" validationexpression="^\d*" MinimumValue="1" MaximumValue="999" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="SiteLogBuffer"  />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
