@@ -3447,9 +3447,9 @@ namespace DotNetNuke.Common
             switch (Convert.ToString(RoleID))
             {
                 case glbRoleAllUsers:
-                    return "All Users";
+                    return glbRoleAllUsersName;
                 case glbRoleUnauthUser:
-                    return "Unauthenticated Users";
+                    return glbRoleUnauthUserName;
             }
             Hashtable htRoles = null;
             if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
