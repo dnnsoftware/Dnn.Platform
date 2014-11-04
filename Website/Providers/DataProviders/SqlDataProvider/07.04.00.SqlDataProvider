@@ -594,6 +594,353 @@ BEGIN
 END
 GO
 
+/********************************************************
+ * Table: PortalSettings (allow CultureCode Null, DNN-5743)
+ ********************************************************/
+IF EXISTS(SELECT * FROM sys.key_constraints WHERE name = 'PK_{objectQualifier}PortalSettings' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
+	 DROP CONSTRAINT [PK_{objectQualifier}PortalSettings]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}PortalSettings' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	DROP INDEX [IX_{objectQualifier}PortalSettings] 
+	  ON {databaseOwner}[{objectQualifier}PortalSettings] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}PasswordHistory' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
+	DROP INDEX [PK_{objectQualifier}PortalSettings] 
+	  ON {databaseOwner}[{objectQualifier}PortalSettings] 
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.all_columns WHERE Name = 'PortalSettingID' and Object_id = object_id(N'{databaseOwner}[{objectQualifier}PortalSettings]')) 
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings]
+	  ADD PortalSettingID Int NOT NULL IDENTITY (1, 1);
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings]
+  ALTER COLUMN CultureCode nVarChar(10) Null;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.key_constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'PK_{objectQualifier}PortalSettings')
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
+	 ADD CONSTRAINT [PK_{objectQualifier}PortalSettings] 
+	 PRIMARY KEY NONCLUSTERED (PortalSettingID)
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.check_constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'CK_{objectQualifier}PortalSettings_CultureCode')
+	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
+	 ADD CONSTRAINT [CK_{objectQualifier}PortalSettings_CultureCode] 
+	 CHECK (CultureCode != '')
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'IX_{objectQualifier}PortalSettings')
+CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings]
+  ON {databaseOwner}[{objectQualifier}PortalSettings]
+     (PortalID, CultureCode, SettingName)
+GO
+
+-- All current entries are supposed to be neutral:
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+ WHERE PortalSettingID NOT IN (SELECT Max(PortalSettingID) 
+                                FROM  {databaseOwner}[{objectQualifier}PortalSettings] 
+                                GROUP BY PortalID, SettingName)
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] SET CultureCode = Null;
+GO
+
+-- Consider site settings for skin and container to be language specific:
+INSERT INTO  {databaseOwner}[{objectQualifier}PortalSettings]  
+      (  PortalID,   CultureCode,   SettingName,   SettingValue,   CreatedByUserID,   CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT S.PortalID, L.CultureCode, S.SettingName, S.SettingValue, S.CreatedByUserID, S.CreatedOnDate, -1,                   GetDate()
+ FROM (SELECT PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+        WHERE SettingName IN ('DefaultAdminContainer', 'DefaultAdminSkin', 'DefaultPortalContainer', 'DefaultPortalSkin', 'DefaultIconLocation')) S
+ JOIN {databaseOwner}[{objectQualifier}PortalLocalization] L ON S.PortalID = L.PortalID;
+GO
+
+ DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+  WHERE SettingName IN ('DefaultAdminContainer', 'DefaultAdminSkin', 'DefaultPortalContainer', 'DefaultPortalSkin', 'DefaultIconLocation')
+    AND CultureCode Is Null;
+GO
+
+-- consider page after login and after logout to affect default language only (if content localization used):
+MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S 
+ USING {databaseOwner}[{objectQualifier}Portals] P ON (S.PortalID = P.PortalID)
+ WHEN MATCHED AND S.SettingName IN ('Redirect_AfterLogin', 'Redirect_AfterLogin') 
+ THEN UPDATE SET CultureCode = P.DefaultLanguage;
+GO
+
+
+/********************************************************
+ * SPROC: UpdatePortalSetting (improve robustness, documented)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalSetting]
+	@PortalID       Int,			-- Key, Not Null
+	@SettingName    nVarChar(  50), -- Key, not Null or Empty
+	@SettingValue   nVarChar(2000), -- Not Null
+	@UserID			Int,			-- Not Null (editing user)
+	@CultureCode    nVarChar(  10)  -- Key, Null|'' for neutral language 
+AS
+BEGIN
+	IF IsNull(@SettingValue, '') = ''
+		DELETE FROM {databaseOwner}{objectQualifier}PortalSettings 
+		 WHERE PortalID    = @PortalID
+		   AND SettingName = @SettingName 
+		   AND IsNull(CultureCode, '') = IsNull(@CultureCode, '')
+	ELSE IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalSettings 
+	                    WHERE PortalID    = @PortalID
+						  AND SettingName = @SettingName 
+						  AND IsNull(CultureCode, '') = IsNull(@CultureCode, '')) 
+		UPDATE {databaseOwner}{objectQualifier}PortalSettings
+		 SET   [SettingValue]         = @SettingValue,
+			   [LastModifiedByUserID] = @UserID,
+			   [LastModifiedOnDate]   = GetDate()
+		 WHERE [PortalID]              = @PortalID
+		   AND [SettingName]           = @SettingName
+		   AND IsNull(CultureCode, '') = IsNull(@CultureCode, '') 		   
+	ELSE IF IsNull(@SettingName,'') != '' -- Add new record:
+		INSERT INTO {databaseOwner}{objectQualifier}PortalSettings 
+		           ( PortalID,  SettingName,  SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode) 
+			VALUES (@PortalID, @SettingName, @SettingValue, @UserID,         GetDate(),     @UserID ,             GetDate(),          CASE WHEN @CultureCode = '' THEN Null ELSE @CultureCode END)
+END
+GO
+
+/********************************************************
+ * SPROC: GetPortalSetting (fixing CultureCode use, DNN-5742
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSetting]
+    @PortalID    Int,		    -- Not Null
+    @SettingName nVarChar(50),	-- Not Null
+    @CultureCode nVarChar(50)	-- Null|-1 for neutral language
+AS
+BEGIN
+	SELECT TOP (1)
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE PortalID    = @PortalID
+	   AND SettingName = @SettingName
+	   AND COALESCE(CultureCode, @CultureCode,'') = IsNull(@CultureCode,'')
+	 ORDER BY IsNull(CultureCode,'') DESC
+END
+GO
+
+/********************************************************
+ * SPROC: GetPortalSettings (fixing CultureCode use, DNN-5742
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	SELECT
+		SettingName,
+		CASE WHEN Lower(SettingValue) Like 'fileid=%'
+		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
+		 ELSE SettingValue 
+		END   AS SettingValue,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate,
+		CultureCode
+	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] P
+	 JOIN  (SELECT PortalID, Max(IsNull(CultureCode, '')) CC, SettingName SN
+	        FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+			WHERE COALESCE(CultureCode, @CultureCode, '') = IsNull(@CultureCode, '')
+			  AND PortalID = @PortalId
+			GROUP BY PortalID, SettingName) S 
+	   ON P.PortalID = S.PortalID AND P.SettingName = S.SN AND P.CultureCode = S.CC;
+END
+GO
+
+/********************************************************
+ * SPROC: DeletePortalSetting (use ignored param CultureCode, DNN-5758)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalSetting]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSetting]
+	@PortalID      Int,          -- Not Null
+	@SettingName   nVarChar(50), -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (SettingName = @SettingName)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, '') = '')
+END	
+GO
+
+
+/********************************************************
+ * SPROC: DeletePortalSettings (add param CultureCode, DNN-5758)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalSettings]
+	@PortalID      Int,          -- Not Null
+	@CultureCode   nVarChar(10)  -- Null|'' for all languages and neutral settings
+
+AS
+BEGIN
+	DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+	 WHERE (PortalID    = @PortalID)
+	   AND (CultureCode = @CultureCode OR IsNull(@CultureCode, '') = '')
+END	
+GO
+
+/********************************************************
+ * SPROC: DeletePortalLanguages (delete PortalSettings and PortalLocalization, DNN-5759)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeletePortalLanguages]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalLanguages]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeletePortalLanguages]
+    @PortalId   Int, -- Null ignored (use referential integrity to delete from all Portals)
+    @LanguageId Int  -- Null ignored (use referential integrity to delete for all languages)
+AS
+BEGIN
+    IF @PortalId Is Not Null AND IsNull(@LanguageId, -1) != -1 BEGIN
+       DECLARE @CultureCode nVarchar(10);
+       SELECT @CultureCode = CultureCode FROM {databaseOwner}[{objectQualifier}Languages] WHERE LanguageId = @LanguageId;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalLanguages]    WHERE PortalId = @PortalId AND @LanguageId  = LanguageId;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalId = @PortalId AND @CultureCode = CultureCode;
+       DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]     WHERE PortalId = @PortalId AND @CultureCode = CultureCode;
+    END
+    -- ELSE rely on referential integrity (portal or language will be deleted as well)
+END
+GO
+
+
+/********************************************************
+ * SPROC: DeleteLanguage (delete PortalSettings and PortalLocalization, DNN-5759)
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteLanguage]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteLanguage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteLanguage]
+	@LanguageID		Int -- Not Null
+AS
+BEGIN
+    DECLARE @CultureCode AS nVarChar(10);
+    SELECT @CultureCode = CultureCode FROM {databaseOwner}[{objectQualifier}Languages] WHERE LanguageId = @LanguageId;
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE @CultureCode = CultureCode;
+    DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]     WHERE @CultureCode = CultureCode;
+    DELETE FROM {databaseOwner}[{objectQualifier}Languages]          WHERE @LanguageID  = LanguageID;
+END
+GO
+
+/********************************************************
+ * SPROC: EnsureLocalizationExists (create localized settings, DNN-5759)
+ ********************************************************/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+	@PortalID       Int,
+	@CultureCode	nvarchar(10)
+AS
+BEGIN
+	DECLARE @MasterLanguage nvarchar(10) = Null;
+	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Languages] L 
+			                JOIN {databaseOwner}[{objectQualifier}PortalLanguages] P ON L.LanguageID = P.LanguageID 
+					       WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
+		RETURN; -- language does not exist for this portal - maybe should raise an error?
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
+		SET @MasterLanguage = @CultureCode
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+							  JOIN {databaseOwner}[{objectQualifier}Portals]            P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+							 WHERE P.PortalID = @PortalID)
+		SELECT @MasterLanguage = DefaultLanguage FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalID
+	 ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE CultureCode = 'en-us' and PortalID = @PortalID)
+		SET @MasterLanguage = 'en-us'
+	 ELSE -- neither default nor system language available: take the language that was assigned first
+		SELECT TOP (1) CultureCode FROM {databaseOwner}[{objectQualifier}PortalLocalization] WHERE PortalID = @PortalID ORDER BY PortalID ASC;
+
+	IF NOT (@MasterLanguage Is Null OR @MasterLanguage LIKE @CultureCode) 
+	BEGIN  -- copy localized values from (existing and different) master language:					
+		INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization]
+		(	PortalId,
+			CultureCode,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			CreatedByUserID,
+			CreatedOnDate,
+			LastModifiedByUserID,
+			LastModifiedOnDate
+		) SELECT
+			PortalId,
+			@MasterLanguage,
+			PortalName,
+			LogoFile,
+			FooterText,
+			Description,
+			KeyWords,
+			BackgroundFile, 
+			HomeTabId,
+			LoginTabId,
+			UserTabId,
+			AdminTabId,
+			RegisterTabId,
+			SearchTabId,
+			-1,
+			GetDate(),
+			-1,
+			GetDate()
+		 FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+		 WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage;
+	
+		-- copy missing localized settings:
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings] S
+		USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings] 
+		       WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage) Q 
+		ON (S.PortalID = Q.PortalID AND S.CultureCode = Q.CultureCode AND S.SettingName = Q.SettingName)
+		WHEN NOT MATCHED THEN 
+		INSERT (  PortalID,   CultureCode,   SettingName,   SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate) 
+		VALUES (Q.PortalID, Q.CultureCode, Q.SettingName, Q.SettingValue,              -1,     GetDate(),                   -1,          GetDate());
+	END;
+END;
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
