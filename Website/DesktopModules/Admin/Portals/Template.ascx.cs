@@ -562,7 +562,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         private static bool IsSecuredTab(TabInfo tab)
         {
             var perms = tab.TabPermissions;
-            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName != "All Users" || !perm.AllowAccess);
+            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
         }
 
         private string IconPortal
