@@ -384,4 +384,13 @@
   <data name="WorkflowStateInUsageException.Text" xml:space="preserve">
     <value>You cannot delete a state in use</value>
   </data>
+  <data name="WorkflowNewStateCannotBeAddedToSystemWorkflows.Text" xml:space="preserve">
+    <value>New states cannot be added to system workflows</value>
+  </data>
+  <data name="WorkflowStateCannotBeMoved.Text" xml:space="preserve">
+    <value>Workflow state cannot be moved</value>
+  </data>
+  <data name="WorkflowSystemWorkflowStateCannotBeDeleted.Text" xml:space="preserve">
+    <value>System workflow state cannot be deleted</value>
+  </data>
 </root>

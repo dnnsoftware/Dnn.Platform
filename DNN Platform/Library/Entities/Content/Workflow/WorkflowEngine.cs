@@ -192,19 +192,14 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
         {
-            if (!state.SendNotification)
+            if (!state.SendNotification && !state.SendNotificationToAdministrators)
             {
                 return;
             }
 
-            var permissions = _workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
-            var users = GetUsersFromPermissions(portalSettings, permissions, state.SendNotificationToAdministrators).ToArray();
-            var roles = GetRolesFromPermissions(portalSettings, permissions, state.SendNotificationToAdministrators).ToArray();
+            var reviewers = GetUserAndRolesForStateReviewers(portalSettings, state);
 
-            roles = roles.ToArray();
-            users = users.ToArray();
-
-            if (!roles.Any() && !users.Any())
+            if (!reviewers.Roles.Any() && !reviewers.Users.Any())
             {
                 return; // If there are no receivers, the notification is avoided
             }
@@ -227,28 +222,49 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Context = GetWorkflowNotificationContext(contentItem, state)
             };
 
-            _notificationsController.SendNotification(notification, portalSettings.PortalId, roles.ToList(), users.ToList());
+            _notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
         }
-        
-        private static IEnumerable<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions, bool includeAdministrators)
+
+        private class ReviewersDto
         {
-            var roles = (from permission in permissions 
+            public List<RoleInfo> Roles { get; set; }
+
+            public List<UserInfo> Users { get; set; }
+        }
+
+        private ReviewersDto GetUserAndRolesForStateReviewers(PortalSettings portalSettings, WorkflowState state)
+        {
+            var reviewers = new ReviewersDto
+                                             {
+                                                 Roles = new List<RoleInfo>(),
+                                                 Users = new List<UserInfo>()
+                                             };
+            if (state.SendNotification)
+            {
+                var permissions = _workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
+                reviewers.Users = GetUsersFromPermissions(portalSettings, permissions);
+                reviewers.Roles = GetRolesFromPermissions(portalSettings, permissions);
+            }
+
+            if (state.SendNotificationToAdministrators)
+            {
+                if (!IsAdministratorRoleAlreadyIncluded(portalSettings, reviewers.Roles))
+                {
+                    var adminRole = RoleController.Instance.GetRoleByName(portalSettings.PortalId, portalSettings.AdministratorRoleName);
+                    reviewers.Roles.Add(adminRole);
+                }
+
+                reviewers.Users = IncludeSuperUsers(reviewers.Users);
+            }
+
+            return reviewers;
+        }
+
+        private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
+        {
+            return (from permission in permissions 
                          where permission.AllowAccess && permission.RoleID > Null.NullInteger 
                          select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
-
-            if (!includeAdministrators)
-            {
-                return roles;
-            }
-
-            if (IsAdministratorRoleAlreadyIncluded(settings, roles))
-            {
-                return roles;
-            }
-
-            var adminRole = RoleController.Instance.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
-            roles.Add(adminRole);
-            return roles;
         }
 
         private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
@@ -256,16 +272,14 @@ namespace DotNetNuke.Entities.Content.Workflow
             return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
         }
 
-        private static IEnumerable<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions, bool includeAdministrators)
+        private static List<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
         {
-            var users = (from permission in permissions 
-                         where permission.AllowAccess && permission.UserID > Null.NullInteger 
-                         select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
-
-            return includeAdministrators ? IncludeSuperUsers(users) : users;
+            return (from permission in permissions
+                where permission.AllowAccess && permission.UserID > Null.NullInteger
+                select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
         }
 
-        private static IEnumerable<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
+        private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
         {
             var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
             foreach (UserInfo superUser in superUsers)
@@ -275,7 +289,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     users.Add(superUser);
                 }
             }
-            return users;
+            return users.ToList();
         }
 
         private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)

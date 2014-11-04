@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
@@ -65,9 +64,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         public bool SendNotification { get; set; }
 
         /// <summary>
-        /// If set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to the administrators of the state when the workflow reach it
+        /// If set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to administrators user when the workflow reach it
         /// </summary>
-        /// <remarks>If SendNotification is set to false, the Workflow Engine <see cref="IWorkflowEngine"/> won't send notification to administrators user even if this property is set to true</remarks>
         public bool SendNotificationToAdministrators { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (workflow.IsSystem)
             {
-                throw new WorkflowInvalidOperationException("New states cannot be added to system workflows"); //TODO: localize error message
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowNewStateCannotBeAddedToSystemWorkflows", Localization.ExceptionsResourceFile));
             }
 
             var lastState = workflow.LastState;
@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (stateToDelete.IsSystem)
             {
-                throw new WorkflowInvalidOperationException("System workflow state cannot be deleted"); // TODO: Localize error message
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowSystemWorkflowStateCannotBeDeleted", Localization.ExceptionsResourceFile));
             }
 
             if (_dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
@@ -116,10 +116,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 throw new WorkflowDoesNotExistException();
             }
-            // TODO: check if remove this code. We can make Order as internal
-            // We do not allow change Order property
-            state.Order = workflowState.Order;
-
             _workflowStateRepository.UpdateWorkflowState(state);
         }
 
@@ -135,7 +131,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (states.Length == 3)
             {
-                throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
             
             WorkflowState stateToMoveUp = null;
@@ -148,7 +144,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 // First and Second workflow state cannot be moved down
                 if (i <= 1)
                 {
-                    throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                    throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
                 }
 
                 stateToMoveUp = states[i - 1];
@@ -158,7 +154,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (stateToMoveUp == null || stateToMoveDown == null)
             {
-                throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
             var orderTmp = stateToMoveDown.Order;
@@ -181,7 +177,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             
             if (states.Length == 3)
             {
-                throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
             WorkflowState stateToMoveUp = null;
@@ -194,7 +190,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 // Last and Next to Last workflow state cannot be moved up
                 if (i >= states.Length - 2)
                 {
-                    throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                    throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
                 }
 
                 stateToMoveUp = states[i];
@@ -204,7 +200,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             if (stateToMoveUp == null || stateToMoveDown == null)
             {
-                throw new WorkflowInvalidOperationException("Workflow state cannot be moved"); // TODO: localize
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
             var orderTmp = stateToMoveDown.Order;
