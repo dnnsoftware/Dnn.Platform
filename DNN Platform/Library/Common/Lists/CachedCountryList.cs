@@ -12,6 +12,7 @@ namespace DotNetNuke.Common.Lists
 		#region " Structures "
 		public struct Country
 		{
+			public int Id;
 			public string Name;
 			public string Code;
 			public string FullName;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Common.Lists
 				string text = li.Text;
 				Country c = new Country
 				{
+					Id = li.EntryID,
 					Code = li.Value,
 					FullName = string.Format("{0} ({1})", text, li.Value),
 					Name = text

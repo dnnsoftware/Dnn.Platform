@@ -248,7 +248,7 @@ namespace DotNetNuke.UI.WebControls
 			{
 				foreach (ListEntryInfo item in ListEntries)
 				{
-					Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.Value });
+					Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
 				}
 			}
 			ControlStyle.AddAttributesToRender(writer);

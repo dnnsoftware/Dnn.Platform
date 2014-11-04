@@ -52,16 +52,16 @@ namespace DotNetNuke.UI.WebControls
 			}
 		}
 
-		private HiddenField _CountryCode;
-		private HiddenField CountryCode
+		private HiddenField _CountryId;
+		private HiddenField CountryId
 		{
 			get
 			{
-				if (_CountryCode == null)
+				if (_CountryId == null)
 				{
-					_CountryCode = new HiddenField();
+					_CountryId = new HiddenField();
 				}
-				return _CountryCode;
+				return _CountryId;
 			}
 		}
 		#endregion
@@ -122,8 +122,8 @@ namespace DotNetNuke.UI.WebControls
 			CountryName.Attributes.Add("data-required", Required.ToString().ToLower());
 			Controls.Add(CountryName);
 
-			CountryCode.ID = ID + "_code";
-			Controls.Add(CountryCode);
+			CountryId.ID = ID + "_id";
+			Controls.Add(CountryId);
 
 		}
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			bool dataChanged = false;
 			string presentValue = StringValue;
-			string postedValue = postCollection[postDataKey + "_code"];
+			string postedValue = postCollection[postDataKey + "_id"];
 			if (!presentValue.Equals(postedValue))
 			{
 				Value = postedValue;
@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.WebControls
 			if (Page != null & EditMode == PropertyEditorMode.Edit)
 			{
 				Page.RegisterRequiresPostBack(this);
-				Page.RegisterRequiresPostBack(CountryCode);
+				Page.RegisterRequiresPostBack(CountryId);
 			}
 
 		}
@@ -176,17 +176,21 @@ namespace DotNetNuke.UI.WebControls
 		{
 
 			CountryName.Text = StringValue;
-			CachedCountryList countries = CachedCountryList.GetCountryList(System.Threading.Thread.CurrentThread.CurrentCulture.Name);
-			if (countries.ContainsKey(StringValue))
+			int countryId = -1;
+			string countryCode = StringValue;
+			if (!string.IsNullOrEmpty(StringValue) && int.TryParse(StringValue, out countryId))
 			{
-				CountryName.Text = countries[StringValue].Name;
+				var listController = new ListController();
+				var c = listController.GetListEntryInfo(countryId);
+				CountryName.Text = c.Text;
+				countryCode = c.Value;
 			}
-			CountryCode.Value = StringValue;
+			CountryId.Value = StringValue;
 
 			var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(Page, c => IsCoupledRegionControl(c));
 			if (regionControl2 != null)
 			{
-				regionControl2.ParentKey = "Country." + StringValue;
+				regionControl2.ParentKey = "Country." + countryCode;
 			}
 
 		}

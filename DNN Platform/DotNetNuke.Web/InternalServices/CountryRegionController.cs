@@ -31,15 +31,15 @@ namespace DotNetNuke.Web.InternalServices
 		}
 
 		[HttpGet()]
-		public HttpResponseMessage Regions(string country)
+		public HttpResponseMessage Regions(int country)
 		{
 			List<Region> res = new List<Region>();
-			foreach (ListEntryInfo r in (new ListController()).GetListEntryInfoItems("Region", "Country." + country, -1))
+			foreach (ListEntryInfo r in (new ListController()).GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
 			{
 				res.Add(new Region
 				{
 					Text = r.Text,
-					Value = r.Value
+					Value = r.EntryID.ToString()
 				});
 			}
 			return Request.CreateResponse(HttpStatusCode.OK, res);

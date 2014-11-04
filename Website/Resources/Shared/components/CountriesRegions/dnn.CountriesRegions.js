@@ -68,7 +68,7 @@ function loadRegionList(category, country) {
 }
 
 function clearCountryValue(countryControl) {
-	$('#' + $(countryControl).attr('id') + '_code').val('');
+	$('#' + $(countryControl).attr('id') + '_id').val('');
 	$(countryControl).attr('data-value', '');
 	$(countryControl).attr('value', '');
 	loadRegionList($(countryControl).attr('data-category'), '');
@@ -87,15 +87,15 @@ function setupCountryAutoComplete() {
 				response($.map(data, function (item) {
 					return {
 						label: item.FullName,
-						id: item.Code,
-						value: item.Code,
+						id: item.Id,
+						value: item.Id,
 						name: item.Name
 					};
 				}))
 			})
 		},
 		select: function (event, ui) {
-			$('#' + $(this).attr('id') + '_code').val(ui.item.id);
+			$('#' + $(this).attr('id') + '_id').val(ui.item.id);
 			$(this).attr('data-value', ui.item.id);
 			$(this).attr('data-text', ui.item.name);
 		},
