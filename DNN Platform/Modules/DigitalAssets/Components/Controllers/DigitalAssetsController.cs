@@ -657,7 +657,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
-                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath);
+                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
                 return GetFolderViewModel(folder);
             }
             catch (FolderAlreadyExistsException)
