@@ -1235,4 +1235,7 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plUpgradeForceSSL.Text" xml:space="preserve">
     <value>Require SSL for Upgrade wizard</value>
   </data>
+  <data name="SiteLogBufferValidation.Text" xml:space="preserve">
+    <value>Buffer size needs to be at least 1.</value>
+  </data>
 </root>
