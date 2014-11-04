@@ -1519,7 +1519,7 @@ namespace DesktopModules.Admin.Portals
                     redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogout.SelectedItem.Value) ?
                                         RedirectAfterLogout.SelectedItem.Value
                                         : "-1";
-                    PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId);
+					PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterLogout", redirectTabId, SelectedCultureCode);
 
                     var defaultAuthProvider = !String.IsNullOrEmpty(authProviderCombo.SelectedItem.Value) ?
                                         authProviderCombo.SelectedItem.Value
