@@ -32,7 +32,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -1037,7 +1037,14 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             // Store the result as a cookie.
-                            response.Cookies.Set(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+	                        if (viewMobileCookie == null)
+	                        {
+								response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+	                        }
+	                        else
+	                        {
+								viewMobileCookie.Value = isMobile.ToString();
+	                        }
                         }
                     }
                     else
