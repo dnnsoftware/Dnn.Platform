@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.InternalServices
 					Value = r.EntryID.ToString()
 				});
 			}
-			return Request.CreateResponse(HttpStatusCode.OK, res);
+			return Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
 		}
 
 	}
