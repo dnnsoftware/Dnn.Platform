@@ -1360,8 +1360,7 @@ namespace DotNetNuke.Entities.Portals
         private void ParsePortalSettings(XmlNode nodeSettings, int PortalId)
         {
             PortalInfo objPortal;
-			String currentCulture = GetActivePortalLanguage(PortalId);
-			objPortal = GetPortal(PortalId);
+            objPortal = GetPortal(PortalId);
             objPortal.LogoFile = Globals.ImportFile(PortalId, XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "logofile"));
             objPortal.FooterText = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "footertext");
             if (nodeSettings.SelectSingleNode("expirydate") != null)
@@ -1401,19 +1400,19 @@ namespace DotNetNuke.Entities.Portals
 
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""), currentCulture);
+                UpdatePortalSetting(PortalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""), currentCulture);
+                UpdatePortalSetting(PortalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""), currentCulture);
+                UpdatePortalSetting(PortalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""), currentCulture);
+                UpdatePortalSetting(PortalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""));
             }
 
             //Enable Skin Widgets Setting
@@ -2870,28 +2869,28 @@ namespace DotNetNuke.Entities.Portals
 			return portal != null && portal.PortalGroupID > Null.NullInteger;
         }
 
-		/// <summary>
-		/// Deletes the portal setting (neutral and for all languages).
-		/// </summary>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="settingName">Name of the setting.</param>
-		public static void DeletePortalSetting(int portalID, string settingName)
-		{
-			DeletePortalSetting(portalID, settingName, Null.NullString);
-		}
-
         /// <summary>
-		/// Deletes the portal setting in this language.
-		/// </summary>
+        /// Deletes the portal setting.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
-		/// <param name="cultureCode">The culture code.</param>
-		public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
-		{
-			DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLower());
-			EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-			DataCache.ClearHostCache(true);
-		}
+        public static void DeletePortalSetting(int portalID, string settingName)
+        {
+            DeletePortalSetting(portalID, settingName, GetActivePortalLanguage(portalID));
+        }
+
+        /// <summary>
+        /// Deletes the portal setting.
+        /// </summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="CultureCode">The culture code.</param>
+        public static void DeletePortalSetting(int portalID, string settingName, string CultureCode)
+        {
+            DataProvider.Instance().DeletePortalSetting(portalID, settingName, CultureCode.ToLower());
+            EventLogController.Instance.AddLog("SettingName", settingName, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            DataCache.ClearHostCache(true);
+        }
 
         /// <summary>
         /// Deletes all portal settings by portal id.
@@ -2899,19 +2898,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         public static void DeletePortalSettings(int portalID)
         {
-			DeletePortalSettings(portalID, Null.NullString);
-		}
-
-		/// <summary>
-		/// Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).
-		/// </summary>
-		/// <param name="portalID">The portal ID.</param>
-		public static void DeletePortalSettings(int portalID, string cultureCode)
-		{
-			DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
-			EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
-			DataCache.ClearHostCache(true);
-		}
+            DataProvider.Instance().DeletePortalSettings(portalID);
+            EventLogController.Instance.AddLog("PortalID", portalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            DataCache.ClearHostCache(true);
+        }
 
         /// <summary>
         /// Gets the portal settings dictionary.
@@ -2920,8 +2910,8 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>portal settings.</returns>
         public static Dictionary<string, string> GetPortalSettingsDictionary(int portalID)
         {
-			return GetPortalSettingsDictionary(portalID, GetActivePortalLanguage(portalID));
-		}
+	        return GetPortalSettingsDictionary(portalID, string.Empty);
+        }
 
         /// <summary>
         /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
@@ -2963,31 +2953,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting for a specific language (or neutral).
-		/// </summary>
-		/// <param name="settingName">Name of the setting.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
-		{
-			var retValue = Null.NullString;
-			try
-			{
-				string setting;
-				GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(settingName, out setting);
-				retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
-			}
-			catch (Exception exc)
-			{
-				Logger.Error(exc);
-			}
-			return retValue;
-		}
-
-		/// <summary>
-		/// Gets the portal setting as boolean.
+        /// Gets the portal setting as boolean.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="portalID">The portal ID.</param>
@@ -3017,38 +2983,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting as boolean for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
-		{
-			bool retValue = Null.NullBoolean;
-			try
-			{
-				string setting = Null.NullString;
-				GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-				if (string.IsNullOrEmpty(setting))
-				{
-					retValue = defaultValue;
-				}
-				else
-				{
-					retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.ToUpperInvariant() == "TRUE");
-				}
-			}
-			catch (Exception exc)
-			{
-				Logger.Error(exc);
-			}
-			return retValue;
-		}
-
-		/// <summary>
-		/// Gets the portal setting as integer.
+        /// Gets the portal setting as integer.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="portalID">The portal ID.</param>
@@ -3078,37 +3013,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting as integer for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
-		public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
-		{
-			int retValue = Null.NullInteger;
-			try
-			{
-				string setting = Null.NullString;
-				GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(key, out setting);
-				if (string.IsNullOrEmpty(setting))
-				{
-					retValue = defaultValue;
-				}
-				else
-				{
-					retValue = Convert.ToInt32(setting);
-				}
-			}
-			catch (Exception exc)
-			{
-				Logger.Error(exc);
-			}
-			return retValue;
-		}
-		/// <summary>
-		/// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">host settings key</param>
@@ -3126,8 +3031,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a single neutral (not language specific) portal setting and clears it from the cache.
-		/// </summary>
+        /// Updates the portal setting.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
@@ -3137,52 +3042,49 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
-		/// </summary>
+        /// Updates the portal setting.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
         {
-			UpdatePortalSetting(portalID, settingName, settingValue, clearCache, Null.NullString);
-		}
-
-		/// <summary>
-		/// Updates a language specific or neutral portal setting and clears it from the cache.
-		/// </summary>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="settingName">Name of the setting.</param>
-		/// <param name="settingValue">The setting value.</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, string cultureCode)
-		{
-			UpdatePortalSetting(portalID, settingName, settingValue, true, cultureCode);
-		}
+            string culture = Thread.CurrentThread.CurrentCulture.ToString().ToLower();
+            if ((string.IsNullOrEmpty(culture)))
+            {
+                culture = GetPortalSetting("DefaultLanguage", portalID, "".ToLower());
+            }
+            if ((string.IsNullOrEmpty(culture)))
+            {
+                culture = Localization.SystemLocale.ToLower();
+            }
+            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, culture);
+        }
 
         /// <summary>
-		/// Updates a language specific or neutral portal setting and optionally clears it from the cache.
-		/// </summary>
+        /// Updates the portal setting.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
-		{
-			string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+        /// <param name="culturecode">The culturecode.</param>
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string culturecode)
+        {
+            string currentSetting = GetPortalSetting(settingName, portalID, String.Empty);
 
-			if (currentSetting != settingValue)
-			{
-				DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode);
-				EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-				if (clearCache)
-				{
-					DataCache.ClearPortalCache(portalID, false);
-					DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-				}
-			}
-		}
+            if (currentSetting != settingValue)
+            {
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, culturecode);
+                EventLogController.Instance.AddLog(settingName, settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                if (clearCache)
+                {
+                    DataCache.ClearPortalCache(portalID, false);
+                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+                }
+            }
+        }
 
         /// <summary>
         /// Checks the desktop modules whether is installed.
