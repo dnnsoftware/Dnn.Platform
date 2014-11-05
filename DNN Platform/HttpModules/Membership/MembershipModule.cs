@@ -32,6 +32,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.HttpModules.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
@@ -49,7 +50,7 @@ namespace DotNetNuke.HttpModules.Membership
     /// </summary>
     public class MembershipModule : IHttpModule
     {
-	    private static string _cultureCode;
+        private static string _cultureCode;
         /// <summary>
         /// Gets the name of the module.
         /// </summary>
@@ -64,18 +65,18 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-	    private static string CurrentCulture
-	    {
-		    get
-		    {
-			    if (string.IsNullOrEmpty(_cultureCode))
-			    {
-				    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
-			    }
+        private static string CurrentCulture
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_cultureCode))
+                {
+                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
+                }
 
-			    return _cultureCode;
-		    }
-	    }
+                return _cultureCode;
+            }
+        }
 
         #region IHttpModule Members
 
@@ -110,7 +111,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
-			var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
+            var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
             UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
@@ -146,11 +147,11 @@ namespace DotNetNuke.HttpModules.Membership
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
-				//if current login is from windows authentication, the ignore the process
-				if (user == null && context.User is WindowsPrincipal)
-				{
-					return;
-				}
+                //if current login is from windows authentication, the ignore the process
+                if (user == null && context.User is WindowsPrincipal)
+                {
+                    return;
+                }
 
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
@@ -173,14 +174,14 @@ namespace DotNetNuke.HttpModules.Membership
 
                 if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
                 {
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
                 }
 
-				if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-				{
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
-				}
+                if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
+                {
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
+                }
 
                 //if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
                 if (DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(Host.UsersOnlineTimeWindow), DateTime.Now) < 0)
@@ -207,7 +208,10 @@ namespace DotNetNuke.HttpModules.Membership
                 context.Items.Add("UserInfo", user);
 
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                Localization.SetLanguage(user.Profile.PreferredLocale);
+                if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+                {
+                    Localization.SetLanguage(user.Profile.PreferredLocale);
+                }
             }
 
             if (context.Items["UserInfo"] == null)
