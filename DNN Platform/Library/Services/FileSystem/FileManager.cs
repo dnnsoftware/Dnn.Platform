@@ -619,13 +619,6 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
-            //check for existing file
-            var existingFile = GetFile(destinationFolder, file.FileName, true);
-            if (existingFile != null)
-            {
-                DeleteFile(existingFile);
-            }
-
             if (file.FolderMappingID == destinationFolder.FolderMappingID)
             {
                 if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
@@ -641,6 +634,14 @@ namespace DotNetNuke.Services.FileSystem
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                 try
                 {
+
+                    //check for existing file
+                    var existingFile = GetFile(destinationFolder, file.FileName, true);
+                    if (existingFile != null)
+                    {
+                        DeleteFile(existingFile);
+                    }
+
                     var folder = FolderManager.Instance.GetFolder(file.FolderId);
                     FolderProvider.Instance(folderMapping.FolderProviderType).CopyFile(folder.MappedPath, file.FileName, destinationFolder.MappedPath, folderMapping);
                 }
@@ -684,6 +685,13 @@ namespace DotNetNuke.Services.FileSystem
 
             using (var fileContent = GetFileContent(file))
             {
+                //check for existing file
+                var existingFile = GetFile(destinationFolder, file.FileName, true);
+                if (existingFile != null)
+                {
+                    DeleteFile(existingFile);
+                }
+
                 return AddFile(destinationFolder, file.FileName, fileContent, true, true, file.ContentType);
             }
         }
