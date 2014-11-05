@@ -32,6 +32,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.HttpModules.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
@@ -207,7 +208,10 @@ namespace DotNetNuke.HttpModules.Membership
                 context.Items.Add("UserInfo", user);
 
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                Localization.SetLanguage(user.Profile.PreferredLocale);
+	            if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+	            {
+					Localization.SetLanguage(user.Profile.PreferredLocale);
+				}
             }
 
             if (context.Items["UserInfo"] == null)
