@@ -47,6 +47,7 @@ namespace DotNetNuke.Entities.Host
     /// <summary>
 	/// Contains most of the host settings.
 	/// </summary>
+    [Serializable]
     public class Host : BaseEntityInfo
     {
         #region Public Shared Properties

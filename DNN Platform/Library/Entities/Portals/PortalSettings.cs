@@ -62,6 +62,7 @@ namespace DotNetNuke.Entities.Portals
     /// 	[cnurse]	10/21/2004	added GetTabModuleSettings
     /// </history>
     /// -----------------------------------------------------------------------------
+    [Serializable]
     public class PortalSettings : BaseEntityInfo, IPropertyAccess
     {
         #region ControlPanelPermission enum
