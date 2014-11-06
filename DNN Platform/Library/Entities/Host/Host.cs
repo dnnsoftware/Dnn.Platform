@@ -1377,7 +1377,8 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                var slb = HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                return slb < 1 ? 1 : slb;
             }
         }
 

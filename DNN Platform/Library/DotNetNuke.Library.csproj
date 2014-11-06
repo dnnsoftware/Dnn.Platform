@@ -141,12 +141,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+      <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />
     <Compile Include="Collections\IPagedList.cs" />
@@ -1740,9 +1740,7 @@
   <ItemGroup>
     <Compile Include="Common\Utilities\FileSystemPermissionVerifier.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj">
       <Project>{ca056730-5759-41f8-a6c1-420f9c0c63e7}</Project>
