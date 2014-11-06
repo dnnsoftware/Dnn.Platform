@@ -428,9 +428,16 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var contentItem = _contentController.GetContentItem(stateTransaction.ContentItemId);
             var workflow = _workflowManager.GetWorkflow(contentItem);
-            if (workflow == null || IsWorkflowCompleted(contentItem))
+
+            if (workflow == null)
             {
                 return;
+            }
+            
+            if (IsWorkflowCompleted(contentItem)
+                        && !(workflow.IsSystem && workflow.States.Count() == 1))
+            {
+                throw new WorkflowInvalidOperationException(Localization.GetExceptionMessage("WorkflowSystemWorkflowStateCannotComplete", "System workflow state cannot be completed."));
             }
 
             var isFirstState = workflow.FirstState.StateID == contentItem.StateID;

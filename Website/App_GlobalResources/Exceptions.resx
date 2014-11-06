@@ -393,4 +393,7 @@
   <data name="WorkflowSystemWorkflowStateCannotBeDeleted.Text" xml:space="preserve">
     <value>System workflow state cannot be deleted</value>
   </data>
+  <data name="WorkflowSystemWorkflowStateCannotComplete.Text" xml:space="preserve">
+    <value>System workflow state cannot be completed.</value>
+  </data>
 </root>
