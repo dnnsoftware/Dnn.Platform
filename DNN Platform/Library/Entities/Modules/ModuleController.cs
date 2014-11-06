@@ -1728,8 +1728,17 @@ namespace DotNetNuke.Entities.Modules
 
                 EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
 
-                //update module order in pane
-                UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);
+                var moduleInfo = GetTabModule(module.TabModuleID);
+                
+                if (moduleInfo == null)
+                {
+                    UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);
+                }
+                else if (moduleInfo.ModuleOrder != module.ModuleOrder || moduleInfo.PaneName != module.PaneName)
+                {
+                    //update module order in pane
+                    UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);   
+                }
 
                 //set the default module
                 if (PortalSettings.Current != null)
