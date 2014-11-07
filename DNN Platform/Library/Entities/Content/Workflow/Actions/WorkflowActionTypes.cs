@@ -29,6 +29,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
         DiscardWorkflow,
         CompleteWorkflow,
         DiscardState,
-        CompleteState
+        CompleteState,
+        StartWorkflow
     }
 }

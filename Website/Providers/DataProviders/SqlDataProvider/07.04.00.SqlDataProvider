@@ -508,6 +508,27 @@ BEGIN
 END
 GO
 
+/* Add Content Workflow Notification when Workflow Starts */
+IF NOT EXISTS (SELECT NotificationTypeID FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes WHERE Name = 'ContentWorkflowStartWorkflowNotification' )
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes(
+		[Name]
+		,[Description]
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+	) VALUES (
+		'ContentWorkflowStartWorkflowNotification',
+		'Content Workflow Start Workflow Notification',
+		-1,
+		GETDATE(),
+		-1,
+		GETDATE()
+	)
+END
+GO
+
 /* Add ContentWorkflowActions table */
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflowActions]') AND type in (N'U'))
 BEGIN
@@ -594,6 +615,66 @@ BEGIN
 END
 GO
 
+/* Add action to Start Workflow Notification */
+DECLARE @NotificationStartWorkflowTypeId INT
+SELECT @NotificationStartWorkflowTypeId = NotificationTypeId
+    FROM    {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes
+    WHERE   Name = 'ContentWorkflowStartWorkflowNotification'
+IF @NotificationStartWorkflowTypeId IS NOT NULL
+BEGIN
+	/* Add Submit notification action */
+	/* also uses the existing Approve method */
+    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+        [NotificationTypeID],
+        [NameResourceKey],
+        [DescriptionResourceKey],
+        [ConfirmResourceKey],
+        [Order],
+        [APICall],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate])
+    VALUES(
+        @NotificationStartWorkflowTypeId,
+        'Submit',
+        'Submit',
+        NULL,
+        1,
+        'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+        -1,
+        GETDATE(),
+        -1,
+        GETDATE()
+        )
+		
+	/* Add Discard notification action */
+	/* also uses the existing Reject method */
+	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+        [NotificationTypeID],
+        [NameResourceKey],
+        [DescriptionResourceKey],
+        [ConfirmResourceKey],
+        [Order],
+        [APICall],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate])
+    VALUES(
+        @NotificationStartWorkflowTypeId,
+        'Discard',
+        'Discard',
+        NULL,
+        1,
+        'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+        -1,
+        GETDATE(),
+        -1,
+        GETDATE()
+        )
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

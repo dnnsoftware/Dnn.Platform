@@ -43,6 +43,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         #region Constants
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
         private const string ContentWorkflowNotificationNoActionType = "ContentWorkflowNoActionNotification";
+        private const string ContentWorkflowNotificatioStartWorkflowType = "ContentWorkflowStartWorkflowNotification";
         #endregion
 
         #region Members
@@ -57,6 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly INotificationsController _notificationsController;
         private readonly IWorkflowManager _workflowManager;
         private readonly IWorkflowLogger _workflowLogger;
+        private readonly ISystemWorkflowManager _systemWorkflowManager;
         #endregion
 
         #region Constructor
@@ -73,10 +75,23 @@ namespace DotNetNuke.Entities.Content.Workflow
             _notificationsController = NotificationsController.Instance;
             _workflowManager = WorkflowManager.Instance;
             _workflowLogger = WorkflowLogger.Instance;
+            _systemWorkflowManager = SystemWorkflowManager.Instance;
         }
         #endregion
 
         #region Private Methods
+
+        private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
+        {
+            return new StateTransaction
+            {
+                ContentItemId = contentItemId,
+                CurrentStateId = stateId,
+                UserId = userId,
+                Message = new StateTransactionMessage()
+            };
+        }
+
         private void PerformWorkflowActionOnStateChanged(StateTransaction stateTransaction, WorkflowActionTypes actionType)
         {
             var contentItem = _contentController.GetContentItem(stateTransaction.ContentItemId);
@@ -149,6 +164,13 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var context = GetWorkflowNotificationContext(contentItem, state);
             var notificationTypeId = _notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId;
+            DeleteNotificationsByType(notificationTypeId, context);
+            notificationTypeId = _notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId;
+            DeleteNotificationsByType(notificationTypeId, context);
+        }
+
+        private void DeleteNotificationsByType(int notificationTypeId, string context)
+        {
             var notifications = _notificationsController.GetNotificationByContext(notificationTypeId, context);
             foreach (var notification in notifications)
             {
@@ -188,6 +210,32 @@ namespace DotNetNuke.Entities.Content.Workflow
             };
 
             _notificationsController.SendNotification(notification, workflow.PortalID, null, new []{ user });
+        }
+
+        private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
+        {
+            var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
+            if (workflowAction == null)
+            {
+                return;
+            }
+
+            var user = _userController.GetUser(workflow.PortalID, starterUserId);
+
+            var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
+
+            var notification = new Notification
+            {
+                NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId,
+                Subject = message.Subject,
+                Body = message.Body,
+                IncludeDismissAction = true,
+                SenderUserID = stateTransaction.UserId,
+
+                Context = GetWorkflowNotificationContext(contentItem, workflow.FirstState)
+            };
+
+            _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
         }
 
         private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
@@ -381,6 +429,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             var states = workflow.States.OrderBy(s => s.Order);
             int index;
 
+            if (workflow.FirstState.StateID == stateId)
+            {
+                return workflow.LastState;
+            }
+
             // locate the current state
             for (index = 0; index < states.Count(); index++)
             {
@@ -414,7 +467,19 @@ namespace DotNetNuke.Entities.Content.Workflow
                 workflow = _workflowRepository.GetWorkflow(workflowId);
             }
 
+            var initialTransaction = CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
+
+            //Perform action before starting workflow
+            PerformWorkflowActionOnStateChanging( initialTransaction, WorkflowActionTypes.StartWorkflow);
             UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
+            //Perform action after starting workflow
+            PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
+
+            //Send notifications to stater
+            if (workflow.WorkflowID != _systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) //This notification is not sent in Direct Publish WF
+            {
+                SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);                
+            }
 
             // Delete previous logs
             _workflowLogRepository.DeleteWorkflowLogs(contentItemId, workflowId);
