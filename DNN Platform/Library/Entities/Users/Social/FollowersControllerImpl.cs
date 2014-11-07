@@ -21,10 +21,12 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Friends;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 
@@ -34,6 +36,18 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
+
+        private static event EventHandler<RelationshipEventArgs> FollowRequested;
+        private static event EventHandler<RelationshipEventArgs> UnfollowRequested;
+
+        static FollowersControllerImpl()
+        {
+            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
+            {
+                FollowRequested += handlers.Value.FriendshipRequested;
+                UnfollowRequested += handlers.Value.FriendshipAccepted;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -65,10 +79,13 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            var userRelationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
-                                            RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
+            RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
+                RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
 
             AddFollowerRequestNotification(initiatingUser, targetUser);
+
+            if (FollowRequested != null)
+                FollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
         }
 
         /// -----------------------------------------------------------------------------
@@ -79,12 +96,16 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void UnFollowUser(UserInfo targetUser)
         {
-            var followRelationship = RelationshipController.Instance.GetFollowerRelationship(UserController.Instance.GetCurrentUserInfo(), targetUser);
+            var initiatingUser = UserController.Instance.GetCurrentUserInfo();
+            var followRelationship = RelationshipController.Instance.GetFollowerRelationship(initiatingUser, targetUser);
 
             RelationshipController.Instance.DeleteUserRelationship(followRelationship);
+
+            if (UnfollowRequested != null)
+                UnfollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
         }
 
-        private void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)
+        private static void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(IsFollowing(targetUser, initiatingUser) ? FollowerRequest : FollowBackRequest);
             var subject = string.Format(Localization.GetString("AddFollowerRequestSubject", Localization.GlobalResourceFile),
@@ -106,13 +127,11 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });
         }
 
-        private bool IsFollowing(UserInfo user1, UserInfo user2)
+        private static bool IsFollowing(UserInfo user1, UserInfo user2)
         {
-            UserRelationship userRelationship = RelationshipController.Instance.GetFollowerRelationship(user1, user2);
+            var userRelationship = RelationshipController.Instance.GetFollowerRelationship(user1, user2);
 
             return (userRelationship != null && userRelationship.Status == RelationshipStatus.Accepted);
         }
-
-
     }
 }

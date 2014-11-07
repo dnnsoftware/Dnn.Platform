@@ -146,6 +146,15 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Entities\Users\RelationshipEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\Users\IFollowerEventHandlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\Users\IFriendshipEventHandlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />
