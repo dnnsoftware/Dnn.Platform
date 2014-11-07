@@ -42,6 +42,7 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.Actions;
 using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
@@ -76,6 +77,22 @@ namespace DotNetNuke.Entities.Tabs
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabController));
         private static readonly DataProvider Provider = DataProvider.Instance();
+
+        private static event EventHandler<TabEventArgs> TabCreated;
+        private static event EventHandler<TabEventArgs> TabUpdated;
+        private static event EventHandler<TabEventArgs> TabRemoved; // soft delete
+        private static event EventHandler<TabEventArgs> TabDeleted; // hard delete
+
+        static TabController()
+        {
+            foreach (var handlers in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
+            {
+                TabCreated += handlers.Value.TabCreated;
+                TabUpdated += handlers.Value.TabUpdated;
+                TabRemoved += handlers.Value.TabRemoved;
+                TabDeleted += handlers.Value.TabDeleted;
+            }
+        }
 
         /// <summary>
         /// Gets the current page in current http request.
@@ -204,6 +221,10 @@ namespace DotNetNuke.Entities.Tabs
                 var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
                 WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);
             }
+
+            if (TabCreated != null)
+                TabCreated(null, new TabEventArgs { Tab = tab });
+
             return tab.TabID;
         }
 
@@ -621,6 +642,9 @@ namespace DotNetNuke.Entities.Tabs
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);
+
+            if (TabDeleted != null)
+                TabDeleted(null, new TabEventArgs { Tab = new TabInfo { TabID = tabId } });
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)
@@ -639,7 +663,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private bool SoftDeleteTabInternal(TabInfo tabToDelete, PortalSettings portalSettings)
         {
-            bool deleted = true;
+            var deleted = false;
             if (!IsSpecialTab(tabToDelete.TabID, portalSettings))
             {
                 if (SoftDeleteChildTabs(tabToDelete.TabID, portalSettings))
@@ -654,16 +678,12 @@ namespace DotNetNuke.Entities.Tabs
 
                     EventLogController.Instance.AddLog(tabToDelete, portalSettings, portalSettings.UserId, "",
                                               EventLogController.EventLogType.TAB_SENT_TO_RECYCLE_BIN);
-                }
-                else
-                {
-                    deleted = false;
+                    deleted = true;
+                    if (TabRemoved != null)
+                        TabRemoved(null, new TabEventArgs { Tab = tabToDelete });
                 }
             }
-            else
-            {
-                deleted = false;
-            }
+
             return deleted;
         }
 
@@ -1041,8 +1061,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
             DeleteTab(tabId, portalId);
-
-            ClearCache(portalId);
         }
 
         /// <summary>
@@ -1115,7 +1133,6 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="clearCache"></param>
         public bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache)
         {
-            bool returnValue = true;
             if (PortalController.Instance.GetCurrentPortalSettings() != null)
             {
                 var defaultLanguage = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
@@ -1130,7 +1147,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 }
             }
-            return returnValue;
+            return true;
         }
 
         /// <summary>
@@ -1906,6 +1923,9 @@ namespace DotNetNuke.Entities.Tabs
             {
                 ClearCache(originalTab.PortalID);
             }
+
+            if (TabUpdated != null)
+                TabUpdated(null, new TabEventArgs { Tab = updatedTab });
         }
 
         /// <summary>
