@@ -26,16 +26,19 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -67,6 +70,22 @@ namespace DotNetNuke.Entities.Modules
         protected override Func<IModuleController> GetFactory()
         {
             return () => new ModuleController();
+        }
+
+        private static event EventHandler<ModuleEventArgs> ModuleCreated;
+        private static event EventHandler<ModuleEventArgs> ModuleUpdated;
+        private static event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
+        private static event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
+
+        static ModuleController()
+        {
+            foreach (var handlers in EventHandlersContainer<IModuleEventHandler>.Instance.EventHandlers)
+            {
+                ModuleCreated += handlers.Value.ModuleCreated;
+                ModuleUpdated += handlers.Value.ModuleUpdated;
+                ModuleRemoved += handlers.Value.ModuleRemoved;
+                ModuleDeleted += handlers.Value.ModuleDeleted;
+            }
         }
 
         #region Private Methods
@@ -125,6 +144,7 @@ namespace DotNetNuke.Entities.Modules
             // add module
             if (Null.IsNull(module.ModuleID))
             {
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 CreateContentItem(module);
 
                 //Add Module
@@ -138,13 +158,13 @@ namespace DotNetNuke.Entities.Modules
                                                             module.IsShareable,
                                                             module.IsShareableViewOnly,
                                                             module.IsDeleted,
-                                                            UserController.Instance.GetCurrentUserInfo().UserID);
+                                                            currentUser.UserID);
 
                 //Now we have the ModuleID - update the contentItem
                 var contentController = Util.GetContentController();
                 contentController.UpdateContentItem(module);
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.MODULE_CREATED);
 
                 // set module permissions
                 ModulePermissionController.SaveModulePermissions(module);
@@ -152,6 +172,9 @@ namespace DotNetNuke.Entities.Modules
 
             //Save ModuleSettings
             UpdateModuleSettings(module);
+
+            if (ModuleCreated != null)
+                ModuleCreated(null, new ModuleEventArgs { Module = module });
         }
 
         private static void AddModulePermission(ref ModuleInfo module, int portalId, string roleName, PermissionInfo permission, string permissionKey)
@@ -612,6 +635,8 @@ namespace DotNetNuke.Entities.Modules
                     UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
                 }
 
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+
                 // update tabmodule
                 dataProvider.UpdateTabModule(newModule.TabModuleID,
                                              newModule.TabID,
@@ -640,7 +665,7 @@ namespace DotNetNuke.Entities.Modules
                                              newModule.DefaultLanguageGuid,
                                              newModule.LocalizedVersionGuid,
                                              newModule.CultureCode,
-                                             UserController.Instance.GetCurrentUserInfo().UserID);
+                                             currentUser.UserID);
 
                 if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                 {
@@ -653,7 +678,7 @@ namespace DotNetNuke.Entities.Modules
                             string Content = portableModule.ExportModule(sourceModule.ModuleID);
                             if (!string.IsNullOrEmpty(Content))
                             {
-                                portableModule.ImportModule(newModule.ModuleID, Content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
+                                portableModule.ImportModule(newModule.ModuleID, Content, newModule.DesktopModule.Version, currentUser.UserID);
                             }
                         }
                     }
@@ -689,23 +714,24 @@ namespace DotNetNuke.Entities.Modules
             IDataReader dr = null;
             try
             {
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
                 if (dr.Read())
                 {
                     if (dr.GetString(0) != settingValue)
                     {
-                        dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                        dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
                         EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "ModuleId", moduleId, settingName, settingValue, 
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                                                        currentUser.UserID);
                     }
                 }
                 else
                 {
-                    dataProvider.AddModuleSetting(moduleId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                    dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
                                                     "ModuleId", moduleId, settingName, settingValue, 
-                                                    UserController.Instance.GetCurrentUserInfo().UserID);
+                                                    currentUser.UserID);
                 }
 
                 if (updateVersion)
@@ -773,6 +799,8 @@ namespace DotNetNuke.Entities.Modules
             //add module
             AddModuleInternal(module);
 
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+
             //Lets see if the module already exists
             ModuleInfo tmpModule = GetModule(module.ModuleID, module.TabID, false);
             if (tmpModule != null)
@@ -786,7 +814,7 @@ namespace DotNetNuke.Entities.Modules
                     //Restore Module
                     RestoreModule(module);
 
-                    TabChangeTracker.Instance.TrackModuleAddition(module, 1, UserController.Instance.GetCurrentUserInfo().UserID);
+                    TabChangeTracker.Instance.TrackModuleAddition(module, 1, currentUser.UserID);
 
                     //Set Module Order as expected
                     UpdateModuleOrder(module.TabID, module.ModuleID, order, pane);
@@ -823,7 +851,7 @@ namespace DotNetNuke.Entities.Modules
                                           module.DefaultLanguageGuid,
                                           module.LocalizedVersionGuid,
                                           module.CultureCode,
-                                          UserController.Instance.GetCurrentUserInfo().UserID);
+                                          currentUser.UserID);
 
                 var log = new LogInfo
                 {
@@ -836,7 +864,7 @@ namespace DotNetNuke.Entities.Modules
                 log.LogProperties.Add(new LogDetailInfo("ModuleID", module.ModuleID.ToString()));
                 LogController.Instance.AddLog(log);
 
-                TabChangeTracker.Instance.TrackModuleAddition(module, 1, UserController.Instance.GetCurrentUserInfo().UserID);
+                TabChangeTracker.Instance.TrackModuleAddition(module, 1, currentUser.UserID);
 
                 if (module.ModuleOrder == -1)
                 {
@@ -1084,8 +1112,15 @@ namespace DotNetNuke.Entities.Modules
             if (includeCurrent && deleteBaseModule && !softDelete)
             {
                 DeleteModule(moduleId);
+                ClearCache(tabId);
             }
-            ClearCache(tabId);
+            else
+            {
+                ClearCache(tabId);
+
+                if (ModuleRemoved != null)
+                    ModuleRemoved(null, new ModuleEventArgs { Module = new ModuleInfo { ModuleID = moduleId } });
+            }
         }
 
         /// <summary>
@@ -1107,7 +1142,8 @@ namespace DotNetNuke.Entities.Modules
             }
 
             //Log deletion
-            EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
+            EventLogController.Instance.AddLog("ModuleId", moduleId.ToString(), PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.MODULE_DELETED);
 
             // queue remove module from search index
             var document = new SearchDocumentToDelete
@@ -1116,6 +1152,9 @@ namespace DotNetNuke.Entities.Modules
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);
+
+            if (ModuleDeleted != null)
+                ModuleDeleted(null, new ModuleEventArgs { Module = module });
         }
 
         /// <summary>
@@ -1247,7 +1286,6 @@ namespace DotNetNuke.Entities.Modules
                         //delete the deep copy "module info"
                         DeleteModule(sourceModule.ModuleID);
                     }
-
                 }
 
                 moduleId = newModule.ModuleID;
@@ -1665,6 +1703,8 @@ namespace DotNetNuke.Entities.Modules
                 CreateContentItem(module);
             }
 
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+
             //update module
             dataProvider.UpdateModule(module.ModuleID,
                                       module.ModuleDefID,
@@ -1676,7 +1716,7 @@ namespace DotNetNuke.Entities.Modules
                                       module.IsShareable,
                                       module.IsShareableViewOnly,
                                       module.IsDeleted,
-                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                                      currentUser.UserID);
 
             //Update Tags
             ITermController termController = Util.GetTermController();
@@ -1686,7 +1726,7 @@ namespace DotNetNuke.Entities.Modules
                 termController.AddTermToContent(_Term, module);
             }
 
-            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.MODULE_UPDATED);
+            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.MODULE_UPDATED);
 
             //save module permissions
             ModulePermissionController.SaveModulePermissions(module);
@@ -1724,9 +1764,9 @@ namespace DotNetNuke.Entities.Modules
                                              module.DefaultLanguageGuid,
                                              module.LocalizedVersionGuid,
                                              module.CultureCode,
-                                             UserController.Instance.GetCurrentUserInfo().UserID);
+                                             currentUser.UserID);
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
 
                 var moduleInfo = GetTabModule(module.TabModuleID);
                 
@@ -1805,7 +1845,7 @@ namespace DotNetNuke.Entities.Modules
                                                          targetModule.DefaultLanguageGuid,
                                                          targetModule.LocalizedVersionGuid,
                                                          targetModule.CultureCode,
-                                                         UserController.Instance.GetCurrentUserInfo().UserID);
+                                                         currentUser.UserID);
 
 							ClearCache(targetModule.TabID);
                         }
@@ -1817,6 +1857,9 @@ namespace DotNetNuke.Entities.Modules
             {
                 ClearCache(tabModule.TabID);
             }
+
+            if (ModuleUpdated != null)
+                ModuleUpdated(null, new ModuleEventArgs { Module = module });
         }
 
         /// <summary>
@@ -1940,23 +1983,24 @@ namespace DotNetNuke.Entities.Modules
             IDataReader dr = null;
             try
             {
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetTabModuleSetting(tabModuleId, settingName);
                 if (dr.Read())
                 {
                     if (dr.GetString(1) != settingValue)
                     {
-                        dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                        dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                         EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "TabModuleId", tabModuleId, settingName, settingValue,
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                                                        currentUser.UserID);
                     }
                 }
                 else
                 {
-                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
+                    dataProvider.AddTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
                                                     "TabModuleId", tabModuleId, settingName, settingValue,
-                                                    UserController.Instance.GetCurrentUserInfo().UserID);
+                                                    currentUser.UserID);
                 }
                 UpdateTabModuleVersion(tabModuleId);
             }
@@ -2009,7 +2053,7 @@ namespace DotNetNuke.Entities.Modules
             var moduleDefinition = GetModuleDefinition(nodeModule);
 
             // Create dummy pane node for private DeserializeModule method
-            XmlDocument docPane = new XmlDocument();
+            var docPane = new XmlDocument();
             docPane.LoadXml(String.Format("<pane><name>{0}</name></pane>", module.PaneName));
 
             // Create ModuleInfo of Xml
