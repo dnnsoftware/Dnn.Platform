@@ -785,6 +785,11 @@ namespace DotNetNuke.Entities.Modules
             dataProvider.UpdateTabModuleVersionByModule(moduleID);
         }
 
+        private bool HasModuleOrderOrPaneChanged(ModuleInfo module)
+        {
+            var storedModuleInfo = GetTabModule(module.TabModuleID);
+            return storedModuleInfo == null || storedModuleInfo.ModuleOrder != module.ModuleOrder || storedModuleInfo.PaneName != module.PaneName;
+        }
         #endregion
 
         #region Public Methods
@@ -1736,6 +1741,8 @@ namespace DotNetNuke.Entities.Modules
 
             if (!Null.IsNull(module.TabID))
             {
+                var hasModuleOrderOrPaneChanged = HasModuleOrderOrPaneChanged(module);
+
                 //update tabmodule
                 dataProvider.UpdateTabModule(module.TabModuleID,
                                              module.TabID,
@@ -1768,13 +1775,7 @@ namespace DotNetNuke.Entities.Modules
 
                 EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
 
-                var moduleInfo = GetTabModule(module.TabModuleID);
-                
-                if (moduleInfo == null)
-                {
-                    UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);
-                }
-                else if (moduleInfo.ModuleOrder != module.ModuleOrder || moduleInfo.PaneName != module.PaneName)
+                if (hasModuleOrderOrPaneChanged)
                 {
                     //update module order in pane
                     UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);   
@@ -1861,7 +1862,7 @@ namespace DotNetNuke.Entities.Modules
             if (ModuleUpdated != null)
                 ModuleUpdated(null, new ModuleEventArgs { Module = module });
         }
-
+        
         /// <summary>
         /// set/change the module position within a pane on a page
         /// </summary>
