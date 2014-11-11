@@ -266,11 +266,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #region Private Methods
         private void ForceDeleteVersion(int tabId, int version)
         {
-            if (GetUnPublishedVersion(tabId) != null)
+            var unpublishedVersion = GetUnPublishedVersion(tabId);
+            if (unpublishedVersion != null 
+                && unpublishedVersion.Version == version)
             {
                 throw new InvalidOperationException(
                     String.Format(
-                        Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersionExists",
+                        Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersion",
                             Localization.ExceptionsResourceFile), tabId, version));
             }
 

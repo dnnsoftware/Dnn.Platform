@@ -339,8 +339,8 @@
   <data name="TabVersionAlreadyPublished.Text" xml:space="preserve">
     <value>For Tab {0}, the version {1} is already published</value>
   </data>
-  <data name="TabVersionCannotBeDeleted_UnpublishedVersionExists.Text" xml:space="preserve">
-    <value>For Tab {0}, the version {1} cannot be deleted because an unpublished version exists</value>
+  <data name="TabVersionCannotBeDeleted_UnpublishedVersion.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be deleted because it is an unpublished version</value>
   </data>
   <data name="TabVersionCannotBeDiscarded_OnlyOneVersion.Text" xml:space="preserve">
     <value>The tab {0} has only one version created. It cannot be discarded</value>
