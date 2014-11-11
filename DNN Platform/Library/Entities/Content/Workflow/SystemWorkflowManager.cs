@@ -165,6 +165,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var state = GetDefaultWorkflowState(order);
             state.StateName = Localization.GetString("DefaultWorkflowState2.StateName");
+            state.SendNotification = true;
+            state.SendNotificationToAdministrators = true;
             return state;
         }
         #endregion

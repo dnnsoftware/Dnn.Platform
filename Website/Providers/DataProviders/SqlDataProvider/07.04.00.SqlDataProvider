@@ -413,11 +413,11 @@ ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [IsSystem]
 GO
 
 /* Added SendNotification column */
-ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotification] [bit] NOT NULL DEFAULT (0) 
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotification] [bit] NOT NULL DEFAULT (1) 
 GO
 
 /* Added SendNotificationToAdministrators column */
-ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotificationToAdministrators] [bit] NOT NULL DEFAULT (0) 
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD [SendNotificationToAdministrators] [bit] NOT NULL DEFAULT (1) 
 GO
 
 /* Added WorkflowLogKey column */
