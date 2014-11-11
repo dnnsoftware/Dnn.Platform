@@ -373,14 +373,24 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void AddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment = null)
         {
+            try
+            {
+                TryAddWorkflowLog(contentItem, state, logType, userId, userComment);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        private void TryAddWorkflowLog(ContentItem contentItem, WorkflowState state, WorkflowLogType logType, int userId, string userComment)
+        {
             var workflow = _workflowManager.GetWorkflow(contentItem);
             var logTypeText = GetWorkflowActionComment(logType);
-            
             var logComment = ReplaceNotificationTokens(logTypeText, workflow, contentItem, state, userId, userComment);
-
             _workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
         }
-        
+
         private static string GetWorkflowActionComment(WorkflowLogType logType)
         {
             var logName = Enum.GetName(typeof(WorkflowLogType), logType);
@@ -603,7 +613,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
             else
             {
-                // TODO: replace reviewers notifications
                 SendNotificationsToReviewers(contentItem, previousState, stateTransaction, WorkflowActionTypes.DiscardState, new PortalSettings(workflow.PortalID));
             }
 
@@ -680,13 +689,13 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var workflow = _workflowManager.GetWorkflow(contentItem);
             UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
+            
+            // after-change action
+            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
 
             // Logs
             AddWorkflowCommentLog(contentItem, stateTransaction.UserId, stateTransaction.Message.UserComment);
             AddWorkflowLog(contentItem, WorkflowLogType.WorkflowApproved, stateTransaction.UserId);
-
-            // after-change action
-            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
 
             // Notifications
             SendNotificationToAuthor(stateTransaction, workflow.LastState, workflow, contentItem, WorkflowActionTypes.CompleteWorkflow);

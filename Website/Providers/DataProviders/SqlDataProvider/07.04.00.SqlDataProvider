@@ -424,6 +424,10 @@ GO
 ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowLogs ADD [Type] [int] NOT NULL DEFAULT -1 
 GO
 
+/* Increased Workflow Log Comment field length to max */
+ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowLogs ALTER COLUMN [Comment] NVARCHAR(MAX) NOT NULL
+GO
+
 /* Set is System Workflows */
 UPDATE {databaseOwner}[{objectQualifier}ContentWorkflows] SET IsSystem = 1 where IsSystem = 0
 GO
