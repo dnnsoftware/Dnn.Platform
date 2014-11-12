@@ -679,6 +679,19 @@ BEGIN
         )
 END
 GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetMessage]
+    @MessageID INT
+AS 
+	SELECT [MessageID], [PortalId], [NotificationTypeID], [To], [From], [Subject], [Body], [ConversationID], [ReplyAllAllowed], [SenderUserID], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate] 
+	FROM   {databaseOwner}[{objectQualifier}CoreMessaging_Messages] 
+	WHERE  [MessageID] = @MessageID
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
