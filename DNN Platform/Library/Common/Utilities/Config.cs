@@ -622,7 +622,9 @@ namespace DotNetNuke.Common.Utilities
 
                 // Attempt a few times in case the file was locked; occurs during modules' installation due
                 // to application restarts where IIS can overlap old application shutdown and new one start.
-                for (var retry = 3; retry >= 0; retry--)
+                const int maxRetires = 4;
+                const double miltiplier = 2.5;
+                for (var retry = maxRetires; retry >= 0; retry--)
                 {
                     try
                     {
@@ -645,7 +647,7 @@ namespace DotNetNuke.Common.Utilities
                         }
 
                         // try incremental delay; maybe the file lock is released by then
-                        Thread.Sleep((10 - 3 * retry) * 1000);
+                        Thread.Sleep(((int)(miltiplier * (maxRetires - retry + 1)) * 1000));
                     }
                 }
 
