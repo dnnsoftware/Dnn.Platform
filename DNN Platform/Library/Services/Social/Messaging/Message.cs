@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Social.Messaging
         public int ConversationId { get; set; }
 
         /// <summary>
-        /// Conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId
+        /// NotificationType ID of the Message. Each message is associated with a notification type.
         /// </summary>
         [XmlAttribute]
         public int NotificationTypeID { get; set; }
