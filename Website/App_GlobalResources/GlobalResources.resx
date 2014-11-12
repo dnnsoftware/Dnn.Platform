@@ -1479,7 +1479,7 @@ Please do not reply to this email.</value>
                                     &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
                                         &lt;tr&gt;
                                             &lt;td align="center"&gt;
-                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
+                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;&lt;a href="[NOTIFICATIONURL]" &gt; View online&lt;/a&gt;
                                             &lt;/td&gt;
                                         &lt;/tr&gt;
                                     &lt;/table&gt;
@@ -1521,12 +1521,12 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;[CONTENT]&lt;/td&gt;
+                    &lt;td&gt;[CONTENT][FRIENDREQUESTACTIONS][FOLLOWREQUESTACTIONS]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
         &lt;/td&gt;
@@ -1566,5 +1566,11 @@ Sincerely,
   </data>
   <data name="WebPermission.Text" xml:space="preserve">
     <value>This extension requires Web permission.</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FRIENDREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Accept&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Follow back&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
   </data>
 </root>
