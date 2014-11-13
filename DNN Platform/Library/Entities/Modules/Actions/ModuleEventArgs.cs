@@ -25,6 +25,6 @@ namespace DotNetNuke.Entities.Modules.Actions
 {
     public class ModuleEventArgs : EventArgs
     {
-        public ModuleInfo Module { get; set; }
+        public ModuleInfo Module { get; internal set; }
     }
 }

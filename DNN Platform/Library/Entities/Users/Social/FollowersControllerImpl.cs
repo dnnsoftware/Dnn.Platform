@@ -79,13 +79,13 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
+            var relationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
                 RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
 
             AddFollowerRequestNotification(initiatingUser, targetUser);
 
             if (FollowRequested != null)
-                FollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                FollowRequested(null, new RelationshipEventArgs { Relashionship = relationship });
         }
 
         /// -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             RelationshipController.Instance.DeleteUserRelationship(followRelationship);
 
             if (UnfollowRequested != null)
-                UnfollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                UnfollowRequested(null, new RelationshipEventArgs { Relashionship = followRelationship });
         }
 
         private static void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)

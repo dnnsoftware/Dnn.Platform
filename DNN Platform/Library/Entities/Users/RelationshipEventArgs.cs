@@ -19,13 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Entities.Users.Social;
 using System;
 
 namespace DotNetNuke.Entities.Users
 {
     public class RelationshipEventArgs : EventArgs
     {
-        public UserInfo InitiatingUser { get; set; }
-        public UserInfo TargetUser { get; set; }
+        public UserRelationship Relashionship { get; internal set; }
     }
 }
