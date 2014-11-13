@@ -244,7 +244,8 @@ namespace DotNetNuke.Services.Social.Notifications
                                                                                       notificationType.Description,
                                                                                       (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
                                                                                       notificationType.DesktopModuleId,
-                                                                                      GetCurrentUserId());
+                                                                                      GetCurrentUserId(), 
+                                                                                      notificationType.IsTask);
         }
 
         public virtual void DeleteNotification(int notificationId)
