@@ -77,38 +77,33 @@ namespace DotNetNuke.HttpModules.Analytics
         {
             try
             {
-                //First check if we are upgrading/installing or if it is a non-page request
-                var app = (HttpApplication) sender;
-                HttpRequest request = app.Request;
+                var request = ((HttpApplication)sender).Request;
 
-                //First check if we are upgrading/installing
-                if (request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                        || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                        || request.Url.LocalPath.ToLower().Contains("installwizard.aspx"))
+                var toLowerLocalPath = request.Url.LocalPath.ToLower();
+
+                // Exit if a request for a .net mapping that isn't a content page is made i.e. axd
+                if (toLowerLocalPath.EndsWith(".aspx") == false && toLowerLocalPath.EndsWith(".asmx") == false &&
+                    toLowerLocalPath.EndsWith(".ashx") == false)
                 {
                     return;
                 }
-				
-                //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-                if (request.Url.LocalPath.ToLower().EndsWith(".aspx") == false && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false &&
-                    request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
+
+                // Exit if we are upgrading/installing
+                if (toLowerLocalPath.EndsWith("install.aspx")
+                        || toLowerLocalPath.Contains("upgradewizard.aspx")
+                        || toLowerLocalPath.Contains("installwizard.aspx"))
                 {
                     return;
                 }
-                if (HttpContext.Current != null)
-                {
-                    HttpContext context = HttpContext.Current;
-                    if ((context == null))
-                    {
-                        return;
-                    }
-                    var page = context.Handler as CDefault;
-                    if ((page == null))
-                    {
-                        return;
-                    }
-                    page.Load += OnPageLoad;
-                }
+
+                // Get page from current HttpContext
+                if (HttpContext.Current == null) return;
+                var context = HttpContext.Current;
+                if (context == null) return;
+                var page = context.Handler as CDefault;
+                if (page == null) return;
+                
+                page.Load += OnPageLoad;
             }
             catch (Exception ex)
             {
