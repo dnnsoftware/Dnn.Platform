@@ -1030,8 +1030,13 @@ dnn.extend(dnn.dom, {
 
     getScriptPath: function () {
         var oThisScript = dnn.dom.getScript('dnn.js');
-        if (oThisScript)
-            return oThisScript.src.replace('dnn.js', '');
+        if (oThisScript) {
+            var path = oThisScript.src;
+            if (path.indexOf('?') > -1) {
+                path = path.substr(0, path.indexOf('?'));
+            }
+            return path.replace('dnn.js', '');
+        }
         var sSP = dnn.getVar('__sp');   //try and get from var
         if (sSP)
             return sSP;
