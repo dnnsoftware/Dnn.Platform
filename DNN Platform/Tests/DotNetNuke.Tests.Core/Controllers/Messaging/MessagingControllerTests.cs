@@ -1336,7 +1336,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(throttlingInterval);
             _mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(false);
             _dtMessages.Clear();
-            _dtMessages.Rows.Add(-1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
+            _dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
             var dr = _dtMessages.CreateDataReader();
             var message = CBO.FillObject<Message>(dr);
             _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(_user12UserInfo)).Returns(message);
@@ -1521,7 +1521,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Body = "body",
                 ConversationId = 1,
                 ReplyAllAllowed = false,
-                SenderUserID = 1
+                SenderUserID = 1,
+                NotificationTypeID = 1
             };
             return message;
         }
@@ -1532,6 +1533,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _dtMessages = new DataTable("Messages");
             var pkMessagesMessageID = _dtMessages.Columns.Add("MessageID", typeof(int));
             _dtMessages.Columns.Add("PortalId", typeof(int));
+            _dtMessages.Columns.Add("NotificationTypeID", typeof(int));
             _dtMessages.Columns.Add("To", typeof(string));
             _dtMessages.Columns.Add("From", typeof(string));
             _dtMessages.Columns.Add("Subject", typeof(string));
