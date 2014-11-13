@@ -620,8 +620,7 @@ namespace DesktopModules.Admin.Portals
                 basicRegistrationSettings.DataSource = settings;
                 basicRegistrationSettings.DataBind();
 
-                var setting = PortalController.GetPortalSettingAsInteger("Registration_RegistrationFormType", portal.PortalID, 0);
-                registrationFormType.Select(setting.ToString(CultureInfo.InvariantCulture));
+				registrationFormType.Select(PortalSettings.Registration.RegistrationFormType.ToString(CultureInfo.InvariantCulture));
 
                 standardRegistrationSettings.DataSource = settings;
                 standardRegistrationSettings.DataBind();
@@ -629,7 +628,7 @@ namespace DesktopModules.Admin.Portals
                 validationRegistrationSettings.DataSource = settings;
                 validationRegistrationSettings.DataBind();
 
-                var customRegistrationFields = PortalController.GetPortalSetting("Registration_RegistrationFields", portal.PortalID, String.Empty);
+				var customRegistrationFields = PortalSettings.Registration.RegistrationFields;
 
                 CustomRegistrationFields = BuildCustomRegistrationFields(customRegistrationFields);
 
@@ -653,7 +652,7 @@ namespace DesktopModules.Admin.Portals
                 var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
 
                 //using values from current portal
-                var redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterRegistration", portal.PortalID, 0);
+                var redirectTab = PortalSettings.Registration.RedirectAfterRegistration;
                 if (redirectTab > 0)
                 {
                     RedirectAfterRegistration.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -683,7 +682,7 @@ namespace DesktopModules.Admin.Portals
                 RedirectAfterLogin.PortalId = portal.PortalID;
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0);
+				redirectTab = PortalSettings.Registration.RedirectAfterLogout;
 
                 if (redirectTab > 0)
                 {

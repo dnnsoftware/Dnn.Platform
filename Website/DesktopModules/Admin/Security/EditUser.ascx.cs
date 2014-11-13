@@ -93,9 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
-
-                if (Convert.ToInt32(setting) == Null.NullInteger)
+				if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -122,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -380,10 +378,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
             //Update DisplayName to conform to Format
-            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(Convert.ToString(setting));
+				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 

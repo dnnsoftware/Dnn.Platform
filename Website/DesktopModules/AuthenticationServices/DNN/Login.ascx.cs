@@ -101,16 +101,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 string _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
-
-                if (Convert.ToInt32(setting) > 0) //redirect to after registration page
+				if (PortalSettings.Registration.RedirectAfterRegistration > 0) //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 else
                 {
-                
-                if (Convert.ToInt32(setting) <= 0)
+
+					if (PortalSettings.Registration.RedirectAfterRegistration <= 0)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -141,7 +139,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 }
 
@@ -236,7 +234,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         UserController.VerifyUser(verificationCode.Replace(".", "+").Replace("-", "/").Replace("_", "="));
 
-                        var redirectTabId = Convert.ToInt32(GetSetting(PortalId, "Redirect_AfterRegistration"));
+						var redirectTabId = PortalSettings.Registration.RedirectAfterRegistration;
 
 	                    if (Request.IsAuthenticated)
 	                    {
@@ -302,15 +300,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				}
 			}
 
-		    var registrationType = PortalController.GetPortalSettingAsInteger("Registration_RegistrationFormType", PortalId, 0);
+			var registrationType = PortalSettings.Registration.RegistrationFormType;
 		    bool useEmailAsUserName;
             if (registrationType == 0)
             {
-                useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+				useEmailAsUserName = PortalSettings.Registration.UseEmailAsUserName;
             }
             else
             {
-                var registrationFields = PortalController.GetPortalSetting("Registration_RegistrationFields", PortalId, String.Empty);
+				var registrationFields = PortalSettings.Registration.RegistrationFields;
                 useEmailAsUserName = !registrationFields.Contains("Username");
             }
 
