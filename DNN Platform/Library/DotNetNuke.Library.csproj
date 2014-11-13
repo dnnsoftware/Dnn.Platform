@@ -575,6 +575,7 @@
     <Compile Include="Security\Permissions\CorePermissionProvider.cs" />
     <Compile Include="Security\Permissions\IFolderPermissionController.cs" />
     <Compile Include="Security\Profile\DNNProfileProvider.cs" />
+    <Compile Include="Security\RegistrationSettings.cs" />
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
     <Compile Include="Obsolete\TestableRoleController.cs" />
     <Compile Include="Security\Roles\IRoleController.cs" />
