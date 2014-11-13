@@ -185,10 +185,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
 			//Update DisplayName to conform to Format
-            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(Convert.ToString(setting));
+				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
@@ -386,20 +385,17 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
 
-            var userNameSetting = GetSetting(UserPortalID, "Security_UserNameValidation");
-            if ((userNameSetting != null) && (!string.IsNullOrEmpty(Convert.ToString(userNameSetting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator))
             {
-                userName.ValidationExpression = Convert.ToString(userNameSetting);
+				userName.ValidationExpression = PortalSettings.Registration.UserNameValidator;
             }
 
-            var setting = GetSetting(UserPortalID, "Security_EmailValidation");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.EmailValidator))
             {
-                email.ValidationExpression = Convert.ToString(setting);
+				email.ValidationExpression = PortalSettings.Registration.EmailValidator;
             }
 
-            setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
                 if (AddUser)
                 {
