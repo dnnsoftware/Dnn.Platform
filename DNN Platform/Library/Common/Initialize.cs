@@ -388,35 +388,28 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {
-            // ReSharper disable ReplaceWithSingleAssignment.True
-            bool canProcess = true;
+            var toLowerLocalPath = request.Url.LocalPath.ToLower();
 
-            if (request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                    || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                    || request.Url.LocalPath.ToLower().Contains("installwizard.aspx")
-                    || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                    || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                    || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            if (toLowerLocalPath.EndsWith("webresource.axd")
+                    || toLowerLocalPath.EndsWith("scriptresource.axd")
+                    || toLowerLocalPath.EndsWith("captcha.aspx")
+                    || toLowerLocalPath.Contains("upgradewizard.aspx")
+                    || toLowerLocalPath.Contains("installwizard.aspx")
+                    || toLowerLocalPath.EndsWith("install.aspx"))
             {
-                canProcess = false;
+                return false;
             }
-            // ReSharper restore ReplaceWithSingleAssignment.True
 
             if (allowUnknownExtensions == false
-                    && request.Url.LocalPath.ToLower().EndsWith(".aspx") == false
-                    && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false
-                    && request.Url.LocalPath.ToLower().EndsWith(".ashx") == false
-                    && request.Url.LocalPath.ToLower().EndsWith(".svc") == false)
+                    && toLowerLocalPath.EndsWith(".aspx") == false
+                    && toLowerLocalPath.EndsWith(".asmx") == false
+                    && toLowerLocalPath.EndsWith(".ashx") == false
+                    && toLowerLocalPath.EndsWith(".svc") == false)
             {
-                canProcess = false;
+                return false;
             }
 
-            if (checkOmitFromRewriteProcessing && RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath))
-            {
-                canProcess = false;
-            }
-
-            return canProcess;
+            return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
         public static void RunSchedule(HttpRequest request)
