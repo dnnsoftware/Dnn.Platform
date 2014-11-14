@@ -1251,4 +1251,10 @@ The host-level settings are currently set as follows:
   <data name="pl500TabId.Text" xml:space="preserve">
     <value>500 Error Page</value>
   </data>
+  <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
+    <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
+  </data>
+  <data name="MustEnableUniqueEmail.Text" xml:space="preserve">
+    <value>You must enable unique e-mail addresses in the membership provider for this instance.</value>
+  </data>
 </root>

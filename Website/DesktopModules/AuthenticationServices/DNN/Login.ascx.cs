@@ -170,6 +170,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
 
+            if (HttpContext.Current.Session["USERNAME_CHANGED"] != null)
+            {
+                txtUsername.Text = HttpContext.Current.Session["USERNAME_CHANGED"].ToString();
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
+            }
+
             var returnUrl = Globals.NavigateURL();
             string url;
             if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
@@ -196,11 +202,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
             //see if the portal supports persistant cookies
             chkCookie.Visible = Host.RememberCheckbox;
 
-            url = Globals.NavigateURL("SendPassword", "returnurl=" + returnUrl);
-            passwordLink.NavigateUrl = url;
-            if (PortalSettings.EnablePopUps)
+
+
+            // no need to show password link if feature is disabled, let's check this first
+            if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                passwordLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(url, this, PortalSettings, true, false, 300, 650));
+                url = Globals.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                passwordLink.NavigateUrl = url;
+                if (PortalSettings.EnablePopUps)
+                {
+                    passwordLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(url, this, PortalSettings, true, false, 300, 650));
+                }
+            }
+            else
+            {
+                passwordLink.Visible = false;
             }
 
 
@@ -313,6 +329,16 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup); 
 
+                //check if we use email address here rather than username
+                if(PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+                {
+                    var testUser = UserController.GetUserByEmail(PortalId, userName); // one additonal call to db to see if an account with that email actually exists
+                    if(testUser != null)
+                    {
+                        userName = testUser.Username; //we need the username of the account in order to authenticate in the next step
+                    }
+                }
+
 				var objUser = UserController.ValidateUser(PortalId, userName, txtPassword.Text, "DNN", string.Empty, PortalSettings.PortalName, IPAddress, ref loginStatus);
 				var authenticated = Null.NullBoolean;
 				var message = Null.NullString;
@@ -324,6 +350,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				{
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
+
+                if (loginStatus != UserLoginStatus.LOGIN_FAILURE && PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+                {
+                    //make sure internal username matches current e-mail address
+                    if (objUser.Username.ToLower() != objUser.Email.ToLower())
+                    {
+                        UserController.ChangeUsername(objUser.UserID, objUser.Email);
+                    }
+
+                    HttpContext.Current.Session.Remove("USERNAME_CHANGED");
+                }
 				
 				//Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")

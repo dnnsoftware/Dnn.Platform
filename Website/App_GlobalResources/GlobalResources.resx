@@ -1573,4 +1573,7 @@ Sincerely,
   <data name="EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.Text" xml:space="preserve">
     <value>&lt;p&gt;&lt;a href="{0}"&gt;Follow back&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
   </data>
+  <data name="MESSAGE_USERNAME_CHANGED_INSTRUCTIONS.Text" xml:space="preserve">
+    <value>Please verify your e-mail address change by re-entering your password.</value>
+  </data>
 </root>

@@ -2273,6 +2273,16 @@ namespace DotNetNuke.Data
 								 superUsersOnly);
 		}
 
+        public virtual int GetDuplicateEmailCount(int portalId)
+        {
+            return ExecuteScalar<int>("GetDuplicateEmailCount", portalId);
+        }
+
+        public virtual int GetSingleUserByEmail(int portalId, string emailToMatch)
+        {
+            return ExecuteScalar<int>("GetSingleUserByEmail", portalId, emailToMatch);
+        }
+
         public virtual void RemoveUser(int userId, int portalId)
         {
             ExecuteNonQuery("RemoveUser", userId, GetNull(portalId));

@@ -1474,6 +1474,22 @@ namespace DesktopModules.Admin.Portals
 
                     foreach (DnnFormItemBase item in standardRegistrationSettings.Items)
                     {
+                        //Make sure that enabling Registration_UseEmailAsUserName doesn't cause issues with duplicate e-mail addresses
+                        if (item.DataField.ToLower() == "registration_useemailasusername" && Boolean.Parse(item.Value.ToString()) == true)
+                        {
+                            if (UserController.GetDuplicateEmailCount() > 0)
+                            {
+                                string message = Localization.GetString("ContainsDuplicateAddresses", LocalResourceFile);
+                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                                return;
+                            }
+                            if (MembershipProvider.Instance().RequiresUniqueEmail == false)
+                            {
+                                string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
+                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                                return;
+                            }
+                        }
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
 
