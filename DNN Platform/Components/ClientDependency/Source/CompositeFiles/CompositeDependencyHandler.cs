@@ -157,8 +157,13 @@ namespace ClientDependency.Core.CompositeFiles
 
                             if (filePaths == null)
                             {
-                                throw new KeyNotFoundException("no map was found for the dependency key: " + fileset +
+                                if (context.IsDebuggingEnabled)
+                                {
+                                    throw new KeyNotFoundException("no map was found for the dependency key: " + fileset +
                                                                " ,CompositeUrlType.MappedId requires that a map is found");
+                                }
+
+                                throw new HttpException(404, "File not found");
                             }
 
                             //combine files and get the definition types of them (internal vs external resources)
