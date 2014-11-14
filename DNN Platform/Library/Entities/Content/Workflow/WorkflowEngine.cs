@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Workflow.Actions;
 using DotNetNuke.Entities.Content.Workflow.Dto;
@@ -463,6 +464,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         #region Public Methods
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
+            Requires.NotNegative("workflowId", workflowId);
+
             var contentItem = _contentController.GetContentItem(contentItemId);
             var workflow = _workflowManager.GetWorkflow(contentItem);
 

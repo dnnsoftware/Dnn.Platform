@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using DotNetNuke.Entities.Content.Workflow.Dto;
 
 namespace DotNetNuke.Entities.Content.Workflow
@@ -35,7 +36,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="workflowId">Workflow Id</param>
         /// <param name="contentItemId">Content item Id</param>
         /// <param name="userId">User Id of the user that start the workflow</param>
-        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when start a workflow on a Content Item that already has a started workflow.</exception>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when start a workflow on a Content Item that already has a started workflow.</exception>        
+        /// <exception cref="ArgumentOutOfRangeException">When workflowId param is negative</exception>
         void StartWorkflow(int workflowId, int contentItemId, int userId);
 
         /// <summary>

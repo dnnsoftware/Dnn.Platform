@@ -26,12 +26,31 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Log.EventLog;
+using Telerik.Web.UI;
 
 namespace DotNetNuke.Entities.Tabs
 {
     class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
+        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));
+       
+        #region Members
+        private readonly ITabController _tabController;
+        private readonly IWorkflowEngine _workflowEngine;
+        private readonly IWorkflowManager _workflowManager;
+        private readonly ITabWorkflowSettings _tabWorkflowSettings;
+        #endregion
 
+        public TabWorkflowTracker()
+        {
+            _tabController = TabController.Instance;
+            _workflowEngine = WorkflowEngine.Instance;
+            _workflowManager = WorkflowManager.Instance;
+            _tabWorkflowSettings = TabWorkflowSettings.Instance;
+        }
 
         protected override Func<ITabChangeTracker> GetFactory()
         {
@@ -56,24 +75,38 @@ namespace DotNetNuke.Entities.Tabs
         #region Private Statics Methods
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)
         {
-            var tabInfo = TabController.Instance.GetTab(tabId, portalId);
-            if (WorkflowEngine.Instance.IsWorkflowCompleted(tabInfo))
+            try
             {
-                var workflow = GetCurrentOrDefaultWorkflow(tabInfo, portalId);
-                WorkflowEngine.Instance.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
-                TabController.Instance.ClearCache(portalId);
+                var tabInfo = _tabController.GetTab(tabId, portalId);
+                if (_workflowEngine.IsWorkflowCompleted(tabInfo))
+                {
+                    var workflow = GetCurrentOrDefaultWorkflow(tabInfo, portalId);
+                    if (workflow == null)
+                    {
+                        Logger.Warn("Current Workflow and Default workflow are not found on NotifyWorkflowAboutChanges");
+                        return;
+                    }
+
+                    _workflowEngine.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
+                    _tabController.ClearCache(portalId);
+                }
             }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+            
         }
 
         private Workflow GetCurrentOrDefaultWorkflow(ContentItem item, int portalId)
         {
             if (item.StateID != Null.NullInteger)
             {
-                return WorkflowManager.Instance.GetWorkflow(item);
+                return _workflowManager.GetWorkflow(item);
             }
 
-            var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
-            return WorkflowManager.Instance.GetWorkflow(defaultWorkflow);
+            var defaultWorkflow = _tabWorkflowSettings.GetDefaultTabWorkflowId(portalId);
+            return _workflowManager.GetWorkflow(defaultWorkflow);
         }
         #endregion
     }
