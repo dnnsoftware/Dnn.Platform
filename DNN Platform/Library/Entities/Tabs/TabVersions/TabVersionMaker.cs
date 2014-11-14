@@ -212,7 +212,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var unPublishedVersion = GetUnPublishedVersion(tabId);
             if (unPublishedVersion == null)
             {
-                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId)).Select(t => t.Clone());
+                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
             }
 
             return GetVersionModules(tabId, unPublishedVersion.TabVersionId);
@@ -236,7 +236,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             if (currentVersion == null //Only when a tab is on a first version and it is not published, the currentVersion object can be null
                 || (PortalSettings.Current != null && !TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, tabId)))
             {
-                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId)).Select(t => t.Clone());
+                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
             }
 
             return GetVersionModules(tabId, currentVersion.Version);
@@ -615,12 +615,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
 
                 var cloneModule = module.Clone();
+                cloneModule.UniqueId = module.UniqueId;
+                cloneModule.VersionGuid = module.VersionGuid;
                 cloneModule.IsDeleted = false;
                 cloneModule.ModuleVersion = detail.ModuleVersion;
                 cloneModule.PaneName = detail.PaneName;
                 cloneModule.ModuleOrder = detail.ModuleOrder;
                 modules.Add(cloneModule);
-            };
+            }
 
             return modules;
         }
