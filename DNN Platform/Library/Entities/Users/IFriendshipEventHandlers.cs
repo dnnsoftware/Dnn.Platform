@@ -27,7 +27,6 @@ namespace DotNetNuke.Entities.Friends
     {
         void FriendshipRequested(object sender, RelationshipEventArgs args);
         void FriendshipAccepted(object sender, RelationshipEventArgs args);
-        void FriendshipRejected(object sender, RelationshipEventArgs args);
         void FriendshipDeleted(object sender, RelationshipEventArgs args);
     }
 }

@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Web.Services.Description;
 using DotNetNuke.Entities.Users.Social;
 using System;
 
@@ -26,6 +27,13 @@ namespace DotNetNuke.Entities.Users
 {
     public class RelationshipEventArgs : EventArgs
     {
-        public UserRelationship Relashionship { get; internal set; }
+        internal RelationshipEventArgs(UserRelationship relationship, int portalId)
+        {
+            Relashionship = relationship;
+            PortalID = portalId;
+        }
+
+        public UserRelationship Relashionship { get; private set; }
+        public int PortalID { get; private set; }
     }
 }
