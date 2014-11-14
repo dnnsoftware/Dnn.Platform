@@ -97,45 +97,30 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
-            if (TabVersionController.Instance.GetTabVersions(tabId).Count() == 1)
-            {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
-            }
             DiscardVersion(tabId, createdByUserID, tabVersion);
         }
 
-        public void DiscardVersion(int tabId, int createdByUserID, TabVersion tabVersion)
+        private void DiscardVersion(int tabId, int createdByUserID, TabVersion tabVersion)
         {
             var unPublishedDetails = TabVersionDetailController.Instance.GetTabVersionDetails(tabVersion.TabVersionId);
-            var publishedChanges = GetVersionModulesDetails(tabId, GetCurrentVersion(tabId).Version).ToArray();
+
+            var currentPublishedVersion = GetCurrentVersion(tabId);
+            TabVersionDetail[] publishedChanges = null;
+
+            if (currentPublishedVersion != null)
+            {
+                publishedChanges = GetVersionModulesDetails(tabId, GetCurrentVersion(tabId).Version).ToArray();
+            }
+            
             foreach (var unPublishedDetail in unPublishedDetails)
             {
-                if (unPublishedDetail.Action == TabVersionDetailAction.Deleted)
+                if (publishedChanges == null)
                 {
-                    var restoredModuleDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
-                    RestoreModuleInfo(tabId, restoredModuleDetail);                    
-                    continue;
+                    DiscardDetailWithoutPublishedTabVersions(tabId, unPublishedDetail);
                 }
-                
-                if (publishedChanges.All(tv => tv.ModuleId != unPublishedDetail.ModuleId))
+                else
                 {
-                    ModuleController.Instance.DeleteTabModule(tabId, unPublishedDetail.ModuleId, true);
-                    continue;
-                }
-
-                if (unPublishedDetail.Action == TabVersionDetailAction.Modified)
-                {
-                    var publishDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
-                    if (publishDetail.PaneName != unPublishedDetail.PaneName ||
-                        publishDetail.ModuleOrder != unPublishedDetail.ModuleOrder)
-                    {
-                        ModuleController.Instance.UpdateModuleOrder(tabId, publishDetail.ModuleId, publishDetail.ModuleOrder, publishDetail.PaneName);
-                    }
-
-                    if (unPublishedDetail.ModuleVersion != Null.NullInteger)
-                    {
-                        DiscardDetail(tabId, unPublishedDetail);
-                    }
+                    DiscardDetailWithPublishedTabVersions(tabId, unPublishedDetail, publishedChanges);
                 }
             }
 
@@ -264,6 +249,49 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #endregion
 
         #region Private Methods
+
+        private void DiscardDetailWithoutPublishedTabVersions(int tabId, TabVersionDetail unPublishedDetail)
+        {
+            if (unPublishedDetail.ModuleVersion != Null.NullInteger)
+            {
+                DiscardDetail(tabId, unPublishedDetail);
+            }
+            ModuleController.Instance.DeleteTabModule(tabId, unPublishedDetail.ModuleId, true);
+        }
+
+        private void DiscardDetailWithPublishedTabVersions(int tabId, TabVersionDetail unPublishedDetail,
+            TabVersionDetail[] publishedChanges)
+        {
+            if (unPublishedDetail.Action == TabVersionDetailAction.Deleted)
+            {
+                var restoredModuleDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
+                RestoreModuleInfo(tabId, restoredModuleDetail);
+                return;
+            }
+
+            if (publishedChanges.All(tv => tv.ModuleId != unPublishedDetail.ModuleId))
+            {
+                ModuleController.Instance.DeleteTabModule(tabId, unPublishedDetail.ModuleId, true);
+                return;
+            }
+
+            if (unPublishedDetail.Action == TabVersionDetailAction.Modified)
+            {
+                var publishDetail = publishedChanges.SingleOrDefault(tv => tv.ModuleId == unPublishedDetail.ModuleId);
+                if (publishDetail.PaneName != unPublishedDetail.PaneName ||
+                    publishDetail.ModuleOrder != unPublishedDetail.ModuleOrder)
+                {
+                    ModuleController.Instance.UpdateModuleOrder(tabId, publishDetail.ModuleId, publishDetail.ModuleOrder,
+                        publishDetail.PaneName);
+                }
+
+                if (unPublishedDetail.ModuleVersion != Null.NullInteger)
+                {
+                    DiscardDetail(tabId, unPublishedDetail);
+                }
+            }
+        }
+
         private void ForceDeleteVersion(int tabId, int version)
         {
             var unpublishedVersion = GetUnPublishedVersion(tabId);
