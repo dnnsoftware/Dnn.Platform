@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
@@ -41,6 +43,11 @@ namespace DotNetNuke.Entities.Tabs
 
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
+            if (SharedModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
+            {
+                throw SharedModuleController.Instance.GetModuleDoesNotBelongToPagException();
+            }
+
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
@@ -51,7 +58,7 @@ namespace DotNetNuke.Entities.Tabs
                 TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
             }
         }
-
+        
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
@@ -63,7 +70,7 @@ namespace DotNetNuke.Entities.Tabs
                 TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
             }
         }
-
+        
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabChangeTracker();

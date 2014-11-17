@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
         {
-            return ConvertToModuleInfo(GetVersionModulesDetails(tabId, version));
+            return ConvertToModuleInfo(GetVersionModulesDetails(tabId, version), tabId);
         }
         #endregion
 
@@ -603,27 +603,37 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        private static IEnumerable<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details)
+        private static IEnumerable<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details, int tabId)
         {
             var modules = new List<ModuleInfo>();
-            foreach (var detail in details)
+            try
             {
-                var module = ModuleController.Instance.GetModule(detail.ModuleId, Null.NullInteger, false);
-                if (module == null)
+                foreach (var detail in details)
                 {
-                    continue;
+                    var module = ModuleController.Instance.GetModule(detail.ModuleId, tabId, false);
+                    if (module == null)
+                    {
+                        continue;
+                    }
+                    var moduleVersion = SharedModuleController.Instance.IsSharedModule(module)
+                        ? Null.NullInteger
+                        : detail.ModuleVersion;
+                    var cloneModule = module.Clone();
+                    cloneModule.UniqueId = module.UniqueId;
+                    cloneModule.VersionGuid = module.VersionGuid;
+                    cloneModule.IsDeleted = false;
+                    cloneModule.ModuleVersion = moduleVersion;
+                    cloneModule.PaneName = detail.PaneName;
+                    cloneModule.ModuleOrder = detail.ModuleOrder;
+                    modules.Add(cloneModule);
                 }
 
-                var cloneModule = module.Clone();
-                cloneModule.UniqueId = module.UniqueId;
-                cloneModule.VersionGuid = module.VersionGuid;
-                cloneModule.IsDeleted = false;
-                cloneModule.ModuleVersion = detail.ModuleVersion;
-                cloneModule.PaneName = detail.PaneName;
-                cloneModule.ModuleOrder = detail.ModuleOrder;
-                modules.Add(cloneModule);
             }
-
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+            
             return modules;
         }
         

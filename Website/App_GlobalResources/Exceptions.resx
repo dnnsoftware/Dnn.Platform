@@ -396,4 +396,7 @@
   <data name="WorkflowSystemWorkflowStateCannotComplete.Text" xml:space="preserve">
     <value>System workflow state cannot be completed.</value>
   </data>
+  <data name="ModuleDoesNotBelongToPage.Text" xml:space="preserve">
+    <value>This module does not belong to the page. Please, move to its master page to change the module</value>
+  </data>
 </root>

@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -42,7 +41,6 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -1538,7 +1536,7 @@ namespace DotNetNuke.Entities.Modules
 
         private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
         {
-            var modules = TabVersionMaker.Instance.GetCurrentModules(tabId);
+            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
             
             var dictionary = new Dictionary<int, ModuleInfo>();
             foreach (var module in modules)
