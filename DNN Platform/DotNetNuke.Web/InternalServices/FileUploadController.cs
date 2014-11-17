@@ -227,11 +227,7 @@ namespace DotNetNuke.Web.InternalServices
                                     Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
                                 }, mediaTypeFormatter, "text/plain");
                         }
-
-                        var root = AppDomain.CurrentDomain.BaseDirectory;
-                        returnFileDto.FilePath = returnFileDto.FilePath.Replace(root, "~/");
-                        returnFileDto.FilePath = VirtualPathUtility.ToAbsolute(returnFileDto.FilePath);
-
+                        
                         return Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
                     });
 
@@ -312,7 +308,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 errorMessage = "";
                 savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
-                savedFileDto.FilePath = Path.Combine(folderInfo.PhysicalPath, fileName);
+                savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
             }
             catch (Exception ex)
