@@ -793,6 +793,30 @@ namespace DotNetNuke.Entities.Modules
         #region Public Methods
 
         /// <summary>
+        /// Check if a ModuleInfo belongs to the referenced Tab or not
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>True is TabId points to a different tab from initial Tab where the module was added. Otherwise, False</returns>
+        public bool IsSharedModule(ModuleInfo module)
+        {
+            var contentController = Util.GetContentController();
+            var content = contentController.GetContentItem(module.ContentItemId);
+            return module.TabID != content.TabID;
+        }
+
+        /// <summary>
+        /// Get the Tab ID corresponding to the initial Tab where the module was added
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>The Tab Id from initial Tab where the module was added</returns>
+        public int GetMasterTabId(ModuleInfo module)
+        {
+            var contentController = Util.GetContentController();
+            var content = contentController.GetContentItem(module.ContentItemId);
+            return content.TabID;
+        }
+
+        /// <summary>
         /// add a module to a page
         /// </summary>
         /// <param name="module">moduleInfo for the module to create</param>

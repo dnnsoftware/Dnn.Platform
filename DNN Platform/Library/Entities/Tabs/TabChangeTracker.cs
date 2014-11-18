@@ -20,10 +20,10 @@
 #endregion
 using System;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -43,9 +43,10 @@ namespace DotNetNuke.Entities.Tabs
 
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
-            if (SharedModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
+            if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
             {
-                throw SharedModuleController.Instance.GetModuleDoesNotBelongToPagException();
+                throw new InvalidOperationException(Localization.GetExceptionMessage("ModuleDoesNotBelongToPage",
+                "This module does not belong to the page. Please, move to its master page to change the module"));
             }
 
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
