@@ -3517,8 +3517,31 @@ namespace DotNetNuke.Data
 
         public virtual void AddLog(string logGUID, string logTypeKey, int logUserID, string logUserName, int logPortalID,
                                    string logPortalName, DateTime logCreateDate, string logServerName,
-                            string logProperties, int logConfigID)
+                            string logProperties, int logConfigID, string exceptionHash, Exception exception)
         {
+	        if (exception != null)
+	        {
+		        if (exception.InnerException == null)
+		        {
+					ExecuteNonQuery("AddException",
+						exceptionHash,
+						exception.Message,
+						exception.StackTrace,
+						"",
+						"",
+						exception.Source);
+		        }
+		        else
+		        {
+					ExecuteNonQuery("AddException",
+						exceptionHash,
+						exception.Message,
+						exception.StackTrace,
+						exception.InnerException.Message,
+						exception.InnerException.StackTrace,
+						exception.Source);
+				}
+	        }
             ExecuteNonQuery("AddEventLog",
                                       logGUID,
                                       logTypeKey,
@@ -3529,7 +3552,8 @@ namespace DotNetNuke.Data
                                       logCreateDate,
                                       logServerName,
                                       logProperties,
-                                      logConfigID);
+                                      logConfigID,
+									  exceptionHash);
         }
 
         public virtual void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription,
