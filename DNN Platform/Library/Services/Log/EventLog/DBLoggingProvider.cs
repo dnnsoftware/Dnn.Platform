@@ -208,7 +208,9 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    objLogInfo.LogCreateDate,
                                                    objLogInfo.LogServerName,
                                                    logProperties,
-                                                   Convert.ToInt32(objLogInfo.LogConfigID));
+                                                   Convert.ToInt32(objLogInfo.LogConfigID),
+												   objLogInfo.ExceptionHash,
+												   objLogInfo.Exception);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
                         LockNotif.AcquireWriterLock(ReaderLockTimeout);

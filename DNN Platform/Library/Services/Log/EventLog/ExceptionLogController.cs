@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(Exception objException, ExceptionLogType logType)
         {
-            var log = new LogInfo {LogTypeKey = logType.ToString()};
+            var log = new LogInfo {LogTypeKey = logType.ToString(), Exception = objException, ExceptionHash = objException.Hash()};
             if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
             {
 				//Add SearchException Properties

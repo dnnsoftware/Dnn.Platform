@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Xml;
+using DotNetNuke.Services.Exceptions;
 
 #endregion
 
@@ -82,6 +83,10 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogServerName { get; set; }
 
         public string LogConfigID { get; set; }
+
+		public string ExceptionHash { get; set; }
+
+		public Exception Exception { get; set; }
 
         #endregion
 
@@ -170,10 +175,13 @@ namespace DotNetNuke.Services.Log.EventLog
                         case "LogServerName":
                             LogServerName = reader.ReadContentAsString();
                             break;
-                        case "LogConfigID":
-                            LogConfigID = reader.ReadContentAsString();
-                            break;
-                    }
+						case "LogConfigID":
+							LogConfigID = reader.ReadContentAsString();
+							break;
+						case "ExceptionHash":
+							ExceptionHash = reader.ReadContentAsString();
+							break;
+					}
                 }
             }
 			
@@ -252,7 +260,8 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogCreateDateNum", LogCreateDateNum.ToString());
             writer.WriteAttributeString("BypassBuffering", BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", LogServerName);
-            writer.WriteAttributeString("LogConfigID", LogConfigID);
+			writer.WriteAttributeString("LogConfigID", LogConfigID);
+			writer.WriteAttributeString("ExceptionHash", ExceptionHash);
             LogProperties.WriteXml(writer);
             writer.WriteEndElement();
         }
