@@ -769,6 +769,28 @@ BEGIN
 END
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDuplicateEmailCount]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
+    @PortalId INT
+AS 
+	SELECT ISNULL((SELECT COUNT(*) TotalCount FROM {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] WHERE UP.PortalId = @PortalId  GROUP BY U.[Email] HAVING COUNT(*) > 1), 0)
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSingleUserByEmail]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSingleUserByEmail]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSingleUserByEmail]
+    @PortalId INT,
+	@Email nvarchar(255)
+AS 
+	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] Where U.Email = @Email and UP.[PortalId] = @PortalId), -1)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

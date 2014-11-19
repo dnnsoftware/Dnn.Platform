@@ -26,6 +26,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -61,8 +62,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         #endregion
-
-       
+    
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
@@ -80,6 +80,19 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 ResetToken = Request.QueryString["resetToken"];
                 
+            }
+
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            {
+                lblUsername.Text = Localization.GetString("Email", LocalResourceFile);
+                lblUsername.HelpText = Localization.GetString("Email.Help", LocalResourceFile);
+                valUsername.Text = Localization.GetString("Email.Required", LocalResourceFile);
+            }
+            else
+            {
+                lblUsername.Text = Localization.GetString("Username", LocalResourceFile);
+                lblUsername.HelpText = Localization.GetString("Username.Help", LocalResourceFile);
+                valUsername.Text = Localization.GetString("Username.Required", LocalResourceFile);
             }
 
         }
@@ -122,7 +135,17 @@ namespace DotNetNuke.Modules.Admin.Security
 
             }
 
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
+            string username = txtUsername.Text;
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            {
+                var testUser = UserController.GetUserByEmail(PortalId, username); // one additonal call to db to see if an account with that email actually exists
+                if (testUser != null)
+                {
+                    username = testUser.Username; //we need the username of the account in order to change the password in the next step
+                }
+            }
+
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
                 var failed = Localization.GetString("PasswordResetFailed", LocalResourceFile);
@@ -134,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 //Log user in to site
                 LogSuccess();
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                UserController.UserLogin(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, "", "", "", ref loginStatus, false);
+                UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
                 RedirectAfterLogin();
             }           
         }

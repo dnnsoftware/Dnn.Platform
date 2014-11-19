@@ -234,6 +234,13 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 userForm.DataSource = User;
 
+                // hide username field in UseEmailAsUserName mode
+                bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                if(disableUsername)
+                {
+                    userForm.Items[0].Visible = false;
+                }
+
                 if (!Page.IsPostBack)
                 {
                     userForm.DataBind();
@@ -491,6 +498,20 @@ namespace DotNetNuke.Modules.Admin.Users
                     UpdateDisplayName();
 
                     UserController.UpdateUser(UserPortalID, User);
+
+                    // make sure username matches possibly changed email address
+                    bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                    if (disableUsername)
+                    {
+                        if (User.Username.ToLower() != User.Email.ToLower())
+                        {
+                            UserController.ChangeUsername(User.UserID, User.Email);
+
+                            //note that this effectively will cause a signout due to the cookie not matching anymore.
+                            HttpContext.Current.Session.Add("USERNAME_CHANGED", User.Email);
+                        }
+                    }
+
 
                     Response.Redirect(Request.RawUrl);
                 }
