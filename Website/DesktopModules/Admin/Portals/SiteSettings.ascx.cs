@@ -1472,6 +1472,7 @@ namespace DesktopModules.Admin.Portals
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
 
+                    //DNN-6093
                     foreach (DnnFormItemBase item in standardRegistrationSettings.Items)
                     {
                         //Make sure that enabling Registration_UseEmailAsUserName doesn't cause issues with duplicate e-mail addresses
@@ -1483,12 +1484,16 @@ namespace DesktopModules.Admin.Portals
                                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
-                            if (MembershipProvider.Instance().RequiresUniqueEmail == false)
-                            {
-                                string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
-                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
-                                return;
-                            }
+                            
+                            // can't actualy use this as web.config settings are system wide.
+
+                            //if (MembershipProvider.Instance().RequiresUniqueEmail == false)
+                            //{
+                            //    string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
+                            //    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                            //    return;
+                            //}
+
                         }
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }

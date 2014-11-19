@@ -170,9 +170,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
 
-            if (HttpContext.Current.Session["USERNAME_CHANGED"] != null)
+            if (Response.Cookies["USERNAME_CHANGED"] != null)
             {
-                txtUsername.Text = HttpContext.Current.Session["USERNAME_CHANGED"].ToString();
+                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].ToString();
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
@@ -327,8 +327,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				string userName = new PortalSecurity().InputFilter(txtUsername.Text, 
 										PortalSecurity.FilterFlag.NoScripting | 
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
-                                        PortalSecurity.FilterFlag.NoMarkup); 
+                                        PortalSecurity.FilterFlag.NoMarkup);
 
+                //DNN-6093
                 //check if we use email address here rather than username
                 if(PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
                 {
@@ -359,7 +360,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         UserController.ChangeUsername(objUser.UserID, objUser.Email);
                     }
 
-                    HttpContext.Current.Session.Remove("USERNAME_CHANGED");
+                    Response.Cookies.Remove("USERNAME_CHANGED");
                 }
 				
 				//Raise UserAuthenticated Event
