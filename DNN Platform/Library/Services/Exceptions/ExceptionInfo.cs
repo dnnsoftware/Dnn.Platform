@@ -21,65 +21,63 @@
 #region Usings
 
 using System;
+using System.Web.UI.WebControls;
 
 #endregion
 
 namespace DotNetNuke.Services.Exceptions
 {
-    [Serializable]
-    public class ExceptionInfo
-    {
-        private int _FileColumnNumber;
-        private int _FileLineNumber;
-        private string _FileName;
-        private string _Method;
+	[Serializable]
+	public class ExceptionInfo
+	{
+		public string Method { get; set; }
 
-        public string Method
-        {
-            get
-            {
-                return _Method;
-            }
-            set
-            {
-                _Method = value;
-            }
-        }
+		public int FileColumnNumber { get; set; }
 
-        public int FileColumnNumber
-        {
-            get
-            {
-                return _FileColumnNumber;
-            }
-            set
-            {
-                _FileColumnNumber = value;
-            }
-        }
+		public string FileName { get; set; }
 
-        public string FileName
-        {
-            get
-            {
-                return _FileName;
-            }
-            set
-            {
-                _FileName = value;
-            }
-        }
+		public int FileLineNumber { get; set; }
 
-        public int FileLineNumber
-        {
-            get
-            {
-                return _FileLineNumber;
-            }
-            set
-            {
-                _FileLineNumber = value;
-            }
-        }
-    }
+		public string AssemblyVersion { get; set; }
+
+		public int PortalId { get; set; }
+
+		public int UserId { get; set; }
+
+		public int TabId { get; set; }
+
+		public string RawUrl { get; set; }
+
+		public string Referrer { get; set; }
+
+		public string UserAgent { get; set; }
+
+		public string ExceptionHash { get; set; }
+
+		public string Message { get; set; }
+
+		public string StackTrace { get; set; }
+
+		public string InnerMessage { get; set; }
+
+		public string InnerStackTrace { get; set; }
+
+		public string Source { get; set; }
+
+		public ExceptionInfo() { }
+
+		public ExceptionInfo(Exception e)
+		{
+			Message = e.Message;
+			StackTrace = e.StackTrace;
+			Source = e.Source;
+			if (e.InnerException != null)
+			{
+				InnerMessage = e.InnerException.Message;
+				InnerStackTrace = e.InnerException.StackTrace;
+			}
+			ExceptionHash = e.Hash();
+		}
+
+	}
 }

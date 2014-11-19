@@ -209,7 +209,6 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    objLogInfo.LogServerName,
                                                    logProperties,
                                                    Convert.ToInt32(objLogInfo.LogConfigID),
-												   objLogInfo.ExceptionHash,
 												   objLogInfo.Exception);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
