@@ -1495,7 +1495,7 @@ AS
 			Return
 		END
 
- DECLARE @LogEventID int
+ DECLARE @LogEventID bigint
 
 	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
 		(LogGUID,
@@ -1625,7 +1625,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExceptionEvents]') AND type in (N'U'))
 BEGIN
  CREATE TABLE {databaseOwner}[{objectQualifier}ExceptionEvents](
-  [LogEventID] int NOT NULL,
+  [LogEventID] bigint NOT NULL,
   [AssemblyVersion] varchar(20) NOT NULL,
   [PortalId] int NULL,
   [UserId] int NULL,
@@ -1649,7 +1649,7 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}AddExceptionEvent
-  LogEventID int,
+  LogEventID bigint,
   AssemblyVersion varchar(20),
   PortalId int,
   UserId int,
