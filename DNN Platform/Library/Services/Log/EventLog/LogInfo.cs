@@ -190,7 +190,12 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     LogProperties.ReadXml(reader);
                 }
-            }
+			}
+			//Check for Exception child node
+			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
+	        {
+				Exception.ReadXml(reader);
+	        }
         }
 
         public static bool IsSystemType(string PropName)
@@ -238,6 +243,10 @@ namespace DotNetNuke.Services.Log.EventLog
             str.Append("<p><strong>CreateDate:</strong>" + LogCreateDate + "</p>");
             str.Append("<p><strong>ServerName:</strong>" + LogServerName + "</p>");
             str.Append(LogProperties.ToString());
+	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
+	        {
+				str.Append(Exception.ToString());
+			}
             return str.ToString();
         }
 
@@ -258,6 +267,10 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogServerName", LogServerName);
 			writer.WriteAttributeString("LogConfigID", LogConfigID);
             LogProperties.WriteXml(writer);
+	        if (!string.IsNullOrEmpty(Exception.ExceptionHash))
+	        {
+		        Exception.WriteXml(writer);
+	        }
             writer.WriteEndElement();
         }
 		
