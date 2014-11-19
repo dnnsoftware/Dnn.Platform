@@ -1369,17 +1369,15 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
+        /// GetUserByEmail gets one single user matching the email address provided
+        /// This will only be useful in portals without duplicate email addresses
         /// filter expression
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
-        /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of UserInfo objects.</returns>
+        /// <returns>A single user object or null if no user found</returns>
         /// -----------------------------------------------------------------------------
         public static UserInfo GetUserByEmail(int portalId, string emailToMatch)
         {

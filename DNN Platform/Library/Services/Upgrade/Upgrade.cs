@@ -3021,6 +3021,11 @@ namespace DotNetNuke.Services.Upgrade
             NotificationsController.Instance.SetNotificationTypeActions(actions, notificationType.NotificationTypeId);
         }
 
+        private static void UpgradeToVersion740()
+        {
+
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -5161,6 +5166,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.3.3":
                         UpgradeToVersion733();
+                        break;
+                    case "7.4.0":
+                        UpgradeToVersion740();
                         break;
                 }
             }

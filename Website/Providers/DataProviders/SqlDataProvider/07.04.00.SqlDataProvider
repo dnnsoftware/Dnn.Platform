@@ -714,6 +714,11 @@ AS
 	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] Where U.Email = @Email and UP.[PortalId] = @PortalId), -1)
 GO
 
+//
+
+
+DECLARE @DuplicateEmailCount INT
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
