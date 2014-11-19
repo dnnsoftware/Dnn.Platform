@@ -1695,6 +1695,93 @@ BEGIN
 	ORDER BY [DateCreated]
 END
 GO
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_EventLog'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_EventLog
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_EventLog
+AS
+SELECT
+ el.*,
+ ee.AssemblyVersion,
+ ee.PortalId,
+ ee.UserId,
+ ee.TabId,
+ ee.RawUrl,
+ ee.Referrer,
+ ee.UserAgent,
+ e.Message,
+ e.StackTrace,
+ e.InnerMessage,
+ e.InnerStackTrace,
+ e.Source
+FROM {databaseOwner}{objectQualifier}EventLog el
+ LEFT JOIN {databaseOwner}{objectQualifier}ExceptionEvents ee ON el.LogEventID = ee.LogEventID
+ LEFT JOIN {databaseOwner}{objectQualifier}Exceptions e ON el.ExceptionHash = e.ExceptionHash
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLog]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetEventLog]
+    @PortalID   Int,            -- Might be Null for all sites
+    @LogTypeKey nVarChar(35),   -- Key of log type or Null for all
+    @PageSize   Int,            -- Number of items per page
+    @PageIndex  Int             -- Page number starting with 0
+AS
+BEGIN
+     WITH [eLog] AS (
+         SELECT ROW_NUMBER() OVER (ORDER BY E.LogCreateDate Desc) AS RowNumber, e.*
+          FROM {databaseOwner}{objectQualifier}vw_EventLog e
+          WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+            AND (e.LogTypeKey LIKE @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+     )
+     SELECT * FROM [eLog]
+      WHERE RowNumber >= {databaseOwner}{objectQualifier}PageLowerBound(@PageIndex, @PageSize)
+        AND RowNumber <= {databaseOwner}{objectQualifier}PageUpperBound(@PageIndex, @PageSize)
+      ORDER BY RowNumber
+
+    SELECT COUNT(1) AS TotalRecords
+     FROM {databaseOwner}{objectQualifier}vw_EventLog e
+     WHERE (e.LogPortalID = @PortalID     OR IsNull(@PortalID,   -1) = -1)
+       AND (e.LogTypeKey Like @LogTypeKey OR IsNull(@LogTypeKey, '') = '')
+
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLogByLogGUID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLogByLogGUID]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLogByLogGUID
+	@LogGUID varchar(36)
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_EventLog
+WHERE (LogGUID = @LogGUID)
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetEventLogPendingNotif]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetEventLogPendingNotif]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetEventLogPendingNotif
+	@LogConfigID int
+AS
+SELECT *
+FROM {databaseOwner}{objectQualifier}vw_EventLog
+WHERE LogNotificationPending = 1
+AND LogConfigID = @LogConfigID
+
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
