@@ -45,6 +45,7 @@ namespace DotNetNuke.Services.Log.EventLog
             LogUserID = -1;
             LogEventID = -1;
             LogUserName = "";
+			Exception = new ExceptionInfo();
         }
 
         public LogInfo(string content) : this()
@@ -84,9 +85,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string LogConfigID { get; set; }
 
-		public string ExceptionHash { get; set; }
-
-		public Exception Exception { get; set; }
+		public ExceptionInfo Exception { get; set; }
 
         #endregion
 
@@ -178,9 +177,6 @@ namespace DotNetNuke.Services.Log.EventLog
 						case "LogConfigID":
 							LogConfigID = reader.ReadContentAsString();
 							break;
-						case "ExceptionHash":
-							ExceptionHash = reader.ReadContentAsString();
-							break;
 					}
                 }
             }
@@ -261,7 +257,6 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("BypassBuffering", BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", LogServerName);
 			writer.WriteAttributeString("LogConfigID", LogConfigID);
-			writer.WriteAttributeString("ExceptionHash", ExceptionHash);
             LogProperties.WriteXml(writer);
             writer.WriteEndElement();
         }
