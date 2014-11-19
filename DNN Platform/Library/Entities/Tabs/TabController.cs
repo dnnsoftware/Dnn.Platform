@@ -83,6 +83,9 @@ namespace DotNetNuke.Entities.Tabs
         private static event EventHandler<TabEventArgs> TabRemoved; // soft delete
         private static event EventHandler<TabEventArgs> TabDeleted; // hard delete
 
+        private static event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
+        private static event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
+
         static TabController()
         {
             foreach (var handlers in EventHandlersContainer<ITabEventHandler>.Instance.EventHandlers)
@@ -91,6 +94,12 @@ namespace DotNetNuke.Entities.Tabs
                 TabUpdated += handlers.Value.TabUpdated;
                 TabRemoved += handlers.Value.TabRemoved;
                 TabDeleted += handlers.Value.TabDeleted;
+            }
+
+            foreach (var handlers in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
+            {
+                TabSerialize += handlers.Value.TabSerialize;
+                TabDeserialize += handlers.Value.TabDeserialize;
             }
         }
 
@@ -219,7 +228,10 @@ namespace DotNetNuke.Entities.Tabs
             if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
             {
                 var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
-                WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);
+                if (defaultWorkflow != Null.NullInteger)
+                {
+                    WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);                    
+                }
             }
 
             if (TabCreated != null)
@@ -2134,6 +2146,12 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
+            if (TabDeserialize != null)
+            {
+                var tab = Instance.GetTab(tabId, portalId);
+                TabDeserialize(null, new TabSyncEventArgs { Tab = tab, TabNode = nodePanes.ParentNode });
+            }
         }
 
         /// <summary>
@@ -2754,6 +2772,12 @@ namespace DotNetNuke.Entities.Tabs
                     modulesNode.AppendChild(tabXml.ImportNode(moduleNode, true));
                 }
             }
+
+            if (TabSerialize != null)
+            {
+                TabSerialize(null, new TabSyncEventArgs{Tab = tab, TabNode = tabNode});
+            }
+
             return tabNode;
         }
 

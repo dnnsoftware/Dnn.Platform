@@ -64,5 +64,12 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabId">Tab Id</param>
         /// <returns>True if the workflow is enabled, false otherwise</returns>
         bool IsWorkflowEnabled(int portalId, int tabId);
+
+        /// <summary>
+        /// The method returns true is the workflow is enabled at portal level
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <returns>True if the workflow is enabled, false otherwise</returns>
+        bool IsWorkflowEnabled(int portalId);
     }
 }

@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
 
             if (FriendshipAccepted != null)
-                FriendshipAccepted(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                FriendshipAccepted(null, new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             AddFriendRequestNotification(initiatingUser, targetUser, userRelationship);
 
             if (FriendshipRequested != null)
-                FriendshipRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                FriendshipRequested(null, new RelationshipEventArgs(userRelationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             RelationshipController.Instance.DeleteUserRelationship(friend);
 
             if (FriendshipDeleted != null)
-                FriendshipDeleted(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                FriendshipDeleted(null, new RelationshipEventArgs(friend, initiatingUser.PortalID));
         }
 
         private static void AddFriendRequestNotification(UserInfo initiatingUser, UserInfo targetUser, UserRelationship userRelationship)

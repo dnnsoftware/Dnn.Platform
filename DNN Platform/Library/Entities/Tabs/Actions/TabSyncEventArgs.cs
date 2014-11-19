@@ -20,11 +20,12 @@
 #endregion
 
 using System;
+using System.Xml;
 
 namespace DotNetNuke.Entities.Tabs.Actions
 {
-    public class TabEventArgs : EventArgs
+    public class TabSyncEventArgs : TabEventArgs
     {
-        public TabInfo Tab { get; internal set; }
+        public XmlNode TabNode { get; set; }
     }
 }

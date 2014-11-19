@@ -11,6 +11,9 @@
 *.sln.docstates
 *.local.sln
 
+## Ignore VS2015/Roslyn artifacts
+*.sln.ide/
+
 # Build results
 [Rr]elease
 *_i.c
@@ -193,3 +196,4 @@ Thumbs.db
 
 # Folder config file
 Desktop.ini
+

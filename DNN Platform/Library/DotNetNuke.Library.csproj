@@ -144,6 +144,8 @@
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
     <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />
+    <Compile Include="Entities\Tabs\Actions\ITabSyncEventHandler.cs" />
+    <Compile Include="Entities\Tabs\Actions\TabSyncEventArgs.cs" />
     <Compile Include="Entities\Tabs\Actions\ITabEventHandler.cs" />
     <Compile Include="Entities\Tabs\Actions\TabEventArgs.cs" />
     <Compile Include="Entities\Users\RelationshipEventArgs.cs">

@@ -292,5 +292,19 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="localizedModule">The localized module.</param>
         /// <param name="isTranslated">if set to <c>true</c> will mark the module as translated].</param>
         void UpdateTranslationStatus(ModuleInfo localizedModule, bool isTranslated);
+
+        /// <summary>
+        /// Check if a ModuleInfo belongs to the referenced Tab or not
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>True is TabId points to a different tab from initial Tab where the module was added. Otherwise, False</returns>
+        bool IsSharedModule(ModuleInfo module);
+        
+        /// <summary>
+        /// Get the Tab ID corresponding to the initial Tab where the module was added
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>The Tab Id from initial Tab where the module was added</returns>
+        int GetMasterTabId(ModuleInfo module);
     }
 }

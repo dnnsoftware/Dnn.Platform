@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
@@ -42,7 +41,6 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -795,6 +793,30 @@ namespace DotNetNuke.Entities.Modules
         #region Public Methods
 
         /// <summary>
+        /// Check if a ModuleInfo belongs to the referenced Tab or not
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>True is TabId points to a different tab from initial Tab where the module was added. Otherwise, False</returns>
+        public bool IsSharedModule(ModuleInfo module)
+        {
+            var contentController = Util.GetContentController();
+            var content = contentController.GetContentItem(module.ContentItemId);
+            return module.TabID != content.TabID;
+        }
+
+        /// <summary>
+        /// Get the Tab ID corresponding to the initial Tab where the module was added
+        /// </summary>
+        /// <param name="module">A ModuleInfo object to be checked</param>
+        /// <returns>The Tab Id from initial Tab where the module was added</returns>
+        public int GetMasterTabId(ModuleInfo module)
+        {
+            var contentController = Util.GetContentController();
+            var content = contentController.GetContentItem(module.ContentItemId);
+            return content.TabID;
+        }
+
+        /// <summary>
         /// add a module to a page
         /// </summary>
         /// <param name="module">moduleInfo for the module to create</param>
@@ -1538,7 +1560,7 @@ namespace DotNetNuke.Entities.Modules
 
         private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
         {
-            var modules = TabVersionMaker.Instance.GetCurrentModules(tabId);
+            var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
             
             var dictionary = new Dictionary<int, ModuleInfo>();
             foreach (var module in modules)

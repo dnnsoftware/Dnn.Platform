@@ -19,12 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace DotNetNuke.Entities.Tabs.Actions
 {
-    public class TabEventArgs : EventArgs
+    public interface ITabSyncEventHandler
     {
-        public TabInfo Tab { get; internal set; }
+        void TabSerialize(object sender, TabSyncEventArgs args);
+        void TabDeserialize(object sender, TabSyncEventArgs args);
     }
 }

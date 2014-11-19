@@ -692,6 +692,83 @@ AS
 	WHERE  [MessageID] = @MessageID
 GO
 
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}CoreMessaging_NotificationTypes' 
+           AND  COLUMN_NAME = 'IsTask')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypes ADD
+            IsTask bit NOT NULL DEFAULT ((0))
+    END 
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateNotificationType]
+	@Name nvarchar(100),
+	@Description nvarchar(2000),
+	@TTL int,
+	@DesktopModuleId int,
+	@CreatedUpdatedUserID int,
+	@IsTask bit
+AS
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] (
+		[Name],
+		[Description],
+		[TTL],
+		[DesktopModuleId],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate],
+		[IsTask]
+	) VALUES (
+		@Name,
+		@Description,
+		@TTL,
+		@DesktopModuleId,
+		@CreatedUpdatedUserID,
+		GETDATE(),
+		@CreatedUpdatedUserID,
+		GETDATE(),
+		@IsTask
+	)
+		
+	SELECT SCOPE_IDENTITY()	
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationType]
+	@NotificationTypeID int
+AS
+BEGIN
+	SELECT [NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleId], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+	WHERE [NotificationTypeID] = @NotificationTypeID
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotificationTypeByName]
+	@Name nvarchar(100)
+AS
+BEGIN
+	SELECT [NotificationTypeID], [Name], [Description], [TTL], [DesktopModuleId], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsTask]
+	FROM {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes]
+	WHERE [Name] LIKE @Name
+END
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDuplicateEmailCount]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
 GO
@@ -713,12 +790,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSingleUserByEmail]
 AS 
 	SELECT ISNULL((SELECT TOP 1 U.UserId from {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] Where U.Email = @Email and UP.[PortalId] = @PortalId), -1)
 GO
-
-//
-
-
-DECLARE @DuplicateEmailCount INT
-
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

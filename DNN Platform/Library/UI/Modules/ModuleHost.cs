@@ -267,14 +267,7 @@ namespace DotNetNuke.UI.Modules
                 viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
                                                               moduleInfo)); 
             }
-
-            // If an specific version of a page is been viewed. This is not 
-            // the standard view mode.
-            if (moduleInfo.ModuleVersion != Null.NullInteger)
-            {
-                return false;
-            }
-
+            
             return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
