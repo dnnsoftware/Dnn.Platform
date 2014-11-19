@@ -306,6 +306,10 @@ namespace DotNetNuke.Modules.Admin.LogViewer
                     str.Append("<p><strong>" + ldi.PropertyName + "</strong>:" + Server.HtmlEncode(ldi.PropertyValue) + "</p>");
                 }
             }
+	        if (!string.IsNullOrEmpty(objLogInfo.Exception.ExceptionHash))
+	        {
+		        str.Append(objLogInfo.Exception);
+	        }
             str.Append("<p>" + Localization.GetString("ServerName", LocalResourceFile) + Server.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             return str.ToString();
         }
