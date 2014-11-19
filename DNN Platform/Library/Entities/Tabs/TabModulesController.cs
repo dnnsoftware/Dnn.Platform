@@ -22,7 +22,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -100,7 +99,7 @@ namespace DotNetNuke.Entities.Tabs
                 return TabVersionMaker.Instance.GetUnPublishedVersionModules(tab.TabID);
             }
 
-            return  tab.ChildModules.Select(kvp => kvp.Value.Clone());
+            return TabVersionMaker.Instance.GetCurrentModules(tab.TabID);
         }
         #endregion
 

@@ -42,10 +42,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         static FollowersControllerImpl()
         {
-            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
+            foreach (var handlers in EventHandlersContainer<IFollowerEventHandlers>.Instance.EventHandlers)
             {
-                FollowRequested += handlers.Value.FriendshipRequested;
-                UnfollowRequested += handlers.Value.FriendshipAccepted;
+                FollowRequested += handlers.Value.FollowRequested;
+                UnfollowRequested += handlers.Value.UnfollowRequested;
             }
         }
 
@@ -79,13 +79,13 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
+            var relationship = RelationshipController.Instance.InitiateUserRelationship(initiatingUser, targetUser,
                 RelationshipController.Instance.GetFollowersRelationshipByPortal(initiatingUser.PortalID));
 
             AddFollowerRequestNotification(initiatingUser, targetUser);
 
             if (FollowRequested != null)
-                FollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                FollowRequested(null, new RelationshipEventArgs(relationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             RelationshipController.Instance.DeleteUserRelationship(followRelationship);
 
             if (UnfollowRequested != null)
-                UnfollowRequested(null, new RelationshipEventArgs { InitiatingUser = initiatingUser, TargetUser = targetUser });
+                UnfollowRequested(null, new RelationshipEventArgs(followRelationship, initiatingUser.PortalID));
         }
 
         private static void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)

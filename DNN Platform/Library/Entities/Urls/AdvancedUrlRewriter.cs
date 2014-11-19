@@ -299,7 +299,7 @@ namespace DotNetNuke.Entities.Urls
                         //not correct alias for portal : will be redirected
                         //perform a 301 redirect if one has already been found
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                        response.RedirectPermanent(result.FinalUrl);
+                        response.RedirectPermanent(result.FinalUrl, false);
                         finished = true;
                     }
                     if (!finished)
@@ -416,7 +416,7 @@ namespace DotNetNuke.Entities.Urls
                                 finished = true;
                                 //perform a 301 redirect if one has already been found
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                response.RedirectPermanent(result.FinalUrl);
+                                response.RedirectPermanent(result.FinalUrl, false);
                             }
                         }
                     }
@@ -581,7 +581,7 @@ namespace DotNetNuke.Entities.Urls
                                         if (result.Action == ActionType.Redirect301)
                                         {
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.RedirectPermanent(result.FinalUrl);
+                                            response.RedirectPermanent(result.FinalUrl, false);
                                             finished = true;
                                         }
                                         else if (result.Action == ActionType.Redirect302)
@@ -688,6 +688,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 //do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
                 //level try/catch block, so we handle it here.
+                Thread.ResetAbort();
             }
             catch (Exception ex)
             {

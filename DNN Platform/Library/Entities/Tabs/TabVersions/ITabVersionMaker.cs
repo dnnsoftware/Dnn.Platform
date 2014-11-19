@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         void Publish(int portalId, int tabId, int createdByUserId);
 
         /// <summary>
-        /// Discards a Tab Version
+        /// Discards a Tab Version. If the tab only has an unpublished version, the page will keep but with no content and not published.
         /// </summary>
         void Discard(int tabId, int createdByUserId);
         

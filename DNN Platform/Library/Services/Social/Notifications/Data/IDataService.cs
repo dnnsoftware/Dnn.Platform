@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
     {
         #region NotificationTypes CRUD
 
-        int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId);
+        int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask);
         void DeleteNotificationType(int notificationTypeId);
         IDataReader GetNotificationType(int notificationTypeId);
         IDataReader GetNotificationTypeByName(string name);

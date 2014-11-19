@@ -583,6 +583,16 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the number count for all duplicate e-mail adresses in the database
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static int GetDuplicateEmailCount()
+        {
+            return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
+        }
+
         #endregion
 
         #region Public Helper Methods
@@ -1355,6 +1365,30 @@ namespace DotNetNuke.Entities.Users
         public static ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords, false, false);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUsersByEmail gets all the users of the portal whose email matches a provided
+        /// filter expression
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="emailToMatch">The email address to use to find a match.</param>
+        /// <param name="pageIndex">The page of records to return.</param>
+        /// <param name="pageSize">The size of the page</param>
+        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
+        /// <returns>An ArrayList of UserInfo objects.</returns>
+        /// -----------------------------------------------------------------------------
+        public static UserInfo GetUserByEmail(int portalId, string emailToMatch)
+        {
+            int uid = DataProvider.Instance().GetSingleUserByEmail(portalId, emailToMatch);
+            if (uid > -1)
+            {
+                return GetUserById(portalId, uid);
+            }
+            return null;
         }
 
         /// -----------------------------------------------------------------------------

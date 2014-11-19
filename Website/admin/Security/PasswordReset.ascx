@@ -5,9 +5,9 @@
     <div class="dnnFormMessage dnnFormInfo" runat="server" Visible="False" id="resetMessages"><asp:Label ID="lblHelp" runat="Server" /></div>
 	<div id="divPassword" runat="server" class="dnnPasswordResetContent">
         <div class="dnnFormItem">
-                            <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="Username" CssClass="dnnFormRequired"/>
+                            <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" CssClass="dnnFormRequired"/>
                             <asp:TextBox ID="txtUsername" runat="server" TextMode="SingleLine"/>
-                            <asp:RequiredFieldValidator ID="valUsername" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Username.Required" Display="Dynamic" ControlToValidate="txtPassword" />
+                            <asp:RequiredFieldValidator ID="valUsername" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" Display="Dynamic" ControlToValidate="txtPassword" />
                         </div>
 		<div class="dnnFormItem">
                             <dnn:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired"/>
