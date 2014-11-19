@@ -956,14 +956,14 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}AddExceptionEvent
-  LogEventID bigint,
-  AssemblyVersion varchar(20),
-  PortalId int,
-  UserId int,
-  TabId int,
-  RawUrl nvarchar(260),
-  Referrer nvarchar(260),
-  UserAgent nvarchar(260),
+  @LogEventID bigint,
+  @AssemblyVersion varchar(20),
+  @PortalId int,
+  @UserId int,
+  @TabId int,
+  @RawUrl nvarchar(260),
+  @Referrer nvarchar(260),
+  @UserAgent nvarchar(260)
 AS
 
 INSERT INTO {databaseOwner}[{objectQualifier}ExceptionEvents]

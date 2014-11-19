@@ -3542,7 +3542,7 @@ namespace DotNetNuke.Data
 												  logProperties,
 												  logConfigID,
 												  exception.ExceptionHash);
-			if (exception.AssemblyVersion != "-1")
+			if (!string.IsNullOrEmpty(exception.AssemblyVersion) && exception.AssemblyVersion != "-1")
 			{
 				ExecuteNonQuery("AddExceptionEvent",
 					logEventID,
