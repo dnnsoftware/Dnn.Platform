@@ -187,9 +187,9 @@ namespace DotNetNuke.Services.Exceptions
 			str.Append("<p><strong>UserAgent:</strong>" + UserAgent + "</p>");
 			str.Append("<p><strong>ExceptionHash:</strong>" + ExceptionHash + "</p>");
 			str.Append("<p><strong>Message:</strong>" + Message + "</p>");
-			str.Append("<p><strong>StackTrace:</strong>" + StackTrace + "</p>");
+			str.Append("<p><strong>StackTrace:</strong><pre>" + StackTrace.Replace(") at ", ")<br/>at ") + "</pre></p>");
 			str.Append("<p><strong>InnerMessage:</strong>" + InnerMessage + "</p>");
-			str.Append("<p><strong>InnerStackTrace:</strong>" + InnerStackTrace + "</p>");
+			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + InnerStackTrace.Replace(") at ",")<br/>at ") + "</pre></p>");
 			str.Append("<p><strong>Source:</strong>" + Source + "</p>");
 			str.Append("<p><strong>FileName:</strong>" + FileName + "</p>");
 			str.Append("<p><strong>FileLineNumber:</strong>" + FileLineNumber + "</p>");
