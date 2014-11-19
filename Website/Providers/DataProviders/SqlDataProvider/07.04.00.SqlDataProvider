@@ -952,14 +952,7 @@ VALUES
 	@StackTrace,
 	@InnerMessage,
 	@InnerStackTrace,
-	@Source);
-
--- Purge orphaned exceptions
-DELETE FROM {databaseOwner}[{objectQualifier}Exceptions]
-FROM {databaseOwner}[{objectQualifier}Exceptions] e
- LEFT JOIN {databaseOwner}[{objectQualifier}EventLog] el ON el.ExceptionHash = e.ExceptionHash
-WHERE el.LogEventID IS NULL;
-
+	@Source)
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExceptionEvents]') AND type in (N'U'))
