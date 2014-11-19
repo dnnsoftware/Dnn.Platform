@@ -129,27 +129,9 @@ namespace DotNetNuke.Services.Log.EventLog
 
 			//Add BasePortalException Properties
 			var objBasePortalException = new BasePortalException(objException.ToString(), objException);
-			log.LogProperties.Add(new LogDetailInfo("AssemblyVersion", objBasePortalException.AssemblyVersion));
-			log.LogProperties.Add(new LogDetailInfo("PortalID", objBasePortalException.PortalID.ToString()));
-			log.LogProperties.Add(new LogDetailInfo("PortalName", objBasePortalException.PortalName));
-			log.LogProperties.Add(new LogDetailInfo("UserID", objBasePortalException.UserID.ToString()));
-			log.LogProperties.Add(new LogDetailInfo("UserName", objBasePortalException.UserName));
-			log.LogProperties.Add(new LogDetailInfo("ActiveTabID", objBasePortalException.ActiveTabID.ToString()));
-			log.LogProperties.Add(new LogDetailInfo("ActiveTabName", objBasePortalException.ActiveTabName));
-			log.LogProperties.Add(new LogDetailInfo("RawURL", objBasePortalException.RawURL));
 			log.LogProperties.Add(new LogDetailInfo("AbsoluteURL", objBasePortalException.AbsoluteURL));
-			log.LogProperties.Add(new LogDetailInfo("AbsoluteURLReferrer", objBasePortalException.AbsoluteURLReferrer));
-			log.LogProperties.Add(new LogDetailInfo("UserAgent", objBasePortalException.UserAgent));
 			log.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
 			log.LogProperties.Add(new LogDetailInfo("ExceptionGUID", objBasePortalException.ExceptionGUID));
-			log.LogProperties.Add(new LogDetailInfo("InnerException", objBasePortalException.InnerException.Message));
-			log.LogProperties.Add(new LogDetailInfo("FileName", objBasePortalException.FileName));
-			log.LogProperties.Add(new LogDetailInfo("FileLineNumber", objBasePortalException.FileLineNumber.ToString()));
-			log.LogProperties.Add(new LogDetailInfo("FileColumnNumber", objBasePortalException.FileColumnNumber.ToString()));
-			log.LogProperties.Add(new LogDetailInfo("Method", objBasePortalException.Method));
-			log.LogProperties.Add(new LogDetailInfo("StackTrace", objBasePortalException.StackTrace));
-			log.LogProperties.Add(new LogDetailInfo("Message", objBasePortalException.Message));
-			log.LogProperties.Add(new LogDetailInfo("Source", objBasePortalException.Source));
 			log.LogPortalID = objBasePortalException.PortalID;
 			LogController.Instance.AddLog(log);
 
