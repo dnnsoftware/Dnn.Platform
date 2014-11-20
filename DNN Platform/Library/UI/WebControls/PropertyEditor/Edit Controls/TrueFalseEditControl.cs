@@ -212,14 +212,17 @@ namespace DotNetNuke.UI.WebControls
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var postedValue = postCollection[postDataKey];
-            bool flag;
-            var boolValue = Boolean.TryParse(postedValue, out flag) ? flag : true;
-            if (!BooleanValue.Equals(boolValue))
+            if (string.IsNullOrEmpty(postedValue))
             {
-                Value = boolValue;
+                Value = false;
                 return true;
             }
-            return false;
+            else
+            {
+                bool flag = (postedValue == "1" || postedValue == "true") ? true : false;
+                Value = flag;
+                return true;
+            }
         }
 
 		
