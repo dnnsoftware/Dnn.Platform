@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        private int AddTabInternal(TabInfo tab, int afterTabId, int beforeTabId, bool includeAllTabsModules)
+        private int AddTabInternal(TabInfo tab, int afterTabId, int beforeTabId, bool includeAllTabsModules, bool startWorkflow = true)
         {
             ValidateTabPath(tab);
 
@@ -225,7 +225,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             // Workflow initialization.
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
+            if (startWorkflow && TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
             {
                 var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
                 if (defaultWorkflow != Null.NullInteger)
@@ -963,6 +963,7 @@ namespace DotNetNuke.Entities.Tabs
                 //First Clone the Tab
                 TabInfo localizedCopy = originalTab.Clone();
                 localizedCopy.TabID = Null.NullInteger;
+                localizedCopy.StateID = Null.NullInteger;
 
                 //Set Guids and Culture Code
                 localizedCopy.UniqueId = Guid.NewGuid();
@@ -991,7 +992,7 @@ namespace DotNetNuke.Entities.Tabs
                 else
                 {
                     localizedCopy.TabPermissions.AddRange(
-                    originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
+                        originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
                 }
 
                 //Get the original Tabs Parent
@@ -1010,7 +1011,12 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
+                AddTabInternal(localizedCopy, -1, -1, false, false); //not include modules show on all page, it will handled in copy modules action.
+
+                /* Tab versioning and workflow is disabled 
+                 * during the creation of the Localized copy
+                 */ 
+                DisableTabVersioningAndWorkflow(localizedCopy);
 
                 //Make shallow copies of all modules
                 ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, true);
@@ -1023,6 +1029,12 @@ namespace DotNetNuke.Entities.Tabs
 
                 //Add Translator Role
                 GiveTranslatorRoleEditRights(localizedCopy, null);
+
+                /* Tab versioning and workflow is re-enabled  
+                 * when the Localized copy is created
+                 */ 
+                EnableTabVersioningAndWorkflow(localizedCopy);
+                MarkAsPublished(localizedCopy);
             }
             catch (Exception ex)
             {
@@ -1034,6 +1046,30 @@ namespace DotNetNuke.Entities.Tabs
             if (clearCache)
             {
                 ClearCache(originalTab.PortalID);
+            }
+        }
+
+        private static void EnableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            if (TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, true);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
+            {
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
+            }
+        }
+
+        private static void DisableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            if (TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID))
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
+            }
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
+            {
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
         }
 
