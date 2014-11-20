@@ -21,6 +21,7 @@
 
 using System.Collections.Generic;
 using DotNetNuke.Common;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Security
@@ -74,23 +75,23 @@ namespace DotNetNuke.Security
 		}
 		public RegistrationSettings(Dictionary<string, string> settings): this()
 		{
-			RandomPassword = settings.GetValue("Registration_RandomPassword", RandomPassword);
-			RedirectAfterRegistration = settings.GetValue("Redirect_AfterRegistration", RedirectAfterRegistration);
-			RedirectAfterLogout = settings.GetValue("Redirect_AfterLogout", RedirectAfterLogout);
-			RegistrationFields = settings.GetValue("Registration_RegistrationFields", RegistrationFields);
-			ExcludeTerms = settings.GetValue("Registration_ExcludeTerms", ExcludeTerms);
-			RegistrationFormType = settings.GetValue("Registration_RegistrationFormType", RegistrationFormType);
-			RequirePasswordConfirm = settings.GetValue("Registration_RequireConfirmPassword", RequirePasswordConfirm);
-			RequireUniqueDisplayName = settings.GetValue("Registration_RequireUniqueDisplayName", RequireUniqueDisplayName);
-			UseAuthProviders = settings.GetValue("Registration_UseAuthProviders", UseAuthProviders);
-			UseEmailAsUserName = settings.GetValue("Registration_UseEmailAsUserName", UseEmailAsUserName);
-			UseProfanityFilter = settings.GetValue("Registration_UseProfanityFilter", UseProfanityFilter);
-			RequireValidProfile = settings.GetValue("Security_RequireValidProfile", RequireValidProfile);
-			RequireValidProfileAtLogin = settings.GetValue("Security_RequireValidProfileAtLogin", RequireValidProfileAtLogin);
-			UseCaptcha = settings.GetValue("Security_CaptchaRegister", UseCaptcha);
-			UserNameValidator = settings.GetValue("Security_UserNameValidation", UserNameValidator);
-			DisplayNameFormat = settings.GetValue("Security_DisplayNameFormat", DisplayNameFormat);
-			EmailValidator = settings.GetValue("Security_EmailValidation", EmailValidator);
+            RandomPassword = settings.GetValueOrDefault("Registration_RandomPassword", RandomPassword);
+            RedirectAfterRegistration = settings.GetValueOrDefault("Redirect_AfterRegistration", RedirectAfterRegistration);
+            RedirectAfterLogout = settings.GetValueOrDefault("Redirect_AfterLogout", RedirectAfterLogout);
+            RegistrationFields = settings.GetValueOrDefault("Registration_RegistrationFields", RegistrationFields);
+            ExcludeTerms = settings.GetValueOrDefault("Registration_ExcludeTerms", ExcludeTerms);
+            RegistrationFormType = settings.GetValueOrDefault("Registration_RegistrationFormType", RegistrationFormType);
+            RequirePasswordConfirm = settings.GetValueOrDefault("Registration_RequireConfirmPassword", RequirePasswordConfirm);
+            RequireUniqueDisplayName = settings.GetValueOrDefault("Registration_RequireUniqueDisplayName", RequireUniqueDisplayName);
+            UseAuthProviders = settings.GetValueOrDefault("Registration_UseAuthProviders", UseAuthProviders);
+            UseEmailAsUserName = settings.GetValueOrDefault("Registration_UseEmailAsUserName", UseEmailAsUserName);
+            UseProfanityFilter = settings.GetValueOrDefault("Registration_UseProfanityFilter", UseProfanityFilter);
+            RequireValidProfile = settings.GetValueOrDefault("Security_RequireValidProfile", RequireValidProfile);
+            RequireValidProfileAtLogin = settings.GetValueOrDefault("Security_RequireValidProfileAtLogin", RequireValidProfileAtLogin);
+            UseCaptcha = settings.GetValueOrDefault("Security_CaptchaRegister", UseCaptcha);
+            UserNameValidator = settings.GetValueOrDefault("Security_UserNameValidation", UserNameValidator);
+            DisplayNameFormat = settings.GetValueOrDefault("Security_DisplayNameFormat", DisplayNameFormat);
+            EmailValidator = settings.GetValueOrDefault("Security_EmailValidation", EmailValidator);
 
 			ExcludeTermsRegex = "^(?:(?!" + ExcludeTerms.Replace(" ", "").Replace(",", "|") + ").)*$\\r?\\n?";
 		}

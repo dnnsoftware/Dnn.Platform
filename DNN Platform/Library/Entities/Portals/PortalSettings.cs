@@ -32,6 +32,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -413,54 +414,54 @@ namespace DotNetNuke.Entities.Portals
 
 		private void ReadSettings()
 		{
-			AllowUserUICulture = Settings.GetValue("AllowUserUICulture", false);
-			CdfVersion = Settings.GetValue("CdfVersion", Null.NullInteger);
-			ContentLocalizationEnabled = Settings.GetValue("ContentLocalizationEnabled", false);
-			DefaultAdminContainer = Settings.GetValue("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
-			DefaultAdminSkin = Settings.GetValue("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
-			DefaultIconLocation = Settings.GetValue("DefaultIconLocation", "icons/sigma");
-			DefaultModuleId = Settings.GetValue("defaultmoduleid", Null.NullInteger);
-			DefaultPortalContainer = Settings.GetValue("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
-			DefaultPortalSkin = Settings.GetValue("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
-			DefaultTabId = Settings.GetValue("defaulttabid", Null.NullInteger);
-			EnableBrowserLanguage = Settings.GetValue("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
-			EnableCompositeFiles = Settings.GetValue("EnableCompositeFiles", false);
-			EnablePopUps = Settings.GetValue("EnablePopUps", false);
-			EnableModuleEffect = Settings.GetValue("EnableModuleEffect", true);
-			HideLoginControl = Settings.GetValue("HideLoginControl", false);
-			EnableSkinWidgets = Settings.GetValue("EnableSkinWidgets", true);
-			EnableUrlLanguage = Settings.GetValue("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
-			HideFoldersEnabled = Settings.GetValue("HideFoldersEnabled", true);
-			InlineEditorEnabled = Settings.GetValue("InlineEditorEnabled", true);
-			SearchIncludeCommon = Settings.GetValue("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
-			SearchIncludeNumeric = Settings.GetValue("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
-			SearchIncludedTagInfoFilter = Settings.GetValue("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
-			SearchMaxWordlLength = Settings.GetValue("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
-			SearchMinWordlLength = Settings.GetValue("MinSearchWordLength", Host.Host.SearchMinWordlLength);
-			SSLEnabled = Settings.GetValue("SSLEnabled", false);
-			SSLEnforced = Settings.GetValue("SSLEnforced", false);
-			SSLURL = Settings.GetValue("SSLURL", Null.NullString);
-			STDURL = Settings.GetValue("STDURL", Null.NullString);
-			EnableRegisterNotification = Settings.GetValue("EnableRegisterNotification", true);
-			DefaultAuthProvider = Settings.GetValue("DefaultAuthProvider", "DNN");
-			SMTPConnectionLimit = Settings.GetValue("SMTPConnectionLimit", 1);
-			SMTPMaxIdleTime = Settings.GetValue("SMTPMaxIdleTime", 0);
+            AllowUserUICulture = Settings.GetValueOrDefault("AllowUserUICulture", false);
+            CdfVersion = Settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            ContentLocalizationEnabled = Settings.GetValueOrDefault("ContentLocalizationEnabled", false);
+            DefaultAdminContainer = Settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
+            DefaultAdminSkin = Settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
+            DefaultIconLocation = Settings.GetValueOrDefault("DefaultIconLocation", "icons/sigma");
+            DefaultModuleId = Settings.GetValueOrDefault("defaultmoduleid", Null.NullInteger);
+            DefaultPortalContainer = Settings.GetValueOrDefault("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
+            DefaultPortalSkin = Settings.GetValueOrDefault("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
+            DefaultTabId = Settings.GetValueOrDefault("defaulttabid", Null.NullInteger);
+            EnableBrowserLanguage = Settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
+            EnableCompositeFiles = Settings.GetValueOrDefault("EnableCompositeFiles", false);
+            EnablePopUps = Settings.GetValueOrDefault("EnablePopUps", true);
+            EnableModuleEffect = Settings.GetValueOrDefault("EnableModuleEffect", true);
+            HideLoginControl = Settings.GetValueOrDefault("HideLoginControl", false);
+            EnableSkinWidgets = Settings.GetValueOrDefault("EnableSkinWidgets", true);
+            EnableUrlLanguage = Settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
+            HideFoldersEnabled = Settings.GetValueOrDefault("HideFoldersEnabled", true);
+            InlineEditorEnabled = Settings.GetValueOrDefault("InlineEditorEnabled", true);
+            SearchIncludeCommon = Settings.GetValueOrDefault("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
+            SearchIncludeNumeric = Settings.GetValueOrDefault("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
+            SearchIncludedTagInfoFilter = Settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
+            SearchMaxWordlLength = Settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
+            SearchMinWordlLength = Settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
+            SSLEnabled = Settings.GetValueOrDefault("SSLEnabled", false);
+            SSLEnforced = Settings.GetValueOrDefault("SSLEnforced", false);
+            SSLURL = Settings.GetValueOrDefault("SSLURL", Null.NullString);
+            STDURL = Settings.GetValueOrDefault("STDURL", Null.NullString);
+            EnableRegisterNotification = Settings.GetValueOrDefault("EnableRegisterNotification", true);
+            DefaultAuthProvider = Settings.GetValueOrDefault("DefaultAuthProvider", "DNN");
+            SMTPConnectionLimit = Settings.GetValueOrDefault("SMTPConnectionLimit", 1);
+            SMTPMaxIdleTime = Settings.GetValueOrDefault("SMTPMaxIdleTime", 0);
 
 			ControlPanelSecurity = ControlPanelPermission.ModuleEditor;
-			string setting = Settings.GetValue("ControlPanelSecurity", "");
+            string setting = Settings.GetValueOrDefault("ControlPanelSecurity", "");
 			if (setting.ToUpperInvariant() == "TAB")
 			{
 				ControlPanelSecurity = ControlPanelPermission.TabEditor;
 			}
 			DefaultControlPanelMode = Mode.View;
-			setting = Settings.GetValue("ControlPanelMode", "");
+            setting = Settings.GetValueOrDefault("ControlPanelMode", "");
 			if (setting.ToUpperInvariant() == "EDIT")
 			{
 				DefaultControlPanelMode = Mode.Edit;
 			}
-			setting = Settings.GetValue("ControlPanelVisibility", "");
+            setting = Settings.GetValueOrDefault("ControlPanelVisibility", "");
 			DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
-			setting = Settings.GetValue("TimeZone", "");
+            setting = Settings.GetValueOrDefault("TimeZone", "");
 			if (!string.IsNullOrEmpty(setting))
 			{
 				var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);

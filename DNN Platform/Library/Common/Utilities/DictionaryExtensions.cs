@@ -11,21 +11,6 @@ namespace DotNetNuke.Common.Utilities
             return (T)value;
         }
 
-        public static bool GetValue(this IDictionary bag, string key, bool defaultValue)
-        {
-            var value = (bag[key] ?? defaultValue).ToString();
-            switch (value.ToLower())
-            {
-                case "true":
-                case "on":
-                case "1":
-                case "yes":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         public static void SetValue<T>(this IDictionary bag, object key, T value, T defaultValue)
         {
             if (Equals(defaultValue, value))
