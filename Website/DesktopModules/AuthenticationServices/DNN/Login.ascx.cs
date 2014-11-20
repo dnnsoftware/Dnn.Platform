@@ -170,9 +170,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
             lblLogin.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
 
-            if (Response.Cookies["USERNAME_CHANGED"] != null)
+            if (!string.IsNullOrEmpty(Response.Cookies["USERNAME_CHANGED"].Value))
             {
-                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].ToString();
+                txtUsername.Text = Response.Cookies["USERNAME_CHANGED"].Value;
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetSystemMessage(PortalSettings, "MESSAGE_USERNAME_CHANGED_INSTRUCTIONS"), ModuleMessage.ModuleMessageType.BlueInfo);
             }
 
