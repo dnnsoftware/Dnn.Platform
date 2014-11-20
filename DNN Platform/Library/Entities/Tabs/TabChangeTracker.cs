@@ -31,11 +31,12 @@ namespace DotNetNuke.Entities.Tabs
     {
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
+            var unPublishedVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID);
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
             }
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
             {
                 TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
             }
@@ -49,12 +50,13 @@ namespace DotNetNuke.Entities.Tabs
                 "This module does not belong to the page. Please, move to its master page to change the module"));
             }
 
+            var unPublishedVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID);
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
             }
 
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
             {
                 TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
             }
@@ -62,11 +64,12 @@ namespace DotNetNuke.Entities.Tabs
         
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
+            var unPublishedVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID);
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
             }
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID))
+            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
             {
                 TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
             }
