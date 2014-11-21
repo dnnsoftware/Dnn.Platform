@@ -1251,7 +1251,6 @@ The host-level settings are currently set as follows:
   <data name="pl500TabId.Text" xml:space="preserve">
     <value>500 Error Page</value>
   </data>
-<<<<<<< HEAD
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
   </data>
