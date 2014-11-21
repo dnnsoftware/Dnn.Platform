@@ -120,10 +120,13 @@ namespace DotNetNuke.Entities.Portals
 		public PortalSettings(int tabID, int portalID)
 		{
 			var portal = PortalController.Instance.GetPortal(portalID);
-			GetPortalSettings(tabID, portal);
-			Settings = PortalController.GetPortalSettingsDictionary(portalID);
+
+            Settings = PortalController.GetPortalSettingsDictionary(portalID);
 			Registration = new RegistrationSettings(Settings);
-			ReadSettings();
+
+            ReadSettings();
+            GetPortalSettings(tabID, portal);
+
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -146,31 +149,38 @@ namespace DotNetNuke.Entities.Portals
 			PortalId = objPortalAliasInfo.PortalID;
 			PortalAlias = objPortalAliasInfo;
 			var portal = PortalController.Instance.GetPortal(PortalId);
-			if (portal != null)
+
+            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
+			Registration = new RegistrationSettings(Settings);
+
+            ReadSettings();
+            if (portal != null)
 			{
 				GetPortalSettings(tabID, portal);
 			}
-			Settings = PortalController.GetPortalSettingsDictionary(PortalId);
-			Registration = new RegistrationSettings(Settings);
-			ReadSettings();
+
 		}
 
 		public PortalSettings(PortalInfo portal)
 		{
 			ActiveTab = new TabInfo();
-			GetPortalSettings(Null.NullInteger, portal);
-			Settings = PortalController.GetPortalSettingsDictionary(PortalId);
+
+            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
 			Registration = new RegistrationSettings(Settings);
-			ReadSettings();
+
+            ReadSettings();
+            GetPortalSettings(Null.NullInteger, portal);
 		}
 
 		public PortalSettings(int tabID, PortalInfo portal)
 		{
 			ActiveTab = new TabInfo();
-			GetPortalSettings(tabID, portal);
-			Settings = PortalController.GetPortalSettingsDictionary(PortalId);
+
+            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
 			Registration = new RegistrationSettings(Settings);
-			ReadSettings();
+
+            ReadSettings();
+            GetPortalSettings(tabID, portal);
 		}
 
 		#endregion
@@ -411,67 +421,6 @@ namespace DotNetNuke.Entities.Portals
 
 		public RegistrationSettings Registration { get; set; }
 		private Dictionary<string, string> Settings { get; set; }
-
-		private void ReadSettings()
-		{
-            AllowUserUICulture = Settings.GetValueOrDefault("AllowUserUICulture", false);
-            CdfVersion = Settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
-            ContentLocalizationEnabled = Settings.GetValueOrDefault("ContentLocalizationEnabled", false);
-            DefaultAdminContainer = Settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
-            DefaultAdminSkin = Settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
-            DefaultIconLocation = Settings.GetValueOrDefault("DefaultIconLocation", "icons/sigma");
-            DefaultModuleId = Settings.GetValueOrDefault("defaultmoduleid", Null.NullInteger);
-            DefaultPortalContainer = Settings.GetValueOrDefault("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
-            DefaultPortalSkin = Settings.GetValueOrDefault("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
-            DefaultTabId = Settings.GetValueOrDefault("defaulttabid", Null.NullInteger);
-            EnableBrowserLanguage = Settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
-            EnableCompositeFiles = Settings.GetValueOrDefault("EnableCompositeFiles", false);
-            EnablePopUps = Settings.GetValueOrDefault("EnablePopUps", true);
-            EnableModuleEffect = Settings.GetValueOrDefault("EnableModuleEffect", true);
-            HideLoginControl = Settings.GetValueOrDefault("HideLoginControl", false);
-            EnableSkinWidgets = Settings.GetValueOrDefault("EnableSkinWidgets", true);
-            EnableUrlLanguage = Settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
-            HideFoldersEnabled = Settings.GetValueOrDefault("HideFoldersEnabled", true);
-            InlineEditorEnabled = Settings.GetValueOrDefault("InlineEditorEnabled", true);
-            SearchIncludeCommon = Settings.GetValueOrDefault("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
-            SearchIncludeNumeric = Settings.GetValueOrDefault("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
-            SearchIncludedTagInfoFilter = Settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
-            SearchMaxWordlLength = Settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
-            SearchMinWordlLength = Settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
-            SSLEnabled = Settings.GetValueOrDefault("SSLEnabled", false);
-            SSLEnforced = Settings.GetValueOrDefault("SSLEnforced", false);
-            SSLURL = Settings.GetValueOrDefault("SSLURL", Null.NullString);
-            STDURL = Settings.GetValueOrDefault("STDURL", Null.NullString);
-            EnableRegisterNotification = Settings.GetValueOrDefault("EnableRegisterNotification", true);
-            DefaultAuthProvider = Settings.GetValueOrDefault("DefaultAuthProvider", "DNN");
-            SMTPConnectionLimit = Settings.GetValueOrDefault("SMTPConnectionLimit", 1);
-            SMTPMaxIdleTime = Settings.GetValueOrDefault("SMTPMaxIdleTime", 0);
-
-			ControlPanelSecurity = ControlPanelPermission.ModuleEditor;
-            string setting = Settings.GetValueOrDefault("ControlPanelSecurity", "");
-			if (setting.ToUpperInvariant() == "TAB")
-			{
-				ControlPanelSecurity = ControlPanelPermission.TabEditor;
-			}
-			DefaultControlPanelMode = Mode.View;
-            setting = Settings.GetValueOrDefault("ControlPanelMode", "");
-			if (setting.ToUpperInvariant() == "EDIT")
-			{
-				DefaultControlPanelMode = Mode.Edit;
-			}
-            setting = Settings.GetValueOrDefault("ControlPanelVisibility", "");
-			DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
-            setting = Settings.GetValueOrDefault("TimeZone", "");
-			if (!string.IsNullOrEmpty(setting))
-			{
-				var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
-				if (timeZone != null)
-					_timeZone = timeZone;
-			}
-
-
-		}
-
 
 		public CacheLevel Cacheability
 		{
@@ -808,11 +757,71 @@ namespace DotNetNuke.Entities.Portals
 			return result;
 		}
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
-		private void ConfigureActiveTab()
+        private void ReadSettings()
+        {
+            AllowUserUICulture = Settings.GetValueOrDefault("AllowUserUICulture", false);
+            CdfVersion = Settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            ContentLocalizationEnabled = Settings.GetValueOrDefault("ContentLocalizationEnabled", false);
+            DefaultAdminContainer = Settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
+            DefaultAdminSkin = Settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
+            DefaultIconLocation = Settings.GetValueOrDefault("DefaultIconLocation", "icons/sigma");
+            DefaultModuleId = Settings.GetValueOrDefault("defaultmoduleid", Null.NullInteger);
+            DefaultPortalContainer = Settings.GetValueOrDefault("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
+            DefaultPortalSkin = Settings.GetValueOrDefault("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
+            DefaultTabId = Settings.GetValueOrDefault("defaulttabid", Null.NullInteger);
+            EnableBrowserLanguage = Settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
+            EnableCompositeFiles = Settings.GetValueOrDefault("EnableCompositeFiles", false);
+            EnablePopUps = Settings.GetValueOrDefault("EnablePopUps", true);
+            EnableModuleEffect = Settings.GetValueOrDefault("EnableModuleEffect", true);
+            HideLoginControl = Settings.GetValueOrDefault("HideLoginControl", false);
+            EnableSkinWidgets = Settings.GetValueOrDefault("EnableSkinWidgets", true);
+            EnableUrlLanguage = Settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
+            HideFoldersEnabled = Settings.GetValueOrDefault("HideFoldersEnabled", true);
+            InlineEditorEnabled = Settings.GetValueOrDefault("InlineEditorEnabled", true);
+            SearchIncludeCommon = Settings.GetValueOrDefault("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
+            SearchIncludeNumeric = Settings.GetValueOrDefault("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
+            SearchIncludedTagInfoFilter = Settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
+            SearchMaxWordlLength = Settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
+            SearchMinWordlLength = Settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
+            SSLEnabled = Settings.GetValueOrDefault("SSLEnabled", false);
+            SSLEnforced = Settings.GetValueOrDefault("SSLEnforced", false);
+            SSLURL = Settings.GetValueOrDefault("SSLURL", Null.NullString);
+            STDURL = Settings.GetValueOrDefault("STDURL", Null.NullString);
+            EnableRegisterNotification = Settings.GetValueOrDefault("EnableRegisterNotification", true);
+            DefaultAuthProvider = Settings.GetValueOrDefault("DefaultAuthProvider", "DNN");
+            SMTPConnectionLimit = Settings.GetValueOrDefault("SMTPConnectionLimit", 1);
+            SMTPMaxIdleTime = Settings.GetValueOrDefault("SMTPMaxIdleTime", 0);
+
+            ControlPanelSecurity = ControlPanelPermission.ModuleEditor;
+            string setting = Settings.GetValueOrDefault("ControlPanelSecurity", "");
+            if (setting.ToUpperInvariant() == "TAB")
+            {
+                ControlPanelSecurity = ControlPanelPermission.TabEditor;
+            }
+            DefaultControlPanelMode = Mode.View;
+            setting = Settings.GetValueOrDefault("ControlPanelMode", "");
+            if (setting.ToUpperInvariant() == "EDIT")
+            {
+                DefaultControlPanelMode = Mode.Edit;
+            }
+            setting = Settings.GetValueOrDefault("ControlPanelVisibility", "");
+            DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
+            setting = Settings.GetValueOrDefault("TimeZone", "");
+            if (!string.IsNullOrEmpty(setting))
+            {
+                var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
+                if (timeZone != null)
+                    _timeZone = timeZone;
+            }
+
+
+        }
+
+        private void ConfigureActiveTab()
 		{
 			if (Globals.IsAdminSkin())
 			{
