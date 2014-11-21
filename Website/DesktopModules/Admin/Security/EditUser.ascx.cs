@@ -93,9 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
-
-                if (Convert.ToInt32(setting) == Null.NullInteger)
+				if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -122,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -233,6 +231,13 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
                 userForm.DataSource = User;
+
+                // hide username field in UseEmailAsUserName mode
+                bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                if(disableUsername)
+                {
+                    userForm.Items[0].Visible = false;
+                }
 
                 if (!Page.IsPostBack)
                 {
@@ -373,10 +378,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
             //Update DisplayName to conform to Format
-            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(Convert.ToString(setting));
+				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
@@ -491,6 +495,20 @@ namespace DotNetNuke.Modules.Admin.Users
                     UpdateDisplayName();
 
                     UserController.UpdateUser(UserPortalID, User);
+
+                    // make sure username matches possibly changed email address
+                    bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                    if (disableUsername)
+                    {
+                        if (User.Username.ToLower() != User.Email.ToLower())
+                        {
+                            UserController.ChangeUsername(User.UserID, User.Email);
+
+                            //note that this effectively will cause a signout due to the cookie not matching anymore.
+                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email));
+                        }
+                    }
+
 
                     Response.Redirect(Request.RawUrl);
                 }

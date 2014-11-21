@@ -100,7 +100,6 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return TabVersionMaker.Instance.GetCurrentModules(tab.TabID);
-            //return tab.ChildModules.Select(kvp => kvp.Value.Clone());
         }
         #endregion
 

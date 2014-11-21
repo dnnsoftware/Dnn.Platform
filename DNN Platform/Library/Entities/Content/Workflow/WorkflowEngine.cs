@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Workflow.Actions;
 using DotNetNuke.Entities.Content.Workflow.Dto;
 using DotNetNuke.Entities.Content.Workflow.Entities;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         #region Constructor
         public WorkflowEngine()
         {
-            _contentController = new ContentController();
+            _contentController = Util.GetContentController();
             _workflowRepository = WorkflowRepository.Instance;
             _workflowStateRepository = WorkflowStateRepository.Instance;
             _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;

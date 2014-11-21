@@ -1251,6 +1251,7 @@ The host-level settings are currently set as follows:
   <data name="pl500TabId.Text" xml:space="preserve">
     <value>500 Error Page</value>
   </data>
+<<<<<<< HEAD
   <data name="PageHeaders.Text" xml:space="preserve">
     <value>Page Output Settings</value>
   </data>
@@ -1271,5 +1272,8 @@ The host-level settings are currently set as follows:
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
     <value>Add Compatible Http Header</value>
+  </data>
+  <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
+    <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
   </data>
 </root>

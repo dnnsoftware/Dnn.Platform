@@ -100,7 +100,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+				if (Value == null || string.IsNullOrEmpty((string)Value))
+				{
+					return intValue;
+				}
+				try
                 {
                     intValue = Convert.ToInt32(Value);
                 }
@@ -189,7 +193,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+	            if (OldValue == null || string.IsNullOrEmpty((string)OldValue))
+	            {
+					return intValue;
+	            }
+	            try
                 {
 					//Try and cast the value to an Integer
                     intValue = Convert.ToInt32(OldValue);

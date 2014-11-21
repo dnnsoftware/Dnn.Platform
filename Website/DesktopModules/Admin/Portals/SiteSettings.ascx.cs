@@ -621,8 +621,7 @@ namespace DesktopModules.Admin.Portals
                 basicRegistrationSettings.DataSource = settings;
                 basicRegistrationSettings.DataBind();
 
-                var setting = PortalController.GetPortalSettingAsInteger("Registration_RegistrationFormType", portal.PortalID, 0);
-                registrationFormType.Select(setting.ToString(CultureInfo.InvariantCulture));
+				registrationFormType.Select(PortalSettings.Registration.RegistrationFormType.ToString(CultureInfo.InvariantCulture));
 
                 standardRegistrationSettings.DataSource = settings;
                 standardRegistrationSettings.DataBind();
@@ -630,7 +629,7 @@ namespace DesktopModules.Admin.Portals
                 validationRegistrationSettings.DataSource = settings;
                 validationRegistrationSettings.DataBind();
 
-                var customRegistrationFields = PortalController.GetPortalSetting("Registration_RegistrationFields", portal.PortalID, String.Empty);
+				var customRegistrationFields = PortalSettings.Registration.RegistrationFields;
 
                 CustomRegistrationFields = BuildCustomRegistrationFields(customRegistrationFields);
 
@@ -654,7 +653,7 @@ namespace DesktopModules.Admin.Portals
                 var tabs = listTabs.Where(t => t.DisableLink == false).ToList();
 
                 //using values from current portal
-                var redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterRegistration", portal.PortalID, 0);
+                var redirectTab = PortalSettings.Registration.RedirectAfterRegistration;
                 if (redirectTab > 0)
                 {
                     RedirectAfterRegistration.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -676,7 +675,7 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataBind();
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0);
+                redirectTab = PortalSettings.Registration.RedirectAfterLogin;
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);
@@ -684,7 +683,7 @@ namespace DesktopModules.Admin.Portals
                 RedirectAfterLogin.PortalId = portal.PortalID;
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogout", portal.PortalID, 0);
+				redirectTab = PortalSettings.Registration.RedirectAfterLogout;
 
                 if (redirectTab > 0)
                 {
@@ -1482,8 +1481,29 @@ namespace DesktopModules.Admin.Portals
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
 
+                    //DNN-6093
                     foreach (DnnFormItemBase item in standardRegistrationSettings.Items)
                     {
+                        //Make sure that enabling Registration_UseEmailAsUserName doesn't cause issues with duplicate e-mail addresses
+                        if (item.DataField.ToLower() == "registration_useemailasusername" && Boolean.Parse(item.Value.ToString()) == true)
+                        {
+                            if (UserController.GetDuplicateEmailCount() > 0)
+                            {
+                                string message = Localization.GetString("ContainsDuplicateAddresses", LocalResourceFile);
+                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                                return;
+                            }
+                            
+                            // can't actualy use this as web.config settings are system wide.
+
+                            //if (MembershipProvider.Instance().RequiresUniqueEmail == false)
+                            //{
+                            //    string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
+                            //    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                            //    return;
+                            //}
+
+                        }
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
 

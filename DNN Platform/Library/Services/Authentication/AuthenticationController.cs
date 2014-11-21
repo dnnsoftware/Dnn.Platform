@@ -317,8 +317,7 @@ namespace DotNetNuke.Services.Authentication
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
             string _RedirectURL = "";
-            object setting = UserModuleBase.GetSetting(settings.PortalId, "Redirect_AfterLogout");
-            if (Convert.ToInt32(setting) == Null.NullInteger)
+            if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
                 {
@@ -345,7 +344,7 @@ namespace DotNetNuke.Services.Authentication
             }
             else //redirect to after logout page
             {
-                _RedirectURL = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(setting));
+				_RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
             return _RedirectURL;
         }
