@@ -1251,4 +1251,25 @@ The host-level settings are currently set as follows:
   <data name="pl500TabId.Text" xml:space="preserve">
     <value>500 Error Page</value>
   </data>
+  <data name="PageHeaders.Text" xml:space="preserve">
+    <value>Page Output Settings</value>
+  </data>
+  <data name="plPageHeadText.Help" xml:space="preserve">
+    <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="plPageHeadText.Text" xml:space="preserve">
+    <value>Html Page Header Tags</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Help" xml:space="preserve">
+    <value>Inject a empty hyperlink on the top of the module with name equals moduleid.</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
+    <value>Inject Module Hyperlinks</value>
+  </data>
+  <data name="plAddCompatibleHttpHeader.Help" xml:space="preserve">
+    <value>Add Http Header X-UA-Compatible IE=edge</value>
+  </data>
+  <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
+    <value>Add Compatible Http Header</value>
+  </data>
 </root>
