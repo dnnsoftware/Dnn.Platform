@@ -51,18 +51,12 @@ namespace DotNetNuke.Entities.Portals
 {
 	/// -----------------------------------------------------------------------------
 	/// <summary>
-	/// PortalSettings Class
-	///
-	/// This class encapsulates all of the settings for the Portal, as well
-	/// as the configuration settings required to execute the current tab
+	/// The PortalSettings class encapsulates all of the settings for the Portal, 
+    /// as well as the configuration settings required to execute the current tab
 	/// view within the portal.
 	/// </summary>
 	/// <remarks>
 	/// </remarks>
-	/// <history>
-	/// 	[cnurse]	10/21/2004	documented
-	/// 	[cnurse]	10/21/2004	added GetTabModuleSettings
-	/// </history>
 	/// -----------------------------------------------------------------------------
 	[Serializable]
 	public class PortalSettings : BaseEntityInfo, IPropertyAccess
@@ -112,23 +106,13 @@ namespace DotNetNuke.Entities.Portals
 		public PortalSettings(int portalId)
 			: this(Null.NullInteger, portalId)
 		{
-			Settings = PortalController.GetPortalSettingsDictionary(portalId);
-			Registration = new RegistrationSettings(Settings);
-			ReadSettings();
 		}
 
 		public PortalSettings(int tabID, int portalID)
 		{
 			var portal = PortalController.Instance.GetPortal(portalID);
-
-            Settings = PortalController.GetPortalSettingsDictionary(portalID);
-			Registration = new RegistrationSettings(Settings);
-
-            ReadSettings();
-            GetPortalSettings(tabID, portal);
-
-		}
-
+            BuildPortalSettings(tabID, portal);
+        }
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// The PortalSettings Constructor encapsulates all of the logic
@@ -145,49 +129,48 @@ namespace DotNetNuke.Entities.Portals
 		/// -----------------------------------------------------------------------------
 		public PortalSettings(int tabID, PortalAliasInfo objPortalAliasInfo)
 		{
-			ActiveTab = new TabInfo();
-			PortalId = objPortalAliasInfo.PortalID;
 			PortalAlias = objPortalAliasInfo;
-			var portal = PortalController.Instance.GetPortal(PortalId);
+			var portal = PortalController.Instance.GetPortal(objPortalAliasInfo.PortalID);
+            BuildPortalSettings(tabID, portal);
+        }
 
-            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
-			Registration = new RegistrationSettings(Settings);
-
-            ReadSettings();
-            if (portal != null)
-			{
-				GetPortalSettings(tabID, portal);
-			}
-
-		}
-
-		public PortalSettings(PortalInfo portal)
+		public PortalSettings(PortalInfo portal) 
+            : this(Null.NullInteger, portal)
 		{
-			ActiveTab = new TabInfo();
-
-            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
-			Registration = new RegistrationSettings(Settings);
-
-            ReadSettings();
-            GetPortalSettings(Null.NullInteger, portal);
 		}
 
 		public PortalSettings(int tabID, PortalInfo portal)
 		{
-			ActiveTab = new TabInfo();
-
-            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
-			Registration = new RegistrationSettings(Settings);
-
-            ReadSettings();
-            GetPortalSettings(tabID, portal);
+            BuildPortalSettings(tabID, portal);
 		}
 
-		#endregion
+        private void BuildPortalSettings(int tabId, PortalInfo portal)
+        {
+            ActiveTab = new TabInfo();
 
-		#region Auto-Properties
+            Settings = PortalController.GetPortalSettingsDictionary(PortalId);
+            Registration = new RegistrationSettings(Settings);
 
-		public TabInfo ActiveTab { get; set; }
+            MapPortalSettingsDictionary();
+            if (portal != null)
+            {
+                MapPortalInfoSettings(tabId, portal);
+
+                if (VerifyPortalTab(PortalId, tabId))
+                {
+                    if (ActiveTab.TabID != Null.NullInteger)
+                    {
+                        ConfigureActiveTab();
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region Auto-Properties
+
+        public TabInfo ActiveTab { get; set; }
 		public int AdministratorId { get; set; }
 		public int AdministratorRoleId { get; set; }
 		public string AdministratorRoleName { get; set; }
@@ -761,7 +744,62 @@ namespace DotNetNuke.Entities.Portals
 
         #region Private Methods
 
-        private void ReadSettings()
+        private void ConfigureActiveTab()
+		{
+			if (Globals.IsAdminSkin())
+			{
+				ActiveTab.SkinSrc = DefaultAdminSkin;
+			}
+			else if (String.IsNullOrEmpty(ActiveTab.SkinSrc))
+			{
+				ActiveTab.SkinSrc = DefaultPortalSkin;
+			}
+			ActiveTab.SkinSrc = SkinController.FormatSkinSrc(ActiveTab.SkinSrc, this);
+			ActiveTab.SkinPath = SkinController.FormatSkinPath(ActiveTab.SkinSrc);
+
+			if (Globals.IsAdminSkin())
+			{
+				ActiveTab.ContainerSrc = DefaultAdminContainer;
+			}
+			else if (String.IsNullOrEmpty(ActiveTab.ContainerSrc))
+			{
+				ActiveTab.ContainerSrc = DefaultPortalContainer;
+			}
+
+			ActiveTab.ContainerSrc = SkinController.FormatSkinSrc(ActiveTab.ContainerSrc, this);
+			ActiveTab.ContainerPath = SkinController.FormatSkinPath(ActiveTab.ContainerSrc);
+
+			ActiveTab.Panes = new ArrayList();
+			var crumbs = new ArrayList();
+			GetBreadCrumbsRecursively(ref crumbs, ActiveTab.TabID);
+			ActiveTab.BreadCrumbs = crumbs;
+		}
+
+		private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
+		{
+			TabInfo tab;
+			var portalTabs = TabController.Instance.GetTabsByPortal(PortalId);
+			var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
+			bool tabFound = portalTabs.TryGetValue(tabId, out tab);
+			if (!tabFound)
+			{
+				tabFound = hostTabs.TryGetValue(tabId, out tab);
+			}
+			//if tab was found
+			if (tabFound)
+			{
+				//add tab to breadcrumb collection
+				breadCrumbs.Insert(0, tab.Clone());
+
+				//get the tab parent
+				if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
+				{
+					GetBreadCrumbsRecursively(ref breadCrumbs, tab.ParentId);
+				}
+			}
+		}
+
+        private void MapPortalSettingsDictionary()
         {
             AllowUserUICulture = Settings.GetValueOrDefault("AllowUserUICulture", false);
             CdfVersion = Settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
@@ -821,73 +859,18 @@ namespace DotNetNuke.Entities.Portals
 
         }
 
-        private void ConfigureActiveTab()
-		{
-			if (Globals.IsAdminSkin())
-			{
-				ActiveTab.SkinSrc = DefaultAdminSkin;
-			}
-			else if (String.IsNullOrEmpty(ActiveTab.SkinSrc))
-			{
-				ActiveTab.SkinSrc = DefaultPortalSkin;
-			}
-			ActiveTab.SkinSrc = SkinController.FormatSkinSrc(ActiveTab.SkinSrc, this);
-			ActiveTab.SkinPath = SkinController.FormatSkinPath(ActiveTab.SkinSrc);
-
-			if (Globals.IsAdminSkin())
-			{
-				ActiveTab.ContainerSrc = DefaultAdminContainer;
-			}
-			else if (String.IsNullOrEmpty(ActiveTab.ContainerSrc))
-			{
-				ActiveTab.ContainerSrc = DefaultPortalContainer;
-			}
-
-			ActiveTab.ContainerSrc = SkinController.FormatSkinSrc(ActiveTab.ContainerSrc, this);
-			ActiveTab.ContainerPath = SkinController.FormatSkinPath(ActiveTab.ContainerSrc);
-
-			ActiveTab.Panes = new ArrayList();
-			var crumbs = new ArrayList();
-			GetBreadCrumbsRecursively(ref crumbs, ActiveTab.TabID);
-			ActiveTab.BreadCrumbs = crumbs;
-		}
-
-		private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
-		{
-			TabInfo tab;
-			var portalTabs = TabController.Instance.GetTabsByPortal(PortalId);
-			var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-			bool tabFound = portalTabs.TryGetValue(tabId, out tab);
-			if (!tabFound)
-			{
-				tabFound = hostTabs.TryGetValue(tabId, out tab);
-			}
-			//if tab was found
-			if (tabFound)
-			{
-				//add tab to breadcrumb collection
-				breadCrumbs.Insert(0, tab.Clone());
-
-				//get the tab parent
-				if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
-				{
-					GetBreadCrumbsRecursively(ref breadCrumbs, tab.ParentId);
-				}
-			}
-		}
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The GetPortalSettings method builds the site Settings
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		///	<param name="tabID">The current tabs id</param>
-		///	<param name="portal">The Portal object</param>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		private void GetPortalSettings(int tabID, PortalInfo portal)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The MapPortalInfoSettings method builds the site Settings
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        ///	<param name="tabID">The current tabs id</param>
+        ///	<param name="portal">The Portal object</param>
+        /// <history>
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        private void MapPortalInfoSettings(int tabID, PortalInfo portal)
 		{
 			PortalId = portal.PortalID;
 			PortalName = portal.PortalName;
@@ -900,7 +883,7 @@ namespace DotNetNuke.Entities.Portals
 			AdministratorId = portal.AdministratorId;
 			Email = portal.Email;
 			HostFee = portal.HostFee;
-			HostSpace = portal.HostSpace;
+            HostSpace = Null.IsNull(portal.HostSpace) ? 0 : portal.HostSpace ;
 			PageQuota = portal.PageQuota;
 			UserQuota = portal.UserQuota;
 			AdministratorRoleId = portal.AdministratorRoleId;
@@ -922,34 +905,14 @@ namespace DotNetNuke.Entities.Portals
 			SearchTabId = portal.SearchTabId;
 			ErrorPage404 = portal.Custom404TabId;
 			ErrorPage500 = portal.Custom500TabId;
-			DefaultLanguage = portal.DefaultLanguage;
-			//HomeDirectory = portal.HomeDirectory;            
+			DefaultLanguage = Null.IsNull(portal.DefaultLanguage) ? Localization.SystemLocale : portal.DefaultLanguage;
+			HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
 			HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
+			HomeSystemDirectory = Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/";
 			HomeSystemDirectoryMapPath = portal.HomeSystemDirectoryMapPath;
 			Pages = portal.Pages;
 			Users = portal.Users;
 			CultureCode = portal.CultureCode;
-
-			//update properties with default values
-			if (Null.IsNull(HostSpace))
-			{
-				HostSpace = 0;
-			}
-			if (Null.IsNull(DefaultLanguage))
-			{
-				DefaultLanguage = Localization.SystemLocale;
-			}
-			HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
-			HomeSystemDirectory = Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/";
-
-			//verify tab for portal. This assigns the Active Tab based on the Tab Id/PortalId
-			if (VerifyPortalTab(PortalId, tabID))
-			{
-				if (ActiveTab != null)
-				{
-					ConfigureActiveTab();
-				}
-			}
 		}
 
 		/// -----------------------------------------------------------------------------
