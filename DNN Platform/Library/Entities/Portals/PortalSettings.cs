@@ -108,11 +108,12 @@ namespace DotNetNuke.Entities.Portals
 		{
 		}
 
-		public PortalSettings(int tabID, int portalID)
+		public PortalSettings(int tabId, int portalID)
 		{
 			var portal = PortalController.Instance.GetPortal(portalID);
-            BuildPortalSettings(tabID, portal);
+            BuildPortalSettings(tabId, portal);
         }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		/// The PortalSettings Constructor encapsulates all of the logic
@@ -121,17 +122,17 @@ namespace DotNetNuke.Entities.Portals
 		/// </summary>
 		/// <remarks>
 		/// </remarks>
-		///	<param name="tabID">The current tab</param>
+		///	<param name="tabId">The current tab</param>
 		///	<param name="objPortalAliasInfo">The current portal</param>
 		/// <history>
 		/// 	[cnurse]	10/21/2004	documented
 		/// </history>
 		/// -----------------------------------------------------------------------------
-		public PortalSettings(int tabID, PortalAliasInfo objPortalAliasInfo)
+		public PortalSettings(int tabId, PortalAliasInfo objPortalAliasInfo)
 		{
 			PortalAlias = objPortalAliasInfo;
 			var portal = PortalController.Instance.GetPortal(objPortalAliasInfo.PortalID);
-            BuildPortalSettings(tabID, portal);
+            BuildPortalSettings(tabId, portal);
         }
 
 		public PortalSettings(PortalInfo portal) 
@@ -139,9 +140,9 @@ namespace DotNetNuke.Entities.Portals
 		{
 		}
 
-		public PortalSettings(int tabID, PortalInfo portal)
+		public PortalSettings(int tabId, PortalInfo portal)
 		{
-            BuildPortalSettings(tabID, portal);
+            BuildPortalSettings(tabId, portal);
 		}
 
         private void BuildPortalSettings(int tabId, PortalInfo portal)
@@ -154,7 +155,7 @@ namespace DotNetNuke.Entities.Portals
             MapPortalSettingsDictionary();
             if (portal != null)
             {
-                MapPortalInfoSettings(tabId, portal);
+                MapPortalInfoSettings(portal);
 
                 if (VerifyPortalTab(PortalId, tabId))
                 {
@@ -859,18 +860,17 @@ namespace DotNetNuke.Entities.Portals
 
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The MapPortalInfoSettings method builds the site Settings
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        ///	<param name="tabID">The current tabs id</param>
-        ///	<param name="portal">The Portal object</param>
-        /// <history>
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private void MapPortalInfoSettings(int tabID, PortalInfo portal)
+	    ///  -----------------------------------------------------------------------------
+	    ///  <summary>
+	    ///  The MapPortalInfoSettings method builds the site Settings
+	    ///  </summary>
+	    ///  <remarks>
+	    ///  </remarks>
+	    /// <param name="portal">The Portal object</param>
+	    ///  <history>
+	    ///  </history>
+	    ///  -----------------------------------------------------------------------------
+	    private void MapPortalInfoSettings(PortalInfo portal)
 		{
 			PortalId = portal.PortalID;
 			PortalName = portal.PortalName;
