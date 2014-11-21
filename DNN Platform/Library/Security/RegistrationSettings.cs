@@ -32,8 +32,9 @@ namespace DotNetNuke.Security
 		#region Properties
 		public bool RandomPassword { get; set; }
 		public int RedirectAfterRegistration { get; set; }
-		public int RedirectAfterLogout { get; set; }
-		public string RegistrationFields { get; set; }
+        public int RedirectAfterLogout { get; set; }
+        public int RedirectAfterLogin { get; set; }
+        public string RegistrationFields { get; set; }
 		public string ExcludeTerms { get; set; }
 		public string ExcludeTermsRegex { get; set; }
 		public int RegistrationFormType { get; set; }
@@ -55,29 +56,31 @@ namespace DotNetNuke.Security
 		public RegistrationSettings()
 		{
 			RandomPassword = false;
-			RedirectAfterRegistration = Null.NullInteger;
-			RedirectAfterLogout = Null.NullInteger;
-			RegistrationFields = Null.NullString;
-			ExcludeTerms = Null.NullString;
+			RedirectAfterRegistration = -1;
+            RedirectAfterLogout = -1;
+            RedirectAfterLogin = -1;
+            RegistrationFields = string.Empty;
+			ExcludeTerms = string.Empty;
 			ExcludeTermsRegex = Null.NullString;
-			RegistrationFormType = Null.NullInteger;
-			RequirePasswordConfirm = false;
+			RegistrationFormType = 0;
+			RequirePasswordConfirm = true;
 			RequireUniqueDisplayName = false;
 			UseAuthProviders = false;
 			UseEmailAsUserName = false;
 			UseProfanityFilter = false;
 			RequireValidProfile = false;
-			RequireValidProfileAtLogin = false;
+			RequireValidProfileAtLogin = true;
 			UseCaptcha = false;
-			UserNameValidator = Null.NullString;
-			DisplayNameFormat = Null.NullString;
-			EmailValidator = Null.NullString;
+			UserNameValidator = Globals.glbUserNameRegEx;
+			DisplayNameFormat = string.Empty;
+			EmailValidator = Globals.glbEmailRegEx;
 		}
 		public RegistrationSettings(Dictionary<string, string> settings): this()
 		{
             RandomPassword = settings.GetValueOrDefault("Registration_RandomPassword", RandomPassword);
             RedirectAfterRegistration = settings.GetValueOrDefault("Redirect_AfterRegistration", RedirectAfterRegistration);
             RedirectAfterLogout = settings.GetValueOrDefault("Redirect_AfterLogout", RedirectAfterLogout);
+            RedirectAfterLogin = settings.GetValueOrDefault("Redirect_AfterLoging", RedirectAfterLogin);
             RegistrationFields = settings.GetValueOrDefault("Registration_RegistrationFields", RegistrationFields);
             ExcludeTerms = settings.GetValueOrDefault("Registration_ExcludeTerms", ExcludeTerms);
             RegistrationFormType = settings.GetValueOrDefault("Registration_RegistrationFormType", RegistrationFormType);

@@ -674,7 +674,7 @@ namespace DesktopModules.Admin.Portals
                 loginSettings.DataBind();
 
                 //using values from current portal
-                redirectTab = PortalController.GetPortalSettingAsInteger("Redirect_AfterLogin", portal.PortalID, 0);
+                redirectTab = PortalSettings.Registration.RedirectAfterLogin;
                 if (redirectTab > 0)
                 {
                     RedirectAfterLogin.SelectedPage = tabs.SingleOrDefault(t => t.TabID == redirectTab);

@@ -545,7 +545,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				{
 
 					AddField("Username", String.Empty, true,
-							String.IsNullOrEmpty(PortalSettings.Security.UserNameValidator) ? ExcludeTerms : PortalSettings.Security.UserNameValidator,
+							String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator) ? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
 							TextBoxMode.SingleLine);
 				}
 
