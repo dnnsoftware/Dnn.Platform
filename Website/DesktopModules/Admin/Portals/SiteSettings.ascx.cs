@@ -431,6 +431,7 @@ namespace DesktopModules.Admin.Portals
                 chkOverrideDefaultSettings.Checked = overrideDefaultSettings;
                 BindClientResourceManagementUi(portal.PortalID, overrideDefaultSettings);
                 ManageMinificationUi();
+                BindPageOutputSettings(portal);
             }
 
             BindUserAccountSettings(portal, activeLanguage);
@@ -766,6 +767,15 @@ namespace DesktopModules.Admin.Portals
                 }
             }
 
+        }
+        private void BindPageOutputSettings(PortalInfo portal)
+        {
+            if (portal != null)
+            {
+                txtPageHeadText.Text = PortalController.GetPortalSetting("PageHeadText", portal.PortalID, Null.NullString);
+                chkInjectModuleHyperLink.Checked = PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", portal.PortalID, true);
+                chkAddCompatibleHttpHeader.Checked = PortalController.GetPortalSettingAsBoolean("AddCompatibleHttpHeader", portal.PortalID, true);                
+            }
         }
 
         #endregion
@@ -1556,6 +1566,10 @@ namespace DesktopModules.Admin.Portals
                                                                     : item.Value.ToString()
                                                                 );
                     }
+
+                    PortalController.UpdatePortalSetting(_portalId, "PageHeadText", txtPageHeadText.Text);
+                    PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
+                    PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", chkAddCompatibleHttpHeader.Checked.ToString());
 
                     profileDefinitions.Update();
 

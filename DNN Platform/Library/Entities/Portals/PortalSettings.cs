@@ -575,6 +575,41 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+
+        public string PageHeadText 
+        {
+            get
+            {
+                return PortalController.GetPortalSetting("PageHeadText", PortalId, Null.NullString);
+            }
+        }
+
+        /*
+         * add <a name="[moduleid]"></a> on the top of the module
+         * 
+         * Desactivate this remove the html5 compatibility warnings
+         * (and make the output smaller)
+         * 
+         */
+        public bool InjectModuleHyperLink
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", PortalId, true);
+            }
+        }
+        /*
+         * generates a : Page.Response.AddHeader("X-UA-Compatible", "IE=edge");
+         */
+        public bool AddCompatibleHttpHeader
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("AddCompatibleHttpHeader", PortalId, true);
+            }
+        }
+
+
 		#endregion
 
 		#region IPropertyAccess Members

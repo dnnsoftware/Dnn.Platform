@@ -3023,7 +3023,18 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion740()
         {
-
+            string PageHeadTextForNewInstall = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
+                                                    "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
+                                                    "<meta name=\"RATING\" content=\"GENERAL\" />";
+            string PageHeadTextForUpgrade = PageHeadTextForNewInstall +
+                                                "<meta name=\"RESOURCE-TYPE\" content=\"DOCUMENT\" />" + "\n" +
+                                                "<meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\" />" + "\n" +
+                                                "<meta content=\"text/css\" http-equiv=\"Content-Style-Type\" />" + "\n";
+            ArrayList portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, "PageHeadText", Globals.Status == Globals.UpgradeStatus.Install ? PageHeadTextForNewInstall : PageHeadTextForUpgrade);
+            }
         }
 
         private static void AddManageUsersModulePermissions()
