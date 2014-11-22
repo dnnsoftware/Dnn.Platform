@@ -558,7 +558,17 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetPortalSetting("PageHeadText", PortalId, Null.NullString);
+                // For New Install
+                string PageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
+                                  "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
+                                  "<meta name=\"RATING\" content=\"GENERAL\" />";
+                string setting;
+                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    PageHead = (setting == "false") ? "" : setting;
+                }
+                return PageHead;
             }
         }
 
@@ -577,13 +587,22 @@ namespace DotNetNuke.Entities.Portals
             }
         }
         /*
-         * generates a : Page.Response.AddHeader("X-UA-Compatible", "IE=edge");
+         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
+         * 
+         
          */
-        public bool AddCompatibleHttpHeader
+        public string AddCompatibleHttpHeader
         {
             get
             {
-                return PortalController.GetPortalSettingAsBoolean("AddCompatibleHttpHeader", PortalId, true);
+                string CompatibleHttpHeader = "IE=edge";
+                string setting;
+                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
+                }
+                return CompatibleHttpHeader;
             }
         }
 

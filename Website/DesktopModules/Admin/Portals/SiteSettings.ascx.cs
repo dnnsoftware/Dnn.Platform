@@ -771,9 +771,10 @@ namespace DesktopModules.Admin.Portals
         {
             if (portal != null)
             {
-                txtPageHeadText.Text = PortalController.GetPortalSetting("PageHeadText", portal.PortalID, Null.NullString);
-                chkInjectModuleHyperLink.Checked = PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", portal.PortalID, true);
-                chkAddCompatibleHttpHeader.Checked = PortalController.GetPortalSettingAsBoolean("AddCompatibleHttpHeader", portal.PortalID, true);                
+                var portalSettings = new PortalSettings(portal);
+                txtPageHeadText.Text = portalSettings.PageHeadText;
+                chkInjectModuleHyperLink.Checked = portalSettings.InjectModuleHyperLink;
+                txtAddCompatibleHttpHeader.Text = portalSettings.AddCompatibleHttpHeader;
             }
         }
 
@@ -1566,9 +1567,9 @@ namespace DesktopModules.Admin.Portals
                                                                 );
                     }
 
-                    PortalController.UpdatePortalSetting(_portalId, "PageHeadText", txtPageHeadText.Text);
+                    PortalController.UpdatePortalSetting(_portalId, "PageHeadText", string.IsNullOrEmpty(txtPageHeadText.Text) ? "false" : txtPageHeadText.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
-                    PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", chkAddCompatibleHttpHeader.Checked.ToString());
+                    PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
 
                     profileDefinitions.Update();
 

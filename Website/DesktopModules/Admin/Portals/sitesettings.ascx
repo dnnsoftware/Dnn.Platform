@@ -507,8 +507,8 @@
                             <asp:CheckBox runat="server" ID="chkInjectModuleHyperLink" />
                         </div>
                         <div class="dnnFormItem">
-                            <dnn:label id="plAddCompatibleHttpHeader" runat="server" controlname="chkAddCompatibleHttpHeader" />
-                            <asp:CheckBox runat="server" ID="chkAddCompatibleHttpHeader" />
+                            <dnn:label id="plAddCompatibleHttpHeader" runat="server" controlname="txtAddCompatibleHttpHeader" />
+                            <asp:TextBox ID="txtAddCompatibleHttpHeader" runat="server" />                            
                         </div>
                     </fieldset>
                 </div>

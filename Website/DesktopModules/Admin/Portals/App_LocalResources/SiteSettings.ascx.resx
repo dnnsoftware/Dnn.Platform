@@ -1267,10 +1267,10 @@ The host-level settings are currently set as follows:
     <value>Inject Module Hyperlinks</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Help" xml:space="preserve">
-    <value>Add Http Header X-UA-Compatible IE=edge</value>
+    <value>Add X-UA-Compatible to the hhtp response headers (ex. : IE=edge)</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
-    <value>Add Compatible Http Header</value>
+    <value>X-UA-Compatible Http Header</value>
   </data>
   <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
     <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
