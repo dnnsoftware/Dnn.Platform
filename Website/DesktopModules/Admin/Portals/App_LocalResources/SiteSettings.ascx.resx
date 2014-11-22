@@ -1270,9 +1270,9 @@ The host-level settings are currently set as follows:
     <value>Inject Module Hyperlinks</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Help" xml:space="preserve">
-    <value>Add Http Header X-UA-Compatible IE=edge</value>
+    <value>Add X-UA-Compatible to the hhtp response headers (ex. : IE=edge)</value>
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
-    <value>Add Compatible Http Header</value>
+    <value>X-UA-Compatible Http Header</value>
   </data>
 </root>
