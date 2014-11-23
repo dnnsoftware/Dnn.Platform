@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,7 +33,6 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 #endregion
 
@@ -99,7 +98,7 @@ namespace DotNetNuke.Services.Sitemap
                     // check if we should override the priorities
                     isProviderPriorityOverrided = bool.Parse(PortalController.GetPortalSetting(_provider.Name + "Override", PortalSettings.PortalId, "False"));
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50"))/100;
+                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50")) / 100;
 
                     // Get all urls from provider
                     List<SitemapUrl> urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
@@ -109,7 +108,7 @@ namespace DotNetNuke.Services.Sitemap
                         {
                             url.Priority = providerPriorityValue;
                         }
-                        if (url.Priority >= excludePriority)
+                        if (url.Priority > 0 && url.Priority >= excludePriority) //#RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
                         {
                             allUrls.Add(url);
                         }
@@ -130,17 +129,17 @@ namespace DotNetNuke.Services.Sitemap
 
                 // create all the files
                 int index = 0;
-                int numFiles = (allUrls.Count/SITEMAP_MAXURLS) + 1;
-                int elementsInFile = allUrls.Count/numFiles;
+                int numFiles = (allUrls.Count / SITEMAP_MAXURLS) + 1;
+                int elementsInFile = allUrls.Count / numFiles;
 
                 for (index = 1; index <= numFiles; index++)
                 {
-                    int lowerIndex = elementsInFile*(index - 1);
+                    int lowerIndex = elementsInFile * (index - 1);
                     int elements = 0;
                     if (index == numFiles)
                     {
                         // last file
-                        elements = allUrls.Count - (elementsInFile*(numFiles - 1));
+                        elements = allUrls.Count - (elementsInFile * (numFiles - 1));
                     }
                     else
                     {
@@ -197,16 +196,12 @@ namespace DotNetNuke.Services.Sitemap
             TextWriter sitemapOutput = output;
             if (cached)
             {
-                if (!Directory.Exists(PortalSettings.HomeDirectoryMapPath + "Sitemap"))
+                if (!Directory.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap"))
                 {
-                    Directory.CreateDirectory(PortalSettings.HomeDirectoryMapPath + "Sitemap");
+                    Directory.CreateDirectory(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
                 }
-                string cachedFile = "sitemap.xml";
-                if (index > 0)
-                {
-                    cachedFile = "sitemap_" + index + ".xml";
-                }
-                sitemapOutput = new StreamWriter(PortalSettings.HomeDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
+                var cachedFile = (index > 0) ? "sitemap_" + index + ".xml": "sitemap.xml";                
+                sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
             }
 
             // Initialize writer
@@ -220,6 +215,7 @@ namespace DotNetNuke.Services.Sitemap
             // build header
             writer.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION);
             writer.WriteAttributeString("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+            writer.WriteAttributeString("xmlns", "xhtml", null, "http://www.w3.org/1999/xhtml");
             var schemaLocation = "http://www.sitemaps.org/schemas/sitemap/" + SITEMAP_VERSION;
             writer.WriteAttributeString("xsi", "schemaLocation", null, string.Format("{0} {0}/sitemap.xsd", schemaLocation));
 
@@ -247,7 +243,7 @@ namespace DotNetNuke.Services.Sitemap
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
             TextWriter sitemapOutput = null;
-            sitemapOutput = new StreamWriter(PortalSettings.HomeDirectoryMapPath + "Sitemap\\sitemap.xml", false, Encoding.UTF8);
+            sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\sitemap.xml", false, Encoding.UTF8);
 
             // Initialize writer
             var settings = new XmlWriterSettings();
@@ -300,6 +296,18 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("lastmod", sitemapUrl.LastModified.ToString("yyyy-MM-dd"));
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
+
+            if (sitemapUrl.AlternateUrls != null)
+            {
+                foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+                {
+                    writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+                    writer.WriteAttributeString("rel", "alternate");
+                    writer.WriteAttributeString("hreflang", alternate.Language);
+                    writer.WriteAttributeString("href", alternate.Url);
+                    writer.WriteEndElement();
+                }
+            }
             writer.WriteEndElement();
         }
 
@@ -310,19 +318,16 @@ namespace DotNetNuke.Services.Sitemap
         private bool CacheIsValid()
         {
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalSettings.PortalId, "1"));
-            bool isValid = true;
+            var isValid = File.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\sitemap.xml");
 
-            if (!File.Exists(PortalSettings.HomeDirectoryMapPath + "Sitemap\\sitemap.xml"))
+            if (!isValid)
+            {
+                return isValid;
+            }
+            DateTime lastmod = File.GetLastWriteTime(PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/sitemap.xml");
+            if (lastmod.AddDays(cacheDays) < DateTime.Now)
             {
                 isValid = false;
-            }
-            if (isValid)
-            {
-                DateTime lastmod = File.GetLastWriteTime(PortalSettings.HomeDirectoryMapPath + "/Sitemap/sitemap.xml");
-                if (lastmod.AddDays(cacheDays) < DateTime.Now)
-                {
-                    isValid = false;
-                }
             }
 
             return isValid;
@@ -335,14 +340,15 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "output">The output stream</param>
         private void WriteSitemapFileToOutput(string file, TextWriter output)
         {
-            if (File.Exists(PortalSettings.HomeDirectoryMapPath + "Sitemap\\" + file))
+            if (!File.Exists(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + file))
             {
-                // write the cached file to output
-                var reader = new StreamReader(PortalSettings.HomeDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8);
-                output.Write(reader.ReadToEnd());
-
-                reader.Close();
+                return;
             }
+            // write the cached file to output
+            var reader = new StreamReader(PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8);
+            output.Write(reader.ReadToEnd());
+
+            reader.Close();
         }
 
 
@@ -350,12 +356,12 @@ namespace DotNetNuke.Services.Sitemap
         {
             bool isChild = false;
             string portalName = null;
-            var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
             string serverPath = Globals.GetAbsoluteServerPath(context.Request);
 
             if (arr.Count > 0)
             {
-                var portalAlias = (PortalAliasInfo) arr[0];
+                var portalAlias = (PortalAliasInfo)arr[0];
                 portalName = Globals.GetPortalDomainName(ps.PortalAlias.HTTPAlias, null, true);
                 if (portalAlias.HTTPAlias.IndexOf("/") > -1)
                 {

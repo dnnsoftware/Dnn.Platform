@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,19 +49,20 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.")]
     public class SearchDataStoreController
     {
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to return a NullInteger value")]
         public static int AddSearchItem(SearchItemInfo item)
         {
-            return DataProvider.Instance().AddSearchItem(item.Title, item.Description, item.Author, item.PubDate, item.ModuleId, item.SearchKey, item.GUID, item.ImageFileId);
+            return Null.NullInteger;
         }
 
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
         public static void DeleteSearchItem(int SearchItemId)
-        {
-            DataProvider.Instance().DeleteSearchItem(SearchItemId);
+        {            
         }
 
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
         public static void DeleteSearchItemWords(int SearchItemId)
-        {
-            DataProvider.Instance().DeleteSearchItemWords(SearchItemId);
+        {            
         }
 
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set")]
@@ -152,18 +153,9 @@ namespace DotNetNuke.Services.Search
             return dicSearchSettings;
         }
 
+        [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing")]
         public static void UpdateSearchItem(SearchItemInfo item)
-        {
-            DataProvider.Instance().UpdateSearchItem(item.SearchItemId,
-                                                     item.Title,
-                                                     item.Description,
-                                                     item.Author,
-                                                     item.PubDate,
-                                                     item.ModuleId,
-                                                     item.SearchKey,
-                                                     item.GUID,
-                                                     item.HitCount,
-                                                     item.ImageFileId);
+        {            
         }
     }
 }

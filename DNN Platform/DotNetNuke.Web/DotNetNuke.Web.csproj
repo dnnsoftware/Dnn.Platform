@@ -37,6 +37,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\Evoq.Content\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,10 +70,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -117,6 +115,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Api\AuthFilterBase.cs" />
     <Compile Include="Api\AuthFilterContext.cs" />
     <Compile Include="Api\AuthorizeAttributeBase.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
+    <Compile Include="Api\Internal\DnnPagePermissionAttribute.cs" />
     <Compile Include="Api\Internal\IAntiForgery.cs" />
     <Compile Include="Api\Internal\IFrameSupportedValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Api\Internal\Auth\AuthMessageHandlerBase.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Api\Internal\DnnActionFilterProvider.cs" />
     <Compile Include="Api\Internal\DnnContextMessageHandler.cs" />
     <Compile Include="Api\Internal\DnnPageEditorAttribute.cs" />
+    <Compile Include="Api\Internal\PagePermissionsAttributesHelper.cs" />
     <Compile Include="Api\IPortalAliasRouteManager.cs" />
     <Compile Include="Api\ITabAndModuleInfoProvider.cs" />
     <Compile Include="Api\PortalAliasRouteManager.cs" />
@@ -148,8 +151,19 @@
     <Compile Include="Api\UrlHelperExtensions.cs" />
     <Compile Include="Api\ValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Common\DotNetNukeHttpApplication.cs" />
+    <Compile Include="Components\Controllers\ControlBarController.cs" />
+    <Compile Include="Components\Controllers\IControlBarController.cs" />
+    <Compile Include="Components\Controllers\Models\MenuItemViewModel.cs" />
+    <Compile Include="Components\Controllers\Models\UpgradeIndicatorViewModel.cs" />
+    <Compile Include="Components\LocalizationHelper.cs" />
     <Compile Include="InternalServices\ControlBarController.cs" />
+    <Compile Include="InternalServices\ContentWorkflowServiceController.cs" />
+    <Compile Include="InternalServices\CountryRegionController.cs" />
+    <Compile Include="InternalServices\EventLogServiceController.cs" />
+    <Compile Include="InternalServices\LanguageServiceController.cs" />
     <Compile Include="InternalServices\GettingStartedController.cs" />
+    <Compile Include="InternalServices\ImageHeader.cs" />
+    <Compile Include="InternalServices\NotificationDTO.cs" />
     <Compile Include="InternalServices\PageServiceController.cs" />
     <Compile Include="InternalServices\ItemListServiceController.cs" />
     <Compile Include="InternalServices\SearchServiceController.cs" />
@@ -160,6 +174,7 @@
     <Compile Include="InternalServices\RelationshipServiceController.cs" />
     <Compile Include="InternalServices\MessagingServiceController.cs" />
     <Compile Include="InternalServices\ServiceRouteMapper.cs" />
+    <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
     <Compile Include="InternalServices\UserFileController.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />
@@ -183,6 +198,9 @@
     <Compile Include="Api\IServiceRouteMapper.cs" />
     <Compile Include="Api\Internal\ServicesRoutingManager.cs" />
     <Compile Include="Common\SharedConstants.cs" />
+    <Compile Include="UI\WebControls\DnnFileDropDownList.cs" />
+    <Compile Include="UI\WebControls\DnnFileUploadOptions.cs" />
+    <Compile Include="UI\WebControls\DnnFileUpload.cs" />
     <Compile Include="UI\WebControls\DnnPortalPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnDropDownListOptions.cs" />
     <Compile Include="UI\WebControls\DnnFolderDropDownList.cs" />
@@ -205,6 +223,7 @@
     <Compile Include="UI\WebControls\DnnMemberListControl.cs" />
     <Compile Include="UI\WebControls\DnnPageDropDownList.cs" />
     <Compile Include="UI\WebControls\DnnPaswordStrengthOptions.cs" />
+    <Compile Include="UI\WebControls\DnnSkinComboBox.cs" />
     <Compile Include="UI\WebControls\DnnToolTip.cs" />
     <Compile Include="UI\WebControls\DnnTreeNode.cs" />
     <Compile Include="Mvp\IWebServiceViewOfT.cs" />
@@ -398,6 +417,9 @@
     <Compile Include="UI\WebControls\UniformControlCollection.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedList.cs" />
     <Compile Include="UI\WebControls\DnnUnsortedListItem.cs" />
+    <Compile Include="UI\WebControls\DnnUrlControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Validators\AttributeBasedObjectValidator.cs" />
     <Compile Include="Validators\DataAnnotationsObjectValidator.cs" />
     <Compile Include="Validators\ObjectValidator.cs" />
@@ -415,6 +437,10 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Management" />
+    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3B64E72E-63CC-4A90-ADFF-4B919EF17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -422,6 +448,10 @@
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>
       <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
@@ -503,4 +533,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="Library.build" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

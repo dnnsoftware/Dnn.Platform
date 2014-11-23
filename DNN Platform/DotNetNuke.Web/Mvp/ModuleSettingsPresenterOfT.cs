@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,8 +23,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-
-using DotNetNuke.Entities.Modules.Internal;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Web.Mvp
 {
@@ -83,16 +82,16 @@ namespace DotNetNuke.Web.Mvp
 
         protected virtual void SaveSettings()
         {
-            var controller = TestableModuleController.Instance;
+            var controller = ModuleController.Instance;
 
             foreach (var setting in View.Model.ModuleSettings)
             {
-                controller.UpdateModuleSetting(ModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, setting.Key, setting.Value);
             }
 
             foreach (var setting in View.Model.TabModuleSettings)
             {
-                controller.UpdateTabModuleSetting(ModuleContext.TabModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(ModuleContext.TabModuleId, setting.Key, setting.Value);
             }
         }
 

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -39,26 +40,12 @@ namespace DotNetNuke.Common.Utilities
     {
         public static T Deserialize<T>(string json)
         {
-            var obj = Activator.CreateInstance<T>();
-            using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
-            {
-                var serializer = new DataContractJsonSerializer(obj.GetType());
-                obj = (T) serializer.ReadObject(ms);
-                return obj;
-            }
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public static string Serialize<T>(T obj)
         {
-            var serializer = new DataContractJsonSerializer(obj.GetType());
-            using (var ms = new MemoryStream())
-            {
-                serializer.WriteObject(ms, obj);
-
-                ms.Position = 0;
-                var sr = new StreamReader(ms);
-                return sr.ReadToEnd();
-            }
+            return JsonConvert.SerializeObject(obj);  
         }
     }
 }

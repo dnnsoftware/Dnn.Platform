@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,11 +36,12 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.Internal;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -77,6 +78,8 @@ namespace DotNetNuke.Entities.Tabs
         private List<TabAliasSkinInfo> _aliasSkins;
         private Dictionary<string, string> _customAliases;
         private List<TabUrlInfo> _tabUrls;
+        private ArrayList _modules;
+
 
         #endregion
 
@@ -123,7 +126,9 @@ namespace DotNetNuke.Entities.Tabs
             DefaultLanguageGuid = Null.NullGuid;
 
             IsVisible = true;
+            HasBeenPublished = true;
             DisableLink = false;
+           
         }
 
         #endregion
@@ -166,6 +171,17 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("visible")]
         public bool IsVisible { get; set; }
 
+        [XmlElement("hasBeenPublished")]
+        public bool HasBeenPublished { get; set; }
+
+        [XmlIgnore]
+        public bool HasAVisibleVersion {
+            get
+            {
+			    return HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+            }
+        }
+
         [XmlElement("keywords")]
         public string KeyWords { get; set; }
 
@@ -175,8 +191,19 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("localizedVersionGuid")]
         public Guid LocalizedVersionGuid { get; set; }
 
+
         [XmlIgnore]
-        public ArrayList Modules { get; set; }
+        public ArrayList Modules 
+        {
+            get
+            {
+                return _modules ?? (_modules = TabModulesController.Instance.GetTabModules(this));
+            }
+            set
+            {
+                _modules = value;
+            } 
+        }
 
         [XmlElement("pageheadtext")]
         public string PageHeadText { get; set; }
@@ -235,7 +262,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return new ModuleController().GetTabModules(TabID);
+                return ModuleController.Instance.GetTabModules(TabID);
             }
         }
 
@@ -246,8 +273,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_defaultLanguageTab == null && (!DefaultLanguageGuid.Equals(Null.NullGuid)))
                 {
-                    var tabCtrl = new TabController();
-                    _defaultLanguageTab = (from kvp in tabCtrl.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
+                    _defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(PortalID) where kvp.Value.UniqueId == DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
                 return _defaultLanguageTab;
             }
@@ -442,9 +468,8 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (_localizedTabs == null)
                 {
-                    var tabCtrl = new TabController();
                     _localizedTabs =
-                        (from kvp in tabCtrl.GetTabsByPortal(PortalID)
+                        (from kvp in TabController.Instance.GetTabsByPortal(PortalID)
                          where kvp.Value.DefaultLanguageGuid == UniqueId && LocaleController.Instance.GetLocale(PortalID, kvp.Value.CultureCode) != null
                          select kvp.Value).ToDictionary(t => t.CultureCode);
                 }
@@ -487,7 +512,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : new TabController().GetTabSettings(TabID));
+                return _settings ?? (_settings = (TabID == Null.NullInteger) ? new Hashtable() : TabController.Instance.GetTabSettings(TabID));
             }
         }
 
@@ -509,7 +534,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TestableTabController.Instance.GetAliasSkins(TabID, PortalID));
+                return _aliasSkins ?? (_aliasSkins = (TabID == Null.NullInteger) ? new List<TabAliasSkinInfo>() : TabController.Instance.GetAliasSkins(TabID, PortalID));
             }
         }
 
@@ -518,7 +543,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TestableTabController.Instance.GetCustomAliases(TabID, PortalID));
+                return _customAliases ?? (_customAliases = (TabID == Null.NullInteger) ? new Dictionary<string, string>() : TabController.Instance.GetCustomAliases(TabID, PortalID));
             }
         }
 
@@ -527,7 +552,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                var key = string.Format("{0}_{1}", Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
+                var key = string.Format("{0}_{1}", TestableGlobals.Instance.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias),
                                             Thread.CurrentThread.CurrentCulture);
 
                 string fullUrl;
@@ -544,15 +569,15 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             case TabType.Normal:
                                 //normal tab
-                                fullUrl = Globals.NavigateURL(TabID, IsSuperTab);
+                                fullUrl = TestableGlobals.Instance.NavigateURL(TabID, IsSuperTab);
                                 break;
                             case TabType.Tab:
                                 //alternate tab url
-                                fullUrl = Globals.NavigateURL(Convert.ToInt32(Url));
+                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(Url));
                                 break;
                             case TabType.File:
                                 //file url
-                                fullUrl = Globals.LinkClick(Url, TabID, Null.NullInteger);
+                                fullUrl = TestableGlobals.Instance.LinkClick(Url, TabID, Null.NullInteger);
                                 break;
                             case TabType.Url:
                                 //external url
@@ -585,7 +610,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TestableTabController.Instance.GetTabUrls(TabID, PortalID));
+                return _tabUrls ?? (_tabUrls = (TabID == Null.NullInteger) ? new List<TabUrlInfo>() : TabController.Instance.GetTabUrls(TabID, PortalID));
             }
         }
 
@@ -772,7 +797,7 @@ namespace DotNetNuke.Entities.Tabs
         #endregion
 
         #region Private Methods
-
+        
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
@@ -848,6 +873,11 @@ namespace DotNetNuke.Entities.Tabs
             _tabUrls = null;
         }
 
+        internal void ClearSettingsCache()
+        {
+            _settings = null;
+        }
+
         #endregion
 
         #region Public Methods
@@ -861,6 +891,7 @@ namespace DotNetNuke.Entities.Tabs
                 PortalID = PortalID,
                 TabName = TabName,
                 IsVisible = IsVisible,
+                HasBeenPublished = HasBeenPublished,
                 ParentId = ParentId,
                 Level = Level,
                 IconFile = _iconFileRaw,
@@ -905,7 +936,8 @@ namespace DotNetNuke.Entities.Tabs
             clonedTab.CultureCode = CultureCode;
 
             clonedTab.Panes = new ArrayList();
-            clonedTab.Modules = new ArrayList();
+            clonedTab.Modules = _modules;
+
             return clonedTab;
         }
 
@@ -932,6 +964,7 @@ namespace DotNetNuke.Entities.Tabs
             PortalID = Null.SetNullInteger(dr["PortalID"]);
             TabName = Null.SetNullString(dr["TabName"]);
             IsVisible = Null.SetNullBoolean(dr["IsVisible"]);
+            HasBeenPublished = Null.SetNullBoolean(dr["HasBeenPublished"]);
             ParentId = Null.SetNullInteger(dr["ParentId"]);
             Level = Null.SetNullInteger(dr["Level"]);
             IconFile = Null.SetNullString(dr["IconFile"]);

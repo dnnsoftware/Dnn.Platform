@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,10 +28,6 @@ namespace DotNetNuke.Web.Client.Providers
         private int? _settingsVersion;
         public override int GetVersion()
         {
-            if (_settingsVersion.HasValue)
-            {
-                return _settingsVersion.Value;
-            }
             _settingsVersion = new ClientResourceSettings().GetVersion();
             if (_settingsVersion.HasValue)
             {

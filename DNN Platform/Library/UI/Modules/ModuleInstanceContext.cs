@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,6 +43,8 @@ using System.Web.UI;
 
 namespace DotNetNuke.UI.Modules
 {
+    using DotNetNuke.Common.Internal;
+
     /// <summary>
     /// Provides context data for a particular instance of a module
     /// </summary>
@@ -243,7 +245,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -259,14 +261,12 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                var controller = new ModuleController();
                 if (_settings == null)
                 {
-                    //we need to make sure we don't directly modify the ModuleSettings so create new HashTable DNN-8715
-                    _settings = new Hashtable(controller.GetModuleSettings(ModuleId));
+                    _settings = new ModuleController().GetModuleSettings(ModuleId, TabId);
 
                     //add the TabModuleSettings to the ModuleSettings
-                    Hashtable tabModuleSettings = controller.GetTabModuleSettings(TabModuleId);
+                    Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleId, TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
                         _settings[strKey] = tabModuleSettings[strKey];
@@ -495,6 +495,11 @@ namespace DotNetNuke.UI.Modules
 
         }
 
+        private static string FilterUrl(HttpRequest request)
+        {
+            return request.RawUrl.Replace("\"", "");
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetActionsCount gets the current number of actions
@@ -590,7 +595,7 @@ namespace DotNetNuke.UI.Modules
                              "ModulePermissions",
                              "",
                              "action_settings.gif",
-                             NavigateUrl(TabId, "ModulePermissions", false, "ModuleId=" + ModuleId),
+                             NavigateUrl(TabId, "ModulePermissions", false, "ModuleId=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                              false,
                              SecurityAccessLevel.ViewPermissions,
                              true,
@@ -607,7 +612,7 @@ namespace DotNetNuke.UI.Modules
                                                           ModuleActionType.ModuleSettings,
                                                           "",
                                                           "action_settings.gif",
-                                                          NavigateUrl(TabId, "Module", false, "ModuleId=" + ModuleId),
+                                                          NavigateUrl(TabId, "Module", false, "ModuleId=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                                                           false,
                                                           SecurityAccessLevel.Edit,
                                                           true,
@@ -628,7 +633,7 @@ namespace DotNetNuke.UI.Modules
                                      "",
                                      "",
                                      "action_export.gif",
-                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId),
+                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
 
                                      "",
                                      false,
@@ -643,7 +648,7 @@ namespace DotNetNuke.UI.Modules
                                      "",
                                      "",
                                      "action_import.gif",
-                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId),
+                                     NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
                                      "",
                                      false,
                                      SecurityAccessLevel.View,
@@ -659,7 +664,9 @@ namespace DotNetNuke.UI.Modules
 
             //help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) && request.QueryString["ctl"] != "Help")
+            if (ModulePermissionController.HasModulePermission(Configuration.ModulePermissions, permisisonList) 
+                    && request.QueryString["ctl"] != "Help"
+                    && !Globals.IsAdminControl())
             {
                 AddHelpActions();
             }
@@ -670,14 +677,15 @@ namespace DotNetNuke.UI.Modules
                 //print module action available to everyone
                 AddPrintAction();
             }
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration))
+
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", Configuration) && !Globals.IsAdminControl())
             {
                 _moduleGenericActions.Actions.Add(GetNextActionID(),
                              Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
                              ModuleActionType.ViewSource,
                              "",
                              "action_source.gif",
-                             NavigateUrl(TabId, "ViewSource", false, "ModuleId=" + ModuleId, "ctlid=" + Configuration.ModuleControlId),
+                             NavigateUrl(TabId, "ViewSource", false, "ModuleId=" + ModuleId, "ctlid=" + Configuration.ModuleControlId, "ReturnURL=" + FilterUrl(request)),
                              false,
                              SecurityAccessLevel.Host,
                              true,
@@ -694,8 +702,7 @@ namespace DotNetNuke.UI.Modules
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!Configuration.IsShared)
                     {
-                        var moduleController = new ModuleController();
-                        if (moduleController.GetModuleTabs(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
+                        if (ModuleController.Instance.GetTabModulesByModule(Configuration.ModuleID).Cast<ModuleInfo>().Any(instance => instance.IsShared))
                         {
                             confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteSharedModule.Confirm")) + "')";
                         }
@@ -816,10 +823,10 @@ namespace DotNetNuke.UI.Modules
 
         public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
         {
-            var isSuperTab = Globals.IsHostTab(tabID);
-            var settings = PortalController.GetCurrentPortalSettings();
+            var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
-            var url = Globals.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
 
             // Making URLs call popups
             if (PortalSettings != null && PortalSettings.EnablePopUps)

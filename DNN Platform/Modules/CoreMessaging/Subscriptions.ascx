@@ -97,7 +97,7 @@
             </div>
             <div class="dnnClear">
                 <ul class="dnnActions dnnLeft">
-                    <li><a href="#" class="dnnPrimaryAction" data-bind="click: save">Save</a></li>
+                    <li><a href="#" class="dnnPrimaryAction" data-bind="click: save"><%=LocalizeString("Save")%></a></li>
                 </ul>
             </div>
             <div class="dnnClear" style="display:none;" id="divUpdated">

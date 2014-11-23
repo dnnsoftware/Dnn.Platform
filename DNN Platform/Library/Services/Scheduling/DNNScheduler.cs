@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,6 @@ using System.Threading;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
-using DotNetNuke.Framework;
 
 using Microsoft.VisualBasic;
 
@@ -90,7 +89,8 @@ namespace DotNetNuke.Services.Scheduling
                                                                           scheduleItem.Enabled,
                                                                           scheduleItem.ObjectDependencies,
                                                                           scheduleItem.Servers,
-                                                                          scheduleItem.FriendlyName);
+                                                                          scheduleItem.FriendlyName,
+                                                                          scheduleItem.ScheduleStartDate);
             //Add schedule to queue
             RunScheduleItemNow(scheduleItem);
 
@@ -214,19 +214,27 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public override void RunScheduleItemNow(ScheduleItem scheduleItem)
+        public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
             //Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
-            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
-            scheduleHistoryItem.NextStart = DateTime.Now;
-            if (scheduleHistoryItem.TimeLapse != Null.NullInteger && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString && scheduleHistoryItem.Enabled &&
-                CanRunOnThisServer(scheduleItem.Servers))
+            var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) { NextStart = runNow ? DateTime.Now : (scheduleItem.ScheduleStartDate != Null.NullDate ? scheduleItem.ScheduleStartDate : DateTime.Now) };
+
+            if (scheduleHistoryItem.TimeLapse != Null.NullInteger
+                && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString
+                && scheduleHistoryItem.Enabled
+                && CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
                 Scheduler.CoreScheduler.AddToScheduleQueue(scheduleHistoryItem);
             }
+
             DataCache.RemoveCache("ScheduleLastPolled");
+        }
+
+        public override void RunScheduleItemNow(ScheduleItem scheduleItem)
+        {
+            RunScheduleItemNow(scheduleItem, false);
         }
 
         public override void Start()
@@ -277,19 +285,31 @@ namespace DotNetNuke.Services.Scheduling
                                                 scheduleItem.Enabled,
                                                 scheduleItem.ObjectDependencies,
                                                 scheduleItem.Servers,
-                                                scheduleItem.FriendlyName);
+                                                scheduleItem.FriendlyName,
+                                                scheduleItem.ScheduleStartDate);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 
+            var scheduleItemStart = scheduleItem.ScheduleStartDate > DateTime.Now
+                                        ? scheduleItem.ScheduleStartDate
+                                        : scheduleItem.NextStart;
             foreach (var scheduleHistoryItem in futureHistory)
             {
-                scheduleHistoryItem.NextStart = scheduleItem.NextStart;
+                scheduleHistoryItem.NextStart = scheduleItemStart;
                 SchedulingController.UpdateScheduleHistory(scheduleHistoryItem);
             }
 
 
             //Add schedule to queue
             RunScheduleItemNow(scheduleItem);
+        }
+
+        //DNN-5001 Possibility to stop already running tasks
+        public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
+        {
+            //get ScheduleHistoryItem of the running task
+            var runningscheduleHistoryItem = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
+            Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem, runningscheduleHistoryItem);
         }
 
         #endregion

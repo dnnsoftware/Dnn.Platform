@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,25 +24,32 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlTypes;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Caching;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Services.Journal
 {
     internal class JournalControllerImpl : IJournalController
     {
         private readonly IJournalDataService _dataService;
+        private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";
+        private const string AllowPhotosSetting = "Journal_AllowPhotos";
+        private const string EditorEnabledSetting = "Journal_EditorEnabled";
 
         #region Constructors
 
@@ -73,7 +80,7 @@ namespace DotNetNuke.Services.Journal
 
         private void UpdateGroupStats(int portalId, int groupId)
         {
-            RoleInfo role = TestableRoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
+            RoleInfo role = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
             if (role == null)
             {
                 return;
@@ -104,7 +111,7 @@ namespace DotNetNuke.Services.Journal
                 }
                 dr.Close();
             }
-            TestableRoleController.Instance.UpdateRoleSettings(role, true);
+            RoleController.Instance.UpdateRoleSettings(role, true);
         }
 
         private void DeleteJournalItem(int portalId, int currentUserId, int journalId, bool softDelete)
@@ -125,48 +132,92 @@ namespace DotNetNuke.Services.Journal
             {
                 UpdateGroupStats(portalId, groupId);
             }
+
+            // queue remove journal from search index
+            var document = new SearchDocumentToDelete
+            {
+                PortalId = portalId,
+                AuthorUserId = currentUserId,
+                UniqueKey = ji.ContentItemId.ToString("D"),
+                //QueryString = "journalid=" + journalId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            };
+
+            if (groupId > 0)
+                document.RoleId = groupId;
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
+        }
+        
+        private Stream GetJournalImageContent(Stream fileContent)
+        {
+            Image image = new Bitmap(fileContent);
+            int thumbnailWidth = 400;
+            int thumbnailHeight = 400;
+            GetThumbnailSize(image.Width, image.Height, ref thumbnailWidth, ref thumbnailHeight);
+            var thumbnail = image.GetThumbnailImage(thumbnailWidth, thumbnailHeight, ThumbnailCallback, IntPtr.Zero);
+            var result = new MemoryStream();
+            thumbnail.Save(result, image.RawFormat);
+
+            return result;
         }
 
+        private void GetThumbnailSize(int imageWidth, int imageHeight, ref int thumbnailWidth, ref int thumbnailHeight)
+        {
+            if (imageWidth >= imageHeight)
+            {
+                thumbnailWidth = Math.Min(imageWidth, thumbnailWidth);
+                thumbnailHeight = GetMinorSize(imageHeight, imageWidth, thumbnailWidth);
+            }
+            else
+            {
+                thumbnailHeight = Math.Min(imageHeight, thumbnailHeight);
+                thumbnailWidth = GetMinorSize(imageWidth, imageHeight, thumbnailHeight);
+            }
+        }
+
+        private int GetMinorSize(int imageMinorSize, int imageMajorSize, int thumbnailMajorSize)
+        {
+            if (imageMajorSize == thumbnailMajorSize)
+            {
+                return imageMinorSize;
+            }
+
+            double calculated = (Convert.ToDouble(imageMinorSize) * Convert.ToDouble(thumbnailMajorSize)) / Convert.ToDouble(imageMajorSize);
+            return Convert.ToInt32(Math.Round(calculated));
+        }
+
+
+        private bool IsImageFile(string fileName)
+        {
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).ToLower().Replace(".", "") + ",") > -1;        
+        }
+
+        private bool ThumbnailCallback()
+        {
+            return true;
+        }
+
+        private bool IsResizePhotosEnabled(ModuleInfo module)
+        {
+            return GetBooleanSetting(AllowResizePhotosSetting, false, module) &&
+                   GetBooleanSetting(AllowPhotosSetting, true, module) &&
+                   GetBooleanSetting(EditorEnabledSetting, true, module);
+        }
+        private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
+        {            
+            if (module.ModuleSettings.Contains(settingName))
+            {
+                return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
+            }
+            return defaultValue;
+        }
         #endregion
 
         #region Public Methods
 
         // Journal Items
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
-        {
-            return GetJournalItem(portalId, currentUserId, journalId, false, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
-        {
-            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
-        }
-
-        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
-        {
-            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted));
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey)
-        {
-            return GetJournalItemByKey(portalId, objectKey, false, false);
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
-        {
-            return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
-        }
-
-        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
-        {
-            if (string.IsNullOrEmpty(objectKey))
-            {
-                return null;
-            }
-            return (JournalItem)CBO.FillObject(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted), typeof(JournalItem));
-        }
-
-        public void SaveJournalItem(JournalItem journalItem, int tabId)
+        public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
             {
@@ -234,6 +285,8 @@ namespace DotNetNuke.Services.Journal
             {
                 journalData = null;
             }
+
+            var originalSecuritySet = journalItem.SecuritySet;
             if (String.IsNullOrEmpty(journalItem.SecuritySet))
             {
                 journalItem.SecuritySet = "E,";
@@ -266,10 +319,12 @@ namespace DotNetNuke.Services.Journal
             {
                 journalItem.SecuritySet += "U" + journalItem.UserId.ToString(CultureInfo.InvariantCulture) + ",";
             }
-            if (journalItem.SocialGroupId > 0)
+
+            //if the post mark as private, shouldn't let it visible to the group.
+            if (journalItem.SocialGroupId > 0 && originalSecuritySet != "U")
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -302,14 +357,15 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateCreated = updatedJournalItem.DateCreated;
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
             var cnt = new Content();
+
             if (journalItem.ContentItemId > 0)
             {
-                cnt.UpdateContentItem(journalItem, tabId);
+                cnt.UpdateContentItem(journalItem, tabId, moduleId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
-                ContentItem ci = cnt.CreateContentItem(journalItem, tabId);
+                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
@@ -326,7 +382,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        public void UpdateJournalItem(JournalItem journalItem, int tabId)
+        public void UpdateJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
             {
@@ -421,7 +477,7 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0)
             {
                 JournalItem item = journalItem;
-                RoleInfo role = TestableRoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
+                RoleInfo role = RoleController.Instance.GetRole(journalItem.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
                 if (role != null)
                 {
                     if (currentUser.IsInRole(role.RoleName))
@@ -434,7 +490,7 @@ namespace DotNetNuke.Services.Journal
                     }
                 }
             }
-            journalItem.JournalId = _dataService.Journal_Save(journalItem.PortalId,
+            journalItem.JournalId = _dataService.Journal_Update(journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
@@ -456,15 +512,14 @@ namespace DotNetNuke.Services.Journal
             journalItem.DateUpdated = updatedJournalItem.DateUpdated;
 
             var cnt = new Content();
-
             if (journalItem.ContentItemId > 0)
             {
-                cnt.UpdateContentItem(journalItem, tabId);
+                cnt.UpdateContentItem(journalItem, tabId, moduleId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
             }
             else
             {
-                ContentItem ci = cnt.CreateContentItem(journalItem, tabId);
+                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
                 _dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
@@ -479,6 +534,73 @@ namespace DotNetNuke.Services.Journal
                     Exceptions.Exceptions.LogException(exc);
                 }
             }
+        }
+        
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, false, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
+        {
+            return GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
+        }
+
+        public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
+        {
+            return CBO.FillObject<JournalItem>(_dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey)
+        {
+            return GetJournalItemByKey(portalId, objectKey, false, false);
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
+        {
+            return GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
+        }
+
+        public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
+        {
+            if (string.IsNullOrEmpty(objectKey))
+            {
+                return null;
+            }
+            return CBO.FillObject<JournalItem>(_dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
+        }
+
+        public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
+        {
+            var userFolder = FolderManager.Instance.GetUserFolder(userInfo);
+
+            if (IsImageFile(fileName) && IsResizePhotosEnabled(module))
+            {
+                return FileManager.Instance.AddFile(userFolder, fileName, GetJournalImageContent(fileContent), true);
+            }
+            //todo: deal with the case where the exact file name already exists.            
+            return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    
+        }
+        
+        public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
+        {
+            var tabId = module == null ? Null.NullInteger : module.TabID;
+            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+
+            SaveJournalItem(journalItem, tabId, tabModuleId);
+        }
+
+        public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
+        {
+            var tabId = module == null ? Null.NullInteger : module.TabID;
+            var tabModuleId = module == null ? Null.NullInteger : module.TabModuleID;
+
+            UpdateJournalItem(journalItem, tabId, tabModuleId);
         }
 
         public void DisableComments(int portalId, int journalId)
@@ -609,6 +731,7 @@ namespace DotNetNuke.Services.Journal
         public void DeleteComment(int journalId, int commentId)
         {
             _dataService.Journal_Comment_Delete(journalId, commentId);
+            //UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
         public void LikeComment(int journalId, int commentId, int userId, string displayName)
@@ -638,6 +761,22 @@ namespace DotNetNuke.Services.Journal
                                                                 DataCache.JournalTypesCachePriority, 
                                                                 portalId), 
                                             c => CBO.FillCollection<JournalTypeInfo>(_dataService.Journal_Types_List(portalId)));
+        }
+
+        #endregion
+
+        #region Obsolete Methods
+
+        [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo)")]
+        public void SaveJournalItem(JournalItem journalItem, int tabId)
+        {
+            SaveJournalItem(journalItem, tabId, Null.NullInteger);
+        }
+
+        [Obsolete("Deprecated in DNN 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo)")]
+        public void UpdateJournalItem(JournalItem journalItem, int tabId)
+        {
+            UpdateJournalItem(journalItem, tabId, Null.NullInteger);
         }
 
         #endregion

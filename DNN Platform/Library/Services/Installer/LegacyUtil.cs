@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -240,12 +240,12 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
             }
-            if (package.Owner == "DotNetNuke")
+            if (package.Owner == "DotNetNuke" || package.Owner == "DNN")
             {
                 package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
-                package.Organization = "DotNetNuke Corporation";
-                package.Url = "www.dotnetnuke.com";
-                package.Email = "support@dotnetnuke.com";
+                package.Organization = "DNN Corp.";
+                package.Url = "http://www.dnnsoftware.com";
+                package.Email = "support@dnnsoftware.com";
                 package.ReleaseNotes = "There are no release notes for this version.";
             }
             else
@@ -254,6 +254,9 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy language package (that is based on manifest xml file)
+        /// </summary> 
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
@@ -319,7 +322,7 @@ namespace DotNetNuke.Services.Installer
             }
 			
             //Process Portal Locales files
-            foreach (PortalInfo portal in new PortalController().GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int portalID = portal.PortalID;
                 filePath = string.Format(Globals.ApplicationMapPath + Localization.Localization.ApplicationResourceDirectory.Substring(1).Replace("/", "\\") + "\\Locales.Portal-{0}.xml", portalID);
@@ -371,6 +374,10 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy module version 3 .dnn install file
+        /// </summary>
+        /// <param name="desktopModule"></param> 
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             //Get the Module folder
@@ -452,6 +459,9 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// <summary>
+        /// Process legacy skinobject version 3 .dnn install package
+        /// </summary> 
         public static void ProcessLegacySkinControls()
         {
             foreach (SkinControlInfo skinControl in SkinControlController.GetSkinControls().Values)

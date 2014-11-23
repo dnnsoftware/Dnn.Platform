@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Web.UI;
 
 using DotNetNuke.Application;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -231,7 +232,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "DeletePage":
                     if ((HasToolPermissions("DeletePage")))
                     {
-                        string url = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                        string url = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                         Page.Response.Redirect(url, true);                        
                     }
                     break;
@@ -373,7 +374,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 isHostTool = AllTools[toolName].IsHostTool;
             }
 
-            if ((isHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return false;
             }
@@ -452,7 +453,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual string BuildToolUrl()
         {
-            if ((ToolInfo.IsHostTool && !UserController.GetCurrentUserInfo().IsSuperUser))
+            if ((ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
@@ -466,19 +467,19 @@ namespace DotNetNuke.Web.UI.WebControls
             switch (ToolInfo.ToolName)
             {
                 case "PageSettings":
-                    returnValue =  Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit");
                     break;
 
                 case "CopyPage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=copy");
                     break;
 
                 case "DeletePage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                     break;
 
                 case "ImportPage":
-                    returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "ImportTab");
                     break;
 
                 case "ExportPage":
@@ -486,18 +487,18 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
 
                 case "NewPage":
-                    returnValue = Globals.NavigateURL("Tab");
+                    returnValue = TestableGlobals.Instance.NavigateURL("Tab");
                     break;
                 case "Help":
                     if (!string.IsNullOrEmpty(Host.HelpURL))
                     {
                         var version = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
-                        returnValue = Globals.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
+                        returnValue = TestableGlobals.Instance.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
                     }
                     break;
 				case "UploadFile":
 				case "HostUploadFile":
-					returnValue = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
+                    returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
                     break;
                 default:
                     if ((!string.IsNullOrEmpty(ToolInfo.ModuleFriendlyName)))
@@ -554,8 +555,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 additionalParams = new List<string>();
             }
 
-            var moduleCtrl = new ModuleController();
-            var moduleInfo = moduleCtrl.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
 
             if (((moduleInfo != null)))
             {
@@ -595,8 +595,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
         {
-            var moduleCtrl = new ModuleController();
-            return moduleCtrl.GetModuleByDefinition(portalID, friendlyName);
+            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
         }
 
         protected virtual void ClearCache()
@@ -606,10 +605,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void RestartApplication()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            objEventLogInfo.AddProperty("Message", GetString("UserRestart"));
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            log.AddProperty("Message", GetString("UserRestart"));
+            LogController.Instance.AddLog(log);
             Config.Touch();
         }
 

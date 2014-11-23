@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,11 +24,15 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
+
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
@@ -94,11 +98,15 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Scheme = request.Url.Scheme,
                 Host = "www.dnnsoftware.com",
-                Path = "DesktopModules/DNNCorp/GettingStarted/7.2.0.html"
+                Path = String.Format("DesktopModules/DNNCorp/GettingStarted/{0}/{1}/index.html", 
+                                            DotNetNukeContext.Current.Application.Name.Replace(".", "_"), 
+                                            DotNetNukeContext.Current.Application.Version.ToString(3)),
+                Query = String.Format("locale={0}", Thread.CurrentThread.CurrentUICulture)
+
             };
             var contentUrl = builder.Uri.AbsoluteUri;
 
-            var fallbackUrl = Globals.AddHTTP(PortalController.GetCurrentPortalSettings().DefaultPortalAlias) + "/Portals/_default/GettingStartedFallback.htm";
+            var fallbackUrl = Globals.AddHTTP(request.Url.Host + Globals.ResolveUrl("~/Portals/_default/GettingStartedFallback.htm"));
 
             var isValid = IsValidUrl(contentUrl);
 

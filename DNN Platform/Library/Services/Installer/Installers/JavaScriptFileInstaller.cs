@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,8 @@
 
 using System;
 using System.Xml.XPath;
+
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Services.Installer.Installers
 {
@@ -91,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Installers
             XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");
             if (libraryNav != null)
             {
-                BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Package.Version);
+                BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(Package.Version, "00", 3, "_"));
             }
         }
 

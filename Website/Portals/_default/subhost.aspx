@@ -6,7 +6,7 @@
     {
         base.OnInit(e);
 
-        PortalSettings settings = PortalController.GetCurrentPortalSettings();
+        PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
         CultureInfo pageLocale = Localization.GetPageLocale(settings);
         if ((settings != null) && (pageLocale != null))
         {
@@ -58,7 +58,7 @@
 			serverPath = serverPath + "/";
 		}
 
-        PortalSettings portal = PortalController.GetCurrentPortalSettings();
+        PortalSettings portal = PortalController.Instance.GetCurrentPortalSettings();
 
 		var queryString = Request.Url.Query.TrimStart('?');
 

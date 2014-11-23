@@ -28,13 +28,14 @@ using System.Xml;
 
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
+using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Services.Installer
 {
     [TestFixture]
-    public class XmlMergeTests
+    public class XmlMergeTests : DnnUnitTest
     {
         private readonly Assembly _assembly = typeof (XmlMergeTests).Assembly;
         private const bool OutputXml = true;
@@ -124,7 +125,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 		[SetUp]
 		public void SetUp()
 		{
-			AppDomain.CurrentDomain.SetData("APPBASE", ConfigurationManager.AppSettings["DefaultPhysicalAppPath"]);
+			AppDomain.CurrentDomain.SetData("APPBASE", WebsitePhysicalAppPath);
 
 			LoggerSource.SetTestableInstance(new TestLogSource());
 		}

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.FileSystem
             objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(objFolderMapping.PortalID,
                                                                              objFolderMapping.MappingName,
                                                                              objFolderMapping.FolderProviderType,
-                                                                             UserController.GetCurrentUserInfo().UserID);
+                                                                             UserController.Instance.GetCurrentUserInfo().UserID);
 
             UpdateFolderMappingSettings(objFolderMapping);
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.FileSystem
             dataProvider.UpdateFolderMapping(objFolderMapping.FolderMappingID,
                                              objFolderMapping.MappingName,
                                              objFolderMapping.Priority,
-                                             UserController.GetCurrentUserInfo().UserID);
+                                             UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearFolderMappingCache(objFolderMapping.PortalID);
             UpdateFolderMappingSettings(objFolderMapping);
@@ -223,11 +223,11 @@ namespace DotNetNuke.Services.FileSystem
                 dr = dataProvider.GetFolderMappingSetting(folderMappingID, settingName);
                 if (dr.Read())
                 {
-                    dataProvider.UpdateFolderMappingSetting(folderMappingID, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                    dataProvider.UpdateFolderMappingSetting(folderMappingID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
                 else
                 {
-                    dataProvider.AddFolderMappingSetting(folderMappingID, settingName, settingValue, UserController.GetCurrentUserInfo().UserID);
+                    dataProvider.AddFolderMappingSetting(folderMappingID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
             catch (Exception ex)

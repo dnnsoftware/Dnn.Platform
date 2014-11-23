@@ -19,6 +19,9 @@
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery-ui.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.PasswordStrength.js"></script>
+    <script type="text/javascript" src="../DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>  
 <body>
@@ -35,9 +38,9 @@
     <div id="languageFlags" style="float: right;">       
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
-        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Espanol (Espana)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton> 
-        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="francais (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>             
-        <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton> 
+        <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton> 
+        <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>             
+        <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="Italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton> 
         <asp:LinkButton  id="lang_nl_NL" class="flag" runat="server" value="nl-NL" title="Nederlands (Nederland)" OnClientClick="installWizard.changePageLocale('lang_nl_NL','nl-NL');" CausesValidation="false"><img src="../images/flags/nl-NL.gif" alt="nl-NL" class="flagimage"/></asp:LinkButton>
     </div>
          
@@ -85,7 +88,7 @@
                 <div id="adminInfo" runat="Server" visible="True" class="dnnForm">
                     <dnn:Label ID="lblAdminInfo" runat="server" CssClass="tabSubTitle" ResourceKey="AdminInfo" />
                     <asp:Label ID="lblAdminInfoError" runat="server" CssClass="NormalRed"/>
-                    <div class="dnnFormItem">
+                    <div class="dnnFormItem dnnFormPassword">
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblUsername" runat="server" ControlName="txtUsername" ResourceKey="UserName" CssClass="dnnFormRequired"/>
                             <asp:TextBox ID="txtUsername" runat="server"/>
@@ -93,7 +96,9 @@
                         </div>
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblPassword" runat="server" ControlName="txtPassword" ResourceKey="Password" CssClass="dnnFormRequired"/>
-                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"/>
+                            <asp:Panel ID="passwordContainer" runat="server" class="password-strength-container">
+                                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"/>
+                            </asp:Panel>
                             <asp:RequiredFieldValidator ID="valPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Password.Required" Display="Dynamic" ControlToValidate="txtPassword" />
                         </div>
                         <div class="dnnFormItem">
@@ -101,6 +106,12 @@
                             <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" />
                             <asp:RequiredFieldValidator ID="valConfirmPassword" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Confirm.Required" Display="Dynamic" ControlToValidate="txtConfirmPassword" />
                         </div>                      
+                        <div class="dnnFormItem">
+                            <dnn:Label ID="lblEmail" runat="server" ControlName="txtEmail" ResourceKey="Email" CssClass="dnnFormRequired"/>
+                            <asp:TextBox ID="txtEmail" runat="server"/>
+                            <asp:RequiredFieldValidator ID="valEmal" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="Email.Required" Display="Dynamic" ControlToValidate="txtEmail" />
+                            <asp:RegularExpressionValidator ID="valEmailValid" runat="server" cssclass="dnnFormMessage dnnFormError dnnRequired" display="Dynamic" resourcekey="Email.Invalid" ControlToValidate="txtEmail" />
+                        </div>
                     </div>
                 </div>
                 <div id="websiteInfo" runat="Server" visible="True" class="dnnForm">                    
@@ -113,14 +124,8 @@
                             <asp:RequiredFieldValidator ID="valWebsiteName" CssClass="dnnFormMessage dnnFormError dnnRequired" runat="server" resourcekey="WebsiteName.Required" Display="Dynamic" ControlToValidate="txtWebsiteName"  />
                         </div>
                         <div class="dnnFormItem">
-                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />                      
-                            <dnn:DnnComboBox ID="templateList" runat="server">
-                                <Items>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateDefault" Value="Default Website.template"/>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateMobile" Value="Mobile Website.template"/>
-                                    <dnn:DnnComboBoxItem ResourceKey="TemplateBlank" Value="Blank Website.template" />
-                                </Items>
-                            </dnn:DnnComboBox>
+                            <dnn:Label ID="lblTemplate" runat="server" ControlName="ddlTemplate" ResourceKey="WebsiteTemplate" />
+                            <dnn:DnnComboBox id="templateList"  runat="server" CausesValidation="False" />
                         </div>
                         <div class="dnnFormItem">
                             <dnn:Label ID="lblLanguage" runat="server" ControlName="ddlLanguage" ResourceKey="Language" />
@@ -512,7 +517,8 @@
                 } else {
                     this.bannerIndex = 1;
                 }
-                image.src = "../images/branding/DNN_logo.png";
+                if (!/\/images\/branding\/DNN_logo.png$/.test(image.src))
+                    image.src = "../images/branding/DNN_logo.png";
                 $("#bannerLink").attr("href", "");
                 $("#bannerLink").attr("target", "");
                 $("#bannerLink").click(function(){ return false;});
@@ -640,6 +646,7 @@
                             username: $('#<%= txtUsername.ClientID %>')[0].value,
                             password: $('#<%= txtPassword.ClientID %>')[0].value,
                             confirmPassword: $('#<%= txtConfirmPassword.ClientID %>')[0].value,
+                            email: $('#<%= txtEmail.ClientID %>')[0].value,
                             websiteName: $('#<%= txtWebsiteName.ClientID %>')[0].value,
                             template: $find('<%= templateList.ClientID %>').get_value(),
                             language: $find('<%= languageList.ClientID %>').get_value(),

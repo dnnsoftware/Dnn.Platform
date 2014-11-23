@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,11 +25,10 @@ using System.Globalization;
 using System.Threading;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
@@ -50,7 +49,7 @@ namespace DotNetNuke.UI.Modules
                     return Int32.Parse(Request.Params["UserId"]);
                 }
 
-                return UserController.GetCurrentUserInfo().UserID;
+                return UserController.Instance.GetCurrentUserInfo().UserID;
             }
         }
 
@@ -80,11 +79,11 @@ namespace DotNetNuke.UI.Modules
 
             if (homeTabId > Null.NullInteger)
             {
-                redirectUrl = Globals.NavigateURL(homeTabId);
+                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
             }
             else
             {
-                redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) +
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) +
                               "/" + Globals.glbDefaultPage;
             }
 
@@ -108,7 +107,7 @@ namespace DotNetNuke.UI.Modules
                                           ? Globals.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : GetRedirectUrl(), true);
                 }
-                catch (ThreadAbortException ex)
+                catch (ThreadAbortException)
                 {
                     Thread.ResetAbort();
                 }

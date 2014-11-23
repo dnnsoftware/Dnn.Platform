@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,6 +18,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System.Web.UI.HtmlControls;
+
 namespace DotNetNuke.Web.Client.Providers
 {
     using System;
@@ -151,8 +154,24 @@ namespace DotNetNuke.Web.Client.Providers
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
             var cssStyleBlock = new LiteralControl(css.Replace("&", "&amp;"));
-            page.FindControl(DnnBodyPlaceHolderName).Controls.Add(jsScriptBlock);
-            page.FindControl(DnnBodyPlaceHolderName).Controls.Add(cssStyleBlock);
+
+            var holderControl = page.FindControl(DnnBodyPlaceHolderName);
+            holderControl.Controls.Add(jsScriptBlock);
+            holderControl.Controls.Add(cssStyleBlock);
+
+            var form = (HtmlForm)page.FindControl("Form");
+            if (form != null)
+            {
+                form.Controls.Remove(holderControl);
+                form.Controls.AddAt(0, holderControl);
+            }
+
+            var scriptManager = ScriptManager.GetCurrent(page);
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            {
+                holderControl.ID = "$crm_" + holderControl.ID;
+                scriptManager.RegisterDataItem(holderControl, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+            }
         }
     }
 }

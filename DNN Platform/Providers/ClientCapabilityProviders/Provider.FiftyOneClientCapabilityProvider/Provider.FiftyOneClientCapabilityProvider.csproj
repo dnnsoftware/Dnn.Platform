@@ -74,6 +74,9 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -82,9 +85,6 @@
       <DependentUpon>Administration.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\FeatureController.cs" />
-    <Compile Include="Components\ModuleBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="DnnDeviceExplorer.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -93,17 +93,16 @@
     <Compile Include="FiftyOneClientCapability.cs" />
     <Compile Include="FiftyOneClientCapabilityProvider.cs" />
     <Compile Include="Properties\RetailerConstants.cs" />
-    <Compile Include="Components\SettingsBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="07.03.00.txt" />
     <Content Include="Administration.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="51Degrees.mobi.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="51Degrees-Lite.dat" />
     <None Include="FiftyOneClientCapabilityProvider.dnn">
       <SubType>Designer</SubType>
     </None>

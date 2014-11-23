@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -107,8 +107,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            var tabController = new TabController();
-            TabInfo linkedTabInfo = tabController.GetTab(IntegerValue, Globals.GetPortalSettings().PortalId, false);
+            TabInfo linkedTabInfo = TabController.Instance.GetTab(IntegerValue, Globals.GetPortalSettings().PortalId, false);
 
             //don't render anything if we didn't find the tab
             if (linkedTabInfo != null)

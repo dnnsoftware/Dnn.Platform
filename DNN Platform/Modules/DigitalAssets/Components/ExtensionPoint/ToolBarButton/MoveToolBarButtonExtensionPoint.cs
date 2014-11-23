@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,11 +19,11 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.ComponentModel.Composition;
 
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public string CssClass
         {
-            get { return "DigitalAssetsSelectionToolBar DigitalAssetsMove permission_COPY"; }
+            get { return "DigitalAssetsSelectionToolBar DigitalAssetsMove permission_COPY disabledIfFiltered"; }
         }
 
         public string Action
@@ -79,5 +79,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get { return 4; }
         }
+
+        public bool Enabled
+        {
+            get { return true; }
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }

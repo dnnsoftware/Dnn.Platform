@@ -28,11 +28,10 @@
             <dnn:label id="plValue" runat="server" controlname="cboValue" />
 		    <asp:TextBox ID="txtValue" runat="server" Visible="false" />
 		    <dnn:DnnComboBox ID="cboValue" runat="server" Visible="false" />
-		    <div style="margin-left: 30%;>
+		    <div style="margin-left: 30%;">
                 <asp:Label ID="lblHelp" runat="server" />
             </div>
         </div>
-
     </fieldset>
     <ul class="dnnActions dnnClear">
     	<li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>

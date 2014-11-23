@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -81,6 +81,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="destinationFolder">The folder where to copy the file to.</param>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
         IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder);
+
+        /// <summary>
+        /// Gets the system defined content types
+        /// </summary>
+        IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>
         /// Deletes the specified file.
@@ -191,6 +196,13 @@ namespace DotNetNuke.Services.FileSystem
         string GetUrl(IFileInfo file);
 
         /// <summary>
+        /// Gets a flag that dertermines if the file is an Image
+        /// </summary>
+        /// <param name="file">The file to test.</param>
+        /// <returns>The flag as a boolean value.</returns>
+        bool IsImageFile(IFileInfo file);
+
+        /// <summary>
         /// Moves the specified file into the specified folder.
         /// </summary>
         /// <param name="file">The file to move.</param>
@@ -217,14 +229,25 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
+        /// <returns>Total files count in the zip file.</returns>
         void UnzipFile(IFileInfo file);
 
         /// <summary>
         /// Extracts the files and folders contained in the specified zip file to the specified folder.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <param name="destinationFolder">The folder to unzip too</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <returns>Total files count in the zip file.</returns>
         void UnzipFile(IFileInfo file, IFolderInfo destinationFolder);
+
+        /// <summary>
+        /// Extracts the files and folders contained in the specified zip file to the specified folder.
+        /// </summary>
+        /// <param name="file">The file to unzip.</param>
+        /// <param name="destinationFolder">The folder to unzip to.</param>
+        /// <param name="invalidFiles">Files which can't exact.</param>
+        /// <returns>Total files count in the zip file.</returns>
+        int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles);
 
         /// <summary>
         /// Updates the metadata of the specified file.

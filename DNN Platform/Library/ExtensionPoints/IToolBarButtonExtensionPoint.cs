@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.UI.Modules;
+
 namespace DotNetNuke.ExtensionPoints
 {
     public interface IToolBarButtonExtensionPoint : IExtensionPoint
@@ -34,5 +36,9 @@ namespace DotNetNuke.ExtensionPoints
         bool ShowText { get; }
 
         bool ShowIcon { get; }
+
+        bool Enabled { get; }
+
+        ModuleInstanceContext ModuleContext { get; set; }
     }
 }

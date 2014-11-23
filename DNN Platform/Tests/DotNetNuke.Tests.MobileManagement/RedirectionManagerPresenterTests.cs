@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 // 
@@ -106,7 +106,8 @@ namespace DotNetNuke.Tests.MobileManagement
 
 		private void CreatePresenter()
 		{
-			UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "Default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
 
 			HttpContext.Current.Items.Add("PortalSettings", new PortalSettings());
 

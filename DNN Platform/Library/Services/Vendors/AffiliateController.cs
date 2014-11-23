@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,6 +20,7 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections;
 
 using DotNetNuke.Common.Utilities;
@@ -31,34 +32,40 @@ namespace DotNetNuke.Services.Vendors
 {
     public class AffiliateController
     {
-        public ArrayList GetAffiliates(int VendorId)
+        public void AddAffiliate(AffiliateInfo affiliate)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetAffiliates(VendorId), typeof (AffiliateInfo));
+            DataProvider.Instance().AddAffiliate(affiliate.VendorId, affiliate.StartDate, affiliate.EndDate, affiliate.CPC, affiliate.CPA);
         }
 
-        public AffiliateInfo GetAffiliate(int AffiliateId, int VendorId, int PortalID)
+        public void DeleteAffiliate(int affiliateId)
         {
-            return (AffiliateInfo) CBO.FillObject(DataProvider.Instance().GetAffiliate(AffiliateId, VendorId, PortalID), typeof (AffiliateInfo));
+            DataProvider.Instance().DeleteAffiliate(affiliateId);
         }
 
-        public void DeleteAffiliate(int AffiliateId)
+        public ArrayList GetAffiliates(int vendorId)
         {
-            DataProvider.Instance().DeleteAffiliate(AffiliateId);
+            return CBO.FillCollection(DataProvider.Instance().GetAffiliates(vendorId), typeof(AffiliateInfo));
         }
 
-        public void AddAffiliate(AffiliateInfo objAffiliate)
+        public AffiliateInfo GetAffiliate(int affiliateId)
         {
-            DataProvider.Instance().AddAffiliate(objAffiliate.VendorId, objAffiliate.StartDate, objAffiliate.EndDate, objAffiliate.CPC, objAffiliate.CPA);
+            return CBO.FillObject<AffiliateInfo>(DataProvider.Instance().GetAffiliate(affiliateId));
         }
 
-        public void UpdateAffiliate(AffiliateInfo objAffiliate)
+        public void UpdateAffiliate(AffiliateInfo affiliate)
         {
-            DataProvider.Instance().UpdateAffiliate(objAffiliate.AffiliateId, objAffiliate.StartDate, objAffiliate.EndDate, objAffiliate.CPC, objAffiliate.CPA);
+            DataProvider.Instance().UpdateAffiliate(affiliate.AffiliateId, affiliate.StartDate, affiliate.EndDate, affiliate.CPC, affiliate.CPA);
         }
 
-        public void UpdateAffiliateStats(int AffiliateId, int Clicks, int Acquisitions)
+        public void UpdateAffiliateStats(int affiliateId, int clicks, int acquisitions)
         {
-            DataProvider.Instance().UpdateAffiliateStats(AffiliateId, Clicks, Acquisitions);
+            DataProvider.Instance().UpdateAffiliateStats(affiliateId, clicks, acquisitions);
+        }
+
+        [Obsolete("Deprecated in Version 7.3.0.  Replaced by single parameter overload as affiliateId is unique")]
+        public AffiliateInfo GetAffiliate(int affiliateId, int vendorId, int portalId)
+        {
+            return GetAffiliate(affiliateId);
         }
     }
 }

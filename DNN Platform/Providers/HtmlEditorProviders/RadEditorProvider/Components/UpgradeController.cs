@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,10 +20,13 @@
 #endregion
 
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 
@@ -78,6 +81,10 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					case "07.00.06":
 						UpdateConfigOfLinksType();
 						break;
+                    case "07.03.00":
+				        UpdateConfigFilesName();
+                        UpdateToolsFilesName();
+                        break;
 				}
 			}
 			catch (Exception ex)
@@ -146,7 +153,56 @@ namespace DotNetNuke.Providers.RadEditorProvider
 			}
 		}
 
+	    private void UpdateConfigFilesName()
+	    {
+            foreach (string file in Directory.GetFiles(HttpContext.Current.Server.MapPath(ModuleFolder + "/ConfigFile")))
+            {
+                var filename = Path.GetFileName(file).ToLowerInvariant();
+                if (filename.StartsWith("configfile") && filename.EndsWith(".xml"))
+                {
+                    UpdateFileNameWithRoleId(file);
+                }
+            }
+	    }
 
+        private void UpdateToolsFilesName()
+        {
+            foreach (string file in Directory.GetFiles(HttpContext.Current.Server.MapPath(ModuleFolder + "/ToolsFile")))
+            {
+                var filename = Path.GetFileName(file).ToLowerInvariant();
+                if (filename.StartsWith("toolsfile") && filename.EndsWith(".xml"))
+                {
+                    UpdateFileNameWithRoleId(file);
+                }
+            }
+        }
+
+	    private void UpdateFileNameWithRoleId(string file)
+	    {
+	        var newPath = file;
+            if(file.ToLowerInvariant().Contains(".host"))
+            {
+                var rolePart = ".RoleId." + Globals.glbRoleSuperUser;
+                newPath = Regex.Replace(file, "\\.host", rolePart, RegexOptions.IgnoreCase);
+            }
+            else if (file.ToLowerInvariant().Contains(".admin"))
+            {
+                var portalSettings = new PortalSettings(Host.HostPortalID);
+                var rolePart = ".RoleId." + portalSettings.AdministratorRoleId;
+                newPath = Regex.Replace(file, "\\.admin", rolePart, RegexOptions.IgnoreCase);
+            }
+            else if (file.ToLowerInvariant().Contains(".registered"))
+            {
+                var portalSettings = new PortalSettings(Host.HostPortalID);
+                var rolePart = ".RoleId." + portalSettings.RegisteredRoleId;
+                newPath = Regex.Replace(file, "\\.registered", rolePart, RegexOptions.IgnoreCase);
+            }
+
+	        if (newPath != file)
+	        {
+	            File.Move(file, newPath);
+	        }
+	    }
 	}
 
 }

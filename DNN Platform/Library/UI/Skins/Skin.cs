@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,7 +38,13 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -46,6 +52,7 @@ using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
+using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -232,7 +239,8 @@ namespace DotNetNuke.UI.Skins
         {
             if (!String.IsNullOrEmpty(message))
             {
-                Control contentPane = control.FindControl(Globals.glbDefaultPane);
+                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
+
                 if (contentPane != null)
                 {
                     ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
@@ -240,6 +248,19 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
+
+        private static Control FindControlRecursive(Control rootControl, string controlID)
+        {
+            if (rootControl.ID == controlID) return rootControl;
+
+            foreach (Control controlToSearch in rootControl.Controls)
+            {
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlID);
+                if (controlToReturn != null) return controlToReturn;
+            }
+            return null;
+        }
+
 
         private bool CheckExpired()
         {
@@ -270,9 +291,9 @@ namespace DotNetNuke.UI.Skins
         private void InjectControlPanel()
         {
             //if querystring dnnprintmode=true, controlpanel will not be shown
-            if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true")
+            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && Request.QueryString["hidecommandbar"] != "true")
             {
-                if ((ControlPanelBase.IsPageAdmin() || ControlPanelBase.IsModuleAdmin()))
+                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
                     //ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
@@ -355,6 +376,12 @@ namespace DotNetNuke.UI.Skins
                         case "div":
                         case "span":
                         case "p":
+                        case "section":
+                        case "header":
+                        case "footer":
+                        case "main":
+                        case "article":
+                        case "aside":
                             //content pane
                             if (objPaneControl.ID.ToLower() != "controlpanel")
                             {
@@ -432,6 +459,28 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                // Versioning checks.
+                if (!TabController.CurrentPage.HasAVisibleVersion)
+                {
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                }
+
+                int urlVersion;
+                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+                {
+                    if (!TabVersionUtils.CanSeeVersionedPages())
+                    {
+                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
+                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        return true;
+                    }
+
+                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
+                    {
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    }
+                }
+
                 //check portal expiry date
                 if (!CheckExpired())
                 {
@@ -497,7 +546,25 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, Null.NullString, slaveModule))
+                
+                string permissionKey;
+                switch (slaveModule.ModuleControl.ControlSrc)
+                {
+                    case "Admin/Modules/ModuleSettings.ascx":
+                        permissionKey = "MANAGE";
+                        break;
+                    case "Admin/Modules/Import.ascx":
+                        permissionKey = "IMPORT";
+                        break;
+                    case "Admin/Modules/Export.ascx":
+                        permissionKey = "EXPORT";
+                        break;
+                    default:
+                        permissionKey = "CONTENT";
+                        break;
+                }
+
+                if (ModulePermissionController.HasModuleAccess(slaveModule.ModuleControl.ControlType, permissionKey, slaveModule))
                 {
                     success = InjectModule(pane, slaveModule);
                 }
@@ -538,9 +605,19 @@ namespace DotNetNuke.UI.Skins
             InjectControlPanel();
 
             //Register any error messages on the Skin
-            if (Request.QueryString["error"] != null)
+            if (Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
-                AddPageMessage(this, Localization.GetString("CriticalError.Error"), Server.HtmlEncode(Request.QueryString["error"]), ModuleMessage.ModuleMessageType.RedError);
+                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+
+                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+                {
+                    ServicesFramework.Instance.RequestAjaxScriptSupport();
+                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                    JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+                    ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                }
             }
 
             if (!TabPermissionController.CanAdminPage() && !success)
@@ -593,11 +670,11 @@ namespace DotNetNuke.UI.Skins
             base.OnPreRender(e);
 
             InvokeSkinEvents(SkinEventType.OnSkinPreRender);
-
-            if(TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
+            var isSpecialPageMode = UrlUtils.InPopUp() || Request.QueryString["dnnprintmode"] == "true";
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
             {
                 //Register Drag and Drop plugin
-                jQuery.RegisterDnnJQueryPlugins(Page);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterStyleSheet(Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                 ClientResourceManager.RegisterScript(Page, "~/resources/shared/scripts/dnn.dragDrop.js");
 

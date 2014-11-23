@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,9 +24,9 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
@@ -42,7 +42,7 @@ namespace DotNetNuke.Admin.Containers
     public partial class ModuleActions : ActionBase
     {
         private List<int> validIDs = new List<int>();
-
+        
         protected string AdminActionsJSON { get; set; }
 
         protected string AdminText
@@ -65,6 +65,8 @@ namespace DotNetNuke.Admin.Containers
         protected string Panes { get; set; }
 
         protected bool SupportsMove { get; set; }
+
+        protected bool IsShared { get; set; }
 
         protected string LocalizeString(string key)
         {
@@ -113,7 +115,9 @@ namespace DotNetNuke.Admin.Containers
                                     if ((EditMode && Globals.IsAdminControl() == false) ||
                                         (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                     {
-                                        if (!action.Icon.Contains("://") && !action.Icon.StartsWith("/"))
+                                        if (!action.Icon.Contains("://")
+                                                && !action.Icon.StartsWith("/")
+                                                && !action.Icon.StartsWith("~/"))
                                         {
                                             action.Icon = "~/images/" + action.Icon;
                                         }
@@ -151,6 +155,7 @@ namespace DotNetNuke.Admin.Containers
                                 }
                             }
                         }
+                        IsShared = PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId));
                     }
                 }
 

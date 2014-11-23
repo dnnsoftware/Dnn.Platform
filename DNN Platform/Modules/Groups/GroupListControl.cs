@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            currentUser = UserController.GetCurrentUserInfo();
+            currentUser = UserController.Instance.GetCurrentUserInfo();
 
         }
 
@@ -111,9 +111,6 @@ namespace DotNetNuke.Modules.Groups.Controls
 
         protected override void Render(HtmlTextWriter output)
         {
-
-            var rc = new RoleController();
-
             var whereCls = new List<Func<RoleInfo, bool>>();
             whereCls.Add(grp => grp.SecurityMode != SecurityMode.SecurityRole);
 	        if (RoleGroupId >= -1)
@@ -132,7 +129,7 @@ namespace DotNetNuke.Modules.Groups.Controls
                 whereCls.Add(grp => grp.RoleName.ToLower().Contains(SearchFilter.ToLower()) || grp.Description.ToLower().Contains(SearchFilter.ToLower()));
             }
 
-            var roles = TestableRoleController.Instance.GetRoles(PortalSettings.PortalId, grp => TestPredicateGroup(whereCls, grp));
+            var roles = RoleController.Instance.GetRoles(PortalSettings.PortalId, grp => TestPredicateGroup(whereCls, grp));
 
             if (SortDirection.ToLower() == "asc")
                 roles = roles.OrderBy(info => GetOrderByProperty(info, SortField)).ToList();

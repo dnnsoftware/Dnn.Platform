@@ -234,9 +234,6 @@
   <data name="DateCreated.Text" xml:space="preserve">
     <value>Date Created</value>
   </data>
-  <data name="LastName.Text" xml:space="preserve">
-    <value>Last Name</value>
-  </data>
   <data name="UserId.Text" xml:space="preserve">
     <value>User Id</value>
   </data>
@@ -266,5 +263,68 @@
   </data>
   <data name="DisplaySearch_Simple.Text" xml:space="preserve">
     <value>Simple Search</value>
+  </data>
+  <data name="ExcludeHostUsersLabel.Help" xml:space="preserve">
+    <value>If checked, Host Users will not appear in search results</value>
+  </data>
+  <data name="ExcludeHostUsersLabel.Text" xml:space="preserve">
+    <value>Exclude Host Users:</value>
+  </data>
+  <data name="Prefix.Text" xml:space="preserve">
+    <value>Prefix</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="MiddleName.Text" xml:space="preserve">
+    <value>Middle Name</value>
+  </data>
+  <data name="Suffix.Text" xml:space="preserve">
+    <value>Suffix</value>
+  </data>
+  <data name="Unit.Text" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="Street.Text" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="City.Text" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Region.Text" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="PostalCode.Text" xml:space="preserve">
+    <value>Postal Code</value>
+  </data>
+  <data name="Telephone.Text" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Cell.Text" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="Fax.Text" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="IM.Text" xml:space="preserve">
+    <value>IM</value>
+  </data>
+  <data name="Website.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="Biography.Text" xml:space="preserve">
+    <value>Biography</value>
+  </data>
+  <data name="TimeZone.Text" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="PreferredLocale.Text" xml:space="preserve">
+    <value>Preferred Locale</value>
   </data>
 </root>

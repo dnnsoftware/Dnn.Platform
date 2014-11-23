@@ -1,4 +1,4 @@
-<%@ Control Language="C#" ClassName="[OWNER].[MODULE].[CONTROL]" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
+<%@ Control Language="C#" ClassName="_OWNER_._MODULE_._CONTROL_" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
 
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Import Namespace="System" %>
@@ -10,8 +10,8 @@
 	#region Copyright
 
 	// 
-	// Copyright (c) [YEAR]
-	// by [OWNER]
+	// Copyright (c) _YEAR_
+	// by _OWNER_
 	// 
 
 	#endregion
@@ -38,9 +38,8 @@
 		
 	protected void cmdSave_Click(object sender, EventArgs e)
 	{
-                ModuleController controller = new ModuleController();
-                controller.UpdateModuleSetting(ModuleId, "field", txtField.Text);
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, "Update Successful", DotNetNuke.UI.Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess);
+        ModuleController.Instance.UpdateModuleSetting(ModuleId, "field", txtField.Text);
+        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, "Update Successful", DotNetNuke.UI.Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess);
 	}
 
 	protected void cmdCancel_Click(object sender, EventArgs e)

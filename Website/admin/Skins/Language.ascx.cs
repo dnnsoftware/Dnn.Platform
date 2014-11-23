@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.Skins.Controls
 				tab = tab.DefaultLanguageTab;
 			}
 
-			return new TabController().GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
+            return TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale) != null;
 		}
 
 		#endregion
@@ -355,28 +355,26 @@ namespace DotNetNuke.UI.Skins.Controls
                         rptLanguages.Visible = false;
                     }
                 }
-                if (!Page.IsPostBack)
+                
+                if (ShowMenu)
                 {
-                    if (ShowMenu)
+                    if (!String.IsNullOrEmpty(CssClass))
                     {
-                        if (!String.IsNullOrEmpty(CssClass))
-                        {
-                            selectCulture.CssClass = CssClass;
-                        }
-                        Localization.LoadCultureDropDownList(selectCulture, CultureDropDownTypes.NativeName, CurrentCulture);
-
-                        //only show language selector if more than one language
-                        if (selectCulture.Items.Count <= 1)
-                        {
-                            selectCulture.Visible = false;
-                        }
+                        selectCulture.CssClass = CssClass;
                     }
-                    else
+                    Localization.LoadCultureDropDownList(selectCulture, CultureDropDownTypes.NativeName, CurrentCulture);
+
+                    //only show language selector if more than one language
+                    if (selectCulture.Items.Count <= 1)
                     {
                         selectCulture.Visible = false;
                     }
-                    handleCommonTemplates();
                 }
+                else
+                {
+                    selectCulture.Visible = false;
+                }
+                handleCommonTemplates();
             }
             catch (Exception ex)
             {

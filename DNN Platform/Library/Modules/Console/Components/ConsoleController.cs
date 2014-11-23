@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,8 +36,15 @@ using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Console.Components
 {
+    /// <summary>
+    /// Controls the Console
+    /// </summary>
     public class ConsoleController
     {
+        /// <summary>
+        /// Gets the size values.
+        /// </summary>
+        /// <returns>A list with different icon types</returns>
         public static IList<string> GetSizeValues()
         {
             IList<string> returnValue = new List<string>();
@@ -47,6 +54,10 @@ namespace DotNetNuke.Modules.Console.Components
             return returnValue;
         }
 
+        /// <summary>
+        /// Gets the view values.
+        /// </summary>
+        /// <returns>Show or Hide</returns>
         public static IList<string> GetViewValues()
         {
             IList<string> returnValue = new List<string>();

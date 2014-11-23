@@ -168,6 +168,9 @@
   <data name="cmdAddDefinition.Text" xml:space="preserve">
     <value>Add Definition</value>
   </data>
+  <data name="cmdCancelDefinition.Text" xml:space="preserve">
+    <value>Cancel Definition</value>
+  </data>
   <data name="cmdSaveControl.Text" xml:space="preserve">
     <value>Update Module Control</value>
   </data>

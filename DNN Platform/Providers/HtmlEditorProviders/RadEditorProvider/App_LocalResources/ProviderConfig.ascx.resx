@@ -566,4 +566,7 @@ You must set the CustomLinks tool in your toolbar configuratioon in order to mak
   <data name="LinksType_UseTabName.Text" xml:space="preserve">
     <value>Use Page Name in URL</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>HTML Editor Manager</value>
+  </data>
 </root>

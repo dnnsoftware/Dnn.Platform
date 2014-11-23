@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,14 +24,15 @@ using System.Collections.Generic;
 using System.Data;
 
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Urls
 {
-    public class UrlTestBase : DnnUnitTest
+    public class UrlTestBase : DnnWebTest
     {
         public UrlTestBase(int portalId) : base(portalId)
         {
@@ -65,6 +66,13 @@ namespace DotNetNuke.Tests.Urls
 
         #endregion
 
+        protected void CreateTab(string tabName)
+        {
+            var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
+
+            TabController.Instance.AddTab(tab);
+        }
+
         private void ExecuteScriptFile(string fileName)
         {
             var sql = TestUtil.ReadStream(fileName);
@@ -83,7 +91,7 @@ namespace DotNetNuke.Tests.Urls
 
         protected void GetDefaultAlias()
         {
-            foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
             {
                 if (alias.IsPrimary)
                 {
@@ -100,12 +108,12 @@ namespace DotNetNuke.Tests.Urls
 
         protected void SetDefaultAlias(string defaultAlias)
         {
-            foreach (var alias in TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
             {
                 if (alias.HTTPAlias == defaultAlias)
                 {
                     alias.IsPrimary = true;
-                    TestablePortalAliasController.Instance.UpdatePortalAlias(alias);
+                    PortalAliasController.Instance.UpdatePortalAlias(alias);
                     break;
                 }
             }

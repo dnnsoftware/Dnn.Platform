@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,17 +48,17 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     /// </summary>
     public class HttpSimulator : IDisposable
     {
-        private static readonly string DefaultPhysicalAppPath = ConfigurationManager.AppSettings["DefaultPhysicalAppPath"]; 
+        private static readonly string WebsitePhysicalAppPath = ConfigurationManager.AppSettings["DefaultPhysicalAppPath"]; 
         private StringBuilder _builder;
         private Uri _referer;
         private readonly NameValueCollection _formVars = new NameValueCollection();
         private readonly NameValueCollection _headers = new NameValueCollection();
 
-        public HttpSimulator() : this("/", DefaultPhysicalAppPath)
+        public HttpSimulator() : this("/", WebsitePhysicalAppPath)
         {
         }
 
-        public HttpSimulator(string applicationPath) : this(applicationPath, DefaultPhysicalAppPath)
+        public HttpSimulator(string applicationPath) : this(applicationPath, WebsitePhysicalAppPath)
         {
             
         }
@@ -589,7 +589,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
         }
 
-        private string _physicalApplicationPath = DefaultPhysicalAppPath;
+        private string _physicalApplicationPath = WebsitePhysicalAppPath;
 
         /// <summary>
         /// Physical path to the application (used for simulation purposes).
@@ -599,13 +599,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             get { return _physicalApplicationPath; }
             set 
             {
-                _physicalApplicationPath = value ?? DefaultPhysicalAppPath;
+                _physicalApplicationPath = value ?? WebsitePhysicalAppPath;
                 //strip trailing backslashes.
                 _physicalApplicationPath = StripTrailingBackSlashes(_physicalApplicationPath) + @"\";
             }
         }
 
-        private string _physicalPath = DefaultPhysicalAppPath;
+        private string _physicalPath = WebsitePhysicalAppPath;
 
         /// <summary>
         /// Physical path to the requested file (used for simulation purposes).

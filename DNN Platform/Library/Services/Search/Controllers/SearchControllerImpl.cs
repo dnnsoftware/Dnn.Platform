@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,8 +53,6 @@ namespace DotNetNuke.Services.Search.Controllers
         #region Private Properties
 
         private const string SeacrchContollersCacheKey = "SearchControllers";
-        private const int MaxLucenceRefetches = 10;
-        private const int MaxLucenceLookBacks = 10;
         
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
@@ -85,7 +83,7 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
             if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId)))
-                throw new ArgumentException("ModuleId based search must have SearchTypeId for a module only");
+                throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
 
             if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
                 || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
@@ -100,7 +98,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch);
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
-                    var analyzer = new SearchQueryAnalyzer(true);
+                    var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);
                     var keywordQuery = new BooleanQuery();
                     foreach (var fieldToSearch in Constants.KeyWordSearchFields)
@@ -152,8 +150,6 @@ namespace DotNetNuke.Services.Search.Controllers
                 localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, Null.NullInteger, Null.NullInteger, true, true), Occur.SHOULD);
                 query.Add(localeQuery, Occur.MUST);
             }
-
-
 
             var luceneQuery = new LuceneQuery
             {
@@ -306,7 +302,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         result.Description = field.StringValue;
                         break;
                     case Constants.Tag:
-                        result.Tags = result.Tags.Concat(new string[] { field.StringValue });
+                        result.Tags = result.Tags.Concat(new[] { field.StringValue });
                         break;
                     case Constants.PermissionsTag:
                         result.Permissions = field.StringValue;
@@ -367,7 +363,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
         }
 
-        private string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
+        private static string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
         {
             var sb = new StringBuilder();
 
@@ -423,8 +419,14 @@ namespace DotNetNuke.Services.Search.Controllers
             //****************************************************************************
             if (searchQuery.PageSize > 0)
             {
-                var luceneResults = LuceneController.Instance.Search(luceneQuery, out totalHits, HasPermissionToViewDoc);
-                results = luceneResults.Select(GetSearchResultFromLuceneResult).ToList();
+                var luceneResults = LuceneController.Instance.Search(new LuceneSearchContext
+                    {
+                        LuceneQuery = luceneQuery,
+                        SearchQuery = searchQuery,
+                        SecurityCheckerDelegate = HasPermissionToViewDoc
+                    });
+                results = luceneResults.Results.Select(GetSearchResultFromLuceneResult).ToList();
+                totalHits = luceneResults.TotalHits;
 
                 //****************************************************************************
                 //Adding URL Links to final trimmed results
@@ -442,17 +444,17 @@ namespace DotNetNuke.Services.Search.Controllers
             return new Tuple<int, IList<SearchResult>>(totalHits, results);
         }
         
-        private bool HasPermissionToViewDoc(Document document)
+        private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
             // others LuceneResult fields are not impotrant at this moment
-            var result = GetPartialSearchResult(document);
+            var result = GetPartialSearchResult(document, searchQuery);
             var resultController = GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);
         }
 
-        private static SearchResult GetPartialSearchResult(Document doc)
+        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
         {
-            var result = new SearchResult();
+            var result = new SearchResult {SearchContext = searchQuery.SearchContext};
             var localeField = doc.GetField(Constants.LocaleTag);
 
             if (localeField != null)

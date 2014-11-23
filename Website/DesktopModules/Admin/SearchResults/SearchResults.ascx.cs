@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,6 +32,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Internals;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 
@@ -52,6 +53,44 @@ namespace DotNetNuke.Modules.SearchResults
         protected string SearchTerm
         {
             get { return Request.QueryString["Search"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Search"]) : string.Empty; }
+        }
+
+        protected string TagsQuery
+        {
+            get { return Request.QueryString["Tag"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Tag"].Replace("\"", "")) : string.Empty; }
+        }
+
+        protected string SearchScopeParam
+        {
+            get { return Request.QueryString["Scope"] != null ? HttpUtility.HtmlEncode(Request.QueryString["Scope"]) : string.Empty; }
+        }
+
+        protected string [] SearchScope
+        {
+            get
+            {
+                var searchScopeParam = SearchScopeParam;
+                return string.IsNullOrEmpty(searchScopeParam) ? new string[0] : searchScopeParam.Split(',');
+            }
+        }
+
+        protected string LastModifiedParam
+        {
+            get { return Request.QueryString["LastModified"] != null ? HttpUtility.HtmlEncode(Request.QueryString["LastModified"]) : string.Empty; }
+        }
+
+        protected string CheckedExactSearch
+        {
+            get
+            {
+                var paramExactSearch = Request.QueryString["ExactSearch"];
+
+                if (!string.IsNullOrEmpty(paramExactSearch) && paramExactSearch.ToLowerInvariant() == "y")
+                {
+                    return "checked=\"true\"";
+                }
+                return "";
+            }
         }
 
         protected string LinkTarget
@@ -137,6 +176,11 @@ namespace DotNetNuke.Modules.SearchResults
         #region localized string
 
         private const string MyFileName = "SearchResults.ascx";
+
+        protected string DefaultText
+        {
+            get { return Localization.GetSafeJSString("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
+        }
 
         protected string NoResultsText
         {
@@ -248,19 +292,41 @@ namespace DotNetNuke.Modules.SearchResults
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             jQuery.RegisterDnnJQueryPlugins(Page);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
 
             CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 
             foreach (string o in SearchContentSources)
             {
-                var item = new RadComboBoxItem(o, o) {Checked = true};
+                var item = new RadComboBoxItem(o, o) {Checked = CheckedScopeItem(o)};
                 SearchScopeList.Items.Add(item);
             }
 
             SearchScopeList.Localization.AllItemsCheckedString = Localization.GetString("AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
+
+            SetLastModifiedFilter();
+        }
+
+        private bool CheckedScopeItem(string scopeItemName)
+        {
+            var searchScope = SearchScope;
+            return searchScope.Length == 0 || searchScope.Any(x => x == scopeItemName);
+        }
+
+        private void SetLastModifiedFilter()
+        {
+            var lastModifiedParam = LastModifiedParam;
+
+            if (!string.IsNullOrEmpty(lastModifiedParam))
+            {
+                var item = AdvnacedDatesList.Items.FirstOrDefault(x => x.Value == lastModifiedParam);
+                if (item != null)
+                {
+                    item.Selected = true;
+                }
+            }
         }
     }
 }

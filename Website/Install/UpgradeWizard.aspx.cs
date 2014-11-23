@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -62,7 +62,6 @@ namespace DotNetNuke.Services.Install
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
-        private Version _dataBaseVersion;        
         private static string _culture;
         private static string[] _supportedLanguages;
 
@@ -81,11 +80,12 @@ namespace DotNetNuke.Services.Install
                 return DotNetNukeContext.Current.Application.Version;
             }
         }
-        protected Version DatabaseVersion
+
+        protected Version CurrentVersion
         {
             get
             {
-                return _dataBaseVersion ?? (_dataBaseVersion = DataProvider.Instance().GetVersion());
+                return DotNetNukeContext.Current.Application.CurrentVersion;
             }
         }
 
@@ -110,8 +110,9 @@ namespace DotNetNuke.Services.Install
         private void LocalizePage()
         {
             SetBrowserLanguage();
+            Page.Title = LocalizeString("Title");
             versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
-            currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(DatabaseVersion));
+            currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));
         }
 
         private static void GetInstallerLocales()
@@ -296,6 +297,28 @@ namespace DotNetNuke.Services.Install
             Config.Touch();
             Response.Redirect("../Default.aspx", true);
         }
+
+        private void SslRequiredCheck()
+        {
+            if (Entities.Host.Host.UpgradeForceSsl && !Request.IsSecureConnection)
+            {
+                var sslDomain = Entities.Host.Host.SslDomain;
+                if (string.IsNullOrEmpty(sslDomain))
+                {
+                    sslDomain = Request.Url.Host;
+                }
+                else if (sslDomain.Contains("://"))
+                {
+                    sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
+                }
+
+                var sslUrl = string.Format("https://{0}{1}",
+                    sslDomain, Request.RawUrl);
+
+                Response.Redirect(sslUrl, true);
+            }
+        }
+
         #endregion
 
         #region Protected Methods
@@ -325,6 +348,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            SslRequiredCheck();
             GetInstallerLocales();
         }
 
@@ -364,7 +388,12 @@ namespace DotNetNuke.Services.Install
 
         //Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
-                                        { {upgradeDatabase, 50}, {upgradeExtensions, 49}, {new InstallVersionStep(), 1} };
+                                {
+                                    {new AddFcnModeStep(), 1},
+                                    {upgradeDatabase, 50}, 
+                                    {upgradeExtensions, 49}, 
+                                    {new InstallVersionStep(), 1}
+                                };
 
         static UpgradeWizard()
         {

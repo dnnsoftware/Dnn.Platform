@@ -6,15 +6,12 @@
 	});
 </script>
 
-<div id="Console" runat="server" class="console">
+<div id="Console" runat="server" class="console" ViewStateMode="Disabled">
 	<asp:DropDownList ID="IconSize" runat="server" />
-	<asp:DropDownList ID="View" runat="server" />
-    <%--<dnn:DnnComboBox ID="IconSize" runat="server" />
-    <dnn:DnnComboBox ID="View" runat="server" />--%>
+	<asp:DropDownList ID="View" runat="server"/>
 	<br id="SettingsBreak" runat="server" style="clear:both" />
 	<div>
-	<asp:Repeater ID="DetailView" runat="server">
-	</asp:Repeater>
+	    <asp:Repeater ID="DetailView" runat="server" />
 	</div>
 	<br style="clear:both" />
 </div>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,10 +23,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Web;
 
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -35,7 +33,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Profile;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -57,6 +55,17 @@ namespace DotNetNuke.Entities.Profile
     public class ProfileController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ProfileController));
+
+        private static event EventHandler<ProfileEventArgs> ProfileUpdated;
+
+        static ProfileController()
+        {
+            foreach (var handlers in EventHandlersContainer<IProfileEventHandlers>.Instance.EventHandlers)
+            {
+                ProfileUpdated += handlers.Value.ProfileUpdated;
+            }
+        }
+
         #region Private Members
 
         private static readonly DataProvider _dataProvider = DataProvider.Instance();
@@ -243,7 +252,7 @@ namespace DotNetNuke.Entities.Profile
             AddDefaultDefinition(portalId, "Contact Info", "Fax", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Contact Info", "Website", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Contact Info", "IM", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "Biography", "RichText", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "Biography", "Multi-line Text", 0, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Preferences", "TimeZone", "TimeZone", 0, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Preferences", "PreferredTimeZone", "TimeZoneInfo", 0, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
@@ -284,9 +293,8 @@ namespace DotNetNuke.Entities.Profile
                                                                definition.Visible,
                                                                definition.Length,
                                                                (int) definition.DefaultVisibility,
-                                                               UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+                                                               UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             return intDefinition;
         }
@@ -311,8 +319,7 @@ namespace DotNetNuke.Entities.Profile
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 
@@ -489,9 +496,8 @@ namespace DotNetNuke.Entities.Profile
                                               definition.Visible,
                                               definition.Length,
                                               (int) definition.DefaultVisibility,
-                                              UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(definition, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
         }
 
@@ -516,8 +522,13 @@ namespace DotNetNuke.Entities.Profile
 
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
-        }
 
+            if (ProfileUpdated != null)
+            {
+                ProfileUpdated(null, new ProfileEventArgs { User = user });
+            }
+        }
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates a User's Profile
@@ -562,7 +573,7 @@ namespace DotNetNuke.Entities.Profile
 					{
 						if (!string.IsNullOrEmpty(user.Profile.Photo) && int.Parse(user.Profile.Photo) > 0)
 						{
-							CreateThumbnails(user.Profile.PhotoURL);
+							CreateThumbnails(int.Parse(user.Profile.Photo));
 						}
 					}
 					catch (Exception ex)
@@ -580,26 +591,31 @@ namespace DotNetNuke.Entities.Profile
             return user;
         }
 
-		private static void CreateThumbnails(string imagePath)
+		private static void CreateThumbnails(int fileId)
 		{
-			if (!string.IsNullOrEmpty(imagePath))
-			{
-				imagePath = HttpContext.Current.Server.MapPath(imagePath);
-				CreateThumbnail(imagePath, "l", 64, 64);
-				CreateThumbnail(imagePath, "s", 50, 50);
-				CreateThumbnail(imagePath, "xs", 32, 32);
-			}
+            CreateThumbnail(fileId, "l", 64, 64);
+            CreateThumbnail(fileId, "s", 50, 50);
+            CreateThumbnail(fileId, "xs", 32, 32);
 		}
 
-		private static void CreateThumbnail(string imagePath, string type, int width, int height)
+		private static void CreateThumbnail(int fileId, string type, int width, int height)
 		{
-			var extension = Path.GetExtension(imagePath);
-			var path = imagePath.Replace(extension, "_" + type + extension);
-			if (!FileWrapper.Instance.Exists(path))
-			{
-				File.Copy(imagePath, path);
-				ImageUtils.CreateImage(path, height, width);
-			}
+		    var file = FileManager.Instance.GetFile(fileId);
+		    if (file != null)
+		    {
+		        var folder = FolderManager.Instance.GetFolder(file.FolderId);
+		        var extension = "." + file.Extension;
+                var sizedPhoto = file.FileName.Replace(extension, "_" + type + extension);
+                if (!FileManager.Instance.FileExists(folder, sizedPhoto))
+                {
+                    using (var content = FileManager.Instance.GetFileContent(file))
+                    {
+                        var sizedContent = ImageUtils.CreateImage(content, height, width, extension);
+
+                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                    }
+                }
+		    }
 		}
 
         /// -----------------------------------------------------------------------------
@@ -632,7 +648,7 @@ namespace DotNetNuke.Entities.Profile
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
-            return (ProfilePropertyDefinition) CBO.FillObject(_dataProvider.GetPropertyDefinition(definitionId), typeof (ProfilePropertyDefinition));
+            return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
         }
 
         #endregion

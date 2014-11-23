@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,7 @@
 
 using System;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
@@ -42,20 +42,12 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
-            var tabController = new TabController();
-            var viewable = false;
+            var viewable = true;
 
             if (searchResult.TabId > 0)
             {
-                var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
-                if (!tab.IsDeleted && TabPermissionController.CanViewPage(tab))
-                {
-                    viewable = true;
-                }                    
-            }
-            else
-            {
-                viewable = true;
+                var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
+                viewable = tab != null && !tab.IsDeleted && TabPermissionController.CanViewPage(tab);
             }
 
             return viewable;
@@ -64,12 +56,11 @@ namespace DotNetNuke.Services.Search.Controllers
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            var tabController = new TabController();
 
-            var tab = tabController.GetTab(searchResult.TabId, searchResult.PortalId, false);
+            var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
             if (TabPermissionController.CanViewPage(tab))
             {
-                url = Globals.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
             }
             
             return url;

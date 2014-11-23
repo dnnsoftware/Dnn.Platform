@@ -230,7 +230,7 @@
                 &lt;tr&gt;
                     &lt;td&gt;OR&lt;/td&gt;
                     &lt;td&gt;orange bike&lt;/td&gt;
-                    &lt;td&gt;Contain the term &lt;i&gt;orange&lt;/i&gt; or &lt;i&gt;bike&lt;/i&gt;, or both. &lt;B&gt;OR must be in uppercase&lt;/B&gt;&lt;/td&gt;
+                    &lt;td&gt;Contain the term &lt;i&gt;orange&lt;/i&gt; or &lt;i&gt;bike&lt;/i&gt;, or both. &lt;b&gt;&lt;i&gt;OR&lt;/i&gt;, if used, must be in uppercase&lt;/b&gt;&lt;/td&gt;
                 &lt;/tr&gt;
 
                 &lt;tr&gt;
@@ -241,20 +241,14 @@
 
                 &lt;tr&gt;
                     &lt;td&gt;AND&lt;/td&gt;
-                    &lt;td&gt;+orange +bike&lt;/td&gt;
-                    &lt;td&gt;Contain both &lt;i&gt;orange&lt;/i&gt; and &lt;i&gt;bike&lt;/i&gt;&lt;/td&gt;
-                &lt;/tr&gt;
-
-                &lt;tr&gt;
-                    &lt;td&gt;&lt;/td&gt;
                     &lt;td&gt;orange &lt;b&gt;AND&lt;/b&gt; bike&lt;/td&gt;
-                    &lt;td&gt;&lt;/td&gt;
+                    &lt;td&gt;Contain both &lt;i&gt;orange&lt;/i&gt; and &lt;i&gt;bike&lt;/i&gt;. &lt;b&gt;&lt;i&gt;AND&lt;/i&gt; must be in uppercase&lt;/b&gt;&lt;/td&gt;&lt;/td&gt;
                 &lt;/tr&gt;
 
                 &lt;tr&gt;
                     &lt;td&gt;Combo&lt;/td&gt;
                     &lt;td&gt;(agile &lt;b&gt;OR&lt;/b&gt; extreme) &lt;b&gt;AND&lt;/b&gt; methodology&lt;/td&gt;
-                    &lt;td&gt;Contain &lt;i&gt;methodology&lt;/i&gt; and must also contain &lt;i&gt;agile&lt;/i&gt; and/or &lt;i&gt;extreme&lt;/i&gt;.&lt;B&gt;AND must be in uppercase&lt;/B&gt;&lt;/td&gt;
+                    &lt;td&gt;Contain &lt;i&gt;methodology&lt;/i&gt; and must also contain &lt;i&gt;agile&lt;/i&gt; and/or &lt;i&gt;extreme&lt;/i&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;</value>
   </data>
@@ -284,5 +278,8 @@
   </data>
   <data name="ResultsCount.Text" xml:space="preserve">
     <value>About {0} Results</value>
+  </data>
+  <data name="DefaultText.Text" xml:space="preserve">
+    <value>Enter Search Term</value>
   </data>
 </root>

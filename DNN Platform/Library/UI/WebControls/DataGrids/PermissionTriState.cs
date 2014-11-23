@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
@@ -65,7 +66,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             if (!ClientAPI.IsClientScriptBlockRegistered(page, scriptKey))
             {
                 AJAX.RegisterScriptManager();
-                jQuery.RequestRegistration();
+                JavaScript.RequestRegistration(CommonJs.jQuery);
                 ClientAPI.RegisterClientScriptBlock(page, "dnn.permissiontristate.js");
 
                 ClientAPI.RegisterStartUpScript(page, scriptKey, "<script type='text/javascript'>" + GetInitScript(ctl) + "</script>");
@@ -146,15 +147,37 @@ namespace DotNetNuke.UI.WebControls.Internal
                 cssClass += " noDenyPerm";
             }
 
+            if (IsFullControl)
+            {
+                cssClass += " fullControl";
+            }
+
+            if (IsView && !Locked)
+            {
+                cssClass += " view";
+            }
+
+            if (!String.IsNullOrEmpty(PermissionKey) && !IsView && !IsFullControl)
+            {
+                cssClass += " " + PermissionKey.ToLowerInvariant();
+            }
+
             writer.Write("<img src='{0}' alt='{1}' />", imagePath, altText);
 
             writer.AddAttribute("class", cssClass);
             base.Render(writer);
         }
 
+        public bool IsFullControl { get; set; }
+
+        public bool IsView { get; set; }
+
         //Locked is currently not used on a post-back and therefore the 
         //value on postback is undefined at this time
         public bool Locked { get; set; }
+
+        public string PermissionKey { get; set; }
+
         public bool SupportsDenyMode { get; set; }
     }
 }

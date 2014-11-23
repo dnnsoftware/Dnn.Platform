@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ModuleHelp.Text" xml:space="preserve">
     <value>There are two types of websites which can be created using this application:&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Parent Websites&lt;/b&gt; are sites which have a unique URL ( ie. www.domain.com ) associated to them. This generally involves purchasing a Domain Name from an Internet Registrar, setting the Primary/Secondary DNS entries to point to the Hosting Provider's DNS Server, and having your Hosting Provider map the Domain Name to the IP Address of your account. An example of a valid Parent Portal Name is &lt;b&gt;www.mydomain.com&lt;/b&gt;. You can also use the IP Address of your site without a Domain Name ( ie. &lt;b&gt;65.174.86.217&lt;/b&gt; ). If you need to have multiple Domain Names pointing to the same portal then you can seperate them with commas ( ie. &lt;b&gt;www.domain1.com,www.domain2.com&lt;/b&gt; ). Do not create a Parent Portal until all of the DNS mappings are in place or else you will not be able to access your portal.&lt;br&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Child Portals&lt;/b&gt; are subhosts of your Hosting Provider account. Essentially this means a directory is created on the web server which allows the site to be accessed through a URL address which includes a Parent domain name as well as the directory name ( ie. www.domain.com/directory ). A Child Portal can be converted into a Parent Portal at any time by simply modifying the Portal Alias entry.&lt;br&gt;&lt;br&gt;*Please Note: Portals will be created using the default properties defined in the Host Settings module ( HostFee, HostSpace, DemoPeriod ) or in the selected template file. Once the portal is created, these properties can be modified in the Admin tab Site Settings module.&lt;br&gt;&lt;br&gt;</value>
@@ -322,6 +322,15 @@
     <value>Site Alias is required.</value>
   </data>
   <data name="DuplicateWithTab.Text" xml:space="preserve">
-    <value>There has a page which's name is same with your site alias, please change a site alias.</value>
+    <value>There is already a page with the same name as you entered for the site alias for this site. Please change the site alias and try again.</value>
+  </data>
+  <data name="DisallowedExtension.Warning" xml:space="preserve">
+    <value>The template contains the following extensions that are not normally authorized – {0}.  As they are an integral part of the template they have been copied to your site.  For more information please check the Event Viewer.</value>
+  </data>
+  <data name="plSiteGroups.Help" xml:space="preserve">
+    <value>You can optionally add your new site to an existing site group</value>
+  </data>
+  <data name="plSiteGroups.Text" xml:space="preserve">
+    <value>Add to Site Group:</value>
   </data>
 </root>

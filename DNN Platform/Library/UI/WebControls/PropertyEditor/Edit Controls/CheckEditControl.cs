@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,22 +51,6 @@ namespace DotNetNuke.UI.WebControls
             SystemType = "System.Boolean";
         }
 
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            string postedValue = postCollection[postDataKey];
-            bool boolValue = false;
-            if (!(postedValue == null || postedValue == string.Empty))
-            {
-                boolValue = true;
-            }
-            if (!BooleanValue.Equals(boolValue))
-            {
-                Value = boolValue;
-                return true;
-            }
-            return false;
-        }
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -82,11 +66,16 @@ namespace DotNetNuke.UI.WebControls
             if ((BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, "1");
             }
             else
             {
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, "");
             }
+
+            writer.AddAttribute("onclick", "this.value = this.checked ? '1' : '';");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
@@ -98,9 +87,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
-            else
-            {
-            }
+
             writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();

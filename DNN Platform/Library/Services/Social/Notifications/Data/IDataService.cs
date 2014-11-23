@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
     {
         #region NotificationTypes CRUD
 
-        int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId);
+        int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask);
         void DeleteNotificationType(int notificationTypeId);
         IDataReader GetNotificationType(int notificationTypeId);
         IDataReader GetNotificationTypeByName(string name);

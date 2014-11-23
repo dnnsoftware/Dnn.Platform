@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Web;
@@ -68,8 +69,6 @@ namespace DotNetNuke.Modules.Admin.Sales
 //                string strEmail;
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
-                var objRoles = new RoleController();
-                var objPortalController = new PortalController();
                 string strPost = "cmd=_notify-validate";
                 foreach (string strName in Request.Form)
                 {
@@ -172,7 +171,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     int intAdministratorRoleId = 0;
                     string strProcessorID = Null.NullString;
-                    PortalInfo objPortalInfo = objPortalController.GetPortal(intPortalID);
+                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(intPortalID);
                     if (objPortalInfo != null)
                     {
                         intAdministratorRoleId = objPortalInfo.AdministratorRoleId;
@@ -186,38 +185,40 @@ namespace DotNetNuke.Modules.Admin.Sales
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {
-                            objPortalController.UpdatePortalExpiry(intPortalID);
+                            PortalController.Instance.UpdatePortalExpiry(intPortalID, PortalController.GetActivePortalLanguage(intPortalID));
                         }
                         else
                         {
-                            var objEventLog = new EventLogController();
-                            var objEventLogInfo = new LogInfo();
-                            objEventLogInfo.LogPortalID = intPortalID;
-                            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-                            objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = "POTENTIAL PAYPAL PAYMENT FRAUD";
-                            objEventLog.AddLog(objEventLogInfo);
+                            var log = new LogInfo
+                            {
+                                LogPortalID = intPortalID,
+                                LogPortalName = PortalSettings.PortalName,
+                                LogUserID = intUserID,
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                            };
+                            LogController.Instance.AddLog(log);
                         }
                     }
                     else
                     {
 						//user subscription
-                        RoleInfo objRoleInfo = TestableRoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
+                        RoleInfo objRoleInfo = RoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
                         float rolePrice = objRoleInfo.ServiceFee;
                         float trialPrice = objRoleInfo.TrialFee;
                         if ((rolePrice.ToString() == dblAmount.ToString() || trialPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {
-                            objRoles.UpdateUserRole(intPortalID, intUserID, intRoleID, blnCancel);
+                            RoleController.Instance.UpdateUserRole(intPortalID, intUserID, intRoleID, RoleStatus.Approved, false, blnCancel);
                         }
                         else
                         {
-                            var objEventLog = new EventLogController();
-                            var objEventLogInfo = new LogInfo();
-                            objEventLogInfo.LogPortalID = intPortalID;
-                            objEventLogInfo.LogPortalName = PortalSettings.PortalName;
-                            objEventLogInfo.LogUserID = intUserID;
-                            objEventLogInfo.LogTypeKey = "POTENTIAL PAYPAL PAYMENT FRAUD";
-                            objEventLog.AddLog(objEventLogInfo);
+                            var log = new LogInfo
+                            {
+                                LogPortalID = intPortalID,
+                                LogPortalName = PortalSettings.PortalName,
+                                LogUserID = intUserID,
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                            };
+                            LogController.Instance.AddLog(log);
                         }
                     }
                 }

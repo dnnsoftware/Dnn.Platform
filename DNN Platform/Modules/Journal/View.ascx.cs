@@ -11,10 +11,12 @@
 */
 
 using System;
-
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -37,13 +39,19 @@ namespace DotNetNuke.Modules.Journal {
         public bool CanRender = true;
         public bool ShowEditor = true;
         public bool CanComment = true;
+        public bool IsGroup = false;
+        public string BaseUrl;
+        public string ProfilePage;
+        public int Gid = -1;
+        public int Pid = -1;
+        public long MaxUploadSize = Config.GetMaxUploadSize();
+
         #region Event Handlers
 
         override protected void OnInit(EventArgs e) 
         {
-
-            jQuery.RequestDnnPluginsRegistration();
-			jQuery.RegisterFileUpload(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journal.js");
@@ -51,7 +59,8 @@ namespace DotNetNuke.Modules.Journal {
 			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
 			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/json2.js");
 
-            if (!Request.IsAuthenticated || (!UserInfo.IsSuperUser && UserInfo.IsInRole("Unverified Users")))
+            var isAdmin = UserInfo.IsInRole(RoleController.Instance.GetRoleById(PortalId, PortalSettings.AdministratorRoleId).RoleName);
+            if (!Request.IsAuthenticated || (!UserInfo.IsSuperUser && !isAdmin && UserInfo.IsInRole("Unverified Users")))
             {
                 ShowEditor = false;
             } 
@@ -81,10 +90,9 @@ namespace DotNetNuke.Modules.Journal {
             ctlJournalList.PageSize = PageSize;
             ctlJournalList.ModuleId = ModuleId;
             
-            var moduleController = new ModuleController();
-            ModuleInfo moduleInfo = moduleController.GetModule(ModuleId);
+            ModuleInfo moduleInfo = ModuleContext.Configuration;
 
-            foreach (var module in moduleController.GetTabModules(TabId).Values) 
+            foreach (var module in ModuleController.Instance.GetTabModules(TabId).Values) 
             {
                 if (module.ModuleDefinition.FriendlyName == "Social Groups") 
                 {
@@ -96,25 +104,25 @@ namespace DotNetNuke.Modules.Journal {
 
                     if (GroupId > 0) 
                     {
-                        var roleController = new RoleController();
-                        RoleInfo roleInfo = roleController.GetRole(GroupId, moduleInfo.OwnerPortalID);
+                        RoleInfo roleInfo = RoleController.Instance.GetRoleById(moduleInfo.OwnerPortalID, GroupId);
                         if (roleInfo != null) 
                         {
                             if (UserInfo.IsInRole(roleInfo.RoleName)) 
                             {
                                 ShowEditor = true;
                                 CanComment = true;
+                                IsGroup = true;
                             } else 
                             {
                                 ShowEditor = false;
                                 CanComment = false;
                             }
                             
-                            if (roleInfo.IsPublic == false && ShowEditor == false) 
+                            if (!roleInfo.IsPublic && !ShowEditor) 
                             {
                                 ctlJournalList.Enabled = false;                               
                             }
-                            if (roleInfo.IsPublic && ShowEditor == false) 
+                            if (roleInfo.IsPublic && !ShowEditor) 
                             {
                                 ctlJournalList.Enabled = true;
                             }
@@ -136,7 +144,7 @@ namespace DotNetNuke.Modules.Journal {
             if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
             {
                 ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
-                if (!UserInfo.IsSuperUser && ctlJournalList.ProfileId != UserId)
+                if (!UserInfo.IsSuperUser && !isAdmin && ctlJournalList.ProfileId != UserId)
                 {
                     ShowEditor = ShowEditor && AreFriends(UserController.GetUserById(PortalId, ctlJournalList.ProfileId), UserInfo);                    
                 }
@@ -168,35 +176,23 @@ namespace DotNetNuke.Modules.Journal {
         private void Page_Load(object sender, EventArgs e) {
             try 
             {
-                var path = Common.Globals.ApplicationPath;
-                path = path.EndsWith("/") ? path : path + "/";
-                path += "DesktopModules/Journal/";
+                BaseUrl = Globals.ApplicationPath;
+                BaseUrl = BaseUrl.EndsWith("/") ? BaseUrl : BaseUrl + "/";
+                BaseUrl += "DesktopModules/Journal/";
 
-                litScripts.Text = "var pagesize=" + PageSize.ToString();
-                litScripts.Text += ";var profilePage='" + Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" }) + "'";
-                litScripts.Text += ";var maxlength=" + MaxMessageLength.ToString();
-                litScripts.Text += ";var baseUrl='" + path + "'"; 
-                litScripts.Text += ";var resxLike='" + Utilities.GetSharedResource("{resx:like}") + "'";
-                litScripts.Text += ";var resxUnLike='" + Utilities.GetSharedResource("{resx:unlike}") + "'";
+                ProfilePage = Common.Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
+
                 if (!String.IsNullOrEmpty(Request.QueryString["userId"])) 
                 {
-                    litScripts.Text += ";var pid=" + Convert.ToInt32(Request.QueryString["userId"]).ToString();
-                    litScripts.Text += ";var gid=-1";
-                    ctlJournalList.ProfileId = Convert.ToInt32(Request.QueryString["userId"]);
-                    ctlJournalList.PageSize = PageSize;
+                    Pid = Convert.ToInt32(Request.QueryString["userId"]);
+                    ctlJournalList.ProfileId = Pid;                    
                 } 
                 else if (GroupId > 0) 
                 {
-                    litScripts.Text += ";var pid=-1";
-                    litScripts.Text += ";var gid=" + GroupId.ToString();
-                    ctlJournalList.SocialGroupId = GroupId;
-                    ctlJournalList.PageSize = PageSize;
-                } 
-                else 
-                {
-                    litScripts.Text += ";var pid=-1";
-                    litScripts.Text += ";var gid=-1";
+                    Gid = GroupId;
+                    ctlJournalList.SocialGroupId = GroupId;                    
                 }
+                ctlJournalList.PageSize = PageSize;
             } 
             catch (Exception exc) //Module failed to load
             {

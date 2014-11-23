@@ -180,4 +180,7 @@
   <data name="Version.Header" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Advanced Configuration Settings</value>
+  </data>
 </root>

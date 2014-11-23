@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -55,6 +55,9 @@
 
             var onCreateNodeElementHandler = $.proxy(this._onCreateNodeElement, this);
             $(this._tree).on("oncreatenode", onCreateNodeElementHandler);
+            
+            var onShowChildrenHandler = $.proxy(this._onShowChildren, this);
+            $(this._tree).on("onshowchildren", onShowChildrenHandler);
 
             this._onNodeIconClickHandler = $.proxy(this._onNodeIconClick, this);
             this._onNodeTextClickHandler = $.proxy(this._onNodeTextClick, this);
@@ -173,6 +176,10 @@
             this.updateLayout();
             $(this).trigger($.Event("onredrawtree"));
         },
+        
+        _onShowChildren: function () {
+            $(this).trigger($.Event("onshowchildren"));
+        },
 
         updateLayout: function () {
             if (this.options.scroll) {
@@ -194,11 +201,28 @@
             if (typeof id === "undefined") {
                 return this._selectedNodeId;
             }
+            
             if (id !== this._selectedNodeId || !this.selectedNode()) {
                 var node = this._getNodeById(id);
                 this.selectedNode(node);
             }
             return this._selectedNodeId = id;
+        },
+        
+        scrollToSelectedNode: function() {               
+            //if node selected, we need scoll tree to show the selected node.
+            var node = this._getNodeById(this.selectedId());
+            if (!node) {
+                //if node is not exist, we should pop a node expand request to make sure its load by expand parents nodes.
+                $(this).trigger($.Event("onrequestexpand"));
+                return;
+            }
+            if (this.options.scroll && node) {
+                var $nodeElement = this._tree.getNodeElement(node);
+                var offset = $nodeElement.position().top - $nodeElement.parentsUntil('div', 'ul[class*="' + this._tree.options.nodeListCss + '"][class*="' + this._tree.options.rootCss + '"]').position().top;
+                this.$element.scrollTop(offset);
+                this.updateLayout();
+            }
         },
 
         selectedPath: function () {
@@ -309,17 +333,15 @@
             this._$searchButton = this._$itemListHeaderElement.find("." + this.options.searchButtonCss);
             this._$searchButton.on("click.drop-down-list", $.proxy(this._onSearchClick, this));
             var onSortHandler = $.proxy(this._onSortClick, this);
+            var onSearchHandler = $.proxy(this._onSearchClick, this);
             this._$searchContainer = this._$itemListHeaderElement.find("." + this.options.searchContainerCss);
-            this._$searchInput = this._$itemListHeaderElement.find("." + this.options.searchInputCss).onEnter(onSortHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
+            this._$searchInput = this._$itemListHeaderElement.find("." + this.options.searchInputCss).onEnter(onSearchHandler).on("keyup.drop-down-list", $.proxy(this._displayClearButton, this));
             this._displayClearButton();
             this._$sortButton = this._$itemListHeaderElement.find("." + this.options.sortButtonCss);
             this._$sortButton.on("click.drop-down-list", onSortHandler);
 
             this._$itemListFooterElement = this.$element.find("." + this.options.footerCss);
             this._$resultValue = this._$itemListFooterElement.find("." + this.options.resultElementCss).children(":first");
-            this._$resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
-            this._resizer = new dnn.Resizer(this._$resizerElement[0], { container: this.$element });
-            $(this._resizer).bind("resized", $.proxy(this._onResize, this));
 
             this._$itemListContentElement = this.$element.find("." + this.options.contentCss);
 
@@ -331,10 +353,12 @@
             this._dynamicTree = new DynamicTreeView(this._$itemListContentElement[0], this.options);
             var $dynamicTree = $(this._dynamicTree);
             $dynamicTree.on("onredrawtree", $.proxy(this._onRedrawTree, this));
+            $dynamicTree.on("onshowchildren", $.proxy(this._onShowChildren, this));
             $dynamicTree.on("onexpandnode", $.proxy(this._onExpandNode, this));
             $dynamicTree.on("oncollapsenode", $.proxy(this._onCollapseNode, this));
             $dynamicTree.on("onselectnode", $.proxy(this._onSelectNode, this));
             $dynamicTree.on("onchangenode", $.proxy(this._onChangeNode, this));
+            $dynamicTree.on("onrequestexpand", $.proxy(this._onRequestExpand, this));
 
             this._sortOrder(dnn.SortOrder.unspecified);
 
@@ -370,6 +394,14 @@
         _onLoadChildren: function (nodeContext, children) {
             this._dynamicTree.showChildren(nodeContext, children);
             this._updateResult(this._dynamicTree.count());
+            
+            $(this).trigger($.Event('onloadchildren'), [nodeContext]);
+        },
+        _onShowChildren: function(nodeContext) {
+            $(this).trigger($.Event('onshowchildren'), [nodeContext]);
+        },
+        _onRequestExpand: function(nodeContext) {
+            $(this).trigger($.Event('onrequestexpand'), [nodeContext]);
         },
 
         _updateResult: function (resultText) {
@@ -426,12 +458,21 @@
             this._dynamicTree.rootNode(rootNode);
             this._updateResult(this._dynamicTree.count());
             this._loading(false);
+            
+            $(this).trigger($.Event('ontreeloaded'));
         },
 
         show: function () {
+            /* the component is a part of DOM, the dimension is known at this point */
             this._itemListHeaderHeight = this._$itemListHeaderElement.outerHeight(true);
             this._itemListFooterHeight = this._$itemListFooterElement.outerHeight(true);
             this._$itemListContentElement.height(this.$element.height() - this._itemListHeaderHeight - this._itemListFooterHeight);
+
+            if (!this._resizer) {
+                var $resizerElement = this._$itemListFooterElement.find("." + this.options.resizerElementCss);
+                this._resizer = new dnn.Resizer($resizerElement[0], { container: this.$element });
+                $(this._resizer).bind("resized", $.proxy(this._onResize, this));
+            }
 
             this._showTree(this._selectedNodeId);
         },
@@ -507,6 +548,13 @@
 
         _getNextSortOrder: function() {
             var order = this._sortOrder();
+            if (this.options.disableUnspecifiedOrder) {
+                if (order === dnn.SortOrder.ascending) {
+                    return dnn.SortOrder.descending;
+                }
+                
+                return dnn.SortOrder.ascending;
+            }
             if (order === dnn.SortOrder.unspecified) {
                 return dnn.SortOrder.ascending;
             }
@@ -628,11 +676,11 @@
         init: function() {
             this.options = $.extend({}, DynamicTreeViewController.defaults(), this.options);
             this._serviceUrl = $.dnnSF(this.options.moduleId).getServiceRoot(this.options.serviceRoot);
-            this.parameters = dnn.KeyValueConverter.arrayToDictionary(this.options.parameters, "Key", "Value");
+            this.parameters = this.options.parameters;
         },
 
         _callGet: function (data, onLoadHandler, method) {
-            $.extend(data, this.parameters.entries());
+            $.extend(data, this.parameters);
             var serviceSettings = {
                 url: this._serviceUrl + method,
                 beforeSend: $.dnnSF(this.options.moduleId).setModuleHeaders,

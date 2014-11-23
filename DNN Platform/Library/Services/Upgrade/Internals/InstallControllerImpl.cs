@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -35,6 +36,7 @@ using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
@@ -170,6 +172,19 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "password", installConfig.SuperUser.Password);
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "email", installConfig.SuperUser.Email);
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "updatepassword", "false");
+            }
+
+            //Set Folder Mappings Settings            
+            if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+            {
+                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+
+                if (folderMappingsNode == null)
+                {
+                    folderMappingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, FolderMappingsConfigController.Instance.ConfigNode, installConfig.FolderMappingsSettings);
+                }
+
+                folderMappingsNode.InnerText = installConfig.FolderMappingsSettings;
             }
 
             //Set Portals
@@ -392,6 +407,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     }
                 }
             }
+            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+            installConfig.FolderMappingsSettings =  (folderMappingsNode != null)? folderMappingsNode.InnerXml : String.Empty;
 
             //Parse the portals node
             XmlNodeList portalsNode = installTemplate.SelectNodes("//dotnetnuke/portals/portal");
@@ -615,7 +632,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
             return culture;
         }
-
+        
         private CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
@@ -627,35 +644,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             var culture = new CultureInfo(language);
             return culture;
         }
-
-        private static string UpgradeRedirect()
-        {
-            //todo: will need to replace DotNetNukeContext.Current.Application.Type with "LanguagePack"
-            return UpgradeRedirect(DotNetNukeContext.Current.Application.Version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
-        }
-
-        private static string UpgradeRedirect(Version version, string packageType, string packageName, string culture)
-        {
-            string url;
-            if (!string.IsNullOrEmpty(Config.GetSetting("UpdateServiceRedirect")))
-            {
-                url = Config.GetSetting("UpdateServiceRedirect");
-            }
-            else
-            {
-                url = DotNetNukeContext.Current.Application.UpgradeUrl + "/redirect.aspx";
-                url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
-                url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
-                url += "&type=" + packageType;
-                url += "&name=" + packageName;
-                if (!string.IsNullOrEmpty(culture))
-                {
-                    url += "&culture=" + culture;
-                }
-            }
-            return url;
-        }
-
 
         private void GetLanguagePack(string downloadUrl, string installFolder)
         {

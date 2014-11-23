@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,8 +21,10 @@
 #region Usings
 
 using System;
-
+using System.Web;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
+using DotNetNuke.UI.Utilities;
 
 #endregion
 
@@ -78,63 +80,68 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        public void AddLog(Exception objException, ExceptionLogType LogType)
+        public void AddLog(Exception objException, ExceptionLogType logType)
         {
-            var objLogController = new LogController();
-            var objLogInfo = new LogInfo();
-            objLogInfo.LogTypeKey = LogType.ToString();
-            if (LogType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
+            var log = new LogInfo {LogTypeKey = logType.ToString()};
+            if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
             {
 				//Add SearchException Properties
                 var objSearchException = (SearchException) objException;
-                objLogInfo.LogProperties.Add(new LogDetailInfo("ModuleId", objSearchException.SearchItem.ModuleId.ToString()));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("SearchItemId", objSearchException.SearchItem.SearchItemId.ToString()));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("Title", objSearchException.SearchItem.Title));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("SearchKey", objSearchException.SearchItem.SearchKey));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("GUID", objSearchException.SearchItem.GUID));
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", objSearchException.SearchItem.ModuleId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("SearchItemId", objSearchException.SearchItem.SearchItemId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("Title", objSearchException.SearchItem.Title));
+                log.LogProperties.Add(new LogDetailInfo("SearchKey", objSearchException.SearchItem.SearchKey));
+                log.LogProperties.Add(new LogDetailInfo("GUID", objSearchException.SearchItem.GUID));
             }
-            else if (LogType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
+            else if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
             {
 				//Add ModuleLoadException Properties
                 var objModuleLoadException = (ModuleLoadException) objException;
-                objLogInfo.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString()));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString()));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("FriendlyName", objModuleLoadException.FriendlyName));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("ModuleControlSource", objModuleLoadException.ModuleControlSource));
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("FriendlyName", objModuleLoadException.FriendlyName));
+                log.LogProperties.Add(new LogDetailInfo("ModuleControlSource", objModuleLoadException.ModuleControlSource));
             }
-            else if (LogType == ExceptionLogType.SECURITY_EXCEPTION)
+            else if (logType == ExceptionLogType.SECURITY_EXCEPTION)
             {
 				//Add SecurityException Properties
                 var objSecurityException = (SecurityException) objException;
-                objLogInfo.LogProperties.Add(new LogDetailInfo("Querystring", objSecurityException.Querystring));
-                objLogInfo.LogProperties.Add(new LogDetailInfo("IP", objSecurityException.IP));
+                log.LogProperties.Add(new LogDetailInfo("Querystring", objSecurityException.Querystring));
+                log.LogProperties.Add(new LogDetailInfo("IP", objSecurityException.IP));
             }
 			
 			//Add BasePortalException Properties
             var objBasePortalException = new BasePortalException(objException.ToString(), objException);
-            objLogInfo.LogProperties.Add(new LogDetailInfo("AssemblyVersion", objBasePortalException.AssemblyVersion));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("PortalID", objBasePortalException.PortalID.ToString()));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("PortalName", objBasePortalException.PortalName));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("UserID", objBasePortalException.UserID.ToString()));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("UserName", objBasePortalException.UserName));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("ActiveTabID", objBasePortalException.ActiveTabID.ToString()));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("ActiveTabName", objBasePortalException.ActiveTabName));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("RawURL", objBasePortalException.RawURL));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("AbsoluteURL", objBasePortalException.AbsoluteURL));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("AbsoluteURLReferrer", objBasePortalException.AbsoluteURLReferrer));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("UserAgent", objBasePortalException.UserAgent));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("ExceptionGUID", objBasePortalException.ExceptionGUID));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("InnerException", objBasePortalException.InnerException.Message));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("FileName", objBasePortalException.FileName));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("FileLineNumber", objBasePortalException.FileLineNumber.ToString()));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("FileColumnNumber", objBasePortalException.FileColumnNumber.ToString()));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("Method", objBasePortalException.Method));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("StackTrace", objBasePortalException.StackTrace));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("Message", objBasePortalException.Message));
-            objLogInfo.LogProperties.Add(new LogDetailInfo("Source", objBasePortalException.Source));
-            objLogInfo.LogPortalID = objBasePortalException.PortalID;
-            objLogController.AddLog(objLogInfo);
+            log.LogProperties.Add(new LogDetailInfo("AssemblyVersion", objBasePortalException.AssemblyVersion));
+            log.LogProperties.Add(new LogDetailInfo("PortalID", objBasePortalException.PortalID.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("PortalName", objBasePortalException.PortalName));
+            log.LogProperties.Add(new LogDetailInfo("UserID", objBasePortalException.UserID.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("UserName", objBasePortalException.UserName));
+            log.LogProperties.Add(new LogDetailInfo("ActiveTabID", objBasePortalException.ActiveTabID.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("ActiveTabName", objBasePortalException.ActiveTabName));
+            log.LogProperties.Add(new LogDetailInfo("RawURL", objBasePortalException.RawURL));
+            log.LogProperties.Add(new LogDetailInfo("AbsoluteURL", objBasePortalException.AbsoluteURL));
+            log.LogProperties.Add(new LogDetailInfo("AbsoluteURLReferrer", objBasePortalException.AbsoluteURLReferrer));
+            log.LogProperties.Add(new LogDetailInfo("UserAgent", objBasePortalException.UserAgent));
+            log.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
+            log.LogProperties.Add(new LogDetailInfo("ExceptionGUID", objBasePortalException.ExceptionGUID));
+            log.LogProperties.Add(new LogDetailInfo("InnerException", objBasePortalException.InnerException.Message));
+            log.LogProperties.Add(new LogDetailInfo("FileName", objBasePortalException.FileName));
+            log.LogProperties.Add(new LogDetailInfo("FileLineNumber", objBasePortalException.FileLineNumber.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("FileColumnNumber", objBasePortalException.FileColumnNumber.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("Method", objBasePortalException.Method));
+            log.LogProperties.Add(new LogDetailInfo("StackTrace", objBasePortalException.StackTrace));
+            log.LogProperties.Add(new LogDetailInfo("Message", objBasePortalException.Message));
+            log.LogProperties.Add(new LogDetailInfo("Source", objBasePortalException.Source));
+            log.LogPortalID = objBasePortalException.PortalID;
+            LogController.Instance.AddLog(log);
+
+            //when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
+            //so that this log can be picked and do more action on it later.
+            if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                HttpContext.Current.Response.Cookies.Add(new HttpCookie("LogGUID", log.LogGUID){HttpOnly = false});
+            }
         }
     }
 }

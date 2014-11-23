@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;
@@ -239,11 +241,11 @@ namespace DotNetNuke.Modules.Admin.Users
             else
             {
                 cmdUnLock.Visible = UserMembership.LockedOut;
-                cmdUnAuthorize.Visible = UserMembership.Approved;
-                cmdAuthorize.Visible = !UserMembership.Approved;
+                cmdUnAuthorize.Visible = UserMembership.Approved && !User.IsInRole("Unverified Users");
+                cmdAuthorize.Visible = !UserMembership.Approved || User.IsInRole("Unverified Users");
                 cmdPassword.Visible = !UserMembership.UpdatePassword;
             }
-            if (UserController.GetCurrentUserInfo().IsSuperUser && UserController.GetCurrentUserInfo().UserID!=User.UserID)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=User.UserID)
             {
                 cmdToggleSuperuser.Visible = true;
                
@@ -263,12 +265,20 @@ namespace DotNetNuke.Modules.Admin.Users
             lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000 
                                         ? (object) UserMembership.LastLockoutDate 
                                         : LocalizeString("Never");
-// ReSharper disable SpecifyACultureInStringConversionExplicitly
+            // ReSharper disable SpecifyACultureInStringConversionExplicitly
             isOnLine.Value = LocalizeString(UserMembership.IsOnLine.ToString());
             lockedOut.Value = LocalizeString(UserMembership.LockedOut.ToString());
             approved.Value = LocalizeString(UserMembership.Approved.ToString());
             updatePassword.Value = LocalizeString(UserMembership.UpdatePassword.ToString());
             isDeleted.Value = LocalizeString(UserMembership.IsDeleted.ToString());
+            
+            //show the user folder path without default parent folder, and only visible to admin.
+            userFolder.Visible = UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+            if (userFolder.Visible)
+            {
+                userFolder.Value = FolderManager.Instance.GetUserFolder(User).FolderPath.Substring(6);
+            }
+
             // ReSharper restore SpecifyACultureInStringConversionExplicitly
 
             membershipForm.DataSource = UserMembership;
@@ -415,7 +425,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (Request.IsAuthenticated != true) return;
             ////ensure only superusers can change user superuser state
-            if (UserController.GetCurrentUserInfo().IsSuperUser != true) return;
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true) return;
             
             var currentSuperUserState = User.IsSuperUser;
             User.IsSuperUser = !currentSuperUserState;

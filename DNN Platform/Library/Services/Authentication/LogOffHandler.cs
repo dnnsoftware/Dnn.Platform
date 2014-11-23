@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,7 @@
 
 using System.Web;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 
 #endregion
 
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Authentication
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.Redirect(Globals.NavigateURL("LogOff"));
+            context.Response.Redirect(TestableGlobals.Instance.NavigateURL("LogOff"));
         }
 
         #endregion

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -56,7 +57,6 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
         {
-            var objTabs = new TabController();
             SitemapUrl pageUrl = null;
             var urls = new List<SitemapUrl>();
 
@@ -66,19 +66,18 @@ namespace DotNetNuke.Services.Sitemap
 
             this.ps = ps;
 
-            foreach (TabInfo objTab in objTabs.GetTabsByPortal(portalId).Values)
+            foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values)
             {
-                if (!objTab.IsDeleted && !objTab.DisableLink && objTab.TabType == TabType.Normal && (Null.IsNull(objTab.StartDate) || objTab.StartDate < DateTime.Now) &&
-                    (Null.IsNull(objTab.EndDate) || objTab.EndDate > DateTime.Now) && IsTabPublic(objTab.TabPermissions))
+                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
                 {
-                    if (includeHiddenPages || objTab.IsVisible)
+                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
                     {
-                        pageUrl = GetPageUrl(objTab, (ps.ContentLocalizationEnabled) ? objTab.CultureCode : null);
+                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
                         urls.Add(pageUrl);
                     }
                 }
             }
-
 
             return urls;
         }
@@ -94,30 +93,10 @@ namespace DotNetNuke.Services.Sitemap
         private SitemapUrl GetPageUrl(TabInfo objTab, string language)
         {
             var pageUrl = new SitemapUrl();
-            pageUrl.Url = Globals.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
-
-            string portalAlias = !String.IsNullOrEmpty(ps.DefaultPortalAlias)
-                                ? ps.DefaultPortalAlias
-                                : ps.PortalAlias.HTTPAlias;
-
-            if (pageUrl.Url.ToLower().IndexOf(portalAlias.ToLower(), StringComparison.Ordinal) == -1)
-            {
-                // code to fix a bug in dnn5.1.2 for navigateurl
-                if ((HttpContext.Current != null))
-                {
-                    pageUrl.Url = Globals.AddHTTP(HttpContext.Current.Request.Url.Host + pageUrl.Url);
-                }
-                else
-                {
-                    // try to use the portalalias
-                    pageUrl.Url = Globals.AddHTTP(portalAlias.ToLower()) + pageUrl.Url;
-                }
-            }
-
+            pageUrl.Url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
             pageUrl.Priority = GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
-            var modCtrl = new ModuleController();
-            foreach (ModuleInfo m in modCtrl.GetTabModules(objTab.TabID).Values)
+            foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(objTab.TabID).Values)
             {
                 if (m.LastModifiedOnDate > objTab.LastModifiedOnDate)
                 {
@@ -125,6 +104,46 @@ namespace DotNetNuke.Services.Sitemap
                 }
             }
             pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily;
+
+            // support for alternate pages: https://support.google.com/webmasters/answer/2620865?hl=en
+            if (ps.ContentLocalizationEnabled && !objTab.IsNeutralCulture)
+            {
+                List<AlternateUrl> alternates = new List<AlternateUrl>();
+                TabInfo currentTab = objTab;
+
+                if (!objTab.IsDefaultLanguage)
+                    currentTab = objTab.DefaultLanguageTab;
+
+                foreach (TabInfo localized in currentTab.LocalizedTabs.Values)
+                {
+                    if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
+                        (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
+                        (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
+                        (IsTabPublic(localized.TabPermissions)) &&
+                        (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
+                    {
+                        string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
+                        alternates.Add(new AlternateUrl() 
+                        { 
+                            Url = alternateUrl, 
+                            Language = localized.CultureCode 
+                        });
+                    }
+                }
+
+                if (alternates.Count > 0)
+                {
+                    // add default language to the list
+                    string alternateUrl = TestableGlobals.Instance.NavigateURL(currentTab.TabID, currentTab.IsSuperTab, ps, "", currentTab.CultureCode);
+                    alternates.Add(new AlternateUrl()
+                    {
+                        Url = alternateUrl,
+                        Language = currentTab.CultureCode
+                    });
+                    
+                    pageUrl.AlternateUrls = alternates;
+                }
+            }
 
             return pageUrl;
         }
@@ -150,7 +169,7 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 else
                 {
-                    priority = Convert.ToSingle(1 - (objTab.Level*0.1));
+                    priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
                 }
 
                 if (priority < minPagePriority)
@@ -173,7 +192,7 @@ namespace DotNetNuke.Services.Sitemap
             if ((roles != null))
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] {';'}))
+                foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {

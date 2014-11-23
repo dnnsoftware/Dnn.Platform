@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
@@ -61,9 +62,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<MessagingController> _mockMessagingController;
         private Mock<InternalMessagingControllerImpl> _mockInternalMessagingController;
         private Mock<DataProvider> _dataProvider;
-        private Mock<IPortalSettings> _portalSettingsWrapper;
+        private Mock<IPortalController> _portalController;
         private Mock<RoleProvider> _mockRoleProvider;
         private Mock<CachingProvider> _mockCacheProvider;
+        private Mock<ILocalizationProvider> _mockLocalizationProvider;
 
         private DataTable _dtMessages;
         private DataTable _dtMessageAttachment;
@@ -92,13 +94,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
+            _mockLocalizationProvider = MockComponentProvider.CreateLocalizationProvider();
+            _mockLocalizationProvider.Setup(l => l.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns("{0}_{1}");
+
             _messagingController = new MessagingController(_mockDataService.Object);
             _internalMessagingController = new InternalMessagingControllerImpl(_mockDataService.Object);
             _mockMessagingController = new Mock<MessagingController> { CallBase = true };
             _mockInternalMessagingController = new Mock<InternalMessagingControllerImpl> { CallBase = true };
 
-            _portalSettingsWrapper = new Mock<IPortalSettings>();
-            TestablePortalSettings.RegisterInstance(_portalSettingsWrapper.Object);
+            _portalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(_portalController.Object);
 
             DataService.RegisterInstance(_mockDataService.Object);
 
@@ -106,7 +111,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             SetupRoleProvider();
             SetupDataTables();
             SetupUsers();
-            SetupPortalSettingsWrapper();
+            SetupPortalSettings();
             SetupCachingProvider();
         }
 
@@ -114,6 +119,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void TearDown()
         {
             ComponentFactory.Container = null;
+            PortalController.ClearInstance();
         }
 
         private void SetupDataProvider()
@@ -144,9 +150,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
         }
 
-        private void SetupPortalSettingsWrapper()
+        private void SetupPortalSettings()
         {
-            _portalSettingsWrapper.Setup(ps => ps.AdministratorRoleName).Returns(Constants.RoleName_Administrators);
+            var portalSettings = new PortalSettings
+                                    {
+                                        AdministratorRoleName = Constants.RoleName_Administrators
+                                    };
+
+            _portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
         private void SetupCachingProvider()
@@ -1325,7 +1336,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(throttlingInterval);
             _mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(false);
             _dtMessages.Clear();
-            _dtMessages.Rows.Add(-1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
+            _dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
             var dr = _dtMessages.CreateDataReader();
             var message = CBO.FillObject<Message>(dr);
             _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(_user12UserInfo)).Returns(message);
@@ -1510,7 +1521,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Body = "body",
                 ConversationId = 1,
                 ReplyAllAllowed = false,
-                SenderUserID = 1
+                SenderUserID = 1,
+                NotificationTypeID = 1
             };
             return message;
         }
@@ -1521,6 +1533,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _dtMessages = new DataTable("Messages");
             var pkMessagesMessageID = _dtMessages.Columns.Add("MessageID", typeof(int));
             _dtMessages.Columns.Add("PortalId", typeof(int));
+            _dtMessages.Columns.Add("NotificationTypeID", typeof(int));
             _dtMessages.Columns.Add("To", typeof(string));
             _dtMessages.Columns.Add("From", typeof(string));
             _dtMessages.Columns.Add("Subject", typeof(string));

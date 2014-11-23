@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,7 +44,6 @@ namespace DotNetNuke.Services.Search.Internals
         private State _current;
         private readonly TermAttribute _termAtt;
         private readonly PositionIncrementAttribute _posIncrAtt;
-        private static readonly PortalController PortalController = new PortalController();
 
         public SynonymFilter(TokenStream input) : base(input)
         {
@@ -90,7 +89,7 @@ namespace DotNetNuke.Services.Search.Internals
                 cultureCode = searchDoc.CultureCode;
                 if (string.IsNullOrEmpty(cultureCode))
                 {
-                    var portalInfo = PortalController.GetPortal(portalId);
+                    var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null)
                         cultureCode = portalInfo.DefaultLanguage;
                 }

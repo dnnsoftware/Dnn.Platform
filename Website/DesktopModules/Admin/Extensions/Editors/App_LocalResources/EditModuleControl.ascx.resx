@@ -141,6 +141,12 @@
   <data name="plSource.Help" xml:space="preserve">
     <value>Select the source file or enter the typename for this control.</value>
   </data>
+  <data name="plSourceFolder.Text" xml:space="preserve">
+    <value>Source folder:</value>
+  </data>
+  <data name="plSourceFolder.Help" xml:space="preserve">
+    <value>Select the source folder for the control.</value>
+  </data>
   <data name="plType.Text" xml:space="preserve">
     <value>Type:</value>
   </data>

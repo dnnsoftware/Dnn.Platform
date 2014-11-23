@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -145,6 +145,14 @@ namespace DotNetNuke.Web.Client.Providers
             var cssStyleBlock = new LiteralControl(css.Replace("&", "&amp;"));
             page.FindControl(JsPlaceHolderName).Controls.Add(jsScriptBlock);
             page.FindControl(CssPlaceHolderName).Controls.Add(cssStyleBlock);
+
+            var scriptManager = ScriptManager.GetCurrent(page);
+            if (scriptManager != null && scriptManager.IsInAsyncPostBack)
+            {
+                var jsHolder = page.FindControl(JsPlaceHolderName);
+                jsHolder.ID = "$crm_" + jsHolder.ID;
+                scriptManager.RegisterDataItem(jsHolder, string.Format("{0}{1}", jsScriptBlock.Text, cssStyleBlock.Text));
+            }
         }
     }
 }

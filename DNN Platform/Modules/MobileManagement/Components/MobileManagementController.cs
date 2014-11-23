@@ -1,6 +1,6 @@
 #region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 #endregion
@@ -36,17 +36,11 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
         private void RemoveProVersion()
         {
-            //update the tab module to use CE version
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
-            TabInfo newTab;
-
-            var portalController = new PortalController();
-
-            foreach (PortalInfo portal in portalController.GetPortals())
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 //Update Site Redirection management page
                 var tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin//SiteRedirectionManagement", Null.NullString);
+                TabInfo newTab;
                 if(tabId == Null.NullInteger)
                 {
                     newTab = Upgrade.AddAdminPage(portal,
@@ -58,15 +52,15 @@ namespace DotNetNuke.Modules.MobileManagement.Components
                 }
                 else
                 {
-                    newTab = tabController.GetTab(tabId, portal.PortalID, true);
+                    newTab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     newTab.IconFile = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_16x16.png";
                     newTab.IconFileLarge = "~/desktopmodules/MobileManagement/images/MobileManagement_Standard_32x32.png";
-                    tabController.UpdateTab(newTab);
+                    TabController.Instance.UpdateTab(newTab);
                 }
 
                 //Remove Pro edition module
                 int moduleID = Null.NullInteger;
-                IDictionary<int, ModuleInfo> modules = moduleController.GetTabModules(newTab.TabID);
+                IDictionary<int, ModuleInfo> modules = ModuleController.Instance.GetTabModules(newTab.TabID);
 
                 if (modules != null)
                 {
@@ -82,7 +76,7 @@ namespace DotNetNuke.Modules.MobileManagement.Components
 
                 if (moduleID != Null.NullInteger)
                 {
-                    moduleController.DeleteTabModule(newTab.TabID, moduleID, false);
+                    ModuleController.Instance.DeleteTabModule(newTab.TabID, moduleID, false);
                 }
 
                 //Add community edition module

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,11 +23,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 
 #endregion
 
@@ -207,6 +209,31 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Updates a Permission
+        /// </summary>
+        /// <param name="permissions">The permissions collection</param>
+        /// <param name="role">The roleto add</param>
+        /// -----------------------------------------------------------------------------
+        protected override void AddPermission(ArrayList permissions, RoleInfo role)
+        {
+            //Search TabPermission Collection for the user 
+            if (_DesktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            {
+                return;
+            }
+
+            //role not found so add new
+            foreach (PermissionInfo objPermission in permissions)
+            {
+                if (objPermission.PermissionKey == "DEPLOY")
+                {
+                    AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
         /// <history>
@@ -268,6 +295,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             _DesktopModulePermissions.Remove(permissionID, roleID, userID);
+            //Clear Permission List
+            _PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Xml;
 
 using DotNetNuke.Collections.Internal;
@@ -67,7 +68,6 @@ namespace DotNetNuke.Entities.Icons
         public const string DefaultIconSize = "16X16";
         public const string DefaultLargeIconSize = "32X32";
         public const string DefaultIconStyle = "Standard";
-        public const string DefaultIconLocation = "icons/sigma";
         public const string IconKeyName = "IconKey";
         public const string IconSizeName = "IconSize";
         public const string IconStyleName = "IconStyle";
@@ -114,13 +114,22 @@ namespace DotNetNuke.Entities.Icons
             if (string.IsNullOrEmpty(style))
                 style = DefaultIconStyle;
 
-            string fileName = string.Format("{0}/{1}_{2}_{3}.png", DefaultIconLocation, key, size, style);
-                      
+            string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
+
             //In debug mode, we want to warn (onluy once) if icon is not present on disk
 #if DEBUG
             CheckIconOnDisk(fileName);
 #endif
             return Globals.ApplicationPath + "/" + fileName;
+        }
+
+        public static string GetFileIconUrl(string extension)
+        {
+            if (!string.IsNullOrEmpty(extension) && File.Exists(HostingEnvironment.MapPath(IconURL("Ext" + extension, "32x32", "Standard"))))
+            {
+                return IconURL("Ext" + extension, "32x32", "Standard");
+            }
+            return IconURL("ExtFile", "32x32", "Standard");
         }
 
         private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
@@ -142,6 +151,20 @@ namespace DotNetNuke.Entities.Icons
 						Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
                 }
             }            
+        }
+
+        public static string[] GetIconSets()
+        {
+            string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
+            var iconRootDir = new DirectoryInfo(iconPhysicalPath);
+            string result = "";
+            foreach (var iconDir in iconRootDir.EnumerateDirectories())
+            {
+                string testFile = Path.Combine(iconDir.FullName,"About_16x16_Standard.png");
+                if (File.Exists(testFile))
+                    result += iconDir.Name + ",";
+            }
+            return result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

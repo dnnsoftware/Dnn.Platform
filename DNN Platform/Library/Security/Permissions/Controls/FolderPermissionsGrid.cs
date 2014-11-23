@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 {
     public class FolderPermissionsGrid : PermissionsGrid
     {
-        #region "Private Members"
+        #region Private Members
 
         private string _folderPath = "";
         protected FolderPermissionCollection FolderPermissions;
@@ -47,7 +47,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Protected Properties"
+        #region Protected Properties
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -71,15 +71,12 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Public Properties"
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and Sets the path of the Folder
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public string FolderPath
         {
@@ -99,9 +96,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the Permission Collection
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public FolderPermissionCollection Permissions
         {
@@ -117,15 +111,12 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the TabPermissions from the Data Store
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected virtual void GetFolderPermissions()
         {
@@ -138,9 +129,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Parse the Permission Keys used to persist the Permissions in the ViewState
         /// </summary>
         /// <param name="settings">A string array of settings</param>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         private FolderPermissionInfo ParseKeys(string[] settings)
         {
@@ -162,7 +150,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         #endregion
 
-        #region "Protected Methods"
+        #region Protected Methods
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
@@ -187,9 +175,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         /// <param name="permissions">The permissions collection</param>
         /// <param name="user">The user to add</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
@@ -218,14 +203,36 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Updates a Permission
+        /// </summary>
+        /// <param name="permissions">The permissions collection</param>
+        /// <param name="role">The role to add</param>
+        /// -----------------------------------------------------------------------------
+        protected override void AddPermission(ArrayList permissions, RoleInfo role)
+        {
+            //Search TabPermission Collection for the user 
+            if (FolderPermissions.Cast<FolderPermissionInfo>().Any(p => p.RoleID == role.RoleID))
+            {
+                return;
+            }
+
+            //role not found so add new
+            foreach (PermissionInfo objPermission in permissions)
+            {
+                if (objPermission.PermissionKey == "READ")
+                {
+                    AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
+                }
+            }            
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the Enabled status of the permission
         /// </summary>
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
-        /// <history>
-        ///     [cnurse]    01/13/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
@@ -241,9 +248,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="column">The column of the Grid</param>
         /// <param name="defaultState">Default State.</param>
         /// <returns>A Boolean (True or False)</returns>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
@@ -260,6 +264,16 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permission;
         }
 
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "WRITE") && PermissionProvider.Instance().SupportsFullControl();
+        }
+
+        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "READ");
+        }
+
         private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
         {
             return IsSystemFolderPermission(permissionInfo);
@@ -274,9 +288,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
@@ -290,9 +301,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Load the ViewState
         /// </summary>
         /// <param name="savedState">The saved state</param>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
@@ -335,15 +343,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             FolderPermissions.Remove(permissionID, roleID, userID);
+            //Clear Permission List
+            _permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Saves the ViewState
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/12/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override object SaveViewState()
         {
@@ -387,9 +394,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// returns whether or not the derived grid supports Deny permissions
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
@@ -404,9 +408,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Overrides the Base method to Generate the Data Grid
         /// </summary>
-        /// <history>
-        ///     [cnurse]    01/09/2006  Documented
-        /// </history>
         /// -----------------------------------------------------------------------------
         public override void GenerateDataGrid()
         {

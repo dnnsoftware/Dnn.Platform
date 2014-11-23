@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.ASP2MenuNavigationProvider" type="Provider" version="07.02.01">
+        <package name="DotNetNuke.ASP2MenuNavigationProvider" type="Provider" version="07.03.04">
             <friendlyName>DotNetNuke ASP2 Menu Navigation Provider</friendlyName>
             <description>DotNetNuke ASP2 Menu Navigation Provider Project provides a navigation system based on the menu included in ASp.NET v2.</description>
             <dependencies/>
             <owner>
-                <name>DotNetNuke</name>
-                <organization>DotNetNuke Corporation</organization>
-                <url>www.dotnetnuke.com</url>
-                <email>support@dotnetnuke.com</email>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
             </owner>
             <license src="license.txt" />
             <releaseNotes src="releaseNotes.txt" />

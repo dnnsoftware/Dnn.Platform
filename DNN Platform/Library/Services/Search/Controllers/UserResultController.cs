@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,14 +23,12 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
 
 #endregion
@@ -41,13 +39,14 @@ namespace DotNetNuke.Services.Search.Controllers
     /// Search Result Controller for Tab Indexer
     /// </summary>
     /// <remarks></remarks>
+    [Serializable]
     public class UserResultController : BaseResultController
     {
         #region Private Properties
 
         private PortalSettings PortalSettings
         {
-            get { return PortalController.GetCurrentPortalSettings(); }
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
         #endregion
@@ -70,7 +69,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchResult.UniqueKey.Contains("adminonly"))
             {
-                return UserController.GetCurrentUserInfo().IsSuperUser || UserController.GetCurrentUserInfo().IsInRole("Administrators");
+                return UserController.Instance.GetCurrentUserInfo().IsSuperUser || UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators");
             }
             
             if (searchResult.UniqueKey.Contains("friendsandgroups"))
@@ -78,12 +77,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")
                                              ? searchResult.UniqueKey.Split('_')[2]
                                              : string.Empty;
-                return HasSocialReplationship(userInSearchResult, UserController.GetCurrentUserInfo(), extendedVisibility);
+                return HasSocialReplationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
             }
 
             if (searchResult.UniqueKey.Contains("membersonly"))
             {
-                return UserController.GetCurrentUserInfo().UserID != Null.NullInteger;
+                return UserController.Instance.GetCurrentUserInfo().UserID != Null.NullInteger;
             }
 
             if (searchResult.UniqueKey.Contains("allusers"))
@@ -96,7 +95,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = Globals.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
+            var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -52,7 +53,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
         private IDictionary<int, PortalInfo> _Portals;
-        private TabController _TabCtrl;
 
         protected int PackageID
         {
@@ -85,18 +85,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        protected TabController TabCtrl
-        {
-            get
-            {
-                if (_TabCtrl == null)
-                {
-                    _TabCtrl = new TabController();
-                }
-                return _TabCtrl;
-            }
-        }
-
         protected IDictionary<int, PortalInfo> Portals
         {
             get
@@ -104,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if (_Portals == null)
                 {
                     _Portals = new Dictionary<int, PortalInfo>();
-                    ArrayList items = new PortalController().GetPortals();
+                    var items = PortalController.Instance.GetPortals();
                     foreach (PortalInfo item in items)
                     {
                         _Portals.Add(item.PortalID, item);
@@ -152,7 +140,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 }
                 else
                 {
-                    BindUsageList(PortalId, PortalController.GetCurrentPortalSettings().PortalName);
+                    BindUsageList(PortalId, PortalController.Instance.GetCurrentPortalSettings().PortalName);
                 }
             }
             catch (Exception ex)
@@ -190,28 +178,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        private string FormatPortalAliases(int PortalID, int TabId)
-        {
-            var str = new StringBuilder();
-            try
-            {
-                var objPortalAliasController = new PortalAliasController();
-                ArrayList arr = objPortalAliasController.GetPortalAliasArrayByPortalID(PortalID);
-                PortalAliasInfo objPortalAliasInfo;
-                int i;
-                for (i = 0; i <= arr.Count - 1; i++)
-                {
-                    objPortalAliasInfo = (PortalAliasInfo) arr[i];
-                    str.Append("<a href=\"" + Globals.AddHTTP(objPortalAliasInfo.HTTPAlias) + "\">" + objPortalAliasInfo.HTTPAlias + "</a>");
-                }
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-            return str.ToString();
-        }
-
         protected string GetFormattedLink(object dataItem)
         {
             var returnValue = new StringBuilder();
@@ -221,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 if ((tab != null))
                 {
                     int index = 0;
-                    TabCtrl.PopulateBreadCrumbs(ref tab);
+                    TabController.Instance.PopulateBreadCrumbs(ref tab);
                     foreach (TabInfo t in tab.BreadCrumbs)
                     {
                         if ((index > 0))
@@ -231,10 +197,9 @@ namespace DotNetNuke.Modules.Admin.Extensions
                         if ((tab.BreadCrumbs.Count - 1 == index))
                         {
                             string url;
-                            var objPortalAliasController = new PortalAliasController();
-                            ArrayList arr = objPortalAliasController.GetPortalAliasArrayByPortalID(t.PortalID);
-                            var objPortalAliasInfo = (PortalAliasInfo) arr[0];
-                            url = Globals.AddHTTP(objPortalAliasInfo.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList();
+                            var alias = aliases[0];
+                            url = Globals.AddHTTP(alias.HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
                             returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else
@@ -324,8 +289,8 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private IDictionary<int, TabInfo> BuildData(int portalID)
         {
-            IDictionary<int, TabInfo> tabsWithModule = TabCtrl.GetTabsByPackageID(portalID, PackageID, false);
-            TabCollection allPortalTabs = TabCtrl.GetTabsByPortal(portalID);
+            IDictionary<int, TabInfo> tabsWithModule = TabController.Instance.GetTabsByPackageID(portalID, PackageID, false);
+            TabCollection allPortalTabs = TabController.Instance.GetTabsByPortal(portalID);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
 			//must get each tab, they parent may not exist

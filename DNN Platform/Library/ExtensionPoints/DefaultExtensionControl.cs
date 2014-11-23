@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -73,5 +74,7 @@ namespace DotNetNuke.ExtensionPoints
                 ViewState["Name"] = value;
             }
         }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }

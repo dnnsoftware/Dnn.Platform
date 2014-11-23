@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,8 +28,18 @@ using System.Net.Sockets;
 
 namespace DotNetNuke.Common.Utils
 {
+    /// <summary>
+    /// Utility functions for network information
+    /// </summary>
     public class NetworkUtils
     {
+        /// <summary>
+        /// Gets the address.
+        /// </summary>
+        /// <param name="Host">The host.</param>
+        /// <param name="AddressFormat">The address format.</param>
+        /// <returns>Returns IP address</returns>
+        /// <remarks><seealso cref="AddressType"></seealso></remarks>
         public static string GetAddress(string Host, AddressType AddressFormat)
         {
             string IPAddress = string.Empty;
@@ -57,6 +67,11 @@ namespace DotNetNuke.Common.Utils
             }
             return string.Empty;
         }
+        /// <summary>
+        /// Convert IP address to long integer
+        /// </summary>
+        /// <param name="ip">The ip address</param>
+        /// <returns>IP Address in long</returns>
         public static long IPtoLong(IPAddress ip)
         {
             //convert IP to number
@@ -73,6 +88,11 @@ namespace DotNetNuke.Common.Utils
             return addr;
         }
 
+        /// <summary>
+        /// Longs to ip address.
+        /// </summary>
+        /// <param name="ip">The ip address</param>
+        /// <returns>IP Number as formatted string</returns>
         public static string LongToIp(long ip)
         {
             //convert number back to IP
@@ -96,11 +116,22 @@ namespace DotNetNuke.Common.Utils
             return addr.TrimEnd('.');
         }
 
+        /// <summary>
+        /// Masks from cidr.
+        /// </summary>
+        /// <param name="cidr">The Classless Inter-Domain Routing (cidr)</param>
+        /// <returns></returns>
         private static long MaskFromCidr(int cidr)
         {
             return Convert.ToInt64(Math.Pow(2, ((32 - cidr))) - 1) ^ 4294967295L;
         }
 
+        /// <summary>
+        /// Formats as cidr.
+        /// </summary>
+        /// <param name="startIP">The start ip.</param>
+        /// <param name="subnetMask">The subnet mask.</param>
+        /// <returns>Classless Inter-Domain Routing</returns>
         public static string FormatAsCidr(string startIP, string subnetMask)
         {
             if (String.IsNullOrEmpty(subnetMask))
@@ -131,6 +162,12 @@ namespace DotNetNuke.Common.Utils
             return answer;
         }
 
+        /// <summary>
+        /// Network2s the ip range.
+        /// </summary>
+        /// <param name="sNetwork">The network name.</param>
+        /// <param name="startIP">The start ip.</param>
+        /// <param name="endIP">The end ip.</param>
         public static void Network2IpRange(string sNetwork, out uint startIP, out uint endIP)
         {
             try
@@ -165,6 +202,11 @@ namespace DotNetNuke.Common.Utils
             }
         }
 
+        /// <summary>
+        /// Convert IP to Integer
+        /// </summary>
+        /// <param name="ipNumber">The ip number.</param>
+        /// <returns>IP number as integer</returns>
         public static uint IP2Int(string ipNumber)
         {
             uint ip = 0;
@@ -179,6 +221,13 @@ namespace DotNetNuke.Common.Utils
             return ip;
         }
 
+        /// <summary>
+        /// Determines whether ip is in range.
+        /// </summary>
+        /// <param name="currentIP">The current ip.</param>
+        /// <param name="startIP">The start ip.</param>
+        /// <param name="subnetmask">The subnetmask.</param>
+        /// <returns>True or False</returns>
         public static bool IsIPInRange(string currentIP, string startIP, string subnetmask)
         {
             try
@@ -212,6 +261,9 @@ namespace DotNetNuke.Common.Utils
         }
     }
 
+    /// <summary>
+    /// Enumration of IP AddressTyes
+    /// </summary>
     public enum AddressType
     {
         IPv4,

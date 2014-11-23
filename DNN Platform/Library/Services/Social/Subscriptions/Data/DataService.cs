@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -99,6 +99,20 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             return provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscription", subscriptionId) == 0;
         }
+
+        public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
+        {
+            return provider.ExecuteScalar<int>("CoreMessaging_UpdateSubscriptionDescription",
+                objectKey,
+                portalId,
+                newDescription);
+        }
+
+        public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
+        {
+            provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
+        }
+
         #endregion
     }
 }

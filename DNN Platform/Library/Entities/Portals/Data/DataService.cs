@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,12 +20,10 @@
 #endregion
 #region Usings
 
-using System;
 using System.Data;
 
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-
 #endregion
 
 namespace DotNetNuke.Entities.Portals.Data
@@ -62,6 +60,16 @@ namespace DotNetNuke.Entities.Portals.Data
                                             portalGroup.PortalGroupDescription,
                                             portalGroup.AuthenticationDomain,
                                             lastModifiedByUserId);
+        }
+
+        public IDataReader GetSharedModulesWithPortal(PortalInfo portal)
+        {
+            return _provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
+        }
+
+        public IDataReader GetSharedModulesByPortal(PortalInfo portal)
+        {
+            return _provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
         }
     }
 }

@@ -68,8 +68,9 @@
                 var w = $('.dnnSearchBox_advanced', this.$wrap).width();
                 var w2 = $('.dnnSearchBox_advanced_query', this.$wrap).width();
                 realInputRight = w + w2 + 50;
-                $('.dnnSearchBox_advanced_query', this.$wrap).hide().css({ marginRight: w + 30 });
-                $('.dnnSearchBoxClearAdvanced', this.$wrap).css({ right: w + 38, top: 0 });
+                $('.dnnSearchBox_advanced_query', this.$wrap).hide();
+                //$('.dnnSearchBox_advanced_query', this.$wrap).hide().css({ marginRight: w + 30 });
+                //$('.dnnSearchBoxClearAdvanced', this.$wrap).css({ right: w + 38, top: 0 });
             }
             this.realInput.css({ right: realInputRight, width: wrapWidth - realInputRight - 8 });
             if (originalVal) {
@@ -194,7 +195,7 @@
             // clear textbox button
             realInput.on('keyup', function (e) {
                 var k = e.keyCode || e.witch;
-                if (self._ignoreKeyCodes.indexOf(k) > -1) return;
+                if ($.inArray(k, self._ignoreKeyCodes) > -1) return;
 
                 var val = realInput.val();
                 var right = parseInt(realInput.css('right').replace('px', '')) - 15;

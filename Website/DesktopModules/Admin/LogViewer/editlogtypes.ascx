@@ -15,7 +15,10 @@
 		        </Columns>
             </MasterTableView>
 	    </dnn:DnnGrid>
-	    <ul class="dnnActions dnnClear"><li><asp:HyperLink class="dnnPrimaryAction" id="hlReturn" runat="server" resourcekey="cmdReturn" causesvalidation="False" /></li></ul>
+	    <ul class="dnnActions dnnClear">
+	        <li><asp:HyperLink class="dnnPrimaryAction" id="hlAdd" runat="server" resourcekey="AddContent.Action" /></li>
+	        <li><asp:HyperLink class="dnnSecondaryAction" id="hlReturn" runat="server" resourcekey="cmdReturn" causesvalidation="False" /></li>
+	    </ul>
     </asp:panel>
     <asp:panel id="pnlEditLogTypeConfigInfo" runat="server">
         <div class="eltContent dnnClear" id="eltContent">
@@ -28,15 +31,15 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plLogTypeKey" runat="server" controlname="ddlLogTypeKey" suffix=":" />
-                    <asp:dropdownlist id="ddlLogTypeKey" runat="server" />
+                    <dnn:DnnComboBox id="cboLogTypeKey" runat="server" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plLogTypePortalID" runat="server" controlname="ddlLogTypePortalID" suffix=":" />
-                    <asp:dropdownlist id="ddlLogTypePortalID" runat="server" /> 
+                    <dnn:DnnComboBox id="cboLogTypePortalID" runat="server" /> 
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plKeepMostRecent" runat="server" controlname="ddlKeepMostRecent" suffix=":" />
-                    <asp:dropdownlist id="ddlKeepMostRecent" runat="server" />
+                    <dnn:DnnComboBox id="cboKeepMostRecent" runat="server" />
                 </div>
             </fieldset>
             <h2 id="Panel-EmailSettings" class="dnnFormSectionHead"><a href=""><%=LocalizeString("EmailSettings")%></a></h2>
@@ -48,31 +51,10 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plThreshold" runat="server" controlname="ddlThreshold" suffix=":" />
-                    <asp:dropdownlist id="ddlThreshold" runat="server" />
-                    <asp:Label id="lblIn" runat="server" resourcekey="In" />
-                    <asp:dropdownlist id="ddlThresholdNotificationTime" runat="server">
-					    <asp:listitem value="1" />
-					    <asp:listitem value="2" />
-					    <asp:listitem value="3" />
-					    <asp:listitem value="4" />
-					    <asp:listitem value="5" />
-					    <asp:listitem value="6" />
-					    <asp:listitem value="7" />
-					    <asp:listitem value="8" />
-					    <asp:listitem value="9" />
-					    <asp:listitem value="10" />
-					    <asp:listitem value="20" />
-					    <asp:listitem value="30" />
-					    <asp:listitem value="60" />
-					    <asp:listitem value="90" />
-					    <asp:listitem value="120" />
-				    </asp:dropdownlist>
-                    <asp:dropdownlist id="ddlThresholdNotificationTimeType" runat="server">
-					    <asp:listitem value="1" resourcekey="Seconds">Seconds</asp:listitem>
-					    <asp:listitem value="2" resourcekey="Minutes">Minutes</asp:listitem>
-					    <asp:listitem value="3" resourcekey="Hours">Hours</asp:listitem>
-					    <asp:listitem value="4" resourcekey="Days">Days</asp:listitem>
-				    </asp:dropdownlist>
+                    <dnn:DnnComboBox id="cboThreshold" runat="server" CssClass="dnnFixedSizeComboBox" Enabled="False" />
+                    <asp:Label id="lblIn" runat="server" resourcekey="In" CssClass="dnnFixedSizeLabel" />
+                    <dnn:DnnComboBox id="cboThresholdNotificationTime" runat="server" CssClass="dnnFixedSizeComboBox short" Enabled="False" />
+                    <dnn:DnnComboBox id="cboThresholdNotificationTimeType" runat="server" CssClass="dnnFixedSizeComboBox" Enabled="False" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plMailFromAddress" runat="server" controlname="txtMailFromAddress" suffix=":" />

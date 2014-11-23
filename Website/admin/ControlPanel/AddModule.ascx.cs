@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -159,13 +159,12 @@ namespace DotNetNuke.UI.ControlPanel
 					PositionLst.Enabled = Enabled;
 					PaneModulesLst.Enabled = Enabled;
 
-					UserInfo objUser = UserController.GetCurrentUserInfo();
+					UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 					if ((objUser != null))
 					{
 						if (objUser.IsSuperUser)
 						{
-							var objModules = new ModuleController();
-							var objModule = objModules.GetModuleByDefinition(-1, "Extensions");
+                            var objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
 							if (objModule != null)
 							{
 								var strURL = Globals.NavigateURL(objModule.TabID, true);
@@ -183,6 +182,7 @@ namespace DotNetNuke.UI.ControlPanel
 
 				if ((!IsPostBack && Visible && Enabled))
 				{
+				    AddNewModule.Checked = true;
 					LoadAllLists();
 				}
 			}
@@ -380,7 +380,7 @@ namespace DotNetNuke.UI.ControlPanel
                         var moduleId = int.Parse(ModuleLst.SelectedValue);
                         if (moduleId >= 0)
                         {
-                            return new ModuleController().GetModule(moduleId, tabId).DesktopModule;
+                            return ModuleController.Instance.GetModule(moduleId, tabId, false).DesktopModule;
                         }
                     }
                 }
@@ -433,13 +433,12 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void DoAddExistingModule(int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
         {
-            var moduleCtrl = new ModuleController();
-            ModuleInfo moduleInfo = moduleCtrl.GetModule(moduleId, tabId, false);
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
 
             int userID = -1;
             if (Request.IsAuthenticated)
             {
-                UserInfo user = UserController.GetCurrentUserInfo();
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
                 if (((user != null)))
                 {
                     userID = user.UserID;
@@ -480,7 +479,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     newModule.ModuleID = Null.NullInteger;
                     //reset the module id
-                    newModule.ModuleID = moduleCtrl.AddModule(newModule);
+                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                     {
@@ -497,7 +496,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
                 else
                 {
-                    moduleCtrl.AddModule(newModule);
+                    ModuleController.Instance.AddModule(newModule);
                 }
 
                 if (remote)
@@ -518,15 +517,12 @@ namespace DotNetNuke.UI.ControlPanel
                 }
 
                 //Add Event Log
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 
         private static void DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
-            var objModules = new ModuleController();
-
             try
             {
                 DesktopModuleInfo desktopModule;
@@ -557,7 +553,7 @@ namespace DotNetNuke.UI.ControlPanel
                     objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
-                        ModuleInfo defaultModule = objModules.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
                         if ((defaultModule != null))
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
@@ -565,14 +561,14 @@ namespace DotNetNuke.UI.ControlPanel
                     }
                 }
 
-                objModules.InitialModulePermission(objModule, objModule.TabID, permissionType);
+                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
 
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
                     //check whether original tab is exists, if true then set culture code to default language,
                     //otherwise set culture code to current.
-                    if (new TabController().GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
+                    if (TabController.Instance.GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
                     {
                         objModule.CultureCode = defaultLocale.Code;
                     }
@@ -588,7 +584,7 @@ namespace DotNetNuke.UI.ControlPanel
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
-                objModules.AddModule(objModule);
+                ModuleController.Instance.AddModule(objModule);
             }
         }
 
@@ -605,15 +601,13 @@ namespace DotNetNuke.UI.ControlPanel
             // Are we in a group of one?
             if (result == null || result.Length == 0)
             {
-                var portalController = new PortalController();
-
-                result = new[] { portalController.GetPortal(PortalSettings.Current.PortalId) };
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
 
             return result;
         }
 
-        private static bool GetIsPortable(ModuleController moduleCtrl, string moduleID, string tabID)
+        private static bool GetIsPortable(string moduleID, string tabID)
         {
             bool isPortable = false;
             int parsedModuleID;
@@ -624,7 +618,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             if ((validModuleID && validTabID))
             {
-                ModuleInfo moduleInfo = moduleCtrl.GetModule(parsedModuleID, parsedTabID);
+                ModuleInfo moduleInfo = ModuleController.Instance.GetModule(parsedModuleID, parsedTabID, false);
                 if (((moduleInfo != null)))
                 {
                     DesktopModuleInfo moduleDesktopInfo = moduleInfo.DesktopModule;
@@ -677,7 +671,6 @@ namespace DotNetNuke.UI.ControlPanel
                 //Get list of modules for the selected tab
                 if (!string.IsNullOrEmpty(PageLst.SelectedValue))
                 {
-                    var moduleCtrl = new ModuleController();
                     var tabId = int.Parse(PageLst.SelectedValue);
                     if (tabId >= 0)
                     {
@@ -686,14 +679,14 @@ namespace DotNetNuke.UI.ControlPanel
                     if ((ModuleLst.ItemCount > 0))
                     {
                         chkCopyModule.Visible = true;
-                        SetCopyModuleMessage(GetIsPortable(moduleCtrl, ModuleLst.SelectedValue, PageLst.SelectedValue));
+                        SetCopyModuleMessage(GetIsPortable(ModuleLst.SelectedValue, PageLst.SelectedValue));
                     }
                 }
             }
             else
             {
                 ModuleLst.Filter = CategoryList.SelectedValue == "All"
-                                        ? (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => true)
+                                        ? (kvp => true)
                                          : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == CategoryList.SelectedValue);
                 ModuleLst.BindAllPortalDesktopModules();
             }
@@ -825,9 +818,7 @@ namespace DotNetNuke.UI.ControlPanel
             if (SiteListPanel.Visible)
             {
                 // Get a list of portals in this SiteGroup.
-                var controller = new PortalController();
-
-                var portals = controller.GetPortals().Cast<PortalInfo>().ToArray();
+                var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().ToArray();
 
                 SiteList.DataSource = portals.Select(
                     x => new {Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID}).ToList();

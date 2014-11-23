@@ -143,7 +143,7 @@
 		        <asp:TemplateColumn>
                     <ItemStyle HorizontalAlign="Center" Width="32px" Height="32px"/>
                     <ItemTemplate>
-                        <asp:Image ID="imgIcon" runat="server" Width="32px" Height="32px" ImageUrl='<%# GetIconUrl("icon_moduledefinitions_32px.gif") %>' ToolTip='<%# GetPackageDescription(Container.DataItem) %>' />
+                        <asp:Image ID="imgIcon" runat="server" Width="32px" Height="32px" ImageUrl='<%# GetPackageIcon(Container.DataItem) %>' ToolTip='<%# GetPackageDescription(Container.DataItem) %>' />
                     </ItemTemplate>
                 </asp:TemplateColumn> 
                 <dnn:textcolumn headerStyle-width="150px" DataField="FriendlyName" HeaderText="Name">

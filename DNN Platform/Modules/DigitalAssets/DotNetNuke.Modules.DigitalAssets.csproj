@@ -65,9 +65,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -81,9 +78,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="ClientDialog.cs" />
     <Compile Include="Components\Controllers\DigitalAssetsSettingsRepository.cs" />
-    <Compile Include="Components\Controllers\FileSizeFormatProvider.cs" />
+    <Compile Include="Components\Controllers\FolderPathComparer.cs" />
     <Compile Include="Components\Controllers\IDigitalAssetsControllerData.cs" />
     <Compile Include="Components\Controllers\Models\ExtractedItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PreviewInfoViewModel.cs" />
@@ -102,6 +102,8 @@
     <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\ExtensionPoint\ToolBarButton\UnlinkToolbarButtonExtensionPoint.cs" />
+    <Compile Include="Components\ExtensionPoint\ToolBarButton\ManageFolderTypesToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\DefaultMenuButtonItem.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\SyncToolBarMenuButtonExtensionPoint.cs" />
@@ -185,6 +187,8 @@
     <Compile Include="Services\ContentServiceController.cs" />
     <Compile Include="Services\DamExceptionFilterAttribute.cs" />
     <Compile Include="Services\DownloadServiceController.cs" />
+    <Compile Include="Services\Models\MappedPathSubFoldersCountRequest.cs" />
+    <Compile Include="Services\Models\UnlinkFolderRequest.cs" />
     <Compile Include="Services\Models\SearchFolderContentRequest.cs" />
     <Compile Include="Services\Models\GetUrlRequest.cs" />
     <Compile Include="Services\Models\SynchronizeFolderRequest.cs" />
@@ -219,15 +223,16 @@
     <Content Include="App_LocalResources\SharedResources.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ClientScripts\dnn.DigitalAssets.FileUpload.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.js" />
     <Content Include="ClientScripts\dnn.DigitalAssets.SearchBox.js" />
     <Content Include="ClientScripts\dnn.DigitalAssetsController.js" />
+    <Content Include="ClientScripts\dnn.DigitalAssets.FilterViewSettings.js" />
     <Content Include="FileFieldsControl.ascx" />
     <Content Include="FolderProperties.ascx" />
     <Content Include="Images\down.png" />
     <Content Include="Images\indeterminate.gif" />
     <Content Include="Images\manageFolderTypes.png" />
+    <Content Include="Images\transparencyBG.jpg" />
     <Content Include="PreviewFieldsControl.ascx" />
     <Content Include="PreviewPanelControl.ascx" />
     <Content Include="EditFolderMapping.ascx" />
@@ -260,6 +265,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>

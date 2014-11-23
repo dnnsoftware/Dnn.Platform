@@ -13,6 +13,15 @@ namespace DotNetNuke.Modules.Html {
     public partial class MyWork {
         
         /// <summary>
+        /// customJS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude customJS;
+        
+        /// <summary>
         /// dgTabs control.
         /// </summary>
         /// <remarks>
@@ -20,6 +29,15 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Web.UI.WebControls.DnnGrid dgTabs;
+        
+        /// <summary>
+        /// lblNoRecords control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoRecords;
         
         /// <summary>
         /// hlCancel control.

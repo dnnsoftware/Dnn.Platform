@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,8 +26,6 @@ using System.Web.Http.Hosting;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Web.Api;
 using Moq;
 using NUnit.Framework;
@@ -38,6 +36,12 @@ namespace DotNetNuke.Tests.Web.Api
     public class DnnApiControllerTests
     {
         internal class DnnApiControllerHelper : DnnApiController {}
+
+        [TearDown]
+        public void TearDown()
+        {
+            PortalController.ClearInstance();
+        }
 
         [Test]
         public void GetsModuleInfoViaTheTabModuleInfoProviders()
@@ -69,7 +73,7 @@ namespace DotNetNuke.Tests.Web.Api
             var mockPortalController = new Mock<IPortalController>();
             var expectedPortalSettings = new PortalSettings();
             mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
-            TestablePortalController.SetTestableInstance(mockPortalController.Object);
+            PortalController.SetTestableInstance(mockPortalController.Object);
 
             //Act
             var result = controller.PortalSettings;

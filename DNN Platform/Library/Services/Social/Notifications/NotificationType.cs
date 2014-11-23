@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -101,6 +101,15 @@ namespace DotNetNuke.Services.Social.Notifications
             }
         }
 
+        /// <summary>
+        /// Is this of a Task type. Default is false.
+        /// </summary>
+        /// <remarks>
+        /// Tasks are primarily notifications where an action must be taken. Dismiss is usually not enough.
+        /// </remarks>
+        [XmlAttribute]
+        public bool IsTask { get; set; }
+
         #region Implementation of IHydratable
 
         /// <summary>
@@ -128,6 +137,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 TimeToLive = new TimeSpan(0, timeToLive, 0);
             }
             DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
+            IsTask = Null.SetNullBoolean(dr["IsTask"]);
 
             //add audit column data
             FillInternal(dr);

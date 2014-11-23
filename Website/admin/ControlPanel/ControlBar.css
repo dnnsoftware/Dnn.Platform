@@ -20,10 +20,9 @@
     top: 0;
     left: 0;
     z-index: 10;
-    padding-top: 10px;
-    height: 43px;
+    height: 53px;
     width: 100%;
-    background: #050505 url(controlbarimages/ControlBar_bg.jpg) repeat-x 0 0;
+    background-color: #020202;
     border-bottom: 1px solid #1b1b1b;
     -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6);
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6);
@@ -54,7 +53,7 @@
     }
 
     #ControlBar dl {
-        margin: 0;
+        margin-bottom: 11px;
         line-height: 18px;
     }
 
@@ -81,7 +80,7 @@
 }
 
     .ServiceIcon > img {
-        margin: 5px 0 1px;
+        margin: 13px 0 1px;
     }
 
     .ServiceIcon.community {
@@ -89,11 +88,11 @@
     }
 
     .ServiceIcon.professional {
-        border-bottom: 5px solid #4e89e3; /*blue*/
+        border-bottom: none;
     }
 
     .ServiceIcon.enterprise {
-        border-bottom: 5px solid #888; /*grey*/
+        border-bottom: none;
     }
 
 #ServiceImg {
@@ -121,29 +120,15 @@
 
 #ControlNav > li > a {
     display: block;
-    padding: 12px 12px 0 12px;
-    height: 32px;
-    border-right: 1px solid transparent;
-    border-left: 1px solid transparent;
+    padding: 20px 12px 0 12px;
+    height: 34px;
     color: #999;
-    text-decoration: none;
-    text-shadow: 0px -2px 0px #000;
 }
 
-#ControlNav > li.hover > a, #ControlNav > li:hover > a {
-    background: #050505; /* Old browsers */
-    border-right: 1px solid #222;
-    border-left: 1px solid #111;
-    -webkit-box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.8);
-    box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.8);
-    color: #ddd;
-    text-shadow: 0px 0px 3px #000000; /* CSS3 */
-    background: -moz-linear-gradient(top, #050505 0%, #222222 99%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#050505), color-stop(99%,#222222)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #050505 0%,#222222 99%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #050505 0%,#222222 99%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #050505 0%,#222222 99%); /* IE10+ */
-    background: linear-gradient(to bottom, #050505 0%,#222222 99%); /* W3C */
+#ControlNav > li.hover > a,
+#ControlNav > li:hover > a {
+    background: #3d3d3d;
+    color: #fff;
 }
 
 /* Control Nav -- Sub Nav */
@@ -151,25 +136,16 @@
     display: none;
     padding: 0;
     position: absolute;
-    top: 43px;
+    top: 54px;
     left: 0;
-    background: #232323; /* Old browsers */
-    background: -moz-linear-gradient(top, #232323 1%, #121212 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#232323), color-stop(100%,#121212)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #232323 1%,#121212 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #232323 1%,#121212 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #232323 1%,#121212 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #232323 1%,#121212 100%); /* W3C */
-    -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
+    background: #232323;
     -webkit-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
     border-top: 1px solid #444;
 }
 
     .subNav.advanced {
-        /* width: 540px; */ /* 3 Column Width */
-        width: 675px; /* 4 Column Width */
+        width: 671px;
     }
 
     .subNav.tools {
@@ -182,8 +158,6 @@
     float: left;
     margin: 0;
     padding: 10px 0 10px 10px !important;
-    -webkit-box-shadow: inset -3px 0px 2px 0px rgba(0, 0, 0, 0.2);
-    box-shadow: inset -3px 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
     .subNavToggle li {
@@ -204,28 +178,14 @@
             border-right: 0;
             -webkit-border-radius: 3px 0px 0px 3px;
             border-radius: 3px 0px 0px 3px;
-            -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6), inset -3px 0px 3px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.6), inset -3px 0px 3px 0px rgba(0, 0, 0, 0.2);
-            background: #353535; /* Old browsers */
-            background: -moz-linear-gradient(top, #353535 1%, #2a2a2a 100%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#353535), color-stop(100%,#2a2a2a)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #353535 1%,#2a2a2a 100%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #353535 1%,#2a2a2a 100%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #353535 1%,#2a2a2a 100%); /* IE10+ */
-            background: linear-gradient(to bottom, #353535 1%,#2a2a2a 100%); /* W3C */
+            background: #353535;
         }
 
         .subNavToggle li:hover a, .subNavToggle li.active a {
             border: 1px solid #4c7abe;
             border-right: 0;
             border-top: 1px solid #74a8f2;
-            background: #4b86db; /* Old browsers */
-            background: -moz-linear-gradient(top, #4b86db 0%, #3d6cb2 99%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b86db), color-stop(99%,#3d6cb2)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #4b86db 0%,#3d6cb2 99%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #4b86db 0%,#3d6cb2 99%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #4b86db 0%,#3d6cb2 99%); /* IE10+ */
-            background: linear-gradient(to bottom, #4b86db 0%,#3d6cb2 99%); /* W3C */
+            background: #4b86db;
         }
 
         .subNavToggle li a span {
@@ -261,11 +221,21 @@
 
 .subNav.advanced dl {
     display: none;
-    /* width: 450px; */ /* 3 column width */
-    width: 585px; /* 4 column width */
+    width: 588px;
     float: left;
-    border-left: 1px solid #333;
+    border: 1px solid #444;
     padding-right: 0;
+    background-color: #444;
+    margin-top: 10px;
+    padding: 10px;
+    margin-bottom: 11px;
+    padding-bottom: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius: 5px;
+    -moz-border-radius-topleft: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0;
 }
 
 .subNav dl.active {
@@ -273,7 +243,7 @@
 }
 
 .subNav.advanced dl {
-    min-height: 140px;
+    min-height: 150px;
 }
 
 .subNav dl dd {
@@ -331,14 +301,14 @@
     display: block;
     white-space: nowrap;
     text-decoration: none;
-    color: #aaa;
+    color: #bdbdbd;
 }
 
 .subNav.advanced dl a {
     display: block;
     white-space: normal;
     text-decoration: none;
-    color: #aaa;
+    color: #bdbdbd;
 }
 
     .subNav.advanced dl a.PE {
@@ -385,7 +355,7 @@
     #ControlBar_SiteSelector p,
     #ControlBar_LanguageSelector p {
         font-size: 11px;
-        color: #555;
+        color: #A1A1A1;
         margin-bottom: 2px;
     }
 
@@ -410,7 +380,7 @@
         margin: 0;
         padding: 4px;
         font-size: 11px;
-        min-width: 0;
+        min-width: 50px;
     }
 
 .subNav dl li:hover a.bookmark {
@@ -430,127 +400,111 @@
 }
 
 /* Control Action Menu -- List */
-#ControlBar #ControlActionMenu {
-    display: inline-block; /*fix child float*/
-    margin: -1px 0 0 30px;
-    border-left: 1px solid #111;
-    border-right: 1px solid #333;
-}
+    #ControlBar #ControlBar_CustomMenuItems,
+    #ControlBar #ControlActionMenu {
+        display: inline-block; /*fix child float*/
+        margin: -1px 0 0 30px;
+        border-left: 1px solid #1a1a1a;
+        border-right: 1px solid #1a1a1a;
+    }
 
-#ControlActionMenu > li {
-    position: relative;
-    margin-top: -1px;
-    margin-bottom: 0;
-    border-top: 1px solid #5b5b5b;
-    border-right: 1px solid #111;
-    border-left: 1px solid #333;
-    float: left;
-    list-style: none;
-    background: rgba(255,255,255,0.03);
-}
+    #ControlBar #ControlBar_CustomMenuItems {
+        margin-left: -6px;
+    }
 
+    #ControlBar_CustomMenuItems > li,
+    #ControlActionMenu > li {
+        position: relative;
+        margin-top: -1px;
+        margin-bottom: 0;
+        border-right: 1px solid #1a1a1a;
+        border-left: 1px solid #1a1a1a;
+        float: left;
+        list-style: none;
+        background: rgba(255,255,255,0.03);
+    }
+
+    #ControlBar_CustomMenuItems > li > a,
     #ControlActionMenu > li > a {
         display: block;
-        padding: 12px 12px 0 12px;
-        height: 32px;
+        padding: 22px 12px 0 12px;
+        height: 34px;
         border-right: 1px solid transparent;
         border-left: 1px solid transparent;
         color: #999;
         text-decoration: none;
-        text-shadow: 0px -1px 0px #000;
         cursor: default;
     }
 
-        #ControlActionMenu > li > a:after {
-            content: '';
-            display: inline-block;
-            margin-left: 6px;
-            height: 5px;
-            width: 8px;
-            background: url(controlbarimages/menuArrow.png) no-repeat 0px 0px;
-        }
-
-    #ControlActionMenu > li:hover {
-        border-top: 1px solid #777;
+    #ControlBar_CustomMenuItems > li > a:after,
+    #ControlActionMenu > li > a:after {
+        content: '';
+        display: inline-block;
+        margin-left: 6px;
+        height: 5px;
+        width: 8px;
+        background: url(controlbarimages/menuArrow.png) no-repeat 0px 0px;
     }
 
-        #ControlActionMenu > li:hover > a, #ControlActionMenu > li.active > a {
-            color: #ddd;
-            background: #505050; /* Old browsers */
-            background: -moz-linear-gradient(top, #505050 0%, #272727 99%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#505050), color-stop(99%,#272727)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #505050 0%,#272727 99%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #505050 0%,#272727 99%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #505050 0%,#272727 99%); /* IE10+ */
-            background: linear-gradient(to bottom, #505050 0%,#272727 99%); /* W3C */
-        }
+    #ControlBar_CustomMenuItems > li:hover > a, #ControlActionMenu > li.active > a,
+    #ControlActionMenu > li:hover > a, #ControlActionMenu > li.active > a {
+        color: #ddd;
+        background: #3d3d3d;
+    }
 
+    #ControlBar_CustomMenuItems > li > a.onActionMenu,
     #ControlActionMenu > li > a.onActionMenu {
         color: #ddd;
-        background: #3693eb; /* Old browsers */
-        background: -moz-linear-gradient(top, #3693eb 1%, #145eb8 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#3693eb), color-stop(100%,#145eb8)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* IE10+ */
-        background: linear-gradient(to bottom, #3693eb 1%,#145eb8 100%); /* W3C */
-        -webkit-box-shadow: inset 0px 1px 0px 0px #6DC0ED, 0px 0px 3px 0px #000;
-        box-shadow: inset 0px 1px 0px 0px #6DC0ED, 0px 0px 3px 0px #000;
-        text-shadow: 0 -1px 0 #0664C4;
+        background: #3d3d3d;
         color: #fff;
     }
 
+    #ControlBar_CustomMenuItems > li ul,
     #ControlActionMenu > li ul {
         display: none;
         position: absolute;
-        top: 44px;
+        top: 55px;
         left: 0;
         margin: 0;
         padding: 20px 30px 10px 20px;
-        background: #232323; /* Old browsers */
-        background: -moz-linear-gradient(top, #232323 1%, #121212 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#232323), color-stop(100%,#121212)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #232323 1%,#121212 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #232323 1%,#121212 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #232323 1%,#121212 100%); /* IE10+ */
-        background: linear-gradient(to bottom, #232323 1%,#121212 100%); /* W3C */
-        -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-        box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-        -webkit-border-radius: 0 0 5px 5px;
+        background: #3d3d3d;
+        -webkit-border-radius: 0 0 3px 3px;
         border-radius: 0 0 5px 5px;
         border-top: 1px solid #444;
     }
 
-        #ControlActionMenu > li ul li {
-            list-style: none;
-            padding-bottom: 3px;
-            margin: 0;
-            line-height: 18px;
-            margin-bottom: 3px;
-        }
+    #ControlBar_CustomMenuItems > li ul li,
+    #ControlActionMenu > li ul li {
+        list-style: none;
+        padding-bottom: 3px;
+        margin: 0;
+        line-height: 18px;
+        margin-bottom: 3px;
+    }
 
-            #ControlActionMenu > li ul li a {
-                text-decoration: none;
-                color: #aaa;
-                white-space: nowrap;
-            }
+    #ControlBar_CustomMenuItems > li ul li a,
+    #ControlActionMenu > li ul li a {
+        text-decoration: none;
+        color: #aaa;
+        white-space: nowrap;
+    }
 
-            #ControlActionMenu > li ul li:hover a {
-                color: #4e89e3; /*blue*/
-            }
+    #ControlBar_CustomMenuItems > li ul li:hover a,
+    #ControlActionMenu > li ul li:hover a {
+        color: #4e89e3; /*blue*/
+    }
 
-#ControlActionMenu .separator {
-    border-top: 1px solid #666;
-    margin: 15px 0;
-}
+    #ControlBar_CustomMenuItems .separator,
+    #ControlActionMenu .separator {
+        border-top: 1px solid #666;
+        margin: 15px 0;
+    }
 
 /* Control Edit Page --- list
 ******************************************/
 #ControlBar #ControlEditPageMenu {
     display: block; /*fix child float*/
     margin: -1px 0 0 30px;
-    border-left: 1px solid #111;
-    border-right: 1px solid #333;
     float: right;
 }
 
@@ -562,67 +516,52 @@
     position: relative;
     margin-top: -1px;
     margin-bottom: 0;
-    border-top: 1px solid #555;
-    border-right: 1px solid #111;
-    border-left: 1px solid #333;
     float: left;
     list-style: none;
-    background: rgba(255,255,255,0.03);
+    background: #000;
 }
 
     #ControlEditPageMenu > li:hover {
         color: #ddd;
-        background: #505050; /* Old browsers */
-        background: -moz-linear-gradient(top, #505050 0%, #272727 99%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#505050), color-stop(99%,#272727)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #505050 0%,#272727 99%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #505050 0%,#272727 99%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #505050 0%,#272727 99%); /* IE10+ */
-        background: linear-gradient(to bottom, #505050 0%,#272727 99%); /* W3C */
-        border-top: 1px solid #777;
+        background: #3d3d3d;
     }
 
     #ControlEditPageMenu > li > a {
         display: block;
-        padding: 10px 12px 0 12px;
-        height: 34px;
-        border-right: 1px solid transparent;
-        border-left: 1px solid transparent;
+        padding: 19px 12px 0 12px;
+        height: 37px;
         color: #999;
         text-decoration: none;
-        text-shadow: 0px -1px 0px #000;
         cursor: default;
     }
 
+    #ControlEditPageMenu > li:hover > a {
+        color: #fff;
+    }
+
         #ControlEditPageMenu > li > a.controlBar_editPageInEditMode {
-            background: #2d92ef; /* Old browsers */
-            background: -moz-linear-gradient(top, #2d92ef 0%, #005cbd 100%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d92ef), color-stop(100%,#005cbd)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* IE10+ */
-            background: linear-gradient(to bottom, #2d92ef 0%,#005cbd 100%); /* W3C */
+            padding-left: 20px;
+            padding-right: 20px;
+            background: #167afb;
             color: #fff;
-            text-shadow: 0px -1px 0px #0664C4;
-            -webkit-box-shadow: inset 0px 1px 0px 0px #6DC0ED;
-            box-shadow: inset 0px 1px 0px 0px #6DC0ED;
         }
 
 span.controlBar_editPageIcon {
     display: block;
     width: 20px;
-    height: 20px;
+    height: 18px;
     background-color: transparent;
-    background-image: url(controlbarimages/editicons.png);
+    background-image: url(controlbarimages/icon-edit-mode-input.png);
     background-repeat: no-repeat;
-    background-position: 0 0;
-    margin-top: 6px;
+    background-position: 0 -2px;
+    margin-top: 4px;
     margin-right: 5px;
     float: left;
 }
 
+#ControlEditPageMenu > li:hover > a .controlBar_editPageIcon,
 a.controlBar_editPageInEditMode > span.controlBar_editPageIcon {
-    background-position: 0 -50px;
+    background-position: 0 -20px;
 }
 
 span.controlBar_editPageTxt {
@@ -635,23 +574,18 @@ span.controlBar_editPageTxt {
 #ControlEditPageMenu > li ul {
     display: none;
     position: absolute;
-    top: 44px;
+    top: 56px;
     right: 0;
     margin: 0;
     min-width: 150px;
     padding: 20px 20px 10px 20px;
-    background: #232323; /* Old browsers */
-    background: -moz-linear-gradient(top, #232323 1%, #121212 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#232323), color-stop(100%,#121212)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #232323 1%,#121212 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #232323 1%,#121212 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #232323 1%,#121212 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #232323 1%,#121212 100%); /* W3C */
-    -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
+    background: #3d3d3d;
     -webkit-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
     border-top: 1px solid #444;
+
+    padding-left: 38px;
+    padding-right: 38px;
 }
 
     #ControlEditPageMenu > li ul li {
@@ -666,7 +600,7 @@ span.controlBar_editPageTxt {
 
         #ControlEditPageMenu > li ul li a {
             text-decoration: none;
-            color: #aaa;
+            color: #fff;
         }
 
         #ControlEditPageMenu > li ul li:hover a {
@@ -678,49 +612,30 @@ span.controlBar_editPageTxt {
     padding-bottom: 5px;
     margin-bottom: 10px;
     width: 100%;
+    margin-bottom: 20px;
 }
 
     #ControlEditPageMenu li.controlBar_BlueEditPageBtn a {
         height: 35px;
         padding: 8px 12px 8px 12px;
         margin-left: 18px;
-        background: #2d92ef; /* Old browsers */
-        background: -moz-linear-gradient(top, #2d92ef 0%, #005cbd 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d92ef), color-stop(100%,#005cbd)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top, #2d92ef 0%,#005cbd 100%); /* IE10+ */
-        background: linear-gradient(to bottom, #2d92ef 0%,#005cbd 100%); /* W3C */
+        background: #1687c3;
         -webkit-border-radius: 3px;
         border-radius: 3px;
-        -webkit-box-shadow: inset 0px 1px 0px 0px #6DC0ED;
-        box-shadow: inset 0px 1px 0px 0px #6DC0ED;
         color: #fff;
         white-space: nowrap; /*prevent word wrap of button */
     }
 
         #ControlEditPageMenu li.controlBar_BlueEditPageBtn a:hover {
             border-color: #0D569E;
-            background: #6cb6f3; /* Old browsers */
-            background: -moz-linear-gradient(top, #6cb6f3 0%, #4387d2 100%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6cb6f3), color-stop(100%,#4387d2)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #6cb6f3 0%,#4387d2 100%); /* Chrome10+,Safari5.1+ */
-            background: linear-gradient(top, #6cb6f3 0%,#4387d2 100%); /* W3C */
+            background: #6cb6f3;
             color: #fff;
-            -webkit-box-shadow: inset 0px 1px 0px 0px #B3D9F9;
-            box-shadow: inset 0px 1px 0px 0px #B3D9F9;
         }
 
         #ControlEditPageMenu li.controlBar_BlueEditPageBtn a:active,
         #ControlEditPageMenu li.controlBar_BlueEditPageBtn a:focus {
             border-color: #0D569E;
-            background: #1f66be; /* Old browsers */
-            background: -moz-linear-gradient(top, #1f66be 0%, #3085e0 100%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1f66be), color-stop(100%,#3085e0)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #1f66be 0%,#3085e0 100%); /* Chrome10+,Safari5.1+ */
-            background: linear-gradient(top, #1f66be 0%,#3085e0 100%); /* W3C */
-            -webkit-box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
-            box-shadow: inset 0px 1px 5px 0px rgba(0, 0, 0, 0.4);
+            background: #1f66be;
             color: #fff;
         }
 
@@ -730,7 +645,7 @@ span.controlBar_editPageTxt {
         }
 
 #ControlEditPageMenu li label {
-    color: #999;
+    color: #fff;
 }
 
 #ControlEditPageMenu li.controlBar_EditPageSection {
@@ -748,7 +663,8 @@ span.controlBar_editPageTxt {
     left: 0;
     width: 100%;
     height: 250px;
-    background: rgba(0,0,0,0.85);
+    background: #3d3d3d;
+    border-top: solid 1px #3d3d3d;
     -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.1);
 }
@@ -826,6 +742,19 @@ div.ControlBar_ModuleListWaiter {
         text-shadow: none;
     }
 
+    div.ControlBar_ModuleListWaiter.NextElements {
+        background-position: 90% 50%;
+        width: 100%;
+        opacity: 0.6;
+        position: absolute;
+        margin-top: 0px;
+        z-index: 10;
+    }
+
+    div.ControlBar_ModuleListWaiter.NextElements > p {
+        display: none;
+    }
+
 div.ControlBar_ModuleListMessage > p {
     margin-top: 85px;
 }
@@ -858,50 +787,34 @@ ul.ControlBar_ModuleList {
 
         ul.ControlBar_ModuleList > li > div {
             width: 150px;
-            height: 150px;
+            height: 147px;
             position: relative;
-            background: #4a4a4a; /* Old browsers */
-            background: -moz-linear-gradient(top, #4a4a4a 1%, #363636 100%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#4a4a4a), color-stop(100%,#363636)); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, #4a4a4a 1%,#363636 100%); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #4a4a4a 1%,#363636 100%); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #4a4a4a 1%,#363636 100%); /* IE10+ */
-            background: linear-gradient(to bottom, #4a4a4a 1%,#363636 100%); /* W3C */
+            background: #4a4a4a;
             cursor: move;
-            color: #999;
-            -webkit-box-shadow: inset 0px 1px 0px 0px #666, 0px 0px 3px 0px #000;
-            box-shadow: inset 0px 1px 0px 0px #666, 0px 0px 3px 0px #000;
+            cursor: url(/images/icon_cursor_grab.cur), move;
+            color: #bdbdbd;
             -webkit-border-radius: 5px;
             border-radius: 5px;
-            -webkit-transition: background 1000ms ease;
-            -moz-transition: background 1000ms ease;
-            -ms-transition: background 1000ms ease;
-            -o-transition: background 1000ms ease;
-            transition: background 1000ms ease;
+        }
+
+        ul.ControlBar_ModuleList > li > div.grabbing {
+            cursor: move;
+            cursor: url(/images/icon_cursor_grabbing.cur), move;
+        }
+
+        .helperGrabbing {
+            cursor: move;
+            cursor: url(/images/icon_cursor_grabbing.cur), move;
         }
 
             ul.ControlBar_ModuleList > li > div:hover {
                 color: #fff;
-                background: #3693eb; /* Old browsers */
-                background: -moz-linear-gradient(top, #3693eb 1%, #145eb8 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#3693eb), color-stop(100%,#145eb8)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* IE10+ */
-                background: linear-gradient(to bottom, #3693eb 1%,#145eb8 100%); /* W3C */
+                background: #3693eb;
             }
 
             ul.ControlBar_ModuleList > li > div.ControlBar_Module_Selected {
                 color: #fff;
-                background: #3693eb; /* Old browsers */
-                background: -moz-linear-gradient(top, #3693eb 1%, #145eb8 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#3693eb), color-stop(100%,#145eb8)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Chrome10+,Safari5.1+ */
-                background: -o-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* Opera 11.10+ */
-                background: -ms-linear-gradient(top, #3693eb 1%,#145eb8 100%); /* IE10+ */
-                background: linear-gradient(to bottom, #3693eb 1%,#145eb8 100%); /* W3C */
-                -webkit-box-shadow: inset 0px 1px 0px 0px #6DC0ED, 0px 0px 3px 0px #000;
-                box-shadow: inset 0px 1px 0px 0px #6DC0ED, 0px 0px 3px 0px #000;
+                background: #3693eb;
             }
 
             ul.ControlBar_ModuleList > li > div > img {
@@ -959,11 +872,7 @@ div.ModuleLocator_Menu.ModuleLocator_Hover {
     .controlBar_ModuleListScrollDummy .jspHorizontalBar {
         background: #333;
         border-radius: 2px;
-        -webkit-transition: background 500ms ease;
-        -moz-transition: background 500ms ease;
-        -ms-transition: background 500ms ease;
-        -o-transition: background 500ms ease;
-        transition: background 500ms ease;
+        height: 20px;
     }
 
         .controlBar_ModuleListScrollDummy .jspHorizontalBar:hover,
@@ -973,6 +882,9 @@ div.ModuleLocator_Menu.ModuleLocator_Hover {
 
     .controlBar_ModuleListScrollDummy .jspDrag {
         background: #000;
+        height: 14px;
+        border-radius: 7px 7px 7px 7px;
+        -webkit-border-radius: 7px 7px 7px 7px;
     }
 
         .controlBar_ModuleListScrollDummy .jspDrag:hover, .controlBar_ModuleListScrollDummy .jspActive {
@@ -1022,13 +934,13 @@ ul#ControlBar_Module_ModulePosition {
         font-weight: normal !important;
     }
 
-#ControlBar .dnnCheckbox img {
-    background: transparent url(../../images/darkCheckbox.png) no-repeat;
-}
+    #ControlEditPageMenu .dnnCheckbox:hover + label, #ControlEditPageMenu .dnnCheckbox + label:hover {
+        color: #4e89e3;
+    }
 
-#ControlBar .dnnCheckbox.dnnCheckbox-checked img {
-    background: transparent url(../../images/darkCheckbox.png) no-repeat -50px 0;
-}
+    #ControlEditPageMenu input[type='checkbox'][disabled] + span + label {
+        color: #9d9d9d;
+    }
 
 #shareableWarning {
     padding: 16px;
@@ -1055,13 +967,13 @@ ul#ControlBar_Module_ModulePosition {
 
 #controlBar_SwitchSite,
 #controlBar_SwitchLanguage {
-    width: 215px;
+    width: 195px;
 }
 
     #controlBar_SwitchSite .rcbInput,
     #controlBar_SwitchLanguage .rcbInput {
         padding: 4px !important;
-        width: 190px !important;
+        width: 170px !important;
     }
 
     #controlBar_SwitchSite .rcbArrowCellRight a,
@@ -1085,36 +997,23 @@ ul#ControlBar_Module_ModulePosition {
     border: 1px solid #464648;
     padding: 0 !important;
     background: #464648;
-    background: -moz-linear-gradient(top, #464648 1%, #333032 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#464648), color-stop(100%,#333032));
-    background: -webkit-linear-gradient(top, #464648 1%,#333032 100%);
-    background: -o-linear-gradient(top, #464648 1%,#333032 100%);
-    background: -ms-linear-gradient(top, #464648 1%,#333032 100%);
-    background: linear-gradient(to bottom, #464648 1%,#333032 100%);
-    -webkit-box-shadow: none;
-    box-shadow: none;
 }
 
 #ControlBar_ControlPanel .dnnBlackDropDown .selected-item .selected-value {
     color: #999;
     background: url(../../../../../../images/dnnSpinnerDownArrowWhite.png) no-repeat center right transparent;
 }
+
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container {
     border: 1px solid #222;
     background-color: #444;
     -webkit-box-shadow: 0 -2px 2px -2px #ccc;
     box-shadow: 0 -2px 2px -2px #ccc;
 }
+
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .sort-button {
     background: #464648;
-    background: -moz-linear-gradient(top, #464648 1%, #333032 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#464648), color-stop(100%,#333032));
-    background: -webkit-linear-gradient(top, #464648 1%,#333032 100%);
-    background: -o-linear-gradient(top, #464648 1%,#333032 100%);
-    background: -ms-linear-gradient(top, #464648 1%,#333032 100%);
-    background: linear-gradient(to bottom, #464648 1%,#333032 100%);
     color: #ccc;
-    box-shadow: 0 2px 3px -2px #000;
     border: 1px solid #222;
 }
 
@@ -1131,26 +1030,116 @@ ul#ControlBar_Module_ModulePosition {
     background-position: 100% -12px;
 }
 
+#ControlBar_Module_AddNewModule .search-container {
+    position: absolute;
+    margin-left: 10px;
+    display: inline;
+}
+
+#ControlBar_Module_AddNewModule .search-container .search-input-container {
+    background: #515151;
+    border: 1px solid #515151;
+    -webkit-border-radius: 5px;
+    border-radius: 3px;
+    height: 31px;
+    width: 134px;
+    padding: 0 33px 1px 33px;
+    margin: 1px;
+    position: relative;
+    top: -1px;
+}
+
+#ControlBar_Module_AddNewModule .search-container input.search-input {
+    background: transparent;
+    color: #999;
+    padding: 8px 1px 7px 1px;
+    width: 100%;
+    max-width: none;
+    display: block;
+    border: none;
+    margin: 0;
+    box-shadow: none !important;
+    outline: none;
+}
+
+    #ControlBar_Module_AddNewModule .search-container input.search-input::-ms-clear {
+        display: none;
+    }
+
+#ControlBar_Module_AddNewModule .search-container .clear-button,
+#ControlBar_Module_AddNewModule .search-container .search-button {
+    display: block;
+    position: absolute;
+    width: 22px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+}
+
+#ControlBar_Module_AddNewModule .search-container .search-button {
+    left: 8px;
+    top: 8px;
+    background-image: url("images/icon-cp-search.png");
+    background-color: transparent;
+}
+
+#ControlBar_Module_AddNewModule .search-container .clear-button {
+    right: 8px;
+    top: 8px;
+    background-image: url("images/icon-clear-input.png");
+    background-color: transparent;
+    background-position: 0 0;
+}
+
+#ControlBar_Module_AddNewModule .search-container .clear-button:hover {
+    right: 8px;
+    top: 8px;
+    background-color: transparent;
+    background-position: 0 -18px;
+}
+
+#ControlBar_Module_AddExistingModule .viewportSeparator,
+#ControlBar_Module_AddNewModule .viewportSeparator {
+    position: absolute;
+    height: 100%;
+    z-index: 5;
+    width: 20%;
+    display: none;
+}
+
+/* No borrar estos gradient */
+#ControlBar_Module_AddExistingModule .viewportSeparator.left,
+#ControlBar_Module_AddNewModule .viewportSeparator.left {
+    background: -moz-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12% , rgba(0,0,0,0.70) 100%);
+    background: -webkit-gradient(linear, right left, right left, color-stop(0%, rgba(0,0,0,0)), color-stop(12%,rgba(0,0,0,0.40)), color-stop(100%,rgba(0,0,0,0.70)));
+    background: -webkit-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12% , rgba(0,0,0,0.70) 100%);
+    background: -o-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12% , rgba(0,0,0,0.70) 100%);
+    background: -ms-linear-gradient(right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12% , rgba(0,0,0,0.70) 100%);
+    background: linear-gradient(to left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12% , rgba(0,0,0,0.70) 100%);
+}
+
+#ControlBar_Module_AddExistingModule .viewportSeparator.right,
+#ControlBar_Module_AddNewModule .viewportSeparator.right {
+    right: 0%;
+    background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.70) 100%);
+    background: -webkit-gradient(linear, left right, left right, color-stop(50%, rgba(0,0,0,0)), color-stop(10%,rgba(0,0,0,0.40)), color-stop(100%,rgba(0,0,0,0.70)));
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.70) 100%);
+    background: -o-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.70) 100%);
+    background: -ms-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.70) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.40) 12%, rgba(0,0,0,0.70) 100%);
+}
+/* No borrar estos gradient */
+
+
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .search-container .search-input-container {
     background: #101010;
-    background: -moz-linear-gradient(top, #101010 1%, #464547 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#101010), color-stop(100%,#464547));
-    background: -webkit-linear-gradient(top, #101010 1%,#464547 100%);
-    background: -o-linear-gradient(top, #101010 1%,#464547 100%);
-    background: -ms-linear-gradient(top, #101010 1%,#464547 100%);
-    background: linear-gradient(to bottom, #101010 1%,#464547 100%);
     border: 1px solid #222;
     box-shadow: 0 2px 3px -2px #ccc;
 }
 
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .search-container input.search-input {
     background: #101010;
-    background: -moz-linear-gradient(top, #101010 1%, #464547 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#101010), color-stop(100%,#464547));
-    background: -webkit-linear-gradient(top, #101010 1%,#464547 100%);
-    background: -o-linear-gradient(top, #101010 1%,#464547 100%);
-    background: -ms-linear-gradient(top, #101010 1%,#464547 100%);
-    background: linear-gradient(to bottom, #101010 1%,#464547 100%);
     color: #999;
     padding: 7px;
 }
@@ -1162,9 +1151,6 @@ ul#ControlBar_Module_ModulePosition {
 #ControlBar_ControlPanel .dnnBlackDropDown .dt-container .dt-header {
     background: #333;
     border-bottom: 1px solid #222;
-    -moz-box-shadow: 0 6px 6px 0 rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 6px 6px 0 rgba(0,0,0,0.5);
-    box-shadow: 0 6px 6px 0 rgba(0,0,0,0.5);
     height: 42px;
     padding: 7px 0 0 0;
 }
@@ -1222,4 +1208,98 @@ ul#ControlBar_Module_ModulePosition {
     background: url("images/controlbar_loading.png") no-repeat 0 0;
 }
 
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark,
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 34px;
+    width: 25px;
+    background: url(controlbarimages/bookmarkThisModule.png) no-repeat 4px 5px;
+    opacity: 0.5;
+}
 
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark {
+    background: url(controlbarimages/bookmarkThisModule.png) no-repeat 4px -45px;
+}
+
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.hideBookmark,
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.hideBookmark {
+    background: none;
+    cursor: move;
+}
+
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark.highlight,
+#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark.highlight {
+    background-image: url(controlbarimages/bookmarkThisModule_white.png);
+}
+
+/* Added */
+#ControlBar .dnnPrimaryAction {
+    text-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #3792ED;
+}
+
+#ControlBar .RadComboBox_DnnBlack td.rcbInputCellLeft,
+#ControlBar .RadComboBox_DnnBlack td.rcbInputCellRigh,
+#ControlBar .RadComboBox_DnnBlack td.rcbArrowCellRight,
+#ControlBar .RadComboBoxDropDown_DnnBlack td.rcbArrowCellLeft {
+    text-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: #515151;
+    color: #fff;
+}
+
+#ControlBar .subNav.advanced dl ul li {
+    padding-top: 10px;
+    margin: 1px;
+    background: #5e5e5e;
+}
+
+#ControlBar .subNavToggle li:hover a,
+#ControlBar .subNavToggle li.active a {
+    border: 1px solid #167afb;
+    border-right: 0;
+    background: #167afb;
+}
+
+#ControlBar .subNavToggle li a {
+    display: block;
+    width: 38px;
+    height: 48px;
+    border: 1px solid #2C2C2C;
+    border-right: 0;
+    -webkit-border-radius: 3px 0px 0px 3px;
+    border-radius: 3px 0px 0px 3px;
+    background: #282828;
+}
+
+#ControlBar .subNav {
+    background-color: #3d3d3d;
+}
+
+#ControlBar .RadComboBox_DnnBlack,
+#ControlBar .RadComboBox_DnnBlack .rcbInput,
+#ControlBar .RadComboBox_DnnBlack .rcbInput.radPreventDecorate input[name="ControlBar$CategoryList"]:focus,
+#ControlBar .RadComboBoxDropDown_DnnBlack {
+    background-color: #515151;
+    color: #bdbdbd !important;
+}
+
+#ControlBar a.controlBar_CloseAddModules {
+    display: block;
+    float: right;
+    background: transparent url(controlbarimages/closeAddModule.png) no-repeat;
+    margin: 5px;
+    color: #B6B6B6;
+    cursor: pointer;
+    padding-left: 23px;
+}
+
+.dnnDropDownList .selected-item {
+    box-shadow: none;
+}

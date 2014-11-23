@@ -1,6 +1,6 @@
 ﻿#region Copyright
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 // 
@@ -19,6 +19,7 @@ using DotNetNuke.Modules.PreviewProfileManagement.Views;
 using DotNetNuke.Services.Mobile;
 using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.PreviewProfileManagement.Mocks;
+using DotNetNuke.Tests.Utilities;
 using DotNetNuke.UI.Modules;
 
 using Moq;
@@ -32,7 +33,7 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 	// ReSharper disable InconsistentNaming
 
 	[TestFixture]
-	public class ProfileManagerPresenterTests
+	public class ProfileManagerPresenterTests : DnnUnitTest
 	{
 		#region Private Properties
 
@@ -128,14 +129,15 @@ namespace DotNetNuke.Tests.PreviewProfileManagement
 
 		private void CreatePresenter()
 		{
-			UnitTestHelper.SetHttpContextWithSimulatedRequest("localhost", "dnn", "c:\\", "Default.aspx");
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
+            simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
 
 			HttpContext.Current.Items.Add("PortalSettings", new PortalSettings());
 
 			_presenter = new ProfileManagerPresenter(_mockView.Object, _mockController.Object)
 			             	{
 								ModuleContext = new ModuleInstanceContext(),
-                                HighlightDataPath = ConfigurationManager.AppSettings["HighlightDataPath"]
+                                HighlightDataPath = HighlightDataPath
 			             	};
 		}
 

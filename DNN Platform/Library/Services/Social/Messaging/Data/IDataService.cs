@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -39,6 +39,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         IDataReader GetMessagesBySender(int messageId, int portalId);
         IDataReader GetLastSentMessage(int userId, int portalId);
         void DeleteMessage(int messageId);
+        void DeleteUserFromConversation(int conversationId, int userId);
 
         IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus);
         IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
@@ -53,6 +54,9 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         int CountArchivedMessagesByConversation(int conversationId);
         int CountSentMessages(int userId, int portalId);
         int CountArchivedMessages(int userId, int portalId);
+        int CountSentConversations(int userId, int portalId);
+        int CountArchivedConversations(int userId, int portalId);
+        int CheckReplyHasRecipients(int conversationId, int userId);
         
         #endregion
 

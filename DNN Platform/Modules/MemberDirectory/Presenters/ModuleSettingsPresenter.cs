@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
         {
             base.OnLoad();
 
-            View.Model.Groups = TestableRoleController.Instance.GetRoles(PortalId, r => r.Status == RoleStatus.Approved);
+            View.Model.Groups = RoleController.Instance.GetRoles(PortalId, r => r.Status == RoleStatus.Approved);
             View.Model.Relationships = RelationshipController.Instance.GetRelationshipsByPortalId(PortalId);
 
             View.Model.ProfileProperties = new List<ProfilePropertyDefinition>();

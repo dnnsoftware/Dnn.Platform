@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,8 @@
 
 using System;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
+
 using Telerik.Web.UI;
 
 #endregion
@@ -35,13 +37,24 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
+            OnClientLoad = "$.dnnComboBoxLoaded";
+            OnClientFocus = "$.dnnComboBoxHack";
+            OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            OnClientItemsRequested = "$.dnnComboBoxItemRequested";
+            MaxHeight = 240;
+            ZIndex = 100010;
+            Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
             Utilities.ApplySkin(this);
-            jQuery.RegisterDnnJQueryPlugins(this.Page);
-            this.OnClientLoad = "$.dnnComboBoxLoaded";
-            this.OnClientFocus = "$.dnnComboBoxHack";
-            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            this.MaxHeight = 240;
-            this.ZIndex = 100010;
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            base.OnPreRender(e);
         }
 
         public void AddItem(string text, string value)

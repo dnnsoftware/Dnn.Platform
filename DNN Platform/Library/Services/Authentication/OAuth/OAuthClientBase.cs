@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,15 +46,16 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 
 using System.Collections.Specialized;
-
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Installer.Log;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     public abstract class OAuthClientBase
     {
         #region Private Members
-
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthClientBase));
         private const string HMACSHA1SignatureType = "HMAC-SHA1";
 
         //oAuth 1
@@ -184,7 +185,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
                         }
                     }
 
-                    HttpContext.Current.Response.Redirect(ret, true);
+                    if (ret != null)
+                    {
+                        HttpContext.Current.Response.Redirect(ret, true);
+                    }
 
                     return AuthorisationResult.RequestingCode;
                 }
@@ -206,12 +210,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (!HaveVerificationCode())
             {
-                List<QueryParameter> parameters = new List<QueryParameter>();
-                parameters.Add(new QueryParameter("scope", Scope));
-                parameters.Add(new QueryParameter(OAuthClientIdKey, APIKey));
-                parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())));
-                parameters.Add(new QueryParameter("state", Service));
-                parameters.Add(new QueryParameter("response_type", "code"));
+                var parameters = new List<QueryParameter>
+                                        {
+                                            new QueryParameter("scope", Scope),
+                                            new QueryParameter(OAuthClientIdKey, APIKey),
+                                            new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())),
+                                            new QueryParameter("state", Service),
+                                            new QueryParameter("response_type", "code")
+                                        };
 
                 HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), true);
                 return AuthorisationResult.RequestingCode;
@@ -219,7 +225,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             ExchangeCodeForToken();
 
-            return AuthorisationResult.Authorized;
+            return String.IsNullOrEmpty(AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
         }
 
         private string ComputeHash(HashAlgorithm hashAlgorithm, string data)
@@ -283,7 +289,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private string ExecuteAuthorizedRequest(HttpMethod method, Uri uri)
         {
             string outUrl;
-            string ret;
             List<QueryParameter> requestParameters;
 
             string nonce = GenerateNonce();
@@ -318,7 +323,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 headerParameters.Add(new QueryParameter(OAuthVerifierKey, OAuthVerifier));
             }
 
-            ret = ExecuteWebRequest(method, uri, String.Empty, headerParameters.ToAuthorizationString());
+            string ret = ExecuteWebRequest(method, uri, String.Empty, headerParameters.ToAuthorizationString());
 
             return ret;
         }
@@ -346,14 +351,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             else
             {
-                if (String.IsNullOrEmpty(parameters))
-                {
-                    request = WebRequest.CreateDefault(new Uri(uri.ToString()));
-                }
-                else
-                {
-                    request = WebRequest.CreateDefault(new Uri(uri + "?" + parameters));
-                }
+                request = WebRequest.CreateDefault(String.IsNullOrEmpty(parameters) 
+                            ? new Uri(uri.ToString()) 
+                            : new Uri(uri + "?" + parameters));
             }
 
             //Add Headers
@@ -362,16 +362,36 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.Headers.Add(HttpRequestHeader.Authorization, authHeader);
             }
 
-            using (WebResponse response = request.GetResponse())
+            try
             {
-                using (Stream responseStream = response.GetResponseStream())
+                using (WebResponse response = request.GetResponse())
                 {
-                    using (var responseReader = new StreamReader(responseStream))
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        return responseReader.ReadToEnd();
+                        if (responseStream != null)
+                        {
+                            using (var responseReader = new StreamReader(responseStream))
+                            {
+                                return responseReader.ReadToEnd();
+                            }
+                        }
                     }
                 }
             }
+            catch (WebException ex)
+            {
+                using (Stream responseStream = ex.Response.GetResponseStream())
+                {
+                    if (responseStream != null)
+                    {
+                        using (var responseReader = new StreamReader(responseStream))
+                        {
+                            Logger.ErrorFormat("WebResponse exception: {0}", responseReader.ReadToEnd());
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         private string GenerateSignatureBase(Uri url, string token, string callbackurl, string oauthVerifier, string httpMethod, string timeStamp, string nonce, out string normalizedUrl, out List<QueryParameter> requestParameters)
@@ -465,9 +485,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private string RequestToken()
         {
-            string outUrl = String.Empty;
+            string outUrl;
             List<QueryParameter> requestParameters;
-            string ret = String.Empty;
 
             string nonce = GenerateNonce();
             string timeStamp = GenerateTimeStamp();
@@ -494,7 +513,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthVersionKey, OAuthVersion)
                                        };
 
-            ret = ExecuteWebRequest(RequestTokenMethod, new Uri(outUrl), String.Empty, headerParameters.ToAuthorizationString());
+            string ret = ExecuteWebRequest(RequestTokenMethod, new Uri(outUrl), String.Empty, headerParameters.ToAuthorizationString());
 
             return ret;
         }
@@ -561,52 +580,72 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         #endregion
 
-        public void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
+        public virtual void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
         {
-            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+            var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
             string userName = Service + "-" + user.Id;
 
-            UserInfo objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
+            var objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
                                                                 Service, "",
                                                                 settings.PortalName, IPAddress,
                                                                 ref loginStatus);
 
 
             //Raise UserAuthenticated Event
-            UserAuthenticatedEventArgs eventArgs = new UserAuthenticatedEventArgs(objUserInfo, userName, loginStatus, Service);
+            var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, userName, loginStatus, Service)
+                                            {
+                                                AutoRegister = true
+                                            };
 
-            eventArgs.AutoRegister = true;
+            var profileProperties = new NameValueCollection();
 
-            NameValueCollection profileProperties = new NameValueCollection();
-
-            profileProperties.Add("FirstName", user.FirstName);
-            profileProperties.Add("LastName", user.LastName);
-            profileProperties.Add("Email", user.PreferredEmail);
-            profileProperties.Add("DisplayName", user.DisplayName);
-            if (!String.IsNullOrEmpty(user.Locale))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.FirstName) && !string.IsNullOrEmpty(user.FirstName)))
+            {
+                profileProperties.Add("FirstName", user.FirstName);
+            }
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.LastName) && !string.IsNullOrEmpty(user.LastName)))
+            {
+                profileProperties.Add("LastName", user.LastName);
+            }
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Email) && !string.IsNullOrEmpty(user.Email)))
+            {
+                profileProperties.Add("Email", user.PreferredEmail);
+            }
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.DisplayName) && !string.IsNullOrEmpty(user.DisplayName)))
+            {
+                profileProperties.Add("DisplayName", user.DisplayName);
+            }
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("ProfileImage")) && !string.IsNullOrEmpty(user.ProfileImage)))
+            {
+                profileProperties.Add("ProfileImage", user.ProfileImage);
+            }
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("Website")) && !string.IsNullOrEmpty(user.Website)))
+            {
+                profileProperties.Add("Website", user.Website);
+            }
+            if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
                 profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
             }
-            //profileProperties.Add("City", user.City);
-            profileProperties.Add("ProfileImage", user.ProfileImage);
-            profileProperties.Add("Website", user.Website);
 
-            if (String.IsNullOrEmpty(user.TimeZoneInfo))
+            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
             {
-                int timeZone;
-                if (Int32.TryParse(user.Timezone, out timeZone))
+                if (String.IsNullOrEmpty(user.TimeZoneInfo))
                 {
-                    var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
+                    int timeZone;
+                    if (Int32.TryParse(user.Timezone, out timeZone))
+                    {
+                        var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
 
-                    profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
+                        profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
+                    }
+                }
+                else
+                {
+                    profileProperties.Add("PreferredTimeZone", user.TimeZoneInfo);
                 }
             }
-            else
-            {
-                profileProperties.Add("PreferredTimeZone", user.TimeZoneInfo);
-            }
-
 
             addCustomProperties(profileProperties);
 
@@ -620,16 +659,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             onAuthenticated(eventArgs);
         }
 
-        public AuthorisationResult Authorize()
+        public virtual AuthorisationResult Authorize()
         {
             if (OAuthVersion == "1.0")
             {
                 return AuthorizeV1();
             }
-            else
-            {
-                return AuthorizeV2();
-            }
+            return AuthorizeV2();
         }
 
         /// <summary>
@@ -661,7 +697,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return GenerateSignatureUsingHash(signatureBase, hmacsha1);
         }
 
-        public TUserData GetCurrentUser<TUserData>() where TUserData : UserData
+        public virtual TUserData GetCurrentUser<TUserData>() where TUserData : UserData
         {
             LoadTokenCookie(String.Empty);
 
@@ -670,15 +706,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 return null;
             }
 
-            string responseText;
-            if (OAuthVersion == "1.0")
-            {
-                responseText = ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint);
-            }
-            else
-            {
-                responseText = ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty);
-            }
+            string responseText = (OAuthVersion == "1.0")
+                ? ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint) 
+                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }
@@ -701,8 +731,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public void RemoveToken()
         {
-            HttpCookie authTokenCookie = new HttpCookie(AuthTokenName);
-            authTokenCookie.Expires = DateTime.Now.AddDays(-30);
+            var authTokenCookie = new HttpCookie(AuthTokenName) {Expires = DateTime.Now.AddDays(-30)};
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }
 

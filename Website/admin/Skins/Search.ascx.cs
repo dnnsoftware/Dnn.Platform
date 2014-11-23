@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,9 +23,12 @@
 using System;
 using System.Collections;
 
+using ClientDependency.Core;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -361,8 +364,7 @@ namespace DotNetNuke.UI.Skins.Controls
             int searchTabId = PortalSettings.SearchTabId;
             if (searchTabId == Null.NullInteger)
             {
-                var objModules = new ModuleController();
-                ArrayList arrModules = objModules.GetModulesByDefinition(PortalSettings.PortalId, "Search Results");
+                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(PortalSettings.PortalId, "Search Results");
                 if (arrModules.Count > 1)
                 {
                     foreach (ModuleInfo SearchModule in arrModules)
@@ -465,42 +467,38 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
                         
-            Framework.jQuery.RegisterDnnJQueryPlugins(this.Page);
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Search/SearchSkinObjectPreview.js");
             
 
             cmdSearch.Click += CmdSearchClick;
             cmdSearchNew.Click += CmdSearchNewClick;
 
-            if (!Page.IsPostBack)
-            {
-                if (MinCharRequired == 0) MinCharRequired = 2;
-                if (AutoSearchDelayInMilliSecond == 0) AutoSearchDelayInMilliSecond = 400;
-                PortalId = PortalSettings.ActiveTab.IsSuperTab ? PortalSettings.PortalId : -1;
+            if (MinCharRequired == 0) MinCharRequired = 2;
+            if (AutoSearchDelayInMilliSecond == 0) AutoSearchDelayInMilliSecond = 400;
+            PortalId = PortalSettings.ActiveTab.IsSuperTab ? PortalSettings.PortalId : -1;
 
-                if (!String.IsNullOrEmpty(Submit))
+            if (!String.IsNullOrEmpty(Submit))
+            {
+                if (Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
-                    if (Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
-                    {
-                        Submit = Submit.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
-                        Submit = Submit.Replace("src='", "src='" + PortalSettings.ActiveTab.SkinPath);
-                    }
+                    Submit = Submit.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
+                    Submit = Submit.Replace("src='", "src='" + PortalSettings.ActiveTab.SkinPath);
                 }
-                else
-                {
-                    Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
-                }
-                cmdSearch.Text = Submit;
-                cmdSearchNew.Text = Submit;
-                if (!String.IsNullOrEmpty(CssClass))
-                {
-                    WebRadioButton.CssClass = CssClass;
-                    SiteRadioButton.CssClass = CssClass;
-                    cmdSearch.CssClass = CssClass;
-                    cmdSearchNew.CssClass = CssClass;
-                }
+            }
+            else
+            {
+                Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
+            }
+            cmdSearch.Text = Submit;
+            cmdSearchNew.Text = Submit;
+            if (!String.IsNullOrEmpty(CssClass))
+            {
+                WebRadioButton.CssClass = CssClass;
+                SiteRadioButton.CssClass = CssClass;
+                cmdSearch.CssClass = CssClass;
+                cmdSearchNew.CssClass = CssClass;
             }
         }
 
@@ -565,7 +563,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     SearchType = "S";
                 }
 
-                ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
+                JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
                 ClientResourceManager.RegisterScript(Page, "~/Resources/Search/Search.js", FileOrder.Js.DefaultPriority, "DnnFormBottomProvider");
 
                 txtSearchNew.Attributes.Add("autocomplete", "off");
@@ -573,28 +571,25 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else
             {
-                if (!Page.IsPostBack)
+                WebRadioButton.Visible = ShowWeb;
+                SiteRadioButton.Visible = ShowSite;
+
+                if (WebRadioButton.Visible)
                 {
-                    WebRadioButton.Visible = ShowWeb;
-                    SiteRadioButton.Visible = ShowSite;
-
-                    if (WebRadioButton.Visible)
-                    {
-                        WebRadioButton.Checked = true;
-                        WebRadioButton.Text = WebText;
-                        WebRadioButton.ToolTip = WebToolTip;
-                    }
-                    if (SiteRadioButton.Visible)
-                    {
-                        SiteRadioButton.Checked = true;
-                        SiteRadioButton.Text = SiteText;
-                        SiteRadioButton.ToolTip = SiteToolTip;
-                    }
-
-                    SearchType = "S";
-                    txtSearch.Attributes.Add("autocomplete", "off");
-                    txtSearch.Attributes.Add("placeholder", PlaceHolderText);
+                    WebRadioButton.Checked = true;
+                    WebRadioButton.Text = WebText;
+                    WebRadioButton.ToolTip = WebToolTip;
                 }
+                if (SiteRadioButton.Visible)
+                {
+                    SiteRadioButton.Checked = true;
+                    SiteRadioButton.Text = SiteText;
+                    SiteRadioButton.ToolTip = SiteToolTip;
+                }
+
+                SearchType = "S";
+                txtSearch.Attributes.Add("autocomplete", "off");
+                txtSearch.Attributes.Add("placeholder", PlaceHolderText);
             }
         }
 

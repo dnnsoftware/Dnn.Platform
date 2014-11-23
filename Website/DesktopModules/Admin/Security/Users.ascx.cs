@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -122,6 +122,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 filterString += filterPropertyString + "&";
             }
+            filterString += "pagesize=" + grdUsers.PageSize + "&";            
             if (!string.IsNullOrEmpty(page))
             {
                 filterString += page;
@@ -142,11 +143,17 @@ namespace DotNetNuke.Modules.Admin.Users
                 text = name;
             }
             var item = new DnnComboBoxItem(text, name);
-            if (name == propertyName)
+            if (name.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase))
             {
                 item.Selected = true;
             }
             return item;
+        }
+
+        private void InitializeGrid()
+        {
+            grdUsers.MasterTableView.PagerStyle.PageSizeLabelText = LocalizeString("PagerPageSize.Text");
+            grdUsers.MasterTableView.PagerStyle.PagerTextFormat = LocalizeString("PagerTextFormat.Text");
         }
 
         private void SetGridDataSource()
@@ -158,40 +165,40 @@ namespace DotNetNuke.Modules.Admin.Users
 
             int totalRecords = 0;
 
-            if (searchText == Localization.GetString("Unauthorized"))
+            if (searchText.Equals(Localization.GetString("Unauthorized"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetUnAuthorizedUsers(UsersPortalId, true, IsSuperUser);
 				totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("Deleted"))
+            else if (searchText.Equals(Localization.GetString("Deleted"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetDeletedUsers(UsersPortalId);
 				totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("OnLine"))
+            else if (searchText.Equals(Localization.GetString("OnLine"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetOnlineUsers(UsersPortalId);
 	            totalRecords = Users.Count;
             }
-            else if (searchText == Localization.GetString("All"))
+            else if (searchText.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
             {
                 Users = UserController.GetUsers(UsersPortalId, grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);                
             }
-            else if (searchText != "None")
+            else if (!searchText.Equals("None", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (searchText.Length > 1)
                 {
                     searchText = "%" + searchText;
                 }
-                switch (searchField)
+                switch (searchField.ToLowerInvariant())
                 {
-                    case "Email":
+                    case "email":
                         Users = UserController.GetUsersByEmail(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
-                    case "Username":
+                    case "username":
                         Users = UserController.GetUsersByUserName(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
-					case "DisplayName":
+					case "displayname":
 						Users = UserController.GetUsersByDisplayName(UsersPortalId, searchText + "%", grdUsers.CurrentPageIndex, grdUsers.PageSize, ref totalRecords, true, IsSuperUser);
                         break;
                     default:
@@ -210,7 +217,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
             filters += "," + Localization.GetString("All");
             filters += "," + Localization.GetString("OnLine");
-            filters += "," + Localization.GetString("Unauthorized");
+            if (!IsSuperUser)
+            {
+                filters += "," + Localization.GetString("Unauthorized");
+            }
             filters += "," + Localization.GetString("Deleted");
             var strAlphabet = filters.Split(',');
             rptLetterSearch.DataSource = strAlphabet;
@@ -221,7 +231,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                UserController.DeleteUnauthorizedUsers(PortalId);
+                UserController.DeleteUnauthorizedUsers(UsersPortalId);
                 RebindGrid();
             }
             catch (Exception exc)
@@ -282,8 +292,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private bool IsPortalAdministrator(int userId)
 		{
-			var portalController = new PortalController();
-			var groupId = portalController.GetPortal(PortalSettings.PortalId).PortalGroupID;
+            var groupId = PortalController.Instance.GetPortal(PortalSettings.PortalId).PortalGroupID;
 			if (groupId != Null.NullInteger)
 			{
 				return PortalGroupController.Instance.GetPortalsByGroup(groupId).Any(p => p.AdministratorId == userId);
@@ -376,17 +385,26 @@ namespace DotNetNuke.Modules.Admin.Users
             base.OnInit(e);
 
             cmdSearch.Click += OnSearchClick;
-            cmdDeleteUnAuthorized.Click += cmdDeleteUnAuthorized_Click;
-            cmdRemoveDeleted.Click += cmdRemoveDeleted_Click;
+            deleteUnAuthorizedButton.Click += DeleteUnAuthorizedButtonClick;
+            removeDeletedButton.Click += RemoveDeletedButtonClick;
             grdUsers.ItemDataBound += GrdUsersOnItemDataBound;
             grdUsers.ItemCommand += GrdUsersOnItemCommand;
             grdUsers.PreRender += GrdUsersOnPreRender;
 
-            if (!IsPostBack)
+            addUserButton.NavigateUrl = EditUrl("Edit");
+            if (ModulePermissionController.CanAdminModule(this.ModuleConfiguration))
+            {
+                addUserButton.Visible = true;
+                removeDeletedButton.Visible = true;
+                deleteUnAuthorizedButton.Visible = true;
+            }
+            
+            InitializeGrid();
+            if (!Page.IsPostBack)
             {
                 SetInitialPageSize();
             }
-
+            
             if (Request.QueryString["filter"] != null)
             {
                 Filter = Request.QueryString["filter"];
@@ -398,7 +416,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (String.IsNullOrEmpty(Filter))
             {
 				//Get Default View
-                var setting = UserModuleBase.GetSetting(UsersPortalId, "Display_Mode");
+                var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, "Display_Mode");
                 var mode = (DisplayMode) setting;
                 switch (mode)
                 {
@@ -424,17 +442,22 @@ namespace DotNetNuke.Modules.Admin.Users
                 else
                 {
                     var settingKey = "Column_" + header;
-                    var setting = UserModuleBase.GetSetting(UsersPortalId, settingKey);
+                    var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, settingKey);
                     isVisible = Convert.ToBoolean(setting);
                 }
-                if (ReferenceEquals(column.GetType(), typeof (DnnGridImageCommandColumn)))
+
+                if (ReferenceEquals(column.GetType(), typeof(DnnGridTemplateColumn)) && column.UniqueName == "DeleteActions")
+                {
+                    isVisible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
+                }
+                else if (ReferenceEquals(column.GetType(), typeof (DnnGridImageCommandColumn)))
                 {
                     isVisible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
 
                     var imageColumn = (DnnGridImageCommandColumn)column;
-					
-                	//Manage Edit Column NavigateURLFormatString
-                	if (imageColumn.CommandName == "Edit")
+
+                    //Manage Edit Column NavigateURLFormatString
+                    if (imageColumn.CommandName == "Edit")
                     {
                         //so first create the format string with a dummy value and then
                         //replace the dummy value with the FormatString place holder
@@ -442,7 +465,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         formatString = formatString.Replace("KEYFIELD", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
-					
+
                     //Manage Roles Column NavigateURLFormatString
                     if (imageColumn.CommandName == "UserRoles")
                     {
@@ -452,7 +475,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                         else
                         {
-							//The Friendly URL parser does not like non-alphanumeric characters
+                            //The Friendly URL parser does not like non-alphanumeric characters
                             //so first create the format string with a dummy value and then
                             //replace the dummy value with the FormatString place holder
                             var formatString = EditUrl("UserId", "KEYFIELD", "User Roles", UserFilter(false));
@@ -460,8 +483,8 @@ namespace DotNetNuke.Modules.Admin.Users
                             imageColumn.NavigateURLFormatString = formatString;
                         }
                     }
-					
-					//Localize Image Column Text
+
+                    //Localize Image Column Text
                     if (!String.IsNullOrEmpty(imageColumn.CommandName))
                     {
                         imageColumn.Text = Localization.GetString(imageColumn.CommandName, LocalResourceFile);
@@ -475,12 +498,24 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (Request.QueryString["pagesize"] != null)
             {
-                grdUsers.PageSize = Convert.ToInt32(Request.QueryString["pagesize"]);
-            }
+                int pageSize;
+                if (Int32.TryParse(Request.QueryString["pagesize"], out pageSize))
+                {
+                    grdUsers.PageSize = pageSize;    
+                }
+            }            
             else
             {
-                var setting = UserModuleBase.GetSetting(UsersPortalId, "Records_PerPage");
-                grdUsers.PageSize = Convert.ToInt32(setting);
+                var pageSizeSetting = GetPageSizeSetting(PortalSettings.PortalId, UserInfo.UserID);
+                if (pageSizeSetting != Null.NullInteger)
+                {
+                    grdUsers.PageSize = pageSizeSetting;
+                }
+                else
+                {
+                    var setting = UserModuleBase.GetSetting(PortalSettings.PortalId, "Records_PerPage");
+                    grdUsers.PageSize = Convert.ToInt32(setting);   
+                }                
             }
         }
 
@@ -512,7 +547,11 @@ namespace DotNetNuke.Modules.Admin.Users
 					if ((!String.IsNullOrEmpty(Filter) && Filter.ToUpper() != "NONE") && !String.IsNullOrEmpty(FilterProperty))
                     {
                         txtSearch.Text = Filter;
-                        ddlSearchType.SelectedValue = FilterProperty;
+                        var findedItem = ddlSearchType.Items.FindItemByValue(FilterProperty, true);
+                        if (findedItem != null)
+                        {
+                            findedItem.Selected = true;
+                        }
                     }
                 }
             }
@@ -522,12 +561,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        void cmdRemoveDeleted_Click(object sender, EventArgs e)
+        void RemoveDeletedButtonClick(object sender, EventArgs e)
         {
             RemoveDeletedUsers();
         }
 
-        void cmdDeleteUnAuthorized_Click(object sender, EventArgs e)
+        void DeleteUnAuthorizedButtonClick(object sender, EventArgs e)
         {
             DeleteUnAuthorizedUsers();
         }
@@ -551,7 +590,30 @@ namespace DotNetNuke.Modules.Admin.Users
                 case "Restore":
                     RestoreUser(GetUserId(e));
                     break;
+                case "ChangePageSize":
+                    ChangePageSizeSetting(PortalSettings.PortalId, UserInfo.UserID, ((GridPageSizeChangedEventArgs)e).NewPageSize);
+                    break;
             }
+        }
+        private void ChangePageSizeSetting(int portalId, int userId, int pageSize)
+        {
+            var personalizationController = new Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(userId, portalId);
+            personalization.Profile["User-Accounts:" + "pageSize_" + portalId] = pageSize.ToString(CultureInfo.InvariantCulture);
+            personalization.IsModified = true;
+            personalizationController.SaveProfile(personalization);
+        }
+
+        private int GetPageSizeSetting(int portalId, int userId)
+        {
+            var personalizationController = new Services.Personalization.PersonalizationController();
+            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var pageSizeValue = personalization.Profile["User-Accounts:" + "pageSize_" + portalId];
+            if (pageSizeValue == null)
+            {
+                return Null.NullInteger;
+            }
+            return Int32.Parse(pageSizeValue.ToString(), CultureInfo.InvariantCulture);
         }
 
         private int GetUserId(GridCommandEventArgs e)
@@ -740,19 +802,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     onlineControl.Visible = user.Membership.IsOnLine;
                     onlineControl.ToolTip = Localization.GetString("Online.Text", LocalResourceFile);
                 }
-            }
-        }
-
-        protected void SetupAddUserLink(object sender, EventArgs e)
-        {
-            if(IsEditable)
-            {
-                AddUserLink.Text = Localization.GetString(ModuleActionType.AddContent, LocalResourceFile);
-                AddUserLink.NavigateUrl = EditUrl();
-            }
-            else
-            {
-                AddUserLink.Visible = false;
             }
         }
 

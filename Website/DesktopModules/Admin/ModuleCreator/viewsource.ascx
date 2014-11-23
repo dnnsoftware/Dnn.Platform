@@ -126,6 +126,13 @@
         var mimeType = dnn.getVar('mimeType') || "text/html";
 
         var setupModule = function () {
+            CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
+                lineNumbers: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                mode: mimeType
+            });
+
             $('#viewSourceForm').dnnTabs();
         };
 
@@ -137,13 +144,6 @@
             // which may or may not cause an issue
             setupModule();
 
-        });
-        
-        CodeMirror.fromTextArea($("textarea[id$='txtSource']")[0], {
-            lineNumbers: true,
-            matchBrackets: true,
-            lineWrapping: true,
-            mode: mimeType
         });
     });
 

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.ControlPanels
 
                 if ((Request.IsAuthenticated))
                 {
-                    UserInfo user = UserController.GetCurrentUserInfo();
+                    UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     if (((user != null)))
                     {
                         bool isAdmin = user.IsInRole(PortalSettings.Current.AdministratorRoleName);
@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.ControlPanels
 
 					if (!Page.IsPostBack)
 					{
-						UserInfo objUser = UserController.GetCurrentUserInfo();
+						UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
 						if ((objUser != null))
 						{
 							if (objUser.IsSuperUser)

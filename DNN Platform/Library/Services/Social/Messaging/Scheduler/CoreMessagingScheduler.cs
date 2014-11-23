@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,8 +40,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 {
     public class CoreMessagingScheduler : SchedulerClient
     {
-        private readonly UserController userController = new UserController();
-
         private const string SettingLastHourlyRun = "CoreMessagingLastHourlyDigestRun";
         private const string SettingLastDailyRun = "CoreMessagingLastDailyDigestRun";
         private const string SettingLastWeeklyRun = "CoreMessagingLastWeeklyDigestRun";
@@ -153,8 +151,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                                 var messageDetails = InternalMessagingController.Instance.GetMessage(singleMessage.MessageID);
                                 var portalSettings = new PortalSettings(messageDetails.PortalID);
 
-                                var senderUser = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
-                                var recipientUser = userController.GetUser(messageDetails.PortalID, singleMessage.UserID);
+                                var senderUser = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+                                var recipientUser = UserController.Instance.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
                                 SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
                             }
@@ -231,12 +229,16 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         private static string GetEmailBody(string template, string messageBody, PortalSettings portalSettings, UserInfo recipientUser)
         {
+
+            template = template.Replace("[MESSAGEBODY]", messageBody); //moved to top since that we we can replace tokens in there too...
+            template = template.Replace("[RECIPIENTUSERID]", recipientUser.UserID.ToString());
+            template = template.Replace("[RECIPIENTDISPLAYNAME]", recipientUser.DisplayName);
+            template = template.Replace("[RECIPIENTEMAIL]", recipientUser.Email.ToString());    
             template = template.Replace("[SITEURL]", GetPortalHomeUrl(portalSettings));
             template = template.Replace("[NOTIFICATIONURL]", GetNotificationUrl(portalSettings, recipientUser.UserID));
             template = template.Replace("[PORTALNAME]", portalSettings.PortalName);
             template = template.Replace("[LOGOURL]", GetPortalLogoUrl(portalSettings));
-            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));
-            template = template.Replace("[MESSAGEBODY]", messageBody);
+            template = template.Replace("[UNSUBSCRIBEURL]", GetSubscriptionsUrl(portalSettings, recipientUser.UserID));            
             template = template.Replace("href=\"/", "href=\"http://" + portalSettings.DefaultPortalAlias + "/");
             template = template.Replace("src=\"/", "src=\"http://" + portalSettings.DefaultPortalAlias + "/");
 
@@ -253,6 +255,37 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             emailItemContent = emailItemContent.Replace("[TITLE]", messageDetails.Subject);
             emailItemContent = emailItemContent.Replace("[CONTENT]", messageDetails.Body);
             emailItemContent = emailItemContent.Replace("[PROFILEPICURL]", GetProfilePicUrl(portalSettings, authorId));
+            emailItemContent = emailItemContent.Replace("[PROFILEURL]", GetProfileUrl(portalSettings, authorId));
+
+            if (messageDetails.NotificationTypeID == 1)
+            {
+
+                var toUser = UserController.Instance.GetUser(messageDetails.PortalID, message.UserID);
+                var defaultLanguage = toUser.Profile.PreferredLocale;
+
+                var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "AcceptFriend");
+                var profileUrl = GetProfileUrl(portalSettings, authorId);
+                var linkContent = GetFriendRequestActionsTemplate(defaultLanguage);
+                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
+                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
+            }
+            if (messageDetails.NotificationTypeID == 2) //no actions for followback notifications
+            {
+                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
+                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");
+            }
+            if (messageDetails.NotificationTypeID == 3)
+            {
+
+                var toUser = UserController.Instance.GetUser(messageDetails.PortalID, message.UserID);
+                var defaultLanguage = toUser.Profile.PreferredLocale;
+
+                var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "FollowBack");
+                var profileUrl = GetProfileUrl(portalSettings, authorId);
+                var linkContent = GetFollowRequestActionsTemplate(defaultLanguage);
+                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
+                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");
+            }
 
             return emailItemContent;
         }
@@ -330,9 +363,9 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private void SendMessage(MessageRecipient messageRecipient)
         {
             //todo: check if host user can send to multiple portals...
-            var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
+            var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);            
 
-            var toUser = userController.GetUser(messageDetails.PortalID, messageRecipient.UserID);
+            var toUser = UserController.Instance.GetUser(messageDetails.PortalID, messageRecipient.UserID);
             if (!IsUserAbleToReceiveAnEmail(toUser))
             {
                 InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
@@ -350,23 +383,23 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
             var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
             var emailBodyItemTemplate =  GetEmailBodyItemTemplate(defaultLanguage);
-            
-            var author = userController.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
+
+            var author = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
             var portalSettings = new PortalSettings(messageDetails.PortalID);
             var fromAddress = portalSettings.Email;
-
             var toAddress = toUser.Email;
 
-            var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
-            var senderAddress = GetSenderAddress(senderName, fromAddress);
+            if (Mail.Mail.IsValidEmailAddress(toUser.Email, toUser.PortalID))
+            {
+                var senderName = GetSenderName(author.DisplayName, portalSettings.PortalName);
+                var senderAddress = GetSenderAddress(senderName, fromAddress);
+                var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
+                var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
+                var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
+                
+                Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);            
+            }
 
-            var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
-
-            var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
-            var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);          
-  
             InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
         }
 
@@ -385,6 +418,16 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile, language);
         }
 
+        private static string GetFriendRequestActionsTemplate(string language)
+        {
+            return Localization.Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
+        }
+
+        private static string GetFollowRequestActionsTemplate(string language)
+        {
+            return Localization.Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
+        }
+
         private static string GetSenderName(string displayName, string portalName)
         {
             return string.IsNullOrEmpty(displayName) ? portalName : displayName;
@@ -398,23 +441,39 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 64, 64);
         }
 
+        private static string GetRelationshipAcceptRequestUrl(PortalSettings portalSettings, int userId, string action)
+        {
+            return string.Format("http://{0}/tabid/{1}/userId/{2}/action/{3}/{4}",
+                portalSettings.DefaultPortalAlias,
+                portalSettings.UserTabId,
+                userId.ToString(),
+                action,
+                Globals.glbDefaultPage);
+        }
+
+        private static string GetProfileUrl(PortalSettings portalSettings, int userId)
+        {
+            return string.Format("http://{0}/tabid/{1}/userId/{2}/{3}",
+                portalSettings.DefaultPortalAlias,
+                portalSettings.UserTabId,
+                userId.ToString(),
+                Globals.glbDefaultPage);
+        }
+
         private static string GetNotificationUrl(PortalSettings portalSettings, int userId)
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}", portalSettings.PortalId);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", portalSettings.PortalId, portalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId <= 0)
             {
-                var tabController = new TabController();
-                var moduleController = new ModuleController();
-
                 messageTabId = portalSettings.UserTabId;
-                var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
+                var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
                 if (profileTab != null)
                 {
-                    var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
+                    var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                     foreach (var tab in childTabs)
                     {
-                        foreach (var kvp in moduleController.GetTabModules(tab.TabID))
+                        foreach (var kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                         {
                             var module = kvp.Value;
                             if (module.DesktopModule.FriendlyName == "Message Center")
@@ -477,16 +536,14 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
         {
             var portalSettings = cacheItemArgs.Params[0] as PortalSettings;
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
 
-            var profileTab = tabController.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
+            var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)
             {
-                var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
+                var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                 foreach (var tab in childTabs)
                 {
-                    foreach (var kvp in moduleController.GetTabModules(tab.TabID))
+                    foreach (var kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                     {
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Message Center")

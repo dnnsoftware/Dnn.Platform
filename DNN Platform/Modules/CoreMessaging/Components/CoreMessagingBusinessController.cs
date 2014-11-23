@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,28 +46,24 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 switch (Version)
                 {
                     case "06.02.00":
-                        var portalController = new PortalController();
-                        var moduleController = new ModuleController();
-                        var tabController = new TabController();
-
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
                         if (moduleDefinition != null)
                         {
-                            var portals = portalController.GetPortals();
+                            var portals = PortalController.Instance.GetPortals();
                             foreach (PortalInfo portal in portals)
                             {
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
                                     //Find TabInfo
-                                    var tab = tabController.GetTab(portal.UserTabId, portal.PortalID, true);
+                                    var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                                     if (tab != null)
                                     {
-                                        foreach (var module in moduleController.GetTabModules(portal.UserTabId).Values)
+                                        foreach (var module in ModuleController.Instance.GetTabModules(portal.UserTabId).Values)
                                         {
                                             if (module.DesktopModule.FriendlyName == "Messaging")
                                             {
                                                 //Delete the Module from the Modules list
-                                                moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                                                ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
 
                                                 //Add new module to the page
                                                 Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);

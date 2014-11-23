@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -338,6 +338,8 @@ namespace DotNetNuke.Modules.Admin.Skins
 					fallbackSkin = IsFallbackContainer(strFolderPath);
 				    pnlMsg = pnlMsgContainers;
 				}
+                pnlMsg.Controls.Clear();
+
 				var strSkinType = strFolderPath.ToLower().IndexOf(Globals.HostMapPath.ToLower()) != -1 ? "G" : "L";
 
 				var canDeleteSkin = SkinController.CanDeleteSkin(strFolderPath, PortalSettings.HomeDirectoryMapPath);
@@ -358,8 +360,8 @@ namespace DotNetNuke.Modules.Admin.Skins
                  	var pnl = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
 				    var lbl = new Label {Text = Localization.GetString(type == "Skin" ? "NoSkin.ErrorMessage" : "NoContainer.ErrorMessage", LocalResourceFile)};
 				    pnl.Controls.Add(lbl);
-                    pnlMsg.Controls.Add(pnl);                 
-				}
+                    pnlMsg.Controls.Add(pnl);
+                }
                 
 				var strFolder = strFolderPath.Substring(strFolderPath.LastIndexOf("\\") + 1);
 				foreach (var strFile in arrFiles)

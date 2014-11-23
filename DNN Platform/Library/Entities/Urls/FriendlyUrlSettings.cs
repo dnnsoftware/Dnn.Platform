@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 
@@ -62,8 +63,6 @@ namespace DotNetNuke.Entities.Urls
 
         // Settings Keys
         public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
-        public const string ErrorPage404Setting = "AUM_ErrorPage404";
-        public const string ErrorPage500Setting = "AUM_ErrorPage500";
         public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
         public const string PageExtensionSetting = "AUM_PageExtension";
         public const string PageExtensionUsageSetting = "AUM_PageExtensionUsage";
@@ -93,10 +92,21 @@ namespace DotNetNuke.Entities.Urls
         public const string AllowDebugCodeSetting = "AUM_AllowDebugCode";
         public const string LogCacheMessagesSetting = "AUM_LogCacheMessages";
         public const string VanityUrlPrefixSetting = "AUM_VanityUrlPrefix";
+        public const string RedirectDefaultPageSetting = "AUM_RedirectDefaultPage";
+        public const string SslClientRedirectSetting = "AUM_SSLClientRedirect";
+        public const string IllegalCharsSetting = "AUM_IllegalChars";
+        public const string ReplaceDoubleCharsSetting = "AUM_ReplaceDoubleChars";
+        public const string Regex404Setting = "AUM_Regex404";
+        public const string Url404Setting = "AUM_Url404";
+        public const string Url500Setting = "AUM_Url500";
+        public const string UseBaseFriendlyUrlsSetting = "AUM_UseBaseFriendlyUrls";
+        public const string InternalAliasesSetting = "AUM_InternalAliases";
+        public const string ProcessRequestsSetting = "AUM_ProcessRequests";
+        public const string CacheTimeSetting = "AUM_CacheTime";
+        public const string IncludePageNameSetting = "AUM_IncludePageName";
 
         #region Public Properties
 
-        internal bool AllowReporting { get; set; }
 
         public bool AllowDebugCode { get; set; }
 
@@ -240,8 +250,6 @@ namespace DotNetNuke.Entities.Urls
 
         public string UseBaseFriendlyUrls { get; set; }
 
-        public string UseMobileAlias { get; set; }
-
         public string UseSiteUrlsRegex { get; set; }
 
         public string ValidExtensionlessUrlsRegex { get; set; }
@@ -313,18 +321,18 @@ namespace DotNetNuke.Entities.Urls
 
             PortalValues = new List<string>();
 
-            IncludePageName = GetBooleanSetting("includePageName", true);
+            IncludePageName = GetBooleanSetting(IncludePageNameSetting, true);
             RegexMatch = GetStringSetting(ValidFriendlyUrlRegexSetting, @"[^\w\d _-]");
             RedirectUnfriendly = GetBooleanSetting(RedirectUnfriendlySetting, true);
             UrlFormat = GetStringSetting(UrlFormatSetting, "advanced");
 
             //541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
-			DoNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting, @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|/ProfilePic\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview");
+			DoNotRedirectRegex = GetStringSetting(DoNotRedirectUrlRegexSetting, @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview");
             DoNotRedirectSecureRegex = GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, String.Empty);
 
             DoNotRewriteRegex = GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx");
 
-            RedirectDefaultPage = GetBooleanSetting("redirectDefaultPage", false);
+            RedirectDefaultPage = GetBooleanSetting(RedirectDefaultPageSetting, false);
             PageExtension = GetStringSetting(PageExtensionSetting, ".aspx");
             _pageExtensionUsage = GetStringSetting(PageExtensionUsageSetting, PageExtensionUsageType.Never.ToString());
 
@@ -335,7 +343,7 @@ namespace DotNetNuke.Entities.Urls
             ForceLowerCaseRegex = GetStringSetting(PreventLowerCaseUrlRegexSetting, String.Empty);
 
             RedirectWrongCase = GetBooleanSetting(RedirectMixedCaseSetting, false);
-            SSLClientRedirect = GetBooleanSetting("sslClientRedirect", true);
+            SSLClientRedirect = GetBooleanSetting(SslClientRedirectSetting, false);
             LogCacheMessages = GetBooleanSetting(LogCacheMessagesSetting, false);
 
             //791 : use threadlocking option
@@ -352,29 +360,34 @@ namespace DotNetNuke.Entities.Urls
 
             //922 : new options for allowing user-configured replacement of characters
             ReplaceChars = GetStringSetting(ReplaceCharsSetting, @" &$+,/?~#<>()¿¡«»!""");
-            IllegalChars = GetStringSetting("illegalChars", @"<>/\?:&=+|%#");
-            ReplaceDoubleChars = GetBooleanSetting("replaceDoubleChars", true);
+            IllegalChars = GetStringSetting(IllegalCharsSetting, @"<>/\?:&=+|%#");
+            ReplaceDoubleChars = GetBooleanSetting(ReplaceDoubleCharsSetting, true);
 
             //793 : checkforDupUrls not being read
             CheckForDuplicateUrls = GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
 
-            /* 454 New 404 error handling */
-            Regex404 = GetStringSetting("regex404", String.Empty);
-            TabId404 = PortalController.GetPortalSettingAsInteger(ErrorPage404Setting, PortalId, -1);
-            Url404 = GetStringSetting("url404", String.Empty);
+            Regex404 = GetStringSetting(Regex404Setting, String.Empty);
+            Url404 = GetStringSetting(Url404Setting, String.Empty);
 
-            //get the 500 error values, if not supplied, use the 404 values
-            TabId500 = PortalController.GetPortalSettingAsInteger(ErrorPage500Setting, PortalId, -1);
+            TabId500 = Null.NullInteger;
+            TabId404 = Null.NullInteger;
+            if (portalId > -1)
+            {
+                var portal = PortalController.Instance.GetPortal(portalId);
+                TabId500 = portal.Custom404TabId;
+                TabId404 = portal.Custom404TabId;
+            }
+
             if (TabId500 == -1)
             {
                 TabId500 = TabId404;
             }
-            Url500 = GetStringSetting("url500", null) ?? Url404;
+            Url500 = GetStringSetting(Url500Setting, null) ?? Url404;
 
             _deletedTabHandling = PortalController.GetPortalSetting(DeletedTabHandlingTypeSetting, PortalId, DeletedTabHandlingType.Do404Error.ToString());
 
-            UseBaseFriendlyUrls = GetStringSetting("useBaseFriendlyUrls", "/SearchResults;/ModuleDefinitions");
-            if (UseBaseFriendlyUrls.EndsWith(";") == false)
+            UseBaseFriendlyUrls = GetStringSetting(UseBaseFriendlyUrlsSetting, String.Empty);
+            if (!String.IsNullOrEmpty(UseBaseFriendlyUrls) && !UseBaseFriendlyUrls.EndsWith(";"))
             {
                 UseBaseFriendlyUrls += ";";
             }
@@ -383,24 +396,19 @@ namespace DotNetNuke.Entities.Urls
             NoFriendlyUrlRegex = GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx");
 
             //703 default debug code to false
-            AllowDebugCode = GetBooleanSetting(AllowDebugCodeSetting, false);
-            //allow reporting value for checking for updates and reporting usage data
-            AllowReporting = GetBooleanSetting("allowReporting", true);
-
-            //737 : integrate mobile alias
-            UseMobileAlias = GetStringSetting("useMobileAlias", null);
+            AllowDebugCode = Host.Host.DebugMode;
 
             VanityUrlPrefix = GetStringSetting(VanityUrlPrefixSetting, "users");
 
             // allow for a list of internal aliases
-            _internalAliases = GetStringSetting("internalAliases", null);
+            _internalAliases = GetStringSetting(InternalAliasesSetting, null);
             ParseInternalAliases();
 
             //661 : do not include in path
             //742 : was not reading and saving value when 'doNotIncludeInPathRegex' used
             DoNotIncludeInPathRegex = GetStringSetting(KeepInQueryStringRegexSetting, @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+");
 
-            string processRequests = GetStringSetting("processRequests", null);
+            string processRequests = GetStringSetting(ProcessRequestsSetting, null);
             if (processRequests != null)
             {
                 processRequests = processRequests.ToLower();
@@ -418,7 +426,7 @@ namespace DotNetNuke.Entities.Urls
             //894 : new switch to disable custom providers if necessary
             EnableCustomProviders = GetBooleanSetting(EnableCustomProvidersSetting, true);
 
-            CacheTime = new TimeSpan(0, GetIntegerSetting("cacheTime", 1440), 0);
+            CacheTime = new TimeSpan(0, GetIntegerSetting(CacheTimeSetting, 1440), 0);
 
             RedirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(RedirectOldProfileUrlSetting, PortalId, true);
         }

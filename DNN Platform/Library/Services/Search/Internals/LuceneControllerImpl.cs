@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,10 +29,12 @@ using System.Text;
 using System.Threading;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
-
+using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
@@ -95,7 +97,7 @@ namespace DotNetNuke.Services.Search.Internals
         private void CheckDisposed()
         {
             if (Thread.VolatileRead(ref _isDisposed) == DISPOSED)
-                throw new ObjectDisposedException("LuceneController is disposed and cannot be used anymore");
+                throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed","LuceneController is disposed and cannot be used anymore"));
         }
         #endregion
 
@@ -122,7 +124,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock.",
+                                        Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter","Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
                                         e, new SearchItemInfo());
 #pragma warning restore 0618
                                 }
@@ -130,7 +132,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                             CheckDisposed();
                             var writer = new IndexWriter(FSDirectory.Open(IndexFolder),
-                                new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
+                                GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
                             _idxReader = writer.GetReader();
                             Thread.MemoryBarrier();
                             _writer = writer;
@@ -221,10 +223,16 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void CheckValidIndexFolder()
         {
-            if (!System.IO.Directory.Exists(IndexFolder) || System.IO.Directory.GetFiles(IndexFolder, "*.*").Length == 0)
+            if (!ValidateIndexFolder())
             {
-                throw new SearchIndexEmptyException("Search indexing directory is either empty or does not exist");
+                throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid","Search indexing directory is either empty or does not exist"));
             }
+        }
+
+        private bool ValidateIndexFolder()
+        {
+            return System.IO.Directory.Exists(IndexFolder) &&
+                   System.IO.Directory.GetFiles(IndexFolder, "*.*").Length > 0;
         }
 
         private FastVectorHighlighter FastHighlighter
@@ -244,49 +252,63 @@ namespace DotNetNuke.Services.Search.Internals
 
         #endregion
 
-        public IEnumerable<LuceneResult> Search(
-            LuceneQuery luceneQuery, out int totalHits, SecurityCheckerDelegate securityChecker = null)
+        public LuceneResults Search(LuceneSearchContext searchContext)
         {
-            Requires.NotNull("LuceneQuery", luceneQuery);
-            Requires.NotNull("LuceneQuery.Query", luceneQuery.Query);
-            Requires.PropertyNotEqualTo("LuceneQuery", "PageSize", luceneQuery.PageSize, 0);
-            Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", luceneQuery.PageIndex, 0);
+            Requires.NotNull("LuceneQuery", searchContext.LuceneQuery);
+            Requires.NotNull("LuceneQuery.Query", searchContext.LuceneQuery.Query);
+            Requires.PropertyNotEqualTo("LuceneQuery", "PageSize", searchContext.LuceneQuery.PageSize, 0);
+            Requires.PropertyNotEqualTo("LuceneQuery", "PageIndex", searchContext.LuceneQuery.PageIndex, 0);
+
+            var luceneResults = new LuceneResults();
+
+            //validate whether index folder is exist and contains index files, otherwise return null.
+            if (!ValidateIndexFolder())
+            {
+                return luceneResults;
+            }
 
             //TODO - Explore simple highlighter as it does not give partial words
             var highlighter = FastHighlighter;
-            var fieldQuery = highlighter.GetFieldQuery(luceneQuery.Query);
+            var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);
 
-            var maxResults = luceneQuery.PageIndex*luceneQuery.PageSize;
-            var minResults = maxResults - luceneQuery.PageSize + 1;
+            var maxResults = searchContext.LuceneQuery.PageIndex * searchContext.LuceneQuery.PageSize;
+            var minResults = maxResults - searchContext.LuceneQuery.PageSize + 1;
 
             var searcher = GetSearcher();
-            var topDocs = new SearchSecurityTrimmer(searcher, securityChecker, luceneQuery);
-            searcher.Search(luceneQuery.Query, null, topDocs);
-            totalHits = topDocs.TotalHits;
+            var searchSecurityTrimmer = new SearchSecurityTrimmer(new SearchSecurityTrimmerContext
+                {
+                    Searcher = searcher,
+                    SecurityChecker = searchContext.SecurityCheckerDelegate,
+                    LuceneQuery = searchContext.LuceneQuery,
+                    SearchQuery = searchContext.SearchQuery
+                });
+            searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
+            luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
 
             if (Logger.IsDebugEnabled)
             {
-                var sb = GetSearcResultExplanation(luceneQuery, topDocs.ScoreDocs, searcher);
-		Logger.Trace(sb);
+                var sb = GetSearcResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher);
+		        Logger.Trace(sb);
             }
 
             //Page doesn't exist
-            if (totalHits < minResults)
-                return new List<LuceneResult>();
+            if (luceneResults.TotalHits < minResults)
+                return luceneResults;
 
-            return topDocs.ScoreDocs.Select(match =>
+            luceneResults.Results  = searchSecurityTrimmer.ScoreDocs.Select(match =>
                 new LuceneResult
                     {
                         Document = searcher.Doc(match.Doc),
                         Score = match.Score,
                         DisplayScore = GetDisplayScoreFromMatch(match.ToString()),
-                        TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, luceneQuery.TitleSnippetLength),
-                        BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, luceneQuery.BodySnippetLength),
-                        DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, luceneQuery.TitleSnippetLength),
-                        TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, luceneQuery.TitleSnippetLength),
-                        AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, luceneQuery.TitleSnippetLength),
-                        ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, luceneQuery.TitleSnippetLength)
+                        TitleSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.TitleTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        BodySnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.BodyTag, searchContext.LuceneQuery.BodySnippetLength),
+                        DescriptionSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        TagSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
+                        AuthorSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
+                        ContentSnippet = GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
                     }).ToList();
+            return luceneResults;
         }
 
         private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
@@ -448,6 +470,39 @@ namespace DotNetNuke.Services.Search.Internals
                 DisposeWriter();
                 DisposeReaders();
             }
+        }
+
+        public Analyzer GetCustomAnalyzer()
+        {
+            var analyzer = DataCache.GetCache<Analyzer>("Search_CustomAnalyzer");
+            if (analyzer == null)
+            {
+                var customAnalyzerType = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
+                
+                if (!string.IsNullOrEmpty(customAnalyzerType))
+                {
+                    try
+                    {
+                        var analyzerType = Reflection.CreateType(customAnalyzerType);
+                        analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
+                        if (analyzer == null)
+                        {
+                            throw new ArgumentException(String.Format(
+                                Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."), 
+                                customAnalyzerType));
+                        }
+
+                        DataCache.SetCache("Search_CustomAnalyzer", analyzer);
+                        return analyzer;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+            }
+
+            return analyzer;
         }
 
         private void DisposeWriter()

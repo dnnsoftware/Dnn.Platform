@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetRecentInbox(UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
                 messageBoxView.TotalConversations = InternalMessagingController.Instance.CountConversations(UserInfo.UserID, portalId);
@@ -75,9 +75,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetRecentSentbox(UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentMessages(UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentConversations(UserInfo.UserID, portalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
@@ -94,9 +94,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetArchivedMessages(UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedMessages(UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedConversations(UserInfo.UserID, portalId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 var totalRecords = 0;
                 var messageThreadsView = InternalMessagingController.Instance.GetMessageThread(conversationId, UserInfo.UserID, afterMessageId, numberOfRecords, ref totalRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageThreadsView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
                 messageThreadsView.TotalThreads = InternalMessagingController.Instance.CountMessagesByConversation(conversationId);
                 messageThreadsView.TotalArchivedThreads = InternalMessagingController.Instance.CountArchivedMessagesByConversation(conversationId);
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 postData.Body = HttpUtility.UrlDecode(postData.Body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, postData.Body, postData.FileIds);
 				var message = ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
                 var totalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
                 var totalThreads = InternalMessagingController.Instance.CountMessagesByConversation(postData.ConversationId);
@@ -216,12 +216,28 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage DeleteUserFromConversation(ConversationDTO postData)
+        {
+            try
+            {
+                InternalMessagingController.Instance.DeleteUserFromConversation(postData.ConversationId, UserInfo.UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         [HttpGet]
         public HttpResponseMessage Notifications(int afterNotificationId, int numberOfRecords)
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 var notificationsDomainModel = NotificationsController.Instance.GetNotifications(UserInfo.UserID, portalId, afterNotificationId, numberOfRecords);
 
                 var notificationsViewModel = new NotificationsViewModel
@@ -239,7 +255,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         From = notification.From,
                         Body = notification.Body,
                         DisplayDate = Common.Utilities.DateUtils.CalculateDateForDisplay(notification.CreatedOnDate),
-                        SenderAvatar = string.Format(Globals.UserProfilePicFormattedUrl(), notification.SenderUserID, 64, 64),
+                        SenderAvatar = string.Format(Globals.UserProfilePicRelativeUrl(), notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
                         Actions = new List<NotificationActionViewModel>()
                     };
@@ -284,11 +300,26 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         }
 
         [HttpGet]
+        public HttpResponseMessage CheckReplyHasRecipients(int conversationId)
+        {
+            try
+            {
+                var recipientCount = InternalMessagingController.Instance.CheckReplyHasRecipients(conversationId, UserController.Instance.GetCurrentUserInfo().UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, recipientCount);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
         public HttpResponseMessage CountNotifications()
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 int notifications = NotificationsController.Instance.CountNotifications(UserInfo.UserID, portalId);
                 return Request.CreateResponse(HttpStatusCode.OK, notifications);
             }
@@ -304,7 +335,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
                 return Request.CreateResponse(HttpStatusCode.OK, unreadMessages);
             }
@@ -320,7 +351,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 var totalsViewModel = new TotalsViewModel
                 {
                     TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId),

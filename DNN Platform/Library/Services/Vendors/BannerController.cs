@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -274,7 +274,7 @@ namespace DotNetNuke.Services.Vendors
 
         public BannerInfo GetBanner(int BannerId)
         {
-            return (BannerInfo) CBO.FillObject(DataProvider.Instance().GetBanner(BannerId), typeof (BannerInfo));
+            return CBO.FillObject<BannerInfo>(DataProvider.Instance().GetBanner(BannerId));
         }
 
         public DataTable GetBannerGroups(int PortalId)

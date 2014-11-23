@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		#region Private Members
 
 		private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
+        private readonly  List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
 
 		#endregion
@@ -168,57 +169,60 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				var redirectURL = "";
 
 				var setting = GetSetting(PortalId, "Redirect_AfterLogin");
-
-				if (Convert.ToInt32(setting) == Null.NullInteger)
+                
+                //first we need to check if there is a returnurl
+				if (Request.QueryString["returnurl"] != null)
 				{
-					if (Request.QueryString["returnurl"] != null)
+					//return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+					if (redirectURL.Contains("://"))
 					{
-						//return to the url passed to signin
-                        redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-						//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-						if (redirectURL.Contains("://"))
-						{
-							redirectURL = "";
-						}
+						redirectURL = "";
 					}
-                    if (Request.Cookies["returnurl"] != null)
+				}
+                if (Request.Cookies["returnurl"] != null)
+                {
+                    //return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
+                    //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+                    if (redirectURL.Contains("://"))
                     {
-                        //return to the url passed to signin
-                        redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (redirectURL.Contains("://"))
+                        redirectURL = "";
+                    }
+                }
+                if (Request.Params["appctx"] != null)
+				{
+					//HACK return to the url passed to signin (LiveID) 
+					redirectURL = HttpUtility.UrlDecode(Request.Params["appctx"]);
+					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+					if (redirectURL.Contains("://"))
+					{
+						redirectURL = "";
+					}
+				}
+                if (String.IsNullOrEmpty(redirectURL) || redirectURL=="/")
+				{
+                    if (Convert.ToInt32(setting) != Null.NullInteger)
+                    {
+                        redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    }
+                    else
+                    {
+                        if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
                         {
-                            redirectURL = "";
+                            //redirect to portal home page specified
+                            redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
+                        }
+                        else
+                        {
+                            //redirect to current page 
+                            redirectURL = Globals.NavigateURL();
                         }
                     }
-                    if (Request.Params["appctx"] != null)
-					{
-						//HACK return to the url passed to signin (LiveID) 
-						redirectURL = HttpUtility.UrlDecode(Request.Params["appctx"]);
-						//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-						if (redirectURL.Contains("://"))
-						{
-							redirectURL = "";
-						}
-					}
-					if (String.IsNullOrEmpty(redirectURL))
-					{
-						if (PortalSettings.LoginTabId != -1 && PortalSettings.HomeTabId != -1)
-						{
-							//redirect to portal home page specified
-							redirectURL = Globals.NavigateURL(PortalSettings.HomeTabId);
-						}
-						else
-						{
-							//redirect to current page 
-							redirectURL = Globals.NavigateURL();
-						}
-					}
+
 				}
-				else //redirect to after login page
-				{
-					redirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
-				}
+
 				
 				//replace language parameter in querystring, to make sure that user will see page in correct language
 				if (UserId != -1 && User != null)
@@ -363,6 +367,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
             AuthenticationLoginBase defaultLoginControl = null;
+            var defaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
             foreach (AuthenticationInfo authSystem in authSystems)
             {
                 try
@@ -395,8 +400,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             }
                             else
                             {
-                                //Add Login Control to List
-                                _loginControls.Add(authLoginControl);
+                                if (authLoginControl.AuthenticationType == defaultAuthProvider)
+                                {
+                                    _defaultauthLogin.Add(authLoginControl);
+                                }
+                                else
+                                {
+                                    //Add Login Control to List
+                                    _loginControls.Add(authLoginControl);
+                                }
                             }
                         }
                     }
@@ -406,7 +418,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     Exceptions.LogException(ex);
                 }
             }
-            int authCount = _loginControls.Count;
+            int authCount = _loginControls.Count + _defaultauthLogin.Count;
             switch (authCount)
             {
                 case 0:
@@ -421,15 +433,25 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                     else
                     {
+                        //if there are social authprovider only
+                        if (_oAuthControls.Count == 0)
                         //Portal has no login controls enabled so load default DNN control
                         DisplayLoginControl(defaultLoginControl, false, false);
                     }
                     break;
                 case 1:
                     //We don't want the control to render with tabbed interface
-                    DisplayLoginControl(_loginControls[0], false, false);
+                    DisplayLoginControl(_defaultauthLogin.Count == 1 
+                                            ? _defaultauthLogin[0] 
+                                            : _loginControls.Count == 1 
+                                                ? _loginControls[0] 
+                                                : _oAuthControls[0], 
+                                        false,
+                                        false);
                     break;
                 default:
+                    //make sure defaultAuth provider control is diplayed first
+                    if (_defaultauthLogin.Count>0) DisplayTabbedLoginControl(_defaultauthLogin[0], tsLogin.Tabs);
                     foreach (AuthenticationLoginBase authLoginControl in _loginControls)
                     {
                         DisplayTabbedLoginControl(authLoginControl, tsLogin.Tabs);
@@ -458,6 +480,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                                  Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc);
             authLoginControl.RedirectURL = RedirectURL;
             authLoginControl.ModuleConfiguration = ModuleConfiguration;
+            if (authSystem.AuthenticationType != "DNN")
+            {
+                authLoginControl.ViewStateMode = ViewStateMode.Enabled;
+            }
 
             //attempt to inject control attributes
             AddLoginControlAttributes(authLoginControl);
@@ -517,7 +543,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private void DisplayLoginControl(AuthenticationLoginBase authLoginControl, bool addHeader, bool addFooter)
         {
             //Create a <div> to hold the control
-            var container = new HtmlGenericControl { TagName = "div", ID = authLoginControl.AuthenticationType };
+            var container = new HtmlGenericControl { TagName = "div", ID = authLoginControl.AuthenticationType, ViewStateMode = ViewStateMode.Disabled};
 
             //Add Settings Control to Container
             container.Controls.Add(authLoginControl);
@@ -552,8 +578,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private void DisplayTabbedLoginControl(AuthenticationLoginBase authLoginControl, TabStripTabCollection Tabs)
         {
             var tab = new DNNTab(Localization.GetString("Title", authLoginControl.LocalResourceFile)) { ID = authLoginControl.AuthenticationType };
+            
             tab.Controls.Add(authLoginControl);
             Tabs.Add(tab);
+            
             tsLogin.Visible = true;
         }
 
@@ -703,7 +731,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					break;
 			}
 
-			if (showProfile && Request.Url.ToString().Contains("popUp=true"))
+            if (showProfile && UrlUtils.InPopUp())
 			{
 				ScriptManager.RegisterClientScriptBlock(this, GetType(), "ResizePopup", "if(parent.$('#iPopUp').length > 0 && parent.$('#iPopUp').dialog('isOpen')){parent.$('#iPopUp').dialog({width: 950, height: 550}).dialog({position: 'center'});};", true);
 			}
@@ -863,7 +891,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private bool UserNeedsVerification()
         {
-            var userInfo = UserController.GetCurrentUserInfo();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
 
             return !userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
                 PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration &&

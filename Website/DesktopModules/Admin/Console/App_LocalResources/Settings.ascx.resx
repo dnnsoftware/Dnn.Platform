@@ -127,7 +127,7 @@
 &lt;li&gt;small icons list with details (Small Icons, Detailed View)&lt;/li&gt;
 &lt;li&gt;large icon list with details (Large Icons, Detailed View)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/P&gt;
+&lt;/p&gt;
 &lt;h3&gt;Page Settings the console module depends on:&lt;/h3&gt;
 &lt;table cellpadding="4" border="1" style="border:solid 1px #dcdcdc;border-collapse:collapse;"&gt;
 &lt;tr&gt;&lt;td nowrap="nowrap"&gt;Page Name&lt;/td&gt;&lt;td&gt;The Page Name is shown as the link title.&lt;/td&gt;&lt;/tr&gt;
@@ -251,5 +251,11 @@
   </data>
   <data name="OrderTabsByHierarchy.Text" xml:space="preserve">
     <value>Order Items By Hierarchy</value>
+  </data>
+  <data name="IncludeHiddenPages.Help" xml:space="preserve">
+    <value>Checked to include pages in the view which are not visible.</value>
+  </data>
+  <data name="IncludeHiddenPages.Text" xml:space="preserve">
+    <value>Include Hidden Pages</value>
   </data>
 </root>

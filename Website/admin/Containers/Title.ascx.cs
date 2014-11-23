@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -89,8 +89,8 @@ namespace DotNetNuke.UI.Containers
             {
                 moduleTitle = " ";
             }
-            var ps = new PortalSecurity();
-            titleLabel.Text = ps.InputFilter(moduleTitle,PortalSecurity.FilterFlag.NoScripting);
+
+            titleLabel.Text = moduleTitle;
             titleLabel.EditEnabled = false;
             titleToolbar.Visible = false;
 
@@ -106,11 +106,13 @@ namespace DotNetNuke.UI.Containers
         {
             if (CanEditModule())
             {
-                var moduleController = new ModuleController();
-                ModuleInfo moduleInfo = moduleController.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
+                ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
 
-                moduleInfo.ModuleTitle = e.Text;
-                moduleController.UpdateModule(moduleInfo);
+                var ps = new PortalSecurity();
+                var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
+                moduleInfo.ModuleTitle = mt;
+
+                ModuleController.Instance.UpdateModule(moduleInfo);
             }
         }
     }

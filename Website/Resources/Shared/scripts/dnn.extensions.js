@@ -27,7 +27,7 @@ if (typeof Object.getOwnPropertyNames === "undefined") {
     Object.getOwnPropertyNames = function(obj) {
         var ownProperties = [];
         for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
+            if (obj.hasOwnProperty && obj.hasOwnProperty(key)) {
                 ownProperties.push(key);
             }
         }
@@ -101,6 +101,12 @@ if (typeof String.prototype.fulltrim !== 'function') {
 if (typeof String.prototype.startsWith !== 'function') {
     String.prototype.startsWith = function (str) {
         return this.slice(0, str.length) === str;
+    };
+}
+
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function (suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
 }
 
@@ -205,7 +211,7 @@ dnn.singletonify = function(constructorFunc /*, args */) {
     };
 };
 
-dnn.extend = function(child, parent) {
+dnn.derive = function(child, parent) {
     var tempConstructor = function() {};
     tempConstructor.prototype = parent.prototype;
     child.prototype = new tempConstructor();
@@ -339,3 +345,8 @@ dnn.uid = (function () {
         return (prefix || "id") + (id++);
     };
 })();
+
+dnn.isUrl = function(url) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(url);
+};

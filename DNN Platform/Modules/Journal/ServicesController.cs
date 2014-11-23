@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -72,6 +72,14 @@ namespace DotNetNuke.Modules.Journal
             public int UserId { get; set; }
         }
 
+        private static bool IsImageFile(string relativePath)
+        {
+            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff","bmp" };
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".",
+            StringComparison.Ordinal) + 1).ToLower();
+            return acceptedExtensions.Contains(extension);
+        }
+
         [HttpPost]
 		[DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Create(CreateDTO postData)
@@ -140,6 +148,8 @@ namespace DotNetNuke.Modules.Journal
                 if (!string.IsNullOrEmpty(postData.ItemData))
                 {
                     ji.ItemData = postData.ItemData.FromJson<ItemData>();
+                    if (!IsImageFile(ji.ItemData.ImageUrl))
+                        ji.ItemData.ImageUrl = string.Empty;
                     ji.ItemData.Description = HttpUtility.UrlDecode(ji.ItemData.Description);
 
                     if (!string.IsNullOrEmpty(ji.ItemData.Url) && ji.ItemData.Url.StartsWith("fileid="))
@@ -151,7 +161,7 @@ namespace DotNetNuke.Modules.Journal
                     }
                 }
 
-                JournalController.Instance.SaveJournalItem(ji, 1);
+                JournalController.Instance.SaveJournalItem(ji, ActiveModule);
 
                 SendMentionNotifications(mentionedUsers, ji, originalSummary);
 
@@ -200,7 +210,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
@@ -229,7 +239,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ji.UserId == UserInfo.UserID || ji.ProfileId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
@@ -460,7 +470,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (ji == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalide request");
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
                 }
 
                 if (ci.UserId == UserInfo.UserID || ji.UserId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))

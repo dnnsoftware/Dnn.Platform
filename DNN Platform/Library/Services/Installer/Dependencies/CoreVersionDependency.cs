@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Reflection;
 using System.Xml.XPath;
 
 using DotNetNuke.Application;
@@ -56,7 +57,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool _IsValid = true;
-                if (DotNetNukeContext.Current.Application.Version < minVersion)
+                if (Assembly.GetExecutingAssembly().GetName().Version < minVersion)
                 {
                     _IsValid = false;
                 }

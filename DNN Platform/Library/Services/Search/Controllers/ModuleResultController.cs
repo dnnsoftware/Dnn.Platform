@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,13 +25,13 @@ using System.Collections;
 using System.Linq;
 using System.Web.Caching;
 
-using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -50,6 +50,8 @@ namespace DotNetNuke.Services.Search.Controllers
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
+        private static Hashtable _moduleSearchControllers = new Hashtable();
+
         #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
@@ -58,26 +60,32 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchResult.ModuleId > 0)
             {
                 //Get All related tabIds from moduleId (while minimizing DB access; using caching)
-                var tabController = new TabController();
                 var moduleId = searchResult.ModuleId;
                 // The next call has over 30% performance enhancement over the above one
-                var tabModules = tabController.GetTabsByPortal(searchResult.PortalId).Values
+                var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
                     .SelectMany(tabinfo => tabinfo.ChildModules.Where(kv => kv.Key == moduleId)).Select(m => m.Value);
 
                 foreach (ModuleInfo module in tabModules)
                 {
-                    var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                    var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                     if (!module.IsDeleted && !tab.IsDeleted && TabPermissionController.CanViewPage(tab))
                     {
                         //Check If authorised to View Module
-                        if (ModulePermissionController.CanViewModule(module))
+                        if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
                         {
                             //Verify against search document permissions
                             if (string.IsNullOrEmpty(searchResult.Permissions) || PortalSecurity.IsInRoles(searchResult.Permissions))
                             {
                                 viewable = true;
                                 if (string.IsNullOrEmpty(searchResult.Url))
-                                    searchResult.Url = Globals.NavigateURL(module.TabID, string.Empty, searchResult.QueryString);
+                                {
+                                    searchResult.Url = GetModuleSearchUrl(module, searchResult);
+                                    if (string.IsNullOrEmpty(searchResult.Url))
+                                    {
+                                        searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
+                                                                               searchResult.QueryString);
+                                    }
+                                }
                                 break;
                             }
                         }
@@ -99,20 +107,26 @@ namespace DotNetNuke.Services.Search.Controllers
                 return searchResult.Url;
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            var tabController = new TabController();
             //Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)
             {
-                var tab = tabController.GetTab(module.TabID, searchResult.PortalId, false);
+                var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                 if (TabPermissionController.CanViewPage(tab) && ModulePermissionController.CanViewModule(module))
                 {
                     try
                     {
-                        var portalSettings = new PortalSettings(searchResult.PortalId);
-	                    portalSettings.PortalAlias = TestablePortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-                        url = Globals.NavigateURL(module.TabID, portalSettings, string.Empty, searchResult.QueryString);
+                        url = GetModuleSearchUrl(module, searchResult);
+
+                        if (string.IsNullOrEmpty(url))
+                        {
+                            var portalSettings = new PortalSettings(searchResult.PortalId);
+                            portalSettings.PortalAlias =
+                                PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+                            url = TestableGlobals.Instance.NavigateURL(module.TabID, portalSettings, string.Empty,
+                                                      searchResult.QueryString);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -137,6 +151,49 @@ namespace DotNetNuke.Services.Search.Controllers
             return CBO.GetCachedObject<ArrayList>(
                 new CacheItemArgs(cacheKey, ModuleByIdCacheTimeOut, ModuleByIdCachePriority, moduleID),
                 (args) => CBO.FillCollection(DataProvider.Instance().GetModule(moduleID, Null.NullInteger), typeof(ModuleInfo)));
+        }
+
+        private bool HasModuleSearchPermission(ModuleInfo module, SearchResult searchResult)
+        {
+            var canView = true;
+
+            var moduleSearchController = GetModuleSearchController(module);
+            if (moduleSearchController != null)
+            {
+                canView = moduleSearchController.HasViewPermission(searchResult);
+            }
+
+            return canView;
+        }
+        
+        private string GetModuleSearchUrl(ModuleInfo module, SearchResult searchResult)
+        {
+            var url = string.Empty;
+            var moduleSearchController = GetModuleSearchController(module);
+            if (moduleSearchController != null)
+            {
+                url = moduleSearchController.GetDocUrl(searchResult);
+            }
+
+            return url;
+        }
+
+        private IModuleSearchResultController GetModuleSearchController(ModuleInfo module)
+        {
+            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+            {
+                return null;
+            }
+
+            if (_moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
+            {
+                return _moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+            }
+
+            var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
+            _moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
+
+            return controller;
         }
 
         #endregion

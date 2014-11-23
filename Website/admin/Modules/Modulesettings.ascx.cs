@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -73,24 +73,10 @@ namespace DotNetNuke.Modules.Admin.Modules
         private int _moduleId = -1;
         private Control _control;
         private ModuleInfo _module;
-        private ModuleController _moduleCtrl;
-        private TabController _tabCtrl;
 
         private ModuleInfo Module
         {
-            get { return _module ?? (_module = ModuleCtrl.GetModule(_moduleId, TabId, false)); }
-        }
-
-        private ModuleController ModuleCtrl
-        {
-            get
-            {
-                if ((_moduleCtrl == null))
-                {
-                    _moduleCtrl = new ModuleController();
-                }
-                return _moduleCtrl;
-            }
+            get { return _module ?? (_module = ModuleController.Instance.GetModule(_moduleId, TabId, false)); }
         }
 
         private ISettingsControl SettingsControl
@@ -98,18 +84,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             get
             {
                 return _control as ISettingsControl;
-            }
-        }
-
-        private TabController TabCtrl
-        {
-            get
-            {
-                if ((_tabCtrl == null))
-                {
-                    _tabCtrl = new TabController();
-                }
-                return _tabCtrl;
             }
         }
 
@@ -225,16 +199,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private void BindContainers()
         {
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(PortalId);
-            var containers = SkinController.GetSkins(portal, SkinController.RootContainer, SkinScope.All)
-                                    .ToDictionary(skin => skin.Key, skin => skin.Value);
-
-            moduleContainerCombo.DataSource = containers;
-            moduleContainerCombo.DataBind();
-            moduleContainerCombo.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
-            moduleContainerCombo.Select(Module.ContainerSrc, false);
-
+            moduleContainerCombo.PortalId = PortalId;
+            moduleContainerCombo.RootPath = SkinController.RootContainer;
+            moduleContainerCombo.Scope = SkinScope.All;
+            moduleContainerCombo.IncludeNoneSpecificItem = true;
+            moduleContainerCombo.NoneSpecificText = "<" + Localization.GetString("None_Specified") + ">";
+            moduleContainerCombo.SelectedValue = Module.ContainerSrc;
         }
 
         private void BindModuleCacheProviderList()
@@ -283,16 +253,26 @@ namespace DotNetNuke.Modules.Admin.Modules
             if (tab != null)
             {
                 var index = 0;
-                TabCtrl.PopulateBreadCrumbs(ref tab);
+                TabController.Instance.PopulateBreadCrumbs(ref tab);
+                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
+                                        .OrderByDescending(a => a.IsPrimary)
+                                        .FirstOrDefault();
+                var portalSettings = new PortalSettings(tab.PortalID)
+                                         {
+                                             PortalAlias = defaultAlias
+                                         };
+
+                var tabUrl = Globals.NavigateURL(tab.TabID, portalSettings, string.Empty);
+
                 foreach (TabInfo t in tab.BreadCrumbs)
                 {
-                    if ((index > 0))
+                    if (index > 0)
                     {
                         returnValue.Append(" > ");
                     }
-                    if ((tab.BreadCrumbs.Count - 1 == index))
+                    if (tab.BreadCrumbs.Count - 1 == index)
                     {
-                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", t.FullUrl, t.LocalizedTabName);
+                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", tabUrl, t.LocalizedTabName);
                     }
                     else
                     {
@@ -310,8 +290,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var tab = dataItem as TabInfo;
             if (tab != null)
             {
-                var portalController = new PortalController();
-                var portal = portalController.GetPortal(tab.PortalID);
+                var portal = PortalController.Instance.GetPortal(tab.PortalID);
                 if (portal != null)
                 {
                     returnValue = portal.PortalName;
@@ -343,8 +322,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             jQuery.RequestDnnPluginsRegistration();
 
-            var moduleController = new ModuleController();
-
             //get ModuleId
             if ((Request.QueryString["ModuleId"] != null))
             {
@@ -353,13 +330,13 @@ namespace DotNetNuke.Modules.Admin.Modules
             if (Module.ContentItemId == Null.NullInteger && Module.ModuleID != Null.NullInteger)
             {
                 //This tab does not have a valid ContentItem
-                moduleController.CreateContentItem(Module);
+                ModuleController.Instance.CreateContentItem(Module);
 
-                moduleController.UpdateModule(Module);
+                ModuleController.Instance.UpdateModule(Module);
             }
 
             //Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", Module))
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", Module))
             {
                 if (!(IsSharedViewOnly() && TabPermissionController.CanAddContentToPage()))
                 {
@@ -434,8 +411,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         if (cboTab.FindItemByValue(Module.TabID.ToString()) == null)
                         {
-                            var objtabs = new TabController();
-                            var objTab = objtabs.GetTab(Module.TabID, Module.PortalID, false);
+                            var objTab = TabController.Instance.GetTab(Module.TabID, Module.PortalID, false);
                             cboTab.AddItem(objTab.LocalizedTabName, objTab.TabID.ToString());
                         }
                     }
@@ -520,8 +496,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             try
             {
-                var objModules = new ModuleController();
-                objModules.DeleteTabModule(TabId, _moduleId, true);
+                ModuleController.Instance.DeleteTabModule(TabId, _moduleId, true);
                 Response.Redirect(ReturnURL, true);
             }
             catch (Exception exc)
@@ -537,7 +512,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         protected void OnPagesGridNeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
-            var tabsByModule = TabCtrl.GetTabsByModuleID(_moduleId);
+            var tabsByModule = TabController.Instance.GetTabsByModuleID(_moduleId);
             tabsByModule.Remove(TabId);
             dgOnTabs.DataSource = tabsByModule.Values;
         }
@@ -548,7 +523,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (Page.IsValid)
                 {
-                    var moduleController = new ModuleController();
                     var allTabsChanged = false;
                     //TODO: REMOVE IF UNUSED
                     //var allowIndexChanged = false;
@@ -579,15 +553,15 @@ namespace DotNetNuke.Modules.Admin.Modules
                         allTabsChanged = true;
                     }
                     Module.AllTabs = chkAllTabs.Checked;
-                    moduleController.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
+                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "hideadminborder", chkAdminBorder.Checked.ToString());
 
                     //check whether allow index value is changed
                     var allowIndex = Settings.ContainsKey("AllowIndex") && Convert.ToBoolean(Settings["AllowIndex"]);
                     if (allowIndex != chkAllowIndex.Checked)
                     {
-                        moduleController.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked ? "True" : "False");
+                        ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked ? "True" : "False");
                     }
-                    moduleController.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
+                    ModuleController.Instance.UpdateTabModuleSetting(Module.TabModuleID, "AllowIndex", chkAllowIndex.Checked.ToString());
 
 
                     switch (Int32.Parse(cboVisibility.SelectedItem.Value))
@@ -643,7 +617,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
                     Module.IsDefaultModule = chkDefault.Checked;
                     Module.AllModules = chkAllModules.Checked;
-                    moduleController.UpdateModule(Module);
+                    ModuleController.Instance.UpdateModule(Module);
 
                     //Update Custom Settings
                     if (SettingsControl != null)
@@ -671,15 +645,15 @@ namespace DotNetNuke.Modules.Admin.Modules
                     //Check if the Module is to be Moved to a new Tab
                     if (!chkAllTabs.Checked)
                     {
-                        var newTabId = Int32.Parse(cboTab.SelectedItem.Value);
+                        var newTabId = Int32.Parse(cboTab.SelectedValue);
                         if (TabId != newTabId)
                         {
                             //First check if there already is an instance of the module on the target page
-                            var tmpModule = moduleController.GetModule(_moduleId, newTabId);
+                            var tmpModule = ModuleController.Instance.GetModule(_moduleId, newTabId, false);
                             if (tmpModule == null)
                             {
                                 //Move module
-                                moduleController.MoveModule(_moduleId, TabId, newTabId, Globals.glbDefaultPane);
+                                ModuleController.Instance.MoveModule(_moduleId, TabId, newTabId, Globals.glbDefaultPane);
                             }
                             else
                             {
@@ -700,19 +674,19 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 foreach (var destinationTab in listTabs)
                                 {
-                                    var module = moduleController.GetModule(_moduleId, destinationTab.TabID);
+                                    var module = ModuleController.Instance.GetModule(_moduleId, destinationTab.TabID, false);
                                     if (module != null)
                                     {
                                         if (module.IsDeleted)
                                         {
-                                            moduleController.RestoreModule(module);
+                                            ModuleController.Instance.RestoreModule(module);
                                         }
                                     }
                                     else
                                     {
                                         if (!PortalSettings.ContentLocalizationEnabled || (Module.CultureCode == destinationTab.CultureCode))
                                         {
-                                            moduleController.CopyModule(Module, destinationTab, Module.PaneName, true);
+                                            ModuleController.Instance.CopyModule(Module, destinationTab, Module.PaneName, true);
                                         }
                                     }
                                 }
@@ -720,7 +694,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                         else
                         {
-                            moduleController.DeleteAllModules(_moduleId, TabId, listTabs);
+                            ModuleController.Instance.DeleteAllModules(_moduleId, TabId, listTabs, true, false, false);
                         }
                     }
 

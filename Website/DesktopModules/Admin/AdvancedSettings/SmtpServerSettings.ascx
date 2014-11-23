@@ -36,6 +36,18 @@
         <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
     </div>
     <div class="dnnFormItem">
+        <dnn:label id="plConnectionLimit" controlname="ConnectionLimit" runat="server" />
+        <asp:TextBox ID="txtConnectionLimit" runat="server" MaxLength="256" Width="225" />
+        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" validationexpression="^\d*" ControlToValidate="txtConnectionLimit"/>
+        <asp:RangeValidator runat="server" id="rexNumber1" Type="Integer" controltovalidate="txtConnectionLimit" validationexpression="^\d*" MinimumValue="1" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" errormessage="Numbers from 1 to 2147483647 only!" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label id="plMaxIdleTime" controlname="MaxIdleTime" runat="server" />
+        <asp:TextBox ID="txtMaxIdleTime" runat="server" MaxLength="256" Width="225" />
+        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" validationexpression="^\d*" ControlToValidate="txtMaxIdleTime"/>
+        <asp:RangeValidator runat="server" id="rexNumber2" Type="Integer" controltovalidate="txtMaxIdleTime" MinimumValue="0" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" errormessage="Numbers from 0 to 2147483647 only!" />
+    </div>
+    <div class="dnnFormItem">
         <dnn:Label ID="plSMTPAuthentication" ControlName="optSMTPAuthentication" runat="server" />
         <asp:RadioButtonList ID="optSMTPAuthentication" CssClass="dnnHSRadioButtons" runat="server"
             RepeatLayout="Flow">

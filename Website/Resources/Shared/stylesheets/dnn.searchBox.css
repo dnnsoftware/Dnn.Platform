@@ -25,6 +25,7 @@
         -webkit-border-radius: 3px;
         border-radius: 3px;
 	    background-color: #fff;
+        max-width: 400px;
     }
 
      .dnnSearchBox > .dnnSearchBox_advanced_query b {
@@ -82,6 +83,7 @@
         vertical-align: top;
         margin: 10px 0 0 0;
         z-index: 15;
+        top: 4px;
     }
 
     .dnnSearchBox > a.dnnSearchBoxClearAdvanced.dnnShow {

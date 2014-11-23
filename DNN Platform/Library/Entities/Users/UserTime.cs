@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,14 +40,14 @@ namespace DotNetNuke.Entities.Users
             {
                 HttpContext context = HttpContext.Current;
             	//Obtain PortalSettings from Current Context
-                PortalSettings objSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings objSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (!context.Request.IsAuthenticated)
                 {
                     return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objSettings.TimeZone);
                 }
                 else
                 {
-                    UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                    UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                     return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objUserInfo.Profile.PreferredTimeZone);
                 }
             }
@@ -58,8 +58,8 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
+                PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 return FromClientToServerFactor(objUserInfo.Profile.PreferredTimeZone.BaseUtcOffset.TotalMinutes, portalSettings.TimeZone.BaseUtcOffset.TotalMinutes);
             }
         }
@@ -69,8 +69,8 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                UserInfo objUserInfo = UserController.GetCurrentUserInfo();
-                PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+                PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return FromServerToClientFactor(objUserInfo.Profile.PreferredTimeZone.BaseUtcOffset.TotalMinutes, portalSettings.TimeZone.BaseUtcOffset.TotalMinutes);
             }
         }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Deprecated in DNN 6.0.")]
         public DateTime ConvertToUserTime(DateTime dt, double clientTimeZone)
         {
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return dt.AddMinutes(FromClientToServerFactor(clientTimeZone, portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));            
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Users
         public DateTime ConvertToServerTime(DateTime dt, double clientTimeZone)
         {
         	//Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return dt.AddMinutes(FromServerToClientFactor(clientTimeZone, portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
         }
 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Users
             if (userInfo == null || userInfo.UserID == -1)
             {
 				//Obtain PortalSettings from Current Context             
-                PortalSettings objSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings objSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return TimeZoneInfo.ConvertTime(DateUtils.GetDatabaseTime(), TimeZoneInfo.Utc, objSettings.TimeZone);
             }
             else

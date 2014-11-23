@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,7 +21,8 @@
 #region Usings
 
 using System;
-
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Analytics.Config;
 
 #endregion
@@ -45,11 +46,12 @@ namespace DotNetNuke.Services.Analytics
             {
                 return "";
             }
-            string trackingId = "";
-            string urlParameter = "";
+            var trackingId = "";
+            var urlParameter = "";
+            var trackForAdmin = true;
             foreach (AnalyticsSetting setting in config.Settings)
             {
-                switch (setting.SettingName.ToLower())
+                switch (setting.SettingName.ToLowerInvariant())
                 {
                     case "trackingid":
                         trackingId = setting.SettingValue;
@@ -57,12 +59,29 @@ namespace DotNetNuke.Services.Analytics
                     case "urlparameter":
                         urlParameter = setting.SettingValue;
                         break;
+                    case "trackforadmin":
+                        if (!bool.TryParse(setting.SettingValue, out trackForAdmin))
+                        {
+                            trackForAdmin = true;
+                        }
+                        break;
                 }
             }
             if (String.IsNullOrEmpty(trackingId))
             {
                 return "";
             }
+
+            //check whether setting to not track traffic if current user is host user or website administrator.
+            if (!trackForAdmin &&
+                (UserController.Instance.GetCurrentUserInfo().IsSuperUser
+                 ||
+                 (PortalSettings.Current != null &&
+                  UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
+            {
+                return "";
+            }
+
             scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
             if ((!String.IsNullOrEmpty(urlParameter)))
             {

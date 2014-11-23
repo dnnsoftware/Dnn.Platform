@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -78,15 +79,14 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
             return provider.AddAuthentication(authSystem.PackageID,
                                               authSystem.AuthenticationType,
                                               authSystem.IsEnabled,
                                               authSystem.SettingsControlSrc,
                                               authSystem.LoginControlSrc,
                                               authSystem.LogoffControlSrc,
-                                              UserController.GetCurrentUserInfo().UserID);
+                                              UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -98,24 +98,54 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="authenticationToken">The authentication token</param>
         /// <history>
         /// 	[cnurse]	07/12/2007  Created
+        /// 	[skydnn]    11/14/2013  DNN-4016
         /// </history>
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("userID/authenticationType",
-                               userID + "/" + authenticationType,
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
-            return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.GetCurrentUserInfo().UserID);
+            UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
+
+            if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
+            {
+                EventLogController.Instance.AddLog("userID/authenticationType",
+                                   userID + "/" + authenticationType,
+                                   PortalController.Instance.GetCurrentPortalSettings(),
+                                   UserController.Instance.GetCurrentUserInfo().UserID,
+                                   EventLogController.EventLogType.AUTHENTICATION_USER_CREATED);
+                return provider.AddUserAuthentication(userID, authenticationType, authenticationToken, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+
+                EventLogController.Instance.AddLog("userID/authenticationType already exists",
+                   userID + "/" + authenticationType,
+                   PortalController.Instance.GetCurrentPortalSettings(),
+                   UserController.Instance.GetCurrentUserInfo().UserID,
+                   EventLogController.EventLogType.AUTHENTICATION_USER_UPDATED);
+
+                return userAuth.UserAuthenticationID;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves authentication information for an user.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        /// <history>
+        ///    [skydnn]  11/11/2013 DNN-4016
+        /// </history>
+        public static UserAuthenticationInfo GetUserAuthentication(int userID)
+        {
+            //Go to database
+            return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
+
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
             provider.DeleteAuthentication(authSystem.AuthenticationID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// -----------------------------------------------------------------------------
@@ -287,35 +317,34 @@ namespace DotNetNuke.Services.Authentication
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
             string _RedirectURL = "";
-            object setting = UserModuleBase.GetSetting(settings.PortalId, "Redirect_AfterLogout");
-            if (Convert.ToInt32(setting) == Null.NullInteger)
+            if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
                 {
 					//redirect to current page (or home page if current page is a profile page to reduce redirects)
-		    if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.HomeTabId);
-		    }
-		    else
-		    {
-			_RedirectURL = Globals.NavigateURL(settings.ActiveTab.TabID);
-		    }
+		            if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
+		            {
+                        _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
+		            }
+		            else
+		            {
+                        _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
+		            }
 
                 }
                 else if (settings.HomeTabId != -1)
                 {
 					//redirect to portal home page specified
-                    _RedirectURL = Globals.NavigateURL(settings.HomeTabId);
+                    _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
                 else //redirect to default portal root
                 {
-                    _RedirectURL = Globals.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
+                    _RedirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
             else //redirect to after logout page
             {
-                _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+				_RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
             return _RedirectURL;
         }
@@ -401,9 +430,8 @@ namespace DotNetNuke.Services.Authentication
                                           authSystem.SettingsControlSrc,
                                           authSystem.LoginControlSrc,
                                           authSystem.LogoffControlSrc,
-                                          UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(authSystem, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+                                          UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
 		
 		#endregion

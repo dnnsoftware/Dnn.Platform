@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -162,22 +162,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     _UploadRoles = string.Empty;
 
-                    var objModules = new ModuleController();
-                    //TODO:  Should replace this with a finder method in PortalSettings to look in the cached modules of the activetab - jmb 11/25/2004
-                    ModuleInfo ModInfo;
-
-                    if (IsHostMenu)
+                    if (Convert.ToString(Settings["uploadroles"]) != null)
                     {
-                        ModInfo = objModules.GetModuleByDefinition(Null.NullInteger, "File Manager");
-                    }
-                    else
-                    {
-                        ModInfo = objModules.GetModuleByDefinition(PortalId, "File Manager");
-                    }
-                    Hashtable settings = new ModuleController().GetModuleSettings(ModInfo.ModuleID);
-                    if (Convert.ToString(settings["uploadroles"]) != null)
-                    {
-                        _UploadRoles = Convert.ToString(settings["uploadroles"]);
+                        _UploadRoles = Convert.ToString(Settings["uploadroles"]);
                     }
                 }
                 return _UploadRoles;
@@ -200,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
         {
-            if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.GetCurrentUserInfo().IsInRole("Administrators"))
+            if (!ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT,EDIT") && !UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators"))
             {
                 Response.Redirect(Globals.NavigateURL("Access Denied"), true);
             }
@@ -220,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// -----------------------------------------------------------------------------
         private void LoadFolders()
         {
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
 
             var folders = FolderManager.Instance.GetFolders(FolderPortalID, "ADD", user.UserID);
             ddlFolders.Services.Parameters.Add("permission", "ADD");

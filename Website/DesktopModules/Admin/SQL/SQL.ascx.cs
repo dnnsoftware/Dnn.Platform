@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -323,8 +323,17 @@ namespace DotNetNuke.Modules.Admin.SQL
         {
             var props = new LogProperties { new LogDetailInfo("User", UserInfo.Username), new LogDetailInfo("SQL Query", query) };
 
-            var elc = new EventLogController();
-            elc.AddLog(props, PortalSettings, UserId, EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(), true);
+            //Add the event log with host portal id.
+            var log = new LogInfo
+            {
+                LogUserID = UserId,
+                LogTypeKey = EventLogController.EventLogType.HOST_SQL_EXECUTED.ToString(),
+                LogProperties = props,
+                BypassBuffering = true,
+                LogPortalID = Null.NullInteger
+            };
+
+            LogController.Instance.AddLog(log);
         }
 
         private void CheckSecurity()

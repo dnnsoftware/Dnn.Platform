@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -82,34 +82,37 @@ namespace DotNetNuke.Services.Mail
             {
                 try
                 {
-                    var smtpClient = new SmtpClient();
-
-                    var smtpHostParts = smtpServer.Split(':');
-                    smtpClient.Host = smtpHostParts[0];
-                    if (smtpHostParts.Length > 1)
+                    //to workaround problem in 4.0 need to specify host name
+                    using (var smtpClient = new SmtpClient())
                     {
-                        smtpClient.Port = Convert.ToInt32(smtpHostParts[1]);
-                    }
+                        var smtpHostParts = smtpServer.Split(':');
+                        smtpClient.Host = smtpHostParts[0];
+                        smtpClient.Port = smtpHostParts.Length > 1 ? Convert.ToInt32(smtpHostParts[1]) : 25;
 
-                    switch (smtpAuthentication)
-                    {
-                        case "":
-                        case "0": //anonymous
-                            break;
-                        case "1": //basic
-                            if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
-                            {
-                                smtpClient.UseDefaultCredentials = false;
-                                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                            }
-                            break;
-                        case "2": //NTLM
-                            smtpClient.UseDefaultCredentials = true;
-                            break;
+                        smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
+                        smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
+
+                        switch (smtpAuthentication)
+                        {
+                            case "":
+                            case "0": //anonymous
+                                break;
+                            case "1": //basic
+                                if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
+                                {
+                                    smtpClient.UseDefaultCredentials = false;
+                                    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                                }
+                                break;
+                            case "2": //NTLM
+                                smtpClient.UseDefaultCredentials = true;
+                                break;
+                        }
+                        smtpClient.EnableSsl = smtpEnableSSL;
+                        smtpClient.Send(mailMessage);
+                        smtpClient.Dispose();
+                        retValue = "";
                     }
-                    smtpClient.EnableSsl = smtpEnableSSL;
-                    smtpClient.Send(mailMessage);
-                    retValue = "";
                 }
                 catch (SmtpFailedRecipientException exc)
                 {
@@ -258,7 +261,7 @@ namespace DotNetNuke.Services.Mail
                     {
                         custom = new ArrayList
                                      {
-                                         HttpContext.Current.Server.UrlEncode(user.Username),
+                                         HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
                                          HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null, user, Scope.SystemMessages, ref propertyNotFound))
                                      };
                     }
@@ -400,6 +403,43 @@ namespace DotNetNuke.Services.Mail
                             smtpEnableSSL);
         }
 
+		/// <summary>
+		/// Sends an email based on params.
+		/// </summary>
+		/// <param name="mailFrom">Email sender</param>
+		/// <param name="mailTo">Recipients, can be more then one separated by semi-colons</param>
+		/// <param name="cc">CC-recipients, can be more then one separated by semi-colons</param>
+		/// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons</param>
+		/// <param name="replyTo">Reply-to email to be displayed for recipients</param>
+		/// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/></param>
+		/// <param name="subject">Subject of email</param>
+		/// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/></param>
+		/// <param name="bodyEncoding">Email Encoding from System.Text.Encoding</param>
+		/// <param name="body">Body of email</param>
+		/// <param name="attachments">List of filenames to attach to email</param>
+		/// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings</param>
+		/// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
+		/// <param name="smtpEnableSSL">Enable or disable SSL.</param>
+		/// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
+		/// <example>SendMail(	"admin@email.com",
+		///						"user@email.com",
+		///						"user1@email.com;user2@email.com",
+		///						"user3@email.com",
+		///						"no-reply@email.com",
+		///						MailPriority.Low,
+		///						"This is test email",
+		///						MailFormat.Text,
+		///						Encoding.UTF8,
+		///						"Test body. Test body. Test body.",
+		///						new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
+		///						"mail.email.com",
+		///						"1",
+		///						"admin@email.com",
+		///						"AdminPassword",
+		///						false);
+		///	</example>
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
@@ -447,23 +487,24 @@ namespace DotNetNuke.Services.Mail
                 smtpPassword = Host.SMTPPassword;
             }
 			
-            //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
-            mailTo = mailTo.Replace(";", ",");
-            cc = cc.Replace(";", ",");
-            bcc = bcc.Replace(";", ",");
-
             MailMessage mailMessage = null;
             mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
             if (!String.IsNullOrEmpty(mailTo))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
             if (!String.IsNullOrEmpty(cc))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
             if (!String.IsNullOrEmpty(bcc))
             {
+                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                bcc = bcc.Replace(";", ",");
                 mailMessage.Bcc.Add(bcc);
             }
             if (replyTo != string.Empty)

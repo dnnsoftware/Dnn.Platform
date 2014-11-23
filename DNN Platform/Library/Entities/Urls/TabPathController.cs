@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -112,9 +112,8 @@ namespace DotNetNuke.Entities.Urls
             if (String.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 //not the default culture, so there could be a different home page for the different cultulre in 5.5+ builds
-                var tc = new TabController();
                 var cultureLocale = new Locale { Code = cultureCode, Fallback = cultureCode, Text = cultureCode };
-                TabInfo tab = tc.GetTabByCulture(defaultHomeTabId, portalId, cultureLocale);
+                TabInfo tab = TabController.Instance.GetTabByCulture(defaultHomeTabId, portalId, cultureLocale);
                 if (tab != null)
                 {
                     //this is the culture specific tab of the home page
@@ -369,8 +368,7 @@ namespace DotNetNuke.Entities.Urls
             string path = "";
             if ((tab.ParentId > -1))
             {
-                var tc = new TabController();
-                TabInfo parentTab = tc.GetTab(tab.ParentId, tab.PortalID, false);
+                TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                 //822 : don't assume parent tab is going to exist - database might be corrupted
                 //896 : check to make sure tabid and parentid are different - or stack overflow occurs with terminal loop
                 if (parentTab != null && parentTab.TabID != tab.TabID)

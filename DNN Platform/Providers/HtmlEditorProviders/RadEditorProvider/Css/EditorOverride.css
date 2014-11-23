@@ -1,76 +1,75 @@
-﻿/* RADWINDOW PROMETHEUS "BLACK" SKIN */
-div.RadWindow.RadWindow_Black.rwMinimizedWindow table td
+﻿div.RadWindow.RadWindow_Default.rwMinimizedWindow table td
 {
 	vertical-align: top;
 }
 
-div.RadWindow.RadWindow_Black table td.rwCorner
+div.RadWindow.RadWindow_Default table td.rwCorner
 {
 	width: 10px;
 }
 
-div.RadWindow.RadWindow_Black table td.rwTopLeft
+div.RadWindow.RadWindow_Default table td.rwTopLeft
 {
     width: 10px; height: 5px;
 	background: url('../images/WindowSprites.gif') no-repeat 0 0;
 }
 
-div.RadWindow.RadWindow_Black table td.rwTopRight
+div.RadWindow.RadWindow_Default table td.rwTopRight
 {
     width: 10px; height: 5px;
     background: url('../images/WindowSprites.gif') no-repeat 0 -40px;
 }
 
-div.RadWindow.RadWindow_Black table td.rwTitlebar
+div.RadWindow.RadWindow_Default table td.rwTitlebar
 {
     background: transparent url('../images/WindowSprites.gif')  repeat-x 0 -80px;
 	height: 5px;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent
+div.RadWindow.RadWindow_Default .rwWindowContent
 {
 	height: 100%;
 	border-bottom: 0;
 	background: white;
 }
 
-div.RadWindow.RadWindow_Black table td.rwBodyLeft
+div.RadWindow.RadWindow_Default table td.rwBodyLeft
 {
     width: 10px;
 	background: transparent url('../images/WindowVerticalSprites.gif') repeat-y;
 }
 
-div.RadWindow.RadWindow_Black table td.rwBodyRight
+div.RadWindow.RadWindow_Default table td.rwBodyRight
 {
     width: 10px;
 	background: transparent url('../images/WindowVerticalSprites.gif') repeat-y -10px 0;
 }
 
-div.RadWindow.RadWindow_Black table td.rwFooterLeft
+div.RadWindow.RadWindow_Default table td.rwFooterLeft
 {
 	width: 10px; height: 10px;
 	background: transparent url('../images/WindowVerticalSprites.gif') no-repeat -20px 0;
 }
 
-div.RadWindow.RadWindow_Black table td.rwFooterRight
+div.RadWindow.RadWindow_Default table td.rwFooterRight
 {
 	width: 10px; height: 10px;
 	background: transparent url('../images/WindowVerticalSprites.gif') no-repeat -30px 0;
 }
 
-div.RadWindow.RadWindow_Black table td.rwFooterCenter
+div.RadWindow.RadWindow_Default table td.rwFooterCenter
 {
 	background: transparent url('../images/WindowSprites.gif') repeat-x 0 -143px;
 	height: 10px;
 }
 
-div.RadWindow.RadWindow_Black td.rwStatusbar
+div.RadWindow.RadWindow_Default td.rwStatusbar
 {
 	height: 23px; line-height: 23px;
 	background: #292929 url('../images/WindowSprites.gif') repeat-x 0 -120px;
 }
 
-div.RadWindow.RadWindow_Black td.rwStatusbar input
+div.RadWindow.RadWindow_Default td.rwStatusbar input
 {
     background-repeat: no-repeat;
     background: transparent;
@@ -80,44 +79,44 @@ div.RadWindow.RadWindow_Black td.rwStatusbar input
     font: normal 11px "Myriad Pro", Arial, Verdana;
 }
 
-div.RadWindow.RadWindow_Black td.rwStatusbar div
+div.RadWindow.RadWindow_Default td.rwStatusbar div
 {
 	margin-top:5px;
     background: url('../images/WindowVerticalSprites.gif') no-repeat -40px 4px;
 }
 
 /* Support for displayng the loading image in the iframe's parent TD */
-div.RadWindow.RadWindow_Black td.rwLoading
+div.RadWindow.RadWindow_Default td.rwLoading
 {
     background: white url('../images/Loading.gif') no-repeat center;
 }
 
 /* Support for displaying loading image in the status bar  */
-div.RadWindow.RadWindow_Black td.rwStatusbar .rwLoading
+div.RadWindow.RadWindow_Default td.rwStatusbar .rwLoading
 {	
 	background-image: url('../images/Loading.gif');	
 	background-repeat: no-repeat;
 }
 
-div.RadWindow.RadWindow_Black td.rwStatusbar span.statustext
+div.RadWindow.RadWindow_Default td.rwStatusbar span.statustext
 {
 	font: normal 11px Verdana, Arial, Sans-serif;
 	color: black;
 }
 
-div.RadWindow.RadWindow_Black tr.rwStatusbarRow .rwCorner.rwBodyLeft
+div.RadWindow.RadWindow_Default tr.rwStatusbarRow .rwCorner.rwBodyLeft
 {
     width: 10px;
     background: transparent url('../images/WindowVerticalSprites.gif') repeat-y 0 0;
 }
 
-div.RadWindow.RadWindow_Black tr.rwStatusbarRow .rwCorner.rwBodyRight
+div.RadWindow.RadWindow_Default tr.rwStatusbarRow .rwCorner.rwBodyRight
 {
     width: 10px;
     background: transparent url('../images/WindowVerticalSprites.gif') repeat-y -10px 0 !important;
 }
 
-div.RadWindow.RadWindow_Black table.rwTitlebarControls ul.rwControlButtons li a
+div.RadWindow.RadWindow_Default table.rwTitlebarControls ul.rwControlButtons li a
 {
 	width: 28px; height: 26px; line-height: 26px; font-size: 1px;
 	cursor: default;
@@ -127,85 +126,85 @@ div.RadWindow.RadWindow_Black table.rwTitlebarControls ul.rwControlButtons li a
 }
 
 /* reload button */
-div.RadWindow.RadWindow_Black a.rwReloadButton
+div.RadWindow.RadWindow_Default a.rwReloadButton
 {
 	background-position: -84px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwReloadButton:hover
+div.RadWindow.RadWindow_Default a.rwReloadButton:hover
 {
 	background-position: -84px -26px;
 }
 
 /* unpin button */
-div.RadWindow.RadWindow_Black a.rwPinButton
+div.RadWindow.RadWindow_Default a.rwPinButton
 {
 	background-position: -140px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwPinButton:hover
+div.RadWindow.RadWindow_Default a.rwPinButton:hover
 {
 	background-position: -140px -26px;
 }
 
 /* pin button */
-div.RadWindow.RadWindow_Black a.rwPinButton.on
+div.RadWindow.RadWindow_Default a.rwPinButton.on
 {
 	background-position: -112px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwPinButton.on:hover
+div.RadWindow.RadWindow_Default a.rwPinButton.on:hover
 {
 	background-position: -112px -26px;
 }
 
 /* minimize button */
-div.RadWindow.RadWindow_Black a.rwMinimizeButton
+div.RadWindow.RadWindow_Default a.rwMinimizeButton
 {
 	background-position: -56px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwMinimizeButton:hover
+div.RadWindow.RadWindow_Default a.rwMinimizeButton:hover
 {
 	background-position: -56px -26px;
 }
 
 /* maximize button */
-div.RadWindow.RadWindow_Black a.rwMaximizeButton
+div.RadWindow.RadWindow_Default a.rwMaximizeButton
 {
 	background-position: -28px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwMaximizeButton:hover
+div.RadWindow.RadWindow_Default a.rwMaximizeButton:hover
 {
     background-position: -28px -26px;
 }
 
 /* close button */
-div.RadWindow.RadWindow_Black a.rwCloseButton
+div.RadWindow.RadWindow_Default a.rwCloseButton
 {
 	background-position: -168px 0;
 }
 
-div.RadWindow.RadWindow_Black a.rwCloseButton:hover
+div.RadWindow.RadWindow_Default a.rwCloseButton:hover
 {
 	background-position: -168px -26px;
 }
 
 /* restore button */
-div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMaximizeButton,
-div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMinimizeButton
+div.RadWindow.RadWindow_Default.rwMinimizedWindow a.rwMaximizeButton,
+div.RadWindow.RadWindow_Default.rwMinimizedWindow a.rwMinimizeButton
 {
     background-position: 0 0;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMaximizeButton:hover,
-div.RadWindow.RadWindow_Black.rwMinimizedWindow a.rwMinimizeButton:hover
+div.RadWindow.RadWindow_Default.rwMinimizedWindow a.rwMaximizeButton:hover,
+div.RadWindow.RadWindow_Default.rwMinimizedWindow a.rwMinimizeButton:hover
 {
 	background-position: 0 -26px;
 }
 
-div.RadWindow.RadWindow_Black table.rwTitlebarControls a.rwIcon
+div.RadWindow.RadWindow_Default table.rwTitlebarControls a.rwIcon
 {
 	background: transparent url('../images/Icon.gif') no-repeat left top;
 	width: 16px; 
@@ -214,7 +213,7 @@ div.RadWindow.RadWindow_Black table.rwTitlebarControls a.rwIcon
 	margin: 3px 0 3px 2px;
 }
 
-div.RadWindow.RadWindow_Black table.rwTitlebarControls em
+div.RadWindow.RadWindow_Default table.rwTitlebarControls em
 {
 	font: normal bold 16px SegoeUI, Arial, Verdana, sans-serif !important;
 	color: #0d5776;	
@@ -222,7 +221,7 @@ div.RadWindow.RadWindow_Black table.rwTitlebarControls em
 	margin-top: 6px;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow
+div.RadWindow.RadWindow_Default.rwMinimizedWindow
 {
 	width: 166px !important;
 	height: 30px !important;
@@ -237,7 +236,7 @@ iframe.rwMinimizedWindowOverlay_Black
 	width: 170px !important; height: 34px !important;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow td
+div.RadWindow.RadWindow_Default.rwMinimizedWindow td
 {
     background: none !important;
 }
@@ -253,30 +252,30 @@ div.RadWindow.radwindow_Black.rwMinimizedWindow table.rwTitlebarControls ul
     position: relative; top: -1px;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow em
+div.RadWindow.RadWindow_Default.rwMinimizedWindow em
 {
 	color: white !important;
 	width: 75px !important;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner
+div.RadWindow.RadWindow_Default.rwMinimizedWindow td.rwCorner
 {
 	cursor: default;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner.rwTopLeft,
-div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwCorner.rwTopRight
+div.RadWindow.RadWindow_Default.rwMinimizedWindow td.rwCorner.rwTopLeft,
+div.RadWindow.RadWindow_Default.rwMinimizedWindow td.rwCorner.rwTopRight
 {
 	width: 10px !important;
 }
 
-div.RadWindow.RadWindow_Black.rwMinimizedWindow td.rwTitlebar
+div.RadWindow.RadWindow_Default.rwMinimizedWindow td.rwTitlebar
 {
 	cursor: default !important;
 	background: #4b4b4b;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup
+div.RadWindow.RadWindow_Default .rwWindowContent .rwDialogPopup
 {
 	margin: 16px;
 	font: normal 11px Arial;
@@ -284,30 +283,30 @@ div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup
 	padding: 0px 0px 16px 50px;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radalert
+div.RadWindow.RadWindow_Default .rwWindowContent .rwDialogPopup.radalert
 {
 	background: transparent url('../images/ModalDialogAlert.gif') no-repeat 8px center;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radprompt
+div.RadWindow.RadWindow_Default .rwWindowContent .rwDialogPopup.radprompt
 {
 	padding: 0;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent .rwDialogPopup.radconfirm
+div.RadWindow.RadWindow_Default .rwWindowContent .rwDialogPopup.radconfirm
 {
 	background: transparent url('../images/ModalDialogConfirm.gif') no-repeat 8px center;	
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent input.rwDialogInput
+div.RadWindow.RadWindow_Default .rwWindowContent input.rwDialogInput
 {
 	padding: 3px 4px 0 4px;
 	height: 17px; width: 100%;
 	font: normal 11px Verdana, Arial, Sans-serif;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a,
-div.RadWindow.RadWindow_Black .rwWindowContent a span
+div.RadWindow.RadWindow_Default .rwWindowContent a,
+div.RadWindow.RadWindow_Default .rwWindowContent a span
 {
 	text-decoration: none;
 	color: black;
@@ -315,39 +314,39 @@ div.RadWindow.RadWindow_Black .rwWindowContent a span
 	cursor: default;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton
 {
 	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat 0 0; 
 	padding: 0 0 0 3px;
 	margin: 8px 8px 8px 0;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton span.rwOuterSpan
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton span.rwOuterSpan
 {
 	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat right 0;
 	padding: 0 3px 0 0;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton span.rwInnerSpan
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton span.rwInnerSpan
 {
 	background: white url('../images/ModalDialogButtonSprites.gif') repeat-x 0 -22px;
 	padding: 0 12px;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton:hover
 {
 	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat 0 -64px; 
 	padding: 0 0 0 3px;
 	margin: 8px 8px 8px 0;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover span.rwOuterSpan
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton:hover span.rwOuterSpan
 {
 	background: transparent url('../images/ModalDialogButtonSprites.gif') no-repeat right -64px;
 	padding: 0 3px 0 0;
 }
 
-div.RadWindow.RadWindow_Black .rwWindowContent a.rwPopupButton:hover span.rwInnerSpan
+div.RadWindow.RadWindow_Default .rwWindowContent a.rwPopupButton:hover span.rwInnerSpan
 {
 	background: white url('../images/ModalDialogButtonSprites.gif') repeat-x 0 -86px;
 	padding: 0 12px;
@@ -375,7 +374,7 @@ div.modaldialogbacgkround
 }
 
 
-.RadEditor ul li, .reDropDownBody ul li
+.reDropDownBody ul li
 {list-style: none !important;}
 .RadEditor a, .reDropDownBody a
 {text-decoration: none !important;}
@@ -449,7 +448,9 @@ div.RadWindow table.rwTitlebarControls ul.rwControlButtons li
 .reTlbVertical a span
 {
 	float: left;
-	width: 22px;
+	width: 30px;
+    height: 24px;
+    line-height: 24px;
 }
 
 .reButton_text
@@ -1328,35 +1329,38 @@ ul.reCustomLinks ul
 .ImageManager,
 .InsertImage
 {
-	background-position: -366px center;
+	background-position: -1170px center;
 }
 
 .ImageMapDialog
 {
-	background-position: -396px center;
+	background-position: -1230px center;
 }
 
 .FlashManager,
 .InsertFlash
 {
-	background-position: -1476px center;
+	background-position: -1140px center;
 }
 
 .MediaManager,
 .InsertMedia
 {
-	background-position: -1476px center;
+	background-position: -1200px center;
 }
 
 .DocumentManager,
 .InsertDocument
 {
-	background-position: -1476px center;
+	background-position: -1110px center;
 }
-
+.SaveTemplate 
+{
+    background-position: -1440px center;
+}
 .TemplateManager
 {
-	background-position: -2765px center;
+	background-position: -1470px center;
 }
 
 .InsertTable{
@@ -1469,33 +1473,36 @@ ul.reCustomLinks ul
 .Paste,
 .PasteStrip
 {
-	background-position: -652px center;
+	background-position: -1260px center;
 }
 
-.PasteAsHtml,
+.PasteAsHtml
+{
+	background-position: -1290px center;
+}
 .PasteHtml
 {
-	background-position: -815px center;
+	background-position: -1380px center;
 }
 
 .PasteFromWord
 {
-	background-position: -845px center;
+	background-position: -1320px center;
 }
 
 .PasteFromWordNoFontsNoSizes
 {
-	background-position: -875px center;
+	background-position: -1350px center;
 }
 
 .PastePlainText
 {
-	background-position: -905px center;
+	background-position: -1410px center;
 }
 
 .Print
 {
-	background-position: -936px center;
+	background-position: -1500px center;
 }
 
 .FindAndReplace
@@ -1805,6 +1812,12 @@ ul.reCustomLinks ul
 {
 	border: 0;
 	background: none;
+}
+
+.reToolbar span
+{
+	background-image: url('../images/editorSprite.png');
+	background-repeat: no-repeat;
 }
 /* end of toolbar */
 
@@ -2504,12 +2517,12 @@ td.reTlbVertical .reToolbar
 	margin: 0 1px;
 	color:#d9d9d9;
 }
-
+/*
 .reDropDownBody .reTlbVertical .reToolbar .reTool_text span.reButton_text
 {
 	padding-left: 13px;
 }
-
+*/
 .reTool span
 {
 	background-image: url('../images/editorSprite.png');

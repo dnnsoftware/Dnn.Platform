@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -82,6 +83,8 @@ namespace DotNetNuke.UI.Skins
         public Pane(HtmlContainerControl pane)
         {
             PaneControl = pane;
+            //Disable ViewState (we enable it later in the process)
+            PaneControl.ViewStateMode = ViewStateMode.Disabled;
             Name = pane.ID;
         }
 
@@ -153,7 +156,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -342,7 +345,7 @@ namespace DotNetNuke.UI.Skins
             var request = PaneControl.Page.Request;
             Containers.Container container = null;
 
-            if (PortalSettings.EnablePopUps && request.Url.ToString().Contains("popUp=true"))
+            if (PortalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
                 containerSrc = module.ContainerPath + "popUpContainer.ascx";
                 //Check Skin for a popup Container
@@ -431,13 +434,24 @@ namespace DotNetNuke.UI.Skins
                 var paneName = Convert.ToString(args.EventArguments["pane"]);
                 var moduleOrder = Convert.ToInt32(args.EventArguments["order"]);
 
-                var moduleController = new ModuleController();
-                moduleController.UpdateModuleOrder(portalSettings.ActiveTab.TabID, moduleId, moduleOrder, paneName);
-                moduleController.UpdateTabModuleOrder(portalSettings.ActiveTab.TabID);
+                ModuleController.Instance.UpdateModuleOrder(portalSettings.ActiveTab.TabID, moduleId, moduleOrder, paneName);
+                ModuleController.Instance.UpdateTabModuleOrder(portalSettings.ActiveTab.TabID);
 
                 //Redirect to the same page to pick up changes
                 PaneControl.Page.Response.Redirect(PaneControl.Page.Request.RawUrl, true);
             }
+        }
+
+
+        private bool IsVesionableModule(ModuleInfo moduleInfo)
+        {
+             if (String.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            {
+                return false;
+            }
+            
+            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            return controller is IVersionable;
         }
 
         #endregion
@@ -459,12 +473,17 @@ namespace DotNetNuke.UI.Skins
             PaneControl.Controls.Add(_containerWrapperControl);
 
             //inject module classes
-            const string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
+            string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
             string sanitizedModuleName = Null.NullString;
 
             if (!String.IsNullOrEmpty(module.DesktopModule.ModuleName))
             {
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
+            }
+
+            if (IsVesionableModule(module))
+            {
+                classFormatString += " DnnVersionableControl";
             }
 
             _containerWrapperControl.Attributes["class"] = String.Format(classFormatString, sanitizedModuleName, module.ModuleID);

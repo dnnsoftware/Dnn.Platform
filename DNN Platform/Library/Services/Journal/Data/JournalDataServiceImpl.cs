@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -103,12 +103,13 @@ namespace DotNetNuke.Services.Journal
         {
             _provider.ExecuteNonQuery("Journal_UpdateContentItemId", journalId, contentItemId);
         }
-        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId) {
-            return Journal_Get(portalId, currentUserId, journalId, false, false);
-        }
-        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
+        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId) 
         {
-            return _provider.ExecuteReader("Journal_Get", portalId, currentUserId, journalId, includeAllItems, isDeleted);
+            return Journal_Get(portalId, currentUserId, journalId, false, false, false);
+        }
+        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
+        {
+            return _provider.ExecuteReader("Journal_Get", portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck);
         }
         public IDataReader Journal_GetByKey(int portalId, string objectKey) {
             return Journal_GetByKey(portalId, objectKey, false, false);

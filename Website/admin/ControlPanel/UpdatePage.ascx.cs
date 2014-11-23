@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -78,13 +78,11 @@ namespace DotNetNuke.UI.ControlPanel
         {
             if ((TabPermissionController.CanManagePage()))
             {
-                var tabCtrl = new TabController();
-
                 TabInfo selectedTab = null;
                 if ((!string.IsNullOrEmpty(PageLst.SelectedValue)))
                 {
                     int selectedTabID = Int32.Parse(PageLst.SelectedValue);
-                    selectedTab = tabCtrl.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
+                    selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
                 }
 
                 TabRelativeLocation tabLocation = TabRelativeLocation.NOTSET;
@@ -122,7 +120,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                 //Update Cached Tabs as TabPath may be needed before cache is cleared
                 TabInfo tempTab;
-                if (new TabController().GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(tab.TabID, out tempTab))
+                if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(tab.TabID, out tempTab))
                 {
                     tempTab.TabPath = tab.TabPath;
                 }
@@ -180,7 +178,7 @@ namespace DotNetNuke.UI.ControlPanel
                 //Weird - but the activetab has different skin src value than getting from the db
                 if (((_currentTab == null)))
                 {
-                    _currentTab = new TabController().GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
+                    _currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
                 }
                 return _currentTab;
             }
@@ -363,14 +361,13 @@ namespace DotNetNuke.UI.ControlPanel
 
 		private bool IsParentTab(TabInfo tab, int parentTabId)
 		{
-			var tabController = new TabController();
 			while (tab != null)
 			{
 				if (tab.TabID == parentTabId)
 				{
 					return true;
 				}
-				tab = tab.ParentId != Null.NullInteger ? tabController.GetTab(tab.ParentId, tab.PortalID, false) : null;
+                tab = tab.ParentId != Null.NullInteger ? TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false) : null;
 			}
 
 			return false;

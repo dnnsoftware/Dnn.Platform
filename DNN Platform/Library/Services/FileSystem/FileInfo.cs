@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Web;
@@ -29,6 +30,7 @@ using System.Xml.Serialization;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 
@@ -51,7 +53,7 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
-    public class FileInfo : BaseEntityInfo, IFileInfo
+    public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileInfo));
         private string _folder;
@@ -175,7 +177,7 @@ namespace DotNetNuke.Services.FileSystem
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
 
                 if (PortalId == Null.NullInteger)
@@ -187,11 +189,10 @@ namespace DotNetNuke.Services.FileSystem
                     if (portalSettings == null || portalSettings.PortalId != PortalId)
                     {
                         //Get the PortalInfo  based on the Portalid
-                        var objPortals = new PortalController();
-                        PortalInfo objPortal = objPortals.GetPortal(PortalId);
-                        if ((objPortal != null))
+                        var portal = PortalController.Instance.GetPortal(PortalId);
+                        if ((portal != null))
                         {
-                            physicalPath = objPortal.HomeDirectoryMapPath + RelativePath;
+                            physicalPath = portal.HomeDirectoryMapPath + RelativePath;
                         }
                     }
                     else
@@ -414,11 +415,61 @@ namespace DotNetNuke.Services.FileSystem
 
         #endregion
 
+        #region IHydratable Implementation
+
+        public void Fill(IDataReader dr)
+        {
+            ContentType = Null.SetNullString(dr["ContentType"]);
+            Extension = Null.SetNullString(dr["Extension"]);
+            FileId = Null.SetNullInteger(dr["FileId"]);
+            FileName = Null.SetNullString(dr["FileName"]);
+            Folder = Null.SetNullString(dr["Folder"]);
+            FolderId = Null.SetNullInteger(dr["FolderId"]);
+            Height = Null.SetNullInteger(dr["Height"]);
+            IsCached = Null.SetNullBoolean(dr["IsCached"]);
+            PortalId  = Null.SetNullInteger(dr["PortalId"]);
+            SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
+            Size = Null.SetNullInteger(dr["Size"]);
+            StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
+            UniqueId = Null.SetNullGuid(dr["UniqueId"]);
+            VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
+            Width = Null.SetNullInteger(dr["Width"]);
+            LastModificationTime = Null.SetNullDateTime(dr["LastModificationTime"]);
+            FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            Title = Null.SetNullString(dr["Title"]);
+            EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
+            StartDate = Null.SetNullDateTime(dr["StartDate"]);
+            EndDate  = Null.SetNullDateTime(dr["EndDate"]);
+            ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
+            PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
+            FillBaseProperties(dr);
+        }
+
+        [XmlIgnore]
+        public int KeyID
+        {
+            get
+            {
+                return this.FileId;
+            }
+            set
+            {
+                FileId = value;
+            }
+        }
+
+        #endregion
+
         #region Private methods
 
         private void LoadImageProperties()
-        {
+        {            
             var fileManager = (FileManager)FileManager.Instance;
+            if (!fileManager.IsImageFile(this))
+            {
+                _width = _height = 0;
+                return;
+            }
             var fileContent = fileManager.GetFileContent(this);
 
             if (fileContent == null)
@@ -434,61 +485,41 @@ namespace DotNetNuke.Services.FileSystem
                 fileContent = tmp;
             }
 
-            if (fileManager.IsImageFile(this))
+            Image image = null;
+            try
             {
-                Image image = null;
+                image = fileManager.GetImageFromStream(fileContent);
 
-                try
-                {
-                    image = fileManager.GetImageFromStream(fileContent);
-
-                    _width = image.Width;
-                    _height = image.Height;
-                }
-                catch
-                {
-                    _width = 0;
-                    _height = 0;
-                    ContentType = "application/octet-stream";
-                }
-                finally
-                {
-                    if (image != null)
-                    {
-                        image.Dispose();
-                    }
-                    fileContent.Position = 0;
-                }
+                _width = image.Width;
+                _height = image.Height;
             }
-            else
+            catch
             {
-                _width = _height = 0;
+                _width = 0;
+                _height = 0;
+                ContentType = "application/octet-stream";
             }
-
+            finally
+            {
+                if (image != null)
+                {
+                    image.Dispose();
+                }
+                fileContent.Position = 0;
+            }    
             fileContent.Close();
         }
 
         private void LoadHashProperty()
         {
             var fileManager = (FileManager)FileManager.Instance;
-            var fileContent = fileManager.GetFileContent(this);
-
-            if (fileContent == null)
+            var currentHashCode = FolderProvider.Instance( FolderMappingController.Instance.GetFolderMapping(FolderMappingID).FolderProviderType).GetHashCode(this);
+            if (currentHashCode != _sha1Hash)
             {
-                //If can't get file content then just exit the function, so it will load again next time.
-                return;
-            }
-
-            if (!fileContent.CanSeek)
-            {
-                var tmp = fileManager.GetSeekableStream(fileContent);
-                fileContent.Close();
-                fileContent = tmp;
+                _sha1Hash = currentHashCode;
+                fileManager.UpdateFile(this);
             }
             
-            _sha1Hash = fileManager.GetHash(fileContent);
-            
-            fileContent.Close();
         }
 
         #endregion

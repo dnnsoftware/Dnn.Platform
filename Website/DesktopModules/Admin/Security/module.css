@@ -152,17 +152,21 @@ p.dnnFormRequired span
     margin-left: 10px;
     margin-right: 10px;
 }
-.dnnProfile .dnnFormItem input[type="text"], .dnnProfile .dnnFormItem select
+.dnnProfile .dnnFormItem input[type="text"], .dnnProfile .dnnFormItem select, .dnnProfile .dnnFormItem textarea
 {
     margin-right: 10px;
 }
 
 .dnnProfileDetails .dnnFormItem input[type="text"],
+.dnnProfileDetails .dnnFormItem textarea,
 .dnnProfileDetails .dnnFormItem select,
 .dnnProfileDetails .RadPicker{
     display: block;
     float: left;
     width: 300px;
+}
+.dnnProfileDetails .dnnFormItem .dnnDropDownList input[type="text"] {
+    float: none;
 }
 .dnnProfileDetails .RadPicker .riTextBox {
 	height: auto;
@@ -635,3 +639,47 @@ ul.buttonList .windowslive a span
 .dnnFormItem input.unmatched {
     background: url("/Icons/Sigma/Delete_16x16_Standard_2.png") #fff no-repeat 98% center;
 }
+
+.dnnProfileDetails .dnnFileUploadScope .dnnFoldersLabel {
+    width: 120px;
+}
+
+.dnnProfileDetails .dnnFileUploadScope .dnnFileUploadFolder {
+    height: 30px;
+}
+
+.dnnProfileDetails .dnnDropDownList.aspNetDisabled {
+    display: none;
+}
+
+/*  fixed profile image upload */
+.dnnProfile .dnnFileUploadScope {
+    display: inline-block;
+    background-color: #F0F0F0;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0;
+    width: 500px;
+}
+
+    .dnnProfile .dnnFileUploadScope > div:first-child {
+        float: right;
+        width: 250px;
+    }
+
+    .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem {
+        width: 250px;
+    }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem .dnnDropDownList {
+            width: 80%;
+        }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem input[type="button"] {
+            margin-left: 45px;
+            width: 80%;
+       }
+
+        .dnnProfile .dnnFileUploadScope .dnnLeft .dnnFormItem.dnnFileUploadFolder {
+            display: none !important;
+        }

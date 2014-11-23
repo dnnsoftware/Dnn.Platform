@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -67,8 +67,7 @@ namespace DotNetNuke.Services.Search
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var tabController = new TabController();
-            var tabs = tabController.GetTabsByPortal(portalId).AsList().Where(t => ((t.TabSettings["AllowIndex"] == null) ||
+            var tabs = TabController.Instance.GetTabsByPortal(portalId).AsList().Where(t => ((t.TabSettings["AllowIndex"] == null) ||
                                                                                     (t.TabSettings["AllowIndex"] != null && t.TabSettings["AllowIndex"].ToString().ToLower() != "false")) &&
                                                                                     t.LastModifiedOnDate > startDate);
             try

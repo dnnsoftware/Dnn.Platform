@@ -155,7 +155,7 @@
 This web site is running in medium trust mode and the 
 &lt;a href="http://msdn.microsoft.com/en-us/library/system.web.configuration.trustsection.originurl(v=VS.80).aspx"&gt;originUrl&lt;/a&gt; 
 attribute in the web.config does not allow access the host '{1}'. Change the originUrl to include '{1}'. Multiple host names can 
-be seperated by | signs.&lt;/li&gt;
+be separated by | signs.&lt;/li&gt;
 &lt;li&gt;
 The web servers firewall or another firewall is blocking access to the host or the SSL port 443. Check the firewall configuration.
 &lt;/li&gt;
@@ -336,5 +336,29 @@ The web servers firewall or another firewall is blocking access to the host or t
   </data>
   <data name="LicenseType_Premium.Text" xml:space="preserve">
     <value>Premium</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Device Detection</value>
+  </data>
+  <data name="AutoUpdatesEnabled.Text" xml:space="preserve">
+    <value>Auto Updates Enabled?</value>
+  </data>
+  <data name="DeviceDetectionEnabled.Text" xml:space="preserve">
+    <value>Device Detection Enabled?</value>
+  </data>
+  <data name="AutoUpdatesEnabled.Help" xml:space="preserve">
+    <value>Enable/disable update data file automatically.</value>
+  </data>
+  <data name="DeviceDetectionEnabled.Help" xml:space="preserve">
+    <value>Enable/disable device detection.</value>
+  </data>
+  <data name="ManualUpdates.Text" xml:space="preserve">
+    <value>Manual Updates:</value>
+  </data>
+  <data name="ShareUsageEnabled.Help" xml:space="preserve">
+    <value>Enable/disable share usage data with 51Degrees.</value>
+  </data>
+  <data name="ShareUsageEnabled.Text" xml:space="preserve">
+    <value>Share Usage Enabled?</value>
   </data>
 </root>

@@ -48,7 +48,9 @@
     font-weight: normal;
     margin: 0;
 }
-
+.ssasPremiumModule .RadComboBox > table {
+    width: 100% !important;
+}
 .dnnSiteSettings div.dnnssStat {
     border-top: 1px #ccc solid;
     padding: 1em 0 4em;
@@ -144,15 +146,15 @@ fieldset .dnnForm {
 
 
 /* clean some form style */
-span.CommandButton input[type="image"]{
+.dnnSiteSettings span.CommandButton input[type="image"]{
     display: none;
 }
 
-span.CommandButton{
+.dnnSiteSettings span.CommandButton{
     border: none;
 }
 
-a.CommandButton{
+.dnnSiteSettings a.CommandButton{
     background: whiteSmoke;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,whiteSmoke), color-stop(100%,#DFDFDF));
     -webkit-box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4), inset 0px 1px 0px 0px rgba(255, 255, 255, 1);
@@ -225,4 +227,21 @@ a[id$='IncrementCrmVersionButton']{
 
 #ssStylesheetEditor .editor {
     margin-bottom: 2em;
+}
+.dnnSiteSettings br {
+display: none !important;
+font-size: 0;
+line-height: 0;
+border-collapse: collapse;
+}
+.dnnSiteSettings .dnnFormItem .dnnHSRadioButtons {
+    overflow: hidden;
+}
+.dnnSiteSettings .dnnFormItem .dnnHSRadioButtons label{
+    width: auto;
+    padding: 0 5px 0 0;
+    margin-left: 3px;
+    text-align: left;
+    font-weight: normal;
+    margin-top: 0;
 }

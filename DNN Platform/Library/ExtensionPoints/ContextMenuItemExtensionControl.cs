@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -45,9 +46,15 @@ namespace DotNetNuke.ExtensionPoints
 
             foreach (var extension in extensionPointManager.GetContextMenuItemExtensionPoints(Module, Group))
             {
+                var icon = extension.Icon;
+                if (icon.StartsWith("~/"))
+                {
+                    icon = Globals.ResolveUrl(icon);
+                }
+
                 str.Append(@"<li id=""" + extension.CtxMenuItemId + @""" class=""" + extension.CssClass + @""">
     <a id=""" + extension.CtxMenuItemId + @"_link"" href=""#"" onclick=""" + extension.Action + @""" >
-        <img id=""" + extension.CtxMenuItemId + @"_icon"" alt=""" + extension.AltText + @""" src=""" + extension.Icon + @""" title=""" + extension.AltText + @""">
+        <img id=""" + extension.CtxMenuItemId + @"_icon"" alt=""" + extension.AltText + @""" src=""" + icon + @""" title=""" + extension.AltText + @""">
         <span id=""" + extension.CtxMenuItemId + @"_text"">"+extension.Text+@"</span>
     </a>
 </li>");

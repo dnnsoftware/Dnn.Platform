@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Search.Entities;
 
 #endregion
 
@@ -105,6 +106,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
             dataProvider.DeleteModuleDefinition(moduleDefinitionId);
             DataCache.ClearHostCache(true);
+
+            // queue remove module definition from search index
+            var document = new SearchDocumentToDelete
+            {
+                ModuleDefId = moduleDefinitionId
+            };
+
+            DataProvider.Instance().AddSearchDeletedItems(document);
         }
 
         /// -----------------------------------------------------------------------------
@@ -236,12 +245,12 @@ namespace DotNetNuke.Entities.Modules.Definitions
                                                                       moduleDefinition.FriendlyName,
                                                                       moduleDefinition.DefinitionName,
                                                                       moduleDefinition.DefaultCacheTime,
-                                                                      UserController.GetCurrentUserInfo().UserID);
+                                                                      UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
 				//Upgrade Module Definition
-                dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.GetCurrentUserInfo().UserID);
+                dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (saveChildren)
             {

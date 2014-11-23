@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Skins.Controls
             get {
                 var userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(Request.Params["UserId"])) {
-                    userId = Int32.Parse(Request.Params["UserId"]);
+                    if (!Int32.TryParse(Request.Params["UserId"], out userId)) userId = Null.NullInteger;
                 }
                 return userId;
             }
@@ -70,6 +70,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 return groupId;
             }
         }
+
+        //do not show when there is no breadcrumb(only has current tab)
+        public bool HideWithNoBreadCrumb { get; set; }
+
         private void InitializeComponent()
         {
         }
@@ -84,6 +88,11 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            if (HideWithNoBreadCrumb && PortalSettings.ActiveTab.BreadCrumbs.Count == 1)
+            {
+                return;
+            }
 
             //public attributes
             string strSeparator;

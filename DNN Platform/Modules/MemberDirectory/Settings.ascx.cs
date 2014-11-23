@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,7 +32,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Modules.MemberDirectory.Presenters;
@@ -134,8 +134,11 @@ namespace DotNetNuke.Modules.MemberDirectory
                     filterBySelector.Items.FindByValue("Group").Enabled = false;
                 }
 
-                relationShipList.DataSource = Model.Relationships;
-                relationShipList.DataBind();
+                foreach (var rel in Model.Relationships)
+                {
+                    relationShipList.AddItem(Localization.GetString(rel.Name,Localization.SharedResourceFile),rel.RelationshipId.ToString());
+                }
+
 
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
@@ -187,6 +190,8 @@ namespace DotNetNuke.Modules.MemberDirectory
                 searchField2List.Select(GetTabModuleSetting("SearchField2", _defaultSearchField2));
                 searchField3List.Select(GetTabModuleSetting("SearchField3", _defaultSearchField3));
                 searchField4List.Select(GetTabModuleSetting("SearchField4", _defaultSearchField4));
+
+                ExcludeHostUsersCheckBox.Checked = Boolean.Parse(GetTabModuleSetting("ExcludeHostUsers", "false"));
             }
         }
 
@@ -207,6 +212,8 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             if(!IsPostBack)
             {
+                BindSortList();
+
                 itemTemplate.Text = GetTabModuleSetting("ItemTemplate", DefaultItemTemplate);
                 alternateItemTemplate.Text = GetTabModuleSetting("AlternateItemTemplate", DefaultAlternateItemTemplate);
                 popUpTemplate.Text = GetTabModuleSetting("PopUpTemplate", DefaultPopUpTemplate);
@@ -261,6 +268,8 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             Model.TabModuleSettings["DisablePaging"] = disablePager.Checked.ToString(CultureInfo.InvariantCulture);
             Model.TabModuleSettings["PageSize"] = pageSize.Text;
+            
+            Model.TabModuleSettings["ExcludeHostUsers"] = ExcludeHostUsersCheckBox.Checked.ToString(CultureInfo.InvariantCulture);
 
             base.OnSavingSettings();
         }
@@ -269,6 +278,39 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             var name = Localization.GetString("ProfileProperties_" + propertyName, resourceFile);
             return string.IsNullOrEmpty(name) ? propertyName : name.Trim(':');
+        }
+
+        private void BindSortList()
+        {
+            sortFieldList.Items.Add(AddSearchItem("UserId"));
+            sortFieldList.Items.Add(AddSearchItem("LastName"));
+            sortFieldList.Items.Add(AddSearchItem("DisplayName"));
+            sortFieldList.Items.Add(AddSearchItem("CreatedOnDate", "DateCreated"));
+            var controller = new ListController();
+            var imageDataType = controller.GetListEntryInfo("DataType", "Image");
+            foreach (ProfilePropertyDefinition definition in Model.ProfileProperties)
+            {
+                if (imageDataType != null && definition.DataType != imageDataType.EntryID)
+                {
+                    sortFieldList.Items.Add(AddSearchItem(definition.PropertyName));
+                }
+            }
+        }
+
+        private ListItem AddSearchItem(string name)
+        {
+            return AddSearchItem(name, name);
+        }
+
+        private ListItem AddSearchItem(string name, string resourceKey)
+        {
+            var text = Localization.GetString(resourceKey, LocalResourceFile);
+            if (String.IsNullOrEmpty(text))
+            {
+                text = resourceKey;
+            }
+            var item = new ListItem(text, name);
+            return item;
         }
     }
 }

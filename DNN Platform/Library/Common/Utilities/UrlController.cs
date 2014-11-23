@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,12 +44,12 @@ namespace DotNetNuke.Common.Utilities
 
         public UrlInfo GetUrl(int PortalID, string Url)
         {
-            return (UrlInfo) CBO.FillObject(DataProvider.Instance().GetUrl(PortalID, Url), typeof (UrlInfo));
+            return CBO.FillObject<UrlInfo>(DataProvider.Instance().GetUrl(PortalID, Url));
         }
 
         public UrlTrackingInfo GetUrlTracking(int PortalID, string Url, int ModuleId)
         {
-            return (UrlTrackingInfo) CBO.FillObject(DataProvider.Instance().GetUrlTracking(PortalID, Url, ModuleId), typeof (UrlTrackingInfo));
+            return CBO.FillObject<UrlTrackingInfo>(DataProvider.Instance().GetUrlTracking(PortalID, Url, ModuleId));
         }
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         if (UserID == -1)
                         {
-                            UserID = UserController.GetCurrentUserInfo().UserID;
+                            UserID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
                         DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
                     }

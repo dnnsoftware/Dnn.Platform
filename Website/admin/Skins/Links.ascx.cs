@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,6 +46,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string _alignment;
         private bool _forceLinks = true;
+        private bool _includeActiveTab = true;
         private string _level;
 
 		#endregion
@@ -91,6 +92,18 @@ namespace DotNetNuke.UI.Skins.Controls
             set
             {
                 _forceLinks = value;
+            }
+        }
+
+        public bool IncludeActiveTab
+        {
+            get
+            {
+                return _includeActiveTab;
+            }
+            set
+            {
+                _includeActiveTab = value;
             }
         }
 		
@@ -172,7 +185,10 @@ namespace DotNetNuke.UI.Skins.Controls
                     case "":
                         if (objTab.ParentId == PortalSettings.ActiveTab.ParentId)
                         {
-                            return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                            if (IncludeActiveTab || objTab.TabID != PortalSettings.ActiveTab.TabID)
+                            {
+                                return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                            }
                         }
                         break;
                     case "child": //Render the current tabs child tabs

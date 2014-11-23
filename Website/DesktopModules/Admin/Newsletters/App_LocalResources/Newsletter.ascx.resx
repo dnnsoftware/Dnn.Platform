@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BasicSettings.Text" xml:space="preserve">
     <value>Basic Settings</value>
@@ -124,10 +124,10 @@
     <value>Addressees</value>
   </data>
   <data name="plRoles.Text" xml:space="preserve">
-    <value>User Role(s)</value>
+    <value>Send To Users or Roles</value>
   </data>
   <data name="plRoles.Help" xml:space="preserve">
-    <value>Select the User Roles that are to receive this message, e.g. 'Administrators', or 'Registered Users'.</value>
+    <value>Select the User or Roles that are to receive this message, e.g. 'User1', 'Administrators' or 'Registered Users'.</value>
   </data>
   <data name="plLanguages.Text" xml:space="preserve">
     <value>Language Filter</value>
@@ -247,8 +247,8 @@
 &lt;p&gt;Text in the &lt;strong&gt;subject&lt;/strong&gt; and &lt;strong&gt;body&lt;/strong&gt; can contain tokens for properties for environment objects like Portal, User and Date/Time, that will get replaced by the current values, if &lt;strong&gt;Replace Tokens&lt;/strong&gt; is enabled. An &lt;strong&gt;Attachment&lt;/strong&gt; file can be specified as well as &lt;strong&gt;priority&lt;/strong&gt; and whether to &lt;strong&gt;suppress multiple emails&lt;/strong&gt; sent to same address.&lt;/p&gt;
 &lt;p&gt;There are 3 &lt;strong&gt;send methods&lt;/strong&gt;:&lt;/p&gt;
 &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;TO&lt;/strong&gt; sends the address individually to each adressee, replacing all available tokens&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;BCC&lt;/strong&gt; sends a single email to the sender, including all adressees as hidden recipients.&lt;br /&gt;
+    &lt;li&gt;&lt;strong&gt;TO&lt;/strong&gt; sends the address individually to each addressee, replacing all available tokens&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;BCC&lt;/strong&gt; sends a single email to the sender, including all addressees as hidden recipients.&lt;br /&gt;
     All user individual&amp;nbsp;tokens will not get replaced&lt;/li&gt;
     &lt;li&gt;&lt;strong&gt;RELAY&lt;/strong&gt; is used like TO, but all individual emails get send to the specified RELAY address. You need to use tokens for users' mobile&amp;nbsp;phone or fax number to&amp;nbsp;get the message delivered.&lt;/li&gt;
 &lt;/ul&gt;

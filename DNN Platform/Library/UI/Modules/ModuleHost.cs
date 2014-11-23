@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return PortalController.GetCurrentPortalSettings();
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -141,6 +141,17 @@ namespace DotNetNuke.UI.Modules
         #endregion
 
         #region Private Methods
+        
+        private void InjectVersionToTheModuleIfSupported()
+        {
+            if (!(_control is IVersionableControl)) return;
+
+            var versionableControl = _control as IVersionableControl;
+            if (_moduleConfiguration.ModuleVersion != Null.NullInteger)
+            {
+                versionableControl.SetModuleVersion(_moduleConfiguration.ModuleVersion);
+            }
+        }
 
         private void InjectModuleContent(Control content)
         {
@@ -256,7 +267,7 @@ namespace DotNetNuke.UI.Modules
                 viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
                                                               moduleInfo)); 
             }
-
+            
             return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
@@ -324,6 +335,9 @@ namespace DotNetNuke.UI.Modules
                     new ExceptionLogController().AddLog(exc);
                 }
             }
+            
+            //Enable ViewState
+            _control.ViewStateMode = ViewStateMode.Enabled;
         }
 
         private void LoadAjaxPanel()
@@ -502,6 +516,8 @@ namespace DotNetNuke.UI.Modules
                 {
                     //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
                     InjectMessageControl(this);
+
+                    InjectVersionToTheModuleIfSupported();
 
                     //inject the module into the panel
                     InjectModuleContent(_control);

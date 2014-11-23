@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,7 +35,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 
 #endregion
@@ -67,12 +66,12 @@ namespace DotNetNuke.Entities.Urls
 
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            return FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.GetCurrentPortalSettings());
+            return FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return FriendlyUrl(tab, path, pageName, PortalController.GetCurrentPortalSettings());
+            return FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings portalSettings)
@@ -218,8 +217,7 @@ namespace DotNetNuke.Entities.Urls
             if (cultureSpecificAlias && portalAlias != portalSettings.PortalAlias.HTTPAlias)
             {
                 //was a change in alias, need to update the portalSettings with a new portal alias
-                var pac = new PortalAliasController();
-                PortalAliasInfo pa = pac.GetPortalAlias(portalAlias, portalSettings.PortalId);
+                PortalAliasInfo pa = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalSettings.PortalId);
                 if (pa != null)
                 {
                     portalSettings.PortalAlias = pa;
@@ -447,8 +445,7 @@ namespace DotNetNuke.Entities.Urls
 
                 if (portalSettings == null)
                 {
-                    var pac = new PortalAliasController();
-                    PortalAliasInfo alias = pac.GetPortalAlias(portalAlias, tab.PortalID);
+                    PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(portalAlias, tab.PortalID);
 
                     portalSettings = new PortalSettings(tab.TabID, alias);
                 }
@@ -471,12 +468,11 @@ namespace DotNetNuke.Entities.Urls
         private static PortalAliasInfo GetAliasForPortal(string httpAlias, int portalId, ref List<string> messages)
         {
             //if no match found, then call database to find (don't rely on cache for this one, because it is an exception event, not an expected event)
-            var pac = new PortalAliasController();
-            PortalAliasInfo alias = pac.GetPortalAlias(httpAlias, portalId);
+            PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(httpAlias, portalId);
             if (alias == null)
             {
                 //no match between alias and portal id
-                var aliasArray = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                var aliasArray = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
                 if (aliasArray.Count > 0)
                 {
                     alias = aliasArray[0]; //nab the first one here
@@ -548,7 +544,7 @@ namespace DotNetNuke.Entities.Urls
                     //get the portal alias mapping for this portal, which tells whether to enforce a primary portal alias or not
                     PortalSettings.PortalAliasMapping aliasMapping = PortalSettings.GetPortalAliasMappingMode(portalId);
                     //check to see if we should be specifying this based on the culture code
-                    var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                    var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
                     //799: if there was no culture code in the path and the portal settings culture was supplied, then use that
                     //essentially we are ignoring the portal alias of the portal settings object and driving the alias from the supplied portal settings culture code
@@ -1370,7 +1366,7 @@ namespace DotNetNuke.Entities.Urls
             //840 : change to re-introduce lower case restrictions on admin / host tabs
             if (tab != null)
             {
-                if (!RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings))
+                if (!(tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
                 {
                     bool forceLowerCase = (settings.ForceLowerCase);
                     if (forceLowerCase)

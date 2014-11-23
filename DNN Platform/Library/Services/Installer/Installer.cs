@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -243,20 +243,18 @@ namespace DotNetNuke.Services.Installer
         {
             try
             {
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
 
-	            if (InstallerInfo.ManifestFile != null)
+                if (InstallerInfo.ManifestFile != null)
 	            {
-		            objEventLogInfo.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", InstallerInfo.ManifestFile.Name.Replace(".dnn", "")));
+		            log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", InstallerInfo.ManifestFile.Name.Replace(".dnn", "")));
 	            }
 
 	            foreach (LogEntry objLogEntry in InstallerInfo.Log.Logs)
                 {
-                    objEventLogInfo.LogProperties.Add(new LogDetailInfo("Info:", objLogEntry.Description));
+                    log.LogProperties.Add(new LogDetailInfo("Info:", objLogEntry.Description));
                 }
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(objEventLogInfo);
+                LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
             {

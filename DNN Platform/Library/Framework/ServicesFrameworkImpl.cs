@@ -1,5 +1,5 @@
 // // DotNetNuke® - http://www.dotnetnuke.com
-// // Copyright (c) 2002-2013
+// // Copyright (c) 2002-2014
 // // by DotNetNuke Corporation
 // // 
 // // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,12 +16,13 @@
 // // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Globalization;
 using System.Web.Helpers;
 using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -59,26 +60,19 @@ namespace DotNetNuke.Framework
 
         public void RequestAjaxScriptSupport()
         {
-            jQuery.RequestRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQuery);
             SetKey(ScriptKey);
         }
 
         public void RegisterAjaxScript(Page page)
         {
-            var portalSettings = TestablePortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings == null) return;
-            var path = portalSettings.PortalAlias.HTTPAlias;
-            int index = path.IndexOf('/');
-            if (index > 0)
+            var path = ServicesFramework.GetServiceFrameworkRoot();
+            if (String.IsNullOrEmpty(path))
             {
-                path = path.Substring(index);
+                return;
             }
-            else
-            {
-                path = "/";
-            }
-            path = path.EndsWith("/") ? path : path + "/";
-            ClientAPI.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
+
+            JavaScript.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
             ClientAPI.RegisterClientVariable(page, "sf_siteRoot", path, /*overwrite*/ true);
             ClientAPI.RegisterClientVariable(page, "sf_tabId", PortalSettings.Current.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture), /*overwrite*/ true);
                         

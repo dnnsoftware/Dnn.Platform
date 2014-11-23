@@ -1,12 +1,18 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 
 (function ($, window, document, undefined) {
     "use strict";
+
+    var $element = function (element, props) {
+        var $e = $(document.createElement(element));
+        props && $e.attr(props);
+        return $e;
+    };
 
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
@@ -92,35 +98,53 @@
             var checkBoxId = dnn.uid("gs_");
             var signUpBoxId = dnn.uid("gs_");
 
-            var layout = $("<div class='" + this._options.containerCss + "'/>")
-                .append($("<div class='" + this._options.headerCss + "'/>")
-                    .append($("<div class='" + this._options.headerLeftCss + "'/>")
-                        .append($("<div/>")
-                            .append($("<div class='" + this._options.headerLeftTextCss + "'/>")
-                                .append($("<div/>")
-                                    .append($("<label for='" + signUpBoxId + "'>" + this._options.signUpLabel + "</label>"))
-                                    .append($("<span>" + this._options.signUpText + "</span>"))))
-                            .append($("<div class='" + this._options.headerLeftInputCss + "'/>")
-                                .append($("<div/>")
-                                    .append($("<div class='" + this._options.inputboxWrapperCss + "'/>")
-                                        .append($("<input type='text' id='" + signUpBoxId + "' maxlength='200' autocomplete='off'/>")))
-                                    .append($("<a href='javascript:void(0);' title='" + this._options.signUpButton + "'>" + this._options.signUpButton + "</a>"))))))
-                    .append($("<div class='" + this._options.headerRightCss + "'/>")
-                        .append($("<div/>")
-                            .append($("<a href='javascript:void(0);' target='manual' title='" + this._options.downloadManualButton + "'><span>" + this._options.downloadManualButton + "</span></a>")))))
-                .append($("<div class='" + this._options.contentCss + "'/>")
-                    .append($("<div/>")
-                        .append($("<iframe scrolling='auto' frameborder='0' />"))))
-                .append($("<div class='" + this._options.footerCss + "'/>")
-                    .append($("<div class='" + this._options.footerBorderCss + "'/>")
-                        .append($("<div/>")))
-                    .append($("<div class='" + this._options.footerLeftCss + "'/>")
-                        .append($("<input type='checkbox' id='" + checkBoxId + "' value='notshowagain' name='ShowDialog' >"))
-                        .append($("<label for='" + checkBoxId + "'>" + this._options.dontShowDialogLabel + "</label>")))
-                    .append($("<div class='" + this._options.footerRightCss + "'/>")
-                        .append($("<a href='//twitter.com/dnncorp' target='dnn-twitter' class='" + this._options.twitterLinkCss + "' title='" + this._options.twitterLinkTooltip + "'/>"))
-                        .append($("<a href='//facebook.com/dotnetnuke' target='dnn-facebook' class='" + this._options.facebookLinkCss + "' title='" + this._options.facebookLinkTooltip + "'/>"))));
-
+            var layout = $element("div", { "class": this._options.containerCss }).append(
+                $element("div", { "class": this._options.headerCss }).append(
+                    $element("div", { "class": this._options.headerLeftCss }).append(
+                        $element("div").append(
+                            $element("div", { "class": this._options.headerLeftTextCss }).append(
+                                $element("div").append(
+                                    $element("label", { 'for': signUpBoxId }).text(this._options.resources.signUpLabel),
+                                    $element("span").text(this._options.resources.signUpText)
+                                )
+                            ),
+                            $element("div", { "class": this._options.headerLeftInputCss }).append(
+                                $element("div").append(
+                                    $element("div", { "class": this._options.inputboxWrapperCss }).append(
+                                        $element("input", { type: "text", "id": signUpBoxId, maxlength: "200", autocomplete: "off" }).val(this._options.resources.signUpLabel)
+                                    ),
+                                    $element("a", { href: "javascript:void(0);", title: this._options.resources.signUpButton }).text(this._options.resources.signUpButton)
+                                )
+                            )
+                        )
+                    ),
+                    $element("div", { "class": this._options.headerRightCss }).append(
+                        $element("div").append(
+                            $element("a", { href: "javascript:void(0);", target: 'manual', title: this._options.resources.downloadManualButton }).append(
+                                $element("span").text(this._options.resources.downloadManualButton)
+                            )
+                        )
+                    )
+                ),
+                $element("div", { "class": this._options.contentCss }).append(
+                    $element("div").append(
+                        $element("iframe", { scrolling: "no", frameborder: "0" })
+                    )
+                ),
+                $element("div", { "class": this._options.footerCss }).append(
+                    $element("div", { "class": this._options.footerBorderCss }).append(
+                        $element("div")
+                    ),
+                    $element("div", { "class": this._options.footerLeftCss }).append(
+                        $element("input", { type: "checkbox", id: checkBoxId, value: "notshowagain", name: "ShowDialog" }),
+                        $element("label", { "for": checkBoxId }).text(this._options.resources.dontShowDialogLabel)
+                    ),
+                    $element("div", { "class": this._options.footerRightCss }).append(
+                        $element("a", { href: "//twitter.com/dnncorp", target: "dnn-twitter", "class": this._options.twitterLinkCss, title: this._options.resources.twitterLinkTooltip }),
+                        $element("a", { href: "//facebook.com/dotnetnuke", target: "dnn-facebook", "class": this._options.facebookLinkCss, title: this._options.resources.facebookLinkTooltip })
+                    )
+                )
+            );
             return layout;
         },
 
@@ -150,14 +174,14 @@
             var isValid = this._isEmailValid(email);
             var self = this;
             if (!isValid) {
-                $.dnnAlert({ title: this._options.invalidEmailTitle, text: this._options.invalidEmailMessage, callback: function () { self._$emailBox.focus(); } });
+                $.dnnAlert({ title: this._options.resources.invalidEmailTitle, text: this._options.resources.invalidEmailMessage, callback: function () { self._$emailBox.focus(); } });
                 return;
             }
             this._controller.signUp(email, $.proxy(this._onSignUp, this));
         },
 
         _onSignUp: function () {
-            $.dnnAlert({ title: this._options.signUpTitle, text: this._options.signUpMessage });
+            $.dnnAlert({ title: this._options.resources.signUpTitle, text: this._options.resources.signUpMessage });
         },
 
         show: function () {
@@ -181,7 +205,7 @@
                 modal: true,
                 autoOpen: true,
                 dialogClass: "dnnFormPopup " + this._options.dialogCss,
-                title: this._options.title,
+                title: this._options.resources.title,
                 resizable: false,
                 width: this._options.width,
                 height: this._options.height,

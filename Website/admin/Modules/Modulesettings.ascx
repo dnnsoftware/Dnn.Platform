@@ -1,5 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Modules.ModuleSettingsPage" CodeFile="Modulesettings.ascx.cs" %>
-<%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/URLControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
@@ -13,7 +13,7 @@
         <li><a href="#msPermissions"><%=LocalizeString("Permissions")%></a></li>
         <li><a href="#msPageSettings"><%=LocalizeString("PageSettings")%></a></li>
         <li id="specificSettingsTab" runat="server">
-            <asp:HyperLink href="#msSpecificSettings" ID="hlSpecificSettings" runat="server" />
+            <asp:HyperLink href="#msSpecificSettings" ID="hlSpecificSettings" runat="server" ViewStateMode="Disabled" />
         </li>
     </ul>
     <div class="msModuleSettings dnnClear" id="msModuleSettings">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plFriendlyName" runat="server" controlname="txtFriendlyName" />
-                    <asp:TextBox ID="txtFriendlyName" runat="server" Enabled="False" />
+                    <asp:TextBox ID="txtFriendlyName" runat="server" Enabled="False" ViewStateMode="Disabled" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plTitle" runat="server" controlname="txtTitle" />
@@ -37,16 +37,16 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plTags" runat="server" controlname="termsSelector" />
-                    <dnn:termsselector id="termsSelector" runat="server" height="250px" width="525px" />
+                    <dnn:termsselector id="termsSelector" runat="server" height="250px" width="525px" IncludeTags="false" />
                 </div>
             </fieldset>
             <h2 id="dnnPanel-ModuleSecuritySettings" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Security")%></a></h2>
             <fieldset>
-                <div class="dnnFormItem" id="rowAllTabs" runat="server">
+                <div class="dnnFormItem" id="rowAllTabs" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plAllTabs" runat="server" controlname="chkAllTabs" />
-                    <asp:CheckBox ID="chkAllTabs" runat="server" AutoPostBack="true" />
+                    <asp:CheckBox ID="chkAllTabs" runat="server" AutoPostBack="true" ViewStateMode="Enabled" />
                 </div>
-                <div class="dnnFormItem" id="trnewPages" runat="server">
+                <div class="dnnFormItem" id="trnewPages" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plNewTabs" runat="server" controlname="chkNewTabs" />
                     <asp:CheckBox ID="chkNewTabs" runat="server" />
                 </div>               
@@ -54,7 +54,7 @@
 					<dnn:Label ID="AllowIndexLabel" runat="server" ControlName="chkAllowIndex" />
 					<asp:CheckBox ID="chkAllowIndex" runat="server" />
 				</div>  
-                <div id="isShareableRow" runat="server" Visible="False" class="dnnFormItem">
+                <div id="isShareableRow" runat="server" Visible="False" class="dnnFormItem" ViewStateMode="Disabled">
                     <dnn:label id="isShareableLabel" runat="server" controlname="isShareableCheckBox" />
                     <asp:CheckBox ID="isShareableCheckBox" runat="server"/>
                 </div>
@@ -76,11 +76,11 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plStartDate" runat="server" controlname="txtStartDate" />
-                    <dnn:dnndatetimepicker id="startDatePicker" runat="server" />
+                    <dnn:dnndatetimepicker id="startDatePicker" runat="server" ViewStateMode="Disabled" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plEndDate" runat="server" controlname="txtEndDate" />
-                    <dnn:dnndatetimepicker id="endDatePicker" runat="server" />
+                    <dnn:dnndatetimepicker id="endDatePicker" runat="server" ViewStateMode="Disabled" />
                     
                 </div>
 				<div class="dnnFormItem">
@@ -95,8 +95,7 @@
             <fieldset>
                 <div>
                     <div class="dnnFormItem">
-                        <dnnweb:DnnGrid ID="dgOnTabs" runat="server" AutoGenerateColumns="False" 
-                            AllowPaging="true" PageSize="20">
+                        <dnnweb:DnnGrid ID="dgOnTabs" runat="server" AutoGenerateColumns="False" AllowPaging="true" PageSize="20" ViewStateMode="Disabled">
                             <MasterTableView>
                                 <Columns>
                                     <dnnweb:DnnGridTemplateColumn HeaderText="Site" HeaderStyle-Width="150px">
@@ -197,18 +196,18 @@
                     <dnn:label id="plWebSlice" runat="server" controlname="chkWebSlice" />
                     <asp:CheckBox ID="chkWebSlice" runat="server" AutoPostBack="true" />
                 </div>
-                <div class="dnnFormItem" id="webSliceTitle" runat="server">
+                <div class="dnnFormItem" id="webSliceTitle" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plWebSliceTitle" runat="server" controlname="txtWebSliceTitle" />
                     <asp:TextBox ID="txtWebSliceTitle" runat="server" />
                 </div>
-                <div class="dnnFormItem" id="webSliceExpiry" runat="server">
+                <div class="dnnFormItem" id="webSliceExpiry" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plWebSliceExpiry" runat="server" controlname="txtWebSliceExpiry" />
-                    <dnn:dnndatepicker ID="diWebSliceExpiry" runat="server" />
+                    <dnn:dnndatepicker ID="diWebSliceExpiry" runat="server"/>
                     <asp:CompareValidator ID="valWebSliceExpiry" ControlToValidate="diWebSliceExpiry"
                         Operator="DataTypeCheck" Type="Date" runat="server" Display="Dynamic" resourcekey="valWebSliceExpiry.ErrorMessage"
                         CssClass="dnnFormMessage dnnFormError" />
                 </div>
-                <div class="dnnFormItem" id="webSliceTTL" runat="server">
+                <div class="dnnFormItem" id="webSliceTTL" runat="server" ViewStateMode="Disabled">
                     <dnn:label id="plWebSliceTTL" runat="server" controlname="txtWebSliceTTL" />
                     <asp:TextBox ID="txtWebSliceTTL" runat="server" />
                     <asp:CompareValidator ID="valWebSliceTTL" ControlToValidate="txtWebSliceTTL" Operator="DataTypeCheck"
@@ -217,8 +216,7 @@
                 </div>
                 <div class="dnnFormItem dnnContainerPreview">
                     <dnn:label id="plModuleContainer" runat="server" controlname="ctlModuleContainer" />
-                    <%--<asp:DropDownList ID="moduleContainerCombo" runat="server" DataTextField="Key" DataValueField="Value" />--%>
-                    <dnn:DnnComboBox ID="moduleContainerCombo" runat="server" DataTextField="Key" DataValueField="Value" />
+                    <dnn:DnnSkinComboBox ID="moduleContainerCombo" runat="server" ViewStateMode="Disabled" />
                     <a href="#" class="dnnSecondaryAction">
                         <%=LocalizeString("ContainerPreview")%></a>
                 </div>
@@ -261,7 +259,7 @@
                     <dnn:label id="plTab" runat="server" controlname="cboTab" />
                     <%--<asp:DropDownList ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId"
                         runat="server" />--%>
-                    <dnn:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server" />
+                    <dnn:DnnComboBox ID="cboTab" DataTextField="IndentedTabName" DataValueField="TabId" runat="server"  ViewStateMode="Disabled"/>
                 </div>
             </fieldset>
         </div>
@@ -284,7 +282,7 @@
                 resourcekey="cmdCancel" /></li>
     </ul>
     <div class="dnnmsStat dnnClear">
-        <dnn:audit id="ctlAudit" runat="server" />
+        <dnn:audit id="ctlAudit" runat="server" ViewStateMode="Disabled" />
     </div>
 </div>
 <script language="javascript" type="text/javascript">

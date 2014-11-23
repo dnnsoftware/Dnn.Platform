@@ -2824,7 +2824,7 @@ IF NOT EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwne
 		CREATE TABLE {databaseOwner}{objectQualifier}ContentWorkflows
 			(
 				[WorkflowID] int NOT NULL IDENTITY (1, 1),
-				[PortalID ]int NULL,
+				[PortalID] int NULL,
 				[WorkflowName] nvarchar(40) NOT NULL,
 				[Description] nvarchar(256) NULL,
 				[IsDeleted] bit NOT NULL,

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,10 +27,12 @@ using System.Security.Principal;
 using System.Web;
 
 using DotNetNuke.Application;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.HttpModules.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
@@ -43,9 +45,18 @@ using DotNetNuke.Security.Roles.Internal;
 
 namespace DotNetNuke.HttpModules.Membership
 {
+    /// <summary>
+    /// Information about membership
+    /// </summary>
     public class MembershipModule : IHttpModule
     {
-	    private static string _cultureCode;
+        private static string _cultureCode;
+        /// <summary>
+        /// Gets the name of the module.
+        /// </summary>
+        /// <value>
+        /// The name of the module: "DNNMembershipModule"
+        /// </value>
         public string ModuleName
         {
             get
@@ -54,26 +65,33 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-	    private static string CurrentCulture
-	    {
-		    get
-		    {
-			    if (string.IsNullOrEmpty(_cultureCode))
-			    {
-				    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
-			    }
+        private static string CurrentCulture
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_cultureCode))
+                {
+                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
+                }
 
-			    return _cultureCode;
-		    }
-	    }
+                return _cultureCode;
+            }
+        }
 
         #region IHttpModule Members
 
+        /// <summary>
+        /// Initializes the specified application.
+        /// </summary>
+        /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
             application.AuthenticateRequest += OnAuthenticateRequest;
         }
 
+        /// <summary>
+        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
+        /// </summary>
         public void Dispose()
         {
         }
@@ -86,37 +104,35 @@ namespace DotNetNuke.HttpModules.Membership
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
 
+        /// <summary>
+        /// Called when unverified user skin initialize.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
-			var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
+            var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
             UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
-        public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensinons)
+        /// <summary>
+        /// Authenticates the request.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="allowUnknownExtensinons">if set to <c>true</c> to allow unknown extensinons.</param>
+        public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
 
             //First check if we are upgrading/installing
-            if (request == null || request.Url == null
-                || request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("installwizard.aspx"))
-            {
-                return;
-            }
-
-            //exit if a request for a .net mapping that isn't a content page is made i.e. axd
-            if (allowUnknownExtensinons == false
-                && request.Url.LocalPath.ToLower().EndsWith(".aspx") == false
-                && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false
-                && request.Url.LocalPath.ToLower().EndsWith(".ashx") == false)
+            if (!Initialize.ProcessHttpModule(context.ApplicationInstance.Request, allowUnknownExtensions, false))
             {
                 return;
             }
 
             //Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isActiveDirectoryAuthHeaderPresent = false;
             var auth = request.Headers.Get("Authorization");
@@ -130,13 +146,12 @@ namespace DotNetNuke.HttpModules.Membership
 
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
-                var roleController = new RoleController();
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
-				//if current login is from windows authentication, the ignore the process
-				if (user == null && context.User is WindowsPrincipal)
-				{
-					return;
-				}
+                //if current login is from windows authentication, the ignore the process
+                if (user == null && context.User is WindowsPrincipal)
+                {
+                    return;
+                }
 
                 //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
@@ -159,14 +174,14 @@ namespace DotNetNuke.HttpModules.Membership
 
                 if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
                 {
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture));
                 }
 
-				if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-				{
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
-					HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
-				}
+                if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
+                {
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, CurrentCulture));
+                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
+                }
 
                 //if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
                 if (DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(Host.UsersOnlineTimeWindow), DateTime.Now) < 0)
@@ -180,11 +195,11 @@ namespace DotNetNuke.HttpModules.Membership
                 //check for RSVP code
                 if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
-                    foreach (var role in TestableRoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
+                    foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
                     {
                         if (role.RSVPCode == request.QueryString["rsvp"])
                         {
-                            roleController.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
+                            RoleController.Instance.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID, RoleStatus.Approved, false, false);
                         }
                     }
                 }
@@ -193,7 +208,10 @@ namespace DotNetNuke.HttpModules.Membership
                 context.Items.Add("UserInfo", user);
 
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                Localization.SetLanguage(user.Profile.PreferredLocale);
+                if (!ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+                {
+                    Localization.SetLanguage(user.Profile.PreferredLocale);
+                }
             }
 
             if (context.Items["UserInfo"] == null)

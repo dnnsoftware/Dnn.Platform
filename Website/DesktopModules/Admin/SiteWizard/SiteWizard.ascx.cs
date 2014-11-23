@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,7 +31,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -186,7 +185,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// -----------------------------------------------------------------------------
         private void GetTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
 
             foreach (var template in templates)
@@ -287,8 +286,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     GetSkins();
 
                     //Get Details for Page 4
-                    var objPortalController = new PortalController();
-                    var objPortal = objPortalController.GetPortal(PortalId);
+                    var objPortal = PortalController.Instance.GetPortal(PortalId);
                     txtPortalName.Text = objPortal.PortalName;
                     txtDescription.Text = objPortal.Description;
                     txtKeyWords.Text = objPortal.KeyWords;
@@ -390,7 +388,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             var values = lstTemplate.SelectedItem.Value.Split('|');
 
-            return TestablePortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         /// -----------------------------------------------------------------------------
@@ -425,38 +423,36 @@ namespace DotNetNuke.Modules.Admin.Portals
         /// -----------------------------------------------------------------------------
         protected void OnWizardFinishedClick(object sender, WizardNavigationEventArgs e)
         {
-            var objPortalController = new PortalController();
-
             //use Portal Template to update portal content pages
             if (lstTemplate.SelectedIndex != -1)
             {
                 var template = LoadPortalTemplateInfoForSelectedItem();
 
                 //process zip resource file if present
-                objPortalController.ProcessResourceFileExplicit(PortalSettings.HomeDirectoryMapPath, template.ResourceFilePath);
+                PortalController.Instance.ProcessResourceFileExplicit(PortalSettings.HomeDirectoryMapPath, template.ResourceFilePath);
 
                 //Process Template
                 switch (optMerge.SelectedValue)
                 {
                     case "Ignore":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Ignore, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Ignore, false);
                         break;
                     case "Replace":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Replace, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Replace, false);
                         break;
                     case "Merge":
-                        objPortalController.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Merge, false);
+                        PortalController.Instance.ParseTemplate(PortalId, template, PortalSettings.AdministratorId, PortalTemplateModuleAction.Merge, false);
                         break;
                 }
             }
 			
             //update Portal info in the database
-            PortalInfo objPortal = objPortalController.GetPortal(PortalId);
+            PortalInfo objPortal = PortalController.Instance.GetPortal(PortalId);
             objPortal.Description = txtDescription.Text;
             objPortal.KeyWords = txtKeyWords.Text;
             objPortal.PortalName = txtPortalName.Text;
             objPortal.LogoFile = String.Format("FileID={0}", ctlLogo.FileID);
-            objPortalController.UpdatePortalInfo(objPortal);
+            PortalController.Instance.UpdatePortalInfo(objPortal);
 
             //Set Portal Skin
             SkinController.SetSkin(SkinController.RootSkin, PortalId, SkinType.Portal, ctlPortalSkin.SkinSrc);

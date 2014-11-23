@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,14 +51,21 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Constructors
 
-        public FolderInfo()
+        public FolderInfo(): this(false)
+        {            
+        }
+
+        internal FolderInfo(bool initialiseEmptyPermissions)
         {
             FolderID = Null.NullInteger;
             UniqueId = Guid.NewGuid();
             VersionGuid = Guid.NewGuid();
-            WorkflowID = Null.NullInteger;
+            WorkflowID = Null.NullInteger;            
+            if (initialiseEmptyPermissions)
+            {
+                _folderPermissions = new FolderPermissionCollection();   
+            }            
         }
-
         #endregion
 
         #region Public Properties
@@ -177,7 +184,7 @@ namespace DotNetNuke.Services.FileSystem
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
 
                 if (PortalID == Null.NullInteger)
@@ -189,10 +196,9 @@ namespace DotNetNuke.Services.FileSystem
                     if (portalSettings == null || portalSettings.PortalId != PortalID)
                     {
                         //Get the PortalInfo  based on the Portalid
-                        var objPortals = new PortalController();
-                        PortalInfo objPortal = objPortals.GetPortal(PortalID);
+                        var portal = PortalController.Instance.GetPortal(PortalID);
 
-                        physicalPath = objPortal.HomeDirectoryMapPath + FolderPath;
+                        physicalPath = portal.HomeDirectoryMapPath + FolderPath;
                     }
                     else
                     {

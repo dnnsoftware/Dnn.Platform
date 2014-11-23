@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             var azureCompact = AzureCompact();
             if (string.IsNullOrEmpty(ManifestFile))
             {
-                if (rblLegacySkin.SelectedValue != "None")
+                if (!string.IsNullOrEmpty(rblLegacySkin.SelectedValue))
                 {
 					//We need to create a manifest file so the installer can continue to run
                     CreateManifest();
@@ -564,7 +564,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             else if (Installer.InstallerInfo.Installed && !chkRepairInstall.Checked)
             {
                 lblWarningMessageWrapper.Visible = true;
-				if (UserController.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
+				if (UserController.Instance.GetCurrentUserInfo().IsSuperUser || Installer.InstallerInfo.PortalID == InstallPortalId)
                 {
                     pnlRepair.Visible = true;
                 }
@@ -600,7 +600,18 @@ namespace DotNetNuke.Modules.Admin.Extensions
 		private bool? AzureCompact()
 		{
 			bool? compact = null;
-			var manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
+			string manifestFile = null;
+            if (Installer.InstallerInfo.ManifestFile != null)
+            {
+                manifestFile = Installer.InstallerInfo.ManifestFile.TempFileName;
+            }
+            if (PackageType!=null)
+            {
+		        if (PackageType.PackageType == "CoreLanguagePack" || PackageType.PackageType == "ExtensionLanguagePack")
+		        {
+		            compact = true;
+		        }
+            }
             if (!IsAzureDatabase())
             {
                 compact = true;

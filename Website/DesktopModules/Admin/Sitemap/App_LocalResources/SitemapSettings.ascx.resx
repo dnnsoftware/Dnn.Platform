@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblLevelPriority.Help" xml:space="preserve">
     <value>When checked, the priority for each page will be computed from the hierarchy level of the page. Top level pages will have a value of 1, second level 0.9, third level 0.8, ...  This setting will not change the value stored in the actual page but it will use the computed value when required.</value>
@@ -290,5 +290,8 @@
   </data>
   <data name="DisableCaching.Text" xml:space="preserve">
     <value>Disable Caching</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Search Engine SiteMap</value>
   </data>
 </root>

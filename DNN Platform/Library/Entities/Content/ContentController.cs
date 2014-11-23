@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,6 +35,8 @@ using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Search.Entities;
+using DotNetNuke.Services.Search.Internals;
 
 #endregion
 
@@ -64,7 +66,7 @@ namespace DotNetNuke.Entities.Content
             //Argument Contract
             Requires.NotNull("contentItem", contentItem);
 
-            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.GetCurrentUserInfo().UserID);
+            contentItem.ContentItemId = _dataService.AddContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
 
             SaveMetadataDelta(contentItem);
 
@@ -77,14 +79,22 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
+            var searrchDoc = new SearchDocumentToDelete
+            {
+                UniqueKey = contentItem.ContentItemId.ToString("D"),
+                ModuleId = contentItem.ModuleID,
+                TabId = contentItem.TabID,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+            };
+            DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
+
             _dataService.DeleteContentItem(contentItem.ContentItemId);
         }
 
         public void DeleteContentItem(int contentItemId)
         {
-            Requires.NotNegative("contentItemId", contentItemId);
-
-            _dataService.DeleteContentItem(contentItemId);
+            var contentItem = GetContentItem(contentItemId);
+            DeleteContentItem(contentItem);
         }
         
         public ContentItem GetContentItem(int contentItemId)
@@ -172,7 +182,7 @@ namespace DotNetNuke.Entities.Content
 
             SaveMetadataDelta(contentItem);
             
-            _dataService.UpdateContentItem(contentItem, UserController.GetCurrentUserInfo().UserID);
+            _dataService.UpdateContentItem(contentItem, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public void AddMetaData(ContentItem contentItem, string name, string value)

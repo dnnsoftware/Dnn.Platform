@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,12 +23,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
-
 using Microsoft.VisualBasic;
+using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -106,16 +106,30 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 MaxThreads = value;
 
-                if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                //if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                //{
+                //    value = 60;
+                //}
+                if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
-                    value = 60;
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60;
                 }
-                DelayAtAppStart = value;
+                else
+                {
+                    DelayAtAppStart = 60;
+                }
             }
             else
             {
                 MaxThreads = 1;
-                DelayAtAppStart = 60;
+                if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
+                {
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
+                }
+                else
+                {
+                    DelayAtAppStart = 60;
+                }
             }
         }
 
@@ -239,6 +253,11 @@ namespace DotNetNuke.Services.Scheduling
         {
             //Do Nothing
         }
+        public virtual void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
+        {
+            //Do Nothing
+        }
+        public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
 
     }
 }

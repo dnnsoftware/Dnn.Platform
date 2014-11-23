@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -131,18 +131,17 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var modules = new ModuleController();
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, drpRoleGroup.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, drpGroupViewPage.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, txtListTemplate.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, txtViewTemplate.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, chkGroupModeration.Checked.ToString());
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, drpViewMode.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, txtPageSize.Text);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, chkEnableSearch.Checked.ToString());
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, lstSortField.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, radSortDirection.SelectedItem.Value);
-                modules.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, chkUserGroups.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, drpRoleGroup.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, drpGroupViewPage.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListTemplate, txtListTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewTemplate, txtViewTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupModerationEnabled, chkGroupModeration.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, drpViewMode.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListPageSize, txtPageSize.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSearchEnabled, chkEnableSearch.Checked.ToString());
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortField, lstSortField.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, radSortDirection.SelectedItem.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, chkUserGroups.Checked.ToString());
             }
             catch (Exception exc) //Module failed to load
             {
@@ -161,35 +160,30 @@ namespace DotNetNuke.Modules.Groups
             }
         }
         private void BindPages() {
-            ModuleController mc = new ModuleController();
-            TabController tc = new TabController();
-            TabInfo tabInfo;
-            foreach (ModuleInfo moduleInfo in mc.GetModules(PortalId)) {
-
-                if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false) {
-                    tabInfo = tc.GetTab(moduleInfo.TabID, PortalId, false);
-                    if (tabInfo != null) {
-                        if (tabInfo.IsDeleted == false) {
-
-                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) {
-                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) {
-                                    
-                                        if (drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) {
-                                            drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
-                                        }
-                                                             
-
+            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(PortalId)) 
+            {
+                if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
+                {
+                    TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, PortalId, false);
+                    if (tabInfo != null) 
+                    {
+                        if (tabInfo.IsDeleted == false) 
+                        {
+                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) 
+                            {
+                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) 
+                                {
+                                    if (drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
+                                    {
+                                        drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }
-
                                 }
+
                             }
-
-
-
                         }
                     }
                 }
             }
-        
+        }
     }
 }

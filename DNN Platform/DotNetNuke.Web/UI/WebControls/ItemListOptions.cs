@@ -43,16 +43,14 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "resultsText")]
         public string ResultsText;
 
-        [DataMember(Name = "services")]
-        public ItemListServicesOptions Services;
-
         [DataMember(Name = "firstItem")]
         public SerializableKeyValuePair<string, string> FirstItem;
 
+        [DataMember(Name = "disableUnspecifiedOrder")]
+        public bool DisableUnspecifiedOrder;
+
         public ItemListOptions()
         {
-            Services = new ItemListServicesOptions();
-
             // all the resources are located under the Website\App_GlobalResources\SharedResources.resx
             SortAscendingButtonTitle = Localization.GetString("DropDownList.SortAscendingButtonTitle", Localization.SharedResourceFile);
             UnsortedOrderButtonTooltip = Localization.GetString("DropDownList.UnsortedOrderButtonTooltip", Localization.SharedResourceFile);

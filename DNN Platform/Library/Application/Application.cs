@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,25 +24,17 @@ using System;
 using System.Reflection;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 
 #endregion
 
 namespace DotNetNuke.Application
 {
-    /// -----------------------------------------------------------------------------
-    /// Namespace:  DotNetNuke.Application
-    /// Project:    DotNetNuke
-    /// Module:     Application
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Application class contains properties that describe the DotNetNuke Application.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	09/10/2009  created
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class Application
     {
         private static ReleaseMode _status = ReleaseMode.None;
@@ -60,6 +52,19 @@ namespace DotNetNuke.Application
             get
             {
                 return "DNN Corporation";
+            }
+        }
+
+        /// <summary>
+        /// Gets the version of the currently installed DotNetNuke framework/application
+        /// Can be prior to Version, if the application is pending to be upgraded.
+        /// </summary>
+        /// <value>The version as retreieved from the database version table.</value>
+        public virtual Version CurrentVersion
+        {
+            get
+            {
+                return DataProvider.Instance().GetVersion();
             }
         }
 
@@ -221,7 +226,7 @@ namespace DotNetNuke.Application
         /// Gets the version of the DotNetNuke framework/application
         /// </summary>
         /// <value>The version as retreieved from the Executing assembly.</value>
-        public Version Version
+        public virtual Version Version
         {
             get
             {

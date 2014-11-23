@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -223,22 +223,20 @@ namespace DotNetNuke.Services.EventQueue
                 catch
                 {
 					//log if message could not be processed
-                    var objEventLog = new EventLogController();
-                    var objEventLogInfo = new LogInfo();
-                    objEventLogInfo.AddProperty("EventQueue.ProcessMessage", "Message Processing Failed");
-                    objEventLogInfo.AddProperty("ProcessorType", message.ProcessorType);
-                    objEventLogInfo.AddProperty("Body", message.Body);
-                    objEventLogInfo.AddProperty("Sender", message.Sender);
+                    var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                    log.AddProperty("EventQueue.ProcessMessage", "Message Processing Failed");
+                    log.AddProperty("ProcessorType", message.ProcessorType);
+                    log.AddProperty("Body", message.Body);
+                    log.AddProperty("Sender", message.Sender);
                     foreach (string key in message.Attributes.Keys)
                     {
-                        objEventLogInfo.AddProperty(key, message.Attributes[key]);
+                        log.AddProperty(key, message.Attributes[key]);
                     }
                     if (!String.IsNullOrEmpty(message.ExceptionMessage))
                     {
-                        objEventLogInfo.AddProperty("ExceptionMessage", message.ExceptionMessage);
+                        log.AddProperty("ExceptionMessage", message.ExceptionMessage);
                     }
-                    objEventLogInfo.LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString();
-                    objEventLog.AddLog(objEventLogInfo);
+                    LogController.Instance.AddLog(log);
                     if (message.ExpirationDate < DateTime.Now)
                     {
 						//Set Message comlete so it is not run a second time

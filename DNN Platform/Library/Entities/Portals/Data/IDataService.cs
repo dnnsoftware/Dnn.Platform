@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,7 +20,6 @@
 #endregion
 #region Usings
 
-using System;
 using System.Data;
 
 #endregion
@@ -36,5 +35,20 @@ namespace DotNetNuke.Entities.Portals.Data
         IDataReader GetPortalGroups();
 
         void UpdatePortalGroup(PortalGroupInfo portalGroup, int lastModifiedByUserId);
+
+        /// <summary>
+        /// Gets all shared modules with the specified Portal  by another owner portals
+        /// </summary>
+        /// <param name="portal">The Portal</param>
+        /// <returns>A list of ModuleInfo objects</returns>
+        IDataReader GetSharedModulesWithPortal(PortalInfo portal);
+
+        /// <summary>
+        /// Gets all shared modules by the specified Portal with another portals
+        /// </summary>
+        /// <param name="portal">The owner Portal</param>
+        /// <returns>A list of ModuleInfo objects</returns>
+        IDataReader GetSharedModulesByPortal(PortalInfo portal);
+
     }
 }

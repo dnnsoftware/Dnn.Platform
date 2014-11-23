@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ContentList
                 dt.Columns.Add(new DataColumn("PubDate", typeof (DateTime)));
 
                 var results = new ContentController().GetContentItemsByTerm(_tagQuery).ToList();
-                var tabController = new TabController();
 
                 if (_tagQuery.Length > 0)
                 {
@@ -67,7 +66,7 @@ namespace DotNetNuke.Modules.ContentList
                         dr["Title"] = item.Content;
 
                         //get tab info and use the tab description, if tab is deleted then ignore the item.
-                        var tab = tabController.GetTab(item.TabID, PortalId, false);
+                        var tab = TabController.Instance.GetTab(item.TabID, PortalId, false);
                         if(tab != null)
                         {
 							if (tab.IsDeleted)

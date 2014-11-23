@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -36,7 +37,7 @@ using Telerik.Web.UI.Upload;
 
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -102,14 +103,21 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         private void ProcessLanguage(List<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
         {
-            var tabCtrl = new TabController();
             RadProgressContext progress = RadProgressContext.Current;
 
             progress.Speed = "N/A";
             progress.PrimaryTotal = totalLanguages;
             progress.PrimaryValue = languageCount;
+            
 
             int total = pageList.Count;
+            if (total == 0)
+            {
+                progress.SecondaryTotal = 0;
+                progress.SecondaryValue = 0;
+                progress.SecondaryPercent = 100;
+            }
+
             for (int i = 0; i <= total - 1; i++)
             {
                 TabInfo currentTab = pageList[i];
@@ -137,11 +145,11 @@ namespace DotNetNuke.Modules.Admin.Languages
 
                 if (locale.Code == PortalDefault)
                 {
-                    tabCtrl.LocalizeTab(currentTab, locale, false);
+                    TabController.Instance.LocalizeTab(currentTab, locale, true);
                 }
                 else
                 {
-                    tabCtrl.CreateLocalizedCopy(currentTab, locale, false);
+                    TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
             }
         }
@@ -193,10 +201,11 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void updateButton_Click(object sender, EventArgs e)
         {
-            var tabCtrl = new TabController();
-            var portalCtrl = new PortalController();
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
-            List<TabInfo> pageList = tabCtrl.GetDefaultCultureTabList(PortalId);
+            List<TabInfo> pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
+                                      where !kvp.Value.TabPath.StartsWith("//Admin")
+                                            && !kvp.Value.IsDeleted
+                                      select kvp.Value).ToList(); ;
 
             int scriptTimeOut = Server.ScriptTimeout;
             Server.ScriptTimeout = timeout;
@@ -216,7 +225,11 @@ namespace DotNetNuke.Modules.Admin.Languages
                 if (!IsDefaultLanguage(locale.Code))
                 {
                     languageCounter += 1;
-                    pageList = tabCtrl.GetCultureTabList(PortalId);
+                    pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
+                                where !kvp.Value.TabPath.StartsWith("//Admin")
+                                      && kvp.Value.CultureCode == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage
+                                      && !kvp.Value.IsDeleted
+                                select kvp.Value).ToList();
 
                     //add translator role
                     Localization.AddTranslatorRole(PortalId, locale);
@@ -225,13 +238,13 @@ namespace DotNetNuke.Modules.Admin.Languages
                     ProcessLanguage(pageList, locale, languageCounter, languageCount);
 
                     //Map special pages
-                    portalCtrl.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
+                    PortalController.Instance.MapLocalizedSpecialPages(PortalSettings.PortalId, locale.Code);
                 }
             }
             //Restore Script Timeout
             Server.ScriptTimeout = scriptTimeOut;
             //clear portal cache
-            DataCache.ClearPortalCache(PortalId,true);
+            DataCache.ClearPortalCache(PortalId, true);
             //'Redirect to refresh page (and skinobjects)
             Response.Redirect(Globals.NavigateURL(), true);
         }

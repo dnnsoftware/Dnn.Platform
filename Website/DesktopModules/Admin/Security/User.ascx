@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
+
 <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short">
     <Items>
         <dnn:DnnFormLiteralItem ID="userNameReadOnly" runat="server"  DataField="Username" />
@@ -17,7 +18,7 @@
 </dnn:DnnFormEditor>
 <div class="dnnFormGroup dnnFormItem dnnFormShort" id="renameUserPortals" runat="server" Visible="False">
     <dnn:Label ID="numSites" runat="server"></dnn:Label>
-    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False"></dnn:DnnComboBox>
+    <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" ViewStateMode="Disabled"/>
 </div>
 
 <asp:panel id="pnlAddUser" runat="server" visible="False" CssClass="dnnForm dnnFormPassword">

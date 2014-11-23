@@ -1,0 +1,693 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* CONTENT-2259 Web Server Groups */
+/**********************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}WebServers' 
+           AND  COLUMN_NAME = 'ServerGroup')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            ServerGroup nvarchar(200) NULL
+    END 
+GO
+
+/* CONTENT-2485: Add UniqueId column to identity the server when its behind affinity tool. */
+/**********************************/
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{objectQualifier}WebServers' 
+           AND  COLUMN_NAME = 'UniqueId')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            UniqueId NVARCHAR(200) NULL
+    END 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateServer]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateServer]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateServer]
+    @ServerID           INT,
+    @URL                NVARCHAR(255),
+    @UniqueId           NVARCHAR(200),
+    @Enabled            BIT,
+    @Group              NVARCHAR(200)
+AS
+    UPDATE {databaseOwner}{objectQualifier}WebServers
+        SET 
+            URL = @URL,
+            UniqueId = @UniqueId,
+            Enabled = @Enabled,
+            ServerGroup = @Group
+        WHERE  ServerID = @ServerID
+GO
+
+/***** Task DNN-DNN-3371: update sp Journal_Get to can check security setting, also update func Journal_User_Permissions to get correct role info. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Get]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Get
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Journal_Get]
+    @PortalId int,
+    @CurrentUserId int,
+    @JournalId int,
+    @IncludeAllItems int = 0,
+    @IsDeleted int = 0,
+    @SecurityCheck BIT = 0
+    AS
+    SELECT     j.JournalId, j.JournalTypeId, j.Title, j.Summary, j.UserId, j.DateCreated, j.DateUpdated, j.PortalId,
+                j.ProfileId, j.GroupId, j.ObjectKey, j.AccessKey,
+                "JournalOwner" = '<entity><id>' + CAST(p.UserId as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name></entity>',
+                "JournalAuthor" = CASE WHEN ISNULL(a.UserId,-1) >0 THEN '<entity><id>' + CAST(a.UserId as nvarchar(150)) + '</id><name><![CDATA[' + a.DisplayName + ']]></name></entity>' ELSE '' END,
+                "JournalOwnerId" = ISNULL(j.ProfileId,j.UserId),
+                 jt.Icon, jt.JournalType,
+                "Profile" = CASE WHEN j.ProfileId > 0 THEN '<entity><id>' + CAST(p.UserID as nvarchar(150)) + '</id><name><![CDATA[' + p.DisplayName + ']]></name><vanity></vanity></entity>' ELSE '' END,
+                jd.JournalXML, ContentItemId, j.ItemData, j.IsDeleted, j.CommentsDisabled, j.CommentsHidden
+    FROM        {databaseOwner}[{objectQualifier}Journal] AS j
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Types] as jt ON jt.JournalTypeId = j.JournalTypeId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_Security] AS js ON js.JournalId = j.JournalId
+                INNER JOIN {databaseOwner}[{objectQualifier}Journal_User_Permissions](@PortalId,@CurrentUserId ,1) as t ON t.seckey = js.SecurityKey OR @SecurityCheck = 0
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Journal_Data] as jd on jd.JournalId = j.JournalId 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS p ON j.ProfileId = p.UserID 
+                LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Users] AS a ON j.UserId = a.UserID
+    WHERE       ((@IncludeAllItems = 0) AND (j.JournalId = @JournalId AND j.IsDeleted = @IsDeleted)) 
+                OR 
+                ((@IncludeAllItems = 1) AND (j.JournalId = @JournalId))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal_User_Permissions]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}Journal_User_Permissions]
+(
+    @PortalId int,
+    @UserId int,
+    @RegisteredRoleId int
+)
+RETURNS 
+@tmp TABLE (seckey nvarchar(200))
+
+AS
+BEGIN
+IF @UserId > 0
+        BEGIN
+            IF @RegisteredRoleId = 1
+                SELECT @RegisteredRoleId = RegisteredRoleId FROM {databaseOwner}[{objectQualifier}Portals] WHERE PortalID = @PortalId
+            INSERT INTO @tmp (seckey) VALUES ('U' + Cast(@UserId as nvarchar(200)))
+            INSERT INTO @tmp (seckey) VALUES ('P' + Cast(@UserId as nvarchar(200)))
+            INSERT INTO @tmp (seckey) VALUES ('F' + Cast(@UserId as nvarchar(200)))
+            IF EXISTS(SELECT RoleId FROM {databaseOwner}[{objectQualifier}UserRoles] WHERE UserID = @UserId AND RoleId = @RegisteredRoleId
+                        AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+                        AND    (ExpiryDate >= getdate() or ExpiryDate is null))
+                    INSERT INTO @tmp (seckey) VALUES ('C')
+            
+        END
+        
+    INSERT INTO @tmp (seckey) VALUES ('E')
+    
+    INSERT INTO @tmp (seckey)
+    SELECT 'R' + CAST(ur.RoleId as nvarchar(200)) 
+        FROM {databaseOwner}[{objectQualifier}UserRoles] as ur
+            INNER JOIN {databaseOwner}[{objectQualifier}Users] as u on ur.UserId = u.UserId
+            INNER JOIN {databaseOwner}[{objectQualifier}Roles] as r on ur.RoleId = r.RoleId
+        WHERE  u.UserId = @UserId
+            AND    r.PortalId = @PortalId
+            AND    (EffectiveDate <= getdate() or EffectiveDate is null)
+            AND    (ExpiryDate >= getdate() or ExpiryDate is null)
+    INSERT INTO @tmp (seckey)
+        SELECT (SELECT CASE WHEN @UserID = ur.UserId 
+                        THEN 'F' + CAST(RelatedUserID as nvarchar(200))
+                        ELSE 'F' + CAST(ur.UserId as nvarchar(200)) END) 
+        FROM {databaseOwner}[{objectQualifier}UserRelationships] ur
+        INNER JOIN {databaseOwner}[{objectQualifier}Relationships] r ON ur.RelationshipID = r.RelationshipID AND r.RelationshipTypeID = 1
+        WHERE (ur.UserId = @UserId OR RelatedUserID = @UserId) AND Status = 2
+    RETURN 
+END
+
+GO
+
+/* DNN-5107 Improve Startup Performance - Cache Settings */
+/*********************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabSettings]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabSettings]
+    @PortalId Int
+AS
+	BEGIN
+		SELECT
+			TS.TabID,
+			TS.SettingName,
+			CASE WHEN Lower(TS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TS.SettingValue)
+				 ELSE TS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabSettings] TS
+			INNER JOIN {databaseOwner}[{objectQualifier}Tabs] T ON t.TabID = TS.TabID
+		WHERE  (PortalId = @PortalId)
+		ORDER BY TS.TabID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModuleSettingsByTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModuleSettingsByTab]
+    @TabId Int
+AS
+	BEGIN
+		SELECT
+			MS.ModuleID,
+			MS.SettingName,
+			CASE WHEN Lower(MS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(MS.SettingValue)
+				 ELSE MS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}ModuleSettings] MS
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] TM ON MS.ModuleID = TM.ModuleID
+		WHERE  TM.TabID = @TabId
+		ORDER BY MS.ModuleID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleSettingsByTab]
+    @TabId Int
+AS
+	BEGIN
+		SELECT
+			TMS.TabModuleID,
+			TMS.SettingName,
+			CASE WHEN Lower(TMS.SettingValue) LIKE 'fileid=%'
+				 THEN {databaseOwner}{objectQualifier}FilePath(TMS.SettingValue)
+				 ELSE TMS.SettingValue END           
+				 AS SettingValue
+		FROM   {databaseOwner}[{objectQualifier}TabModuleSettings] TMS
+			INNER JOIN {databaseOwner}[{objectQualifier}TabModules] TM ON TMS.TabModuleID = TM.TabModuleID
+		WHERE  TM.TabID = @TabId
+		ORDER BY TMS.TabModuleID
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByTabModuleID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByTabModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByTabModuleID]
+	@TabModuleID Int -- NOT Null
+AS
+	BEGIN
+		SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs] T
+		WHERE IsDeleted = 0
+		  AND TabID IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}TabModules]
+						WHERE TabModuleID = @TabModuleID AND IsDeleted = 0)
+		ORDER BY PortalId, Level, ParentID, TabOrder -- PortalId added for query optimization
+	END
+GO
+
+/***** Fix bug Content-2390: Add log type WEBSERVER_CREATED, WEBSERVER_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_CREATED', N'Web Server Created', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_UPDATED', N'Web Server Updated', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_CREATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_UPDATED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+/* DNN-5126 Need AffiliateController.GetAffiliate(int affiliateID) */
+/*******************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAffiliate]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliate]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAffiliate]
+	@AffiliateId int
+AS
+
+	SELECT	*
+	FROM	{databaseOwner}{objectQualifier}Affiliates 
+	WHERE	AffiliateId = @AffiliateId
+GO
+
+/* DNN-4993 Scheduled Job Start Date and Time */
+/*********************************************************/
+
+ALTER TABLE {databaseOwner}{objectQualifier}Schedule
+	ADD ScheduleStartDate DATETIME NULL 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSchedule]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateSchedule
+	@ScheduleID int
+	,@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@LastModifiedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+UPDATE {databaseOwner}{objectQualifier}Schedule
+	SET 
+	TypeFullName = @TypeFullName
+	,FriendlyName = @FriendlyName
+	,TimeLapse = @TimeLapse
+	,TimeLapseMeasurement = @TimeLapseMeasurement
+	,RetryTimeLapse = @RetryTimeLapse
+	,RetryTimeLapseMeasurement = @RetryTimeLapseMeasurement
+	,RetainHistoryNum = @RetainHistoryNum
+	,AttachToEvent = @AttachToEvent
+	,CatchUpEnabled = @CatchUpEnabled
+	,Enabled = @Enabled
+	,ObjectDependencies = @ObjectDependencies
+	,Servers = @Servers,
+	[LastModifiedByUserID] = @LastModifiedByUserID,	
+	[LastModifiedOnDate] = getdate(),
+	ScheduleStartDate = @ScheduleStartDate
+	WHERE ScheduleID = @ScheduleID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSchedule]
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddSchedule
+
+	@TypeFullName varchar(200)
+	,@TimeLapse int
+	,@TimeLapseMeasurement varchar(2)
+	,@RetryTimeLapse int
+	,@RetryTimeLapseMeasurement varchar(2)
+	,@RetainHistoryNum int
+	,@AttachToEvent varchar(50)
+	,@CatchUpEnabled bit
+	,@Enabled bit
+	,@ObjectDependencies varchar(300)
+	,@Servers varchar(150)
+	,@CreatedByUserID	int
+	,@FriendlyName varchar(200)
+	,@ScheduleStartDate datetime
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+		(TypeFullName
+		,TimeLapse
+		,TimeLapseMeasurement
+		,RetryTimeLapse
+		,RetryTimeLapseMeasurement
+		,RetainHistoryNum
+		,AttachToEvent
+		,CatchUpEnabled
+		,Enabled
+		,ObjectDependencies
+		,Servers
+		,FriendlyName
+		,[CreatedByUserID]
+		,[CreatedOnDate]
+		,[LastModifiedByUserID]
+		,[LastModifiedOnDate]
+		,ScheduleStartDate
+		)
+	VALUES
+		(@TypeFullName
+		,@TimeLapse
+		,@TimeLapseMeasurement
+		,@RetryTimeLapse
+		,@RetryTimeLapseMeasurement
+		,@RetainHistoryNum
+		,@AttachToEvent
+		,@CatchUpEnabled
+		,@Enabled
+		,@ObjectDependencies
+		,@Servers
+		,@FriendlyName
+		,@CreatedByUserID
+		,getdate()
+		,@CreatedByUserID
+		,getdate()
+		,@ScheduleStartDate
+		)
+GO
+
+/* DNN-4991 Scheduler main view */
+/********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+ @Server varchar(150)
+AS
+BEGIN
+SELECT
+  S.*
+  , (SELECT max(S1.NextStart)
+   FROM {databaseOwner}{objectQualifier}ScheduleHistory S1
+   WHERE S1.ScheduleID = S.ScheduleID) as NextStart
+ FROM {databaseOwner}{objectQualifier}Schedule S
+ WHERE
+  (@Server IS NULL OR S.Servers LIKE '%,' + @Server + ',%' OR S.Servers IS NULL)
+  ORDER BY FriendlyName ASC
+END
+GO
+
+/* CONTENT-2389:  add column PingFailureCount in WebServers table, and event log type WEBSERVER_DISABLED, WEBSERVER_ENABLED, WEBSERVER_PINGFAILED. */
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_DISABLED', N'Web Server Disabled', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_ENABLED', N'Web Server Enabled', N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'WEBSERVER_PINGFAILED', N'Web Server Ping Failed', N'', N'DotNetNuke.Logging.EventLogType', N'OperationFailure')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_DISABLED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_ENABLED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'WEBSERVER_PINGFAILED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+GO
+
+IF NOT EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}WebServers' AND  COLUMN_NAME = 'PingFailureCount')
+   BEGIN
+        ALTER TABLE {databaseOwner}{objectQualifier}WebServers ADD
+            PingFailureCount INT NOT NULL DEFAULT(0)
+    END 
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateServerActivity]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateServerActivity
+    @ServerName			NVARCHAR(50),
+    @IISAppName			NVARCHAR(200),
+    @CreatedDate		DATETIME,
+    @LastActivityDate	DATETIME,
+    @PingFailureCount   INT
+AS
+
+	DECLARE @ServerID int
+	SET @ServerID = (SELECT ServerID FROM {databaseOwner}{objectQualifier}WebServers WHERE ServerName = @ServerName AND IISAppName = @IISAppName)
+
+	IF @ServerID IS NULL
+		BEGIN
+			-- Insert
+			INSERT INTO {databaseOwner}{objectQualifier}WebServers (
+				ServerName,
+				IISAppName,
+				CreatedDate,
+				LastActivityDate,
+                PingFailureCount,
+				[Enabled]
+			)
+			VALUES (
+				@ServerName,
+				@IISAppName,
+				@CreatedDate,
+				@LastActivityDate,
+                @PingFailureCount,
+				0
+			)
+
+            SELECT @ServerID = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+			-- Update
+			UPDATE {databaseOwner}{objectQualifier}WebServers 
+				SET 
+					LastActivityDate = @LastActivityDate, PingFailureCount = @PingFailureCount
+				WHERE  ServerName = @ServerName AND IISAppName = @IISAppName
+		END
+
+    SELECT @ServerID
+GO
+
+/* DNN-5192 Improve Edit Page Performance - Unneccessary DB Calls */
+/******************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByTab]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByTab
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByPortalDesktopModule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByPortalDesktopModule
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByFolder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByFolder
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByModuleID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByModuleID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByModuleDefID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByModuleDefID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionByCodeAndKey]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionByCodeAndKey
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermission]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermission
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissions]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissions
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPermissions
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}Permission
+	ORDER BY ViewOrder
+GO
+
+/* API Cleanup */
+/***************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalAlias]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalAlias
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalAliasByPortalAliasID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalAliasByPortalAliasID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalAliasByPortalID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalAliasByPortalID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPortalAliases]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetPortalAliases
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetPortalAliases
+AS
+	SELECT * FROM {databaseOwner}{objectQualifier}PortalAlias
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetRecycleModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetRecycleModules
+GO
+
+
+/* DNN-5249 SI: Page Header Tags are truncated in site template - import / export */
+/**********************************************************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddTabToEnd]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddTabToEnd
+	@ContentItemID			int,
+    @PortalID				int,
+    @UniqueId				uniqueidentifier,
+    @VersionGuid			uniqueidentifier,
+    @DefaultLanguageGuid	uniqueidentifier,
+    @LocalizedVersionGuid	uniqueidentifier,
+    @TabName				nvarchar(200),
+    @IsVisible				bit,
+    @DisableLink			bit,
+    @ParentId				int,
+    @IconFile				nvarchar(100),
+    @IconFileLarge			nvarchar(100),
+    @Title					nvarchar(200),
+    @Description			nvarchar(500),
+    @KeyWords				nvarchar(500),
+    @Url					nvarchar(255),
+    @SkinSrc				nvarchar(200),
+    @ContainerSrc			nvarchar(200),
+    @StartDate				datetime,
+    @EndDate				datetime,
+    @RefreshInterval		int,
+    @PageHeadText			nvarchar(max),
+    @IsSecure				bit,
+    @PermanentRedirect		bit,
+    @SiteMapPriority		float,
+    @CreatedByUserID		int,
+    @CultureCode			nvarchar(50)
+
+AS
+
+	BEGIN
+		DECLARE @TabId int
+		DECLARE @TabOrder int 
+		SET @TabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}{objectQualifier}Tabs WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentID IS NULL)))
+		IF @TabOrder IS NULL
+			SET @TabOrder = 1
+		ELSE
+			SET @TabOrder = @TabOrder + 2
+
+		-- Create Tab
+		EXECUTE @TabId = {databaseOwner}{objectQualifier}AddTab 
+							@ContentItemID,
+							@PortalID,
+							@TabOrder,
+							@UniqueId,
+							@VersionGuid,
+							@DefaultLanguageGuid,
+							@LocalizedVersionGuid,
+							@TabName,
+							@IsVisible,
+							@DisableLink,
+							@ParentId,
+							@IconFile,
+							@IconFileLarge,
+							@Title,
+							@Description,
+							@KeyWords,
+							@Url,
+							@SkinSrc,
+							@ContainerSrc,
+							@StartDate,
+							@EndDate,
+							@RefreshInterval,
+							@PageHeadText,
+							@IsSecure,
+							@PermanentRedirect,
+							@SiteMapPriority,
+							@CreatedByUserID,
+							@CultureCode;
+		
+		-- Update Content Item
+		UPDATE {databaseOwner}{objectQualifier}ContentItems
+			SET TabID = @TabId
+			WHERE ContentItemID = @ContentItemID
+
+		SELECT @TabId
+	END
+GO
+
+/********************************************************
+ * INDEX: Analytics_PageTime_TabId - issu #: DNN-5263
+ ********************************************************/
+IF NOT EXISTS (SELECT 1 FROM sys.indexes
+				WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Journal]')
+				AND name = N'IX_{objectQualifier}Journal_ContentItemId')
+    CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Journal_ContentItemId]
+		ON {databaseOwner}[{objectQualifier}Journal] ([ContentItemId])
+		INCLUDE ([GroupId])
+GO
+
+/***** Fix bug Content-2481: add workflow source table to store the workflow caller. *****/
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}ContentWorkflowSources') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}ContentWorkflowSources
+			(
+				[SourceID] INT NOT NULL IDENTITY (1, 1),
+				[WorkflowID] INT NOT NULL,
+				[SourceName] NVARCHAR(20) NOT NULL,
+				[SourceType] NVARCHAR(250) NOT NULL
+				CONSTRAINT [PK_{objectQualifier}ContentWorkflowSources] PRIMARY KEY CLUSTERED (SourceID),
+				CONSTRAINT [IX_{objectQualifier}ContentWorkflowSources] UNIQUE NONCLUSTERED  (WorkflowID ASC, SourceName ASC),
+				CONSTRAINT [FK_{objectQualifier}ContentWorkflowSources_{objectQualifier}ContentWorkflows] FOREIGN KEY (WorkflowID) 
+					REFERENCES {databaseOwner}{objectQualifier}ContentWorkflows (WorkflowID) ON DELETE  CASCADE
+			) 
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetContentWorkflowSource]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowSource]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowSource]
+	@WorkflowID INT,
+    @SourceName NVARCHAR(20)
+AS
+    SELECT 
+		[SourceID],
+		[WorkflowID],
+		[SourceName],
+		[SourceType]
+	FROM {databaseOwner}{objectQualifier}ContentWorkflowSources
+    WHERE WorkflowID = @WorkflowID AND SourceName = @SourceName
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddContentWorkflowSource]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddContentWorkflowSource]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddContentWorkflowSource]
+	@WorkflowID INT,
+    @SourceName NVARCHAR(20),
+    @SourceType NVARCHAR(250)
+AS
+    INSERT INTO  {databaseOwner}{objectQualifier}ContentWorkflowSources(
+		[WorkflowID],
+		[SourceName],
+		[SourceType])
+    VALUES(
+        @WorkflowID,
+        @SourceName,
+        @SourceType
+    )
+
+    SELECT SCOPE_IDENTITY()
+GO
+
+/***** Fix bug Content-2390: Add log type WEBSERVER_CREATED, WEBSERVER_UPDATED *****/
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogTypes] ([LogTypeKey], [LogTypeFriendlyName], [LogTypeDescription], [LogTypeOwner], [LogTypeCSSClass]) VALUES (N'FOLDER_MOVED', N'Folder Moved', N'', N'DotNetNuke.Logging.EventLogType', N'ItemUpdated')
+
+INSERT INTO {databaseOwner}[{objectQualifier}EventLogConfig] ([LogTypeKey], [LogTypePortalID], [LoggingIsActive], [KeepMostRecent], [EmailNotificationIsActive], [NotificationThreshold], [NotificationThresholdTime], [NotificationThresholdTimeType], [MailFromAddress], [MailToAddress]) VALUES (N'FOLDER_MOVED', NULL, 1, 10, 0, 1, 1, 1, N'', N'')
+
+/***** Fix bug Content-2547: add sp UpdateFileHashCode. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateFileHashCode]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileHashCode]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFileHashCode]
+	@FileId				  Int, 		-- Not Null
+	@HashCode VARCHAR(40)  -- Not NULL
+AS
+BEGIN
+    UPDATE {databaseOwner}[{objectQualifier}Files]
+    SET    SHA1Hash = @HashCode
+    WHERE  FileId = @FileId
+END
+GO
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

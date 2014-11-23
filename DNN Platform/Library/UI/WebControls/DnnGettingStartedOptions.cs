@@ -4,12 +4,8 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.WebControls
 {
     [DataContract]
-    public class DnnGettingStartedOptions
+    public class DnnGettingStartedResources
     {
-
-        [DataMember(Name = "showOnStartup")]
-        public bool ShowOnStartup;
-
         [DataMember(Name = "title")]
         public string Title;
 
@@ -45,22 +41,36 @@ namespace DotNetNuke.UI.WebControls
 
         [DataMember(Name = "signUpMessage")]
         public string SignUpMessage;
+    }
+
+    [DataContract]
+    public class DnnGettingStartedOptions
+    {
+
+        [DataMember(Name = "showOnStartup")]
+        public bool ShowOnStartup;
+
+        [DataMember(Name = "resources")]
+        public DnnGettingStartedResources Resources;
 
         public DnnGettingStartedOptions()
         {
-            // all the resources are located under the Website\App_GlobalResources\SharedResources.resx
-            Title = Localization.GetString("GettingStarted.Title", Localization.SharedResourceFile);
-            SignUpLabel = Localization.GetString("GettingStarted.SignUpLabel", Localization.SharedResourceFile);
-            SignUpText = Localization.GetString("GettingStarted.SignUpText", Localization.SharedResourceFile);
-            SignUpButton = Localization.GetString("GettingStarted.SignUpButton", Localization.SharedResourceFile);
-            DownloadManualButton = Localization.GetString("GettingStarted.DownloadManualButton", Localization.SharedResourceFile);
-            DontShowDialogLabel = Localization.GetString("GettingStarted.DontShowDialogLabel", Localization.SharedResourceFile);
-            FacebookLinkTooltip = Localization.GetString("GettingStarted.FacebookLinkTooltip", Localization.SharedResourceFile);
-            TwitterLinkTooltip = Localization.GetString("GettingStarted.TwitterLinkTooltip", Localization.SharedResourceFile);
-            InvalidEmailTitle = Localization.GetString("GettingStarted.InvalidEmailTitle", Localization.SharedResourceFile);
-            InvalidEmailMessage = Localization.GetString("GettingStarted.InvalidEmailMessage", Localization.SharedResourceFile);
-            SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile);
-            SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile);
+            Resources = new DnnGettingStartedResources
+            {
+                // all the resources are located under the Website\App_GlobalResources\SharedResources.resx
+                Title = Localization.GetString("GettingStarted.Title", Localization.SharedResourceFile),
+                SignUpLabel = Localization.GetString("GettingStarted.SignUpLabel", Localization.SharedResourceFile),
+                SignUpText = Localization.GetString("GettingStarted.SignUpText", Localization.SharedResourceFile),
+                SignUpButton = Localization.GetString("GettingStarted.SignUpButton", Localization.SharedResourceFile),
+                DownloadManualButton = Localization.GetString("GettingStarted.DownloadManualButton", Localization.SharedResourceFile),
+                DontShowDialogLabel = Localization.GetString("GettingStarted.DontShowDialogLabel", Localization.SharedResourceFile),
+                FacebookLinkTooltip = Localization.GetString("GettingStarted.FacebookLinkTooltip", Localization.SharedResourceFile),
+                TwitterLinkTooltip = Localization.GetString("GettingStarted.TwitterLinkTooltip", Localization.SharedResourceFile),
+                InvalidEmailTitle = Localization.GetString("GettingStarted.InvalidEmailTitle", Localization.SharedResourceFile),
+                InvalidEmailMessage = Localization.GetString("GettingStarted.InvalidEmailMessage", Localization.SharedResourceFile),
+                SignUpTitle = Localization.GetString("GettingStarted.SignUpTitle", Localization.SharedResourceFile),
+                SignUpMessage = Localization.GetString("GettingStarted.SignUpMessage", Localization.SharedResourceFile)
+            };
         }
 
     }

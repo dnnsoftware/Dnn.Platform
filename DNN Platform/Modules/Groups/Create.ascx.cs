@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.WebControls;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
 using System.IO;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.Groups
 {
@@ -40,7 +33,7 @@ namespace DotNetNuke.Modules.Groups
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DotNetNuke.Framework.jQuery.RegisterDnnJQueryPlugins(this.Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -49,14 +42,13 @@ namespace DotNetNuke.Modules.Groups
         }
         private void Create_Click(object sender, EventArgs e)
         {
-            RoleController roleController = new RoleController();
-            Security.PortalSecurity ps = new Security.PortalSecurity();
+            var ps = new Security.PortalSecurity();
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 
             txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
             txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-            if (roleController.GetRoleByName(PortalId, txtGroupName.Text) != null)
+            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
             {
                 lblInvalidGroupName.Visible = true;
                 return;
@@ -71,7 +63,7 @@ namespace DotNetNuke.Modules.Groups
                 {
 	                if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
 	                {
-		                modRoles.Add(roleController.GetRole(modulePermissionInfo.RoleID, PortalId));
+                        modRoles.Add(RoleController.Instance.GetRoleById(PortalId, modulePermissionInfo.RoleID));
 	                }
 					else if (modulePermissionInfo.UserID > Null.NullInteger)
 					{
@@ -108,8 +100,8 @@ namespace DotNetNuke.Modules.Groups
             }
             roleInfo.RoleGroupID = DefaultRoleGroupId;
 
-            roleInfo.RoleID = roleController.AddRole(roleInfo);
-            roleInfo = roleController.GetRole(roleInfo.RoleID, PortalId);
+            roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
+            roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);
 
 	        var groupUrl = Globals.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
@@ -122,7 +114,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.Settings.Add("GroupCreatorName", UserInfo.DisplayName);
             roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
 
-            TestableRoleController.Instance.UpdateRoleSettings(roleInfo, true);
+            RoleController.Instance.UpdateRoleSettings(roleInfo, true);
 	    if (inpFile.PostedFile != null && inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
@@ -139,14 +131,14 @@ namespace DotNetNuke.Modules.Groups
                     var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
                     var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
                     roleInfo.IconFile = "FileID=" + fileInfo.FileId;
-                    roleController.UpdateRole(roleInfo);
+                    RoleController.Instance.UpdateRole(roleInfo);
                 }
             }
 
             var notifications = new Notifications();
 
 
-            roleController.AddUserRole(PortalId, UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(PortalId, UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)
             {
                 //Send notification to Group Moderators to approve/reject group.

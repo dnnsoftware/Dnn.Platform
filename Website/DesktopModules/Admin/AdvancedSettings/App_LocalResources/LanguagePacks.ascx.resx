@@ -156,4 +156,7 @@
   <data name="Version.Header" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="Download.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
 </root>

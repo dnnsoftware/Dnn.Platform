@@ -1,0 +1,20 @@
+<Settings>
+  <Setting>
+    <Name>Name</Name>
+    <Type>String</Type>
+    <Help>The name of the JavaScript library</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>Version</Name>
+    <Type>Version</Type>
+    <Help>The version of the JavaScript library</Help>
+    <Value></Value>
+  </Setting>
+  <Setting>
+    <Name>SpecificVersion</Name>
+    <Type>SpecificVersion</Type>
+    <Help>How specificly the Version attribute should be applied</Help>
+    <Value></Value>
+  </Setting>
+</Settings>

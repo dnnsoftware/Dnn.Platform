@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,12 +26,22 @@ using System.Web.UI;
 
 namespace DotNetNuke.Entities.Modules.Communications
 {
+    /// <summary>
+    /// Specifies communications between modules. 
+    /// There are listeners and communicators
+    /// </summary>
     public class ModuleCommunicate
     {
         private readonly ModuleCommunicators _ModuleCommunicators = new ModuleCommunicators();
 
         private readonly ModuleListeners _ModuleListeners = new ModuleListeners();
 
+        /// <summary>
+        /// Gets the module communicators.
+        /// </summary>
+        /// <value>
+        /// The module communicators.
+        /// </value>
         public ModuleCommunicators ModuleCommunicators
         {
             get
@@ -40,6 +50,12 @@ namespace DotNetNuke.Entities.Modules.Communications
             }
         }
 
+        /// <summary>
+        /// Gets the module listeners.
+        /// </summary>
+        /// <value>
+        /// The module listeners.
+        /// </value>
         public ModuleListeners ModuleListeners
         {
             get
@@ -49,6 +65,10 @@ namespace DotNetNuke.Entities.Modules.Communications
         }
 
 
+        /// <summary>
+        /// Loads the communicator.
+        /// </summary>
+        /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {
             // Check and see if the module implements IModuleCommunicator 

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -67,9 +67,25 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             _provider.ExecuteNonQuery("CoreMessaging_DeleteMessage", messageId);
         }
 
+        public void DeleteUserFromConversation(int conversationId, int userId)
+        {
+            _provider.ExecuteNonQuery("CoreMessaging_DeleteUserFromConversation", conversationId, userId);
+        }
+
         public int CreateMessageReply(int conversationId, int portalId,string body, int senderUserId, string from, int createUpdateUserId)
         {
             return _provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId,body, senderUserId, from, createUpdateUserId);
+        }
+
+        /// <summary>
+        /// check if an attempt to reply to an existing mail has valid users
+        /// </summary>
+        /// <param name="conversationId">the particular reply within the message</param>
+        /// <param name="userId">the user sending the message - as they are a recipient they must be excluded from the count</param>
+        /// <returns>count of recipients</returns>
+        public int CheckReplyHasRecipients(int conversationId, int userId)
+        {
+            return _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
         }
 
         public IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus)
@@ -164,6 +180,16 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public int CountArchivedMessages(int userId, int portalId)
         {
             return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
+        }
+
+        public int CountSentConversations(int userId, int portalId)
+        {
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
+        }
+
+        public int CountArchivedConversations(int userId, int portalId)
+        {
+            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
         #endregion

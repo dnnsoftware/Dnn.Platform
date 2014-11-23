@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,6 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Entities.Users.Social.Data;
@@ -76,7 +75,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             MockComponentProvider.CreateEventLogController();
 
             _portalController = new Mock<IPortalController>();
-            TestablePortalController.SetTestableInstance(_portalController.Object);
+            PortalController.SetTestableInstance(_portalController.Object);
 
             _portalGroupController = new Mock<IPortalGroupController>();
             PortalGroupController.RegisterInstance(_portalGroupController.Object);
@@ -85,10 +84,22 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("0");
             HostController.RegisterInstance(mockHostController.Object);
 
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(c => c.GetCurrentUserInfo()).Returns(new UserInfo() { UserID = 1});
+            UserController.SetTestableInstance(mockUserController.Object);
+
             CreateLocalizationProvider();
 
             SetupDataTables();						
 		}
+
+        [TearDown]
+        public void TearDown()
+        {
+            ComponentFactory.Container = null;
+            PortalController.ClearInstance();
+            UserController.ClearInstance();
+        }
 
 		#endregion
 

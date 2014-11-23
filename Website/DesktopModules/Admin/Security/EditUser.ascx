@@ -15,7 +15,14 @@
     (function ($, Sys) {
         function setUpDnnEditUser() {
             $('#dnnEditUser').dnnTabs().dnnPanels();
-
+            //DNN-26777
+            $('#<%= cmdDelete.ClientID %>').dnnConfirm({
+                text: '<%= ClientAPI.GetSafeJSString(LocalizeString("UnregisterUser")) %>',
+                            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+                            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+                            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+                            isButton: false
+                        });
             var serviceFramework = $.ServicesFramework(<%=ModuleId %>);
 
             var closeText = '<%= ClientAPI.GetSafeJSString(LocalizeString("Close")) %>';
@@ -79,8 +86,11 @@
                     });
                 });
             });
+            
+            var dnn = dnn || {};
+            dnn.subscriptionsSettings = <%=UserSubscriptions.GetSettingsAsJson()%>;
+            dnn.subscriptionsController = new Subscription(ko, dnn.subscriptionsSettings,'dnnUserSubscriptions');
         }
-
 
         $(document).ready(function () {
             setUpDnnEditUser();
@@ -116,7 +126,7 @@
                         <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField="Email" Required="true" />
                    </Items>
                 </dnn:DnnFormEditor>
-                <asp:Panel class="dnnFormItem" ID="VanityUrlRow" runat="server" Visible="False">
+                <asp:Panel class="dnnFormItem" ID="VanityUrlRow" runat="server" Visible="False" ViewStateMode="Disabled">
                     <dnn:Label ID="VanityUrlLabel" runat="server" />
                     <asp:Label runat="server" ID="VanityUrl" />
                     <div class="dnnFormGroup" id="VanityUrlPanel" runat="Server">
@@ -157,10 +167,3 @@
     	<dnn:MemberServices id="ctlServices" runat="server"></dnn:MemberServices>
     </div>
 </div>
-<script type="text/javascript">
-    jQuery(document).ready(function($) {
-        var dnn = dnn || {};
-        dnn.subscriptionsSettings = <%=UserSubscriptions.GetSettingsAsJson()%>;
-        dnn.subscriptionsController = new Subscription(ko, dnn.subscriptionsSettings,'dnnUserSubscriptions');
-    });    
-</script>

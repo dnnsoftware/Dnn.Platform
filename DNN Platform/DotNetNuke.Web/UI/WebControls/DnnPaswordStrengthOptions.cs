@@ -85,7 +85,8 @@ namespace DotNetNuke.Web.UI.WebControls
         [OnSerializing]
         public void OnSerializing(StreamingContext context)
         {
-            var settings = new MembershipPasswordSettings(PortalController.GetCurrentPortalSettings().PortalId);
+            int portalId = (PortalController.Instance.GetCurrentPortalSettings()) != null ? (PortalController.Instance.GetCurrentPortalSettings().PortalId) : -1;
+            var settings = new MembershipPasswordSettings(portalId);
             MinLength = settings.MinPasswordLength;
             CriteriaAtLeastNCharsText = string.Format(CriteriaAtLeastNCharsText, MinLength);
 

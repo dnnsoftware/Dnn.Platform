@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FolderProperties.ascx.cs" Inherits="DotNetNuke.Modules.DigitalAssets.FolderProperties" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Security.Permissions.Controls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
@@ -101,8 +102,35 @@
         }, 
         {
             selectedTab: '<%=(!IsPostBack ? "0" : "-1")%>',
-            canAdminPermissions: '<%=ClientAPI.GetSafeJSString(HasFullControl.ToString().ToLowerInvariant()) %>',
-            dialogTitle: '<%=ClientAPI.GetSafeJSString(DialogTitle)%>'
+            canAdminPermissions: '<%=Localization.GetSafeJSString((HasFullControl && !IsHostPortal).ToString().ToLowerInvariant()) %>',
+            dialogTitle: '<%=Localization.GetSafeJSString(DialogTitle)%>'
         }
     );
+
+    if (dnn && dnn.controls && dnn.controls.triStateManager) {
+        dnn.controls.triStateManager.updateAdvancedState = function (state, callback) {
+            var $collection = this.parent().parent().find('td input.tristate');
+            if ((this.hasClass('browse') || this.hasClass('read')) && state === 'False') {
+                var $notView = $collection.not('input.browse').not('input.read');
+                $notView.each(function (index, elem) {
+                    var $elem = jQuery(elem);
+                    if (!$elem.hasClass('lockedPerm')) {
+                        elem.value = state;
+                        callback($elem, state);
+                    }
+                });
+            }
+            //if other permissions are set to true must have Read,Browse permission
+            if (!this.hasClass('browse') && !this.hasClass('read') && state === 'True') {
+                var $view = $collection.filter('input.read, input.browse');
+                $view.each(function (index, elem) {
+                    var $elem = jQuery(elem);
+                    if (!$elem.hasClass('lockedPerm')) {
+                        elem.value = state;
+                        callback($elem, state);
+                    }
+                });
+            }
+        };
+    }
 </script>

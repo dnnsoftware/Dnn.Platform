@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,8 +43,6 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Framework
 {
-    using Web.Client;
-
     public class jQuery
     {
         private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
@@ -66,7 +64,6 @@ namespace DotNetNuke.Framework
 
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-        private const string jQueryHoverIntentFile = "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js";
         private const string jQueryUIVersionKey = "jQueryUIVersionKey";
         private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
         public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
@@ -79,6 +76,7 @@ namespace DotNetNuke.Framework
         /// <value></value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string HostedUrl
         {
             get
@@ -98,7 +96,8 @@ namespace DotNetNuke.Framework
 		/// <value></value>
 		/// <returns></returns>
 		/// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
-		public static string HostedMigrateUrl
+        [Obsolete("This is managed through the JavaScript Library package")]
+        public static string HostedMigrateUrl
 		{
 			get
 			{
@@ -117,6 +116,7 @@ namespace DotNetNuke.Framework
         /// <value></value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property</remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string HostedUIUrl
         {
             get
@@ -137,6 +137,7 @@ namespace DotNetNuke.Framework
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool IsInstalled
         {
             get
@@ -154,6 +155,7 @@ namespace DotNetNuke.Framework
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
         /// These files should exist in the /Resources/Shared/Scripts/jquery directory.
         /// </remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool IsUIInstalled
         {
             get
@@ -201,6 +203,7 @@ namespace DotNetNuke.Framework
         /// <value></value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property</remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool UseDebugScript
         {
             get
@@ -220,6 +223,7 @@ namespace DotNetNuke.Framework
         /// <value></value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property</remarks>
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static bool UseHostedScript
         {
             get
@@ -338,16 +342,19 @@ namespace DotNetNuke.Framework
 
         #region Public Methods
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string JQueryFileMapPath(bool getMinFile)
         {
             return HttpContext.Current.Server.MapPath(JQueryFile(getMinFile));
         }
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string JQueryUIFileMapPath(bool getMinFile)
         {
             return HttpContext.Current.Server.MapPath(JQueryUIFile(getMinFile));
         }
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string JQueryFile(bool getMinFile)
         {
             string jfile = jQueryDebugFile;
@@ -358,7 +365,8 @@ namespace DotNetNuke.Framework
             return jfile;
         }
 
-		public static string JQueryMigrateFile(bool getMinFile)
+        [Obsolete("This is managed through the JavaScript Library package")]
+        public static string JQueryMigrateFile(bool getMinFile)
 		{
 			string jfile = jQueryMigrateDebugFile;
 			if (getMinFile)
@@ -368,6 +376,7 @@ namespace DotNetNuke.Framework
 			return jfile;
 		}
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string JQueryUIFile(bool getMinFile)
         {
             string jfile = jQueryUIDebugFile;
@@ -378,6 +387,7 @@ namespace DotNetNuke.Framework
             return jfile;
         }
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string GetJQueryScriptReference()
         {
             string scriptsrc = HostedUrl;
@@ -388,7 +398,8 @@ namespace DotNetNuke.Framework
             return scriptsrc;
         }
 
-		public static string GetJQueryMigrateScriptReference()
+        [Obsolete("This is managed through the JavaScript Library package")]
+        public static string GetJQueryMigrateScriptReference()
 		{
 			string scriptsrc = HostedMigrateUrl;
 			if (!UseHostedScript || string.IsNullOrEmpty(scriptsrc))
@@ -398,6 +409,7 @@ namespace DotNetNuke.Framework
 			return scriptsrc;
 		}
 
+        [Obsolete("This is managed through the JavaScript Library package")]
         public static string GetJQueryUIScriptReference()
         {
             string scriptsrc = HostedUIUrl;
@@ -426,7 +438,7 @@ namespace DotNetNuke.Framework
 			{
 				cookieTimeout = 5; // ping server in 5 minutes to make sure the server is not IDLE.
 			}
-			RequestRegistration();
+            JavaScript.RequestRegistration(CommonJs.jQuery);
 
 			var seconds = (cookieTimeout*60 - 30)*1000; //ping server 30 seconds before cookie is time out.
 			var scriptBlock = string.Format("(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
@@ -456,6 +468,7 @@ namespace DotNetNuke.Framework
         public static void RegisterScript(Page page, string script)
         {
             ClientResourceManager.RegisterScript(page, script);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load")]
@@ -497,6 +510,7 @@ namespace DotNetNuke.Framework
         {
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);")]

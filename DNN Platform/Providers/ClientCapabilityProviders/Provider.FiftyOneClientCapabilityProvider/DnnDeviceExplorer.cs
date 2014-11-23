@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -90,37 +90,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// <param name="anchor">The name of the anchor.</param>
         protected override void AddLabel(WebControl panel, string text, string tooltip, Uri url, string anchor)
         {
-            var toolTip = new Literal();
-
-//            if (!string.IsNullOrEmpty(tooltip))
-//            {
-////                const string toolTipHtml =
-////                    @"<div class=""dnnTooltip"">
-////                        <label>
-////                            <a class=""dnnFormHelp"" href=""#"">{0}</a>
-////                        </label>
-////                        <div class=""dnnFormHelpContent dnnClear"" style=""display: none;"">
-////                            <span class=""dnnHelpText"">{1}</span>
-////                            <a href=""#"" class=""pinHelp""></a>
-////                        </div>
-////                      </div>";
-
-//                const string toolTipHtml =
-//                    @"<div class=""dnnTooltip"">
-//                              <div class=""dnnFormHelpContent dnnClear"">
-//                                <span class=""dnnHelpText"">{1}</span>
-//                                <a href=""#"" class=""pinHelp""></a>
-//                            </div>   
-//                      </div>      
-//                    ";
-
-//                string link = url != null ? string.Format("<a href=\"{0}\">{1}</a>", url, tooltip) : tooltip;
-//                toolTip.Text = string.Format(toolTipHtml, text, link);
-//            }
-//            else
-            {
-                toolTip.Text = string.Format("<span>{0}</span>", text);
-            }
+            var toolTip = new Literal {Text = string.Format("<span>{0}</span>", text)};
 
             panel.Controls.Add(toolTip);
         }

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,9 +36,6 @@ namespace DotNetNuke.Services.Messaging.Scheduler
     {
         
         private readonly MessagingController _mController = new MessagingController();
-        private readonly PortalController _pController = new PortalController();
-
-        private readonly UserController _uController = new UserController();
 
         public MessagingScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -103,8 +100,8 @@ namespace DotNetNuke.Services.Messaging.Scheduler
         private void SendMessage(Data.Message objMessage)
         {
             string senderAddress = UserController.GetUserById(objMessage.PortalID, objMessage.FromUserID).Email;
-            string fromAddress = _pController.GetPortal(objMessage.PortalID).Email;
-            string toAddress = _uController.GetUser(objMessage.PortalID, objMessage.ToUserID).Email;
+            string fromAddress = PortalController.Instance.GetPortal(objMessage.PortalID).Email;
+            string toAddress = UserController.Instance.GetUser(objMessage.PortalID, objMessage.ToUserID).Email;
 
 
             Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, objMessage.Subject, objMessage.Body);

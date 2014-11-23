@@ -297,7 +297,7 @@
   <data name="GetUrlAltText.Text" xml:space="preserve">
     <value>Click and press CTRL+C to copy...</value>
   </data>
-  <data name="GetUrlLabel.Text" xml:space="preserve">
+  <data name="GetFileUrlLabel.Text" xml:space="preserve">
     <value>File URL Is:</value>
   </data>
   <data name="GetUrlError.Title" xml:space="preserve">
@@ -442,6 +442,39 @@
     <value>Uploading and extracting...</value>
   </data>
   <data name="InvalidGroup.Error" xml:space="preserve">
-    <value>The group is not valid</value>
+    <value>The group ID is not set. Please go back to the groups page and select the desired group.</value>
+  </data>
+  <data name="InvalidUser.Error" xml:space="preserve">
+    <value>The module is configured as User mode, it cannot be used with unauthenticated user</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="ToolbarTitle.Actions.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ToolbarTitle.Views.Text" xml:space="preserve">
+    <value>Views</value>
+  </data>
+  <data name="Unlink.Text" xml:space="preserve">
+    <value>Unlink</value>
+  </data>
+  <data name="UnlinkFolder.Text" xml:space="preserve">
+    <value>Unlink Folder</value>
+  </data>
+  <data name="UnlinkFolderError.Title" xml:space="preserve">
+    <value>An error occurred while unlinking the folder</value>
+  </data>
+  <data name="Unlink.Title" xml:space="preserve">
+    <value>Unlink Folder...</value>
+  </data>
+  <data name="UnlinkConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to unlink the Folder?</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolder.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folder. This will be unlinked from this site and the folder and files will remain at the remote location</value>
+  </data>
+  <data name="DeleteConfirmWithMappedSubfolders.Text" xml:space="preserve">
+    <value>Note: Selected folders include [COUNT] Remote Folders. These will be unlinked from this site and folders and files will remain at the remote location</value>
   </data>
 </root>

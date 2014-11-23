@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,12 +25,14 @@
 
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Web.Routing;
 using System.Web.UI;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -43,9 +45,8 @@ namespace DotNetNuke.Modules.MemberDirectory
         protected override void OnInit(EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterJQueryUI(Page);
-            jQuery.RegisterHoverIntent(Page);
-			jQuery.RegisterFileUpload(Page);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
 
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
             AddIe7StyleSheet();
@@ -118,7 +119,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User");
+                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User") && ModuleContext.PortalSettings.UserId > -1;
             }
         }
 

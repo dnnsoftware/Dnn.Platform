@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,10 +23,10 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.UI;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
@@ -41,6 +41,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class FolderProperties : PortalModuleBase
     {
+        private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
+
         private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
         private FolderViewModel folderViewModel;
         private bool isRootFolder;
@@ -72,26 +74,49 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected bool IsHostPortal
+        {
+            get
+            {
+                return IsHostMenu || controller.GetCurrentPortalId(ModuleId) == Null.NullInteger;
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             try
             {
                 base.OnInit(e);
 
-                jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 var folderId = Convert.ToInt32(Request.Params["FolderId"]);
                 Folder = FolderManager.Instance.GetFolder(folderId);
-                if (string.IsNullOrEmpty(Folder.FolderPath))
+
+                FolderViewModel rootFolder;
+                switch (SettingsRepository.GetMode(ModuleId))
                 {
-                    folderViewModel = controller.GetRootFolder();
-                    isRootFolder = true;
-                }
-                else
-                {
-                    folderViewModel = controller.GetFolder(folderId);
+                    case DigitalAssestsMode.Group:
+                        var groupId = Convert.ToInt32(Request.Params["GroupId"]);
+                        rootFolder = controller.GetGroupFolder(groupId, PortalSettings);
+                        if (rootFolder == null)
+                        {
+                            throw new Exception("Invalid group folder");
+                        }
+                        break;
+
+                    case DigitalAssestsMode.User:
+                        rootFolder = controller.GetUserFolder(PortalSettings.UserInfo);
+                        break;
+
+                    default:
+                        rootFolder = controller.GetRootFolder(ModuleId);
+                        break;
                 }
 
+                isRootFolder = rootFolder.FolderID == folderId;
+                folderViewModel = isRootFolder ? rootFolder : controller.GetFolder(folderId);
+                
                 // Setup controls
                 CancelButton.Click += OnCancelClick;
                 SaveButton.Click += OnSaveClick;
@@ -109,7 +134,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     if (fieldsControl != null)
                     {
                         fieldsControl.SetController(controller);
-                        fieldsControl.SetItemViewModel(new ItemViewModel()
+                        fieldsControl.SetItemViewModel(new ItemViewModel
                         {
                             ItemID = folderViewModel.FolderID,
                             IsFolder = true,
@@ -133,6 +158,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 {
                     return;
                 }
+
                 SaveFolderProperties();
 
                 SavePermissions();
@@ -163,6 +189,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 controller.RenameFolder(folderViewModel.FolderID, FolderNameInput.Text);
             }
+
             var fieldsControl = folderFieldsControl as IFieldsControl;
             if (fieldsControl != null)
             {
@@ -177,7 +204,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 throw new DotNetNukeException(LocalizeString("UserCannotChangePermissionsError"));
             }
 
-            Folder = (FolderInfo)FolderManager.Instance.GetFolder(Folder.FolderID);
+            Folder = FolderManager.Instance.GetFolder(Folder.FolderID);
             Folder.FolderPermissions.Clear();
             Folder.FolderPermissions.AddRange(PermissionsGrid.Permissions);
             FolderPermissionController.SaveFolderPermissions(Folder);
@@ -283,7 +310,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         private void SetupPermissionGrid()
         {
             PermissionsGrid.FolderPath = Folder.FolderPath;
-            PermissionsGrid.Visible = HasFullControl;
+            PermissionsGrid.Visible = HasFullControl && !IsHostPortal;
         }
     }
 }

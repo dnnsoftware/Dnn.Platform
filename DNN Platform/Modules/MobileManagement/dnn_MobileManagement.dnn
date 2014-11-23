@@ -1,15 +1,15 @@
 ﻿<dotnetnuke type="Package" version="6.0">
 	<packages>
-		<package name="DotNetNuke.MobileManagement" type="Module" version="07.02.01" isSystem="true">
+		<package name="DotNetNuke.MobileManagement" type="Module" version="07.03.04" isSystem="true">
 			<friendlyName>Site Redirection Management</friendlyName>
 			<iconFile>Images/MobileManagement_Standard_32x32.png</iconFile>
 			<description>The Site Redirection Management module allows users to manage their website redirects.</description>
 			<owner>
-				<name>DotNetNuke Corporation</name>
-				<organization>DotNetNuke Corporation</organization>
-				<url>www.dotnetnuke.com</url>
-				<email>support@dotnetnuke.com</email>
-			</owner>
+                <name>DNN</name>
+                <organization>DNN Corp.</organization>
+                <url>http://www.dnnsoftware.com</url>
+                <email>support@dnnsoftware.com</email>
+            </owner>
 			<azureCompatible>true</azureCompatible>
 			<dependencies>
 				<dependency type="CoreVersion">06.01.00</dependency>

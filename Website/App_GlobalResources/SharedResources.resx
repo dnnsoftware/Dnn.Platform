@@ -120,6 +120,12 @@
   <data name="DeleteItem.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Delete This Item?</value>
   </data>
+  <data name="DeletetUser.Text" xml:space="preserve">
+    <value>Are You Sure You Wish To Delete This User?</value>
+  </data>
+  <data name="UnregisterUser.Text" xml:space="preserve">
+    <value>Are you sure you want to unregister? This will delete your user account.</value>
+  </data>
   <data name="RemoveItem.Text" xml:space="preserve">
     <value>Are You Sure You Wish To Remove This Item?</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="cmdReturn.Text" xml:space="preserve">
     <value>Return</value>
+  </data>
+  <data name="cmdStop.Text" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="cmdDownLoad.Text" xml:space="preserve">
     <value>Download</value>
@@ -319,7 +328,7 @@
     <value>You do not have access to view this module within the website.</value>
   </data>
   <data name="CriticalError.Error" xml:space="preserve">
-    <value>A critical error has occurred.</value>
+    <value>A critical error has occurred. Please check the Event Viewer for further details.</value>
   </data>
   <data name="ModuleLoad.Error" xml:space="preserve">
     <value>Unhandled error loading module.</value>
@@ -956,6 +965,9 @@
   </data>
   <data name="User.Text" xml:space="preserve">
     <value>Username:</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name:</value>
   </data>
   <data name="PageDisabled.Header" xml:space="preserve">
     <value>Page Disabled</value>
@@ -1762,10 +1774,10 @@
     <value>Host Root</value>
   </data>
   <data name="LIBRARY_ReadSuccess.Text" xml:space="preserve">
-    <value>Parsed Library Manaifest Successfully</value>
+    <value>Parsed library manifest successfully</value>
   </data>
   <data name="LIBRARY_Registered.Text" xml:space="preserve">
-    <value>Library Registered Succssfully - {0}</value>
+    <value>Library Registered Successfully - {0}</value>
   </data>
   <data name="LIBRARY_UnRegistered.Text" xml:space="preserve">
     <value>Library UnRegistered Successfully - {0}</value>
@@ -1789,7 +1801,7 @@
     <value>Welcome to your website</value>
   </data>
   <data name="GettingStarted.SignUpLabel" xml:space="preserve">
-    <value>Sign Up For Our Newsletter</value>
+    <value>Sign up for our Newsletter</value>
   </data>
   <data name="GettingStarted.SignUpText" xml:space="preserve">
     <value>Get Tips, Tricks, and Product Updates In Your Inbox</value>
@@ -1823,5 +1835,89 @@
   </data>
   <data name="ViewJournal.Text" xml:space="preserve">
     <value>View</value>
+  </data>
+  <data name="SizeB.Text" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="SizeGb.Text" xml:space="preserve">
+    <value>GB</value>
+  </data>
+  <data name="SizeKb.Text" xml:space="preserve">
+    <value>KB</value>
+  </data>
+  <data name="SizeMb.Text" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  <data name="Friends.Text" xml:space="preserve">
+    <value>Friends</value>
+  </data>
+  <data name="Followers.Text" xml:space="preserve">
+    <value>Followers</value>
+  </data>
+  <data name="FriendsAndGroups.Text" xml:space="preserve">
+    <value>Friends and Groups</value>
+  </data>
+  <data name="PermissionRoleHeader.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="InvalidRoleId.Text" xml:space="preserve">
+    <value>The role specified is invalid.  Please specify a valid role.</value>
+  </data>
+  <data name="PermissionActionsHeader.Text" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="RoleNotFound.Text" xml:space="preserve">
+    <value>The selected role is not found. Please refresh the page and try again</value>
+  </data>
+  <data name="RoleSelect.Text" xml:space="preserve">
+    <value>Select Role:</value>
+  </data>
+  <data name="CreatingConfiguredFolderMapping.Error" xml:space="preserve">
+    <value>Error when creating a folder mapping from config file</value>
+  </data>
+  <data name="PermissionUserHeader.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ChooseFile.Text" xml:space="preserve">
+    <value>Choose File</value>
+  </data>
+  <data name="Review.Text" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="FileUpload.UnzipFilePromptTitle.Text" xml:space="preserve">
+    <value>Unzip Information</value>
+  </data>
+  <data name="FileUpload.UnzipFileFailedPromptBody.Text" xml:space="preserve">
+    <value>&lt;div class="invalidFiles"&gt;&lt;p&gt;[COUNT] of [TOTAL] file(s) were not extracted because their file types are not supported:&lt;/p&gt;[FILELIST]&lt;/div&gt;</value>
+  </data>
+  <data name="FileUpload.UnzipFileSuccessPromptBody.Text" xml:space="preserve">
+    <value>&lt;div class="validFiles"&gt;&lt;p&gt;[TOTAL] of [TOTAL] file(s) files were extracted successfully.&lt;/div&gt;</value>
+  </data>
+  <data name="AuthorizeUser.Text" xml:space="preserve">
+    <value>Authorize</value>
+  </data>
+  <data name="AuthorizeUserDescription.Text" xml:space="preserve">
+    <value>Authorize the user registration.</value>
+  </data>
+  <data name="RejectUser.Text" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="RejectUserDescription.Text" xml:space="preserve">
+    <value>Reject the user registration. Removes the user.</value>
+  </data>
+  <data name="DefaultWorkflowMigrationPrefix.Text" xml:space="preserve">
+    <value>Folders:</value>
+  </data>
+  <data name="DefaultDirectPublishWorkflowDescription.Text" xml:space="preserve">
+    <value>Allows an author to directly publish content to the site</value>
+  </data>
+  <data name="DefaultDirectPublishWorkflowName.Text" xml:space="preserve">
+    <value>Direct Publish</value>
+  </data>
+  <data name="DefaultSaveDraftWorkflowDescription.Text" xml:space="preserve">
+    <value>Allows author to save a draft copy before the content is published</value>
+  </data>
+  <data name="DefaultSaveDraftWorkflowName.Text" xml:space="preserve">
+    <value>Save Draft</value>
   </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,8 +26,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     /// </summary>
     public enum SpecificVersion
     {
+        /// <summary>The most recent version</summary>
         Latest,
+        /// <summary>Match the major version</summary>
         LatestMajor,
-        LatestMinor
+        /// <summary>Match the major and minor versions</summary>
+        LatestMinor,
+        /// <summary>Match version exactly</summary>
+        Exact,
     }
 }

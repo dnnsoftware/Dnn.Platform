@@ -70,6 +70,9 @@
     <Content Include="Settings.ascx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\FacebookClient.cs" />
     <Compile Include="Components\FacebookUserData.cs" />
     <Compile Include="Login.ascx.cs">

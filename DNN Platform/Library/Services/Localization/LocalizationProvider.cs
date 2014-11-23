@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Web.Hosting;
+using System.Xml;
 using System.Xml.XPath;
 
 using DotNetNuke.Collections.Internal;
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.Localization
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
         #region Nested type: CustomizedLocale
 
-        private enum CustomizedLocale
+        public enum CustomizedLocale
         {
             None = 0,
             Portal = 1,
@@ -54,12 +55,12 @@ namespace DotNetNuke.Services.Localization
 
         public string GetString(string key, string resourceFileRoot)
         {
-            return GetString(key, resourceFileRoot, null, PortalController.GetCurrentPortalSettings(), false);
+            return GetString(key, resourceFileRoot, null, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language)
         {
-            return GetString(key, resourceFileRoot, language, PortalController.GetCurrentPortalSettings(), false);
+            return GetString(key, resourceFileRoot, language, PortalController.Instance.GetCurrentPortalSettings(), false);
         }
 
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings)
@@ -98,7 +99,107 @@ namespace DotNetNuke.Services.Localization
             return resourceValue;
         }
 
+        /// <summary>
+        /// Saves a string to a resource file.
+        /// </summary>
+        /// <param name="key">The key to save (e.g. "MyWidget.Text").</param>
+        /// <param name="value">The text value for the key.</param>
+        /// <param name="resourceFileRoot">Relative path for the resource file root (e.g. "DesktopModules/Admin/Lists/App_LocalResources/ListEditor.ascx.resx").</param>
+        /// <param name="language">The locale code in lang-region format (e.g. "fr-FR").</param>
+        /// <param name="portalSettings">The current portal settings.</param>
+        /// <param name="resourceType">Specifies whether to save as portal, host or system resource file.</param>
+        /// <param name="createFile">if set to <c>true</c> a new file will be created if it is not found.</param>
+        /// <param name="createKey">if set to <c>true</c> a new key will be created if not found.</param>
+        /// <returns>If the value could be saved then true will be returned, otherwise false.</returns>
+        /// <exception cref="System.Exception">Any file io error or similar will lead to exceptions</exception>
+        public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool createFile, bool createKey)
+        {
+            try
+            {
+                if (key.IndexOf(".", StringComparison.Ordinal) < 1)
+                {
+                    key += ".Text";
+                }
+                string resourceFileName = GetResourceFileName(resourceFileRoot, language);
+                resourceFileName = resourceFileName.Replace("." + language.ToLower() + ".", "." + language + ".");
+                switch (resourceType)
+                {
+                    case CustomizedLocale.Host:
+                        resourceFileName = resourceFileName.Replace(".resx", ".Host.resx");
+                        break;
+                    case CustomizedLocale.Portal:
+                        resourceFileName = resourceFileName.Replace(".resx", ".Portal-" + portalSettings.PortalId + ".resx");
+                        break;
+                }
+                resourceFileName = resourceFileName.TrimStart('~', '/', '\\');
+                string filePath = HostingEnvironment.MapPath("~/" + Globals.ApplicationPath + resourceFileName);
+                XmlDocument doc = null;
+                if (File.Exists(filePath))
+                {
+                    doc = new XmlDocument();
+                    doc.Load(filePath);
+                }
+                else
+                {
+                    if (createFile)
+                    {
+                        doc = new System.Xml.XmlDocument();
+                        doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
+                        XmlNode root = doc.CreateElement("root");
+                        doc.AppendChild(root);
+                        AddResourceFileNode(ref root, "resheader", "resmimetype", "text/microsoft-resx");
+                        AddResourceFileNode(ref root, "resheader", "version", "2.0");
+                        AddResourceFileNode(ref root, "resheader", "reader", "System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+                        AddResourceFileNode(ref root, "resheader", "writer", "System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+                    }
+                }
+                if (doc == null) { return false; }
+                XmlNode reskeyNode = doc.SelectSingleNode("root/data[@name=\"" + key + "\"]");
+                if (reskeyNode != null)
+                {
+                    reskeyNode.SelectSingleNode("value").InnerText = value;
+                }
+                else
+                {
+                    if (createKey)
+                    {
+                        XmlNode root = doc.SelectSingleNode("root");
+                        AddResourceFileNode(ref root, "data", key, value);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                doc.Save(filePath);
+                DataCache.RemoveCache("/" + resourceFileName.ToLower());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format("Error while trying to create resource in {0}", resourceFileRoot), ex);
+            }
+        }
+
         #endregion
+
+        /// <summary>
+        /// Adds one of either a "resheader" or "data" element to resxRoot (which should be the root element of the resx file). 
+        /// This function is used to construct new resource files and to add resource keys to an existing file.
+        /// </summary>
+        /// <param name="resxRoot">The RESX root.</param>
+        /// <param name="elementName">Name of the element ("resheader" or "data").</param>
+        /// <param name="nodeName">Name of the node (in case of "data" specify the localization key here, e.g. "MyWidget.Text").</param>
+        /// <param name="nodeValue">The node value (text value to use).</param>
+        private static void AddResourceFileNode(ref XmlNode resxRoot, string elementName, string nodeName, string nodeValue)
+        {
+            XmlNode newNode = resxRoot.AddElement(elementName, "").AddAttribute("name", nodeName);
+            if (elementName == "data")
+            {
+                newNode = newNode.AddAttribute("xml:space", "preserve");
+            }
+            newNode.AddElement("value", nodeValue);
+        }
 
         private static object GetResourceFileCallBack(CacheItemArgs cacheItemArgs)
         {

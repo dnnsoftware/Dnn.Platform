@@ -1,7 +1,7 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,6 +46,7 @@ namespace DotNetNuke.UI.Containers
 	/// 	[sun1]	    2/1/2004	Created
 	/// 	[cniknet]	10/15/2004	Replaced public members with properties and removed
 	///                             brackets from property names
+	///     [miker]     05/19/2014 Added support for CssClass
 	/// </history>
 	/// -----------------------------------------------------------------------------
     public partial class Icon : SkinObjectBase
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Containers
 		#region "Public Members"
 
         public string BorderWidth { get; set; }
+        public string CssClass { get; set; }
 		
 		#endregion
 
@@ -67,6 +69,10 @@ namespace DotNetNuke.UI.Containers
                 if (!String.IsNullOrEmpty(BorderWidth))
                 {
                     imgIcon.BorderWidth = Unit.Parse(BorderWidth);
+                }
+                if (!String.IsNullOrEmpty(CssClass))
+                {
+                    imgIcon.CssClass = CssClass;
                 }
                 Visible = false;
                 if ((ModuleControl != null) && (ModuleControl.ModuleContext.Configuration != null))

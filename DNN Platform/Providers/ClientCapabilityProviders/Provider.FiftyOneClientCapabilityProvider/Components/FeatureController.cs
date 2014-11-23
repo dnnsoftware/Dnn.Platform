@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components
             {
                 case "06.01.05":
                     PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == Constants.PackageName);
-                    IDictionary<int, TabInfo> moduleTabs = new TabController().GetTabsByPackageID(-1, package.PackageID, false);
+                    IDictionary<int, TabInfo> moduleTabs = TabController.Instance.GetTabsByPackageID(-1, package.PackageID, false);
 
                     if (moduleTabs.Count > 0)
                         return string.Empty;

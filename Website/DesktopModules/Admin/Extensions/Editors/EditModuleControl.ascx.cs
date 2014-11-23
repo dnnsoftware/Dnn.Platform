@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.Activities.Expressions;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -33,7 +35,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
-
+using DotNetNuke.Web.UI.WebControls;
 using Globals = DotNetNuke.Common.Globals;
 
 #endregion
@@ -42,38 +44,75 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
 {
     public partial class EditModuleControl : PortalModuleBase
     {
-        private int ModuleControlId;
-        private int ModuleDefId;
-        private DesktopModuleInfo _DesktopModule;
+        #region Private Fields
+
+        
+        private DesktopModuleInfo _desktopModule;
+        private ModuleControlInfo _moduleControl;
+
+        #endregion
+
+        #region Properties
 
         protected DesktopModuleInfo DesktopModule
         {
             get
             {
-                return _DesktopModule ?? (_DesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(PackageID));
+                return _desktopModule ?? (_desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(PackageId));
             }
         }
 
-        public int PackageID
+        private int ModuleControlId
         {
             get
             {
-                int _PackageID = Null.NullInteger;
-                if ((Request.QueryString["PackageID"] != null))
+                return Request.QueryString["modulecontrolid"] != null ? Int32.Parse(Request.QueryString["modulecontrolid"]) : Null.NullInteger;
+            }
+        }
+        private int ModuleDefId
+        {
+            get
+            {
+                return Request.QueryString["moduledefid"] != null ? Int32.Parse(Request.QueryString["moduledefid"]) : Null.NullInteger;
+            }
+        }
+
+        public int PackageId
+        {
+            get
+            {
+                if (Request.QueryString["PackageID"] != null)
                 {
-                    _PackageID = Int32.Parse(Request.QueryString["PackageID"]);
+                    return Int32.Parse(Request.QueryString["PackageID"]);
                 }
-                return _PackageID;
+                return Null.NullInteger;
             }
         }
 
-        protected string ReturnURL
+        protected string ReturnUrl
         {
             get
             {
-                return EditUrl(TabId, "Edit", true, "PackageID=" + PackageID, "mid=" + ModuleId);
+                return EditUrl(TabId, "Edit", true, "PackageID=" + PackageId, "mid=" + ModuleId);
             }
         }
+
+        protected ModuleControlInfo ModuleControl
+        {
+            get
+            {
+                if (_moduleControl == null && ModuleControlId > Null.NullInteger)
+                {
+                    _moduleControl = ModuleControlController.GetModuleControl(ModuleControlId);
+                }
+
+                return _moduleControl;
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
 
         private void AddFiles(string root, string filter)
         {
@@ -81,28 +120,59 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             foreach (string strFile in files)
             {
                 string file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
-                cboSource.AddItem(file, file.ToLower());
+
+                var item = new DnnComboBoxItem(file, file.ToLower());
+                if (ModuleControl != null && item.Value.Equals(ModuleControl.ControlSrc.ToLower()))
+                {
+                    item.Selected = true;
+                }
+                cboSource.Items.Add(item);
             }
 
         }
 
-        private void BindControlList(string root, bool isRecursive)
+        private void BindControlList()
         {
+            cboSource.Items.Clear();
+            cboSource.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
+
+            var root = cboSourceFolder.SelectedValue;
             if (Directory.Exists(Request.MapPath(Globals.ApplicationPath + "/" + root)))
             {
-                string[] folders = Directory.GetDirectories(Request.MapPath(Globals.ApplicationPath + "/" + root));
-                if (isRecursive)
-                {
-                    foreach (string strFolder in folders)
-                    {
-                        BindControlList(strFolder.Substring(Request.MapPath(Globals.ApplicationPath).Length + 1).Replace('\\', '/'), true);
-                    }
-                }
-
                 AddFiles(root, "*.ascx");
                 AddFiles(root, "*.cshtml");
                 AddFiles(root, "*.vbhtml");
             }
+        }
+
+        private void BindSourceFolders()
+        {
+            IList<string> controlfolders = GetSubdirectories(Request.MapPath(Globals.ApplicationPath + "/DesktopModules"));
+            controlfolders.Insert(0, Request.MapPath(Globals.ApplicationPath + "/Admin/Skins"));
+
+            var currentControlFolder = ModuleControl != null ? Path.GetDirectoryName(ModuleControl.ControlSrc.ToLower()).Replace('\\', '/') : string.Empty;
+
+            foreach (var folder in controlfolders)
+            {
+                  var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly).Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml")|| s.EndsWith(".vbhtml"));
+                    if (moduleControls > 0)
+                    {
+                        var shortFolder =folder.Substring(Request.MapPath(Globals.ApplicationPath).Length + 1).Replace('\\', '/');
+
+                        var item = new DnnComboBoxItem(shortFolder, shortFolder.ToLower());
+                        if (item.Value.Equals(currentControlFolder))
+                        {
+                            item.Selected = true;
+                        }
+                        cboSourceFolder.Items.Add(item);
+                    }                
+            }
+        }
+
+        private IList<string> GetSubdirectories(string path)
+        {
+            return (from subdirectory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories)
+                   select subdirectory).ToList();
         }
 
         private void LoadIcons()
@@ -137,20 +207,23 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             }
         }
 
+        #endregion
+
+        #region Event Handlers
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             cboSource.SelectedIndexChanged += cboSource_SelectedIndexChanged;
+            cboSourceFolder.SelectedIndexChanged += cboSourceFolder_SelectedIndexChanged;
             cmdCancel.Click += cmdCancel_Click;
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
 
             try
             {
-                ModuleDefId = (Request.QueryString["moduledefid"] != null) ? Int32.Parse(Request.QueryString["moduledefid"]) : Null.NullInteger;
-                ModuleControlId = (Request.QueryString["modulecontrolid"] != null) ? Int32.Parse(Request.QueryString["modulecontrolid"]) : Null.NullInteger;
-                if (Page.IsPostBack == false)
+                if (!Page.IsPostBack)
                 {
                     lblModule.Text = DesktopModule.FriendlyName;
                     var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(ModuleDefId);
@@ -159,47 +232,48 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                         lblDefinition.Text = objModuleDefinition.FriendlyName;
                     }
                     ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteItem"));
-                    var moduleControl = ModuleControlController.GetModuleControl(ModuleControlId);
-                    BindControlList("DesktopModules", true);
-                    BindControlList("Admin/Skins", false);
-                    //cboSource.Items.Insert(0, new ListItem("<" + Localization.GetString("None_Specified") + ">", ""));
-                    cboSource.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "");
+                    
+                    
+                    BindSourceFolders();
+                    BindControlList();
+                    
                     if (!Null.IsNull(ModuleControlId))
                     {
-                        if (moduleControl != null)
+                        if (ModuleControl != null)
                         {
-                            txtKey.Text = moduleControl.ControlKey;
-                            txtTitle.Text = moduleControl.ControlTitle;
-                            if (cboSource.FindItemByValue(moduleControl.ControlSrc.ToLower()) != null)
+                            txtKey.Text = ModuleControl.ControlKey;
+                            txtTitle.Text = ModuleControl.ControlTitle;
+
+                            if (!string.IsNullOrEmpty(cboSource.SelectedValue))
                             {
-                                cboSource.FindItemByValue(moduleControl.ControlSrc.ToLower()).Selected = true;
                                 LoadIcons();
                             }
                             else
                             {
-                                txtSource.Text = moduleControl.ControlSrc;
+                                txtSource.Text = ModuleControl.ControlSrc;
                             }
-                            if (cboType.FindItemByValue(Convert.ToInt32(moduleControl.ControlType).ToString()) != null)
+
+                            if (cboType.FindItemByValue(Convert.ToInt32(ModuleControl.ControlType).ToString()) != null)
                             {
-                                cboType.FindItemByValue(Convert.ToInt32(moduleControl.ControlType).ToString()).Selected = true;
+                                cboType.FindItemByValue(Convert.ToInt32(ModuleControl.ControlType).ToString()).Selected = true;
                             }
-                            if (!Null.IsNull(moduleControl.ViewOrder))
+                            if (!Null.IsNull(ModuleControl.ViewOrder))
                             {
-                                txtViewOrder.Text = moduleControl.ViewOrder.ToString();
+                                txtViewOrder.Text = ModuleControl.ViewOrder.ToString();
                             }
-                            if (cboIcon.FindItemByValue(moduleControl.IconFile.ToLower()) != null)
+                            if (cboIcon.FindItemByValue(ModuleControl.IconFile.ToLower()) != null)
                             {
-                                cboIcon.FindItemByValue(moduleControl.IconFile.ToLower()).Selected = true;
+                                cboIcon.FindItemByValue(ModuleControl.IconFile.ToLower()).Selected = true;
                             }
-                            if (!Null.IsNull(moduleControl.HelpURL))
+                            if (!Null.IsNull(ModuleControl.HelpURL))
                             {
-                                txtHelpURL.Text = moduleControl.HelpURL;
+                                txtHelpURL.Text = ModuleControl.HelpURL;
                             }
-                            if (moduleControl.SupportsPartialRendering)
+                            if (ModuleControl.SupportsPartialRendering)
                             {
                                 chkSupportsPartialRendering.Checked = true;
                             }
-                            supportsModalPopUpsCheckBox.Checked = moduleControl.SupportsPopUps;
+                            supportsModalPopUpsCheckBox.Checked = ModuleControl.SupportsPopUps;
                         }
                     }
                     else
@@ -226,11 +300,16 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
             LoadIcons();
         }
 
+        private void cboSourceFolder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindControlList();
+        }
+
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {
-                Response.Redirect(ReturnURL, true);
+                Response.Redirect(ReturnUrl, true);
             }
             catch (Exception exc)
             {
@@ -246,7 +325,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                 {
                     ModuleControlController.DeleteModuleControl(ModuleControlId);
                 }
-                Response.Redirect(ReturnURL, true);
+                Response.Redirect(ReturnUrl, true);
             }
             catch (Exception exc)
             {
@@ -295,7 +374,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AddControl.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
-                        Response.Redirect(ReturnURL, true);
+                        Response.Redirect(ReturnUrl, true);
                     }
                     else
                     {
@@ -308,5 +387,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
+        #endregion
     }
 }

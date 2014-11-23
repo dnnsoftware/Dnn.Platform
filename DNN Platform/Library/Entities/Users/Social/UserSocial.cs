@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -54,7 +54,6 @@ namespace DotNetNuke.Entities.Users.Social
         private IList<UserRelationship> _userRelationships;
         private  IList<UserRoleInfo> _roles;
         private readonly UserInfo _userInfo;
-        private readonly RoleController _roleController;
 
         #endregion
 
@@ -62,7 +61,6 @@ namespace DotNetNuke.Entities.Users.Social
 
         public UserSocial(UserInfo userInfo)
         {
-            _roleController = new RoleController();
             _userInfo = userInfo;
         }
 
@@ -78,7 +76,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
                                                                 && 
                                                                 (ur.UserId == _userInfo.UserID &&
@@ -98,7 +96,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == _userInfo.UserID &&
@@ -115,7 +113,7 @@ namespace DotNetNuke.Entities.Users.Social
             get
             {
                 var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
-                var currentUser = UserController.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == currentUser.UserID &&
@@ -164,7 +162,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return _roles ?? (_roles = (_userInfo.PortalID == -1 && _userInfo.UserID == -1)
                                             ? new List<UserRoleInfo>()
-                                            : _roleController.GetUserRoles(_userInfo, true)
+                                            : RoleController.Instance.GetUserRoles(_userInfo, true)
                                 ); 
             }
         }

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -44,6 +46,8 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
+//DNN-4016
+using DotNetNuke.Services.Authentication;
 
 #endregion
 
@@ -60,6 +64,9 @@ namespace DotNetNuke.Security.Membership
     /// </summary>
     /// <remarks>
     /// </remarks>
+    /// <history>
+    /// [skydnn] DNN4016 and DNN4133
+    /// </history>
     /// -----------------------------------------------------------------------------
     public class AspNetMembershipProvider : MembershipProvider
     {
@@ -68,6 +75,7 @@ namespace DotNetNuke.Security.Membership
         #region Private Members
 
         private readonly DataProvider _dataProvider = DataProvider.Instance();
+        private readonly IEnumerable<string> _socialAuthProviders = new  List<string>() {"Facebook", "Google", "Twitter", "LiveID"}; 
 
         #endregion
 
@@ -252,7 +260,7 @@ namespace DotNetNuke.Security.Membership
                                                           displayName,
                                                           updatePassword,
                                                           isApproved,
-                                                          UserController.GetCurrentUserInfo().UserID));
+                                                          UserController.Instance.GetCurrentUserInfo().UserID));
             }
             catch (Exception ex)
             {
@@ -267,20 +275,20 @@ namespace DotNetNuke.Security.Membership
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
             var portalSecurity = new PortalSecurity();
-            user.Username = portalSecurity.InputFilter(user.Username,
+            string userName = portalSecurity.InputFilter(user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
-            user.Email = portalSecurity.InputFilter(user.Email,
+            string email = portalSecurity.InputFilter(user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                System.Web.Security.Membership.CreateUser(user.Username,
+                System.Web.Security.Membership.CreateUser(userName,
                                                           user.Membership.Password,
-                                                          user.Email,
+                                                          email,
                                                           user.Membership.PasswordQuestion,
                                                           user.Membership.PasswordAnswer,
                                                           true,
@@ -288,9 +296,9 @@ namespace DotNetNuke.Security.Membership
             }
             else
             {
-                System.Web.Security.Membership.CreateUser(user.Username,
+                System.Web.Security.Membership.CreateUser(userName,
                                                           user.Membership.Password,
-                                                          user.Email,
+                                                          email,
                                                           null,
                                                           null,
                                                           true,
@@ -507,7 +515,8 @@ namespace DotNetNuke.Security.Membership
                             UserID = Null.SetNullInteger(dr["UserID"]),
                             FirstName = Null.SetNullString(dr["FirstName"]),
                             LastName = Null.SetNullString(dr["LastName"]),
-                            DisplayName = Null.SetNullString(dr["DisplayName"])
+                            DisplayName = Null.SetNullString(dr["DisplayName"]),
+                            LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                         };
 
                     var schema = dr.GetSchemaTable();
@@ -712,11 +721,10 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
             _dataProvider.ChangeUsername(userId, newUsername);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog("userId",
+            EventLogController.Instance.AddLog("userId",
                                userId.ToString(),
-                               PortalController.GetCurrentPortalSettings(),
-                               UserController.GetCurrentUserInfo().UserID,
+                               PortalController.Instance.GetCurrentPortalSettings(),
+                               UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.USERNAME_UPDATED);
             DataCache.ClearCache();          
         }
@@ -836,10 +844,49 @@ namespace DotNetNuke.Security.Membership
         /// </remarks>
         /// <param name="user">The user to persist to the Data Store.</param>
         /// <returns>A UserCreateStatus enumeration indicating success or reason for failure.</returns>
+        /// <history>
+        /// DNN-4016 Allow OAuth authenticated user to join more than one portal
+        /// DNN-4133 Prevent duplicate usernames for OAuth email address with same email prefix and different email domain.
+        /// </history>
         /// -----------------------------------------------------------------------------
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
             UserCreateStatus createStatus = ValidateForProfanity(user);
+            string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
+
+            //DNN-4016
+            //the username exists, first we check to see if this is an OAUTH user
+            bool isOAuthUser = false;
+
+            if (String.IsNullOrEmpty(service) || service.Equals("DNN"))
+            {
+                isOAuthUser = false;
+            }
+            else
+            {
+                try
+                {
+                    UserAuthenticationInfo authUser = AuthenticationController.GetUserAuthentication(user.UserID);
+
+                    // Check that the OAuth service currently being used for login is the same as was previously used (this should always be true if user authenticated to userid)
+                    if (authUser == null || authUser.AuthenticationType.Equals(service, StringComparison.OrdinalIgnoreCase))
+                    {
+                        isOAuthUser = true;
+                        //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
+                        user.Username = service + "-" + user.Email;
+                    }
+                    else
+                    {
+                        createStatus = UserCreateStatus.DuplicateEmail;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    createStatus = UserCreateStatus.UnexpectedError;
+                    EventLogController.Instance.AddLog("CreateUser", "Exception checking oauth authentication in CreateUser for userid : " + user.UserID + " " + ex.InnerException.Message, EventLogController.EventLogType.ADMIN_ALERT);
+                }
+            }
 
             if (createStatus == UserCreateStatus.AddUser)
             {
@@ -854,8 +901,9 @@ namespace DotNetNuke.Security.Membership
                     UserInfo objVerifyUser = GetUserByUserName(Null.NullInteger, user.Username);
                     if (objVerifyUser != null)
                     {
-                        //the username exists so we should now verify the password
-                        if (ValidateUser(user.Username, user.Membership.Password))
+                        //DNN-4016
+                        //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
+                        if (isOAuthUser || ValidateUser(user.Username, user.Membership.Password))
                         {
                             //check if user exists for the portal specified
                             objVerifyUser = GetUserByUserName(user.PortalID, user.Username);
@@ -1430,9 +1478,7 @@ namespace DotNetNuke.Security.Membership
                 else
                 {
                     //Next try the Database
-                    onlineUser =
-                        (OnlineUserInfo)
-                        CBO.FillObject(_dataProvider.GetOnlineUser(user.UserID), typeof (OnlineUserInfo));
+                    onlineUser = CBO.FillObject<OnlineUserInfo>(_dataProvider.GetOnlineUser(user.UserID));
                     if (onlineUser != null)
                     {
                         isOnline = true;
@@ -1579,7 +1625,7 @@ namespace DotNetNuke.Security.Membership
             {
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
-            string vanityUrl = HttpUtility.HtmlEncode(user.VanityUrl);
+            
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
@@ -1599,7 +1645,7 @@ namespace DotNetNuke.Security.Membership
                                      user.IsSuperUser,
                                      email,
                                      displayName,
-                                     vanityUrl,
+                                     user.VanityUrl,
                                      updatePassword,
                                      isApproved,
                                      false,
@@ -1607,7 +1653,7 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.GetCurrentUserInfo().UserID);
+                                     UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);
@@ -1699,16 +1745,26 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
-                    //Check Verification code
-                    var ps = new PortalSecurity();
-                    if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                    //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
+                    if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
                     {
+                        user.Membership.Approved = true;
+                        UserController.UpdateUser(portalId, user);
                         UserController.ApproveUser(user);
                     }
                     else
                     {
-                        loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        var ps = new PortalSecurity();
+                        if (verificationCode == ps.EncryptString(portalId + "-" + user.UserID, Config.GetDecryptionkey()))
+                        {
+                            UserController.ApproveUser(user);
+                        }
+                        else
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        }
                     }
+
                 }
 
                 //Verify User Credentials

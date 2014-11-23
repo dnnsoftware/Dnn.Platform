@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -69,7 +69,6 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    var tc = new TabController();
                     //loop through all specified tab names
                     foreach (string tabName in tabNames.Split(';'))
                     {
@@ -89,7 +88,7 @@ namespace DotNetNuke.Entities.Urls
                             else
                             {
                                 //portal id specified : specific portal
-                                TabInfo tab = tc.GetTabByName(tabName, portalId);
+                                TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId);
                                 if (tab != null)
                                 {
                                     tabIds.Add(tab.TabID);

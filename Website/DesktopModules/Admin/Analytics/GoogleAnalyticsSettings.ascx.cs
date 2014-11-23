@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,6 +51,7 @@ namespace DotNetNuke.Modules.Admin.Analytics
                     {
                         var trackingId = "";
                         var urlParameter = "";
+                        var trackForAdmin = true;
                         foreach (AnalyticsSetting setting in config.Settings)
                         {
                             switch (setting.SettingName.ToLower())
@@ -61,10 +62,17 @@ namespace DotNetNuke.Modules.Admin.Analytics
                                 case "urlparameter":
                                     urlParameter = setting.SettingValue;
                                     break;
+                                case "trackforadmin":
+                                    if (!bool.TryParse(setting.SettingValue, out trackForAdmin))
+                                    {
+                                        trackForAdmin = true;
+                                    }
+                                    break;
                             }
                         }
                         txtTrackingId.Text = trackingId;
                         txtUrlParameter.Text = urlParameter;
+                        chkTrackForAdmin.Checked = trackForAdmin;
                     }
                 }
             }
@@ -87,6 +95,10 @@ namespace DotNetNuke.Modules.Admin.Analytics
                 setting = new AnalyticsSetting();
                 setting.SettingName = "UrlParameter";
                 setting.SettingValue = txtUrlParameter.Text;
+                config.Settings.Add(setting);
+                setting = new AnalyticsSetting();
+                setting.SettingName = "TrackForAdmin";
+                setting.SettingValue = chkTrackForAdmin.Checked.ToString().ToLowerInvariant();
                 config.Settings.Add(setting);
                 AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Updated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);

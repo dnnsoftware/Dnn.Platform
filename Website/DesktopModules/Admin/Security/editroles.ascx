@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Security.EditRoles" CodeFile="EditRoles.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="Url" Src="~/controls/UrlControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Url" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnEditRole dnnClear" id="dnnEditRole">
@@ -17,7 +17,7 @@
                     <asp:TextBox ID="txtRoleName" runat="server" MaxLength="50" />
                     <asp:Label ID="lblRoleName" Visible="False" runat="server" />
                     <asp:RequiredFieldValidator ID="valRoleName" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName" ControlToValidate="txtRoleName" Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[A-Za-z0-9\.\s_-]*" />
+                    <asp:RegularExpressionValidator ID="valRoleName2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valRoleName2" ControlToValidate="txtRoleName" Display="Dynamic" ValidationExpression="[^&\$\+,/?~#<>\(\)¿¡«»!\.:\*'\[\]]*" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plDescription" runat="server" ResourceKey="Description" ControlName="txtDescription" />
@@ -65,11 +65,8 @@
                 </div>
                 <div class="dnnFormItem" id="divBillingPeriod" runat="server">
                     <dnn:Label ID="plBillingPeriod" runat="server" ResourceKey="BillingPeriod" Suffix=":" ControlName="txtBillingPeriod" />
-                    <asp:TextBox ID="txtBillingPeriod" runat="server" MaxLength="50" Columns="30" />
-                    <div class="dnnLabel">                    
-                    </div>
-                    <%--<asp:DropDownList ID="cboBillingFrequency" runat="server" DataValueField="value" DataTextField="text" AutoPostBack="true" />--%>
-                    <dnn:DnnComboBox ID="cboBillingFrequency" runat="server" DataValueField="value" DataTextField="text" AutoPostBack="true" />
+                    <asp:TextBox ID="txtBillingPeriod" runat="server" MaxLength="50" Columns="30" CssClass="dnnFixedSizeComboBox" />
+                    <dnn:DnnComboBox ID="cboBillingFrequency" runat="server" DataValueField="value" DataTextField="text" AutoPostBack="true" CssClass="dnnFixedSizeComboBox" />
                     <asp:CompareValidator ID="valBillingPeriod1" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valBillingPeriod1" ControlToValidate="txtBillingPeriod" Display="Dynamic" Type="Integer" Operator="DataTypeCheck" />
                     <asp:CompareValidator ID="valBillingPeriod2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valBillingPeriod2" ControlToValidate="txtBillingPeriod" Display="Dynamic" Operator="GreaterThan" ValueToCompare="0" />
                 </div>
@@ -82,7 +79,6 @@
                 <div class="dnnFormItem" id="divTrialPeriod" runat="server">
                     <dnn:Label ID="plTrialPeriod" runat="server" ResourceKey="TrialPeriod" Suffix=":" ControlName="txtTrialPeriod" />
                     <asp:TextBox ID="txtTrialPeriod" runat="server" MaxLength="50" Columns="30" CssClass="dnnFixedSizeComboBox" />
-                    <%--<asp:DropDownList ID="cboTrialFrequency" runat="server" Width="100px" DataValueField="value" DataTextField="text" AutoPostBack="true" />--%>
                     <dnn:DnnComboBox ID="cboTrialFrequency" runat="server" DataValueField="value" DataTextField="text" AutoPostBack="true" CssClass="dnnFixedSizeComboBox" />
                     <asp:CompareValidator ID="valTrialPeriod1" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valTrialPeriod1" ControlToValidate="txtTrialPeriod" Display="Dynamic" Type="Integer" Operator="DataTypeCheck" />
                     <asp:CompareValidator ID="valTrialPeriod2" CssClass="dnnFormMessage dnnFormError" runat="server" resourcekey="valTrialPeriod2" ControlToValidate="txtTrialPeriod" Display="Dynamic" Operator="GreaterThan" ValueToCompare="0" />

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,11 +23,10 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Web.Configuration;
 using System.Xml;
 using System.Xml.XPath;
-
-using DotNetNuke.Application;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -64,7 +63,19 @@ namespace DotNetNuke.Common.Utilities
 
         #endregion
 
-        /// <summary>
+        #region FcnMode enum
+
+        public enum FcnMode
+        {
+            Default,
+            Disabled,
+            NotSet, 
+            Single
+        }
+
+        #endregion
+        
+            /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
         /// when the key already exists, this need to be updated or not
         /// </summary>
@@ -240,6 +251,21 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Returns the fcnMode from webconfig httpRuntime
+        /// </summary>
+        /// <returns>decryption key</returns>
+        /// -----------------------------------------------------------------------------
+        public static string GetFcnMode()
+        {
+            var configNav = Load();
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime").CreateNavigator();
+
+            var result = XmlUtils.GetAttributeValue(httpNode, "fcnMode");
+
+            return result;
+        }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Returns the maximum file size allowed to be uploaded to the application in bytes
         /// </summary>
         /// <returns>Size in bytes</returns>
@@ -249,8 +275,8 @@ namespace DotNetNuke.Common.Utilities
             var configNav = Load();
 
             var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ?? 
-						   configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
-	        long maxRequestLength = 0;
+                           configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+            long maxRequestLength = 0;
             if (httpNode != null)
             {
                 maxRequestLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxRequestLength", 0) * 1024;
@@ -258,13 +284,79 @@ namespace DotNetNuke.Common.Utilities
 
             httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
                        configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
-	        if (httpNode != null)
+
+            if (httpNode == null && Iis7AndAbove())
             {
-                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 0);
+                const int DefaultMaxAllowedContentLength = 30000000;
+                return Math.Min(maxRequestLength, DefaultMaxAllowedContentLength);
+            }
+
+            if (httpNode != null)
+            {
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return Math.Min(maxRequestLength, maxAllowedContentLength);
             }
 
             return maxRequestLength;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Returns the maximum file size allowed to be uploaded based on the request filter limit
+        /// </summary>
+        /// <returns>Size in megabytes</returns>
+        /// -----------------------------------------------------------------------------
+        public static long GetRequestFilterSize()
+        {
+            var configNav = Load();
+            const int defaultRequestFilter = 30000000/1024/1024;
+            var httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                       configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+            if (httpNode == null && Iis7AndAbove())
+            {
+                return defaultRequestFilter;
+            }
+
+            if (httpNode != null)
+            {
+                var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
+                return maxAllowedContentLength / 1024 / 1024;
+            }
+            return defaultRequestFilter;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Sets the maximum file size allowed to be uploaded to the application in bytes
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void SetMaxUploadSize(long newSize)
+        {
+            if (newSize < 12582912) { newSize = 12582912; }; // 12 Mb minimum
+
+            var configNav = Load();
+
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
+                            configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
+            if (httpNode != null)
+            {
+                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
+                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
+            }
+
+            httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
+                       configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
+            if (httpNode != null)
+            {
+                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
+            }
+
+            Save(configNav);
+        }
+
+        private static bool Iis7AndAbove()
+        {
+            return Environment.OSVersion.Version.Major >= 6;
         }
 
         /// -----------------------------------------------------------------------------
@@ -515,10 +607,11 @@ namespace DotNetNuke.Common.Utilities
 
         public static string Save(XmlDocument xmlDoc, string filename)
         {
+            var retMsg = string.Empty;
             try
             {
-                string strFilePath = Globals.ApplicationMapPath + "\\" + filename;
-                FileAttributes objFileAttributes = FileAttributes.Normal;
+                var strFilePath = Globals.ApplicationMapPath + "\\" + filename;
+                var objFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
                     //save current file attributes
@@ -526,21 +619,49 @@ namespace DotNetNuke.Common.Utilities
                     //change to normal ( in case it is flagged as read-only )
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
-                //save the config file
-                var writer = new XmlTextWriter(strFilePath, null) { Formatting = Formatting.Indented };
-                xmlDoc.WriteTo(writer);
-                writer.Flush();
-                writer.Close();
+
+                // Attempt a few times in case the file was locked; occurs during modules' installation due
+                // to application restarts where IIS can overlap old application shutdown and new one start.
+                const int maxRetires = 4;
+                const double miltiplier = 2.5;
+                for (var retry = maxRetires; retry >= 0; retry--)
+                {
+                    try
+                    {
+                        //save the config file
+                        var settings = new XmlWriterSettings { CloseOutput = true, Indent = true };
+                        using (var writer = XmlWriter.Create(strFilePath, settings))
+                        {
+                            xmlDoc.WriteTo(writer);
+                            writer.Flush();
+                            writer.Close();
+                        }
+                        break;
+                    }
+                    catch (IOException exc)
+                    {
+                        if (retry == 0)
+                        {
+                            Logger.Error(exc);
+                            retMsg = exc.Message;
+                        }
+
+                        // try incremental delay; maybe the file lock is released by then
+                        Thread.Sleep(((int)(miltiplier * (maxRetires - retry + 1)) * 1000));
+                    }
+                }
+
                 //reset file attributes
                 File.SetAttributes(strFilePath, objFileAttributes);
-                return "";
             }
             catch (Exception exc)
             {
-                //the file permissions may not be set properly
+                // the file permissions may not be set properly
                 Logger.Error(exc);
-                return exc.Message;
+                retMsg = exc.Message;
             }
+
+            return retMsg;
         }
 
         public static bool Touch()
@@ -795,6 +916,44 @@ namespace DotNetNuke.Common.Utilities
 
             return xmlConfig;
         }
+
+        public static bool IsNet45OrNewer()
+        {
+            // Class "ReflectionContext" exists from .NET 4.5 onwards.
+            return Type.GetType("System.Reflection.ReflectionContext", false) != null;
+        }
+
+        public static string AddFCNMode(FcnMode fcnMode)
+        {
+            const string strError = "";
+            var xmlConfig = new XmlDocument();
+            try
+            {
+                //open the web.config
+                xmlConfig = Load();
+
+                //check current .net version and if attribute has been added already
+                if ((IsNet45OrNewer()) && String.IsNullOrEmpty(GetFcnMode()))
+                {
+                    XmlNode xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
+                                                xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
+                    XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                //in case of error installation shouldn't be stopped, log into log4net
+                Logger.Error(ex);
+                //strError += ex.Message;
+            }
+
+            //save the web.config
+            Save(xmlConfig);
+
+            return strError;  
+
+        }
+
 
     }
 }

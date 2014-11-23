@@ -1,16 +1,16 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_TwitterAuthentication" type="Auth_System" version="07.02.01">
+    <package name="DNN_TwitterAuthentication" type="Auth_System" version="07.03.04">
       <friendlyName>DotNetNuke Twitter Authentication Project</friendlyName>
       <description>
         The DotNetNuke Twitter Authentication Project is an Authentication provider for DotNetNuke that uses
         Twitter authentication to authenticate users.
       </description>
       <owner>
-        <name>DotNetNuke Corporation</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license src="license.txt" />
       <releaseNotes src="releasenotes.txt" />

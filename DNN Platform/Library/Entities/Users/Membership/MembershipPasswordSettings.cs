@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,8 +22,9 @@
 #endregion
 
 using System;
+using System.Web;
 using System.Web.Security;
-
+using DotNetNuke.Common;
 using DotNetNuke.Security.Membership;
 
 namespace DotNetNuke.Entities.Users.Membership
@@ -93,16 +94,37 @@ namespace DotNetNuke.Entities.Users.Membership
             //portalId not used currently - left in place for potential site specific settings
             PortalId = portalId;
 
-            EnableBannedList = Host.Host.EnableBannedList;
-            EnableStrengthMeter = Host.Host.EnableStrengthMeter;
-            EnableIPChecking = Host.Host.EnableIPChecking;
-            EnablePasswordHistory = Host.Host.EnablePasswordHistory;
+            if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
+            {
+                EnableBannedList = Host.Host.EnableBannedList;
+                EnableStrengthMeter = Host.Host.EnableStrengthMeter;
+                EnableIPChecking = Host.Host.EnableIPChecking;
+                EnablePasswordHistory = Host.Host.EnablePasswordHistory;
 
-            ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
-            NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
+                NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+            }
+            else //setup default values during install process.
+            {
+                EnableStrengthMeter = true;
+                EnableBannedList = true;
+                EnablePasswordHistory = true;
+            }
         }
 
         public int PortalId { get; set; }
+
+        #endregion
+
+        #region Private Methods
+
+        private static bool IsInstallRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLower();
+
+            return url.EndsWith("/install.aspx")
+                   || url.Contains("/installwizard.aspx");
+        }
 
         #endregion
     }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -76,26 +76,18 @@ namespace DotNetNuke.HttpModules
         public void OnBeginRequest(object s, EventArgs e)
         {
             var app = (HttpApplication)s;
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             
             //First check if we are upgrading/installing
-            if (app.Request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                    || app.Request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                    || app.Request.Url.LocalPath.ToLower().Contains("installwizard.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("webresource.axd")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("sitemap.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".asmx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".ashx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".svc")
-                    || app.Request.HttpMethod == "POST" 
-                    || ServicesModule.ServiceApi.IsMatch(app.Context.Request.RawUrl)
-					|| IsSpecialPage(app.Request.RawUrl)
+            if (!Initialize.ProcessHttpModule(app.Request, false, false)
+                    || app.Request.HttpMethod == "POST"
+                    || ServicesModule.ServiceApi.IsMatch(app.Request.RawUrl) 
+                    || IsSpecialPage(app.Request.RawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(app.Request.RawUrl, app, portalSettings)))
             {
                 return;
-            } 
+            }
+ 
             if (_redirectionController != null)
             {
                 if (portalSettings != null && portalSettings.ActiveTab != null)
@@ -140,13 +132,13 @@ namespace DotNetNuke.HttpModules
 				tabPath = tabPath.Substring(0, tabPath.IndexOf("?"));
 			}
 
-			var portalSettings = PortalController.GetCurrentPortalSettings();
+			var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			if (portalSettings == null)
 			{
 				return true;
 			}
 
-			var alias = PortalController.GetCurrentPortalSettings().PortalAlias.HTTPAlias.ToLowerInvariant();
+			var alias = PortalController.Instance.GetCurrentPortalSettings().PortalAlias.HTTPAlias.ToLowerInvariant();
 			if (alias.Contains("/"))
 			{
 				tabPath = tabPath.Replace(alias.Substring(alias.IndexOf("/")), string.Empty);

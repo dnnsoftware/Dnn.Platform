@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Globalization;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -34,6 +35,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Security.Permissions;
 
 #endregion
 
@@ -121,7 +123,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var rawQueryStringCollection =
                 HttpUtility.ParseQueryString(new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query);
 
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             string[] arrKeys = queryStringCollection.AllKeys;
 
             for (int i = 0; i <= arrKeys.GetUpperBound(0); i++)
@@ -144,7 +146,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                                 int.TryParse(queryStringCollection[ModuleIdKey], out moduleID);
                                 int.TryParse(queryStringCollection["tabid"], out tabid);
-                                ModuleInfo localizedModule = new ModuleController().GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
+                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
                                 if (localizedModule != null)
                                 {
                                     if (!string.IsNullOrEmpty(returnValue))
@@ -168,8 +170,21 @@ namespace DotNetNuke.UI.Skins.Controls
                                     //skip parameter as it is part of a querystring param that has the following form
                                     // [friendlyURL]/?param=value
                                     // gemini 25516
+
+                                    if (!DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
+                                    {
+                                        if (!String.IsNullOrEmpty(returnValue))
+                                        {
+                                            returnValue += "&";
+                                        }
+                                        returnValue += arrKeys[i] + "=" + HttpUtility.UrlEncode(rawQueryStringCollection.Get(arrKeys[i]));
+                                    }
+
+
                                 }
-                                else
+                                // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
+                                // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
+                                else //if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
                                 {
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
@@ -224,19 +239,55 @@ namespace DotNetNuke.UI.Skins.Controls
             int tabId = objPortal.ActiveTab.TabID;
             bool islocalized = false;
 
-            TabInfo localizedTab = new TabController().GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            TabInfo localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;
-                tabId = localizedTab.TabID;
+                if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
+                {
+                    PortalInfo localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
+                    tabId = localizedPortal.HomeTabId;
+                }
+                else
+                {
+                    string fullurl = "";
+                    switch (localizedTab.TabType)
+                    {
+                        case TabType.Normal:
+                            //normal tab
+                            tabId = localizedTab.TabID;
+                            break;
+                        case TabType.Tab:
+                            //alternate tab url                                
+                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            break;
+                        case TabType.File:
+                            //file url
+                            fullurl = TestableGlobals.Instance.LinkClick(localizedTab.Url, localizedTab.TabID, Null.NullInteger);
+                            break;
+                        case TabType.Url:
+                            //external url
+                            fullurl = localizedTab.Url;
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(fullurl))
+                    {
+                        return objSecurity.InputFilter(fullurl, PortalSecurity.FilterFlag.NoScripting);
+                    }
+                }
             }
 
-
-            var rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
+            // on localised pages most of the querystring parameters have no sense and generate duplicate urls for the same content
+            // because we are on a other tab with other modules (example : ?returntab=/en-US/about)
+            string rawQueryString = "";
+            if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls && !islocalized )
+            {
+                rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
+            }
 
             return
                 objSecurity.InputFilter(
-                    Globals.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
+                    TestableGlobals.Instance.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
                     rawQueryString,
                     PortalSecurity.FilterFlag.NoScripting);
         }

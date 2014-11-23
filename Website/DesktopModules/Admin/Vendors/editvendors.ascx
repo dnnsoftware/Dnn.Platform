@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Address" Src="~/controls/Address.ascx"%>
 <%@ Register TagPrefix="dnn" TagName="Audit" Src="~/controls/ModuleAuditControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="Portal" TagName="URL" Src="~/controls/URLControl.ascx" %>
+<%@ Register TagPrefix="Portal" TagName="URL" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Reference Control="~/DesktopModules/Admin/Vendors/Affiliates.ascx" %>
 <%@ Reference Control="~/DesktopModules/Admin/Vendors/Banners.ascx" %>
 <div class="dnnForm dnnEditVendor dnnClear" id="dnnEditVendor">

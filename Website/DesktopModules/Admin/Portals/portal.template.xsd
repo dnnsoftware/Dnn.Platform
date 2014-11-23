@@ -32,6 +32,12 @@
               <xs:element name="containersrcadmin" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="portalaliasmapping" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="contentlocalizationenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="inlineeditorenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="enablepopups" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="hidefoldersenabled" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelsecurity" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="controlpanelvisibility" type="xs:string" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="sku" type="xs:string"/>
           </xs:complexType>
@@ -40,6 +46,32 @@
           <xs:complexType>
             <xs:sequence>
               <xs:element name="locale" minOccurs="0" maxOccurs="unbounded">
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="extensionUrlProviders" maxOccurs="1" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="extensionUrlProvider" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="active" type="xs:string" minOccurs="1" maxOccurs="1" />
+                      <xs:element name="settings" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                              <xs:sequence>
+                                  <xs:element name="setting" minOccurs="0" maxOccurs="unbounded">
+                                      <xs:complexType>
+                                          <xs:attribute name="name" type="xs:string"/>
+                                          <xs:attribute name="value" type="xs:string"/>
+                                      </xs:complexType>
+                                  </xs:element>
+                              </xs:sequence>
+                          </xs:complexType>
+                      </xs:element>
+                  </xs:all>
+                </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>

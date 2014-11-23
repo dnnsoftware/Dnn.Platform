@@ -1,0 +1,2084 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-- DNN-4740
+IF EXISTS (SELECT * FROM Sys.Check_Constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'CK_{objectQualifier}Roles_PortalId')
+	ALTER TABLE {databaseOwner}[{objectQualifier}Roles] DROP CONSTRAINT CK_{objectQualifier}Roles_PortalId
+GO
+
+-- DNN-4537:
+-- Optimize Indexes on DesktopModulePermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}DesktopModulePermission] DROP CONSTRAINT [IX_{objectQualifier}DesktopModulePermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_DesktopModules' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_DesktopModules] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_DesktopModules ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(PortalDesktopModuleID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_Users' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Users] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Users ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(UserID, PortalDesktopModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}DesktopModulePermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}DesktopModulePermission'))
+	DROP INDEX [IX_{objectQualifier}DesktopModulePermission_Roles] ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+GO
+
+--Correct error data
+
+DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE IsNull(UserID, -1) = -1
+ AND FolderPermissionID NOT IN
+ (SELECT Min(FolderPermissionID) 
+ FROM {databaseOwner} [{objectQualifier}FolderPermission]
+ WHERE IsNull(UserID, -1) = -1
+ GROUP BY FolderID, PermissionID, RoleID);
+ GO
+
+ UPDATE {databaseOwner}[{objectQualifier}FolderPermission]
+ SET UserID = Null
+ WHERE UserID = -1;
+ GO
+
+DELETE FROM 
+{databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE UserID Is Not Null
+ AND FolderPermissionID NOT IN
+ (SELECT Min(FolderPermissionID) 
+ FROM {databaseOwner}[{objectQualifier}FolderPermission]
+ WHERE UserID Is Not Null 
+ GROUP BY FolderID, PermissionID, UserID);
+ GO
+
+ UPDATE {databaseOwner}[{objectQualifier}FolderPermission]
+ SET RoleID = Null
+ WHERE UserID IS Not Null
+ AND RoleID Is Not Null;
+ GO
+
+ -- DesktopModule Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND DesktopModulePermissionID NOT IN(SELECT Min(DesktopModulePermissionID) 
+										 FROM  {databaseOwner}[{objectQualifier}DesktopModulePermission]
+										 WHERE IsNull(UserID, -1) = -1
+										 GROUP BY PortalDesktopModuleID, PermissionID, RoleID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ WHERE UserID Is Not Null
+   AND DesktopModulePermissionID NOT IN (SELECT Min(DesktopModulePermissionID) 
+										  FROM  {databaseOwner}[{objectQualifier}DesktopModulePermission]
+										  WHERE UserID Is Not Null 
+										  GROUP BY PortalDesktopModuleID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
+
+
+-- Module Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND ModulePermissionID NOT IN(SELECT Min(ModulePermissionID) 
+								  FROM  {databaseOwner}[{objectQualifier}ModulePermission]
+								  WHERE IsNull(UserID, -1) = -1
+								  GROUP BY ModuleID, PermissionID, RoleID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}ModulePermission]
+ WHERE UserID Is Not Null
+   AND ModulePermissionID NOT IN (SELECT Min(ModulePermissionID) 
+								  FROM {databaseOwner}[{objectQualifier}ModulePermission]
+                                  WHERE UserID Is Not Null 
+								  GROUP BY ModuleID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}ModulePermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
+
+
+-- Module Permissions
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]
+ WHERE IsNull(UserID, -1) = -1
+   AND TabPermissionID NOT IN(SELECT Min(TabPermissionID) 
+								  FROM  {databaseOwner}[{objectQualifier}TabPermission]
+								  WHERE IsNull(UserID, -1) = -1
+								  GROUP BY TabID, PermissionID, RoleID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]
+ SET   UserID = Null
+ WHERE UserID = -1;
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}TabPermission]
+ WHERE UserID Is Not Null
+   AND TabPermissionID NOT IN (SELECT Min(TabPermissionID) 
+								  FROM {databaseOwner}[{objectQualifier}TabPermission]
+                                  WHERE UserID Is Not Null 
+								  GROUP BY TabID, PermissionID, UserID);
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}TabPermission]
+ SET   RoleID = Null
+ WHERE UserID IS Not Null
+   AND RoleID Is Not Null;
+GO
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}DesktopModulePermission_Roles ON {databaseOwner}[{objectQualifier}DesktopModulePermission]
+	(RoleID, PortalDesktopModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on FolderPermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}FolderPermission] DROP CONSTRAINT [IX_{objectQualifier}FolderPermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Folders' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Folders] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Folders ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(FolderID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Users' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Users] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Users ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(UserID, FolderID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}FolderPermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}FolderPermission'))
+	DROP INDEX [IX_{objectQualifier}FolderPermission_Roles] ON {databaseOwner}[{objectQualifier}FolderPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}FolderPermission_Roles ON {databaseOwner}[{objectQualifier}FolderPermission]
+	(RoleID, FolderID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on ModulePermission table:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT [IX_{objectQualifier}ModulePermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Modules' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Modules] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Modules ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(ModuleID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Users' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Users] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Users ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(UserID, ModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Roles] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(RoleID, ModuleID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+
+-- Optimize Indexes on TabPermission table: remove redundant index on tabPermission table, optimize indexes
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}TabPermission] DROP CONSTRAINT [IX_{objectQualifier}TabPermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Tabs' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Tabs] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Tabs ON {databaseOwner}[{objectQualifier}TabPermission]
+	(TabID, PermissionID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Users' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Users] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Users ON {databaseOwner}[{objectQualifier}TabPermission]
+	(UserID, TabID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabPermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}TabPermission'))
+	DROP INDEX [IX_{objectQualifier}TabPermission_Roles] ON {databaseOwner}[{objectQualifier}TabPermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}TabPermission_Roles ON {databaseOwner}[{objectQualifier}TabPermission]
+	(RoleID, TabID, PermissionID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
+
+-- DNN-4319: Optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByTabID]
+    @TabId Int -- Not Null!
+AS
+    SELECT MP.*
+    FROM        {databaseOwner}[{objectQualifier}Tabs]                 AS T
+    INNER JOIN  {databaseOwner}[{objectQualifier}TabModules]           AS TM ON TM.TabID    = T.TabID
+    INNER JOIN  {databaseOwner}[{objectQualifier}vw_ModulePermissions] AS MP ON TM.ModuleID = MP.ModuleID AND T.PortalID = MP.PortalID
+    WHERE T.TabID = @TabId
+GO
+
+-- DNN-4318: view does contain all necessary columns
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByPortal]
+    @PortalId Int -- Not Null!
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+    WHERE PortalID = @PortalID
+GO
+
+-- DNN-4317: optimize for performance
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetModulePermissionsByModuleID]
+    @ModuleId       Int,   -- Null|-1 for all modules
+    @PermissionId   Int    -- Null|-1 for all permissions
+AS
+BEGIN
+	IF (IsNull(@ModuleId, -1) = -1) -- separate branches with individual query optimization
+		SELECT *
+		  FROM {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+		 WHERE (PermissionID = @PermissionId OR IsNull(@PermissionId, -1) = -1)
+	 ELSE
+		SELECT *
+		FROM {databaseOwner}[{objectQualifier}vw_ModulePermissions]
+		WHERE ((ModuleID = @ModuleId) OR (ModuleID IS NULL AND PermissionCode = 'SYSTEM_MODULE_DEFINITION'))
+		AND (PermissionID = @PermissionId OR IsNull(@PermissionId, -1) = -1)
+END
+GO
+
+-- DNN-4315: optimized to use a subquery
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByUserID]
+    @PortalId Int,  -- Null|-1 for Host menu tabs
+    @UserId   Int   -- Not Null
+AS
+    DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+    WHERE UserID = @UserId
+     AND FolderID IN (SELECT FolderID FROM {databaseOwner}[{objectQualifier}Folders] 
+	                  WHERE (PortalID = @PortalId Or IsNull(@PortalId, -1) = IsNull(PortalID, -1)))
+GO
+
+-- DNN-4314: optimized to use a single statement
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteFolderPermissionsByFolderPath]
+    @PortalId   Int,            -- Null for Host menu tabs
+    @FolderPath nVarChar(300)   -- must be a valid path
+AS
+BEGIN
+    DELETE FROM {databaseOwner}[{objectQualifier}FolderPermission]
+    WHERE FolderID IN (SELECT FolderID FROM {databaseOwner}[{objectQualifier}Folders]
+                                       WHERE FolderPath = @FolderPath AND (IsNull(PortalID, -1) = IsNull(@PortalId, -1)))
+END
+GO
+
+-- DNN-4622:
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogConfigID' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+    DROP INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogConfigID] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogConfigID], [LogNotificationPending], [LogCreateDate])
+	INCLUDE ([LogEventID])
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogCreateDate' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+	DROP INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogCreateDate] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogCreateDate])
+	INCLUDE ([LogConfigID])
+GO
+
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}EventLog_LogType' AND object_id = OBJECT_ID('{objectQualifier}EventLog'))
+	DROP INDEX [IX_{objectQualifier}EventLog_LogType] ON {databaseOwner}[{objectQualifier}EventLog] 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}EventLog_LogType] ON {databaseOwner}[{objectQualifier}EventLog] 
+	([LogTypeKey], [LogPortalID])
+GO
+
+--Add stored procedure to update subscription descriptions
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_UpdateSubscriptionDescription]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_UpdateSubscriptionDescription
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_UpdateSubscriptionDescription]
+	@ObjectKey NVARCHAR(255), 
+    @PortalId INT,
+    @Description NVARCHAR(255)	
+AS 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}CoreMessaging_Subscriptions
+		SET [Description] = @Description
+		WHERE PortalId = @PortalId 
+		AND ObjectKey LIKE @ObjectKey		
+		SELECT @@ROWCOUNT AS [ResultStatus]      
+	END
+GO
+
+-- DNN-4316
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFolderPermissionsByPortal]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortal]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFolderPermissionsByPortal]
+    @PortalId Int   -- Null|-1 for Host menu tabs
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}vw_FolderPermissions]
+    WHERE IsNull(PortalID, -1) = IsNull(@PortalId, -1)
+GO	
+
+-- DNN-4313
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddDesktopModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddDesktopModulePermission]
+    @PortalDesktopModuleID Int, -- not null!
+    @PermissionId          Int, -- not null!
+    @RoleId                Int, -- might be negative for virtual roles
+    @AllowAccess           Bit, -- false: deny, true: grant
+    @UserId                Int, -- -1 is replaced by Null
+    @CreatedByUserId       Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}DesktopModulePermission] (
+        [PortalDesktopModuleID],
+        [PermissionID],
+        [RoleID],
+        [AllowAccess],
+        [UserID],
+        [CreatedByUserID],
+        [CreatedOnDate],
+        [LastModifiedByUserID],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @PortalDesktopModuleID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddFolderPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddFolderPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddFolderPermission]
+    @FolderID           Int, -- not Null!
+    @PermissionId       Int, -- not Null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}FolderPermission] (
+        [FolderID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @FolderID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModulePermission]
+    @ModuleID           Int, -- not null!
+    @PortalID           Int, -- not null!
+    @PermissionId       Int, -- not null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}ModulePermission] (
+        [ModuleID],
+        [PortalID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @ModuleID,
+        @PortalID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddTabPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddTabPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabPermission]
+    @TabID              Int, -- not null!
+    @PermissionId       Int, -- not null!
+    @RoleId             Int, -- might be negative for virtual roles
+    @AllowAccess        Bit, -- false: deny, true: grant
+    @UserId             Int, -- -1 is replaced by Null
+    @CreatedByUserId    Int  -- -1 is replaced by Null
+AS
+BEGIN
+    INSERT INTO {databaseOwner}[{objectQualifier}TabPermission] (
+        [TabID],
+        [PermissionID],
+        [RoleId],
+        [AllowAccess],
+        [UserId],
+        [CreatedByUserId],
+        [CreatedOnDate],
+        [LastModifiedByUserId],
+        [LastModifiedOnDate]
+    ) VALUES (
+        @TabID,
+        @PermissionID,
+        @RoleId,
+        @AllowAccess,
+        CASE WHEN @UserId = -1 THEN Null ELSE @UserId END,
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate(),
+        CASE WHEN @CreatedByUserID = -1 THEN Null ELSE @CreatedByUserID END,
+        GetDate()
+    )
+    SELECT SCOPE_IDENTITY()
+END
+GO
+
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateDesktopModulePermission]
+    @DesktopModulePermissionId Int, -- not null!
+    @PortalDesktopModuleId     Int, -- not null!
+    @PermissionId              Int, -- not null!
+    @RoleId                    Int, -- might be negative for virtual roles
+    @AllowAccess               Bit, -- false: deny, true: grant
+    @UserId                    Int, -- -1 is replaced by Null
+    @LastModifiedByUserId      Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}DesktopModulePermission]
+    SET
+        [PortalDesktopModuleId] = @PortalDesktopModuleId,
+        [PermissionId]          = @PermissionId,
+        [RoleId]                = @RoleId,
+        [AllowAccess]           = @AllowAccess,
+        [UserId]                = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId]  = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]    = GetDate()
+    WHERE [DesktopModulePermissionId] = @DesktopModulePermissionId
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateFolderPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateFolderPermission]
+    @FolderPermissionID     Int, -- not null!
+    @FolderID               Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}FolderPermission] SET
+        [FolderID]             = @FolderID,
+        [PermissionID]         = @PermissionID,
+        [RoleId]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserId]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [FolderPermissionID]   = @FolderPermissionID
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateModulePermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModulePermission]
+    @ModulePermissionId     Int, -- not null!
+    @PortalId               Int, -- not null!
+    @ModuleId               Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}ModulePermission] SET
+        [ModuleId]             = @ModuleId,
+        [PortalId]             = @PortalId,
+        [PermissionId]         = @PermissionId,
+        [RoleId]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserId]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [ModulePermissionID]   = @ModulePermissionID
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateTabPermission]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabPermission]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabPermission]
+    @TabPermissionId        Int, -- not null!
+    @TabId                  Int, -- not null!
+    @PermissionId           Int, -- not null!
+    @RoleId                 Int, -- might be negative for virtual roles
+    @AllowAccess            Bit, -- false: deny, true: grant
+    @UserId                 Int, -- -1 is replaced by Null
+    @LastModifiedByUserId   Int  -- -1 is replaced by Null
+AS
+    UPDATE {databaseOwner}[{objectQualifier}TabPermission] SET
+        [TabID]                = @TabId,
+        [PermissionID]         = @PermissionId,
+        [RoleID]               = @RoleId,
+        [AllowAccess]          = @AllowAccess,
+        [UserID]               = CASE WHEN @UserId = -1 THEN Null ELSE @UserId  END,
+        [LastModifiedByUserId] = CASE WHEN @LastModifiedByUserId = -1 THEN Null ELSE @LastModifiedByUserId  END,
+        [LastModifiedOnDate]   = GetDate()
+    WHERE
+        [TabPermissionID]      = @TabPermissionId
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] ALTER COLUMN Header nVarChar(Max)
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] ALTER COLUMN Footer nVarChar(Max)
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabModules] DROP CONSTRAINT [IX_{objectQualifier}TabModules] 
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_TabID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_TabID] ON {databaseOwner}[{objectQualifier}TabModules]
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleID' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules]
+
+	IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}TabModules_ModuleOrder' AND object_id = OBJECT_ID('{objectQualifier}TabModules'))
+	DROP INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules]
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_TabID] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([TabID], [ModuleID])
+	INCLUDE ([IsDeleted], CultureCode, ModuleTitle)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([ModuleID], [TabID])
+	INCLUDE ([IsDeleted], CultureCode, ModuleTitle)
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules] 
+	([TabID], [PaneName], [ModuleOrder])
+	INCLUDE ([TabModuleID], [ModuleID], [CacheTime], [Alignment], [Color], [Border], [IconFile], [Visibility], [ContainerSrc], 
+	         [DisplayTitle], [DisplayPrint], [DisplaySyndicate], [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL],
+			 [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IsDeleted], [CacheMethod], [ModuleTitle],
+			 [Header], [Footer], [CultureCode], [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid]
+)
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModules]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModules]
+	@TabId int -- not null!
+AS
+BEGIN
+	SELECT	* 
+	FROM {databaseOwner}{objectQualifier}vw_TabModules
+	WHERE  TabId = @TabId
+	ORDER BY TabId, PaneName, ModuleOrder -- optimized for index used
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabModuleOrder]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleOrder]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabModuleOrder]
+	@TabId    int, 			-- Not Null
+	@PaneName nvarchar(50)  -- Not Null
+AS
+BEGIN
+	SELECT *
+	FROM {objectQualifier}TabModules 
+	WHERE TabId    = @TabId 
+	  AND PaneName = @PaneName
+	ORDER BY TabId, PaneName, ModuleOrder -- optimized for index used
+END
+GO
+
+-- DNN-4310
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Lists'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_Lists]
+GO	
+-- optimized
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Lists]
+AS
+	SELECT  L.EntryID, 
+		L.ListName, 
+		L.[Value], 
+		L.Text, 
+		L.[Level], 
+		L.SortOrder, 
+		L.DefinitionID, 
+		L.ParentID, 
+		L.Description, 
+		L.PortalID, 
+		L.SystemList, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) AS ParentKey, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'Parent',     0) AS Parent, 
+		{databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentList', 0) AS ParentList,
+		S.MaxSortOrder,
+		S.EntryCount,
+		CASE WHEN EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}Lists] WHERE (ParentID = L.EntryID)) THEN 1 ELSE 0 END AS HasChildren, 
+		L.CreatedByUserID, 
+		L.CreatedOnDate, 
+		L.LastModifiedByUserID, 
+		L.LastModifiedOnDate
+	FROM {databaseOwner}[{objectQualifier}Lists] AS L
+	LEFT JOIN (SELECT ListName, ParentID, Max(SortOrder) AS MaxSortOrder, Count(1) AS EntryCount 
+			   FROM {databaseOwner}[{objectQualifier}Lists] GROUP BY ListName, ParentID) S 		ON L.ParentID = S.ParentId AND L.ListName = S.ListName
+GO
+
+-- CONTENT-2224
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			FO.FolderPath AS 'Folder',
+			FO.StorageLocation,
+			FO.IsCached,
+			FO.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F
+			INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			FO.FolderPath AS 'Folder',
+			FO.StorageLocation,
+			FO.IsCached,
+			FO.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F
+			INNER JOIN {databaseOwner}[{objectQualifier}Folders] FO ON F.FolderID = FO.FolderID
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
+
+--DNN-4701
+ 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}vw_CoreMessaging_Messages') and OBJECTPROPERTY(id, N'IsView') = 1)
+	DROP VIEW {databaseOwner}{objectQualifier}vw_CoreMessaging_Messages
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_CoreMessaging_Messages]
+AS
+	SELECT
+		M.MessageID, 
+		M.PortalID, 
+		M.NotificationTypeID, 
+		M.[To], 
+		M.[From],
+		M.Subject,
+		M.Body,
+		M.ConversationID, 
+		M.ReplyAllAllowed, 
+		M.SenderUserID,
+		M.ExpirationDate, 
+        M.Context, 
+		M.IncludeDismissAction,
+		M.CreatedByUserID, 
+		M.CreatedOnDate, 
+		M.LastModifiedByUserID, 
+		M.LastModifiedOnDate, 
+		MR.RecipientID,
+		MR.UserID, 
+        MR.[Read], 
+		MR.Archived, 
+		MR.EmailSent, 
+		MR.EmailSentDate, 
+		MR.EmailSchedulerInstance
+	FROM       {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR
+	INNER JOIN {databaseOwner}[{objectQualifier}CoreMessaging_Messages]          M ON mr.MessageID = m.MessageID
+GO
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CheckReplyHasRecipients]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_CheckReplyHasRecipients
+	@ConversationId Int, -- Not Null
+	@UserId 		Int  -- Not Null
+AS 
+BEGIN
+	SELECT COUNT(M.UserID)
+	FROM       {databaseOwner}{objectQualifier}vw_CoreMessaging_Messages AS M
+	INNER JOIN {databaseOwner}{objectQualifier}vw_Users AS U ON M.UserID = U.UserID AND M.PortalID = IsNull(U.PortalID, M.PortalID)
+	WHERE (M.MessageID = @ConversationId) 
+	  AND (M.UserID   <> @UserId) 
+	  AND (U.IsDeleted = 0)
+END
+GO
+
+IF EXISTS (SELECT * FROM Sys.Views WHERE (name = N'{objectQualifier}vw_Users'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Users]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Users]
+AS
+	SELECT  U.UserId,
+        UP.PortalId,
+        U.Username,
+        U.FirstName,
+        U.LastName,
+        U.DisplayName,
+        U.IsSuperUser,
+        U.Email,
+        UP.VanityUrl,
+        U.AffiliateId,
+        IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
+        UP.RefreshRoles,
+        U.LastIPAddress,
+        U.UpdatePassword,
+        U.PasswordResetToken,
+        U.PasswordResetExpiration,
+        UP.Authorised,
+        U.CreatedByUserId,
+        U.CreatedOnDate,
+        U.LastModifiedByUserId,
+        U.LastModifiedOnDate
+	FROM       {databaseOwner}[{objectQualifier}Users]       AS U
+		LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] AS UP 
+			ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
+GO
+
+--DNN-4518
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetCurrencies]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetCurrencies
+GO
+
+--DNN-4539
+
+-- Rename and optimize Index (updates solution from DNN-4296 as well)
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_1')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_2')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]') AND name = N'IX_{objectQualifier}IX_Tabs_PortalID_ParentID')
+	DROP INDEX [IX_{objectQualifier}IX_Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_1' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_1] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_2' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ParentId_IsDeleted' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ParentId_IsDeleted_2' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted_2] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_IX_{objectQualifier}Tabs_PortalID_ParentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_IX_{objectQualifier}Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_PortalID_ParentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_PortalID_ParentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_ContentID' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_ContentID] ON {databaseOwner}[{objectQualifier}Tabs]
+GO
+                                                   
+                                                   
+IF EXISTS(SELECT * FROM sys.indexes WHERE name='IX_{objectQualifier}Tabs_PortalLevelParentOrder' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Tabs]'))
+	DROP INDEX [IX_{objectQualifier}Tabs_PortalLevelParentOrder] ON {databaseOwner}[{objectQualifier}Tabs] 
+GO
+
+-- should be unique, but - who knows 
+-- Note: this index need to be adopted, when columns of tabs table are added or renamed
+-- Remark: an alternative would be clustering the table by this index, however, there are a number of 3rd party modules which placed an FK on TabID
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_PortalLevelParentOrder] ON {databaseOwner}[{objectQualifier}Tabs] 
+	([PortalID], [Level], [ParentId], [TabOrder], [IsDeleted])
+	INCLUDE ([TabID], [TabName], [IsVisible], [IconFile], [DisableLink], [Title], [Description], [KeyWords], [Url], [SkinSrc],
+			 [ContainerSrc], [StartDate], [EndDate], [RefreshInterval], [PageHeadText], [IsSecure], [PermanentRedirect], [SiteMapPriority],
+			 [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate], [IconFileLarge], [CultureCode], [ContentItemID],
+			 [UniqueId], [VersionGuid], [DefaultLanguageGuid], [LocalizedVersionGuid], [TabPath])
+GO
+
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}Tabs_ContentID ON {databaseOwner}[{objectQualifier}Tabs] 
+	(ContentItemID ASC)
+	INCLUDE (TabId, TabName, Title, IsVisible, IsDeleted, [UniqueID], CultureCode)
+	WHERE ContentItemId Is NOT Null
+GO
+
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Tabs_ParentId_IsDeleted] ON {databaseOwner}[{objectQualifier}Tabs] 
+   ([ParentId], [IsDeleted])
+   INCLUDE ([CreatedOnDate])
+GO
+
+
+-- DNN-4338: optimized
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteTab]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteTab]
+    @TabId Int  -- ID of tab to delete; Not Null and > 0
+AS
+BEGIN
+    DECLARE @TabOrder Int
+    DECLARE @ParentId Int
+    DECLARE @ContentItemId Int
+    SELECT @TabOrder = TabOrder, @ParentId = ParentID, @ContentItemID = ContentItemID FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId
+
+    -- Delete Tab --
+    DELETE FROM {databaseOwner}[{objectQualifier}Tabs] WHERE  TabID = @TabId
+
+    -- Update TabOrder of remaining Tabs --
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET TabOrder = TabOrder - 2
+        WHERE IsNull(ParentID, -1) = IsNull(@ParentId , -1) AND TabOrder > @TabOrder
+
+    -- Delete Content Item --
+    DELETE FROM {databaseOwner}[{objectQualifier}ContentItems] WHERE ContentItemID = @ContentItemId
+END
+GO
+
+
+-- DNN-4343: optimized by simplification, due to FK constraint and parent tabs are tabs as well
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetCustomAliasesForTabs]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetCustomAliasesForTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetCustomAliasesForTabs] 
+AS
+	SELECT HttpAlias
+	FROM  {databaseOwner}[{objectQualifier}PortalAlias] pa 
+	WHERE PortalAliasId IN (SELECT PortalAliasId FROM {databaseOwner}[{objectQualifier}TabUrls])
+	ORDER BY HttpAlias
+GO
+
+
+-- optimized
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabs]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabs]
+	@PortalID Int  -- Null|-1 for host pages
+AS
+	SELECT *
+	FROM   {databaseOwner}[{objectQualifier}vw_Tabs]
+	WHERE  IsNull(PortalId, -1) = IsNull(@PortalID, -1)
+	ORDER BY PortalId, [Level], ParentID, TabOrder -- PortalId added for query optimization
+GO
+
+
+-- optimized
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetTabsByModuleID]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByModuleID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByModuleID]
+	@ModuleID Int -- NOT Null
+AS
+BEGIN
+	SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs] T
+	WHERE IsDeleted = 0
+	  AND TabID IN (SELECT TabID FROM {databaseOwner}[{objectQualifier}TabModules]
+					WHERE ModuleID = @ModuleID AND IsDeleted = 0)
+	ORDER BY PortalId, Level, ParentID, TabOrder -- PortalId added for query optimization
+END
+GO
+
+
+-- DNN-4342: optimized code
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetTabsByPackageID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetTabsByPackageID]
+    @PortalId  Int, -- Null for Host menu items
+    @PackageId Int, -- Not Null!
+    @ForHost   Bit  -- 0: Get pages for a specific portal (or host pages only)
+                    -- 1: Get all host pages and portal pages
+AS
+BEGIN
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Tabs]
+     WHERE (IsNull(PortalId, -1) = IsNull(@PortalId, -1) Or @ForHost = 1)
+       AND IsDeleted = 0
+       AND TabId IN (SELECT TabId FROM {databaseOwner}[{objectQualifier}vw_Modules] M
+                      INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] DM ON M.DesktopModuleID = DM.DesktopModuleID
+                      WHERE DM.PackageID = @PackageId AND M.IsDeleted = 0)
+    ORDER BY PortalID, TabName
+	OPTION (OPTIMIZE FOR (@PortalId UNKNOWN, @PackageId UNKNOWN, @ForHost UNKNOWN));
+END
+GO
+
+--DNN-21164
+ 
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserProfile]') AND name = N'IX_{objectQualifier}UserProfile_Visibility')
+	DROP INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}UserProfile_Visibility] ON {databaseOwner}[{objectQualifier}UserProfile]
+	([UserID] ASC,[ProfileID] ASC)
+ INCLUDE ( [PropertyDefinitionID],[PropertyValue],[PropertyText],[Visibility],[LastUpdatedDate],[ExtendedVisibility])
+GO
+
+--DNN-4804 - force upgrade of iconbar (deprecated April 2010)
+UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue='Admin/ControlPanel/ControlBar.ascx' WHERE SettingName='ControlPanel' AND SettingValue='Admin/ControlPanel/IconBar.ascx'
+GO
+
+--DNN-3185: IX_ModuleDefinitions maybe a constraint or index in 6.x or 7.x, so we need handle both type and remove it, then create new on on DefinitionName column.
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 1)
+    ALTER TABLE {databaseOwner}{objectQualifier}ModuleDefinitions DROP CONSTRAINT IX_{objectQualifier}ModuleDefinitions
+GO
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ModuleDefinitions]') AND name = N'IX_{objectQualifier}ModuleDefinitions' AND is_unique_constraint = 0)
+    DROP INDEX [IX_{objectQualifier}ModuleDefinitions] ON {databaseOwner}[{objectQualifier}ModuleDefinitions]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModuleDefinitions ON {databaseOwner}[{objectQualifier}ModuleDefinitions](DefinitionName)
+GO
+
+ /***** Fix bug DNN-4770: update default skin packages as normal package to allow delete it. *****/
+ UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Gravity" type="Skin" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Gravity</skinName><basePath>Portals\_default\Skins\Gravity</basePath></skinFiles></component></components></package>'
+    WHERE FriendlyName  = 'Gravity' AND PackageType = 'Skin'
+GO
+
+ UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Gravity" type="Container" version="07.00.00"><friendlyName>Gravity</friendlyName><description>Gravity</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Gravity</containerName><basePath>Portals\_default\Containers\Gravity</basePath></containerFiles></component></components></package>'
+    WHERE FriendlyName  = 'Gravity' AND PackageType = 'Container'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Facebook" type="Skin" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Facebook</skinName><basePath>Portals\_default\Skins\Facebook</basePath></skinFiles></component></components></package>'
+    WHERE FriendlyName  = 'Facebook' AND PackageType = 'Skin'
+GO
+
+ UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Facebook" type="Container" version="07.00.00"><friendlyName>Facebook</friendlyName><description>Facebook</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Facebook</containerName><basePath>Portals\_default\Containers\Facebook</basePath></containerFiles></component></components></package>'
+    WHERE FriendlyName  = 'Facebook' AND PackageType = 'Container'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Aphelia" type="Skin" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>Aphelia</skinName><basePath>Portals\_default\Skins\Aphelia</basePath></skinFiles></component></components></package>'
+    WHERE FriendlyName  = 'Aphelia' AND PackageType = 'Skin'
+GO
+
+ UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="Aphelia" type="Container" version="07.00.00"><friendlyName>Aphelia</friendlyName><description>Aphelia</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>Aphelia</containerName><basePath>Portals\_default\Containers\Aphelia</basePath></containerFiles></component></components></package>'
+    WHERE FriendlyName  = 'Aphelia' AND PackageType = 'Container'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="DarkKnightMobile" type="Skin" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Skin"><skinFiles><skinName>DarkKnightMobile</skinName><basePath>Portals\_default\Skins\DarkKnightMobile</basePath></skinFiles></component></components></package>'
+    WHERE FriendlyName  = 'DarkKnightMobile' AND PackageType = 'Skin'
+GO
+
+ UPDATE {databaseOwner}{objectQualifier}Packages SET 
+    IsSystemPackage = 0,
+    Manifest = '<package name="DarkKnightMobile" type="Container" version="07.00.00"><friendlyName>DarkKnightMobile</friendlyName><description>DarkKnightMobile</description><owner><name>DotNetNuke</name><organization>DotNetNuke Corporation</organization><url>www.dotnetnuke.com</url><email>support@dotnetnuke.com</email></owner><components><component type="Container"><containerFiles><containerName>DarkKnightMobile</containerName><basePath>Portals\_default\Containers\DarkKnightMobile</basePath></containerFiles></component></components></package>'
+    WHERE FriendlyName  = 'DarkKnightMobile' AND PackageType = 'Container'
+GO
+
+/* Fix bug DNN-4147: Add Custom404TabId, Custom500TabId to PortalLocalization Table */
+/*************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLocalization' AND COLUMN_NAME='Custom404TabId')
+	BEGIN
+		-- Add new SearchTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
+			ADD Custom404TabId int NULL
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}PortalLocalization' AND COLUMN_NAME='Custom500TabId')
+	BEGIN
+		-- Add new SearchTabId Column
+		ALTER TABLE {databaseOwner}{objectQualifier}PortalLocalization
+			ADD Custom500TabId int NULL
+	END
+GO
+
+--update the value from portal settings to portal localization table
+UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom404TabId = SettingValue
+    FROM {databaseOwner}{objectQualifier}PortalLocalization pl
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage404'
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage404'
+GO
+
+UPDATE {databaseOwner}{objectQualifier}PortalLocalization SET Custom500TabId = SettingValue
+    FROM {databaseOwner}{objectQualifier}PortalLocalization pl
+    INNER JOIN {databaseOwner}{objectQualifier}PortalSettings ps ON ps.PortalID = pl.PortalID AND ps.SettingName = 'AUM_ErrorPage500'
+GO
+
+DELETE FROM {databaseOwner}{objectQualifier}PortalSettings WHERE SettingName = 'AUM_ErrorPage500'
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_Portals]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+        {databaseOwner}{objectQualifier}FilePath(PL.LogoFile) AS LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+        {databaseOwner}{objectQualifier}FilePath(PL.BackgroundFile) AS BackgroundFile,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+        PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        PL.Custom404TabId,
+        PL.Custom500TabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}{objectQualifier}Portals            AS P
+    INNER JOIN {databaseOwner}{objectQualifier}PortalLocalization AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}{objectQualifier}Users              AS U  ON P.AdministratorId = U.UserID
+GO
+
+IF EXISTS (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PortalsDefaultLanguage]
+AS
+    SELECT * FROM {databaseOwner}[{objectQualifier}vw_Portals] WHERE CultureCode = DefaultLanguage
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdatePortalInfo]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdatePortalInfo]
+	@PortalID				INT,
+	@PortalGroupID			INT,
+	@PortalName				NVARCHAR(128),
+	@LogoFile				NVARCHAR(50),
+	@FooterText				NVARCHAR(100),
+	@ExpiryDate				DATETIME,
+	@UserRegistration		INT,
+	@BannerAdvertising		INT,
+	@Currency				CHAR(3),
+	@AdministratorId		INT,
+	@HostFee				MONEY,
+	@HostSpace				INT,
+	@PageQuota				INT,
+	@UserQuota				INT,
+	@PaymentProcessor		NVARCHAR(50),
+	@ProcessorUserId		NVARCHAR(50),
+	@ProcessorPassword		NVARCHAR(50),
+	@Description			NVARCHAR(500),
+	@KeyWords				NVARCHAR(500),
+	@BackgroundFile			NVARCHAR(50),
+	@SiteLogHistory			INT,
+	@SplashTabId			INT,
+	@HomeTabId				INT,
+	@LoginTabId				INT,
+	@RegisterTabId			INT,
+	@UserTabId				INT,
+	@SearchTabId			INT,
+    @Custom404TabId			INT,
+    @Custom500TabId			INT,
+	@DefaultLanguage		NVARCHAR(10),
+	@HomeDirectory			VARCHAR(100),
+	@LastModifiedByUserID	INT,
+	@CultureCode			NVARCHAR(50)
+
+AS
+
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+		   PortalGroupID		= @PortalGroupID,
+		   ExpiryDate			= @ExpiryDate,
+		   UserRegistration		= @UserRegistration,
+		   BannerAdvertising	= @BannerAdvertising,
+		   Currency				= @Currency,
+		   AdministratorId		= @AdministratorId,
+		   HostFee				= @HostFee,
+		   HostSpace			= @HostSpace,
+		   PageQuota			= @PageQuota,
+		   UserQuota			= @UserQuota,
+		   PaymentProcessor		= @PaymentProcessor,
+		   ProcessorUserId		= @ProcessorUserId,
+		   ProcessorPassword	= @ProcessorPassword,
+		   SiteLogHistory		= @SiteLogHistory,
+		   DefaultLanguage		= @DefaultLanguage,
+		   HomeDirectory		= @HomeDirectory,
+		   LastModifiedByUserID = @LastModifiedByUserID,
+		   LastModifiedOnDate	= GETDATE()
+	WHERE  PortalId = @PortalID
+
+    IF EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}PortalLocalization WHERE PortalId = @PortalID AND CultureCode = @CultureCode)
+	BEGIN 
+		UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+			SET
+				PortalName				= @PortalName,
+				LogoFile				= @LogoFile,
+				FooterText				= @FooterText,
+				Description				= @Description,
+				KeyWords				= @KeyWords,
+				BackgroundFile			= @BackgroundFile,
+				HomeTabId				= @HomeTabId,
+				LoginTabId				= @LoginTabId,
+				RegisterTabId			= @RegisterTabId,
+				UserTabId				= @UserTabId,
+				SplashTabId				= @SplashTabId,
+				SearchTabId				= @SearchTabId,
+                Custom404TabId			= @Custom404TabId,
+                Custom500TabId			= @Custom500TabId,
+				LastModifiedByUserID	= @LastModifiedByUserID,
+				LastModifiedOnDate		= GETDATE()
+		WHERE	PortalId = @PortalID 
+			AND CultureCode = @CultureCode
+	END 
+ELSE
+	BEGIN 
+		DECLARE @AdminTabId int
+		SET @AdminTabId = (SELECT AdminTabId 
+								FROM {databaseOwner}{objectQualifier}PortalLocalization 
+								WHERE PortalID = @PortalID AND CultureCode='en-US')
+
+		INSERT INTO {databaseOwner}{objectQualifier}PortalLocalization (
+			[PortalID],
+			[CultureCode],
+			[PortalName],
+			[LogoFile],
+			[FooterText],
+			[Description],
+			[KeyWords],
+			[BackgroundFile],
+			[HomeTabId],
+			[LoginTabId],
+			[UserTabId],
+			[AdminTabId],
+			[SplashTabId],
+			[SearchTabId],
+            [Custom404TabId],
+            [Custom500TabId],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		)
+		VALUES (
+			@PortalID,
+			@CultureCode,
+			@PortalName,
+			@LogoFile, 
+			@FooterText,
+			@Description,
+			@KeyWords,
+			@BackgroundFile,
+			@HomeTabId ,
+			@LoginTabId ,
+			@UserTabId,
+			@AdminTabid,
+			@SplashTabId,
+			@SearchTabId,
+            @Custom404TabId,
+            @Custom500TabId,
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+		)
+	END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdatePortalSetup]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdatePortalSetup
+	@PortalId				INT,
+	@AdministratorId		INT,
+	@AdministratorRoleId	INT,
+	@RegisteredRoleId		INT,
+	@SplashTabId			INT,
+	@HomeTabId				INT,
+	@LoginTabId				INT,
+	@RegisterTabId			INT,
+	@UserTabId				INT,
+	@SearchTabId            INT,
+    @Custom404TabId         INT,
+    @Custom500TabId         INT,
+	@AdminTabId				INT,
+	@CultureCode			NVARCHAR(50)
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}Portals
+		SET    
+			AdministratorId = @AdministratorId, 
+			AdministratorRoleId = @AdministratorRoleId, 
+			RegisteredRoleId = @RegisteredRoleId
+	WHERE  PortalId = @PortalId
+
+	UPDATE {databaseOwner}{objectQualifier}PortalLocalization
+		SET 
+			HomeTabId = @HomeTabId,
+			LoginTabId = @LoginTabId,
+			UserTabId = @UserTabId,
+			RegisterTabId = @RegisterTabId,
+			AdminTabId = @AdminTabId,
+			SplashTabId = @SplashTabId,
+			SearchTabId = @SearchTabId,
+            Custom404TabId = @Custom404TabId,
+            Custom500TabId = @Custom500TabId
+      WHERE portalID = @PortalID
+GO
+
+--DNN-4745
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetRolesByUser]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetRolesByUser]
+GO
+
+/* Fix bug DNN-4845: the CommentXml column may update as an empty string but not null, need check whether root element exists. */
+/****************************************************************/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}Journal_Comment_Like]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+GO
+	CREATE PROCEDURE {databaseOwner}{objectQualifier}Journal_Comment_Like
+		@JournalId int,
+		@CommentId int,
+		@UserId int,
+		@UserName nvarchar(50)
+	AS
+	DECLARE @cxml xml
+	SET @cxml = (SELECT CommentXML FROM {databaseOwner}{objectQualifier}Journal_Comments WHERE CommentId = @CommentId AND JournalId = @JournalId)
+	IF @cxml IS NULL OR @cxml.exist('/root') = 0
+		BEGIN
+		DECLARE @x xml
+			SET @x = '<root></root>';
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML = @x
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+		END
+	IF EXISTS(SELECT CommentId
+				FROM {databaseOwner}{objectQualifier}Journal_Comments
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@userid")]') = 1)
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('delete (/root/likes/u[@uid=sql:variable("@UserId")])')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId
+				AND CommentXML.exist('/root/likes/u[@uid=sql:variable("@UserId")]') = 1
+		END
+	ELSE
+		BEGIN
+			BEGIN
+				IF NOT EXISTS(SELECT CommentId FROM {databaseOwner}{objectQualifier}Journal_Comments
+								WHERE JournalId = @JournalId AND CommentId = @CommentID
+								AND CommentXML.exist('/root/likes') = 1)
+					BEGIN
+						UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+						SET CommentXML.modify('insert <likes /> as last into (/root)[1]') 
+						WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root') = 1
+					END
+			END
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}Journal_Comments
+				SET CommentXML.modify('insert <u uid="{xs:string(sql:variable("@UserId"))}" un="{xs:string(sql:variable("@UserName"))}" /> as last into (/root/likes)[1]')
+				WHERE JournalId = @JournalId AND CommentId = @CommentId AND CommentXML.exist('/root/likes') = 1
+			END
+		END
+GO
+
+/******* Fix bug DNN-3355 - Old Search tables not cleared and deleted on Upgrades *******/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddSearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddSearchItemWordPosition]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddSearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddSearchWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchItems]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchItems]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchItemWords]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchItemWords]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteSearchItemWordPosition]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteSearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItems]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItems]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItemWordPosition]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItemWordBySearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWordBySearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItemWordBySearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWordBySearchWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItemWordPositionBySearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItemWordPositionBySearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchResults]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchResults]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchResultsByWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchResultsByWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchWordByID]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchWordByID]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetSearchWords]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSearchWords]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateSearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateSearchItemWordPosition]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateSearchWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateSearchWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ListSearchItem]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ListSearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ListSearchItemWord]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ListSearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ListSearchItemWordPosition]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}ListSearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_SearchItems]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_SearchItems]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchItemWordPosition]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}SearchItemWordPosition]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchItemWord]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}SearchItemWord]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchItem]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}SearchItem]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchWord]') AND type in (N'U'))
+	DROP TABLE {databaseOwner}[{objectQualifier}SearchWord]
+GO
+
+/*****  DNN-4862: when user doesn't have profile, return default visibility mode and user's update date. *****/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]') AND type in (N'P', N'PC'))
+        DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
+    @PortalId INT ,
+    @StartDate DATETIME ,
+        @startUserId INT = 0,
+    @numberOfUsers INT = 500
+AS 
+    BEGIN
+        WITH    ValidDataType
+                  AS ( SELECT   EntryID
+                       FROM     {databaseOwner}[{objectQualifier}Lists]
+                       WHERE    ListName = 'DataType'
+                                AND SystemList = 1
+                                AND Value IN ( 'Text', 'RichText' )
+                     ),
+                  ValidUsers AS 
+                  (
+                                      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
+                                  FROM      {databaseOwner}[{objectQualifier}Users] u
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                                            LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                                            LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                                  WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
+                                            AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
+                                            AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+                                                SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+                                                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+                                                WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+                                         )
+
+
+            SELECT  DISTINCT u.UserID ,
+                                        u.DisplayName,
+                    fn.PropertyValue AS FirstName,
+                    pd.PropertyName ,
+                    CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
+                    CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS Visibility,
+                    p.ExtendedVisibility,
+                    CASE WHEN u.LastModifiedOnDate > p.LastUpdatedDate OR p.LastUpdatedDate IS NULL THEN u.LastModifiedOnDate ELSE p.LastUpdatedDate END AS 'ModifiedTime'
+            FROM    {databaseOwner}[{objectQualifier}Users] u
+                    INNER JOIN ValidUsers vu ON vu.UserId = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
+                    LEFT JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
+                    LEFT JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
+            WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+    END
+GO
+
+/******* Fix bug CONTENT-2289 - Document Viewer issue *******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_Files]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_Files]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_Files]
+AS
+	SELECT	fi.FileId, 
+			fi.PortalId, 
+			fi.FileName, 
+			fi.Extension, 
+			fi.Size, 
+			fi.Width, 
+			fi.Height, 
+			fi.ContentType, 
+			fi.FolderID, 
+			fi.[Content], 
+			fi.CreatedByUserID, 
+			fi.CreatedOnDate, 
+			fi.LastModifiedByUserID, 
+			fi.LastModifiedOnDate, 
+			fi.UniqueId, 
+			fi.VersionGuid, 
+			fi.SHA1Hash, 
+			fi.LastModificationTime, 
+			fi.Title, 
+			fi.StartDate, 
+			fi.EnablePublishPeriod, 
+			fi.EndDate, 
+			fi.ContentItemID, 
+			fi.PublishedVersion, 
+			fo.FolderPath AS Folder,
+			fo.IsCached,
+			fo.FolderMappingID,
+			fo.StorageLocation
+	FROM         {databaseOwner}[{objectQualifier}Files] AS fi 
+	INNER JOIN {databaseOwner}[{objectQualifier}Folders] AS fo 
+		ON fi.FolderID = fo.FolderID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_PublishedFiles]') AND type in (N'V'))
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+AS
+	SELECT     
+	   fi.[FileId]
+      ,fi.[PortalId]
+      ,fi.[FileName]
+      ,fi.[Extension]
+      ,fi.[Size]
+      ,fi.[Width]
+      ,fi.[Height]
+      ,fi.[ContentType]
+      ,fi.[FolderID]
+      ,fi.[Content]
+      ,fi.[CreatedByUserID]
+      ,fi.[CreatedOnDate]
+      ,fi.[LastModifiedByUserID]
+      ,fi.[LastModifiedOnDate]
+      ,fi.[UniqueId]
+      ,fi.[VersionGuid]
+      ,fi.[SHA1Hash]
+      ,fi.[LastModificationTime]
+      ,fi.[Title]
+      ,fi.[StartDate]
+      ,fi.[EnablePublishPeriod]
+      ,fi.[EndDate]
+      ,fi.[ContentItemID]
+      ,fi.[PublishedVersion]
+	  ,fi.[Folder]
+	  ,fi.[IsCached]
+	  ,fi.[StorageLocation]
+	  ,fi.[FolderMappingID]
+	FROM       {databaseOwner}[{objectQualifier}vw_Files] fi
+	  WHERE [EnablePublishPeriod] = 0 
+		 OR ([StartDate] <= GETDATE()
+			AND ([EndDate] IS NULL OR GETDATE() <= [EndDate]))
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllFiles]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllFiles]
+AS
+BEGIN
+	SELECT   
+	  FileId,  
+	  PortalId,  
+	  [FileName],  
+	  Extension,  
+	  Size,  
+	  Width,  
+	  Height,  
+	  ContentType,  
+	  FolderID,  
+	  Folder,  
+	  StorageLocation,  
+	  IsCached,
+	  UniqueId,
+	  VersionGuid,
+	  SHA1Hash,
+	  FolderMappingID,  
+	  LastModificationTime,  
+	  Title,  
+	  EnablePublishPeriod,  
+	  StartDate,  
+	  EndDate,  
+	  CreatedByUserID,  
+	  CreatedOnDate,  
+	  LastModifiedByUserID,  
+	  LastModifiedOnDate,  
+	  PublishedVersion,  
+	  ContentItemID
+	FROM {databaseOwner}[{objectQualifier}vw_Files] 	
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFile]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFile]
+	@FileName nvarchar(246),
+	@FolderID int,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] 			
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,	   
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   ContentItemID,
+			   PublishedVersion
+		FROM {databaseOwner}[{objectQualifier}vw_Files]
+		WHERE [FileName] = @FileName AND FolderID = @FolderID
+	END
+END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFileById]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFileById]
+	@FileId int	,
+	@RetrieveUnpublishedFiles bit = 0
+AS
+BEGIN
+	IF @RetrieveUnpublishedFiles = 0 BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   UniqueId,
+			   VersionGuid,
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles]
+		WHERE FileId = @FileId
+	END
+	ELSE BEGIN
+		SELECT FileId,
+			   PortalId,
+			   [FileName],
+			   Extension,
+			   Size,
+			   Width,
+			   Height,
+			   ContentType,
+			   FolderID,
+			   Folder,
+			   StorageLocation,
+			   IsCached,
+			   [UniqueId],
+			   [VersionGuid],
+			   SHA1Hash,
+			   FolderMappingID,
+			   LastModificationTime,
+			   Title,
+			   EnablePublishPeriod,
+			   StartDate,
+			   EndDate,
+			   CreatedByUserID,
+			   CreatedOnDate,
+			   LastModifiedByUserID,
+			   LastModifiedOnDate,
+			   PublishedVersion,
+			   ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] 
+		WHERE FileId = @FileId
+	END	
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetFiles]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetFiles]
+    @FolderID Int,                      -- not null!
+    @RetrieveUnpublishedFiles Bit = 0   -- include files, hidden by status or date?
+AS
+	IF @RetrieveUnpublishedFiles = 0 
+	BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_PublishedFiles] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+	ELSE BEGIN
+		SELECT
+			F.FileId,
+			F.PortalId,
+			F.[FileName],
+			F.Extension,
+			F.[Size],
+			F.Width,
+			F.Height,
+			F.ContentType,
+			F.FolderID,
+			F.Folder,
+			F.StorageLocation,
+			F.IsCached,
+			F.FolderMappingID,
+			F.UniqueId,
+			F.VersionGuid,
+			F.SHA1Hash,
+			F.LastModificationTime,
+			F.Title,
+			F.EnablePublishPeriod,
+			F.StartDate,
+			F.EndDate,
+			F.CreatedByUserID,
+			F.CreatedOnDate,
+			F.LastModifiedByUserID,
+			F.LastModifiedOnDate,
+			F.PublishedVersion,
+			F.ContentItemID
+		FROM {databaseOwner}[{objectQualifier}vw_Files] F			
+		WHERE F.FolderID = @FolderID
+		ORDER BY [FolderID], [FileName]
+	END
+GO
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

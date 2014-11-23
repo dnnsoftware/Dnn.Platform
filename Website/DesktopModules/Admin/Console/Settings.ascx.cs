@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,12 +29,12 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.Internal;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Console.Components;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI.WebControls;
 
 #endregion
@@ -57,7 +57,7 @@ namespace DesktopModules.Admin.Console
 
             if (includeParent)
             {
-                TabInfo consoleTab = TestableTabController.Instance.GetTab(tabId, PortalId);
+                TabInfo consoleTab = TabController.Instance.GetTab(tabId, PortalId);
                 if (consoleTab != null)
                 {
                     tabList.Add(consoleTab);
@@ -92,7 +92,7 @@ namespace DesktopModules.Admin.Console
         private void SwitchMode()
         {
             int parentTabId = -1;
-            if (Settings.ContainsKey("ParentTabID"))
+            if (Settings.ContainsKey("ParentTabID") && !string.IsNullOrEmpty(Convert.ToString(Settings["ParentTabID"])))
             {
                 parentTabId = Convert.ToInt32(Settings["ParentTabID"]);
             }
@@ -116,7 +116,7 @@ namespace DesktopModules.Admin.Console
                    break;
             }
 
-            SelectDropDownListItem(ref ParentTab, parentTabId.ToString(CultureInfo.InvariantCulture));
+            ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, PortalId);
             BindTabs(parentTabId, IncludeParent.Checked);
         }
 
@@ -126,26 +126,12 @@ namespace DesktopModules.Admin.Console
             {
                 if (Page.IsPostBack == false)
                 {
-                    var portalTabs = TabController.GetPortalTabs(PortalId, Null.NullInteger, false, true);
+                    if (Settings.ContainsKey("ParentTabId") && !string.IsNullOrEmpty(Convert.ToString(Settings["ParentTabId"])))
+                    {
+                        var tabId = Convert.ToInt32(Settings["ParentTabId"]);
+                        ParentTab.SelectedPage = TabController.Instance.GetTab(tabId, PortalId);
+                    }
 
-					//Add host tabs
-                    if (UserInfo != null && UserInfo.IsSuperUser)
-                    {
-                        var hostTabs = new TabController().GetTabsByPortal(Null.NullInteger);
-                        portalTabs.AddRange(hostTabs.Values);
-                    }
-                    ParentTab.Items.Clear();
-                    foreach (var t in portalTabs)
-                    {
-                        if ((TabPermissionController.CanViewPage(t)))
-                        {
-                            ParentTab.AddItem(t.IndentedTabName, t.TabID.ToString(CultureInfo.InvariantCulture));
-                            //ParentTab.Items.Add(new ListItem(t.IndentedTabName, t.TabID.ToString(CultureInfo.InvariantCulture)));
-                        }
-                    }
-                    //ParentTab.Items.Insert(0, "");
-                    ParentTab.InsertItem(0, "", "");
-                    SelectDropDownListItem(ref ParentTab, "ParentTabID");
                     foreach (string val in ConsoleController.GetSizeValues())
                     {
                         //DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
@@ -181,6 +167,10 @@ namespace DesktopModules.Admin.Console
 					{
 						OrderTabsByHierarchy.Checked = Convert.ToBoolean(Settings["OrderTabsByHierarchy"]);
 					}
+                    if (Settings.ContainsKey("IncludeHiddenPages"))
+                    {
+                        IncludeHiddenPages.Checked = Convert.ToBoolean(Settings["IncludeHiddenPages"]);
+                    }
                     if (Settings.ContainsKey("ConsoleWidth"))
                     {
                         ConsoleWidth.Text = Convert.ToString(Settings["ConsoleWidth"]);
@@ -200,8 +190,6 @@ namespace DesktopModules.Admin.Console
         {
             try
             {
-                var moduleController = new ModuleController();
-
 				//validate console width value
                 var wdth = string.Empty;
                 if ((ConsoleWidth.Text.Trim().Length > 0))
@@ -217,23 +205,25 @@ namespace DesktopModules.Admin.Console
                         throw new Exception("ConsoleWidth value is invalid. Value must be numeric.");
                     }
                 }
-                if ((ParentTab.SelectedValue == string.Empty))
+                if (ParentTab.SelectedItemValueAsInt == Null.NullInteger)
                 {
-                    moduleController.DeleteModuleSetting(ModuleId, "ParentTabID");
+                    ModuleController.Instance.DeleteModuleSetting(ModuleId, "ParentTabID");
                 }
                 else
                 {
-                    moduleController.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedValue);
+                    ModuleController.Instance.UpdateModuleSetting(ModuleId, "ParentTabID", ParentTab.SelectedItem.Value);
                 }
-                moduleController.UpdateModuleSetting(ModuleId, "Mode", modeList.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "DefaultSize", DefaultSize.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "AllowSizeChange", AllowResize.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "DefaultView", DefaultView.SelectedValue);
-                moduleController.UpdateModuleSetting(ModuleId, "AllowViewChange", AllowViewChange.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "ShowTooltip", ShowTooltip.Checked.ToString(CultureInfo.InvariantCulture));
-				moduleController.UpdateModuleSetting(ModuleId, "OrderTabsByHierarchy", OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
-                moduleController.UpdateModuleSetting(ModuleId, "IncludeParent", IncludeParent.Checked.ToString(CultureInfo.InvariantCulture)); 
-                moduleController.UpdateModuleSetting(ModuleId, "ConsoleWidth", wdth);
+
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "Mode", modeList.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "DefaultSize", DefaultSize.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowSizeChange", AllowResize.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "DefaultView", DefaultView.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "AllowViewChange", AllowViewChange.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ShowTooltip", ShowTooltip.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "OrderTabsByHierarchy", OrderTabsByHierarchy.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeHiddenPages", IncludeHiddenPages.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "IncludeParent", IncludeParent.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateModuleSetting(ModuleId, "ConsoleWidth", wdth);
 
                 foreach (RepeaterItem item in tabs.Items)
                 {
@@ -243,7 +233,7 @@ namespace DesktopModules.Admin.Console
 						var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
                         var key = String.Format("TabVisibility{0}", tabPath.Replace("//","-"));
-                        moduleController.UpdateModuleSetting(ModuleId, key, visibility);
+                        ModuleController.Instance.UpdateModuleSetting(ModuleId, key, visibility);
                     }
                 }
             }
@@ -258,8 +248,9 @@ namespace DesktopModules.Admin.Console
             base.OnInit(e);
 
             tabs.ItemDataBound +=  tabs_ItemDataBound;
-            ParentTab.SelectedIndexChanged += parentTab_SelectedIndexChanged;
             modeList.SelectedIndexChanged += modeList_SelectedIndexChanged;
+
+            ParentTab.UndefinedItem = new ListItem(SharedConstants.Unspecified, string.Empty);
         }
 
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)
@@ -270,7 +261,7 @@ namespace DesktopModules.Admin.Console
 
         protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindTabs(Int32.Parse(ParentTab.SelectedValue), IncludeParent.Checked);
+            BindTabs(ParentTab.SelectedItemValueAsInt, IncludeParent.Checked);
         }
 
         void tabs_ItemDataBound(Object Sender, RepeaterItemEventArgs e)

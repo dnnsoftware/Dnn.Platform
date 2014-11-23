@@ -29,18 +29,18 @@
 			    <Columns>
 				    <asp:TemplateColumn HeaderText="" HeaderStyle-CssClass="dnnGridHeaderTD-NoBorder">
 					    <ItemTemplate>
-						    <img id="imgDragDrop" runat="server" src="~/Icons/Sigma/DragDrop_15x15_Standard.png" alt=""/>
+						    <img id="imgDragDrop_<%#Eval("Id") %>" src="<%=ResolveUrl("~/Icons/Sigma/DragDrop_15x15_Standard.png")%>" alt="<%=LocalizeString("DragAndDrop.Tooltip")%>" title="<%=LocalizeString("DragAndDrop.Tooltip")%>"/>
 					    </ItemTemplate>
 				    </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="" HeaderStyle-CssClass="dnnGridHeaderTD-NoBorder">
 					    <ItemTemplate>
-                            <a href="<%#GetEditUrl(Eval("Id").ToString()) %>"><img src="<%=ResolveUrl("~/icons/sigma/edit_16X16_standard.png") %>" alt="" /></a>
+                            <a href="<%#GetEditUrl(Eval("Id").ToString()) %>"><img id="imgEdit_<%#Eval("Id") %>" src="<%=ResolveUrl("~/icons/sigma/edit_16X16_standard.png") %>" alt="<%=LocalizeString("EditRule.Tooltip")%>" title="<%=LocalizeString("EditRule.Tooltip")%>"/></a>
 					    </ItemTemplate>
 				    </asp:TemplateColumn>
                     <asp:TemplateColumn HeaderText="">
 					    <ItemTemplate>
                             <asp:LinkButton ID="btnDel" runat="server" CssClass="delete" CausesValidation="false" CommandArgument='<%#Eval("Id") %>' CommandName="delete" >
-                                 <asp:Image ID="image1" runat="server" ImageUrl="~/icons/sigma/delete_16X16_standard.png" />
+                                 <img id="imgDelete_<%#Eval("Id") %>" src="<%=ResolveUrl("~/icons/sigma/delete_16X16_standard.png")%>" alt="<%=LocalizeString("DeleteRule.Tooltip")%>" title="<%=LocalizeString("DeleteRule.Tooltip")%>"/>
                             </asp:LinkButton>
 					    </ItemTemplate>
 				    </asp:TemplateColumn>
@@ -67,7 +67,7 @@
                         <ItemTemplate>
                 	        <div class="dnnRedirectionIsEnabled">
 						        <asp:LinkButton id="btnEnable" runat="server" CssClass="enable" CausesValidation="false" CommandArgument='<%#Eval("Id") %>' CommandName="enable">
-							        <img src="<%#Convert.ToBoolean(Eval("Enabled")) ? ResolveUrl("~/icons/sigma/checked_16x16_standard.png") : ResolveUrl("~/icons/sigma/cancel_16x16_standard.png") %>" alt="" />
+							        <img src="<%#Convert.ToBoolean(Eval("Enabled")) ? ResolveUrl("~/icons/sigma/checked_16x16_standard.png") : ResolveUrl("~/icons/sigma/cancel_16x16_standard.png") %>" alt="<%=LocalizeString("ToggleRuleEnableSetting.Tooltip")%>" title="<%=LocalizeString("ToggleRuleEnableSetting.Tooltip")%>" />
 						        </asp:LinkButton>
 					        </div>
                         </ItemTemplate>

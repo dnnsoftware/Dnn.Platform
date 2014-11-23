@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Web.Caching;
 
@@ -36,7 +37,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Vendors;
@@ -60,33 +60,19 @@ namespace DotNetNuke.Entities.Modules
         TextBox = 1
     }
 
-    /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  UserModuleBase
-    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal that manage Users.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <history>
-    ///		[cnurse]	03/20/2006
-    /// </history>
-    /// -----------------------------------------------------------------------------
     public class UserModuleBase : PortalModuleBase
     {
         private UserInfo _User;
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether we are in Add User mode
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/06/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool AddUser
         {
             get
@@ -95,23 +81,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        ///// <summary>
-        ///// Gets the effective portalId for User (returns the current PortalId unless Portal
-        ///// is in a PortalGroup, when it will return the PortalId of the Master Portal).
-        ///// </summary>
-        //protected int EffectivePortalId
-        //{
-        //    get { return PortalController.GetEffectivePortalId(PortalId); }
-        //}
-
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the current user is an Administrator (or SuperUser)
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsAdmin
         {
             get
@@ -134,14 +106,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether this control is in the Host menu
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/13/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsHostTab
         {
             get
@@ -150,14 +117,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the control is being called form the User Accounts module
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	07/07/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsEdit
         {
             get
@@ -166,7 +128,7 @@ namespace DotNetNuke.Entities.Modules
                 if (Request.QueryString["ctl"] != null)
                 {
                     string ctl = Request.QueryString["ctl"];
-                    if (ctl == "Edit")
+                    if (ctl.ToLowerInvariant() == "edit")
                     {
                         _IsEdit = true;
                     }
@@ -175,14 +137,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the current user is modifying their profile
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsProfile
         {
             get
@@ -204,7 +161,7 @@ namespace DotNetNuke.Entities.Modules
                         if (Request.QueryString["ctl"] != null)
                         {
                             string ctl = Request.QueryString["ctl"];
-                            if (ctl == "Profile")
+                            if (ctl.ToLowerInvariant() == "profile")
                             {
                                 _IsProfile = true;
                             }
@@ -215,14 +172,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether an anonymous user is trying to register
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/21/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsRegister
         {
             get
@@ -231,14 +183,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the User is editing their own information
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/03/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected bool IsUser
         {
             get
@@ -247,14 +194,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the PortalId to use for this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	02/21/2007  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected int UserPortalID
         {
             get
@@ -263,14 +205,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the User associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/02/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public UserInfo User
         {
             get
@@ -287,14 +224,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the UserId associated with this control
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/01/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public new int UserId
         {
             get
@@ -304,7 +236,9 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (Request.QueryString["userid"] != null)
                     {
-                        _UserId = Int32.Parse(Request.QueryString["userid"]);
+                        int userId;
+                        // Use Int32.MaxValue as invalid UserId
+                        _UserId = Int32.TryParse(Request.QueryString["userid"], out userId) ? userId : Int32.MaxValue;
                         ViewState["UserId"] = _UserId;
                     }
                 }
@@ -320,17 +254,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Setting for the Module
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	05/01/2006  Created
-        ///     [cnurse]    02/07/2008  DNN-7003 Fixed GetSetting() in UserModuleBase so it handles situation where one or more settings are missing.
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);
@@ -353,16 +281,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates the Settings for the Module
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	06/27/2006  Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;
@@ -376,14 +297,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// InitialiseUser initialises a "new" user
         /// </summary>
-        /// <history>
-        /// 	[cnurse]	03/13/2006
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private UserInfo InitialiseUser()
         {
             var newUser = new UserInfo();
@@ -483,18 +399,12 @@ namespace DotNetNuke.Entities.Modules
             return country;
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddLocalizedModuleMessage adds a localized module message
         /// </summary>
         /// <param name="message">The localized message</param>
         /// <param name="type">The type of message</param>
         /// <param name="display">A flag that determines whether the message should be displayed</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2006
-        /// 	[cnurse]	07/03/2007  Moved to Base Class and changed to Protected
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             if (display)
@@ -503,18 +413,12 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddModuleMessage adds a module message
         /// </summary>
         /// <param name="message">The message</param>
         /// <param name="type">The type of message</param>
         /// <param name="display">A flag that determines whether the message should be displayed</param>
-        /// <history>
-        /// 	[cnurse]	03/14/2006
-        /// 	[cnurse]	07/03/2007  Moved to Base Class and changed to Protected
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             AddLocalizedModuleMessage(Localization.GetString(message, LocalResourceFile), type, display);
@@ -522,20 +426,20 @@ namespace DotNetNuke.Entities.Modules
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
         {
-            string strMessage = "";
-            ModuleMessage.ModuleMessageType message = ModuleMessage.ModuleMessageType.RedError;
+            var strMessage = "";
+            var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
 				//send notification to portal administrator of new user registration
 				//check the receive notification setting first, but if register type is Private, we will always send the notification email.
 				//because the user need administrators to do the approve action so that he can continue use the website.
 				if (PortalSettings.EnableRegisterNotification || PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-	            {
-		            strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
-	                SendAdminNotification(newUser, "NewUserRegistration", PortalSettings);
-	            }
+				{
+				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, PortalSettings);
+				    SendAdminNotification(newUser, PortalSettings);
+				}
 
-	            var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
                 //complete registration
                 switch (PortalSettings.UserRegistration)
@@ -591,9 +495,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
-            //Log Event to Event Log
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(newUser, PortalSettings, UserId, newUser.Username, EventLogController.EventLogType.USER_CREATED);
+           
             return strMessage;
         }
 
@@ -616,37 +518,32 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("In DotNetNuke 5.2 replaced by UserController.GetUserSettings(settings).")]
         public static Hashtable GetSettings(Hashtable settings)
         {
-            return UserController.GetUserSettings(PortalController.GetCurrentPortalSettings().PortalId, settings);
+            return UserController.GetUserSettings(PortalController.Instance.GetCurrentPortalSettings().PortalId, settings);
         }
 
         #region Private methods
-        private void SendAdminNotification(UserInfo newUser, string notificationType, PortalSettings portalSettings)
+
+        private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
             var notification = new Notification
             {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,                
-                IncludeDismissAction = true,
-                SenderUserID = portalSettings.AdministratorId
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = GetNotificationSubject(locale, newUser, portalSettings),
+                Body = GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
             };
-            notification.Subject = GetNotificationSubject(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
-            notification.Body = GetNotificationBody(notificationType, newUser.Profile.PreferredLocale, newUser, portalSettings);
-            var roleController = new RoleController();
-            var adminrole = roleController.GetRole(portalSettings.AdministratorRoleId, portalSettings.PortalId);
-            var roles = new List<RoleInfo>();
-            roles.Add(adminrole);
+            var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
+            var roles = new List<RoleInfo> { adminrole };
             NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
-
         }
 
-        private string GetNotificationBody(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
@@ -656,17 +553,12 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
         }
 
-        private string GetNotificationSubject(string notificationType, string locale, UserInfo newUser, PortalSettings portalSettings)
+        private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
         {
-            string text = "";
-            switch (notificationType)
-            {
-                case "NewUserRegistration":
-                    text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
-                    break;
-            }
+            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
+
         #endregion
     }
 }

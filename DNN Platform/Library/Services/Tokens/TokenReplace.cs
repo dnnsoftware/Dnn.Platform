@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     if (HttpContext.Current != null)
                     {
-                        this.PortalSettings = PortalController.GetCurrentPortalSettings();
+                        this.PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                     }
                 }
                 else
@@ -235,14 +235,13 @@ namespace DotNetNuke.Services.Tokens
             {
                 if (ModuleId > int.MinValue && (_ModuleInfo == null || _ModuleInfo.ModuleID != ModuleId))
                 {
-                    var mc = new ModuleController();
                     if (PortalSettings != null && PortalSettings.ActiveTab != null)
                     {
-                        _ModuleInfo = mc.GetModule(ModuleId, PortalSettings.ActiveTab.TabID, false);
+                        _ModuleInfo = ModuleController.Instance.GetModule(ModuleId, PortalSettings.ActiveTab.TabID, false);
                     }
                     else
                     {
-                        _ModuleInfo = mc.GetModule(ModuleId);
+                        _ModuleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, true);
                     }
                 }
                 return _ModuleInfo;

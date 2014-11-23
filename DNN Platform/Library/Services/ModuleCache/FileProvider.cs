@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -52,10 +52,12 @@ namespace DotNetNuke.Services.ModuleCache
         private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
         {
             byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            var md5 = new MD5CryptoServiceProvider();
-            hash = md5.ComputeHash(hash);
+            var sha256 = new SHA256CryptoServiceProvider();
+            hash = sha256.ComputeHash(hash);
             return tabModuleId + "_" + ByteArrayToString(hash);
         }
+
+
 
         private static string GetAttribFileName(int tabModuleId, string cacheKey)
         {
@@ -89,10 +91,9 @@ namespace DotNetNuke.Services.ModuleCache
                 }
             }
 
-            var portalController = new PortalController();
-            PortalInfo portalInfo = portalController.GetPortal(portalId);
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
 
-            string homeDirectoryMapPath = portalInfo.HomeDirectoryMapPath;
+            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
 
             if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
@@ -115,7 +116,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static string GetCacheFolder()
         {
-            int portalId = PortalController.GetCurrentPortalSettings().PortalId;
+            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
             return GetCacheFolder(portalId);
         }
 
@@ -290,8 +291,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void Remove(int tabModuleId)
         {
-            var controller = new ModuleController();
-            ModuleInfo tabModule = controller.GetTabModule(tabModuleId);
+            ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
 
             int portalId = tabModule.PortalID;
             if (portalId == Null.NullInteger)

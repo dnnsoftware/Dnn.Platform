@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="CreateInstall" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PlatformRoot>$(MSBuildProjectDirectory)\..\..</PlatformRoot>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(PlatformRoot)\Website</WebsitePath>
+    <PackageName>DNN_Platform</PackageName>
+  </PropertyGroup>
+
+  <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
+
+  <ItemGroup>
+    <InstallExclude Include="$(WebsitePath)\development.config"/>
+    <InstallExclude Include="$(WebsitePath)\release.config"/>
+    <InstallExclude Include="$(WebsitePath)\DotNetNuke.vstemplate"/>
+    <InstallExclude Include="$(WebsitePath)\dotnetnuke.webproj"/>
+    <InstallExclude Include="$(WebsitePath)\bin\*.pdb"/>
+    <InstallExclude Include="$(WebsitePath)\bin\*.xml"/>
+    <InstallExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.*"/>
+    <InstallExclude Include="$(WebsitePath)\bin\DotNetNuke.Enterprise.*"/>
+    <InstallExclude Include="$(WebsitePath)\bin\DotNetNuke.Professional.*"/>
+    <InstallExclude Include="$(WebsitePath)\bin\Providers\*.pdb"/>
+    <InstallExclude Include="$(WebsitePath)\bin\Providers\*.xml"/>
+    <InstallExclude Include="$(WebsitePath)\bin\Providers\DotNetNuke.Provider.Professional.FiftyOnePremiumProvider.dll"/>
+    <InstallExclude Include="$(WebsitePath)\bin\Providers\FiftyOne.Foundation.dll"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Module\DNNXE*"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Module\DNNPro*"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Provider\DNNPro*"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Module\Telerik_Design*"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Skin\*.resources"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Skin\Facebook*"/>
+    <InstallExclude Include="$(WebsitePath)\Install\Provider\RadEditorProvider_06.01.02_Install.resources" />
+    <InstallExclude Include="$(WebsitePath)\Install\Provider\FiftyOnePremiumProvider_*_Install.zip" />
+    <InstallExclude Include="$(WebsitePath)\Install\AuthSystem\DNNPro*"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpgradeExclude Include="$(WebsitePath)\**\System.Web.Extensions.dll" />
+    <UpgradeExclude Include="$(WebsitePath)\App_Data\Database.mdf" />
+    <UpgradeExclude Include="$(WebsitePath)\App_Data\Database_log.LDF" />
+    <UpgradeExclude Include="$(WebsitePath)\bin\Telerik.Web.UI.dll" />
+    <UpgradeExclude Include="$(WebsitePath)\bin\Telerik.Web.UI.Skins.dll" />
+    <UpgradeExclude Include="$(WebsitePath)\bin\DotNetNuke.Modules.Html.dll" />
+    <UpgradeExclude Include="$(WebsitePath)\Install\Container\*.zip" />
+    <UpgradeExclude Include="$(WebsitePath)\Install\Language\*.zip" />
+    <UpgradeExclude Include="$(WebsitePath)\Install\Skin\*.zip" Exclude="$(WebsitePath)\Install\Skin\DarkKnight_01.00.00_Install.zip" />
+    <UpgradeExclude Include="$(WebsitePath)\web.config" />
+    <UpgradeExclude Include="$(WebsitePath)\favicon.ico" />
+    <UpgradeExclude Include="$(WebsitePath)\bin\dnnWerk.RadEditorProvider.dll"/>
+    <UpgradeExclude Include="$(WebsitePath)\Config\DotNetNuke.config" />
+    <UpgradeExclude Include="@(InstallExclude)" />
+  </ItemGroup>
+
+  <Target Name="Compile">
+    <Message Text="$(MSBuildProjectDirectory)" />
+
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean"/>
+    <MSBuild Projects="$(PlatformRoot)\DNN_Platform.sln" Properties="Configuration=Release;Platform=Any CPU" Targets="Rebuild"/>
+    <Message Text="DotNetNuke Compile finished" Importance="high" />
+    
+  </Target>
+
+
+  <Target Name="CreateInstall" DependsOnTargets="Compile">
+    <ItemGroup>
+      <InstallPackage Include="$(WebsitePath)\**\*.*" Exclude="@(InstallExclude)" />
+    </ItemGroup>
+
+    <Zip Files="@(InstallPackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Install.zip" />
+    <Message Text="Creating Install Package" Importance="high" />
+  </Target>
+
+  <Target Name="CreateUpgrade" DependsOnTargets="Compile">
+    <ItemGroup>
+      <UpgradePackage Include="$(WebsitePath)\**\*.*" Exclude="@(UpgradeExclude);" />
+    </ItemGroup>
+    <Zip Files="@(UpgradePackage)" WorkingDirectory="$(WebsitePath)\" ZipFileName="$(PlatformRoot)\$(PackageName)_Upgrade.zip" />
+    <Message Text="Creating Upgrade Package" Importance="high"/>
+  </Target>
+</Project>

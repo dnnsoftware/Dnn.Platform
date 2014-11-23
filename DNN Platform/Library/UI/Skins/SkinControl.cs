@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -194,14 +194,13 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-                var objPortals = new PortalController();
-				if (Request.QueryString["pid"] != null && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+				if (Request.QueryString["pid"] != null && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    _objPortal = objPortals.GetPortal(Int32.Parse(Request.QueryString["pid"]));
+                    _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }
                 else
                 {
-                    _objPortal = objPortals.GetPortal(PortalSettings.PortalId);
+                    _objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 }
                 if (!Page.IsPostBack)
                 {

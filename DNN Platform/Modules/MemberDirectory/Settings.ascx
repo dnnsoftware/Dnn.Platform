@@ -45,10 +45,6 @@
          <div class="dnnFormItem">
             <dnn:label id="sortFieldListLabel" runat="server" controlname="sortFieldList" />
             <asp:DropDownList runat="server" ID="sortFieldList">
-                <asp:ListItem Value="UserId" resourcekey="UserId"/>
-                <asp:ListItem Value="LastName" resourcekey="LastName"/>
-                <asp:ListItem Value="DisplayName" resourcekey="DisplayName"/>
-                <asp:ListItem Value="CreatedOnDate" resourcekey="DateCreated"/>
             </asp:DropDownList>
         </div>        
          <div class="dnnFormItem">
@@ -58,6 +54,10 @@
                 <asp:ListItem Value="DESC" resourcekey="Descending"/>
             </asp:DropDownList>
         </div>        
+        <div class="dnnFormItem">
+            <dnn:label id="ExcludeHostUsersLabel" runat="server" controlname="ExcludeHostUsersCheckBox" />
+            <asp:CheckBox ID="ExcludeHostUsersCheckBox" runat="server" />
+        </div>            
    </fieldset>
     <h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Search")%></a></h2>
     <fieldset>

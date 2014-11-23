@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -72,10 +72,8 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                var objModules = new ModuleController();
-
-                objModules.UpdateTabModuleSetting(TabModuleId, "ProfileTemplate", txtTemplate.Text);
-                objModules.UpdateTabModuleSetting(TabModuleId, "IncludeButton", IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "ProfileTemplate", txtTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "IncludeButton", IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception exc)
             {

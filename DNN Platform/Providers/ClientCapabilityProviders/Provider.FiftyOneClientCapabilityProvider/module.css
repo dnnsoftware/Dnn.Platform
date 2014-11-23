@@ -28,7 +28,7 @@
 ----------------------------------------------- */
 .DnnModule-Device-Detection .deviceMsg{
 	display:block;
-	padding:25px; margin-bottom:25px;
+	padding:0 25px 25px 25px; margin-bottom:25px;
 	width:870px;
 /*
     background:#efefef;
@@ -40,6 +40,12 @@
 	-moz-border-radius: 5px;
 	border-radius: 5px; 
     */
+}
+.DnnModule-Device-Detection .deviceMsg div.bold {
+    font-weight: bold;
+}
+.DnnModule-Device-Detection input.dnnSecondaryAction {
+    height: 32px;
 }
 #fiftyOneDegrees .upgradePremium h5 + div{
 	width:60%;
@@ -103,6 +109,7 @@
 	.DnnModule-Device-Detection .deviceMsg .footer + input[type="submit"]{
 		display:inline-block;
 		margin-bottom:15px;
+	    margin-top: 22px;
 	}
 	
 	.DnnModule-Device-Detection .deviceMsg .purchaseBox{
@@ -139,7 +146,12 @@
 	padding: 25px;
 	background-color: #eaeaea;
 }
-.DnnModule-Device-Detection .deviceCol-left input[type="text"]{padding:5px; margin-right:5px;}
+.DnnModule-Device-Detection .deviceCol-left input[type="text"]{
+    padding:5px; 
+    margin-right:5px;
+    vertical-align: top;
+    height: 21px;
+}
 .DnnModule-Device-Detection .deviceCol-right{
 	position:relative;
 	float:left;
@@ -166,7 +178,13 @@
 .DnnModule-Device-Detection .deviceCol-right .explorer{
 	padding-right:15px;
 }
-
+.DnnModule-Device-Detection .deviceCol-right .explorer input{
+    vertical-align: top;
+}
+.DnnModule-Device-Detection .deviceCol-right .explorer input.searchButton{
+    height: 32px;
+    margin-left: 4px;
+}
 
 .DnnModule-Device-Detection .content > .footer{
 	clear:both;
@@ -264,6 +282,17 @@
 .deviceMsg > fieldset p{
     width: 600px;
     float: left;
+}
+.deviceMsg .dnnUploadActions {
+    margin-top: 22px;
+}
+.DnnModule-Device-Detection .deviceMsg .footer + input + .dnnLabel{
+	margin-top: 22px;
+    line-height: 32px;
+}
+.deviceMsg div.bold.bottom {
+    position: relative;
+    top: -95px;
 }
 
 .deviceExplorerVendors > p{

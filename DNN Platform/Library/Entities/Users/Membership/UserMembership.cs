@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,10 +49,11 @@ namespace DotNetNuke.Entities.Users
     {
         private readonly UserInfo _user;
         private bool _objectHydrated;
+        private bool _approved;
 
         public UserMembership(UserInfo user)
         {
-            Approved = true;
+            _approved = true;
             _user = user;
         }
 
@@ -64,7 +65,29 @@ namespace DotNetNuke.Entities.Users
         ///     [cnurse]	02/27/2006	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
-        public bool Approved { get; set; }
+        public bool Approved
+        {
+            get
+            {
+                return _approved;
+            }
+            set
+            {
+                if (!_approved && value)
+                {
+                    Approving = true;
+                }
+
+                _approved = value;
+            } 
+        }
+
+        internal bool Approving { get; private set; }
+
+        internal void ConfirmApproved()
+        {
+            Approving = false;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

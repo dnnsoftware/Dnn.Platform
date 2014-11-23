@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,11 +53,11 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			base.OnPreRender(e);
 
-			Entities.Users.UserInfo userInfo = Entities.Users.UserController.GetCurrentUserInfo();
+			Entities.Users.UserInfo userInfo = Entities.Users.UserController.Instance.GetCurrentUserInfo();
 			if (! Page.IsPostBack && userInfo != null && userInfo.UserID != Null.NullInteger)
 			{
 				//check view permissions - Yes?
-				var portalSettings = PortalController.GetCurrentPortalSettings();
+				var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			    var pageCulture = Thread.CurrentThread.CurrentCulture.Name;
 				if (string.IsNullOrEmpty(pageCulture))
 				{

@@ -12,6 +12,10 @@
             <dnn:label id="lblUrlParameter" runat="server" controlname="txtUrlParameter" suffix=":" />
             <asp:textbox id="txtUrlParameter" runat="server" textmode="multiline" rows="6" Width="280px" />
         </div>
+        <div class="dnnFormItem">
+            <dnn:label id="lblTrackForAdmin" runat="server" controlname="txtUrlParameter" suffix=":" />
+            <asp:CheckBox id="chkTrackForAdmin" runat="server" Checked="False" />
+        </div>
     </fieldset>
     <ul class="dnnActions dnnClear">
         <li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>

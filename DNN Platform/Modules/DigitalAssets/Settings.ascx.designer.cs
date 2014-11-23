@@ -31,48 +31,75 @@ namespace DotNetNuke.Modules.DigitalAssets {
         protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox DefaultFolderTypeComboBox;
         
         /// <summary>
-        /// GroupModeLabel control.
+        /// ModeLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl GroupModeLabel;
+        protected global::System.Web.UI.UserControl ModeLabel;
         
         /// <summary>
-        /// GroupModeComboBox control.
+        /// ModeComboBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox GroupModeComboBox;
+        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox ModeComboBox;
         
         /// <summary>
-        /// RootFolderItem control.
+        /// ViewConditionItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RootFolderItem;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ViewConditionItem;
         
         /// <summary>
-        /// RootFolderLabel control.
+        /// ViewConditionLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl RootFolderLabel;
+        protected global::System.Web.UI.UserControl ViewConditionLabel;
         
         /// <summary>
-        /// RootFolderDropDownList control.
+        /// FilterOptionsRadioButtonsList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList RootFolderDropDownList;
+        protected global::System.Web.UI.WebControls.RadioButtonList FilterOptionsRadioButtonsList;
+        
+        /// <summary>
+        /// FilterByFolderDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Web.UI.WebControls.DnnFolderDropDownList FilterByFolderDropDownList;
+        
+        /// <summary>
+        /// SubfolderFilterRadioButtonList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList SubfolderFilterRadioButtonList;
+        
+        /// <summary>
+        /// FolderMustBeSelected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator FolderMustBeSelected;
     }
 }

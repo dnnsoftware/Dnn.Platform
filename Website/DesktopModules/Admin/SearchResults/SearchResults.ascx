@@ -55,7 +55,7 @@
 <div id="dnnSearchResultAdvancedForm" class="dnnForm">
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedTags" runat="server" ResourceKey="lblAdvancedTags" />
-        <input type="text" id="advancedTagsCtrl" />
+        <input type="text" id="advancedTagsCtrl" value="<%=TagsQuery %>" />
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedDates" runat="server" ResourceKey="lblAdvancedDates" />
@@ -76,7 +76,7 @@
     </div>
     <div class="dnnFormItem">
         <dnn:Label ID="lblAdvancedExactSearch" runat="server" ResourceKey="lblAdvancedExactSearch" />
-        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" />
+        <input type="checkbox" id="dnnSearchResultAdvancedExactSearch" <%= CheckedExactSearch %> />
     </div>
     <ul class="dnnActions dnnClear">
         <li>
@@ -124,6 +124,7 @@
             };
 
             dnn.searchResult.init({
+                defaultText: '<%= DefaultText %>',
                 comboAdvancedDates: '<%= AdvnacedDatesList.ClientID %>',
                 comboAdvancedScope: '<%= SearchScopeList.ClientID %>',
                 noresultsText: '<%= NoResultsText %>',

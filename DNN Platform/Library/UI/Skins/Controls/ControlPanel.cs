@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@ using System;
 using System.Web.UI.HtmlControls;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.Web.Client;
@@ -37,7 +38,7 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			base.OnInit(e);
 
-			if (Request.QueryString["dnnprintmode"] != "true" && Request.QueryString["popUp"] != "true")
+            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
 			{
 				var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
                 var objForm = (HtmlForm)Page.FindControl("Form");

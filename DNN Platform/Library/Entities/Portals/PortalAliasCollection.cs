@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,6 @@ using System.Collections;
 namespace DotNetNuke.Entities.Portals
 {
     [Serializable]
-    [Obsolete("Deprecated in DNN 7.1. Use Dictionary<string, PortalLAiasInfo>")]
     public class PortalAliasCollection : DictionaryBase
     {
 		/// <summary>

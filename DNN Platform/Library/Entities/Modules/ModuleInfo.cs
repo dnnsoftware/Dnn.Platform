@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -74,10 +74,11 @@ namespace DotNetNuke.Entities.Modules
         private ModuleControlInfo _moduleControl;
         private ModuleDefinitionInfo _moduleDefinition;
         private ModulePermissionCollection _modulePermissions;
-        private Hashtable _moduleSettings;
         private TabInfo _parentTab;
-        private Hashtable _tabModuleSettings;
         private TabPermissionCollection _tabPermissions;
+        private Hashtable _moduleSettings;
+        private Hashtable _tabModuleSettings;
+
 
         public ModuleInfo()
         {
@@ -89,6 +90,7 @@ namespace DotNetNuke.Entities.Modules
             DesktopModuleID = Null.NullInteger;
             ModuleDefID = Null.NullInteger;
             ModuleTitle = Null.NullString;
+            ModuleVersion = Null.NullInteger;
             _authorizedEditRoles = Null.NullString;
             _authorizedViewRoles = Null.NullString;
             Alignment = Null.NullString;
@@ -321,8 +323,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-                        var oModuleCtrl = new ModuleController();
-                        _moduleSettings = oModuleCtrl.GetModuleSettings(ModuleID);
+                        _moduleSettings = new ModuleController().GetModuleSettings(ModuleID, TabID);
                     }
                 }
                 return _moduleSettings;
@@ -331,6 +332,9 @@ namespace DotNetNuke.Entities.Modules
 
         [XmlElement("title")]
         public string ModuleTitle { get; set; }
+
+        [XmlIgnore]
+        public int ModuleVersion { get; set; }
 
         [XmlIgnore]
         public int OwnerPortalID { get; set; }
@@ -366,10 +370,10 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-                        var oModuleCtrl = new ModuleController();
-                        _tabModuleSettings = oModuleCtrl.GetTabModuleSettings(TabModuleID);
+                        _tabModuleSettings = new ModuleController().GetTabModuleSettings(TabModuleID, TabID);
                     }
                 }
+
                 return _tabModuleSettings;
             }
         }
@@ -527,15 +531,14 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (_parentTab == null)
                 {
-                    var tabCtrl = new TabController();
                     if (PortalID == Null.NullInteger || string.IsNullOrEmpty(CultureCode))
                     {
-                        _parentTab = tabCtrl.GetTab(TabID, PortalID, false);
+                        _parentTab = TabController.Instance.GetTab(TabID, PortalID, false);
                     }
                     else
                     {
                         Locale locale = LocaleController.Instance.GetLocale(CultureCode);
-                        _parentTab = tabCtrl.GetTabByCulture(TabID, PortalID, locale);
+                        _parentTab = TabController.Instance.GetTabByCulture(TabID, PortalID, locale);
                     }
                 }
                 return _parentTab;
@@ -1100,8 +1103,7 @@ namespace DotNetNuke.Entities.Modules
             AllModules = Null.NullBoolean;
             if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
             {
-                var objModules = new ModuleController();
-                ModuleInfo objModule = objModules.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+                ModuleInfo objModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
                 if (objModule != null)
                 {
                     Alignment = objModule.Alignment;

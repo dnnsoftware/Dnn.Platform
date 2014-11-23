@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -178,6 +178,36 @@ namespace DotNetNuke.Tests.Core.Collections
             var value = collection.GetValueOrDefault<DateTime>("startDate");
 
             Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+        }
+
+        [Test]
+        public void get_null_string_without_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValue<string>("app id");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_null_string_with_default()
+        {
+            var collection = new Dictionary<string, string> { { "app id", null } };
+
+            var value = collection.GetValueOrDefault("app id", "a default value");
+
+            Expect(value, Is.Null);
+        }
+
+        [Test]
+        public void get_nullable_datetime()
+        {
+            var collection = new Dictionary<string, DateTime?> { { "startDate", null } };
+
+            var value = collection.GetValue<DateTime?>("startDate");
+
+            Expect(value, Is.Null);
         }
 
         [Test]

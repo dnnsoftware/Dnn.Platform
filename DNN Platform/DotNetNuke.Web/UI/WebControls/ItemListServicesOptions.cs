@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -7,6 +6,9 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class ItemListServicesOptions
     {
+
+        [DataMember(Name = "moduleId")]
+        public string ModuleId = string.Empty;
 
         [DataMember(Name = "serviceRoot")]
         public string ServiceRoot;

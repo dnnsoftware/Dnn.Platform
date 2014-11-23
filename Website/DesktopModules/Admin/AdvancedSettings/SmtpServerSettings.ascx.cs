@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Globalization;
 using System.Text;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
@@ -39,6 +40,8 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
         private void BindData()
         {
             txtSMTPServer.Text = Entities.Host.Host.SMTPServer;
+            txtConnectionLimit.Text = Entities.Host.Host.SMTPConnectionLimit.ToString(CultureInfo.InvariantCulture);
+            txtMaxIdleTime.Text = Entities.Host.Host.SMTPMaxIdleTime.ToString(CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(Entities.Host.Host.SMTPAuthentication))
             {
                 optSMTPAuthentication.Items.FindByValue(Entities.Host.Host.SMTPAuthentication).Selected = true;
@@ -140,6 +143,8 @@ namespace DotNetNuke.Modules.Admin.AdvancedSettings
                     && !SecurityPolicy.HasAspNetHostingPermission();
 
             HostController.Instance.Update("SMTPServer", txtSMTPServer.Text, false);
+            HostController.Instance.Update("SMTPConnectionLimit", txtConnectionLimit.Text, false);
+            HostController.Instance.Update("SMTPMaxIdleTime", txtMaxIdleTime.Text, false);
             HostController.Instance.Update("SMTPAuthentication", optSMTPAuthentication.SelectedItem.Value, false);
             HostController.Instance.Update("SMTPUsername", txtSMTPUsername.Text, false);
             HostController.Instance.UpdateEncryptedString("SMTPPassword", txtSMTPPassword.Text, Config.GetDecryptionkey());

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,7 +31,6 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -56,13 +55,13 @@ namespace DotNetNuke.Modules.Admin.Sitemap
 			//core settings
 			chkLevelPriority.Checked = bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", PortalId, "False"));
             var minPriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1"), NumberFormatInfo.InvariantInfo);
-            txtMinPagePriority.Text = minPriority.ToString();
+            txtMinPagePriority.Text = minPriority.ToString(CultureInfo.InvariantCulture);
 
             chkIncludeHidden.Checked = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", PortalId, "False"));
 
             //General settings
             var excludePriority = float.Parse(PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1"), NumberFormatInfo.InvariantInfo);
-            txtExcludePriority.Text = excludePriority.ToString();
+            txtExcludePriority.Text = excludePriority.ToString(CultureInfo.InvariantCulture);
 
             cmbDaysToCache.SelectedIndex = Int32.Parse(PortalController.GetPortalSetting("SitemapCacheDays", PortalId, "1"));
         }
@@ -71,12 +70,12 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         {
             PortalController.UpdatePortalSetting(PortalId, "SitemapLevelMode", chkLevelPriority.Checked.ToString());
 
-            if (float.Parse(txtMinPagePriority.Text) < 0)
+            if (float.Parse(txtMinPagePriority.Text, NumberFormatInfo.InvariantInfo) < 0)
             {
                 txtMinPagePriority.Text = "0";
             }
 
-            var minPriority = float.Parse(txtMinPagePriority.Text);
+            var minPriority = float.Parse(txtMinPagePriority.Text, NumberFormatInfo.InvariantInfo);
 
             PortalController.UpdatePortalSetting(PortalId, "SitemapMinPriority", minPriority.ToString(NumberFormatInfo.InvariantInfo));
         }
@@ -99,7 +98,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
         private bool IsChildPortal(PortalSettings ps, HttpContext context)
         {
             var isChild = false;
-            var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
+            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(ps.PortalId).ToList();
             var serverPath = Globals.GetAbsoluteServerPath(context.Request);
 
             if (arr.Count > 0)
@@ -225,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Sitemap
 
             PortalController.UpdatePortalSetting(PortalId, "SitemapIncludeHidden", chkIncludeHidden.Checked.ToString());
 
-            float excludePriority = float.Parse(txtExcludePriority.Text);
+            float excludePriority = float.Parse(txtExcludePriority.Text, NumberFormatInfo.InvariantInfo);
             PortalController.UpdatePortalSetting(PortalId, "SitemapExcludePriority", excludePriority.ToString(NumberFormatInfo.InvariantInfo));
 
             if ((cmbDaysToCache.SelectedIndex == 0))

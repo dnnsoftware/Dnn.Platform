@@ -1,8 +1,8 @@
 // 
-// *NOTE: Please manage your content in the  associated [CONTROL].html file in this folder
+// *NOTE: Please manage your content in the  associated _CONTROL_.html file in this folder
 // 
 
-<%@ Control Language="C#" ClassName="[OWNER].[MODULE].[CONTROL]" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
+<%@ Control Language="C#" ClassName="_OWNER_._MODULE_._CONTROL_" Inherits="DotNetNuke.Entities.Modules.PortalModuleBase" %>
 
 <%@ Import Namespace="System.IO" %>
 
@@ -12,8 +12,8 @@
 	#region Copyright
 
 	// 
-	// Copyright (c) [YEAR]
-	// by [OWNER]
+	// Copyright (c) _YEAR_
+	// by _OWNER_
 	// 
 
 	#endregion
@@ -36,7 +36,7 @@
 		if (!Page.IsPostBack)
 		{
                         //Load the HTML file
-			var path = Server.MapPath(ModulePath) + "[CONTROL].html";
+			var path = Server.MapPath(ModulePath) + "_CONTROL_.html";
 			if (File.Exists(path))
 			{
   			    var content = Null.NullString;

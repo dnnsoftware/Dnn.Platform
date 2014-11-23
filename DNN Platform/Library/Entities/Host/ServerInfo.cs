@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,13 +42,17 @@ namespace DotNetNuke.Entities.Host
         {
             IISAppName = Globals.IISAppName;
             ServerName = Globals.ServerName;
+            ServerGroup = String.Empty;
             CreatedDate = created;
             LastActivityDate = lastactivity;
+            Enabled = true;
         }
 
         public int ServerID { get; set; }
 
         public string IISAppName { get; set; }
+
+        public string ServerGroup { get; set; }
 
         public string ServerName { get; set; }
 
@@ -59,6 +63,10 @@ namespace DotNetNuke.Entities.Host
         public DateTime CreatedDate { get; set; }
 
         public DateTime LastActivityDate { get; set; }
+
+        public int PingFailureCount { get; set; }
+
+        public string UniqueId { get; set; }
 
         #region IHydratable Members
 
@@ -80,6 +88,23 @@ namespace DotNetNuke.Entities.Host
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
             LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
+
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'PingFailureCount'").Length > 0)
+                {
+                    PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+                }
+                if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
+                {
+                    ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                }
+                if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
+                {
+                    UniqueId = Null.SetNullString(dr["UniqueId"]);
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,8 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Internal;
 using DotNetNuke.Entities.Portals.Data;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
@@ -46,7 +48,7 @@ namespace DotNetNuke.Entities.Portals
         #region Constructors
 
         public PortalGroupController()
-            : this(DataService.Instance, new PortalController())
+            : this(DataService.Instance, PortalController.Instance)
         {
         }
 
@@ -161,8 +163,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     userNo += 1;
 
-                    //move user to master portal
-                    UserController.CopyUserToPortal(user, masterPortal, true, true);
+                    UserController.MoveUserToPortal(user, masterPortal, true);
 
                     OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
                 }
@@ -170,7 +171,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (masterUsers.Count > 0)
             {
-                var autoAssignRoles = TestableRoleController.Instance.GetRoles(portal.PortalID,
+                var autoAssignRoles = RoleController.Instance.GetRoles(portal.PortalID,
                                                                                role =>
                                                                                role.AutoAssignment &&
                                                                                role.Status == RoleStatus.Approved);
@@ -179,9 +180,7 @@ namespace DotNetNuke.Entities.Portals
                     userNo += 1;
                     foreach (var autoAssignRole in autoAssignRoles)
                     {
-                        var roleController = new RoleController();
-                        roleController.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID,
-                                                   Null.NullDate, Null.NullDate);
+                        RoleController.Instance.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
                     OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
                 }
@@ -193,7 +192,7 @@ namespace DotNetNuke.Entities.Portals
 
             //Add portal to group
             portal.PortalGroupID = portalGroup.PortalGroupId;
-            _portalController.UpdatePortalInfo(portal);
+            PortalController.Instance.UpdatePortalInfo(portal);
 
             OnAddPortalToGroupFinished(callback, portal, portalGroup, users.Count);
         }
@@ -206,12 +205,37 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        private void DeleteSharedModules(PortalInfo portal)
+        {
+            var sharedModules = GetSharedModulesWithPortal(portal);
+            foreach (var sharedModule in sharedModules)
+            {
+                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);                
+            }
+
+            sharedModules = GetSharedModulesByPortal(portal);
+            foreach (var sharedModule in sharedModules)
+            {
+                ModuleController.Instance.DeleteTabModule(sharedModule.TabID, sharedModule.ModuleID, false);
+            }
+        }
+
+        private IEnumerable<ModuleInfo> GetSharedModulesWithPortal(PortalInfo portal)
+        {
+            return CBO.FillCollection<ModuleInfo>(_dataService.GetSharedModulesWithPortal(portal));
+        }
+
+        private IEnumerable<ModuleInfo> GetSharedModulesByPortal(PortalInfo portal)
+        {
+            return CBO.FillCollection<ModuleInfo>(_dataService.GetSharedModulesByPortal(portal));
+        } 
+
         public int AddPortalGroup(PortalGroupInfo portalGroup)
         {
             //Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
 
-            portalGroup.PortalGroupId = _dataService.AddPortalGroup(portalGroup, UserController.GetCurrentUserInfo().UserID);
+            portalGroup.PortalGroupId = _dataService.AddPortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Update portal
             var portal = _portalController.GetPortal(portalGroup.MasterPortalId);
@@ -236,8 +260,9 @@ namespace DotNetNuke.Entities.Portals
             var portal = _portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
+                DeleteSharedModules(portal);
                 portal.PortalGroupID = -1;
-                _portalController.UpdatePortalInfo(portal);
+                PortalController.Instance.UpdatePortalInfo(portal);
             }
 
             _dataService.DeletePortalGroup(portalGroup);
@@ -255,8 +280,7 @@ namespace DotNetNuke.Entities.Portals
 
         public IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId)
         {
-            var controller = new PortalController();
-            var portals = controller.GetPortals();
+            var portals = PortalController.Instance.GetPortals();
 
             return portals.Cast<PortalInfo>()
                             .Where(portal => portal.PortalGroupID == portalGroupId)
@@ -284,8 +308,9 @@ namespace DotNetNuke.Entities.Portals
             callback(args);
 
             //Remove portal from group
+            DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
-            _portalController.UpdatePortalInfo(portal);
+            PortalController.Instance.UpdatePortalInfo(portal);
 
             var userNo = 0;
             if (copyUsers)
@@ -295,8 +320,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     userNo += 1;
 
-                    //Copy user to portal
-                    UserController.CopyUserToPortal(masterUser, portal, false, false);
+                    UserController.CopyUserToPortal(masterUser, portal, false);
 
                     //Callback to update progress bar
                     args = new UserCopiedEventArgs
@@ -313,15 +337,12 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 //Get admin users
-                var roleController = new RoleController();
-                var adminUsers = roleController.GetUsersByRoleName(Null.NullInteger, portal.AdministratorRoleName)
-                    .Cast<UserInfo>()
-                    .Where(u => roleController.GetUserRole(portal.PortalID, u.UserID, portal.AdministratorRoleId) != null);
+                var adminUsers = RoleController.Instance.GetUsersByRole(Null.NullInteger, portal.AdministratorRoleName)
+                    .Where(u => RoleController.Instance.GetUserRole(portal.PortalID, u.UserID, portal.AdministratorRoleId) != null);
 
                 foreach (var user in adminUsers)
                 {
-                    //Copy Administrator to portal
-                    UserController.CopyUserToPortal(user, portal, false, false);
+                    UserController.CopyUserToPortal(user, portal, false);
 
                     //Callback to update progress bar
                     args = new UserCopiedEventArgs
@@ -354,9 +375,15 @@ namespace DotNetNuke.Entities.Portals
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 
-            _dataService.UpdatePortalGroup(portalGroup, UserController.GetCurrentUserInfo().UserID);
+            _dataService.UpdatePortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearCache();
+        }
+        
+        public bool IsModuleShared(int moduleId, PortalInfo portal)
+        {
+            if (portal == null) return false;
+            return GetSharedModulesWithPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted) || GetSharedModulesByPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted);
         }
 
         #endregion

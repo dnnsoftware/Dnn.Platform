@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -91,6 +91,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             _dataService.DeleteMessageRecipientByMessageAndUser(messageId, userId);
         }
 
+        public virtual void DeleteUserFromConversation(int conversationId, int userId)
+        {
+            _dataService.DeleteUserFromConversation(conversationId, userId);
+        }
+
         public virtual Message GetMessage(int messageId)
         {
             return CBO.FillObject<Message>(_dataService.GetMessage(messageId));
@@ -132,7 +137,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs)
         {
-            return ReplyMessage(conversationId, body, fileIDs, UserController.GetCurrentUserInfo());
+            return ReplyMessage(conversationId, body, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender)
@@ -153,6 +158,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
 
+
             //Profanity Filter
             var profanityFilterSetting = GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
             if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
@@ -172,7 +178,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = messageId }))
                 {
-                    _dataService.SaveMessageAttachment(attachment, UserController.GetCurrentUserInfo().UserID);
+                    _dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
 
@@ -328,6 +334,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Counter APIs
 
+        public virtual int CheckReplyHasRecipients(int conversationId, int userId)
+        {
+            return _dataService.CheckReplyHasRecipients(conversationId, userId);
+        }
+
         public virtual int CountArchivedMessagesByConversation(int conversationId)
         {
             return _dataService.CountArchivedMessagesByConversation(conversationId);
@@ -357,6 +368,16 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             return _dataService.CountArchivedMessages(userId, portalId);
         }
+
+        public virtual int CountSentConversations(int userId, int portalId)
+        {
+            return _dataService.CountSentConversations(userId, portalId);
+        }
+
+        public virtual int CountArchivedConversations(int userId, int portalId)
+        {
+            return _dataService.CountArchivedConversations(userId, portalId);
+        }
         
         #endregion
 
@@ -369,7 +390,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual UserInfo GetCurrentUserInfo()
         {
-            return UserController.GetCurrentUserInfo();
+            return UserController.Instance.GetCurrentUserInfo();
         }
 
         internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
@@ -384,7 +405,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(TestablePortalSettings.Instance.AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
 
         internal virtual string InputFilter(string input)

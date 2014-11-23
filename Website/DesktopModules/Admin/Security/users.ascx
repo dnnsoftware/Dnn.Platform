@@ -6,7 +6,6 @@
         <asp:textbox id="txtSearch" Runat="server" CssClass="dnnUserSearchInput dnnFixedSizeComboBox" />
         <dnn:DnnComboBox id="ddlSearchType" Runat="server" CssClass="dnnUsersSearchFilter dnnFixedSizeComboBox" />
         <asp:LinkButton ID="cmdSearch" runat="server" resourcekey="Search" CssClass="dnnSecondaryAction dnnUsersSearchFilter" />        
-        <asp:HyperLink runat="server" ID="AddUserLink" CssClass="dnnSecondaryAction dnnUsersSearchFilter dnnRight" OnPreRender="SetupAddUserLink" />
     </div>
     <div class="dnnClear" ></div>
     <ul class="uLetterSearch dnnClear">
@@ -77,26 +76,28 @@
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
                 </Columns>
+                <PagerStyle AlwaysVisible="true" PageButtonCount="6" Mode="NextPrevAndNumeric"/>
+
             </MasterTableView>
         </dnn:DNNGrid>
     </div>
         <ul class="dnnActions dnnClear">
-        <li><dnn:ActionLink id="addUser" runat="Server" ControlKey="Edit" resourcekey ="AddContent.Action" /></li>
-		<li><asp:LinkButton id="cmdRemoveDeleted" runat="server" CssClass="dnnSecondaryAction" resourcekey="RemoveDeleted.Action" /></li>
-		<li><asp:LinkButton id="cmdDeleteUnAuthorized" runat="server" CssClass="dnnSecondaryAction" resourcekey="DeleteUnAuthorized.Action" /></li>
+        <li><asp:HyperLink id="addUserButton" runat="Server" CssClass="dnnPrimaryAction" resourcekey ="AddContent.Action" Visible="false" /></li>
+		<li><asp:LinkButton id="removeDeletedButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="RemoveDeleted.Action" Visible="false" /></li>
+		<li><asp:LinkButton id="deleteUnAuthorizedButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="DeleteUnAuthorized.Action" Visible="false" /></li>
 	</ul>
 </div>
 <script language="javascript" type="text/javascript">
     /*globals jQuery, window, Sys */
     (function ($, Sys) {
         function setUpDnnUsers() {
-            $('#<%= cmdDeleteUnAuthorized.ClientID %>').dnnConfirm({
+            $('#<%= deleteUnAuthorizedButton.ClientID %>').dnnConfirm({
                 text: '<%= Localization.GetSafeJSString("DeleteItems.Text", Localization.SharedResourceFile) %>',
                 yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                 noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
                 title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
             });
-            $('#<%= cmdRemoveDeleted.ClientID %>').dnnConfirm({
+            $('#<%= removeDeletedButton.ClientID %>').dnnConfirm({
                 text: '<%= Localization.GetSafeJSString("RemoveItems.Confirm", Localization.SharedResourceFile) %>',
                 yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
                 noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
@@ -148,14 +149,16 @@
                             click: function () {
                                 $dnnDialog.dialog("close");
                                 $this.trigger("click", [true]);
-                            }
-                        },
+                            },
+                            'class': 'dnnPrimaryAction'
+            },
                         {
                             text: opts.noText,
                             click: function () {
                                 $(this).dialog("close");
-                            }
-                        }
+                            },
+                            'class': 'dnnSecondaryAction'
+        }
                     ]
                 });
                 $dnnDialog.dialog('open');

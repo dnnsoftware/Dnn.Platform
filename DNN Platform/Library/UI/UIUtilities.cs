@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins;
 
@@ -80,11 +81,10 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            var moduleController = new ModuleController();
             ModuleInfo slaveModule = null;
             if (moduleId != -1)
             {
-                ModuleInfo module = moduleController.GetModule(moduleId, tabId, false);
+                ModuleInfo module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                 if (module != null)
                 {
                     slaveModule = module.Clone();
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI
         {
             var request = HttpContext.Current.Request;
             var isLegacyUi = true;
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings != null)
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
@@ -172,6 +172,44 @@ namespace DotNetNuke.UI
             var moduleId = GetModuleId(key);
 
             return IsLegacyUI(moduleId, key, portalId);
+        }
+
+        internal static string GetLocalResourceFile(Control ctrl)
+        {
+            string resourceFileName = Null.NullString;
+
+            while (ctrl != null)
+            {
+                if (ctrl is UserControl)
+                {
+                    resourceFileName = string.Format("{0}/{1}/{2}.ascx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                    if ((File.Exists(ctrl.Page.Server.MapPath(resourceFileName))))
+                    {
+                        break;
+                    }
+                }
+
+                if (ctrl is IModuleControl)
+                {
+                    resourceFileName = ((IModuleControl)ctrl).LocalResourceFile;
+                    break;
+                }
+
+                if (ctrl is ControlPanelBase)
+                {
+                    resourceFileName = ((ControlPanelBase)ctrl).LocalResourceFile;
+                    break;
+                }
+
+                if (ctrl is Page)
+                {
+                    resourceFileName = string.Format("{0}/{1}/{2}.aspx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
+                }
+
+                ctrl = ctrl.Parent;
+            }
+
+            return resourceFileName;
         }
     }
 }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -126,6 +126,10 @@ namespace DotNetNuke.Services.Log.EventLog
                 if (dr["LogUserID"] != DBNull.Value)
                 {
                     obj.LogUserID = Convert.ToInt32(dr["LogUserID"]);
+                }
+                if (dr["LogEventID"] != DBNull.Value)
+                {
+                    obj.LogEventID = Convert.ToInt32(dr["LogEventID"]);
                 }
                 obj.LogTypeKey = Convert.ToString(dr["LogTypeKey"]);
                 obj.LogUserName = Convert.ToString(dr["LogUserName"]);
@@ -360,7 +364,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override LogTypeConfigInfo GetLogTypeConfigInfoByID(string id)
         {
-            return (LogTypeConfigInfo) CBO.FillObject(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)), typeof (LogTypeConfigInfo));
+            return CBO.FillObject<LogTypeConfigInfo>(DataProvider.Instance().GetLogTypeConfigInfoByID(Convert.ToInt32(id)));
         }
 
         public override ArrayList GetLogTypeInfo()

@@ -21,7 +21,7 @@
         this.element = element;
         this.options = options;
 
-        this.init();
+        this.valid = this.init();
     };
 
     InputComparer.prototype = {
@@ -39,15 +39,17 @@
 
             this._$firstElement = this.$element.find(this.options.firstElementSelector);
             if (this._$firstElement.length === 0) {
-                return;
+                return false;
             }
             this._$secondElement = this.$element.find(this.options.secondElementSelector);
             if (this._$secondElement.length === 0) {
-                return;
+                return false;
             }
             this._focusOutHandler = $.proxy(this._onFocusOut, this);
             this._$firstElement.on('focusout', this._focusOutHandler);
             this._$secondElement.on('focusout', this._focusOutHandler);
+
+            return true;
         },
 
         _onFocusOut: function (eventObject) {
@@ -125,6 +127,10 @@
 
             this._$container = $(this.options.containerSelector);
             this._comparer = new InputComparer(this._$container, this.options);
+            
+            if (!this._comparer.valid) {
+                return;
+            }
 
             var onCompareHandler = $.proxy(this._onCompare, this);
             $(this._comparer).bind("on-compare", onCompareHandler);

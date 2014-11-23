@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-                if ((Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+                if ((Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
                     return Int32.Parse(Page.Request.QueryString["pid"]);
                 }
@@ -230,7 +230,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return PortalController.GetCurrentPortalSettings();
+				return PortalController.Instance.GetCurrentPortalSettings();
 			}
 		}
 
@@ -628,7 +628,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		private bool IsUserFolder(string folderPath)
 		{
-            UserInfo user = User ?? UserController.GetCurrentUserInfo();
+            UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
             return (folderPath.ToLowerInvariant().StartsWith("users/") && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
 		}
 
@@ -651,7 +651,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </history>
 		private void LoadFolders()
 		{
-            UserInfo user = User ?? UserController.GetCurrentUserInfo();
+            UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
             _cboFolders.Items.Clear();
 
 			//Add Personal Folder
@@ -968,7 +968,7 @@ namespace DotNetNuke.Web.UI.WebControls
 						if (folder == null)
 						{
 							//Add User folder
-                            var user = User ?? UserController.GetCurrentUserInfo();
+                            var user = User ?? UserController.Instance.GetCurrentUserInfo();
                             //fix user's portal id
 						    user.PortalID = PortalId;
                             folder = ((FolderManager)folderManager).AddUserFolder(user);

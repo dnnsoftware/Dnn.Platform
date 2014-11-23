@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -51,14 +51,18 @@ namespace DotNetNuke.Services.Search.Internals
         private const string LastIndexKeyFormat = "{0}_{1}";
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/DesktopModules/Admin/SearchAdmin/App_LocalResources/SearchAdmin.ascx";
-        private readonly IList<string> EmptySynonums = new List<string>(0);
+        private readonly IList<string> _emptySynonums = new List<string>(0);
 
         #region SearchType APIs
 
         public IEnumerable<SearchType> GetSearchTypes()
         {
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SearchType>>(cachArg, GetSearchTypesCallBack);
+            return CBO.GetCachedObject<IList<SearchType>>(cachArg,
+                delegate
+                {
+                    return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
+                });
         }
 
         public SearchType GetSearchTypeByName(string searchTypeName)
@@ -83,7 +87,7 @@ namespace DotNetNuke.Services.Search.Internals
             IList<string> synonyms;
             if (terms == null || !terms.TryGetValue((term ?? string.Empty).ToLower(), out synonyms))
             {
-                synonyms = EmptySynonums;
+                synonyms = _emptySynonums;
             }
             return synonyms;
         }
@@ -224,18 +228,10 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime GetSearchReindexRequestTime(int portalId)
         {
             var requestedOn = SqlDateTime.MinValue.Value;
-            string reindexRequest;
 
-            if (portalId < 0)
-            {
-                // host level setting
-                reindexRequest = HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString);
-            }
-            else
-            {
-                // portal level setting
-                reindexRequest = PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString);
-            }
+            var reindexRequest = portalId < 0
+                ? HostController.Instance.GetString(Constants.SearchReindexSettingName, Null.NullString) // host level setting
+                : PortalController.GetPortalSetting(Constants.SearchReindexSettingName, portalId, Null.NullString); // portal level setting
 
             if (reindexRequest != Null.NullString)
             {
@@ -290,7 +286,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns></returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
-            var portals2Reindex = new PortalController().GetPortals().Cast<PortalInfo>()
+            var portals2Reindex = PortalController.Instance.GetPortals().Cast<PortalInfo>()
                 .Where(portal => IsReindexRequested(portal.PortalID, startDate))
                 .Select(portal => portal.PortalID);
 
@@ -340,8 +336,9 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (minWordLength > maxWordLength)
             {
+                var exceptionMessage = Localization.Localization.GetExceptionMessage("SearchAnalyzerMinWordLength", "Search Analyzer: min word length ({0}) is greater than max word length ({1}) value");
                 throw new InvalidDataException(
-                    string.Format("Search Analyzer: min word length ({0}) is greater than max wrod length ({1}) value", minWordLength, maxWordLength));
+                    string.Format(exceptionMessage, minWordLength, maxWordLength));
             }
 
             return new Tuple<int, int>(minWordLength, maxWordLength);
@@ -378,7 +375,7 @@ namespace DotNetNuke.Services.Search.Internals
                         insideQuote = !insideQuote;
                         if (!insideQuote)
                         {
-                            newPhraseBulder.Append(currentWord.ToString() + " ");
+                            newPhraseBulder.Append(currentWord + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -397,7 +394,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (insideQuote)
             {
                 currentWord.Append('"');
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
             else if (useWildCard)
             {
@@ -405,7 +402,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else
             {
-                newPhraseBulder.Append(currentWord.ToString());
+                newPhraseBulder.Append(currentWord);
             }
 
             return newPhraseBulder.ToString().Trim().Replace("  ", " ");
@@ -551,11 +548,6 @@ namespace DotNetNuke.Services.Search.Internals
             return allTerms;
         }
 
-        private object GetSearchTypesCallBack(CacheItemArgs cacheItem)
-        {
-            return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
-        }
-
         private object GetSearchStopWordsCallBack(CacheItemArgs cacheItem)
         {
             var splittedKeys = cacheItem.CacheKey.Split('_');
@@ -575,7 +567,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (PortalController.GetPortalSetting(setting, portalId, "false") != "false") return;
             
             //Portal may not be present, especially during installation
-            if (new PortalController().GetPortal(portalId) == null) return;
+            if (PortalController.Instance.GetPortal(portalId) == null) return;
 
             foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {

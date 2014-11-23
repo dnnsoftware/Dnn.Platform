@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -65,9 +65,9 @@ namespace DesktopModules.Admin.Security
 
         private void BindData()
         {
-            var roles = _roleGroupId < -1 
-                                ? TestableRoleController.Instance.GetRoles(PortalId) 
-                                : TestableRoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == _roleGroupId);
+            var roles = _roleGroupId < -1
+                                ? RoleController.Instance.GetRoles(PortalId)
+                                : RoleController.Instance.GetRoles(PortalId, r => r.RoleGroupID == _roleGroupId);
             grdRoles.DataSource = roles;
 
             if (_roleGroupId < 0)
@@ -134,7 +134,7 @@ namespace DesktopModules.Admin.Security
 
             var ctlEntry = new ListController();
             ListEntryInfo entry = ctlEntry.GetListEntryInfo("Frequency", frequency);
-            return entry.Text;
+            return entry != null ? entry.Text : frequency;
         }
 
         #endregion

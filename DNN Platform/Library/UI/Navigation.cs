@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -354,7 +354,7 @@ namespace DotNetNuke.UI
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
                                        int intDepth, int intNavNodeOptions)
         {
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             DNNNodeCollection objRootNodes = objRootNode.DNNNodes;
 
@@ -435,19 +435,14 @@ namespace DotNetNuke.UI
           return CanShowTab(objTab, isAdminMode, showDisabled, showHidden);
         }
 
-        public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled, bool showHidden)
+        public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
         {
 			//if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
-            if ((objTab.IsVisible || showHidden) && !objTab.IsDeleted && (!objTab.DisableLink || showDisabled) &&
-                (((objTab.StartDate < DateTime.Now || objTab.StartDate == Null.NullDate) && (objTab.EndDate > DateTime.Now || objTab.EndDate == Null.NullDate)) || isAdminMode) &&
-                TabPermissionController.CanNavigateToPage(objTab))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return ((tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
+                    (!tab.DisableLink || showDisabled) &&
+                    (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
+                      (tab.EndDate > DateTime.Now || tab.EndDate == Null.NullDate)) || isAdminMode) &&
+                    TabPermissionController.CanNavigateToPage(tab));
         }
 
         /// -----------------------------------------------------------------------------
@@ -649,8 +644,7 @@ namespace DotNetNuke.UI
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
             int i;
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
-            bool blnFoundStart = intStartTabId == -1;
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();
@@ -663,7 +657,6 @@ namespace DotNetNuke.UI
                 objBreadCrumbs.Add(((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID, 1);
                 intLastBreadCrumbId = ((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID;
             }
-            var objTabController = new TabController();
             List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
             List<TabInfo> hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
             foreach (TabInfo objTab in portalTabs)

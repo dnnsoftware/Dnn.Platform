@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -203,11 +203,11 @@ namespace DotNetNuke.UI.UserControls
 
         public bool NewWindow
         {
-            get 
+            get
             {
                 return chkNewWindow.Visible && chkNewWindow.Checked;
             }
-            set 
+            set
             {
                 chkNewWindow.Checked = chkNewWindow.Visible && value;
             }
@@ -582,7 +582,7 @@ namespace DotNetNuke.UI.UserControls
             set
             {
                 ViewState["Url"] = value;
-				txtUrl.Text = string.Empty;
+                txtUrl.Text = string.Empty;
 
                 if (IsTrackingViewState)
                 {
@@ -717,7 +717,7 @@ namespace DotNetNuke.UI.UserControls
                 string TrackingUrl = _Url;
 
                 _Urltype = Globals.GetURLType(_Url).ToString("g").Substring(0, 1);
-                if (_Urltype == "U" && (_Url.StartsWith("~/" + IconController.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
+                if (_Urltype == "U" && (_Url.StartsWith("~/" + PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     _Urltype = "I";
                 }
@@ -982,11 +982,11 @@ namespace DotNetNuke.UI.UserControls
 
                         cboImages.Items.Clear();
 
-                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, IconController.DefaultIconLocation.Replace('/', '\\'));
+                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
-                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", IconController.DefaultIconLocation, img).ToLower()));
+                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", PortalSettings.DefaultIconLocation, img).ToLower()));
                         }
 
                         ListItem selecteItem = cboImages.Items.FindByValue(_Url.ToLower());
@@ -1027,7 +1027,7 @@ namespace DotNetNuke.UI.UserControls
 
                         cboTabs.Items.Clear();
 
-                        PortalSettings _settings = PortalController.GetCurrentPortalSettings();
+                        PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                         cboTabs.DataSource = TabController.GetPortalTabs(_settings.PortalId, Null.NullInteger, !Required, "none available", true, false, false, true, false);
                         cboTabs.DataBind();
                         if (cboTabs.Items.FindByValue(_Url) != null)
@@ -1216,14 +1216,13 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                var objPortals = new PortalController();
-                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.GetCurrentUserInfo().IsSuperUser))
+                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    _objPortal = objPortals.GetPortal(Int32.Parse(Request.QueryString["pid"]));
+                    _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
                 }
                 else
                 {
-                    _objPortal = objPortals.GetPortal(PortalSettings.PortalId);
+                    _objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 }
                 if (ViewState["IsUrlControlLoaded"] == null)
                 {
@@ -1423,7 +1422,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     fileManager.AddFile(folder, fileName, txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
                 }
-                catch (PermissionsNotMetException)
+                catch (Services.FileSystem.PermissionsNotMetException)
                 {
                     lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     ErrorRow.Visible = true;

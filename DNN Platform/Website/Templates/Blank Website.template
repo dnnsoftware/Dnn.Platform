@@ -584,254 +584,6 @@
     </rolegroup>
   </rolegroups>
   <tabs>
-    <tab >
-      <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-      <description>
-      </description>
-      <disabled>false</disabled>
-      <enddate>0001-01-01T00:00:00</enddate>
-      <issecure>false</issecure>
-      <visible>false</visible>
-      <keywords>
-      </keywords>
-      <pageheadtext>
-      </pageheadtext>
-      <permanentredirect>false</permanentredirect>
-      <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
-      <skinsrc>[G]Skins/Gravity/2-Col.ascx</skinsrc>
-      <startdate>0001-01-01T00:00:00</startdate>
-      <name>Getting Started</name>
-      <title>[Tab.GettingStarted.Title.Text]</title>
-      <url type="Normal" />
-      <tabtype>gettingStartedTab</tabtype>
-      <tabpermissions>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>All Users</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>VIEW</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-        <permission>
-          <permissioncode>SYSTEM_TAB</permissioncode>
-          <permissionkey>EDIT</permissionkey>
-          <allowaccess>true</allowaccess>
-          <rolename>Administrators</rolename>
-        </permission>
-      </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CustomStylesheet</settingname>
-          <settingvalue>GettingStarted.css</settingvalue>
-        </tabsetting>
-      </tabsettings>
-      <panes>
-        <pane>
-          <name>ContentPane</name>
-          <modules>
-            <module>
-              <moduleID>514</moduleID>
-              <title>[Tab.GettingStarted.Title.Text]</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>1200</cachetime>
-              <cachemethod>FileModuleCachingProvider</cachemethod>
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc>[G]Containers/Gravity/Title_h2.ascx</containersrc>
-              <displaytitle>true</displaytitle>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <content type="DNNHTML" version="06.02.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;&lt;![CDATA[
-&lt;p id=&quot;GettingStartedHeader&quot;&gt;
-    [Tab.GettingStarted.Header.Module.Title.Text]
-&lt;/p&gt;
-&lt;div id=&quot;GettingStartedLeftPanel&quot;&gt;
-      &lt;div id=&quot;slides&quot; class=&quot;slides&quot;&gt;
-          &lt;div class=&quot;slides_container&quot;&gt;            
-              &lt;div class=&quot;slide&quot;&gt;
-                  &lt;div&gt;
-                      &lt;h5 class=&quot;SubHead&quot;&gt;What&#39;s new with 7.0&lt;/h5&gt;
-                      &lt;p style=&quot;width: 275px; height: 150px; background-color: black;&quot;&gt;
-                          &lt;iframe id=&quot;whatsNewVideo&quot; width=&quot;275&quot; frameborder=&quot;0&quot; style=&quot;display: none;&quot; src=&quot;http://www.dotnetnuke.com/Resources/Video-Library/7.0/WhatsNew.aspx?v=7.0.0&quot;
-                              onload=&quot;javascript:$(&#39;#whatsNewVideo&#39;).show()&quot;&gt;&lt;/iframe&gt;
-                      &lt;/p&gt;
-                      &lt;p&gt;
-                          [Tab.GettingStarted.LeftPane.Module.Content.2.Text]&lt;/p&gt;
-                      &lt;p&gt;
-                          &lt;a class=&quot;videolink&quot; target=&quot;_blank&quot; href=&quot;http://www.dotnetnuke.com/Resources/Video-Library/7.0/WhatsNew.aspx?v=7.0.0&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.3.Text]&lt;/a&gt;&lt;/p&gt;
-                  &lt;/div&gt;
-                  &lt;div&gt;
-                      &lt;h5 class=&quot;SubHead&quot;&gt;Learn the basics of working with DNN&lt;/h5&gt;
-                      &lt;p style=&quot;width: 275px; height: 150px; background-color: black;&quot;&gt;
-                          &lt;iframe id=&quot;introVideo&quot; width=&quot;275&quot; frameborder=&quot;0&quot; style=&quot;display: none;&quot; src=&quot;http://www.dotnetnuke.com/Resources/Video-Library/7.0/introduction.aspx?v=7.0.0&quot;
-                              onload=&quot;javascript:$(&#39;#introVideo&#39;).show()&quot;&gt;&lt;/iframe&gt;
-                      &lt;/p&gt;
-                      &lt;p&gt;
-                          [Tab.GettingStarted.LeftPane.Module.Content.0.Text]&lt;/p&gt;
-                      &lt;p&gt;
-                          &lt;a class=&quot;videolink&quot;  target=&quot;_blank&quot; href=&quot;http://www.dotnetnuke.com/Resources/Video-Library/7.0/introduction.aspx?v=7.0.0&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.1.Text]&lt;/a&gt;&lt;/p&gt;
-                  &lt;/div&gt;
-              &lt;/div&gt;
-              &lt;div class=&quot;slide&quot;&gt;
-                  &lt;div id=&quot;Presonalize&quot; class=&quot;presonalize&quot;&gt;
-                      &lt;h5 class=&quot;SubHead&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.4.Text]&lt;/h5&gt;
-                      &lt;p /&gt;&lt;p /&gt;
-                      &lt;p&gt;[Tab.GettingStarted.LeftPane.Module.Content.5.Text]
-                      &lt;br /&gt;[Tab.GettingStarted.LeftPane.Module.Content.6.Text]
-                      &lt;/p&gt;
-                      &lt;h5 class=&quot;SubHead&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.7.Text]&lt;/h5&gt;
-                      &lt;span class=&quot;storeImage&quot;&gt;
-                          &lt;a class=&quot;storeSkins&quot; href=&quot;http://store.dotnetnuke.com/skins&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
-                      &lt;/span&gt;                    
-                      &lt;div class=&quot;storeInfo&quot;&gt;
-                          &lt;h6 class=&quot;visitStoreLink&quot;&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://store.dotnetnuke.com/skins&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.8.Text]&lt;/a&gt;&lt;/h6&gt;
-                          [Tab.GettingStarted.LeftPane.Module.Content.9.Text]
-                      &lt;/div&gt;
-                      &lt;span class=&quot;storeImage&quot;&gt;
-                          &lt;a class=&quot;storeModules&quot; href=&quot;http://store.dotnetnuke.com/modules&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;
-                      &lt;/span&gt;
-                      &lt;div class=&quot;storeInfo&quot;&gt;
-                          &lt;h6 class=&quot;visitStoreLink&quot;&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://store.dotnetnuke.com/modules&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.10.Text]&lt;/a&gt;&lt;/h6&gt;
-                          [Tab.GettingStarted.LeftPane.Module.Content.11.Text]
-                      &lt;/div&gt;
-                      &lt;hr /&gt;
-                      &lt;h6 class=&quot;visitStoreLink&quot;&gt;&lt;a class=&quot;visitStore&quot; target=&quot;_blank&quot; href=&quot;http://store.dotnetnuke.com/&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.12.Text]&lt;/a&gt;&lt;/h6&gt;
-                  &lt;/div&gt;     
-                  &lt;div id=&quot;Sponsors&quot; class=&quot;sponsors&quot;&gt;
-                      &lt;h5 class=&quot;SubHead sponsors&quot;&gt;[Tab.GettingStarted.LeftPane.Module.Content.13.Text]&lt;/h5&gt;&lt;br /&gt;                       
-                      &lt;a target=&quot;_blank&quot; class=&quot;&quot; href=&quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=24&amp;amp;VendorId=21&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;ASP.net&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;maxasp&quot; href=&quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=35&amp;amp;VendorId=49&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;CBeyond Cloud Services - Smart Hosting, Smart Choices&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;telerik&quot; href=&quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=73&amp;amp;VendorId=63&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Telerik - Deliver more than expected&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;exacttarget&quot; href=&quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=78&amp;amp;VendorId=66&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Exact Target&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;winlive&quot; href=&quot;http://www.dotnetnuke.com/Admin/Vendors/BannerClickThrough.aspx?BannerId=629&amp;amp;VendorId=21&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Windows Live - Click here for developer resources&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;redgate&quot; href=&quot;http://www.dotnetnuke.com/DesktopModules/Admin/Banners/BannerClickThrough.aspx?BannerId=29&amp;amp;VendorId=42&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Redgate&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;appliedi&quot; href=&quot;https://www.dotnetnuke.com/DesktopModules/Admin/Banners/BannerClickThrough.aspx?BannerId=1386&amp;amp;VendorId=143&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Applied Innovations - Hosting with freedom to grow&quot; /&gt;&lt;/a&gt;
-                      &lt;a target=&quot;_blank&quot; class=&quot;arrowdesign&quot; href=&quot;https://www.dotnetnuke.com/DesktopModules/Admin/Banners/BannerClickThrough.aspx?BannerId=1487&amp;amp;VendorId=155&amp;amp;PortalId=25&quot;&gt;&lt;img src=&quot;../../Images/Spacer.gif&quot; alt=&quot;Arrow Consulting &amp;amp; Design&quot; /&gt;&lt;/a&gt;
-                  &lt;/div&gt;                
-              &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div class=&quot;slidePrevNext&quot;&gt;
-            &lt;a href=&quot;#&quot; class=&quot;prev&quot;&gt;&lt;img src=&quot;../../images/arrow-left.png&quot; alt=&quot;&quot;&gt;&lt;/a&gt;
-                &lt;ul class=&quot;pagination&quot;&gt;
-                    &lt;li class=&quot;&quot;&gt;&lt;a href=&quot;#0&quot;&gt;1&lt;/a&gt;&lt;/li&gt;
-                    &lt;li class=&quot;&quot;&gt;&lt;a href=&quot;#1&quot;&gt;2&lt;/a&gt;&lt;/li&gt;                    
-                &lt;/ul&gt;
-            &lt;a href=&quot;#&quot; class=&quot;next&quot;&gt;&lt;img src=&quot;../../images/arrow-right.png&quot; alt=&quot;&quot;&gt;&lt;/a&gt;
-      &lt;/div&gt;
-  &lt;/div&gt;   
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&quot;GettingStartedRightPanel&quot;&gt;
-    &lt;h5 class=&quot;SubHead&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.0.Text]&lt;/h5&gt;
-    &lt;p&gt;[Tab.GettingStarted.RightPane.Module.Content.1.Text]&lt;/p&gt;
-    &lt;p&gt;
-    &lt;a href=&quot;javascript:GettingStartedNS.showModal(pageCurrentPortalAliasUrl+&#39;/Admin/AdvancedSettings.aspx?popUp=true&amp;src=gettingStarted&#39;);&quot; id=&quot;btnSetAdvancedSettigns&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.2.Text]&lt;/a&gt;&lt;/p&gt;
-    &lt;hr class=&quot;GettingStartedSeparator&quot; /&gt;
-    &lt;h5 class=&quot;SubHead&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.3.Text]&lt;/h5&gt;
-    &lt;p&gt;
-    [Tab.GettingStarted.RightPane.Module.Content.4.Text]
-    &lt;/p&gt;
-    &lt;ul&gt;
-        &lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.dotnetnuke.com/Community/Community-Exchange.aspx&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.5.Text]&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;http://www.dotnetnuke.com/Community/Community-Voice.aspx&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.6.Text]&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;hr class=&quot;GettingStartedSeparator&quot; /&gt;
-    &lt;h5 class=&quot;SubHead&quot;&gt;[Tab.GettingStarted.RightPane.Module.Content.7.Text]&lt;/h5&gt;
-    &lt;p&gt;[Tab.GettingStarted.RightPane.Module.Content.8.Text]&lt;/p&gt;
-    &lt;p&gt;
-        &lt;iframe id=&quot;facebookLike&quot; src=&quot;//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fdotnetnuke&amp;send=false&amp;layout=button_count&amp;width=120&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font=arial&amp;height=21&quot; scrolling=&quot;no&quot; 
-          frameborder=&quot;0&quot; style=&quot;border:none; overflow:hidden; width:120px; height:21px; display:none;&quot; allowTransparency=&quot;true&quot; onload=&quot;javascript:$(&#39;#facebookLike&#39;).show()&quot; &gt;&lt;/iframe&gt;
-        &lt;a target=&quot;_blank&quot; href=&quot;http://www.dotnetnuke.com/Community/Community-Overview.aspx&quot; style=&quot; vertical-align: super;&quot;&gt;[Tab.About.RightPane.OtherModule.Content.8.Text]&lt;/a&gt;            
-    &lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&quot;actions&quot;&gt;
-    &lt;hr class=&quot;GettingStartedSeparator&quot; /&gt;
-    &lt;ul class=&quot;dnnActions dnnClear&quot;&gt;
-        &lt;li&gt; &lt;a class=&quot;dnnSecondaryAction&quot; href=&quot;http://www.dotnetnuke.com/Resources/Video-Library/7.0/introduction.aspx?v=7.0.0&quot; target=&quot;_blank&quot;&gt;[Tab.GettingStarted.Actions.Module.Content.0.Text]&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt; &lt;a href=&quot;javascript:GettingStartedNS.goTo(pageCurrentPortalAliasUrl);&quot; class=&quot;dnnSecondaryAction&quot; id=&quot;btnLetMeAtIn&quot;&gt;[Tab.GettingStarted.Actions.Module.Content.1.Text]&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-&lt;/div&gt;                     
-]]&gt;&lt;/content&gt;&lt;/htmltext&gt;]]></content>
-              <modulesettings>
-                <modulesetting>
-                  <settingname>WorkflowID</settingname>
-                  <settingvalue>1</settingvalue>
-                </modulesetting>
-                <modulesetting>
-                  <settingname>HtmlText_ReplaceTokens</settingname>
-                  <settingvalue>False</settingvalue>
-                </modulesetting>
-              </modulesettings>
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>DNN_HTML</definition>
-              <moduledefinition>Text/HTML</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-      </panes>
-    </tab>
     <tab>
       <description>[Tab.Home.Description.Text]</description>
       <disabled>false</disabled>
@@ -867,38 +619,8 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings>
-        <tabsetting>
-          <settingname>IncludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheDuration</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheIncludeExclude</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>ExcludeVaryBy</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>MaxVaryByCount</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-        <tabsetting>
-          <settingname>CacheProvider</settingname>
-          <settingvalue>
-          </settingvalue>
-        </tabsetting>
-      </tabsettings>
+      <tabsettings/>
+      <tabtype>hometab</tabtype>
     </tab>
     <tab>
       <containersrc />
@@ -945,7 +667,7 @@
       <tabtype>usertab</tabtype>
       <panes>
         <pane>
-          <name>LeftPaneProfile</name>
+          <name>LeftPane</name>
           <modules>
             <module>
               <alltabs>false</alltabs>
@@ -1019,77 +741,7 @@
           </modules>
         </pane>
         <pane>
-          <name>HeaderPaneProfile</name>
-          <modules>
-            <module>
-              <title>ViewProfile</title>
-              <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header />
-              <footer />
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod>FileModuleCachingProvider</cachemethod>
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
-              <displaytitle>true</displaytitle>
-              <displayprint>false</displayprint>
-              <displaysyndicate>false</displaysyndicate>
-              <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
-              <modulepermissions>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>All Users</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>VIEW</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-                <permission>
-                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
-                  <permissionkey>EDIT</permissionkey>
-                  <allowaccess>true</allowaccess>
-                  <rolename>Administrators</rolename>
-                </permission>
-              </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings>
-                <tabmodulesetting>
-                  <settingname>hideadminborder</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>IncludeButton</settingname>
-                  <settingvalue>False</settingvalue>
-                </tabmodulesetting>
-                <tabmodulesetting>
-                  <settingname>ProfileTemplate</settingname>
-                  <settingvalue>
-                    &lt;div id="UserDisplayNameHeader"&gt;
-                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
-                    &lt;/div&gt;
-
-                  </settingvalue>
-                </tabmodulesetting>
-              </tabmodulesettings>
-              <definition>ViewProfile</definition>
-              <moduledefinition>ViewProfile</moduledefinition>
-            </module>
-          </modules>
-        </pane>
-        <pane>
-          <name>RightPaneProfile</name>
+          <name>RightPane</name>
           <modules>
             <module>
               <title>Member Directory</title>
@@ -1331,8 +983,73 @@
           </modules>
         </pane>
         <pane>
-          <name>ContentPaneProfile</name>
+          <name>CenterPane</name>
           <modules>
+            <module>
+              <title>ViewProfile</title>
+              <alltabs>false</alltabs>
+              <inheritviewpermissions>true</inheritviewpermissions>
+              <header />
+              <footer />
+              <startdate>0001-01-01T00:00:00</startdate>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <cachetime>0</cachetime>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <alignment />
+              <color />
+              <border />
+              <iconfile />
+              <visibility>Maximized</visibility>
+              <containersrc>[G]Containers/Gravity/NoTitle.ascx</containersrc>
+              <displaytitle>true</displaytitle>
+              <displayprint>false</displayprint>
+              <displaysyndicate>false</displaysyndicate>
+              <iswebslice>false</iswebslice>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <modulepermissions>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>All Users</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+                <permission>
+                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+                </permission>
+              </modulepermissions>
+              <modulesettings />
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>IncludeButton</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+                <tabmodulesetting>
+                  <settingname>ProfileTemplate</settingname>
+                  <settingvalue>
+                    &lt;div id="UserDisplayNameHeader"&gt;
+                    &lt;h2&gt;[USER:DISPLAYNAME]&lt;/h2&gt;
+                    &lt;/div&gt;
+
+                  </settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>ViewProfile</definition>
+              <moduledefinition>ViewProfile</moduledefinition>
+            </module>
             <module>
               <title>Journal</title>
               <alltabs>false</alltabs>
@@ -5027,31 +4744,66 @@
               <definition>SearchResults</definition>
               <moduledefinition>Search Results</moduledefinition>
             </module>
+          </modules>
+        </pane>
+      </panes>
+    </tab>
+    <tab >
+      <content>[Tab.404ErrorPage.Content.Text]</content>
+      <contentKey />
+      <containersrc />
+      <cultureCode />
+      <description />
+      <disabled>false</disabled>
+      <enddate>0001-01-01T00:00:00</enddate>
+      <issecure>false</issecure>
+      <visible>false</visible>
+      <keywords />
+      <pageheadtext />
+      <permanentredirect>false</permanentredirect>
+      <refreshinterval>-1</refreshinterval>
+      <sitemappriority>0.5</sitemappriority>
+      <startdate>0001-01-01T00:00:00</startdate>
+      <name>404 Error Page</name>
+      <title>[Tab.404ErrorPage.Title.Text]</title>
+      <skinsrc>[G]Skins/Gravity/404Skin.ascx</skinsrc>
+      <url type="Normal" />
+      <tabtype>404Tab</tabtype>
+      <tabpermissions>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>All Users</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>VIEW</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_TAB</permissioncode>
+          <permissionkey>EDIT</permissionkey>
+          <allowaccess>true</allowaccess>
+          <rolename>Administrators</rolename>
+        </permission>
+      </tabpermissions>
+      <tabsettings />
+      <panes>
+        <pane>
+          <name>ContentPane</name>
+          <modules>
             <module>
-              <moduleID>369</moduleID>
-              <title>Results</title>
               <alltabs>false</alltabs>
-              <inheritviewpermissions>true</inheritviewpermissions>
-              <header>
-              </header>
-              <footer>
-              </footer>
-              <startdate>0001-01-01T00:00:00</startdate>
-              <enddate>0001-01-01T00:00:00</enddate>
-              <cachetime>0</cachetime>
-              <cachemethod />
-              <alignment />
-              <color />
-              <border />
-              <iconfile />
-              <visibility>Maximized</visibility>
-              <containersrc />
-              <displaytitle>true</displaytitle>
-              <displayprint>true</displayprint>
+              <cachemethod>FileModuleCachingProvider</cachemethod>
+              <cachetime>1200</cachetime>
+              <displayprint>false</displayprint>
               <displaysyndicate>false</displaysyndicate>
+              <displaytitle>true</displaytitle>
+              <enddate>0001-01-01T00:00:00</enddate>
+              <inheritviewpermissions>true</inheritviewpermissions>
               <iswebslice>false</iswebslice>
-              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-              <webslicettl>0</webslicettl>
               <modulepermissions>
                 <permission>
                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -5060,10 +4812,30 @@
                   <rolename>Administrators</rolename>
                 </permission>
               </modulepermissions>
-              <modulesettings />
-              <tabmodulesettings />
-              <definition>ContentList</definition>
-              <moduledefinition>Content List</moduledefinition>
+              <title>[Tab.404ErrorPage..Module.Title.Text]</title>
+              <startdate>0001-01-01T00:00:00</startdate>
+              <visibility>Maximized</visibility>
+              <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
+              <webslicettl>0</webslicettl>
+              <content type="DNNHTML" version="07.00.00"><![CDATA[&lt;htmltext&gt;&lt;content&gt;[Tab.404ErrorPage..Module.Content.Text]&lt;/content&gt;&lt;/htmltext&gt;]]></content>
+              <modulesettings>
+                <modulesetting>
+                  <settingname>WorkflowID</settingname>
+                  <settingvalue>1</settingvalue>
+                </modulesetting>
+                <modulesetting>
+                  <settingname>HtmlText_ReplaceTokens</settingname>
+                  <settingvalue>False</settingvalue>
+                </modulesetting>
+              </modulesettings>
+              <tabmodulesettings>
+                <tabmodulesetting>
+                  <settingname>hideadminborder</settingname>
+                  <settingvalue>False</settingvalue>
+                </tabmodulesetting>
+              </tabmodulesettings>
+              <definition>DNN_HTML</definition>
+              <moduledefinition>Text/HTML</moduledefinition>
             </module>
           </modules>
         </pane>

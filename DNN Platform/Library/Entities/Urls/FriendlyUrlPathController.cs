@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -301,8 +301,7 @@ namespace DotNetNuke.Entities.Urls
                             if (string.IsNullOrEmpty(childTabPath) == false)
                             {
                                 //remove the parent tab path from the child tab path
-                                var tc = new TabController();
-                                TabInfo profilePage = tc.GetTab(tab.ParentId, tab.PortalID, false);
+                                TabInfo profilePage = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                                 string profilePagePath = TabIndexController.GetTabPath(profilePage, options, parentTraceId);
                                 if (childTabPath.Contains(profilePagePath))
                                 {

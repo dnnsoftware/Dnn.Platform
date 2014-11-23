@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,6 +36,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -84,6 +86,26 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
         #endregion
 
+        #region Protected Methods
+
+        protected string GetInitialEntries()
+            {
+            int id;
+            UserInfo user;
+            RoleInfo role;
+            var entities = new StringBuilder("[");
+
+            foreach (var value in (Request.QueryString["users"] ?? string.Empty).Split(','))
+                if (int.TryParse(value, out id) && (user = UserController.GetUserById(PortalId, id)) != null)
+                    entities.AppendFormat(@"{{ id: ""user-{0}"", name: ""{1}"" }},", user.UserID, user.DisplayName.Replace("\"", ""));
+            foreach (var value in (Request.QueryString["roles"] ?? string.Empty).Split(','))
+                if (int.TryParse(value, out id) && (role = RoleController.Instance.GetRoleById(PortalId, id)) != null)
+                    entities.AppendFormat(@"{{ id: ""role-{0}"", name: ""{1}"" }},", role.RoleID, role.RoleName.Replace("\"", ""));
+
+            return entities.Append(']').ToString();
+            }
+        #endregion
+
         #region Event Handlers
 
         /// -----------------------------------------------------------------------------
@@ -102,6 +124,8 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             cmdPreview.Click += OnPreviewClick;
             cmdSend.Click += OnSendClick;
 
+            ServicesFramework.Instance.RequestAjaxScriptSupport();
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             jQuery.RequestDnnPluginsRegistration();
 
             try
@@ -364,12 +388,8 @@ namespace DotNetNuke.Modules.Admin.Newsletters
         private void GetRecipients(out List<string> objRoleNames, out List<UserInfo> objUsers)
         {
             objRoleNames = new List<string>();
-            foreach (string strRoleName in dgSelectedRoles.SelectedRoleNames)
-            {
-                objRoleNames.Add(strRoleName);
-            }
-
             objUsers = new List<UserInfo>();
+
             if (!String.IsNullOrEmpty(txtEmail.Text))
             {
                 Array arrEmail = txtEmail.Text.Split(';');
@@ -379,6 +399,9 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                     objUsers.Add(objUser);
                 }
             }
+
+            objRoleNames.AddRange(recipients.Value.Split(',').Where(value => value.StartsWith("role-")).Select(value => RoleController.Instance.GetRoleById(PortalId, int.Parse(value.Substring(5))).RoleName).Where(roleName => !string.IsNullOrWhiteSpace(roleName)));
+            objUsers.AddRange(recipients.Value.Split(',').Where(value => value.StartsWith("user-")).Select(value => UserController.GetUserById(PortalId, int.Parse(value.Substring(5)))).Where(user => user != null));
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Html
         private static void AddHtmlNotification(string subject, string body, UserInfo user)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
-            var portalSettings = PortalController.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
 
             var notification = new Notification {NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID};
@@ -78,10 +78,9 @@ namespace DotNetNuke.Modules.Html
 
         private void ClearModuleSettings(ModuleInfo objModule)
         {
-            var moduleController = new ModuleController();
             if (objModule.ModuleDefinition.FriendlyName == "Text/HTML")
             {
-                moduleController.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
+                ModuleController.Instance.DeleteModuleSetting(objModule.ModuleID, "WorkFlowID");
             }
         }
 
@@ -121,19 +120,17 @@ namespace DotNetNuke.Modules.Html
             if (objHtmlText.StateID != objWorkflow.GetFirstWorkflowStateID(objHtmlText.WorkflowID) && objHtmlText.IsPublished == false)
             {
                 // get users from permissions for state
-                var objRoles = new RoleController();
-                foreach (WorkflowStatePermissionInfo permission in
-                    WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
+                foreach (WorkflowStatePermissionInfo permission in WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
                 {
                     if (permission.AllowAccess)
                     {
                         if (Null.IsNull(permission.UserID))
                         {
                             int roleId = permission.RoleID;
-                            RoleInfo objRole = TestableRoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
+                            RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
                             if ((objRole != null))
                             {
-                                foreach (UserRoleInfo objUserRole in objRoles.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
+                                foreach (UserRoleInfo objUserRole in RoleController.Instance.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
                                 {
                                     if (!arrUsers.Contains(objUserRole.UserID))
                                     {
@@ -157,10 +154,9 @@ namespace DotNetNuke.Modules.Html
             if (arrUsers.Count > 0 || (objHtmlText.IsPublished && objHtmlText.Notify))
             {
                 // get tabid from module 
-                var objModules = new ModuleController();
-                ModuleInfo objModule = objModules.GetModule(objHtmlText.ModuleID);
+                ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
 
-                PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+                PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (objPortalSettings != null)
                 {
                     string strResourceFile = string.Format("{0}/DesktopModules/{1}/{2}/{3}",
@@ -220,15 +216,17 @@ namespace DotNetNuke.Modules.Html
 
         private string DeTokeniseLinks(string content, int portalId)
         {
-
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {
                 portalRoot = "/" + portalRoot;
             }
-            content = content.Replace(PortalRootToken, portalRoot);
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
+            }
+            content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
 
             return content;
         }
@@ -236,12 +234,15 @@ namespace DotNetNuke.Modules.Html
         private string TokeniseLinks(string content, int portalId)
         {
             //Replace any relative portal root reference by a token "{{PortalRoot}}"
-            var portalController = new PortalController();
-            var portal = portalController.GetPortal(portalId);
+            var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
             {
                 portalRoot = "/" + portalRoot;
+            }
+            if (!portalRoot.EndsWith("/"))
+            {
+                portalRoot = portalRoot + "/";
             }
             Regex exp = new Regex(portalRoot, RegexOptions.IgnoreCase);
             content = exp.Replace(content, PortalRootToken);
@@ -286,7 +287,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
 		public static string FormatHtmlText(int moduleId, string content, Hashtable settings)
 		{
-			return FormatHtmlText(moduleId, content, settings, PortalController.GetCurrentPortalSettings());
+			return FormatHtmlText(moduleId, content, settings, PortalController.Instance.GetCurrentPortalSettings());
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -313,7 +314,7 @@ namespace DotNetNuke.Modules.Html
 			if (blnReplaceTokens)
 			{
 				var tr = new TokenReplace();
-				tr.AccessingUser = UserController.GetCurrentUserInfo();
+				tr.AccessingUser = UserController.Instance.GetCurrentUserInfo();
 				tr.DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View;
 				tr.ModuleId = moduleId;
 				tr.PortalSettings = portalSettings;
@@ -358,7 +359,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public HtmlTextInfo GetHtmlText(int ModuleID, int ItemID)
         {
-            return (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetHtmlText(ModuleID, ItemID), typeof (HtmlTextInfo)));
+            return CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetHtmlText(ModuleID, ItemID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -367,39 +368,36 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "ModuleID">The ID of the Module</param>
-        /// <param name = "IsPublished">Whether the content has been published or not</param>
-        /// <param name="WorkflowID">The Workflow ID</param>
+        /// <param name = "moduleId">The ID of the Module</param>
+        /// <param name = "isPublished">Whether the content has been published or not</param>
+        /// <param name="workflowId">The Workflow ID</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
-        public HtmlTextInfo GetTopHtmlText(int ModuleID, bool IsPublished, int WorkflowID)
+        public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
-            var objHtmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(ModuleID, IsPublished), typeof (HtmlTextInfo)));
-            if (objHtmlText != null)
+            var htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished));
+            if (htmlText != null)
             {
                 // check if workflow has changed
-                if (IsPublished == false && objHtmlText.WorkflowID != WorkflowID)
+                if (isPublished == false && htmlText.WorkflowID != workflowId)
                 {
                     // get proper state for workflow
-                    var objWorkflow = new WorkflowStateController();
-                    objHtmlText.WorkflowID = WorkflowID;
-                    objHtmlText.WorkflowName = "[REPAIR_WORKFLOW]";
-                    if (objHtmlText.IsPublished)
-                    {
-                        objHtmlText.StateID = objWorkflow.GetLastWorkflowStateID(WorkflowID);
-                    }
-                    else
-                    {
-                        objHtmlText.StateID = objWorkflow.GetFirstWorkflowStateID(WorkflowID);
-                    }
+                    htmlText.WorkflowID = workflowId;
+                    htmlText.WorkflowName = "[REPAIR_WORKFLOW]";
+
+                    var workflowStateController = new WorkflowStateController();
+                    htmlText.StateID = htmlText.IsPublished 
+                                        ? workflowStateController.GetLastWorkflowStateID(workflowId) 
+                                        : workflowStateController.GetFirstWorkflowStateID(workflowId);
                     // update object
-                    UpdateHtmlText(objHtmlText, GetMaximumVersionHistory(objHtmlText.PortalID));
+                    UpdateHtmlText(htmlText, GetMaximumVersionHistory(htmlText.PortalID));
+
                     // get object again
-                    objHtmlText = (HtmlTextInfo) (CBO.FillObject(DataProvider.Instance().GetTopHtmlText(ModuleID, IsPublished), typeof (HtmlTextInfo)));
+                    htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, false));
                 }
             }
-            return objHtmlText;
+            return htmlText;
         }
 
         /// -----------------------------------------------------------------------------
@@ -420,8 +418,17 @@ namespace DotNetNuke.Modules.Html
             string workFlowType = Null.NullString;
 
             // get from module settings
-            var moduleController = new ModuleController();
-            Hashtable settings = moduleController.GetModuleSettings(ModuleId);
+            Hashtable settings;
+            if (ModuleId > -1)
+            {
+                var module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+                settings = module.ModuleSettings;
+            }
+            else
+            {
+                settings = new Hashtable();
+            }
+
             if (settings["WorkflowID"] != null)
             {
                 workFlowId = Convert.ToInt32(settings["WorkflowID"]);
@@ -430,7 +437,7 @@ namespace DotNetNuke.Modules.Html
             if (workFlowId == Null.NullInteger)
             {
                 // if undefined at module level, get from tab settings
-                settings = new TabController().GetTabSettings(TabId);
+                settings = TabController.Instance.GetTabSettings(TabId);
                 if (settings["WorkflowID"] != null)
                 {
                     workFlowId = Convert.ToInt32(settings["WorkflowID"]);
@@ -585,13 +592,13 @@ namespace DotNetNuke.Modules.Html
 																		 htmlContent.Summary,
                                                                          htmlContent.StateID,
                                                                          htmlContent.IsPublished,
-                                                                         UserController.GetCurrentUserInfo().UserID,
+                                                                         UserController.Instance.GetCurrentUserInfo().UserID,
                                                                          MaximumVersionHistory);
             }
             else
             {
                 // update content
-				DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.GetCurrentUserInfo().UserID);
+				DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // add log history
@@ -625,20 +632,17 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void UpdateWorkflow(int ObjectID, string WorkFlowType, int WorkflowID, bool ReplaceExistingSettings)
         {
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
-
             switch (WorkFlowType)
             {
                 case "Module":
-                    moduleController.UpdateModuleSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
+                    ModuleController.Instance.UpdateModuleSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     break;
                 case "Page":
-                    tabController.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
+                    TabController.Instance.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     if (ReplaceExistingSettings)
                     {
                         //Get All Modules on the current Tab
-                        foreach (var kvp in moduleController.GetTabModules(ObjectID))
+                        foreach (var kvp in ModuleController.Instance.GetTabModules(ObjectID))
                         {
                             ClearModuleSettings(kvp.Value);
                         }
@@ -649,12 +653,12 @@ namespace DotNetNuke.Modules.Html
                     if (ReplaceExistingSettings)
                     {
                         //Get All Tabs aon the Site
-                        foreach (var kvp in tabController.GetTabsByPortal(ObjectID))
+                        foreach (var kvp in TabController.Instance.GetTabsByPortal(ObjectID))
                         {
-                            tabController.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
+                            TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }
                         //Get All Modules in the current Site
-                        foreach (ModuleInfo objModule in moduleController.GetModules(ObjectID))
+                        foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(ObjectID))
                         {
                             ClearModuleSettings(objModule);
                         }
@@ -712,7 +716,7 @@ namespace DotNetNuke.Modules.Html
             }
 
             // save portal setting
-            PortalSettings objPortalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (PortalSecurity.IsInRole(objPortalSettings.AdministratorRoleName))
             {
                 PortalController.UpdatePortalSetting(PortalID, "MaximumVersionHistory", MaximumVersionHistory.ToString());
@@ -739,8 +743,7 @@ namespace DotNetNuke.Modules.Html
         {
             string xml = "";
 
-            var moduleController = new ModuleController();
-            ModuleInfo module = moduleController.GetModule(moduleId);
+            ModuleInfo module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             int workflowID = GetWorkflow(moduleId, module.TabID, module.PortalID).Value;
 
             HtmlTextInfo content = GetTopHtmlText(moduleId, true, workflowID);
@@ -769,8 +772,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public void ImportModule(int ModuleID, string Content, string Version, int UserId)
         {
-            var moduleController = new ModuleController();
-            ModuleInfo module = moduleController.GetModule(ModuleID);
+            ModuleInfo module = ModuleController.Instance.GetModule(ModuleID, Null.NullInteger, true);
             var workflowStateController = new WorkflowStateController();
             int workflowID = GetWorkflow(ModuleID, module.TabID, module.PortalID).Value;
             XmlNode xml = Globals.GetContent(Content, "htmltext");

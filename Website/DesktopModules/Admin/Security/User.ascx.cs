@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.GetCurrentUserInfo().IsSuperUser)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser==false)
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //if an admin, check if the user is only within this portal
-            if (UserController.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
             {
                 //only allow updates for non-superuser accounts
                 if (User.IsSuperUser)
@@ -185,10 +185,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
 			//Update DisplayName to conform to Format
-            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(Convert.ToString(setting));
+				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
@@ -287,6 +286,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 User.Membership.Approved = chkAuthorize.Checked;
             }
             var user = User;
+
+            // make sure username is set in UseEmailAsUserName" mode
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            {
+                user.Username = User.Email;
+                User.Username = User.Email;
+            }
+
             var createStatus = UserController.CreateUser(ref user);
 
             var args = (createStatus == UserCreateStatus.Success)
@@ -362,10 +369,22 @@ namespace DotNetNuke.Modules.Admin.Users
                 txtPassword.Attributes.Add("value", txtPassword.Text);
             }
 
-            userNameReadOnly.Visible = !AddUser;
-            userName.Visible = AddUser;
-            
-            if (CanUpdateUsername())
+
+            bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+
+            //only show username row once UseEmailAsUserName is disabled in site settings
+            if (disableUsername)
+            {
+                userNameReadOnly.Visible = false;
+                userName.Visible = false;
+            }
+            else
+            {
+                userNameReadOnly.Visible = !AddUser;
+                userName.Visible = AddUser;
+            }
+
+            if (CanUpdateUsername() && !disableUsername)
             {
                
                 renameUserName.Visible = true;
@@ -386,20 +405,17 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
 
-            var userNameSetting = GetSetting(UserPortalID, "Security_UserNameValidation");
-            if ((userNameSetting != null) && (!string.IsNullOrEmpty(Convert.ToString(userNameSetting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator))
             {
-                userName.ValidationExpression = Convert.ToString(userNameSetting);
+				userName.ValidationExpression = PortalSettings.Registration.UserNameValidator;
             }
 
-            var setting = GetSetting(UserPortalID, "Security_EmailValidation");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.EmailValidator))
             {
-                email.ValidationExpression = Convert.ToString(setting);
+				email.ValidationExpression = PortalSettings.Registration.EmailValidator;
             }
 
-            setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
                 if (AddUser)
                 {
@@ -434,17 +450,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#region Event Handlers
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-            jQuery.RequestDnnPluginsRegistration();
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -466,7 +471,15 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected override void OnPreRender(EventArgs e)
         {
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+            jQuery.RequestDnnPluginsRegistration();
+
             base.OnPreRender(e);
+
 
 			if (Host.EnableStrengthMeter)
 			{
@@ -617,12 +630,21 @@ namespace DotNetNuke.Modules.Admin.Users
 						//Update DisplayName to conform to Format
                         UpdateDisplayName();
                         //either update the username or update the user details
-                        if (CanUpdateUsername())
+
+                        bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+
+                        if (CanUpdateUsername() && !disableUsername)
                         {
                             UserController.ChangeUsername(User.UserID, renameUserName.Value.ToString());
                         }
 
                         UserController.UpdateUser(UserPortalID, User);
+
+                        if (disableUsername && (User.Username.ToLower() != User.Email.ToLower()))
+                        {
+                            UserController.ChangeUsername(User.UserID, User.Email);
+                        }
+
                         OnUserUpdated(EventArgs.Empty);
                         OnUserUpdateCompleted(EventArgs.Empty);
                     }

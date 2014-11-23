@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,13 +26,11 @@ using System;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabExistsException : Exception
+    public class TabExistsException : TabException
     {
-        public TabExistsException(int tabId, string message) : base(message)
-        {
-            TabId = tabId;
+        public TabExistsException(int tabId, string message) : base(tabId, message)
+        {            
         }
 
-        public int TabId { get; private set; }
     }
 }

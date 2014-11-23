@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Portals
     ///            Dim _PhysicalPath As String
     ///            Dim PortalSettings As PortalSettings = Nothing
     ///            If Not HttpContext.Current Is Nothing Then
-    ///                PortalSettings = PortalController.GetCurrentPortalSettings()
+    ///                PortalSettings = PortalController.Instance.GetCurrentPortalSettings()
     ///            End If
     ///            If PortalId = Null.NullInteger Then
     ///                _PhysicalPath = DotNetNuke.Common.Globals.HostMapPath + RelativePath
@@ -286,6 +286,17 @@ namespace DotNetNuke.Entities.Portals
         public string HomeDirectory { get; set; }
 
         /// <summary>
+        /// Home System (local) directory of the portal (logical path)
+        /// </summary>
+        /// <value>Portal home system directory</value>
+        /// <returns>Portal home system directory in local filesystem</returns>
+        /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
+        [XmlElement("homesystemdirectory")]
+        public string HomeSystemDirectory {
+            get { return String.Format("{0}-System", HomeDirectory); }
+        }
+
+        /// <summary>
         /// TabdId of the Home page
         /// </summary>
         /// <value>TabId of the Home page</value>
@@ -516,6 +527,26 @@ namespace DotNetNuke.Entities.Portals
         public int SearchTabId { get; set; }
 
         /// <summary>
+        ///   Tabid of the Custom 404 page
+        /// </summary>
+        /// <value>Tabid of the Custom 404 page</value>
+        /// <returns>Tabid of the Custom 404 page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("custom404tabid")]
+        public int Custom404TabId { get; set; }
+
+        /// <summary>
+        ///   Tabid of the Custom 500 error page
+        /// </summary>
+        /// <value>Tabid of the Custom 500 error page</value>
+        /// <returns>Tabid of the Custom 500 error page</returns>
+        /// <remarks>
+        /// </remarks>
+        [XmlElement("custom500tabid")]
+        public int Custom500TabId { get; set; }
+
+        /// <summary>
         /// # of days that Site log history should be kept. 0 means unlimited
         /// </summary>
         /// <value># of days sitelog history</value>
@@ -646,7 +677,7 @@ namespace DotNetNuke.Entities.Portals
                 if (_administratorRoleName == Null.NullString && AdministratorRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo adminRole = TestableRoleController.Instance.GetRole(PortalID, r => r.RoleID == AdministratorRoleId);
+                    RoleInfo adminRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == AdministratorRoleId);
                     if (adminRole != null)
                     {
                         _administratorRoleName = adminRole.RoleName;
@@ -676,6 +707,21 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
+        /// Fysical path on disk of the home directory of the portal
+        /// </summary>
+        /// <value></value>
+        /// <returns>Fully qualified path of the home system (local) directory</returns>
+        /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
+        [XmlIgnore]
+        public string HomeSystemDirectoryMapPath
+        {
+            get
+            {
+                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeSystemDirectory.Replace("/", "\\"));
+            }
+        }
+
+        /// <summary>
         /// Actual number of pages of the portal
         /// </summary>
         /// <value>Number of pages of the portal</value>
@@ -688,8 +734,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (_pages < 0)
                 {
-                    var objTabController = new TabController();
-                    _pages = objTabController.GetTabCount(PortalID);
+                    _pages = TabController.Instance.GetTabsByPortal(PortalID).Count;
                 }
                 return _pages;
             }
@@ -714,7 +759,7 @@ namespace DotNetNuke.Entities.Portals
                 if (_registeredRoleName == Null.NullString && RegisteredRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo regUsersRole = TestableRoleController.Instance.GetRole(PortalID, r => r.RoleID == RegisteredRoleId);
+                    RoleInfo regUsersRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == RegisteredRoleId);
                     if (regUsersRole != null)
                     {
                         _registeredRoleName = regUsersRole.RoleName;
@@ -789,6 +834,8 @@ namespace DotNetNuke.Entities.Portals
             RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
             UserTabId = Null.SetNullInteger(dr["UserTabID"]);
             SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
+            Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
+            Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
             DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility
             TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);

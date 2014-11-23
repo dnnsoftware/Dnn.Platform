@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -42,24 +42,16 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        protected string FormatVersion(object version)
+        protected string FormatVersion(object v)
         {
-            var retValue = Null.NullString;
-            var package = version as PackageInfo;
-            if (package != null)
+            var version = v as System.Version;
+            if (version == null)
             {
-                retValue = package.Version.ToString(3);
+                return Null.NullString;
             }
-            else
-            {
-                var dependency = version as PackageDependencyInfo;
-                if (dependency != null)
-                {
-                    retValue = dependency.Version.ToString(3);
-                }
-            }
-
-            return retValue;
+            
+            var fieldCount = version.Build > -1 ? 3 : 2;
+            return version.ToString(fieldCount);
         }
 
 

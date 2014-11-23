@@ -1,19 +1,10 @@
-﻿.dnnEditState .DnnModule
-{
-    opacity:0.5;
-    -webkit-transition: opacity 250ms ease-in-out;
-	-moz-transition: opacity 250ms ease-in-out;
-    -ms-transition: opacity 250ms ease-in-out;
-    -o-transition: opacity 250ms ease-in-out;
-	transition: opacity 250ms ease-in-out;
-}
-
-.dnnEditState .DnnModule:hover
+﻿.dnnEditState .DnnModule:hover
 {
     opacity:1;
 }
-
-
+.dnnEditState.dnnOpacityDisabled .DnnModule {
+    opacity: 1;
+}
 form .actionMenu ul {z-index:1000 !important;}
 form .actionMenu ul:hover{z-index:1003 !important;}
 form .dnn_mact {
@@ -154,3 +145,26 @@ form .dnn_mact > li.actionMenuMove:hover > a {
 .dnn_mact > li.actionMenuMove > ul li:hover {
     background-color: #e8f1fa;
 }
+
+form .dnn_mact li.dnn_shared {
+    display: inline-block;
+    width: 20px;
+    height: 100px;
+    background-color: #000;
+    /*background-image: url(images/dnnActionMenu.png);*/
+}
+
+    form .dnn_mact li.dnn_shared > div
+    {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        writing-mode:tb-rl;
+        -webkit-transform:rotate(90deg);
+        -moz-transform:rotate(90deg);
+        -o-transform: rotate(90deg);
+	    white-space:nowrap;
+        color: white;
+        background-color: #000;
+        background-image: none !important;
+    }

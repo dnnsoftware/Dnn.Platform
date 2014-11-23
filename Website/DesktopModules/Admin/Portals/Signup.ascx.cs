@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,7 +35,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -47,6 +46,8 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 
+using Telerik.Web.UI;
+
 #endregion
 
 namespace DotNetNuke.Modules.Admin.Portals
@@ -54,6 +55,7 @@ namespace DotNetNuke.Modules.Admin.Portals
     public partial class Signup : PortalModuleBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Signup));
+
         #region Private Properties
 
         private CultureDropDownTypes DisplayType { get; set; }
@@ -80,17 +82,11 @@ namespace DotNetNuke.Modules.Admin.Portals
             jQuery.RequestDnnPluginsRegistration();
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -110,6 +106,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 if (!Page.IsPostBack)
                 {
                     BindTemplates();
+                    BindSiteGroups();
                     // load template description
                     cboTemplate_SelectedIndexChanged(null, null);
 
@@ -176,7 +173,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
         void BindTemplates()
         {
-            var templates = TestablePortalController.Instance.GetAvailablePortalTemplates();
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
             templates = templates.OrderBy(x => x, new TemplateDisplayComparer()).ToList();
 
             foreach (var template in templates)
@@ -189,13 +186,24 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             if (cboTemplate.Items.Count == 0)
             {
-                UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("PortalMissing", LocalResourceFile),
-                                                ModuleMessage.ModuleMessageType.RedError);
+                UI.Skins.Skin.AddModuleMessage(this, "", Localization.GetString("PortalMissing", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 cmdUpdate.Enabled = false;
             }
-            //cboTemplate.InsertItem(0, Localization.GetString("None_Specified"), "");
-            //cboTemplate.SelectedIndex = 0;
+        }
 
+        void BindSiteGroups()
+        {
+            var portalGroups = PortalGroupController.Instance.GetPortalGroups().ToList();
+            var showGroups = portalGroups.Any();
+            if (showGroups)
+            {
+                cboSiteGroups.Items.Add(new RadComboBoxItem(LocalizeString("None_Specified"), "-1"));
+                foreach (var portalGroup in portalGroups)
+                {
+                    cboSiteGroups.Items.Add(new RadComboBoxItem(portalGroup.PortalGroupName, portalGroup.PortalGroupId.ToString()));
+                }
+            }
+            pnlSiteGroups.Visible = showGroups;
         }
 
         void SelectADefaultTemplate(IList<PortalController.PortalTemplateInfo> templates)
@@ -255,18 +263,6 @@ namespace DotNetNuke.Modules.Admin.Portals
             return new ListItem(text, value);
         }
         
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdCancel_Click runs when the Cancel button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             try
@@ -279,17 +275,6 @@ namespace DotNetNuke.Modules.Admin.Portals
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// cmdUpdate_Click runs when the Update button is clicked
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(Object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -302,8 +287,6 @@ namespace DotNetNuke.Modules.Admin.Portals
                     string strPortalAlias;
                     string strChildPath = string.Empty;
                     var closePopUpStr = string.Empty;
-
-                    var objPortalController = new PortalController();
 
                     //check template validity
                     var messages = new ArrayList();
@@ -405,7 +388,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                     //Validate Portal Alias
                     if (!string.IsNullOrEmpty(strPortalAlias))
                     {
-                        PortalAliasInfo portalAlias = PortalAliasController.GetPortalAliasLookup(strPortalAlias.ToLower());
+                        PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(strPortalAlias.ToLower());
                         if (portalAlias != null)
                         {
                             message = Localization.GetString("DuplicatePortalAlias", LocalResourceFile);
@@ -423,7 +406,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                             if (useCurrent.Checked)
                             {
                                 adminUser = UserInfo;
-                                intPortalId = objPortalController.CreatePortal(txtPortalName.Text,
+                                intPortalId = PortalController.Instance.CreatePortal(txtPortalName.Text,
                                                                            adminUser.UserID,
                                                                            txtDescription.Text,
                                                                            txtKeyWords.Text,
@@ -458,7 +441,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                                                         }
                                                 };
 
-                                intPortalId = objPortalController.CreatePortal(txtPortalName.Text,
+                                intPortalId = PortalController.Instance.CreatePortal(txtPortalName.Text,
                                                                            adminUser,
                                                                            txtDescription.Text,
                                                                            txtKeyWords.Text,
@@ -476,10 +459,22 @@ namespace DotNetNuke.Modules.Admin.Portals
                             intPortalId = Null.NullInteger;
                             message = ex.Message;
                         }
+
                         if (intPortalId != -1)
                         {
+                            //Add new portal to Site Group
+                            if (cboSiteGroups.SelectedValue != "-1")
+                            {
+                                var portal = PortalController.Instance.GetPortal(intPortalId);
+                                var portalGroup = PortalGroupController.Instance.GetPortalGroups().SingleOrDefault(g => g.PortalGroupId == Int32.Parse(cboSiteGroups.SelectedValue));
+                                if (portalGroup != null)
+                                {
+                                    PortalGroupController.Instance.AddPortalToGroup(portal, portalGroup, args => { });
+                                }
+                            }
+
                             //Create a Portal Settings object for the new Portal
-                            PortalInfo objPortal = objPortalController.GetPortal(intPortalId);
+                            PortalInfo objPortal = PortalController.Instance.GetPortal(intPortalId);
                             var newSettings = new PortalSettings { PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias }, PortalId = intPortalId, DefaultLanguage = objPortal.DefaultLanguage };
                             string webUrl = Globals.AddHTTP(strPortalAlias);
                             try
@@ -520,8 +515,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 closePopUpStr = (PortalSettings.EnablePopUps) ? "onclick=\"return " + UrlUtils.ClosePopUp(true,webUrl,true) + "\"" : "";
                                 message = string.Format(Localization.GetString("UnknownSendMail.Error", LocalResourceFile), webUrl, closePopUpStr);
                             }
-                            var objEventLog = new EventLogController();
-                            objEventLog.AddLog(objPortalController.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
+                            EventLogController.Instance.AddLog(PortalController.Instance.GetPortal(intPortalId), PortalSettings, UserId, "", EventLogController.EventLogType.PORTAL_CREATED);
 
                             // mark default language as published if content localization is enabled
                             bool ContentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalId, false);
@@ -554,22 +548,11 @@ namespace DotNetNuke.Modules.Admin.Portals
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// optType_SelectedIndexChanged runs when the Portal Type is changed
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	5/10/2004	Updated to reflect design changes for Help, 508 support
-        ///                       and localisation
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-				txtPortalAlias.Text = optType.SelectedValue == "C" ? Globals.GetDomainName(Request) + @"/" : "";
+                txtPortalAlias.Text = optType.SelectedValue == "C" ? Globals.GetDomainName(Request) + @"/" : "";
             }
             catch (Exception exc) //Module failed to load
             {
@@ -633,7 +616,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             var values = cboTemplate.SelectedItem.Value.Split('|');
 
-            return TestablePortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+            return PortalController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
         }
 
         private void useCurrent_CheckedChanged(object sender, EventArgs e)

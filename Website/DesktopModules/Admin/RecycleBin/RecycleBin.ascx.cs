@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -74,8 +74,6 @@ namespace DesktopModules.Admin.RecycleBin
                 LoadData();
             }
 
-			var tabController = new TabController();
-
             modulesListBox.Items.Clear();
             tabsListBox.Items.Clear();
 
@@ -89,8 +87,8 @@ namespace DesktopModules.Admin.RecycleBin
                 var locale = LocaleController.Instance.GetLocale(module.CultureCode);
 
                 TabInfo tab = locale != null
-                                ? tabController.GetTabByCulture(module.TabID, PortalId, locale)
-                                : tabController.GetTab(module.TabID, PortalId, false);
+                                ? TabController.Instance.GetTabByCulture(module.TabID, PortalId, locale)
+                                : TabController.Instance.GetTab(module.TabID, PortalId, false);
 
                 if (tab == null)
                 {
@@ -118,54 +116,45 @@ namespace DesktopModules.Admin.RecycleBin
 
         private void DeleteModule(ModuleInfo module)
         {
-            var eventLogController = new EventLogController();
-            var moduleController = new ModuleController();
-            
             //hard-delete Tab Module Instance
-            moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
-            eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_DELETED);
+            ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
+            EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_DELETED);
         }
 
 	    private void DeleteTab(TabInfo tab, bool deleteDescendants)
 		{
-			var eventLogController = new EventLogController();
-			var tabController = new TabController();
-			var moduleController = new ModuleController();
-
 			//get tab modules before deleting page
-			var tabModules = moduleController.GetTabModules(tab.TabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
 
 			//hard delete the tab
-			tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
+			TabController.Instance.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
 			
 			//delete modules that do not have other instances
 			foreach (var kvp in tabModules)
 			{
 				//check if all modules instances have been deleted
-				var delModule = moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
+                var delModule = ModuleController.Instance.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
 				if (delModule == null || delModule.TabID == Null.NullInteger)
 				{
-					moduleController.DeleteModule(kvp.Value.ModuleID);
+                    ModuleController.Instance.DeleteModule(kvp.Value.ModuleID);
 				}
 			}
-			eventLogController.AddLog(tab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_DELETED);
+            EventLogController.Instance.AddLog(tab, PortalSettings, UserId, "", EventLogController.EventLogType.TAB_DELETED);
 		}
 
         private void LoadData()
         {
-            var moduleController = new ModuleController();
-            var tabController = new TabController();
             var currentLocale = LocaleController.Instance.GetCurrentLocale(PortalId);
 
             TabCollection tabsList = modeButtonList.SelectedValue == "ALL"
-                             ? tabController.GetTabsByPortal(PortalId)
-                             : tabController.GetTabsByPortal(PortalId).WithCulture(currentLocale.Code, true);
+                             ? TabController.Instance.GetTabsByPortal(PortalId)
+                             : TabController.Instance.GetTabsByPortal(PortalId).WithCulture(currentLocale.Code, true);
 
             DeletedTabs = tabsList.Values.Where(tab => tab.IsDeleted)
                                             .OrderBy(tab => tab.TabPath)
                                             .ToList();
 
-            DeletedModules = moduleController.GetRecycleModules(PortalId)
+            DeletedModules = ModuleController.Instance.GetModules(PortalId)
                                                 .Cast<ModuleInfo>()
                                                 .Where(module => module.IsDeleted && (modeButtonList.SelectedValue == "ALL" || module.CultureCode == currentLocale.Code))
                                                 .ToList();
@@ -173,11 +162,8 @@ namespace DesktopModules.Admin.RecycleBin
 
         private void RestoreModule(int moduleId, int tabId)
         {
-            var eventLogController = new EventLogController();
-            var moduleController = new ModuleController();
-
             // restore module
-            var module = moduleController.GetModule(moduleId, tabId, false);
+            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if ((module != null))
             {
                 if (DeletedTabs.Any(t => t.TabID == module.TabID))
@@ -187,8 +173,8 @@ namespace DesktopModules.Admin.RecycleBin
                                                    ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
-                moduleController.RestoreModule(module);
-                eventLogController.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
+                ModuleController.Instance.RestoreModule(module);
+                EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }
 
@@ -207,8 +193,7 @@ namespace DesktopModules.Admin.RecycleBin
 				}
 				else
 				{
-				    var tabController = new TabController();
-                    tabController.RestoreTab(tab, PortalSettings);
+                    TabController.Instance.RestoreTab(tab, PortalSettings);
 					DeletedTabs.Remove(tab);
 
 					//restore modules in this tab

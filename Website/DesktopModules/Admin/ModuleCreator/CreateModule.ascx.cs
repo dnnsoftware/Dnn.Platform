@@ -116,11 +116,9 @@ namespace DesktopModules.Admin.ModuleCreator
 
         private string CreateModuleControl()
         {
-            EventLogController objEventLog = new EventLogController();
-
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
-            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+            EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
 
             var controlName = Null.NullString;
@@ -140,14 +138,15 @@ namespace DesktopModules.Admin.ModuleCreator
                 tr.Close();
 
                 //replace tokens
-                sourceCode = sourceCode.Replace("[OWNER]", GetOwner());
-                sourceCode = sourceCode.Replace("[MODULE]", GetModule());
-                sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
-                sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
+                sourceCode = sourceCode.Replace("_OWNER_", GetOwner());
+                sourceCode = sourceCode.Replace("_MODULE_", GetModule());
+                sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
+                sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
                 {
@@ -194,7 +193,7 @@ namespace DesktopModules.Admin.ModuleCreator
                     tw.WriteLine(sourceCode);
                     tw.Close();
 
-                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+                    EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
                 }
 
@@ -342,15 +341,14 @@ namespace DesktopModules.Admin.ModuleCreator
                         ModuleControlController.AddModuleControl(objModuleControl);
 
                         //Update current module to reference new moduledefinition
-                        var objModules = new ModuleController();
-                        var objModule = objModules.GetModule(ModuleId, TabId, false);
+                        var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
                         objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                         objModule.ModuleTitle = txtModule.Text;
 
                         //HACK - need core enhancement to be able to update ModuleDefID
                         DotNetNuke.Data.DataProvider.Instance().ExecuteSQL("Update dbo.Modules set ModuleDefID = " + objModule.ModuleDefID.ToString() + " where ModuleID = " + ModuleId.ToString());
 
-                        objModules.UpdateModule(objModule);
+                        ModuleController.Instance.UpdateModule(objModule);
 
                         return true;
                     }

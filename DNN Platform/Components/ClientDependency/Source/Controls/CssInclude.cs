@@ -27,6 +27,27 @@ namespace ClientDependency.Core.Controls
             CssMedia = mediaType;
         }
 
-        public CssMediaType CssMedia { get; set; }
+	    public CssMediaType CssMedia
+	    {
+	        get
+	        {
+	            if (HtmlAttributes.ContainsKey("media"))
+	            {
+	                return (CssMediaType)Enum.Parse(typeof (CssMediaType), HtmlAttributes["media"], true);
+	            }
+	            return CssMediaType.All;
+	        }
+	        set
+	        {
+	            if (HtmlAttributes.ContainsKey("media"))
+	            {
+	                HtmlAttributes["media"] = value.ToString().ToLowerInvariant();
+	            }
+	            else
+	            {
+                    HtmlAttributes.Add("media", value.ToString().ToLowerInvariant());
+	            }
+	        }
+	    }
 	}
 }

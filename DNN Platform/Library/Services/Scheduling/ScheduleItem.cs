@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -35,14 +35,14 @@ namespace DotNetNuke.Services.Scheduling
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
+        #region Private Members
 
-        private DateTime _NextStart;
+        private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 
         #endregion
 
-        #region "Constructors"
+        #region Constructors
 
         public ScheduleItem()
         {
@@ -54,19 +54,18 @@ namespace DotNetNuke.Services.Scheduling
             RetryTimeLapseMeasurement = Null.NullString;
             ObjectDependencies = Null.NullString;
             RetainHistoryNum = Null.NullInteger;
-            _NextStart = Null.NullDate;
             CatchUpEnabled = Null.NullBoolean;
             Enabled = Null.NullBoolean;
             AttachToEvent = Null.NullString;
             ThreadID = Null.NullInteger;
             ProcessGroup = Null.NullInteger;
             Servers = Null.NullString;
+            ScheduleStartDate = Null.NullDate;
         }
 
         #endregion
 
-
-        #region "Persisted Properties"
+        #region Persisted Properties
 
         public string AttachToEvent { get; set; }
 
@@ -74,17 +73,19 @@ namespace DotNetNuke.Services.Scheduling
 
         public bool Enabled { get; set; }
 
+        public DateTime ScheduleStartDate { get; set; }
+
         public string FriendlyName { get; set; }
 
         public DateTime NextStart
         {
             get
             {
-                if (_NextStart == Null.NullDate)
+                if (!_NextStart.HasValue)
                 {
                     _NextStart = DateTime.Now;
                 }
-                return _NextStart;
+                return _NextStart.Value;
             }
             set
             {
@@ -205,15 +206,19 @@ namespace DotNetNuke.Services.Scheduling
             CatchUpEnabled = Null.SetNullBoolean(dr["CatchUpEnabled"]);
             Enabled = Null.SetNullBoolean(dr["Enabled"]);
             Servers = Null.SetNullString(dr["Servers"]);
-            try
-            {
-                NextStart = Null.SetNullDateTime(dr["NextStart"]);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                //Ignore 
-            }
 
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'NextStart'").Length > 0)
+                {
+                    NextStart = Null.SetNullDateTime(dr["NextStart"]);
+                }
+                if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
+                {
+                    ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
+                }
+            }
             //Fill BaseEntityInfo
             base.FillInternal(dr);
         }

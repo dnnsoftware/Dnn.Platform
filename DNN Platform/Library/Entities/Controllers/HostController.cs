@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -275,7 +275,6 @@ namespace DotNetNuke.Entities.Controllers
 		/// <param name="clearCache">if set to <c>true</c> will clear cache after update the setting.</param>
         public void Update(ConfigurationSetting config, bool clearCache)
         {
-            var objEventLog = new EventLogController();
             try
             {
                 var settings = GetSettingsFromDatabase();
@@ -285,21 +284,21 @@ namespace DotNetNuke.Entities.Controllers
                     settings.TryGetValue(config.Key, out currentconfig);
                     if (currentconfig != null && currentconfig.Value != config.Value)
                     {
-                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.GetCurrentUserInfo().UserID);
-                        objEventLog.AddLog(config.Key,
+                        DataProvider.Instance().UpdateHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                        EventLogController.Instance.AddLog(config.Key,
                                            config.Value,
-                                           PortalController.GetCurrentPortalSettings(),
-                                           UserController.GetCurrentUserInfo().UserID,
+                                           PortalController.Instance.GetCurrentPortalSettings(),
+                                           UserController.Instance.GetCurrentUserInfo().UserID,
                                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
                 {
-                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.GetCurrentUserInfo().UserID);
-                    objEventLog.AddLog(config.Key,
+                    DataProvider.Instance().AddHostSetting(config.Key, config.Value, config.IsSecure, UserController.Instance.GetCurrentUserInfo().UserID);
+                    EventLogController.Instance.AddLog(config.Key,
                                        config.Value,
-                                       PortalController.GetCurrentPortalSettings(),
-                                       UserController.GetCurrentUserInfo().UserID,
+                                       PortalController.Instance.GetCurrentPortalSettings(),
+                                       UserController.Instance.GetCurrentUserInfo().UserID,
                                        EventLogController.EventLogType.HOST_SETTING_CREATED);
                 }
             }
@@ -310,7 +309,7 @@ namespace DotNetNuke.Entities.Controllers
 
             if ((clearCache))
             {
-                DataCache.ClearHostCache(false);
+                DataCache.RemoveCache(DataCache.HostSettingsCacheKey);
             }
         }
 
@@ -344,7 +343,7 @@ namespace DotNetNuke.Entities.Controllers
         public void UpdateEncryptedString(string key, string value, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
-            Requires.NotNullOrEmpty("value", value);
+            Requires.NotNull("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
             Update(key, cipherText);

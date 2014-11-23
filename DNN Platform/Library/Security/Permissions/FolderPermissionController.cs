@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using System.Collections.Generic;
 
@@ -33,9 +34,48 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Security.Permissions
 {
-    public class FolderPermissionController
+    public partial class FolderPermissionController : ServiceLocator<IFolderPermissionController, FolderPermissionController>, IFolderPermissionController
     {
         private static readonly PermissionProvider provider = PermissionProvider.Instance();
+
+        protected override Func<IFolderPermissionController> GetFactory()
+        {
+            return () => new FolderPermissionController();
+        }
+
+        #region Public Methods
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        bool IFolderPermissionController.CanAddFolder(IFolderInfo folder)
+        {
+            return provider.CanAddFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can addmister a folder
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
+        {
+            return provider.CanAdminFolder((FolderInfo)folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        bool IFolderPermissionController.CanViewFolder(IFolderInfo folder)
+        {
+            return provider.CanViewFolder((FolderInfo)folder);
+        }
+
+        #endregion
 
         private static void ClearPermissionCache(int PortalID)
         {
@@ -44,34 +84,74 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearFolderCache(PortalID);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAddFolder(FolderInfo folder)
         {
-            return provider.CanAddFolder(folder) || CanAdminFolder(folder);
+            return provider.CanAddFolder(folder);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can addmister a folder
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanAdminFolder(FolderInfo folder)
         {
             return provider.CanAdminFolder(folder);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can browse the folder
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
+        public static bool CanBrowseFolder(FolderInfo folder)
+        {
+            return provider.CanBrowseFolder(folder);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can copy a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanCopyFolder(FolderInfo folder)
         {
-            return provider.CanCopyFolder(folder) || CanAdminFolder(folder);
+            return provider.CanCopyFolder(folder);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can delete a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanDeleteFolder(FolderInfo folder)
         {
-            return provider.CanDeleteFolder(folder) || CanAdminFolder(folder);
+            return provider.CanDeleteFolder(folder);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can manage a folder's settings
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanManageFolder(FolderInfo folder)
         {
-            return provider.CanManageFolder(folder) || CanAdminFolder(folder);
+            return provider.CanManageFolder(folder);
         }
 
+        /// <summary>
+        /// Returns a flag indicating whether the current user can view a folder or file
+        /// </summary>
+        /// <param name="folder">The page</param>
+        /// <returns>A flag indicating whether the user has permission</returns>
         public static bool CanViewFolder(FolderInfo folder)
         {
-            return provider.CanViewFolder(folder) || CanAdminFolder(folder);
+            return provider.CanViewFolder(folder);
         }
 
         public static void DeleteFolderPermissionsByUser(UserInfo objUser)
@@ -169,95 +249,5 @@ namespace DotNetNuke.Security.Permissions
             provider.SaveFolderPermissions(folder);
             ClearPermissionCache(folder.PortalID);
         }
-
-        #region "Obsolete Methods"
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        public int AddFolderPermission(FolderPermissionInfo objFolderPermission)
-        {
-            ClearPermissionCache(objFolderPermission.PortalID);
-            return DataProvider.Instance().AddFolderPermission(objFolderPermission.FolderID,
-                                                               objFolderPermission.PermissionID,
-                                                               objFolderPermission.RoleID,
-                                                               objFolderPermission.AllowAccess,
-                                                               objFolderPermission.UserID,
-                                                               UserController.GetCurrentUserInfo().UserID);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        public void DeleteFolderPermission(int FolderPermissionID)
-        {
-            DataProvider.Instance().DeleteFolderPermission(FolderPermissionID);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        public void DeleteFolderPermissionsByFolder(int PortalID, string FolderPath)
-        {
-            DataProvider.Instance().DeleteFolderPermissionsByFolderPath(PortalID, FolderPath);
-            ClearPermissionCache(PortalID);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Use DeleteFolderPermissionsByUser(UserInfo) ")]
-        public void DeleteFolderPermissionsByUserID(UserInfo objUser)
-        {
-            DataProvider.Instance().DeleteFolderPermissionsByUserID(objUser.PortalID, objUser.UserID);
-            ClearPermissionCache(objUser.PortalID);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        public FolderPermissionInfo GetFolderPermission(int FolderPermissionID)
-        {
-            return CBO.FillObject<FolderPermissionInfo>(DataProvider.Instance().GetFolderPermission(FolderPermissionID), true);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolderPath(PortalId, Folder)")]
-        public ArrayList GetFolderPermissionsByFolder(int PortalID, string Folder)
-        {
-            return CBO.FillCollection(DataProvider.Instance().GetFolderPermissionsByFolderPath(PortalID, Folder, -1), typeof(FolderPermissionInfo));
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolderPath(PortalId, Folder)")]
-        public FolderPermissionCollection GetFolderPermissionsByFolder(ArrayList arrFolderPermissions, string FolderPath)
-        {
-            return new FolderPermissionCollection(arrFolderPermissions, FolderPath);
-        }
-
-        [Obsolete("Deprecated in DNN 5.1. GetModulePermissions(ModulePermissionCollection, String) ")]
-        public string GetFolderPermissionsByFolderPath(ArrayList arrFolderPermissions, string FolderPath, string PermissionKey)
-        {
-            //Create a Folder Permission Collection from the ArrayList
-            var folderPermissions = new FolderPermissionCollection(arrFolderPermissions, FolderPath);
-
-            //Return the permission string for permissions with specified FolderPath
-            return folderPermissions.ToString(PermissionKey);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolder(PortalId, Folder)")]
-        public FolderPermissionCollection GetFolderPermissionsCollectionByFolderPath(int PortalID, string Folder)
-        {
-            return GetFolderPermissionsCollectionByFolder(PortalID, Folder);
-        }
-
-        [Obsolete("Deprecated in DNN 5.0. Please use GetFolderPermissionsCollectionByFolder(PortalId, Folder)")]
-        public FolderPermissionCollection GetFolderPermissionsCollectionByFolderPath(ArrayList arrFolderPermissions, string FolderPath)
-        {
-            var objFolderPermissionCollection = new FolderPermissionCollection(arrFolderPermissions, FolderPath);
-            return objFolderPermissionCollection;
-        }
-
-        [Obsolete("Deprecated in DNN 5.1.")]
-        public void UpdateFolderPermission(FolderPermissionInfo objFolderPermission)
-        {
-            DataProvider.Instance().UpdateFolderPermission(objFolderPermission.FolderPermissionID,
-                                                           objFolderPermission.FolderID,
-                                                           objFolderPermission.PermissionID,
-                                                           objFolderPermission.RoleID,
-                                                           objFolderPermission.AllowAccess,
-                                                           objFolderPermission.UserID,
-                                                           UserController.GetCurrentUserInfo().UserID);
-            ClearPermissionCache(objFolderPermission.PortalID);
-        }
-
-        #endregion
     }
 }

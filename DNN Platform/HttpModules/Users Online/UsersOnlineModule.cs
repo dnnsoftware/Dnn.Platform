@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,7 +22,7 @@
 
 using System;
 using System.Web;
-
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 
 #endregion
@@ -59,15 +59,11 @@ namespace DotNetNuke.HttpModules.UsersOnline
             HttpRequest request = app.Request;
 
             //check if we are upgrading/installing or if this is a captcha request
-            if (request.Url.LocalPath.ToLower().EndsWith("/install/install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/installwizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx") 
-                || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd") 
-                || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            if (!Initialize.ProcessHttpModule(request, false, false))
             {
                 return;
             }
+
             //Create a Users Online Controller
             var objUserOnlineController = new UserOnlineController();
 

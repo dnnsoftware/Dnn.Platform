@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,15 +19,71 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+using DotNetNuke.Common;
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Portals.Internal
 {
-    public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>
+    public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
         protected override Func<IPortalTemplateIO> GetFactory()
         {
-            return () => new PortalTemplateIOImpl();
+            return () => new PortalTemplateIO();
         }
+
+        #region IPortalTemplateIO Members
+
+        public IEnumerable<string> EnumerateTemplates()
+        {
+            string path = Globals.HostMapPath;
+            if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path, "*.template").Where(x => Path.GetFileNameWithoutExtension(x) != "admin");
+            }
+
+            return new string[0];
+        }
+
+        public IEnumerable<string> EnumerateLanguageFiles()
+        {
+            string path = Globals.HostMapPath;
+            if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path, "*.template.??-??.resx");
+            }
+
+            return new string[0];
+        }
+
+        public string GetResourceFilePath(string templateFilePath)
+        {
+            return CheckFilePath(templateFilePath + ".resources");
+        }
+
+        public string GetLanguageFilePath(string templateFilePath, string cultureCode)
+        {
+            return CheckFilePath(string.Format("{0}.{1}.resx", templateFilePath, cultureCode));
+        }
+
+        public TextReader OpenTextReader(string filePath)
+        {
+            return new StreamReader(File.Open(filePath, FileMode.Open));
+        }
+
+        private static string CheckFilePath(string path)
+        {
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            return "";
+        }
+
+        #endregion
     }
 }

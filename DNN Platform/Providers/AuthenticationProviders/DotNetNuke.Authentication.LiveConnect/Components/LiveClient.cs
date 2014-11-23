@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,8 +41,8 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 
         public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
         {
-            TokenEndpoint = new Uri("https://oauth.live.com/token");
-            AuthorizationEndpoint = new Uri("https://oauth.live.com/authorize");
+            TokenEndpoint = new Uri("https://login.live.com/token");
+            AuthorizationEndpoint = new Uri("https://login.live.com/authorize");
             MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
 
             Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");

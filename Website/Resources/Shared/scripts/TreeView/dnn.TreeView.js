@@ -31,6 +31,7 @@
             // e.g., this.element and this.options
             this.options = $.extend(TreeView.defaults(), this.options);
             this._onRedrawHandler = $.proxy(this._onRedraw, this);
+            this._onShowChildrenHandler = $.proxy(this._onShowChildren, this);
         },
 
         _createChildrenNodeElement: function (childrenContext, isRoot) {
@@ -39,8 +40,8 @@
             }
             var childContext;
             var $childNodeElement;
-
             var $childrenNodeElement = $("<ul/>");
+
             $childrenNodeElement.addClass(this.options.nodeListCss);
             if (isRoot) {
                 $childrenNodeElement.addClass(this.options.rootCss);
@@ -91,7 +92,7 @@
             var $nodeElement = this.getNodeElement(nodeContext);
             $nodeElement.children('ul').remove();
             $nodeElement.append($childrenNodeElement);
-            $childrenNodeElement.slideDown({ duration: this.options.expandSpeed, easing: this.options.expandEasing, complete: this._onRedrawHandler });
+            $childrenNodeElement.slideDown({ duration: this.options.expandSpeed, easing: this.options.expandEasing, complete: this._onShowChildrenHandler });
             return $childrenNodeElement;
         },
 
@@ -104,6 +105,13 @@
         _onRedraw: function (nodeContext) {
             var e = $.Event('onredrawtree');
             this.$this.trigger(e, [nodeContext]);
+        },
+        
+        _onShowChildren: function (nodeContext) {
+            var e = $.Event('onredrawtree');
+            this.$this.trigger(e, [nodeContext]);
+
+            this.$this.trigger('onshowchildren', [nodeContext]);
         },
 
         getNodeElement: function (nodeContext) {

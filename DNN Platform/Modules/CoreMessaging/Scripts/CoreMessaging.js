@@ -202,6 +202,9 @@
 
         //use an observable value to show/hide the replies list
         self.showReplies = ko.observable(false);
+        
+        //use an observable value to decide if a reply is possible
+        self.replyHasRecipients = ko.observable(true);
 
         self.threadSubject = ko.observable('');
         self.threadTo = ko.observable('');
@@ -282,7 +285,32 @@
             History.pushState({ view: 'messages', action: 'thread', conversationId: message.ConversationId }, "", "?view=messages&action=thread&t=" + self.fetch_unix_timestamp());
         };
 
+        self.checkReplyHasRecipients = function (conversationId) {
+            var returnValue = 0; // If the call fails, just return 0.
+
+            $.ajax({
+                type: "GET",
+                beforeSend: serviceFramework.setModuleHeaders,
+                url: baseServicepath + "CheckReplyHasRecipients",
+                async: false,
+                cache: false,
+                data: { conversationId: conversationId }
+            }).done(function (data) {
+                if ($.type(data) === "number") {
+                    returnValue = data;
+                }
+            });
+
+            if (returnValue == 0) {
+                self.replyHasRecipients(false);
+                displayMessage("#dnnCoreMessaging", settings.replyHasNoRecipientsText, "dnnFormWarning");
+            } else {
+                self.replyHasRecipients(true);
+            }
+        };
+        
         self.sendThreadRequestHandler = function (conversationId, afterMessageId) {
+            self.checkReplyHasRecipients(conversationId);
             $.ajax({
                 type: "GET",
                 url: baseServicepath + "Thread",
@@ -474,6 +502,60 @@
             });
         };
 
+        self.unarchive = function (message) {
+            $.ajax({
+                type: "POST",
+                url: baseServicepath + 'MarkUnArchived',
+                beforeSend: serviceFramework.setModuleHeaders,
+                data: { conversationId: message.ConversationId }
+            }).done(function (data) {
+                if (data.Result === "success") {
+                    if (message.ThreadCount != undefined) {
+                        self.TotalNewThreads(self.TotalNewThreads() - message.NewThreadCount());
+                    }
+
+                    self.messages.remove(message);
+                    self.TotalConversations(self.TotalConversations() - 1);
+                } else {
+                    displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                }
+            }).fail(function (xhr, status) {
+                displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+            });
+        };
+
+        self.delete = function (message) {
+            var opts = {
+                callbackTrue: function() {
+                    $.ajax({
+                        type: "POST",
+                        url: baseServicepath + 'DeleteUserFromConversation',
+                        beforeSend: serviceFramework.setModuleHeaders,
+                        data: { conversationId: message.ConversationId }
+                    }).done(function(data) {
+                        if (data.Result === "success") {
+                            if (message.ThreadCount != undefined) {
+                                self.TotalNewThreads(self.TotalNewThreads() - message.NewThreadCount());
+                            }
+
+                            self.messages.remove(message);
+                            self.TotalConversations(self.TotalConversations() - 1);
+                        } else {
+                            displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                        }
+                    }).fail(function(xhr, status) {
+                        displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+                    });
+                },
+                text: settings.text,
+                yesText: settings.yesText,
+                noText: settings.noText,
+                title: settings.title
+            };
+
+            $.dnnConfirm(opts);
+        };
+
         self.moveSelectedToArchive = function () {
             $.each(self.messages(), function () {
                 if (this.messageSelected()) self.moveToArchive(this);
@@ -555,6 +637,8 @@
         };
 
         self.loadNotificationsTabHandler = function () {
+            self.loadingData(true);
+            
             $.ajax({
                 type: "GET",
                 url: notificationspath,
@@ -786,7 +870,6 @@
             var body = $(containerElement + " #replyMessage").val();
             if (body.length == 0) return;
             var conversationId = self.messagethreads()[0].ConversationId;
-
             $.ajax({
                 type: "POST",
                 url: baseServicepath + "Reply",
@@ -796,6 +879,8 @@
                 if (typeof data !== "undefined" &&
                     data != null &&
                     typeof data.Conversation !== "undefined") {
+                    displayMessage("#dnnCoreMessaging", settings.messageSentText, "dnnFormSuccess");
+
                     $(containerElement + " #replyMessage").val('');
                     self.messagethreads.push(new messageThreadView(data));
 
@@ -850,7 +935,7 @@
             });
         };
 
-        self.getTotals = function () {
+        self.getTotals = function (refresh) {
             $.ajax({
                 type: "GET",
                 beforeSend: serviceFramework.setModuleHeaders,
@@ -859,17 +944,29 @@
                 cache: false
             }).done(function (totalsViewModel) {
                 if (typeof totalsViewModel !== "undefined" && totalsViewModel != null) {
+                    var state = window.History.getState();
                     if (typeof totalsViewModel.TotalUnreadMessages !== "undefined" && $.type(totalsViewModel.TotalUnreadMessages) === "number") {
+                        var oldTotalNewThreads = self.TotalNewThreads();
                         self.TotalNewThreads(totalsViewModel.TotalUnreadMessages);
+                        if (refresh && oldTotalNewThreads !== totalsViewModel.TotalUnreadMessages) {
+                            if (state.data == null || !state.data.view || (state.data.view == "messages" && state.data.action == "inbox")) {
+                                self.loadBox(inboxpath);
+                            }
+                        }
                     }
 
                     if (typeof totalsViewModel.TotalNotifications !== "undefined" && $.type(totalsViewModel.TotalNotifications) === "number") {
+                        var oldNotifications = self.TotalNotifications();
                         self.TotalNotifications(totalsViewModel.TotalNotifications);
+                        if (refresh && oldNotifications !== totalsViewModel.TotalNotifications) {
+                            if (state.data == null || !state.data.view || (state.data.view == "notifications" && state.data.action == "notifications")) {
+                                self.loadNotificationsTabHandler();
+                            }
+                        }
                     }
                 }
             });
         };
-	    		
     }
 
     this.init = function (element) {
@@ -897,9 +994,10 @@
             viewModel.myinboxHandler();
         }
 
-	    setInterval(function() {
-	    	viewModel.loadBox(inboxpath);
-	    }, refreshInterval);
+        setInterval(function () {
+            //for issue DNN-5753
+            viewModel.getTotals(true);
+        }, refreshInterval);
 
         viewModel.getTotals();
     };

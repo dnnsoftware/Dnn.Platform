@@ -1,7 +1,7 @@
-﻿#region Copyright
+#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,7 +21,6 @@
 
 #region Usings
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,26 +43,17 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     /// <summary>
     /// 51Degrees.mobi implementation of ClientCapabilityProvider
     /// </summary>
-    public class FiftyOneClientCapabilityProvider : DotNetNuke.Services.ClientCapability.ClientCapabilityProvider
+    public class FiftyOneClientCapabilityProvider : ClientCapabilityProvider
     {
-        #region Constructors
-
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public FiftyOneClientCapabilityProvider()
-        {
-        }
-
-        #endregion
-
         #region Static Methods
 
-        static object _allCapabilitiesLock = new object();
+        static readonly object _allCapabilitiesLock = new object();
         static IQueryable<IClientCapability> _allCapabilities;
 
-        static object _allClientCapabilityValuesLock = new object();
+        static readonly object _allClientCapabilityValuesLock = new object();
         static Dictionary<string, List<string>> _allClientCapabilityValues;
+
+        private static IDictionary<string, int> _highPiorityCapabilityValues;
 
         private static IQueryable<IClientCapability> AllCapabilities
         {
@@ -75,12 +65,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                     {
                         if (_allCapabilities == null)
                         {
-                            var capabilities = new List<IClientCapability>();
-
-                            foreach (var device in Factory.ActiveProvider.Devices)
-                            {
-                                capabilities.Add(new FiftyOneClientCapability(device));
-                            }
+                            var capabilities = DataProvider.Devices.Select(device => new FiftyOneClientCapability(device)).Cast<IClientCapability>().ToList();
 
                             _allCapabilities = capabilities.AsQueryable();
                         }
@@ -102,34 +87,28 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            foreach (var property in Factory.ActiveProvider.Properties.Values)
+                            foreach (var property in DataProvider.Properties)
                             {
-                                var values = new List<string>();
-                                foreach (var value in property.Values)
-                                    values.Add(value.Name);
+                                var values = property.Values.Select(value => value.Name).ToList();
                                 _allClientCapabilityValues.Add(property.Name, values);
                             }
                         }
                     }
 
                     _allClientCapabilityValues = _allClientCapabilityValues.OrderByDescending(kvp =>
-                                                              {
-                                                                  if (HighPiorityCapabilityValues.ContainsKey(kvp.Key))
-                                                                  {
-                                                                      return HighPiorityCapabilityValues[kvp.Key];
-                                                                  }
-                                                                  else
-                                                                  {
-                                                                      return 0;
-                                                                  }
-                                                              }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
+                                                                {
+                                                                    if (HighPiorityCapabilityValues.ContainsKey(kvp.Key))
+                                                                    {
+                                                                        return HighPiorityCapabilityValues[kvp.Key];
+                                                                    }
+                                                                    return 0;
+                                                                }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
                 }
 
                 return _allClientCapabilityValues;
             }
         }
 
-        private static IDictionary<string, int> _highPiorityCapabilityValues;
         private static IDictionary<string, int> HighPiorityCapabilityValues
         {
             get
@@ -166,28 +145,21 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             var request = HttpContext.Current != null ? HttpContext.Current.Request : null;
             if (request != null && request.UserAgent == userAgent &&
-                request.Browser.Capabilities.Contains(FiftyOne.Foundation.Mobile.Detection.Constants.FiftyOneDegreesProperties))
+                request.Browser.Capabilities.Contains(Constants.FiftyOneDegreesProperties))
             {
                 // The useragent has already been processed by 51Degrees.mobi when the request
                 // was processed by the detector module. Uses the values obtained then.
-                var clientCapability = new FiftyOneClientCapability(request.Browser);
-                clientCapability.UserAgent = request.UserAgent;
+                var clientCapability = new FiftyOneClientCapability(request.Browser) {UserAgent = request.UserAgent};
                 return clientCapability;
             }
-            else
+            // The useragent has not already been processed. Therefore process it now
+            // and then set the properties.
+            var match = WebProvider.ActiveProvider.Match(userAgent);
+            if (match != null)
             {
-                // The useragent has not already been processed. Therefore process it now
-                // and then set the properties.
-                var deviceInfo = Factory.ActiveProvider.GetDeviceInfo(userAgent);
-                if (deviceInfo != null)
-                {
-                    return new FiftyOneClientCapability(deviceInfo);
-                }
-                else
-                {
-                    return new FiftyOneClientCapability(null as SortedList<string, List<string>>);
-                }
+                return new FiftyOneClientCapability(match);
             }
+            return new FiftyOneClientCapability(null as SortedList<string, string[]>);
         }
 
         /// <summary>
@@ -197,7 +169,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);
 
-            var device = Factory.ActiveProvider.GetDeviceInfoByID(deviceId);
+            var device = DataProvider.GetDeviceFromDeviceID(deviceId);
             
 			if(device == null)
 			{
@@ -248,3 +220,4 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         #endregion
     }
 }
+

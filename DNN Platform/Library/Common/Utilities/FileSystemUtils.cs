@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -468,7 +468,7 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("Deprecated in DNN 6.0.  It has been replaced by PathUtils.Instance.GetUserFolderPath(UserInfo user) ")]
         public static string GetUserFolderPath(int userID)
         {
-            var user = UserController.GetUserById(PortalController.GetCurrentPortalSettings().PortalId, userID);
+            var user = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, userID);
             return PathUtils.Instance.GetUserFolderPath(user);
         }
 
@@ -618,7 +618,7 @@ namespace DotNetNuke.Common.Utilities
                 var fileManager = FileManager.Instance;
                 var folderManager = FolderManager.Instance;
 
-                var settings = PortalController.GetCurrentPortalSettings();
+                var settings = PortalController.Instance.GetCurrentPortalSettings();
                 var portalID = GetFolderPortalID(settings);
 
                 if (newFileName != Null.NullString)
@@ -1068,7 +1068,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var userFoldersArray = new ArrayList();
             
-            var user = UserController.GetCurrentUserInfo();
+            var user = UserController.Instance.GetCurrentUserInfo();
 
             //Create Home folder if it doesn't exist
             var userFolders = (!includeSecure && !includeDatabase) ? FolderManager.Instance.GetFileSystemFolders(user, permissions) : 
@@ -1431,7 +1431,7 @@ namespace DotNetNuke.Common.Utilities
             var fileManager = FileManager.Instance;
             var folderManager = FolderManager.Instance;
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var portalID = GetFolderPortalID(settings);
 
             var fileName = objHtmlInputFile.FileName;
@@ -1457,7 +1457,7 @@ namespace DotNetNuke.Common.Utilities
             var fileManager = FileManager.Instance;
             var folderManager = FolderManager.Instance;
 
-            var settings = PortalController.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
             var portalID = GetFolderPortalID(settings);
 
             var fileName = objHtmlInputFile.FileName;

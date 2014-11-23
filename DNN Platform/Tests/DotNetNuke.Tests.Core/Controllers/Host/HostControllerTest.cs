@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -154,7 +154,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -186,7 +186,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Once());
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             //Assert
             _mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
             //Clear was not called a second time
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Never());
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
         [Test]
@@ -221,7 +221,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             //Assert
             _mockData.Verify(c => c.UpdateHostSetting("String_1_S", "MyValue", false, It.IsAny<int>()), Times.Exactly(1));
             _mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
-          
         }
 
         #endregion
@@ -241,7 +240,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.AddHostSetting(key, value, false, It.IsAny<int>()));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -257,7 +256,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.AddHostSetting(key, value, false, It.IsAny<int>()));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -273,7 +272,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.AddHostSetting(key, value, false, It.IsAny<int>()));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Once());
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -289,7 +288,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             //Assert
             _mockData.Verify(c => c.AddHostSetting(key, value, false, It.IsAny<int>()));
-            _mockCache.Verify(c => c.Clear("Host", ""), Times.Never());
+            _mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
         #endregion

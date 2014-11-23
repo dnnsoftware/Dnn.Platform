@@ -1,14 +1,14 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Telerik.Web" type="Library" version="07.02.00">
+    <package name="DotNetNuke.Telerik.Web" type="Library" version="07.03.04" isSystem="true">
       <friendlyName>DotNetNuke Telerik Web Components</friendlyName>
       <description>Provides Telerik Components for DotNetNuke.</description>
       <dependencies/>
       <owner>
-        <name>DNNCorp</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>www.dotnetnuke.com</url>
-        <email>support@dotnetnuke.com</email>
+        <name>DNN</name>
+        <organization>DNN Corp.</organization>
+        <url>http://www.dnnsoftware.com</url>
+        <email>support@dnnsoftware.com</email>
       </owner>
       <license>Please refer to the Telerik EULA.pdf in your site's documentation folder.</license>
       <releaseNotes>

@@ -126,7 +126,8 @@ AS
 	SELECT * FROM {databaseOwner}{objectQualifier}PackageTypes
 GO
 
-DROP INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Packages]') AND name = N'IX_{objectQualifier}Packages')
+    DROP INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}Packages ON {databaseOwner}[{objectQualifier}Packages]
 	(
@@ -852,7 +853,7 @@ BEGIN
 		[CreatedOnDate] [datetime] NOT NULL,
 		[LastModifiedByUserId] [int] NOT NULL,
 		[LastModifiedOnDate] [datetime] NOT NULL,
-		 CONSTRAINT [PK_dnn_SavedQueries] PRIMARY KEY CLUSTERED 
+		 CONSTRAINT [PK_{objectQualifier}SavedQueries] PRIMARY KEY CLUSTERED 
 		(
 			[QueryId] ASC
 		)
@@ -928,14 +929,10 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAvailableUsersForIndex]
     @PortalId INT ,
     @StartDate DATETIME ,
-	@pageIndex INT = 0,
+	@startUserId INT = 0,
     @numberOfUsers INT = 500
 AS 
     BEGIN
-		DECLARE @startRow INT, @endRow INT
-		SELECT @startRow = @pageIndex * @numberOfUsers + 1
-		SELECT @endRow = @startRow + @numberOfUsers - 1;
-
         WITH    ValidDataType
                   AS ( SELECT   EntryID
                        FROM     {databaseOwner}[{objectQualifier}Lists]
@@ -943,11 +940,11 @@ AS
                                 AND SystemList = 1
                                 AND Value IN ( 'Text', 'RichText' )
                      ),
-                  ValidUsers
-                  AS ( SELECT   UserId
-                       FROM     ( SELECT DISTINCT
-                                            ( u.UserID ) ,
-                                            DENSE_RANK() OVER ( ORDER BY u.UserID ) AS rownumber
+                  ValidUsers AS 
+                  (
+				      SELECT UserId FROM ( SELECT   UserId, ROW_NUMBER() OVER(ORDER BY UserId ASC) AS rownumber
+                         FROM ( SELECT DISTINCT
+                                            ( u.UserID )
                                   FROM      {databaseOwner}[{objectQualifier}Users] u
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
                                             INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
@@ -956,12 +953,18 @@ AS
                                   WHERE     up.PortalId = @PortalId
                                             AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
                                             AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
-                                ) AS T
-                       WHERE    T.rownumber BETWEEN @startRow AND @endRow
-                     )
+                                ) AS T WHERE UserID > @startUserId) AS T
+                                WHERE rownumber <= @numberOfUsers
+                     ),
+                     FirstName AS (
+						SELECT UserID, PropertyValue FROM {databaseOwner}[{objectQualifier}UserProfile] p
+						INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID
+						WHERE pd.PropertyName = 'FirstName' AND pd.PortalID = @PortalID
+					 )
 
             SELECT  DISTINCT u.UserID ,
 					u.DisplayName,
+                    fn.PropertyValue AS FirstName,
                     pd.PropertyName ,
                     CASE WHEN (p.PropertyValue IS NULL) THEN p.PropertyText ELSE p.PropertyValue END AS PropertyValue,
                     p.Visibility,
@@ -972,25 +975,24 @@ AS
                     INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
                     INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
                     INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
+                    LEFT JOIN FirstName fn ON fn.UserID = u.UserID
             WHERE   ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
-
-        ;WITH    ValidDataType
-                  AS ( SELECT   EntryID
-                       FROM     {databaseOwner}[{objectQualifier}Lists]
-                       WHERE    ListName = 'DataType'
-                                AND SystemList = 1
-                                AND Value IN ( 'Text', 'RichText' )
-                     )
-        SELECT  COUNT(DISTINCT ( u.UserID )) AS TotalRecords
-        FROM    {databaseOwner}[{objectQualifier}Users] u
-                INNER JOIN {databaseOwner}[{objectQualifier}UserPortals] up ON up.UserId = u.UserID
-                INNER JOIN {databaseOwner}[{objectQualifier}UserProfile] p ON p.UserID = u.UserID
-                INNER JOIN {databaseOwner}[{objectQualifier}ProfilePropertyDefinition] pd ON pd.PropertyDefinitionID = p.PropertyDefinitionID AND pd.Visible = 1 AND pd.PortalID = @PortalID
-                INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
-        WHERE   up.PortalId = @PortalId
-                AND (u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)
-                AND ((p.PropertyText IS NOT NULL AND p.PropertyText <> '') OR ( p.PropertyValue IS NOT NULL AND p.PropertyValue <> '') OR p.LastUpdatedDate > @StartDate)
     END
+GO
+
+--insert the reindex flag for all portals when upgrade to 7.2.0
+
+INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings]
+        ( PortalID ,
+          SettingName ,
+          SettingValue ,
+          CreatedByUserID ,
+          CreatedOnDate ,
+          LastModifiedByUserID ,
+          LastModifiedOnDate ,
+          CultureCode
+        )
+		SELECT PortalID, 'UserIndexer_ReIndex', 'true', -1, GETDATE(), -1, GETDATE(), '' FROM {databaseOwner}[{objectQualifier}Portals]
 GO
 
 /*   Fix DNN-3914 Add new SQL functions */

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,7 @@
 
 using System;
 using System.Text;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.ExtensionPoints
 {
@@ -30,16 +31,31 @@ namespace DotNetNuke.ExtensionPoints
         {
             var extension = (IToolBarButtonExtensionPoint)extensionPoint;
 
+            var cssClass = extension.CssClass;
+            var action = extension.Action;
+            if (!extension.Enabled)
+            {
+                cssClass += " disabled";
+                action = "void(0);";
+            }
+
+            var icon = extension.Icon;
+            if (icon.StartsWith("~/"))
+            {
+                icon = Globals.ResolveUrl(icon);
+            }
+
+            var quote = action.Contains("'") ? "\"" : "'";
             var str = new StringBuilder();
             str.AppendFormat(
-                        "<button id='{0}' class='{1}' onclick='{2}; return false;' title='{3}'>",
-                        extension.ButtonId, extension.CssClass, extension.Action, extension.Text);
+                        "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
+                        extension.ButtonId, cssClass, action, extension.Text, quote);
 
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
                 !extension.ShowText ? "text-indent: -10000000px;" : "",
-                extension.ShowIcon ? extension.Icon : "",
+                extension.ShowIcon ? icon : "",
                 extension.Text);
 
             str.AppendLine("</button>");

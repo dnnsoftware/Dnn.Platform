@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,7 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Configuration;
+using System.Diagnostics;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using FiftyOne.Foundation.Mobile.Configuration;
+using FiftyOne.Foundation.Mobile.Detection.Entities;
 
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
@@ -27,15 +33,15 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
-    using Components;
     using FiftyOne.Foundation.Mobile.Detection;
     using FiftyOne.Foundation.UI;
     using FiftyOne.Foundation.UI.Web;
+    using System.Xml;
 /// <summary>
     /// Administration control is used as the main control off the hosts
     /// page to activate 51Degrees.mobi.
     /// </summary>
-    partial class Administration : ModuleBase
+    partial class Administration : PortalModuleBase
     {
         /// <summary>
         ///  Records if premium data is in use when the control is first loaded.
@@ -53,6 +59,12 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             SearchButton.Click += SearchButtonClick;
             HardwareList.ItemDataBound += ListItemDataBound;
             PremiumUpload.UploadComplete += UploadComplete;
+            cbDetectionEnabled.CheckedChanged += DetectionEnabledChanged;
+            cbAutoUpdatesEnabled.CheckedChanged += AutoUpdatesEnabledChanged;
+            cbShareUsageEnabled.CheckedChanged += ShareUsageEnabledChanged;
+            cbDetectionEnabledPremium.CheckedChanged += DetectionEnabledChanged;
+            cbAutoUpdatesEnabledPremium.CheckedChanged += AutoUpdatesEnabledChanged;
+            cbShareUsageEnabledPremium.CheckedChanged += ShareUsageEnabledChanged;
             
             NoResultsMessage.Visible = false;
             PremiumUploadSuccess.Visible = false;
@@ -138,7 +150,20 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             NoResultsMessage.Visible = hasSearchQuery && !hasDeviceId && !hasModel && !hasVendor;
         }
 
-        protected override void OnPreRender(EventArgs e)
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        if (!IsPostBack)
+        {
+            cbDetectionEnabled.Checked = cbDetectionEnabledPremium.Checked = GetDetectionConfig("enabled", true);
+            cbAutoUpdatesEnabled.Checked = cbAutoUpdatesEnabledPremium.Checked = GetDetectionConfig("autoUpdate", true);
+            cbShareUsageEnabled.Checked = cbShareUsageEnabledPremium.Checked = GetDetectionConfig("shareUsage", true);
+
+        }
+    }
+
+    protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             PremiumUpload.Visible = DataProvider.IsPremium;
@@ -160,7 +185,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             var premiumLabel = e.Item.FindControl("Premium") as HtmlGenericControl;
             if (premiumLabel != null)
             {
-                premiumLabel.Visible = property.IsPremium;
+                premiumLabel.Visible = DataProvider.GetIsPremium(property);
             }
 
             var values = e.Item.FindControl("Values") as HtmlGenericControl;
@@ -189,10 +214,10 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             }
             else
             {
-                var device = DataProvider.Provider.GetDeviceInfo(this.SearchTextBox.Text);
-                if (device != null)
+                var deviceId = DataProvider.GetDeviceID(this.SearchTextBox.Text);
+                if (deviceId != null)
                 {
-                    additionalParams = "DeviceID=" + device.DeviceId;
+                    additionalParams = "DeviceID=" + deviceId;
                 }
             }
             
@@ -207,6 +232,53 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 				: (DataProvider.IsCms ? LocalizeString("LicenseType_CMS.Text") : LocalizeString("LicenseType_Lite.Text"));
 			return string.Format(content, licenseType);
 		}
+
+        private void DetectionEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("enabled", (sender as CheckBox).Checked);
+        }
+
+        private void AutoUpdatesEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("autoUpdate", (sender as CheckBox).Checked);
+        }
+
+        private void ShareUsageEnabledChanged(object sender, EventArgs e)
+        {
+            UpdateDetectionConfig("shareUsage", (sender as CheckBox).Checked);
+        }
+
+        private void UpdateDetectionConfig(string attrName, bool enabled)
+        {
+            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
+            if (section != null)
+            {
+                var document = new XmlDocument();
+                document.LoadXml(section.SectionInformation.GetRawXml());
+                document.DocumentElement.SetAttribute(attrName, enabled.ToString().ToLowerInvariant());
+
+                section.SectionInformation.SetRawXml(document.InnerXml);
+
+                section.CurrentConfiguration.Save(ConfigurationSaveMode.Modified);
+
+                Config.Touch();
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+
+        private bool GetDetectionConfig(string attrName, bool defaultValue)
+        {
+            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
+            if (section != null)
+            {
+                var property = section.ElementInformation.Properties[attrName];
+                if (property != null)
+                {
+                    return bool.Parse(property.Value.ToString());
+                }
+            }
+
+            return defaultValue;
+        }
     }
 }
-

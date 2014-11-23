@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -79,6 +79,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing Getting ClientCapabilities based on clientID
 
         [Test]
+        [Ignore("The current version of Fifty One Degress does not support this")]
         public void FiftyOneClientCapabilityProvider_GetClientCapabilityById_Returns_ClientCapability_For_ClientId()
         {
             //Arrange
@@ -128,6 +129,7 @@ namespace DotNetNuke.Tests.FiftyOneClientCapabilityProviderTest
         #region Testing GetAllClientCapabilities
 
         [Test]
+        [Ignore("The current version of Fifty One Degress does not support this")]
         public void FiftyOneClientCapabilityProvider_GetAllClientCapabilities_Returns_MoreThanZero_Records()
         {
             //Arrange

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -853,6 +853,11 @@ namespace DotNetNuke.Collections
             {
                 if (typeof(T).IsValueType)
                 {
+                    if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        return (T)value;
+                    }
+
                     // TODO: this should probably return the default value if called from GetOrDefault...
                     throw new InvalidCastException();
                 }

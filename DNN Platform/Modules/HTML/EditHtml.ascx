@@ -1,8 +1,11 @@
 <%@ Control language="C#" Inherits="DotNetNuke.Modules.Html.EditHtml" CodeBehind="EditHtml.ascx.cs" AutoEventWireup="false" Explicit="True" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="texteditor" Src="~/controls/texteditor.ascx" %>
 <%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnncl" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+
+<dnncl:DnnCssInclude ID="customJS" runat="server" FilePath="DesktopModules/HTML/edit.css" AddTag="false" />
+
 <div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml">
 	<div class="ehCurrentContent dnnClear" id="ehCurrentContent">
 		<div class="ehccContent dnnClear">
@@ -56,7 +59,7 @@
 			</fieldset>
 			<h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead" runat="server"><a href=""><%=LocalizeString("dshHistory")%></a></h2>
 			<fieldset id="fsEditHtmlHistory" runat="server">
-				<dnnweb:dnngrid ID="dgHistory" runat="server" AutoGenerateColumns="false">
+				<dnnweb:DnnGrid ID="dgHistory" runat="server" AutoGenerateColumns="false">
 					<MasterTableView>
 						<Columns>
 								<dnnweb:DnnGridBoundColumn HeaderText="Date" DataField="CreatedOnDate" />
@@ -69,7 +72,7 @@
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="NoHistory" />
 						</NoRecordsTemplate>
 					</MasterTableView>
-				</dnnweb:dnngrid>
+				</dnnweb:DnnGrid>
 			</fieldset>
             <h2 id="dnnVersions" class="dnnFormSectionHead" runat="server"><a href=""><%=LocalizeString("dshVersions")%></a></h2>
             <fieldset>
@@ -78,7 +81,7 @@
 				        <dnn:label id="plMaxVersions" runat="server" controlname="lblMaxVersions" suffix=":" />
 				        <asp:Label ID="lblMaxVersions" runat="server" />
 			        </div>
-			        <dnnweb:dnngrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5" >
+			        <dnnweb:DnnGrid ID="dgVersions" runat="server" AutoGenerateColumns="false" AllowPaging="True" PageSize="5" >
 				        <PagerStyle Mode="NextPrevAndNumeric"></PagerStyle>
 				         <MasterTableView>
 					        <Columns>
@@ -108,10 +111,10 @@
 						        </dnnweb:DnnGridTemplateColumn>
 					        </Columns>
 					        <NoRecordsTemplate>
-						        <asp:Label ID="lblNoRecords" runat="server" resourcekey="NoVersions" />
+						        <asp:Label ID="lblNoRecords1" runat="server" resourcekey="NoVersions" />
 					        </NoRecordsTemplate>
 				        </MasterTableView>
-			        </dnnweb:dnngrid>
+			        </dnnweb:DnnGrid>
 		        </div>
             </fieldset>
 		</div>

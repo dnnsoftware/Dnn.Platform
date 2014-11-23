@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -33,12 +33,16 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
+using DotNetNuke.Services.Social.Notifications;
 
 #endregion
 
@@ -79,13 +83,16 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnInit(e);
 
-			//redirect to home page if the user has been deleted
+			//throw 404 so that deleted profile is not reindexed
 			if(ProfileUser == null || ProfileUser.IsDeleted)
 			{
-				Response.Redirect(GetRedirectUrl(), true);
+    		    throw new HttpException(404, "Not Found");
 			}
 
-            jQuery.RegisterJQuery(Page);
+            ProcessQuerystring();
+
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
 
 		/// <summary>
@@ -181,8 +188,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     var clientName = Localization.GetSafeJSString(property.PropertyName);
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
-                    value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-                    value = value.Replace("\r", string.Empty).Replace("\n",  " ");
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        value = Localization.GetSafeJSString(Server.HtmlDecode(value));
+                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
+                        value = value.Replace(";", string.Empty).Replace("//", string.Empty);
+                    }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");
@@ -196,6 +207,8 @@ namespace DotNetNuke.Modules.Admin.Users
 			                       : String.Empty;
 
                 sb.Append("self.Email = ko.observable('");
+                email = Localization.GetSafeJSString(Server.HtmlDecode(email));
+                email = email.Replace(";", string.Empty).Replace("//", string.Empty);
                 sb.Append(email + "');");
                 sb.Append('\n');
                 sb.Append("self.EmailText = '");
@@ -236,6 +249,63 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			return redirectUrl;
 		}
+
+        private void ProcessQuerystring()
+        {
+            //in case someone is being redirected to here from an e-mail link action we need to process that here
+
+            var action = Request.QueryString["action"];
+
+            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in. 
+            {
+                string loginUrl = Common.Globals.LoginURL(Request.RawUrl, false);
+                Response.Redirect(loginUrl);
+            }
+            if (Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
+            {
+                //current user, i.e. the one that the request was for
+                var currentUser = UserController.Instance.GetCurrentUserInfo();               
+                // the initiating user,i.e. the one who wanted to be friend
+                // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
+                var initiatingUser = UserController.Instance.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(Request.QueryString["UserID"]));
+
+                if (initiatingUser.UserID == currentUser.UserID)
+                {
+                    return; //do not further process for users who are on their own profile page
+                }
+            
+                var friendRelationship = RelationshipController.Instance.GetFriendRelationship(currentUser, initiatingUser);
+
+                if (friendRelationship != null)
+                {                   
+                    if (action.ToLower() == "acceptfriend")
+                    {
+                        var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        FriendsController.Instance.AcceptFriend(friend);                        
+                    }
+
+                    if (action.ToLower() == "followback")
+                    {
+                        var follower = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        try
+                        {
+                            FollowersController.Instance.FollowUser(follower);
+                            var notifications = NotificationsController.Instance.GetNotificationByContext(3, initiatingUser.UserID.ToString());
+                            if (notifications.Count > 0)
+                            {
+                                NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
+                            }
+                        }
+                        catch 
+                        {}
+
+
+                    }                    
+                }
+
+                Response.Redirect(Common.Globals.UserProfileURL(initiatingUser.UserID));
+            }
+        }
 
 		#endregion
 	}

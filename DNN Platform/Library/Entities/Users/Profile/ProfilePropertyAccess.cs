@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Entities.Users
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo(definition.DataType).Value;
+                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
                 DataCache.SetCache(cacheKey, strDataType);
             }
             return strDataType;
@@ -91,7 +92,8 @@ namespace DotNetNuke.Entities.Users
                             {
                                 if (user.Social.UserRelationships.Any(userRelationship =>
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
-                                                                              && accessingUser.UserID == userRelationship.RelatedUserId)
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted
+                                                                              && (accessingUser.UserID == userRelationship.RelatedUserId || user.UserID==userRelationship.RelatedUserId))
                                                                       ))
                                 {
                                     isVisible = true;
@@ -136,7 +138,7 @@ namespace DotNetNuke.Entities.Users
                     //Is Administrator
                     if (String.IsNullOrEmpty(administratorRoleName))
                     {
-                        PortalInfo ps = new PortalController().GetPortal(user.PortalID);
+                        PortalInfo ps = PortalController.Instance.GetPortal(user.PortalID);
                         administratorRoleName = ps.AdministratorRoleName;
                     }
 
@@ -173,13 +175,16 @@ namespace DotNetNuke.Entities.Users
                 {
                     if (CheckAccessLevel(property, accessingUser))
                     {
-                        if (property.PropertyName.ToLower() == "photo")
+                        switch (property.PropertyName.ToLower())
                         {
-                            return user.Profile.PhotoURL;
-                        }
-                        else
-                        {
-                            return GetRichValue(property, format, formatProvider);
+                            case "photo":
+                                return user.Profile.PhotoURL;
+                            case "country":
+                                return user.Profile.Country;
+                            case "region":
+                                return user.Profile.Region;
+                            default:
+                                return GetRichValue(property, format, formatProvider);
                         }
                     }
                 }
@@ -227,14 +232,13 @@ namespace DotNetNuke.Entities.Users
                         result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
                         break;
                     case "page":
-                        var tabCtrl = new TabController();
                         int tabid;
                         if (int.TryParse(property.PropertyValue, out tabid))
                         {
-                            TabInfo tab = tabCtrl.GetTab(tabid, Null.NullInteger, false);
+                            TabInfo tab = TabController.Instance.GetTab(tabid, Null.NullInteger, false);
                             if (tab != null)
                             {
-                                result = string.Format("<a href='{0}'>{1}</a>", Globals.NavigateURL(tabid), tab.LocalizedTabName);
+                                result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);
                             }
                         }
                         break;

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -79,6 +79,17 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public override bool Enabled {
+            get
+            {
+                return _moduleCombo.Enabled;
+            }
+            set
+            {
+                _moduleCombo.Enabled = value;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -105,12 +116,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private static Dictionary<int, string> GetTabModules(int tabID)
         {
-            var tabCtrl = new TabController();
-            var moduleCtrl = new ModuleController();
-            var tabModules = moduleCtrl.GetTabModules(tabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
             // Is this tab from another site?
-            var isRemote = tabCtrl.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
+            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
 
             var pageModules = tabModules.Values.Where(m => !isRemote || ModuleSuportsSharing(m)).Where(m => ModulePermissionController.CanAdminModule(m) && m.IsDeleted == false).ToList();
 
@@ -148,7 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void BindTabModuleImages(int tabID)
         {
-            var tabModules = new ModuleController().GetTabModules(tabID);
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
@@ -210,6 +219,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void BindAllPortalDesktopModules()
         {
+            _moduleCombo.SelectedValue = null;
             _moduleCombo.DataSource = GetPortalDesktopModules();
             _moduleCombo.DataBind();
             BindPortalDesktopModuleImages();
@@ -217,6 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void BindTabModulesByTabID(int tabID)
         {
+            _moduleCombo.SelectedValue = null;
             _moduleCombo.DataSource = GetTabModules(tabID);
             _moduleCombo.DataBind();
             BindTabModuleImages(tabID);

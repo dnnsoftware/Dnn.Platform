@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,7 +20,6 @@
 #endregion
 using System.Web.Http.Routing;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 
 namespace DotNetNuke.Web.Api
 {
@@ -36,7 +35,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>a url</returns>
         public static string DnnLink(this UrlHelper urlHelper, string moduleFolderName, string routeName, object routeValues)
         {
-            return DnnLink(urlHelper, moduleFolderName, routeName, routeValues, TestablePortalController.Instance.GetCurrentPortalSettings().PortalAlias);
+            return DnnLink(urlHelper, moduleFolderName, routeName, routeValues, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace DotNetNuke.Web.Api
         public static string DnnLink(this UrlHelper urlHelper, string moduleFolderName, string routeName, object routeValues, PortalAliasInfo portalAliasInfo)
         {
             var parm = new PortalAliasRouteManager();
-            var fullName = parm.GetRouteName(moduleFolderName, routeName, TestablePortalController.Instance.GetCurrentPortalSettings().PortalAlias);
+            var fullName = parm.GetRouteName(moduleFolderName, routeName, PortalController.Instance.GetCurrentPortalSettings().PortalAlias);
             HttpRouteValueDictionary allRouteValues = parm.GetAllRouteValues(portalAliasInfo, routeValues);
 
             return urlHelper.Link(fullName, allRouteValues);

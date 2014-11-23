@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -143,10 +143,18 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     string unlocalizedText = Text;
                     Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
+                    if (String.IsNullOrEmpty(Text))
+                    {
+                        Text = unlocalizedText;
+                    }
 
                     if ((string.IsNullOrEmpty(ToolTip)))
                     {
                         ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
+                        if (String.IsNullOrEmpty(ToolTip))
+                        {
+                            ToolTip = unlocalizedText;
+                        }
                     }
                 }
             }

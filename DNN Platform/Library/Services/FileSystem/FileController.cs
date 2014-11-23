@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.FileSystem
         [Obsolete("Deprecated in DNN 6.0.")]
         public FileInfo GetFileByUniqueID(Guid uniqueId)
         {
-            return (FileInfo) CBO.FillObject(DataProvider.Instance().GetFileByUniqueID(uniqueId), typeof (FileInfo));
+            return CBO.FillObject<FileInfo>(DataProvider.Instance().GetFileByUniqueID(uniqueId));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -100,12 +100,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void Subscribe(int roleID, bool cancel)
         {
-            var objRoles = new RoleController();
-            RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID);
+            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID);
 
             if (objRole.IsPublic && objRole.ServiceFee == 0.0)
             {
-                objRoles.UpdateUserRole(PortalId, UserInfo.UserID, roleID, cancel);
+                RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
 
                 //Raise SubscriptionUpdated Event
                 OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
@@ -125,12 +124,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void UseTrial(int roleID)
         {
-            var objRoles = new RoleController();
-            RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
 
             if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
-                objRoles.UpdateUserRole(PortalId, UserInfo.UserID, roleID, false);
+                RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
 
                 //Raise SubscriptionUpdated Event
                 OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
@@ -336,11 +334,10 @@ namespace DotNetNuke.Modules.Admin.Security
         protected bool ShowSubscribe(int roleID)
         {
             bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
             if (objRole.IsPublic)
             {
-                var objPortals = new PortalController();
-                PortalInfo objPortal = objPortals.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                 if (objRole.ServiceFee == 0.0)
                 {
                     showSubscribe = true;
@@ -355,9 +352,8 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected bool ShowTrial(int roleID)
         {
-            var objRoles = new RoleController();
             bool showTrial = Null.NullBoolean;
-            RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
             if (string.IsNullOrEmpty(objRole.TrialFrequency) || objRole.TrialFrequency == "N" || (objRole.IsPublic && objRole.ServiceFee == 0.0))
             {
                 showTrial = Null.NullBoolean;
@@ -365,7 +361,7 @@ namespace DotNetNuke.Modules.Admin.Security
             else if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
 				//Use Trial?
-                UserRoleInfo objUserRole = objRoles.GetUserRole(PortalId, UserInfo.UserID, roleID);
+                UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalId, UserInfo.UserID, roleID);
                 if ((objUserRole == null) || (!objUserRole.IsTrialUsed))
                 {
                     showTrial = true;
@@ -390,8 +386,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if (Request.IsAuthenticated)
             {
-                RoleController roleController = new RoleController();
-                grdServices.DataSource = roleController.GetUserRoles(UserInfo, false);
+                grdServices.DataSource = RoleController.Instance.GetUserRoles(UserInfo, false);
                 grdServices.DataBind();
 
                 //if no service available then hide options
@@ -482,15 +477,12 @@ namespace DotNetNuke.Modules.Admin.Security
             bool rsvpCodeExists = false;
             if (!String.IsNullOrEmpty(code))
             {
-				//Get the roles from the Database
-                var objRoles = new RoleController();
-
                 //Parse the roles
-                foreach (RoleInfo objRole in TestableRoleController.Instance.GetRoles(PortalSettings.PortalId))
+                foreach (RoleInfo objRole in RoleController.Instance.GetRoles(PortalSettings.PortalId))
                 {
                     if (objRole.RSVPCode == code)
                     {
-                        objRoles.UpdateUserRole(PortalId, UserInfo.UserID, objRole.RoleID);
+                        RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, objRole.RoleID, RoleStatus.Approved, false, false);
                         rsvpCodeExists = true;
 
                         //Raise SubscriptionUpdated Event

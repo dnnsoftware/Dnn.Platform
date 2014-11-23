@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -224,7 +224,7 @@ namespace DotNetNuke.UI.WebControls
 				if (GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
 				{
 					//return single language
-					PortalSettings _Settings = PortalController.GetCurrentPortalSettings();
+					PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
 					foreach (string strLocale in LocaleController.Instance.GetLocales(_Settings.PortalId).Keys)
 					{
 						a.Add(strLocale);
@@ -370,7 +370,7 @@ namespace DotNetNuke.UI.WebControls
 		private CultureInfo[] GetCultures(bool specific)
 		{
 			var a = new ArrayList();
-			PortalSettings _Settings = PortalController.GetCurrentPortalSettings();
+			PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
 			foreach (string strLocale in LocaleController.Instance.GetLocales(_Settings.PortalId).Keys)
 			{
 				var c = new CultureInfo(strLocale);

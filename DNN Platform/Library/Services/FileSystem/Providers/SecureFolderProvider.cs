@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Services.FileSystem.Internal;
@@ -66,13 +67,16 @@ namespace DotNetNuke.Services.FileSystem
             for (var i = 0; i < fileNames.Length; i++)
             {
                 var fileName = Path.GetFileName(fileNames[i]);
-				if(!fileName.EndsWith(ProtectedExtension))
+                if (!fileName.EndsWith(ProtectedExtension, StringComparison.InvariantCultureIgnoreCase))
 				{
-					FileWrapper.Instance.Move(fileNames[i], fileNames[i] + ProtectedExtension);
+                    var destFileName = fileNames[i] + ProtectedExtension;
+                    if (FileWrapper.Instance.Exists(destFileName))
+                        FileWrapper.Instance.Delete(destFileName);
+					FileWrapper.Instance.Move(fileNames[i], destFileName);
 				}
 				else
 				{
-					fileName = fileName.Substring(0, fileName.LastIndexOf(ProtectedExtension));
+                    fileName = fileName.Substring(0, fileName.LastIndexOf(ProtectedExtension, StringComparison.InvariantCultureIgnoreCase));
 				}
 
                 fileNames[i] = fileName;

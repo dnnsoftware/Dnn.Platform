@@ -13,6 +13,7 @@
         var panes = opts.panes;
         var supportsMove = opts.supportsMove;
         var count = adminCount + customCount;
+        var isShared = opts.IsShared;
         
         if (count > 0 || supportsMove) {
             var $form = $("body form");
@@ -30,7 +31,10 @@
                     buildMoveMenu(menuRoot, "Move", "actionMenuMove");
                 }
                 
-	            watchResize(moduleId);
+                if (isShared) {
+                    buildSharedMenu(menuRoot, "Shared Module", "dnn_shared");
+                }
+                watchResize(moduleId);
             }
         }
 
@@ -98,20 +102,24 @@
                 });
             }
 
+            var htmlStringContainer = "";
+
             //Add move to pane entries
             for (i = 0; i < panes.length; i++) {
                 var pane = panes[i];
                 if (paneName !== pane) {
                     id = pane + moduleId;
                     //htmlString = "<li id=\"" + id + "\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_move.gif\"><span>" + opts.movePaneText.replace("{0}", pane) + "</span></a>";
-                    htmlString = "<li id=\"" + id + "\">" + opts.movePaneText.replace("{0}", pane);
-                    parent.append(htmlString);
-
-                    //Add click event handler to just added element
-                    parent.find("li#" + id).click(function () {
-                        moveToPane($(this).attr("id").replace(moduleId, ""));
-                    });
+                    htmlStringContainer += "<li id=\"" + id + "\">" + opts.movePaneText.replace("{0}", pane);
                 }
+            }
+
+            if (htmlStringContainer) {
+                // loop is done, append the HTML and add moveToPane function on click event
+                parent.append(htmlStringContainer);
+                parent.find("li").click(function () {
+                    moveToPane($(this).attr("id").replace(moduleId, ""));
+                });
             }
         }
 
@@ -138,16 +146,20 @@
                         htmlString += "<img src=\"" + action.Icon + "\"><span>" + action.Title + "</span>";
                     }
 
-                    $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
-                        text: opts.deleteText,
-                        yesText: opts.yesText,
-                        noText: opts.noText,
-                        title: opts.confirmTitle
-                    });
-
                     $parent.append(htmlString);
                 }
             }
+
+            $parent.find("#moduleActions-" + moduleId + "-Delete a").dnnConfirm({
+                text: opts.deleteText,
+                yesText: opts.yesText,
+                noText: opts.noText,
+                title: opts.confirmTitle
+            });
+        }
+        
+        function buildSharedMenu(root, rootText, rootClass, actions, actionCount) {
+            root.append("<li class=\"" + rootClass + "\"><div>" + rootText + "</div>");
         }
 
         function buildMenuRoot(root, rootText, rootClass) {
@@ -183,7 +195,7 @@
                     .fadeIn("slow", function () {
 
                         //update server
-                        completeMove(targetPane, ((moduleIndex * 2) + 4));
+                        completeMove(targetPane, ( 2 * moduleIndex + 2));
                     });
             });
         }
@@ -226,7 +238,7 @@
                     .insertBefore($("#dnn_" + targetPane).children()[moduleIndex - 1])
                     .fadeIn("slow", function () {
                         //update server
-                        completeMove(targetPane, (moduleIndex * 2) - 2);
+                        completeMove(targetPane, (2 * moduleIndex - 4));
                     });
             });
         }

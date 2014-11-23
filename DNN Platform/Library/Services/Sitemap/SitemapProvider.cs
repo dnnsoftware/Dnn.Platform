@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,11 +40,11 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                return bool.Parse(PortalController.GetPortalSetting(Name + "Enabled", PortalController.GetCurrentPortalSettings().PortalId, "True"));
+                return bool.Parse(PortalController.GetPortalSetting(Name + "Enabled", PortalController.Instance.GetCurrentPortalSettings().PortalId, "True"));
             }
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.GetCurrentPortalSettings().PortalId, Name + "Enabled", value.ToString());
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, Name + "Enabled", value.ToString());
             }
         }
 
@@ -53,11 +53,11 @@ namespace DotNetNuke.Services.Sitemap
         {
             get
             {
-                return bool.Parse(PortalController.GetPortalSetting(Name + "Override", PortalController.GetCurrentPortalSettings().PortalId, "False"));
+                return bool.Parse(PortalController.GetPortalSetting(Name + "Override", PortalController.Instance.GetCurrentPortalSettings().PortalId, "False"));
             }
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.GetCurrentPortalSettings().PortalId, Name + "Override", value.ToString());
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, Name + "Override", value.ToString());
             }
         }
 
@@ -69,14 +69,14 @@ namespace DotNetNuke.Services.Sitemap
                 if ((OverridePriority))
                 {
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    value = float.Parse(PortalController.GetPortalSetting(Name + "Value", PortalController.GetCurrentPortalSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);
+                    value = float.Parse(PortalController.GetPortalSetting(Name + "Value", PortalController.Instance.GetCurrentPortalSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);
                 }
                 return value;
             }
 
             set
             {
-                PortalController.UpdatePortalSetting(PortalController.GetCurrentPortalSettings().PortalId, Name + "Value", value.ToString(NumberFormatInfo.InvariantInfo));
+                PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, Name + "Value", value.ToString(NumberFormatInfo.InvariantInfo));
             }
         }
 

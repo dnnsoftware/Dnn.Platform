@@ -126,22 +126,49 @@
   <data name="DefaultFolderType.Text" xml:space="preserve">
     <value>Default folder type</value>
   </data>
+  <data name="ExcludeSubfolders.Text" xml:space="preserve">
+    <value>Exclude subfolders</value>
+  </data>
+  <data name="ExcludeSubfoldersLabel.Help" xml:space="preserve">
+    <value>If checked, the module will show only files and files under subfolders but it will not show subfolders</value>
+  </data>
+  <data name="ExcludeSubfoldersLabel.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FilterByFolder.Text" xml:space="preserve">
+    <value>Filter By Folder</value>
+  </data>
+  <data name="FolderMustBeSelected.ErrorMessage" xml:space="preserve">
+    <value>A folder must be selected when the "Filter By Folder" option is checked</value>
+  </data>
   <data name="Group.Text" xml:space="preserve">
     <value>Group</value>
   </data>
-  <data name="GroupMode.Help" xml:space="preserve">
+  <data name="IncludeSubfoldersFilesOnly.Text" xml:space="preserve">
+    <value>Include Subfolders (Files Only)</value>
+  </data>
+  <data name="IncludeSubfoldersFolderStructure.Text" xml:space="preserve">
+    <value>Include Subfolders (Show folder structure)</value>
+  </data>
+  <data name="Mode.Help" xml:space="preserve">
     <value>The mode the module should operate in</value>
   </data>
-  <data name="GroupMode.Text" xml:space="preserve">
+  <data name="Mode.Text" xml:space="preserve">
     <value>Mode</value>
   </data>
   <data name="Normal.Text" xml:space="preserve">
     <value>Normal</value>
   </data>
-  <data name="RootFolder.Help" xml:space="preserve">
-    <value>Set the selected folder as the root folder for this module instance</value>
+  <data name="NoSet.Text" xml:space="preserve">
+    <value>No Set</value>
   </data>
-  <data name="RootFolder.Text" xml:space="preserve">
-    <value>Root folder</value>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="ViewCondition.Help" xml:space="preserve">
+    <value>Select the filter options to be applied in the grid</value>
+  </data>
+  <data name="ViewCondition.Text" xml:space="preserve">
+    <value>Set View Condition</value>
   </data>
 </root>

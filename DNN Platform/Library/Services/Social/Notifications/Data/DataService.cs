@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         #region NotificationTypes CRUD
 
-        public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId)
+        public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
-            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CreateNotificationType"), name, _provider.GetNull(description), _provider.GetNull(timeToLive), _provider.GetNull(desktopModuleId), createUpdateUserId);
+            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CreateNotificationType"), name, _provider.GetNull(description), _provider.GetNull(timeToLive), _provider.GetNull(desktopModuleId), createUpdateUserId, isTask);
         }
 
         public void DeleteNotificationType(int notificationTypeId)
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         public int SendNotification(Notification notification, int portalId)
         {
-            var createdByUserId = UserController.GetCurrentUserInfo().UserID;
+            var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             return _provider.ExecuteScalar<int>(GetFullyQualifiedName("SendNotification"),
                                                 notification.NotificationTypeID,
                                                 portalId,

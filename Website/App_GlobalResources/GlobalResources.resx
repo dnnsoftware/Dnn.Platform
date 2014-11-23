@@ -852,7 +852,7 @@ Thank you,
                     &lt;br /&gt;
                     &lt;br /&gt;
                     Note: If there are multiple URLs which correspond to the same website then the website alias
-                    field must contain each valid Domain Name in a comma seperated list.
+                    field must contain each valid Domain Name in a comma separated list.
                     &lt;br /&gt;
                     &lt;br /&gt;
                     Example:
@@ -966,9 +966,6 @@ Operation Completed:  [Custom:3]
   <data name="//Admin//Skins.String" xml:space="preserve">
     <value>Skins</value>
   </data>
-  <data name="//Host//FileManager.String" xml:space="preserve">
-    <value>File Manager</value>
-  </data>
   <data name="//Host//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
   </data>
@@ -977,7 +974,7 @@ Operation Completed:  [Custom:3]
   </data>
   <data name="License.Text" xml:space="preserve">
     <value>&lt;p&gt;DotNetNuke&amp;reg; - http://www.dotnetnuke.com&lt;br /&gt;
-Copyright (c) 2002-2013&lt;br/&gt;
+Copyright (c) 2002-2014&lt;br/&gt;
     by DotNetNuke Corporation&lt;/p&gt;
     &lt;p&gt;Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -1114,7 +1111,7 @@ Sincerely,
   <data name="//Host//ProfessionalFeatures.String" xml:space="preserve">
     <value>Professional Features</value>
   </data>
-  <data name="//Host//ProfessionalFeatures//ActivateYourLicense.String" xml:space="preserve">
+  <data name="//Host//ProfessionalFeatures//ActivateyourLicense.String" xml:space="preserve">
     <value>Activate Your License</value>
   </data>
   <data name="//Host//ProfessionalFeatures//ApplicationIntegrity.String" xml:space="preserve">
@@ -1171,8 +1168,8 @@ Sincerely,
   <data name="//NewsPromotions.String" xml:space="preserve">
     <value>News &amp; Promotions</value>
   </data>
-  <data name="//OurServices.String" xml:space="preserve">
-    <value>Our Services</value>
+  <data name="//OurProducts.String" xml:space="preserve">
+    <value>Our Products</value>
   </data>
   <data name="//Modules.Text" xml:space="preserve">
     <value>Modules</value>
@@ -1334,8 +1331,8 @@ Please do not reply to this email.</value>
   <data name="//Admin//FileManagement.String" xml:space="preserve">
     <value>File Management</value>
   </data>
-  <data name="UrlPathCleaned.Error" xml:space="preserve">
-    <value>The Page URL entered contains characters which cannot be used in a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.</value>
+  <data name="CustomUrlPathCleaned.Error" xml:space="preserve">
+    <value>The Page URL entered contains characters which cannot be used in a URL or are illegal characters for a URL.   These characters have been removed.  Click the 'Update' button again to accept the modified URL.&lt;br&gt;[NOTE: The illegal characters list is the following: &lt;&gt;\?:&amp;=+|%# ]</value>
   </data>
   <data name="UrlPathNotUnique.Error" xml:space="preserve">
     <value>The submitted URL is not available.  If you wish to accept the suggested alternative, please click Save.</value>
@@ -1482,10 +1479,7 @@ Please do not reply to this email.</value>
                                     &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
                                         &lt;tr&gt;
                                             &lt;td align="center"&gt;
-                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.twitter.com/" &gt; Follow us on Twitter&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
-                                                &lt;a href="http://www.facebook.com/" &gt; Become a fan on Facebook&lt;/a&gt;
-
+                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;&lt;a href="[NOTIFICATIONURL]" &gt; View online&lt;/a&gt;
                                             &lt;/td&gt;
                                         &lt;/tr&gt;
                                     &lt;/table&gt;
@@ -1527,12 +1521,12 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;[CONTENT]&lt;/td&gt;
+                    &lt;td&gt;[CONTENT][FRIENDREQUESTACTIONS][FOLLOWREQUESTACTIONS]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
         &lt;/td&gt;
@@ -1551,5 +1545,35 @@ Sincerely,
   </data>
   <data name="EMAIL_PASSWORD_UPDATED_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] Password Updated</value>
+  </data>
+  <data name="//Admin//SearchAdmin.String" xml:space="preserve">
+    <value>Search Admin</value>
+  </data>
+  <data name="//Host//FileManagement.String" xml:space="preserve">
+    <value>File Management</value>
+  </data>
+  <data name="//Host//ProfessionalFeatures//AdvancedURLManagement.String" xml:space="preserve">
+    <value>Advanced URL Management</value>
+  </data>
+  <data name="//Admin//UserSwitcher.String" xml:space="preserve">
+    <value>User Switcher</value>
+  </data>
+  <data name="AspNetHostingPermission.Text" xml:space="preserve">
+    <value>This extension requires Full Trust.</value>
+  </data>
+  <data name="ReflectionPermission.Text" xml:space="preserve">
+    <value>This extension requries Reflection permission.</value>
+  </data>
+  <data name="WebPermission.Text" xml:space="preserve">
+    <value>This extension requires Web permission.</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FRIENDREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Accept&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Follow back&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="MESSAGE_USERNAME_CHANGED_INSTRUCTIONS.Text" xml:space="preserve">
+    <value>Please verify your e-mail address change by re-entering your password.</value>
   </data>
 </root>

@@ -124,13 +124,13 @@
     <value>Body Top</value>
   </data>
   <data name="CDNLabel.Help" xml:space="preserve">
-    <value>The url to the default CDN to use for the library.  This can be overridden by providing a cutom URL.</value>
+    <value>The URL to the default CDN to use for the library.  This can be overridden by providing a custom URL.</value>
   </data>
   <data name="CDNLabel.Text" xml:space="preserve">
     <value>Default CDN:</value>
   </data>
   <data name="CustomCDNLabel.Help" xml:space="preserve">
-    <value>The url to a custom CDN location for this library which will be used instead of the default CDN</value>
+    <value>The URL to a custom CDN location for this library which will be used instead of the default CDN</value>
   </data>
   <data name="CustomCDNLabel.Text" xml:space="preserve">
     <value>Custom CDN:</value>
@@ -142,7 +142,7 @@
     <value>Depends On:</value>
   </data>
   <data name="FileNameLabel.Help" xml:space="preserve">
-    <value>The filename of the javascript file.</value>
+    <value>The filename of the JavaScript file.</value>
   </data>
   <data name="FileNameLabel.Text" xml:space="preserve">
     <value>File Name:</value>

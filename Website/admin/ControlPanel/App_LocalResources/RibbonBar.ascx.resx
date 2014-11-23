@@ -151,7 +151,7 @@
     <value>Copy</value>
   </data>
   <data name="Tool.DeletePage.Confirm" xml:space="preserve">
-    <value>Are you sure you want to delete this page?</value>
+    <value>Are you sure you want to delete this page and its child pages?</value>
   </data>
   <data name="Tool.DeletePage.Text" xml:space="preserve">
     <value>Delete</value>
@@ -424,7 +424,7 @@
     <value>Clear Cache</value>
   </data>
   <data name="Tool.RecycleApp.Text" xml:space="preserve">
-    <value>Recycle Application Pool</value>
+    <value>Recycle Application Domain</value>
   </data>
   <data name="Tool.ClearCache.ToolTip" xml:space="preserve">
     <value>Forces the application to purge all of its cache.</value>

@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,6 +26,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
@@ -91,9 +92,8 @@ namespace DotNetNuke.Web.UI.WebControls
 			    pinLink.Attributes.Add("href", "#");
 				panel.Controls.Add(pinLink);
 
-				ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
-                jQuery.RequestHoverIntentRegistration();
-				jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 			}
 		}

@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -39,18 +38,23 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 
 #endregion
 
 namespace DotNetNuke.Services.Log.EventLog
 {
-    public class LogController
+    public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LogController));
         private const int WriterLockTimeout = 10000; //milliseconds
         private static readonly ReaderWriterLock LockLog = new ReaderWriterLock();
-        private static readonly PortalController portalController = new PortalController();
+
+        protected override Func<ILogController> GetFactory()
+        {
+            return () => new LogController();
+        }
 
         #region Private Methods
 
@@ -195,7 +199,7 @@ namespace DotNetNuke.Services.Log.EventLog
                         {
                             if (HttpContext.Current.Request.IsAuthenticated)
                             {
-                                logInfo.LogUserName = UserController.GetCurrentUserInfo().Username;
+                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
                             }
                         }
                     }
@@ -203,7 +207,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     //Get portal name if name isn't set
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
-                        logInfo.LogPortalName = portalController.GetPortal(logInfo.LogPortalID).PortalName;
+                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
                     }
 
 	                if (LoggingProvider.Instance() != null)
@@ -226,12 +230,12 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     Logger.Error(exc);
 
-                    //AddLogToFile(logInfo);
+                    AddLogToFile(logInfo);
                 }
             }
         }
 
-        public virtual void AddLogType(string configFile, string fallbackConfigFile)
+        public void AddLogType(string configFile, string fallbackConfigFile)
         {
             var xmlDoc = new XmlDocument();
             try
@@ -292,12 +296,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
         }
 
-        public virtual void AddLogType(LogTypeInfo logType)
+        public void AddLogType(LogTypeInfo logType)
         {
             LoggingProvider.Instance().AddLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
 
-        public virtual void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
+        public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
             LoggingProvider.Instance().AddLogTypeConfigInfo(logTypeConfig.ID,
                                                             logTypeConfig.LoggingIsActive,
@@ -358,24 +362,9 @@ namespace DotNetNuke.Services.Log.EventLog
             return LoggingProvider.Instance().GetSingleLog(log, returnType);
         }
 
-        public bool LoggingIsEnabled(string logType, int portalID)
-        {
-            return LoggingProvider.Instance().LoggingIsEnabled(logType, portalID);
-        }
-
         public void PurgeLogBuffer()
         {
             LoggingProvider.Instance().PurgeLogBuffer();
-        }
-
-        public virtual bool SupportsEmailNotification()
-        {
-            return LoggingProvider.Instance().SupportsEmailNotification();
-        }
-
-        public virtual bool SupportsInternalViewer()
-        {
-            return LoggingProvider.Instance().SupportsInternalViewer();
         }
 
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
@@ -398,74 +387,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
-
-        #endregion
-
-        #region Obsolete Methods
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog()
-        {
-            return LoggingProvider.Instance().GetLog();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(int portalID)
-        {
-            return LoggingProvider.Instance().GetLog(portalID);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(int portalID, string logType)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, logType);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 5.0 or earlier. This method has been replaced with one that supports record paging.")]
-        public virtual LogInfoArray GetLog(string logType)
-        {
-            return LoggingProvider.Instance().GetLog(logType);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int portalID, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(portalID, logType, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogs().")]
-        public virtual LogInfoArray GetLog(string logType, int pageSize, int pageIndex, ref int totalRecords)
-        {
-            return LoggingProvider.Instance().GetLog(logType, pageSize, pageIndex, ref totalRecords);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in 6.0. Replaced by GetLogTypeInfoDictionary().")]
-        public virtual ArrayList GetLogTypeInfo()
-        {
-            return LoggingProvider.Instance().GetLogTypeInfo();
-        }
-
 
         #endregion
     }

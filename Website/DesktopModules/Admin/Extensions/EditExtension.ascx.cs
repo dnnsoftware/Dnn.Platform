@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             get
             {
-                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID));
+                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID, true));
             }
         }
 
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
             cmdUpdate.Click += OnUpdateClick;
             Page.PreRenderComplete += (sender, args) =>
                                           {
-                                              if (HttpContext.Current.Request.Url.ToString().Contains("popUp=true"))
+                                              if (UrlUtils.InPopUp())
                                               {
                                                   var title = string.Format("{0} > {1}", Page.Title, Package.FriendlyName);
                                                   Page.Title = title;
@@ -283,20 +283,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Globals.NavigateURL();
             }
 
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Package_Updated runs when a Package has been updated by a custom editor.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[cnurse]	08/15/2007	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private void Package_Updated(object sender, EventArgs e)
-        {
         }
 
         protected void OnCancelClick(object sender, EventArgs e)
@@ -327,7 +313,6 @@ namespace DotNetNuke.Modules.Admin.Extensions
             try
             {
                 UpdatePackage(true);
-                Response.Redirect(Request.RawUrl, true);
             }
             catch (Exception ex)
             {

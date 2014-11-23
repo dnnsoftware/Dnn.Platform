@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -53,6 +53,20 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
             DeleteFileData(file);
         }
+
+        public void UnlinkFile(IFileInfo file)
+        {
+            string lockReason;
+            if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
+            {
+                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
+            }
+
+            FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
+            
+            DeleteFileData(file);
+        }
+
 
         public void DeleteFileData(IFileInfo file)
         {

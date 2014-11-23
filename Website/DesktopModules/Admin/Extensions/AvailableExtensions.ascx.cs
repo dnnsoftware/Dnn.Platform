@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.XPath;
@@ -120,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 var pkgErrorsMsg = invalidPackages.Aggregate(string.Empty, (current, pkg) => current + (pkg + "<br />"));
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageErrors.Text", LocalResourceFile) + pkgErrorsMsg, ModuleMessage.ModuleMessageType.RedError);
             }
-
+            
             grid.DataSource = packages.Values;
             grid.DataBind();
         }
@@ -129,6 +130,56 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             extensionTypeRepeater.DataSource = PackageTypesList;
             extensionTypeRepeater.DataBind();
+        }
+
+        private void ProcessDownload()
+        {
+            // make sure only host users can download the packge.
+            if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+            {
+                return;
+            }
+
+            var packageType = Request.QueryString["ptype"];
+            var packageName = Request.QueryString["package"];
+            if (string.IsNullOrEmpty(packageType) || string.IsNullOrEmpty(packageName))
+            {
+                return;
+            }
+
+            if (!PackageTypesList.ContainsKey(packageType))
+            {
+                //try to remove the underscore in package type.
+                packageType = packageType.Replace("_", "");
+                if (!PackageTypesList.ContainsKey(packageType))
+                {
+                    return;
+                }
+            }
+
+            var packageFile = new FileInfo(Path.Combine(PackageTypesList[packageType], packageName));
+            if (!packageFile.Exists)
+            {
+                return;
+            }
+
+            try
+            {
+                var fileName = packageName;
+                if (fileName.EndsWith(".resources"))
+                {
+                    fileName = fileName.Replace(".resources", "") + ".zip";
+                }
+                Response.Clear();
+                Response.AppendHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+                Response.AppendHeader("Content-Length", packageFile.Length.ToString());
+                Response.ContentType = "application/zip, application/octet-stream";
+                Response.WriteFile(packageFile.FullName);
+            }
+            catch (Exception ex)
+            {
+                //do nothing here, just ignore the error.
+            }
         }
 
         protected string FormatVersion(object version)
@@ -152,8 +203,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     int portalID = Convert.ToInt32(DataBinder.Eval(dataItem, "PortalID"));
                     if ((portalID != Null.NullInteger && portalID != int.MinValue))
                     {
-                        var controller = new PortalController();
-                        PortalInfo portal = controller.GetPortal(portalID);
+                        var portal = PortalController.Instance.GetPortal(portalID);
                         returnValue = string.Format(Localization.GetString("InstalledOnPortal.Tooltip", LocalResourceFile), portal.PortalName);
                     }
                     else
@@ -185,20 +235,34 @@ namespace DotNetNuke.Modules.Admin.Extensions
             var package = dataItem as PackageInfo;
             switch (package.PackageType)
             {
-                case "Module":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
                 case "Container":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultContainerImage;
                 case "Skin":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultSkinImage;
                 case "AuthenticationSystem":
                 case "Auth_System":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultAuthenicationImage;
                 case "Provider":
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultProviderImage;
                 default:
-                    return (!String.IsNullOrEmpty(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
+                    return (IconExists(package.IconFile)) ? package.IconFile : Globals.ImagePath + DefaultExtensionImage;
             }
+        }
+
+        private bool IconExists(string imagePath)
+        {
+            if (String.IsNullOrWhiteSpace(imagePath)) return false;
+
+            string path;
+            try
+            {
+                path = Server.MapPath(imagePath);
+            }
+            catch (HttpException)
+            {
+                return false;
+            }
+            return File.Exists(path);
         }
 
         protected string GetPackageType(object dataItem)
@@ -215,6 +279,11 @@ namespace DotNetNuke.Modules.Admin.Extensions
             languagePacks.ModuleContext.Configuration = ModuleContext.Configuration;
             extensionTypeRepeater.ItemDataBound += extensionTypeRepeater_ItemDataBound;
 
+            if (Request.QueryString["action"] != null
+                && Request.QueryString["action"].ToLowerInvariant() == "download")
+            {
+                ProcessDownload();
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -238,16 +307,26 @@ namespace DotNetNuke.Modules.Admin.Extensions
             }
         }
 
-        void extensionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void extensionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             DataGridItem item = e.Item;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 var package = (PackageInfo) e.Item.DataItem;
 
-                HyperLink installLink = (HyperLink)item.Controls[4].Controls[1];
+                var installLink = (HyperLink)item.Controls[4].Controls[1];
+                var downloadLink = (HyperLink)item.Controls[4].Controls[3];
 
                 installLink.NavigateUrl = Util.InstallURL(ModuleContext.TabId, "", package.PackageType, package.FileName);
+                if (ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+                {
+                    downloadLink.NavigateUrl = Globals.NavigateURL(ModuleContext.TabId, "", "action=download",
+                        "ptype=" + package.PackageType, "package=" + package.FileName);
+                }
+                else
+                {
+                    downloadLink.Visible = false;
+                }
             }
         }
     }

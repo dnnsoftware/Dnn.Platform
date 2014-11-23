@@ -122,7 +122,21 @@
                                 <li class="ListCol-4">
                                     <ul class="msgActionItems">
                                         <li><span data-bind="text: CreatedOnDate" class="smTimeStamped"></span><a href="#" class="ActiveToggle" data-bind="    click: $root.toggleState, visible: $root.showInbox(), attr: { title: (Read() === true ? '<%=LocalizeString("MarkUnread")%>    ' : '<%=LocalizeString("MarkRead")%>    ') }"><span><%=LocalizeString("ReadStatusToggle")%></span></a></li>
-                                        <li class="hoverControls"><div><a href="#" data-bind="click: $root.moveToArchive, visible: $root.showInbox()"><%=LocalizeString("MarkArchive")%></a> | <a href="#" data-bind="    click: $root.getRepliesAndReply"><%=LocalizeString("Reply")%></a></div></li>
+                                        <li class="hoverControls">
+                                            <div>
+                                                <!-- ko if: $root.showInbox -->
+                                                <a href="#" data-bind="click: $root.moveToArchive"><%=LocalizeString("MarkArchive")%></a>
+                                                <!-- /ko -->
+                                                <!-- ko if: $root.showArchivebox -->
+                                                <a href="#" data-bind="click: $root.unarchive"><%=LocalizeString("MarkUnarchive")%></a>
+                                                <!-- /ko -->
+                                                <!-- ko if: $root.showArchivebox -->
+                                                 | <a href="#" data-bind="click: $root.delete"><%=LocalizeString("Delete")%></a>
+                                                <!-- /ko -->
+                                                <!-- ko if: ($root.showInbox() || $root.showArchivebox()) --> | <!-- /ko -->
+                                                <a href="#" data-bind="click: $root.getRepliesAndReply"><%=LocalizeString("Reply")%></a>
+                                            </div>
+                                        </li>
                                         <li><span class="attachmentsIcon" data-bind="if: AttachmentCount"><img src='<%= ResolveUrl("images/paperClip.png") %>' alt="" /></span></li>
                                     </ul>
                                 </li>
@@ -186,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dnnCoreMessagingFooter">
+                <div class="dnnCoreMessagingFooter" data-bind="visible:replyHasRecipients">
                     <textarea name="replyMessage" id="replyMessage" data-bind="hasfocus: isReplySelected"></textarea>
                     <a href="#" class="dnnPrimaryAction" data-bind="click: $root.reply"><%=LocalizeString("Reply")%></a>
                     <div class="dnnClear"></div>
@@ -242,7 +256,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(function ($) {		
         var sm = new CoreMessaging($, ko, {
-            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicFormattedUrl() %>',
+            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
             conversationSetAsReadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
             conversationSetAsUnreadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
             loadingText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',
@@ -254,8 +268,14 @@
             notificationConfirmNoText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
             actionPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
             actionNotPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
+            replyHasNoRecipientsText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
+            messageSentText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
             serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
-            serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>'
+            serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
+            text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
+            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
         }, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',

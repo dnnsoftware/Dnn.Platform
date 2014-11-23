@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -125,11 +125,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (RoleId != Null.NullInteger)
                     {
-                        _Role = TestableRoleController.Instance.GetRole(PortalId, r => r.RoleID == RoleId); ;
+                        _Role = RoleController.Instance.GetRole(PortalId, r => r.RoleID == RoleId); ;
                     }
                     else if (cboRoles.SelectedItem != null)
                     {
-                        _Role = TestableRoleController.Instance.GetRole(PortalId, r => r.RoleID == Convert.ToInt32(cboRoles.SelectedItem.Value));
+                        _Role = RoleController.Instance.GetRole(PortalId, r => r.RoleID == Convert.ToInt32(cboRoles.SelectedItem.Value));
                     }
                 }
                 return _Role;
@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 if (cboRoles.Items.Count == 0)
                 {
-                    var roles = TestableRoleController.Instance.GetRoles(PortalId, x => x.Status == RoleStatus.Approved);
+                    var roles = RoleController.Instance.GetRoles(PortalId, x => x.Status == RoleStatus.Approved);
 
                     //Remove access to Admin Role if use is not a member of the role
                     int roleIndex = Null.NullInteger;
@@ -382,11 +382,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private IList<UserRoleInfo> GetPagedDataSource()
         {
-            var objRoleController = new RoleController();
             var roleName = RoleId != Null.NullInteger ? Role.RoleName : Null.NullString;
             var userName = UserId != Null.NullInteger ? User.Username : Null.NullString;
 
-            var userList = objRoleController.GetUserRoles(PortalId, userName, roleName);
+            var userList = RoleController.Instance.GetUserRoles(PortalId, userName, roleName);
             _totalRecords = userList.Count;
             _totalPages = _totalRecords%PageSize == 0 ? _totalRecords/PageSize : _totalRecords/PageSize + 1;
 
@@ -412,8 +411,7 @@ namespace DotNetNuke.Modules.Admin.Security
         	DateTime? expiryDate = null;
         	DateTime? effectiveDate = null;
 
-            var objRoles = new RoleController();
-            UserRoleInfo objUserRole = objRoles.GetUserRole(PortalId, UserId, RoleId);
+            UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalId, UserId, RoleId);
             if (objUserRole != null)
             {
                 if (Null.IsNull(objUserRole.EffectiveDate) == false)
@@ -427,7 +425,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else //new role assignment
             {
-                RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalId, r => r.RoleID == RoleId);
+                RoleInfo objRole = RoleController.Instance.GetRole(PortalId, r => r.RoleID == RoleId);
 
                 if (objRole.BillingPeriod > 0)
                 {
@@ -568,15 +566,24 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             if ((Request.QueryString["UserId"] != null))
             {
-                UserId = Int32.Parse(Request.QueryString["UserId"]);
+                int userId;
+                // Use Int32.MaxValue as invalid UserId
+                UserId = Int32.TryParse(Request.QueryString["UserId"], out userId) ? userId : Int32.MaxValue;
             }
 
             CurrentPage = 1;
             if (Request.QueryString["CurrentPage"] != null)
             {
-                CurrentPage = Convert.ToInt32(Request.QueryString["CurrentPage"]);
-                if (CurrentPage <= 0)
+                var currentPage = 0;
+                if (int.TryParse(Request.QueryString["CurrentPage"], out currentPage)
+                    && currentPage > 0)
+                {
+                    CurrentPage = currentPage;
+                }
+                else
+                {
                     CurrentPage = 1;
+                }
             }
 
             cboRoles.SelectedIndexChanged += cboRoles_SelectedIndexChanged;
@@ -781,8 +788,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
                 int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
 
-                var roleController = new RoleController();
-                RoleInfo role = TestableRoleController.Instance.GetRole(PortalId, r => r.RoleID == roleId);
+                RoleInfo role = RoleController.Instance.GetRole(PortalId, r => r.RoleID == roleId);
                 if (!RoleController.DeleteUserRole(UserController.GetUserById(PortalId, userId), role, PortalSettings, chkNotify.Checked))
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);

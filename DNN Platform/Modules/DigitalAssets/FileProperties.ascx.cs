@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,6 +30,7 @@ using System.Web.UI.HtmlControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
@@ -69,13 +70,22 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected string ActiveTab
+        {
+            get
+            {
+                return Request.QueryString["activeTab"];
+            }
+        }
+
+
         protected override void OnInit(EventArgs e)
         {
             try
             {
                 base.OnInit(e);
 
-                jQuery.RequestDnnPluginsRegistration();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 var fileId = Convert.ToInt32(Request.Params["FileId"]);
                 file = FileManager.Instance.GetFile(fileId, true);

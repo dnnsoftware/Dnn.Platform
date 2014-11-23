@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTrackingId.Help" xml:space="preserve">
     <value>Website tracking ID obtained from Google</value>
@@ -134,5 +134,14 @@
   </data>
   <data name="valTrackingId.Text" xml:space="preserve">
     <value>Tracking ID is Required!</value>
+  </data>
+  <data name="lblTrackForAdmin.Help" xml:space="preserve">
+    <value>Select this option to include Administrator and SuperUsers in results or disable to exclude these users.</value>
+  </data>
+  <data name="lblTrackForAdmin.Text" xml:space="preserve">
+    <value>Track For Administrators?</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Google Analytics</value>
   </data>
 </root>

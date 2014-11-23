@@ -1,7 +1,7 @@
 ﻿; if (typeof window.dnn === "undefined" || window.dnn === null) { window.dnn = {}; }; //var dnn = dnn || {};
 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // All Rights Reserved
 
@@ -64,10 +64,14 @@
         },
 
         _createLayout: function () {
-            var layout = $("<div class='" + this.options.containerCss + "'/>")
+            var layout = $("<div id='" + (this.options.containerId || dnn.uid()) + "' class='" + this.options.containerCss + "'/>")
                     .append($("<div class='" + this.options.selectedItemCss + "'/>")
                         .append($("<a href='javascript:void(0);' class='" + this.options.selectedValueCss + "'/>")));
             return layout;
+        },
+        
+        id: function() {
+            return this.$element.attr('id');
         },
 
         selectedItem: function (item) {
@@ -82,6 +86,7 @@
             if (this._treeView) {
                 this._treeView.selectedId(item ? item.key : null);
             }
+            
             return item;
         },
 
@@ -102,6 +107,14 @@
             }
             return this._disabled;
         },
+        
+        refresh: function (parentId) {
+            this.options.services.parameters.parentId = parentId;
+            if (this._treeView) {
+                this._treeView._showTree();
+                this._treeView._dynamicTree.updateLayout();
+            }
+        },
 
         _setSelectedItemCaption: function (item) {
             var caption = item ? item.value : "";
@@ -111,12 +124,14 @@
         _onOpenItemList: function () {
             this._$selectedItemCaption.addClass(this.options.openedItemListCss);
             $(document).on("click." + this._id, this._onDocumentClickHandler);
+
+            this._treeView._dynamicTree.scrollToSelectedNode();
         },
 
         _onCloseItemList: function () {
             this._$selectedItemCaption.removeClass(this.options.openedItemListCss);
             $(document).off("click." + this._id, this._onDocumentClickHandler);
-            dnn.removeElement(this._$treeViewLayout[0]);
+            this._$treeViewLayout.detach(); // keeps all jQuery data associated with the removed element
         },
 
         _openItemList: function () {
@@ -165,10 +180,67 @@
             var treeView = new dnn.SortableTreeView(null, this.options.itemList, controller);
             var onChangeNodeHandler = $.proxy(this._onChangeNode, this);
             var onSelectNodeHandler = $.proxy(this._onSelectNode, this);
-            $(treeView).on("onchangenode", onChangeNodeHandler).on("onselectnode", onSelectNodeHandler);
+            var onTreeLoadedHandler = $.proxy(this._onTreeLoaded, this);
+            var onShowChildrenHandler = $.proxy(this._onShowChildren, this);
+            var onRequestExpandHandler = $.proxy(this._onRequestExpand, this);
+            $(treeView).on("onchangenode", onChangeNodeHandler)
+                       .on("onselectnode", onSelectNodeHandler)
+                       .on("ontreeloaded", onTreeLoadedHandler)
+                       .on("onloadchildren", onTreeLoadedHandler)
+                       .on("onshowchildren", onShowChildrenHandler)
+                       .on("onrequestexpand", onRequestExpandHandler);
             var item = this.selectedItem();
             treeView.selectedId(item ? item.key : null);
             return treeView;
+        },
+        
+        _onTreeLoaded: function () {
+            var id = this.$element[0].id;
+            if (!id) {
+                return;
+            }
+
+            var expandPath = dnn.getVar(id + "_expandPath");
+
+            if (expandPath == null) {
+                $(this._treeView).off("onshowchildren");
+            }
+
+            if (expandPath && expandPath.length > 0) {
+                var position = expandPath.indexOf(',') > -1 ? expandPath.indexOf(',') : expandPath.length;
+                var nodeId = expandPath.substr(0, position);
+                var leftPath = expandPath.substr(position);
+                if (leftPath.length > 1 && leftPath[0] == ',') {
+                    leftPath = leftPath.substr(1);
+                }
+
+                dnn.setVar(id + "_expandPath", leftPath);
+                var dynamicTree = this._treeView._dynamicTree;
+                var node = dynamicTree._getNodeById(nodeId);
+                if (node) {
+                    var expandIcon = dynamicTree._tree.getNodeElement(node).children(":first");
+                    if (!expandIcon.hasClass(dynamicTree.options.expandedCss)) {
+                        expandIcon.trigger('click');
+                    } else {
+                        this._onTreeLoaded();
+                    }
+                }
+            }
+        },
+        
+        _onShowChildren: function () {
+            this._treeView._dynamicTree.scrollToSelectedNode();
+            var id = this.$element[0].id;
+            if (id) {
+                var expandPath = dnn.getVar(id + "_expandPath");
+                if (!expandPath) {
+                    $(this._treeView).off("onshowchildren");
+                }
+            }
+        },
+        
+        _onRequestExpand: function() {
+            this._onTreeLoaded();
         },
 
         _onSelectNode: function(eventObject, node) {
@@ -181,7 +253,7 @@
 
             if (this.options.onSelectionChanged && this.options.onSelectionChanged.length) {
                 for (var i = 0, size = this.options.onSelectionChanged.length; i < size; i++) {
-                    dnn.executeFunctionByName(this.options.onSelectionChanged[i], window, item);
+                    dnn.executeFunctionByName(this.options.onSelectionChanged[i], window, item, eventObject.target.$element);
                 }
             }
             if (typeof this.options.onSelectionChangedBackScript === "function") {

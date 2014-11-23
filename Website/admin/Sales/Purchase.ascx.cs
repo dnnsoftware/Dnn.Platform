@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     if (RoleID != -1)
                     {
-                        RoleInfo objRole = TestableRoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == RoleID);
+                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == RoleID);
 
                         if (objRole.RoleID != -1)
                         {
@@ -155,8 +155,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                 if (Page.IsValid)
                 {
-                    var objPortalController = new PortalController();
-                    PortalInfo objPortalInfo = objPortalController.GetPortal(PortalSettings.PortalId);
+                    PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
                     if (objPortalInfo != null)
                     {
                         strPaymentProcessor = objPortalInfo.PaymentProcessor;

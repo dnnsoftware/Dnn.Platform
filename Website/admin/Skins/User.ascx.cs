@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    var userInfo = UserController.GetCurrentUserInfo();
+                    var userInfo = UserController.Instance.GetCurrentUserInfo();
                     if (userInfo.UserID != -1)
                     {
                         registerLink.Text = userInfo.DisplayName;                                                
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         if (ShowAvatar)
                         {
-                            avatar.ImageUrl = string.Format(Globals.UserProfilePicFormattedUrl(), userInfo.UserID, 32, 32);
+                            avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32);
                             avatar.NavigateUrl = enhancedRegisterLink.NavigateUrl;
                             avatar.ToolTip = Localization.GetString("ProfileAvatar", Localization.GetResourceFile(this, MyFileName));
                             avatarGroup.Visible = true;                            
@@ -208,7 +208,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private int GetMessageTab()
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}", PortalSettings.PortalId);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", PortalSettings.PortalId, PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
                 return messageTabId;
@@ -225,18 +225,15 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private int FindMessageTab()
         {
-            var tabController = new TabController();
-            var moduleController = new ModuleController();
-
             //On brand new install the new Message Center Module is on the child page of User Profile Page 
             //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
-            var profileTab = tabController.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
+            var profileTab = TabController.Instance.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
             if (profileTab != null)
             {
-                var childTabs = tabController.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
+                var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
                 foreach (TabInfo tab in childTabs)
                 {
-                    foreach (KeyValuePair<int, ModuleInfo> kvp in moduleController.GetTabModules(tab.TabID))
+                    foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
                     {
                         var module = kvp.Value;
                         if (module.DesktopModule.FriendlyName == "Message Center" && !module.IsDeleted)

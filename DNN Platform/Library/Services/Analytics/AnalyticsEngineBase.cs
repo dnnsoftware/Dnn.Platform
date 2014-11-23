@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Analytics
         public string ReplaceTokens(string s)
         {
             var tokenizer = new TokenReplace();
-            tokenizer.AccessingUser = UserController.GetCurrentUserInfo();
+            tokenizer.AccessingUser = UserController.Instance.GetCurrentUserInfo();
             tokenizer.DebugMessages = false;
             return (tokenizer.ReplaceEnvironmentTokens(s));
         }

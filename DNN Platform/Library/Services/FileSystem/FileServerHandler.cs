@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
         /// -----------------------------------------------------------------------------
         public void ProcessRequest(HttpContext context)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             int TabId = -1;
             int ModuleId = -1;
             try
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.FileSystem
                 if(UrlType == TabType.Tab)
                 {
                     //verify whether the tab is exist, otherwise throw out 404.
-                    if(new TabController().GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
+                    if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
                         Exceptions.Exceptions.ProcessHttpException();
                     }
@@ -215,6 +215,10 @@ namespace DotNetNuke.Services.FileSystem
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
+                                catch (ThreadAbortException) //if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                {
+
+                                }
                                 catch (Exception ex)
                                 {
                                     Logger.Error(ex);
@@ -239,9 +243,8 @@ namespace DotNetNuke.Services.FileSystem
                             break;
                     }
                 }
-                catch (ThreadAbortException exc)
+                catch (ThreadAbortException)
                 {
-                    Logger.Error(exc);
                 }
                 catch (Exception)
                 {

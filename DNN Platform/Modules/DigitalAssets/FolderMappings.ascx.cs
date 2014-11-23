@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -90,7 +91,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
             CancelButton.NavigateUrl = Globals.NavigateURL();
             NewMappingButton.Click += OnNewMappingClick;
 
@@ -102,10 +103,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 {
                     MappingsGrid.Rebind();
                 }
-            }
-            if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
-            {
-                NewMappingButton.Visible = false;
             }
         }
 

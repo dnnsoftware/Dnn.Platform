@@ -227,7 +227,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
 	.smListings{width:100%; clear:both; margin-bottom:15px;}
 	
 	.DnnModule .smListings ul{ padding-left:0!important;}
-	.smListings > ul > li{display:table; width:100%; background:#eee; border-bottom:1px solid #eee;  }
+	.smListings > ul > li{overflow: auto; width:100%; background:#eee; border-bottom:1px solid #eee;  }
 	.smListings > ul > li.active{background:none;}
 
 
@@ -248,7 +248,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .dnnPri
 	.DnnModule-Messaging-Notifications .smListings .ListCol-1{width:1%; padding-left:2%; min-width:25px;}
 	.DnnModule-Messaging-Notifications .smListings .ListCol-2{width:8%; min-width:65px;}
 	.DnnModule-Messaging-Notifications .smListings .ListCol-3{width:56%;}
-	.DnnModule-Messaging-Notifications .smListings .ListCol-4{width:25%; max-width:110px;float:right;}
+	.DnnModule-Messaging-Notifications .smListings .ListCol-4{width:25%; max-width:160px;float:right;}
 	
 	.DnnModule-Messaging-Details .smListings .ListCol-1{width:6%; padding-left:2%;}
 	.DnnModule-Messaging-Details .smListings .ListCol-2{width:61%;}
@@ -932,4 +932,10 @@ img.badgeImage {
 span.badgeName {
     font-weight: bold;
 }
-	/* End Subscriptions Style*/
+/* End Subscriptions Style*/
+
+/* ISSUE DNN-5754 */
+ul.messages dd.message img {
+    max-width: 100% !important;
+    height: auto !important;
+}

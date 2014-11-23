@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -37,6 +37,7 @@ using System.Xml.XPath;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization.Internal;
@@ -47,7 +48,7 @@ using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
+using DotNetNuke.Web.UI.WebControls;
 using Telerik.Web.UI;
 using Globals = DotNetNuke.Common.Globals;
 
@@ -92,7 +93,7 @@ namespace DotNetNuke.Services.Install
         private static int _installerProgress;
         //private static bool _isValidConnection = false;
         //private static bool _isValidInput = false;
-        
+
         #endregion
 
 		#region Private Properties
@@ -603,7 +604,7 @@ namespace DotNetNuke.Services.Install
             _installConfig.SuperUser.Password = installInfo["password"];
             _installConfig.SuperUser.Locale = _culture;
             // Defaults
-            _installConfig.SuperUser.Email = "host@change.me";
+            _installConfig.SuperUser.Email = installInfo["email"];
             _installConfig.SuperUser.FirstName = "SuperUser";
             _installConfig.SuperUser.LastName = "Account";
 
@@ -747,6 +748,18 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        void BindTemplates()
+        {
+            var templates = PortalController.Instance.GetAvailablePortalTemplates();
+
+            foreach (var template in templates)
+            {
+                templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));
+            }
+            templateList.SelectedIndex = templateList.FindItemByValue("Default Website.template").Index;
+        }
+
+
         private static void VisitSiteClick(object sender, EventArgs eventArgs)
         {    
             //Delete the status file.
@@ -851,6 +864,36 @@ namespace DotNetNuke.Services.Install
             }
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            passwordContainer.CssClass = "password-strength-container";
+            txtPassword.CssClass = "password-strength";
+                
+            var options = new DnnPaswordStrengthOptions();
+            var optionsAsJsonString = Json.Serialize(options);
+            var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+                "password-strength", optionsAsJsonString, Environment.NewLine);
+            Page.ClientScript.RegisterStartupScript(GetType(), "PasswordStrength", script, true);
+
+            txtConfirmPassword.CssClass = "password-confirm";
+            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+            {
+                FirstElementSelector = "#" + passwordContainer.ClientID + " input[type=password]",
+                SecondElementSelector = ".password-confirm",
+                ContainerSelector = ".dnnFormPassword",
+                UnmatchedCssClass = "unmatched",
+                MatchedCssClass = "matched"
+            };
+
+            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+
+            Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", confirmScript, true);
+
+
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the Page loads
@@ -868,9 +911,6 @@ namespace DotNetNuke.Services.Install
             
             base.OnLoad(e);
             visitSite.Click += VisitSiteClick;           
-
-			//Register jquery reference.
-			jQuery.RequestRegistration();
 
             //Create Status Files
             if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
@@ -912,7 +952,8 @@ namespace DotNetNuke.Services.Install
                 {
                     SetupDatabaseInfo();
                     BindLanguageList();
-                    
+                    BindTemplates();
+
                     if (CheckDatabaseConnection())
                     {
                         Initialise();
@@ -962,11 +1003,13 @@ namespace DotNetNuke.Services.Install
                     if (synchConnectionString.Status == StepStatus.AppRestart) Response.Redirect(HttpContext.Current.Request.RawUrl, true);
 
                     txtUsername.Text = _installConfig.SuperUser.UserName;
+                    txtEmail.Text = _installConfig.SuperUser.Email;
                     if (_installConfig.Portals.Count > 0)
                     {
                         txtWebsiteName.Text = _installConfig.Portals[0].PortalName;
                         //TODO Language and Template
                     }
+                    valEmailValid.ValidationExpression = Globals.glbEmailRegEx;
                 }
             }
 
@@ -1063,6 +1106,7 @@ namespace DotNetNuke.Services.Install
 											{new UpdateLanguagePackStep(), 5},
                                             {installSite, 20},
                                             {createSuperUser, 5},
+                                            {new AddFcnModeStep(), 1},
                                             {activateLicense, 4},
                                             {new InstallVersionStep(), 1}
                                         };
@@ -1118,7 +1162,8 @@ namespace DotNetNuke.Services.Install
 		    var errorMsg=string.Empty;
             
             // Check Required Fields
-			if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty || installInfo["websiteName"] == string.Empty)
+            if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
+                 || installInfo["websiteName"] == string.Empty || installInfo["email"] == string.Empty)
             {
                 result = false;
 		        errorMsg = LocalizeStringStatic("InputErrorMissingRequiredFields");

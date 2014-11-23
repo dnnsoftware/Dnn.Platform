@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblMessage.Text" xml:space="preserve">
     <value>&lt;b&gt;NOTE:&lt;/b&gt;&amp;nbsp;&amp;nbsp;You must use the File Manager to upload your Skin or Container package.</value>
@@ -136,10 +136,10 @@
     <value>Restore Default Skin</value>
   </data>
   <data name="Portal.Text" xml:space="preserve">
-    <value>Website</value>
+    <value>Site</value>
   </data>
   <data name="Admin.Text" xml:space="preserve">
-    <value>Admin</value>
+    <value>Edit</value>
   </data>
   <data name="cmdDelete.Text" xml:space="preserve">
     <value>Delete Skin Package</value>
@@ -215,5 +215,8 @@
   </data>
   <data name="ParseOptions.Help" xml:space="preserve">
     <value>Portable requires relative graphical references this makes the skin more portable but require additional resources at runtime.</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Skin Editor</value>
   </data>
 </root>

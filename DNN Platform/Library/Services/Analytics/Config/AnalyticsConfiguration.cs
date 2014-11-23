@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -138,15 +138,12 @@ namespace DotNetNuke.Services.Analytics.Config
             catch (Exception ex)
             {
 				//log it
-                var objEventLog = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
-                objEventLogInfo.AddProperty("FilePath", filePath);
-                objEventLogInfo.AddProperty("ExceptionMessage", ex.Message);
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
-                objEventLog.AddLog(objEventLogInfo);
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
+                log.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
+                log.AddProperty("FilePath", filePath);
+                log.AddProperty("ExceptionMessage", ex.Message);
+                LogController.Instance.AddLog(log);
                 Logger.Error(ex);
-
             }
             finally
             {

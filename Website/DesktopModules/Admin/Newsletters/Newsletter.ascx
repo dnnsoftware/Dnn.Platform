@@ -1,11 +1,16 @@
 <%@ Control Inherits="DotNetNuke.Modules.Admin.Newsletters.Newsletter" Language="C#" AutoEventWireup="false" CodeFile="Newsletter.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="URLControl" Src="~/controls/URLControl.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="URLControl" Src="~/controls/DnnUrlControl.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+
+<dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js" Priority="103" />
+<dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" />
+
 <div class="dnnForm dnnNewsletters dnnClear" id="dnnNewsletters">
+    
     <ul class="dnnAdminTabNav dnnClear">
 		<li><a href="#newMessage"><%=LocalizeString("Message")%></a></li>
 		<li><a href="#newAdvancedSettings"><%=LocalizeString("AdvancedSettings")%></a></li>
@@ -14,7 +19,7 @@
         <fieldset>
             <div class="dnnFormItem">
                 <dnn:Label ID="plRoles" runat="server" ControlName="chkRoles" />
-                <dnn:RolesSelectionGrid runat="server" ID="dgSelectedRoles" />
+                <input type='text' id='recipients' name='recipients' runat="server" />
             </div>
             <div class="dnnFormItem">
                 <dnn:Label id="plLanguages" runat="server" ControlName="selLanguage" />
@@ -130,6 +135,35 @@
 (function ($, Sys) {
     function setUpDnnNewsletter() {
         $('#dnnNewsletters').dnnTabs();
+
+        $('#<%=recipients.ClientID%>').tokenInput($.ServicesFramework(<%=ModuleId %>).getServiceRoot('InternalServices') + 'MessagingService/' + "Search", {
+            theme: "facebook",
+            prePopulate: <%=GetInitialEntries()%>,
+            resultsFormatter: function (item) {
+                if (item.id.startsWith("user-")) {
+                    return "<li class='user'><img src='" + item.iconfile + "' title='" + item.name + "' height='25px' width='25px' /><span>" + item.name + "</span></li>";
+                } else if (item.id.startsWith("role-")) {
+                    return "<li class='role'><img src='" + item.iconfile + "' title='" + item.name + "' height='25px' width='25px' /><span>" + item.name + "</span></li>";
+                }
+                return "<li>" + item[this.propertyToSearch] + "</li>";
+            },
+            minChars: 2,
+            preventDuplicates: true,
+            hintText: '',
+            noResultsText: "No Results",
+            searchingText: "Searching...",
+            onError: function (xhr, status) {
+                var messageNode = $("<div/>")
+                    .addClass('dnnFormMessage dnnFormWarning')
+                    .text('An error occurred while getting suggestions: ' + status);
+
+                $('#<%=recipients.ClientID%>').prepend(messageNode);
+
+                messageNode.fadeOut(3000, 'easeInExpo', function () {
+                    messageNode.remove();
+                });
+            }
+        });
     }
     $(document).ready(function () {
         setUpDnnNewsletter();

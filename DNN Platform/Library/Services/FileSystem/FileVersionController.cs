@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,10 +27,12 @@ using System.IO;
 using System.Linq;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.FileSystem.EventArgs;
 
 namespace DotNetNuke.Services.FileSystem
@@ -126,7 +128,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.FileName);
             
             // Notify File Changed
-            OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
+            OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public int DeleteFileVersion(IFileInfo file, int version)
@@ -149,8 +151,15 @@ namespace DotNetNuke.Services.FileSystem
                     new FileInfo { FileId = file.FileId, FileName = GetVersionedFilename(file, newVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
                     file.FileName);
 
+                //Update the Last Modification Time
+                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+                if (file.LastModificationTime != providerLastModificationTime)
+                {
+                    DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
+                }
+
                 // Notify File Changed
-                OnFileChanged(file, UserControllerWrapper.Instance.GetCurrentUserInfo().UserID);
+                OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
@@ -264,9 +273,9 @@ namespace DotNetNuke.Services.FileSystem
         #region helper methods
         private void RegisterEventHandlers()
         {
-            foreach (var value in FileEventHandlersContainer.Instance.FileEventsHandlers.Select(e => e.Value))
+            foreach (var events in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
             {
-                FileChanged += value.FileOverwritten;
+                FileChanged += events.Value.FileOverwritten;
             }
         }
 

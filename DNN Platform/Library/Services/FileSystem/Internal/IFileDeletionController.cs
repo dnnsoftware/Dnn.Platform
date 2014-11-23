@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,6 +27,12 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// </summary>
         /// <param name="file">The file to delete.</param>
         void DeleteFile(IFileInfo file);
+
+        /// <summary>
+        /// Unlinks the specified file
+        /// </summary>
+        /// <param name="file">The file to unlink</param>
+        void UnlinkFile(IFileInfo file);
 
         /// <summary>
         /// Deletes the specified file metadata.

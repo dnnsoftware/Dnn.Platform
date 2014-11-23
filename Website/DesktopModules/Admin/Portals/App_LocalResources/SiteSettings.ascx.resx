@@ -219,6 +219,12 @@
   <data name="plAdminContainer.Help" xml:space="preserve">
     <value>The selected container will be applied to all edit mode (ctl=) modules on the site.</value>
   </data>
+  <data name="plIconSet.Text" xml:space="preserve">
+    <value>Icon Set:</value>
+  </data>
+  <data name="plIconSet.Help" xml:space="preserve">
+    <value>The selected iconset will be applied to all icons on the site.</value>
+  </data>
   <data name="plBackground.Text" xml:space="preserve">
     <value>Body Background:</value>
   </data>
@@ -872,18 +878,6 @@ The host-level settings are currently set as follows:
   <data name="PasswordAttemptWindow.Text" xml:space="preserve">
     <value>Invalid Attempt Window (in mins):</value>
   </data>
-  <data name="PasswordConfig_PasswordExpiry.Help" xml:space="preserve">
-    <value>The number of days before a User must change their password (value of 0 means the password never expires)</value>
-  </data>
-  <data name="PasswordConfig_PasswordExpiry.Text" xml:space="preserve">
-    <value>Password Expiry (in days):</value>
-  </data>
-  <data name="PasswordConfig_PasswordExpiryReminder.Help" xml:space="preserve">
-    <value>The number of days warning the user will recieve that their password is about to expire.</value>
-  </data>
-  <data name="PasswordConfig_PasswordExpiryReminder.Text" xml:space="preserve">
-    <value>Password Expiry Reminder (in days):</value>
-  </data>
   <data name="PasswordFormat.Help" xml:space="preserve">
     <value>The password format</value>
   </data>
@@ -979,6 +973,12 @@ The host-level settings are currently set as follows:
   </data>
   <data name="Security_CaptchaRetrivePassword.Text" xml:space="preserve">
     <value>Use CAPTCHA to Retrieve Password</value>
+  </data>
+  <data name="Security_CaptchaChangePassword.Help" xml:space="preserve">
+    <value>Select to add a CAPTCHA control to Password Change</value>
+  </data>
+  <data name="Security_CaptchaChangePassword.Text" xml:space="preserve">
+    <value>Use CAPTCHA to Change Password</value>
   </data>
   <data name="Security_RequireValidProfileAtLogin.Help" xml:space="preserve">
     <value>You can optionally require a user to update their Profile before be logged in, if their Profile is no longer Valid.</value>
@@ -1147,5 +1147,111 @@ The host-level settings are currently set as follows:
   </data>
   <data name="VanityUrlPrefixHeader.Text" xml:space="preserve">
     <value>Enter a prefix for Vanity URLs</value>
+  </data>
+  <data name="DefaultAuthProvider.Text" xml:space="preserve">
+    <value>Default Authentication Provider</value>
+  </data>
+  <data name="DefaultAuthProvider.Help" xml:space="preserve">
+    <value>You can select a default auth provider for user login. Only providers that support forms authentication can be selected.</value>
+  </data>
+  <data name="EmailErrorMessage.Text" xml:space="preserve">
+    <value>There has been an error trying to send the test email. The error is:&lt;br /&gt;{0}</value>
+  </data>
+  <data name="EmailSentMessage.Text" xml:space="preserve">
+    <value>Email Sent Successfully from {0} to {1}</value>
+  </data>
+  <data name="EmailTest.Text" xml:space="preserve">
+    <value>Test SMTP Settings</value>
+  </data>
+  <data name="plSMTPAuthentication.Text" xml:space="preserve">
+    <value>SMTP Authentication:</value>
+  </data>
+  <data name="plSMTPAuthentication.Help" xml:space="preserve">
+    <value>Enter the SMTP Server Authentication method ( default = Anonymous )</value>
+  </data>
+  <data name="plSMTPEnableSSL.Help" xml:space="preserve">
+    <value>Used for SMTP services that require secure connection (usually not needed)</value>
+  </data>
+  <data name="plSMTPEnableSSL.Text" xml:space="preserve">
+    <value>SMTP Enable SSL:</value>
+  </data>
+  <data name="plSMTPMode.Text" xml:space="preserve">
+    <value>SMTP Mode:</value>
+  </data>
+  <data name="plSMTPPassword.Text" xml:space="preserve">
+    <value>SMTP Password:</value>
+  </data>
+  <data name="plSMTPPassword.Help" xml:space="preserve">
+    <value>Enter the Password for the SMTP Server</value>
+  </data>
+  <data name="plSMTPServer.Help" xml:space="preserve">
+    <value>Please enter name (address) and port of the SMTP server to be used for sending mails from this website.</value>
+  </data>
+  <data name="plSMTPServer.Text" xml:space="preserve">
+    <value>SMTP Server and port:</value>
+  </data>
+  <data name="plSMTPUsername.Text" xml:space="preserve">
+    <value>SMTP Username:</value>
+  </data>
+  <data name="plSMTPUsername.Help" xml:space="preserve">
+    <value>Enter the Username for the SMTP Server</value>
+  </data>
+  <data name="SMTP.Text" xml:space="preserve">
+    <value>SMTP Server Settings</value>
+  </data>
+  <data name="SMTPAnonymous.Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="SMTPBasic.Text" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="SMTPNTLM.Text" xml:space="preserve">
+    <value>NTLM</value>
+  </data>
+  <data name="SmtpServerWarning.Text" xml:space="preserve">
+    <value>You are try to use a custom SMTP port with your install instance running under medium trust, you need contact your host provider to make sure this setting can work correctly on the server.</value>
+  </data>
+  <data name="SpecifyHostEmailMessage.Text" xml:space="preserve">
+    <value>You Must Specify The Host Email Address</value>
+  </data>
+  <data name="plMaxIdleTime.Text" xml:space="preserve">
+    <value>Max Idle Time:</value>
+  </data>
+  <data name="plMaxIdleTime.Help" xml:space="preserve">
+    <value>The length of time, in milliseconds, that a connection associated with the ServicePoint object can remain idle before it is closed and reused for another connection. Max value is 2147483647. Default is 0. 
+</value>
+  </data>
+  <data name="plConnectionLimit.Text" xml:space="preserve">
+    <value>Connection Limit:</value>
+  </data>
+  <data name="plConnectionLimit.Help" xml:space="preserve">
+    <value>The maximum number of connections allowed on this ServicePoint object. Max value is 2147483647. Default is 1. </value>
+  </data>
+  <data name="ConnectionLimitValidation.Text" xml:space="preserve">
+    <value>Numbers from 1 to 2147483647 only!</value>
+  </data>
+  <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
+    <value>Numbers from 1 to 2147483647 only!</value>
+  </data>
+  <data name="enableModuleEffectLabel.Text" xml:space="preserve">
+    <value>Enable Module Effect?</value>
+  </data>
+  <data name="enableModuleEffectLabel.Help" xml:space="preserve">
+    <value>Check this box to enable highlight current edit module in edit mode.</value>
+  </data>
+  <data name="pl404TabId.Help" xml:space="preserve">
+    <value>The 404 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in a "Page Not Found" error.</value>
+  </data>
+  <data name="pl404TabId.Text" xml:space="preserve">
+    <value>404 Error Page</value>
+  </data>
+  <data name="pl500TabId.Help" xml:space="preserve">
+    <value>The 500 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in an unexpected error.</value>
+  </data>
+  <data name="pl500TabId.Text" xml:space="preserve">
+    <value>500 Error Page</value>
+  </data>
+  <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
+    <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
   </data>
 </root>

@@ -1,6 +1,7 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration, DotNetNuke.Providers.FiftyOneClientCapabilityProvider" AutoEventWireup="true" CodeBehind="Administration.ascx.cs" %>
 <%@ Register Assembly="FiftyOne.Foundation" Namespace="FiftyOne.Foundation.UI.Web" TagPrefix="fiftyOne" %>
 <%@ Register Assembly="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" Namespace="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" tagPrefix="dnn" %>
+<%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelcontrol.ascx" %>
 
 <div class="DnnModule DnnModule-Device-Detection" id="fiftyOneDegrees">
 
@@ -9,11 +10,21 @@
         <div class="content">
             <div class="deviceMsg">
                 <% if (!this.IsPremium) { %>
+                    <p class="bold"><dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
+                        <asp:CheckBox runat="server" ID="cbDetectionEnabled" AutoPostBack="True" /></p>
+                    <p class="bold"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
+                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabled" AutoPostBack="True" /></p>
+                    <p class="bold"><dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                        <asp:CheckBox runat="server" ID="cbShareUsageEnabled" AutoPostBack="True" /></p>
                     <h2><%= LocalizeString("Lite.Header")%></h2>
                     <fieldset class="upgradePremium">
                         <h5><%= LocalizeString("LiteUpgrade.Label")%></h5>
-                        <fiftyOne:Activate runat="server" ID="Activate" LogoEnabled="False" ErrorCssClass="dnnFormMessage dnnFormValidationSummary" SuccessCssClass="dnnFormMessage dnnFormSuccess" FooterEnabled="False" />
-                        <fiftyOne:Stats runat="server" ID="LiteStats" ButtonVisible="False" />
+                        <fiftyOne:Activate runat="server" ID="Activate" LogoEnabled="False" 
+                            ErrorCssClass="dnnFormMessage dnnFormValidationSummary" 
+                            SuccessCssClass="dnnFormMessage dnnFormSuccess" FooterEnabled="False"
+                            ButtonCssClass="dnnSecondaryAction" ShowShareUsage="False"
+                            CheckBoxCssClass="dnnInvisible" />
+                        <fiftyOne:Stats runat="server" ID="LiteStats" ButtonVisible="False" ButtonCssClass="dnnSecondaryAction" />
                         <p class="footer purchaseBox" id="purchaseBox" runat="server"><em><%= LocalizeString("PurchaseInfo.Text")%><a href="<%=LocalizeString("PurchaseInfoLink.Href") %>" target="_blank"><%= LocalizeString("PurchaseInfoLink.Text")%></a><%= LocalizeString("PurchaseInfoEnd.Text")%></em></p>
                     </fieldset>
                     
@@ -27,13 +38,27 @@
                         </ul>
                     </fieldset>
                 <% } else { %>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="DeviceDetectionEnabled" />
+                        <asp:CheckBox runat="server" ID="cbDetectionEnabledPremium" AutoPostBack="True" />
+                    </div>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="AutoUpdatesEnabled" />
+                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabledPremium" AutoPostBack="True" />
+                    </div>
+                    <div class="bold dnnFormItem">
+                        <dnn:label runat="server" resourcekey="ShareUsageEnabled" />
+                        <asp:CheckBox runat="server" ID="cbShareUsageEnabledPremium" AutoPostBack="True" />
+                    </div>
+
                     <h2><%= GetLicenseFormatString("Premium.Header") %></h2>
                     <fieldset>
                         <p><%= GetLicenseFormatString("PremiumIntro.Text") %></p>
-                        <fiftyOne:Stats runat="server" ID="PremiumStats" />
+                        <fiftyOne:Stats runat="server" ID="PremiumStats" ButtonCssClass="dnnSecondaryAction" />
                         <p id="PremiumUploadError" runat="server" class="dnnFormMessage dnnFormValidationSummary"><%=GetLicenseFormatString("PremiumUploadError.Text")%></p>
                         <p id="PremiumUploadSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("PremiumUploadSuccess.Text")%></p>
-                        <fiftyOne:Upload runat="server" ID="PremiumUpload" FooterEnabled="False" LogoEnabled="False" />
+                        <dnn:label runat="server" resourcekey="ManualUpdates" /><fiftyOne:Upload runat="server" ID="PremiumUpload" FooterEnabled="False" 
+                            LogoEnabled="False" ButtonCssClass="dnnSecondaryAction" CssClass="dnnUploadActions" />
                     </fieldset>
                 <% } %>
             </div>
@@ -155,7 +180,7 @@
                             </FooterTemplate>
                         </asp:Repeater>
                     </div>
-                    <div class="explorer">
+                    <div class="explorer dnnFormItem">
                         <div class="contents-header">
                         <% if (FiftyOne.Foundation.UI.DataProvider.IsPremium) { %>
                             <h4><%=LocalizeString("DeviceExplorer.Header") %></h4>
@@ -197,6 +222,8 @@
         if (event.keyCode == 13) {
             $("<%= SearchButton.ClientID %>").click();
         }
-    }); 
+    });
 
+    $('.DnnModule-Device-Detection .deviceMsg .footer + input[type="submit"]').addClass('dnnSecondaryAction');
+    $('.dnnInvisible').hide();
 </script>

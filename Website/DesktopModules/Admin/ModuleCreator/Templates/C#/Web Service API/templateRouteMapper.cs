@@ -1,8 +1,8 @@
 #region Copyright
 
 // 
-// Copyright (c) [YEAR]
-// by [OWNER]
+// Copyright (c) _YEAR_
+// by _OWNER_
 // 
 
 #endregion
@@ -13,13 +13,13 @@ using DotNetNuke.Web.Api;
 
 #endregion
 
-namespace [OWNER].[MODULE]
+namespace _OWNER_._MODULE_
 {
-    public class [MODULE]RouteMapper : IServiceRouteMapper
+    public class _MODULE_RouteMapper : IServiceRouteMapper
     {
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            mapRouteManager.MapHttpRoute("[OWNER].[MODULE]", "default", "{controller}/{action}", new[] {"[OWNER].[MODULE]"});
+            mapRouteManager.MapHttpRoute("_OWNER_._MODULE_", "default", "{controller}/{action}", new[] {"_OWNER_._MODULE_"});
         }
     }
 } 

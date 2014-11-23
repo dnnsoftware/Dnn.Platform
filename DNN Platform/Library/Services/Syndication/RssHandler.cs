@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,10 +25,10 @@ using System.Collections.Generic;
 using System.Web;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Search;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -47,7 +47,6 @@ namespace DotNetNuke.Services.Syndication
         /// <remarks></remarks>
         protected override void PopulateChannel(string channelName, string userName)
         {
-            var objModules = new ModuleController();
             ModuleInfo objModule;
             if (Request == null || Settings == null || Settings.ActiveTab == null || ModuleId == Null.NullInteger)
             {
@@ -90,7 +89,7 @@ namespace DotNetNuke.Services.Syndication
                     {
                         if (Settings.ActiveTab.StartDate < DateTime.Now && Settings.ActiveTab.EndDate > DateTime.Now)
                         {
-                            objModule = objModules.GetModule(result.ModuleId, query.TabId);
+                            objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
                             if (objModule != null && objModule.DisplaySyndicate && objModule.IsDeleted == false)
                             {
                                 if (ModulePermissionController.CanViewModule(objModule))
@@ -120,10 +119,10 @@ namespace DotNetNuke.Services.Syndication
             var url = searchResult.Url;
             if (url.Trim() == "")
             {
-                url = Globals.NavigateURL(searchResult.TabId);
+                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId);
                 if (url.ToLower().IndexOf(HttpContext.Current.Request.Url.Host.ToLower()) == -1)
                 {
-                    url = Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
+                    url = TestableGlobals.Instance.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
                 }
             }
 

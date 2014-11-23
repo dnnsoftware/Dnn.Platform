@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,10 +21,12 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Friends;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 
@@ -33,6 +35,20 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     internal class FriendsControllerImpl : IFriendsController
     {
         internal const string FriendRequest = "FriendRequest";
+
+        private static event EventHandler<RelationshipEventArgs> FriendshipRequested;
+        private static event EventHandler<RelationshipEventArgs> FriendshipAccepted;
+        private static event EventHandler<RelationshipEventArgs> FriendshipDeleted;
+
+        static FriendsControllerImpl()
+        {
+            foreach (var handlers in EventHandlersContainer<IFriendshipEventHandlers>.Instance.EventHandlers)
+            {
+                FriendshipRequested += handlers.Value.FriendshipRequested;
+                FriendshipAccepted += handlers.Value.FriendshipAccepted;
+                FriendshipDeleted += handlers.Value.FriendshipDeleted;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -43,12 +59,16 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
-            var friendRelationship = RelationshipController.Instance.GetFriendRelationship(UserController.GetCurrentUserInfo(), targetUser);
+            var initiatingUser = UserController.Instance.GetCurrentUserInfo();
+            var friendRelationship = RelationshipController.Instance.GetFriendRelationship(initiatingUser, targetUser);
 
             RelationshipController.Instance.AcceptUserRelationship(friendRelationship.UserRelationshipId);
-            NotificationsController.Instance.DeleteNotificationRecipient(NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
-                friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), 
-                UserController.GetCurrentUserInfo().UserID);
+            NotificationsController.Instance.DeleteNotificationRecipient(
+                NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
+                friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
+
+            if (FriendshipAccepted != null)
+                FriendshipAccepted(null, new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -63,7 +83,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void AddFriend(UserInfo targetUser)
         {
-            AddFriend(UserController.GetCurrentUserInfo(), targetUser);
+            var initiatingUser = UserController.Instance.GetCurrentUserInfo();
+            AddFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -85,6 +106,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                                         RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             AddFriendRequestNotification(initiatingUser, targetUser, userRelationship);
+
+            if (FriendshipRequested != null)
+                FriendshipRequested(null, new RelationshipEventArgs(userRelationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -95,7 +119,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo targetUser)
         {
-            DeleteFriend(UserController.GetCurrentUserInfo(), targetUser);
+            var initiatingUser = UserController.Instance.GetCurrentUserInfo();
+            DeleteFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -109,13 +134,16 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            UserRelationship friend = RelationshipController.Instance.GetUserRelationship(initiatingUser, targetUser, 
-                                        RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
+            var friend = RelationshipController.Instance.GetUserRelationship(initiatingUser, targetUser,
+                RelationshipController.Instance.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
 
             RelationshipController.Instance.DeleteUserRelationship(friend);
+
+            if (FriendshipDeleted != null)
+                FriendshipDeleted(null, new RelationshipEventArgs(friend, initiatingUser.PortalID));
         }
 
-        private void AddFriendRequestNotification(UserInfo initiatingUser, UserInfo targetUser, UserRelationship userRelationship)
+        private static void AddFriendRequestNotification(UserInfo initiatingUser, UserInfo targetUser, UserRelationship userRelationship)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
             var subject = string.Format(Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile),
@@ -135,7 +163,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             };
 
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });
-
         }
     }
 }

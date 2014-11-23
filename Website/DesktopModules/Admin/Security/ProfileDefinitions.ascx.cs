@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -444,10 +444,20 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             string retValue = Null.NullString;
             var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo(definition.DataType);
+            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
             if (definitionEntry != null)
             {
                 retValue = definitionEntry.Value;
+            }
+            return retValue;
+        }
+
+        public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
+        {
+            string retValue = Null.NullString;
+            if (!String.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
+            {
+                retValue = LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
             }
             return retValue;
         }

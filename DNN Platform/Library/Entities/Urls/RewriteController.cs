@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,10 +36,10 @@ using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls.Config;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Urls
             string defaultPage = Globals.glbDefaultPage.ToLower();
             string portalAliasUrl = url.ToLower().Replace("/" + defaultPage, "");
             //if there is a straight match on a portal alias, it's the home page for that portal requested 
-            var portalAlias = PortalAliasController.GetPortalAliasInfo(portalAliasUrl);
+            var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
             {
                 //special case : sometimes, some servers issue root/default.aspx when root/ was requested, sometimes not.  It depends
@@ -182,10 +182,12 @@ namespace DotNetNuke.Entities.Urls
                         bool customTabAlias = false;
                         //check for culture-specific aliases
                         string culture = null;
-                        var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
+                        var primaryAliases =
+                            PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
+                                                         .Where(a => a.IsPrimary).ToList();
                         //if there are chosen portal aliases, check to see if the found alias is one of them
                         //if not, then will check for a custom alias per tab
-                        if (primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias) == false)
+                        if (!primaryAliases.ContainsAlias(portal.PortalID, portalAlias.HTTPAlias))
                         {
                             checkForCustomAlias = true;
                         }
@@ -232,8 +234,20 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                tabId = portal.HomeTabId;
-                                //not a custom alias for a specific tab, so it must be the home page for the portal we identified
+                                //not a custom alias for a specific tab, so it must be the home page for the portal we identified,
+                                //if its first request and splash page defined, then redirec to splash page.
+                                if (portal.SplashTabId > Null.NullInteger && HttpContext.Current != null &&
+                                    !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
+                                {
+                                    tabId = portal.SplashTabId;
+                                    HttpContext.Current.Response.Cookies.Add(new HttpCookie("SplashPageView", "true"));
+                                    result.Action = ActionType.Redirect302;
+                                    result.Reason = RedirectReason.Requested_SplashPage;
+                                }
+                                else
+                                {
+                                    tabId = portal.HomeTabId;
+                                }                                
                                 if (culture == null)
                                 {
                                     culture = portal.DefaultLanguage; //set culture to default if not found specifically
@@ -259,10 +273,9 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, "");
                             }
-                            if (culture != portal.DefaultLanguage)
-                            {
-                                AddLanguageCodeToRewritePath(ref newUrl, culture);
-                            }
+
+                            //DNN-3789 always call this method as culture is defined by GetPageLocale
+                            AddLanguageCodeToRewritePath(ref newUrl, culture);
                             //add on language specified by current portal alias
                             reWritten = true;
                         }
@@ -372,8 +385,8 @@ namespace DotNetNuke.Entities.Urls
                             userParam = "UserId=" + user.UserID.ToString();
 
                             //Get the User profile Tab
-                            var portal = new PortalController().GetPortal(result.PortalId);
-                            var profilePage = new TabController().GetTab(portal.UserTabId, result.PortalId, false);
+                            var portal = PortalController.Instance.GetPortal(result.PortalId);
+                            var profilePage = TabController.Instance.GetTab(portal.UserTabId, result.PortalId, false);
 
                             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
@@ -411,7 +424,7 @@ namespace DotNetNuke.Entities.Urls
             return found;
         }
 
-        private static string CheckLanguageMatch(ref string url, UrlAction result)
+        internal static string CheckLanguageMatch(ref string url, UrlAction result)
         {
             //ok now scan for the language modifier 
             Match langMatch = Regex.Match(url, "/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -428,7 +441,7 @@ namespace DotNetNuke.Entities.Urls
                 url = url.Replace(langParms, "") + langParms;
                 result.CultureCode = langMatch.Groups["code"].Value; //get the culture code in the requested url
 
-                var primaryAliases = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
                 if (primaryAliases.Count > 0)
                 {
                     string aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
@@ -573,8 +586,7 @@ namespace DotNetNuke.Entities.Urls
             TabInfo tab = null;
             if (tabId > 0 && portalId > -1)
             {
-                var tc = new TabController();
-                tab = tc.GetTab(tabId, portalId, false);
+                tab = TabController.Instance.GetTab(tabId, portalId, false);
             }
             //don't overwrite specific skin at tab level for rewritten Urls
             if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
@@ -1363,11 +1375,14 @@ namespace DotNetNuke.Entities.Urls
             {
                 //add the portal default language to the rewrite path
                 PortalInfo portal = CacheController.GetPortal(result.PortalId, false);
-                if (portal != null && !string.IsNullOrEmpty(portal.DefaultLanguage))
+                
+                //DNN-3789 - culture is defined by GetPageLocale
+                string currentLocale = Localization.GetPageLocale(new PortalSettings(result.TabId, result.PortalAlias)).Name;
+                if (portal != null && !string.IsNullOrEmpty(currentLocale))
                 {
-                    AddLanguageCodeToRewritePath(ref rewritePath, portal.DefaultLanguage);
-                    result.CultureCode = portal.DefaultLanguage;
-                    result.DebugMessages.Add("Portal Default Language code " + portal.DefaultLanguage + " added");
+                    AddLanguageCodeToRewritePath(ref rewritePath, currentLocale);
+                    result.CultureCode = currentLocale;
+                    result.DebugMessages.Add("Current Language code " + currentLocale + " added");
                 }
             }
             //set the rewrite path
@@ -1404,8 +1419,10 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
-            //fallback position - all portals match 'Admin'
-            const string adminPageName = "Admin";
+            var portal = PortalController.Instance.GetPortal(portalId);
+            var adminTab = TabController.Instance.GetTab(portal.AdminTabId, portalId);
+            
+            string adminPageName = adminTab.TabName;
             //we should be checking that the tab path matches //Admin//pagename or //admin
             //in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
@@ -1493,7 +1510,7 @@ namespace DotNetNuke.Entities.Urls
                 int lastParmToProcessTo;
 
                 string userIdParm = null;
-                PortalInfo thisPortal = new PortalController().GetPortal(result.PortalId);
+                var thisPortal = PortalController.Instance.GetPortal(result.PortalId);
 
                 //check if there is more than one parm, and keep the value of the primary (first) parm
                 if (thisPortal.UserTabId == result.TabId || thisPortal.UserTabId == -1)

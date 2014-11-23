@@ -126,9 +126,6 @@
   <data name="Cancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ChooseFile.Text" xml:space="preserve">
-    <value>Choose File</value>
-  </data>
   <data name="Community.Text" xml:space="preserve">
     <value>Community Members</value>
   </data>

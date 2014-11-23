@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -174,7 +174,6 @@ namespace DotNetNuke.Entities.Urls
                     //OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
 
-                    var tc = new TabController();
                     if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)
@@ -263,7 +262,7 @@ namespace DotNetNuke.Entities.Urls
                                     //if the tabid has been supplied, do a friendly url provider lookup to get the correct format for the tab url
                                     if (tabId > -1)
                                     {
-                                        TabInfo tab = tc.GetTab(tabId, result.PortalId, false);
+                                        TabInfo tab = TabController.Instance.GetTab(tabId, result.PortalId, false);
                                         if (tab != null)
                                         {
                                             string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, "");
@@ -407,8 +406,7 @@ namespace DotNetNuke.Entities.Urls
             if (int.TryParse(tab.Url, out redirectTabId))
             {
                 //ok, redirecting to a new tab, specified by the tabid in the Url field
-                var tc = new TabController();
-                TabInfo redirectTab = tc.GetTab(redirectTabId, tab.PortalID, false);
+                TabInfo redirectTab = TabController.Instance.GetTab(redirectTabId, tab.PortalID, false);
                 if (redirectTab != null)
                 {
                     //now get the friendly url for that tab

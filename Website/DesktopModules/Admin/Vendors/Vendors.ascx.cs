@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
 
 	    protected bool CanEdit()
         {
-            return PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+            return ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EDIT", ModuleConfiguration);
         }
 
         private void SetDataSource()
@@ -67,11 +67,11 @@ namespace DotNetNuke.Modules.Admin.Vendors
             CreateLetterSearch();
 
             bool isUnauthorized = false;
-            if (_searchFilter == Localization.GetString("All"))
+            if (_searchFilter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
             {
                 _searchFilter = "";
             }
-            else if (_searchFilter == Localization.GetString("Unauthorized"))
+            else if (_searchFilter.Equals(Localization.GetString("Unauthorized"), StringComparison.InvariantCultureIgnoreCase))
             {
                 _searchFilter = "";
                 isUnauthorized = true;

@@ -147,6 +147,9 @@
   <data name="Module_Ideas.Text" xml:space="preserve">
     <value>Ideas</value>
   </data>
+  <data name="Module_Journal.Text" xml:space="preserve">
+    <value>Journal</value>
+  </data>
   <data name="Module_Text/HTML.Text" xml:space="preserve">
     <value>Pages</value>
   </data>

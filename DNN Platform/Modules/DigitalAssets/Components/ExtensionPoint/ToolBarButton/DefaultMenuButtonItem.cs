@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,7 @@
 
 using System;
 using DotNetNuke.ExtensionPoints;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
@@ -57,5 +58,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         public string Action { get; private set; }
 
         public string CssClass { get; private set; }
+
+        public bool Visible
+        {
+            get { return true; }
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
     }
 }

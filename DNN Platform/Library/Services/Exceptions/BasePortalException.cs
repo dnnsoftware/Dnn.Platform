@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Exceptions
             try
             {
                 var context = HttpContext.Current;
-                var portalSettings = PortalController.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 var innerException = new Exception(Message, this);
                 while (innerException.InnerException != null)
                 {
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Exceptions
                     ActiveTabName = "";
                 }
 
-                var currentUserInfo = UserController.GetCurrentUserInfo();
+                var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
 
                 if (UserID != -1)

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections.Specialized;
 using System.Web.UI;
 
 using DotNetNuke.Common.Utilities;
@@ -207,6 +208,20 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(Localization.GetString("False", Localization.SharedResourceFile));
             writer.RenderEndTag();
         }
+
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            var postedValue = postCollection[postDataKey];
+            bool flag;
+            var boolValue = Boolean.TryParse(postedValue, out flag) ? flag : true;
+            if (!BooleanValue.Equals(boolValue))
+            {
+                Value = boolValue;
+                return true;
+            }
+            return false;
+        }
+
 		
 		#endregion
     }

@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         MessageRecipient GetMessageRecipient(int messageId, int userId);
         IList<MessageRecipient> GetMessageRecipients(int messageId);
         void DeleteMessageRecipient(int messageId, int userId);
-
+        void DeleteUserFromConversation(int conversationId, int userId);
 
         void MarkRead(int conversationId, int userId);
         void MarkUnRead(int conversationId, int userId);
@@ -120,6 +120,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Counter APIs
 
+        int CheckReplyHasRecipients(int conversationId , int userId);
+
         int CountUnreadMessages(int userId, int portalId);
 
         int CountConversations(int userId, int portalId);
@@ -131,6 +133,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         int CountSentMessages(int userId, int portalId);
 
         int CountArchivedMessages(int userId, int portalId);
+
+        int CountSentConversations(int userId, int portalId);
+
+        int CountArchivedConversations(int userId, int portalId);
 
         #endregion
     }

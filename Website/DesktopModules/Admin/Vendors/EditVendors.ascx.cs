@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -118,8 +118,6 @@ namespace DotNetNuke.Modules.Admin.Vendors
 
             try
             {
-                var objTabs = new TabController();
-
                 var blnBanner = false;
                 var blnSignup = false;
 
@@ -220,15 +218,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
                     }
                     else
                     {
-                        TabInfo objTab;
-						if (Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
-                        {
-                            objTab = objTabs.GetTabByName("Vendors", Null.NullInteger);
-                        }
-                        else
-                        {
-                            objTab = objTabs.GetTabByName("Vendors", PortalId);
-                        }
+                        TabInfo objTab = TabController.Instance.GetTabByName("Vendors", Globals.IsHostTab(PortalSettings.ActiveTab.TabID) ? Null.NullInteger : PortalId);
                         if (objTab != null)
                         {
                             ViewState["filter"] = Request.QueryString["filter"];

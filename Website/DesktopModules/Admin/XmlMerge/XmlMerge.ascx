@@ -64,6 +64,19 @@
 
 	    $('#dnnConfigManager').dnnTabs();
 
+	    var $fileUpload = $('#dnnConfigMerge input[type="file"]');
+	    $fileUpload.data("text", '<%=LocalizeSafeJsString("ChooseFile.Text")%>');
+
+        //DNN-5361 Fix xml merge upload button issue
+	    var $cmdUpload = $('a[id$="cmdUpload"]');
+	    $cmdUpload.attr('disabled', true).addClass('dnnDisabled');
+
+	    $fileUpload.change(function () {
+	        if ($(this).val()) {
+	            $cmdUpload.attr('disabled', false).removeClass('dnnDisabled');
+	        }
+	    });
+
 	    var configeditor = CodeMirror.fromTextArea($("textarea[id$='txtConfiguration']")[0], {
 	        lineNumbers: true,
 	        matchBrackets: true,

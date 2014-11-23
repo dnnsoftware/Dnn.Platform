@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -47,6 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
             Tabs = new List<DnnFormTab>();
 
             FormMode = DnnFormMode.Long;
+            ViewStateMode = ViewStateMode.Disabled;
         }
 
         protected string LocalResourceFile
@@ -300,7 +302,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             Page.RegisterRequiresControlState(this);
-            jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
 

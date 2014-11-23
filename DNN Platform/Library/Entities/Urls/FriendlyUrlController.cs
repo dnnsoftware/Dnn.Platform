@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -655,18 +655,17 @@ namespace DotNetNuke.Entities.Urls
             //716 just ignore portal settings if we don't actually need it 
             if (includeStdUrls)
             {
-                portalSettings = PortalController.GetCurrentPortalSettings();
+                portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             }
             return GetTabs(portalId, includeStdUrls, portalSettings, settings);
         }
 
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
         {
-            var tc = new TabController();
             //811 : friendly urls for admin/host tabs
             var tabs = new Dictionary<int, TabInfo>();
-            var portalTabs = tc.GetTabsByPortal(portalId);
-            var hostTabs = tc.GetTabsByPortal(-1);
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(-1);
 
             foreach (TabInfo tab in portalTabs.Values)
             {
@@ -710,59 +709,15 @@ namespace DotNetNuke.Entities.Urls
             return aliases;
         }
 
-        /*
-        internal static Dictionary<int, TabInfo> GetTabs(int portalId)
-        {
-            var tabs = (Dictionary<int, TabInfo>)HttpContext.Current.Session["tabs" + portalId.ToString()] ??
-                       new Dictionary<int, TabInfo>();
-            return tabs;
-        }
-
-        internal static void StashTabs(Dictionary<int, TabInfo> tabs, int portalId)
-        {
-            HttpContext.Current.Session["tabs" + portalId.ToString()] = tabs;
-            var portals = (List<int>) HttpContext.Current.Session["tabportals"] ?? new List<int>();
-            if (portals.Contains(portalId) == false)
-            {
-                portals.Add(portalId);
-            }
-            HttpContext.Current.Session["tabportals"] = portals;
-        }
-
-        internal static void FlushTabs()
-        {
-            var portals = (List<int>) HttpContext.Current.Session["tabportals"];
-            if (portals != null)
-            {
-                foreach (int portalId in portals)
-                {
-                    HttpContext.Current.Session.Remove("tabs" + portalId.ToString());
-                }
-            }
-            HttpContext.Current.Session.Remove("tabportals");
-        }
-
-        internal static void FlushTabs(int PortalId)
-        {
-            HttpContext.Current.Session["tabs" + PortalId.ToString()] = null;
-            var portals = (List<int>) HttpContext.Current.Session["tabportals"];
-            if (portals != null && portals.Contains(PortalId))
-            {
-                portals.Remove(PortalId);
-            }
-            HttpContext.Current.Session["tabportals"] = portals;
-        }
-        */
         public static TabInfo GetTab(int tabId, bool addStdUrls)
         {
-            PortalSettings portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             return GetTab(tabId, addStdUrls, portalSettings, GetCurrentSettings(portalSettings.PortalId));
         }
 
         public static TabInfo GetTab(int tabId, bool addStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
         {
-            var tc = new TabController();
-            TabInfo tab = tc.GetTab(tabId, portalSettings.PortalId, false);
+            TabInfo tab = TabController.Instance.GetTab(tabId, portalSettings.PortalId, false);
             if (addStdUrls)
             {
                 //Add on the standard Urls that exist for a tab, based on settings like
@@ -772,180 +727,50 @@ namespace DotNetNuke.Entities.Urls
             return tab;
         }
 
-        //internal static void RebuildStandardUrls(TabInfo tab, PortalSettings portalSettings,
-        //                                         FriendlyUrlSettings settings)
-        //{
-        //    if (tab != null)
-        //    {
-        //        var standardRedirects = new List<string>();
-        //        foreach (TabRedirectInfo redirect in tab.TabRedirects)
-        //        {
-        //            if (redirect.FixedUrl)
-        //            {
-        //                standardRedirects.Add(redirect.Key);
-        //            }
-        //        }
-        //        //now remove the standard redirects
-        //        foreach (string key in standardRedirects)
-        //        {
-        //            tab.TabRedirects.Remove(key);
-        //        }
-        //    }
-        //    BuildFriendlyUrls(tab, true, portalSettings, settings);
-        //}
-
-        //public static void RecheckRedirectsForTab(TabInfo tab, string changingKey)
-        //{
-        //    RecheckRedirectsForTab(tab, changingKey, GetCurrentSettings(false, true, tab.PortalID));
-        //}
-
-        //public static void RecheckRedirectsForTab(TabInfo tab, string changingKey, FriendlyUrlSettings settings)
-        //{
-        //    //essentially the smae logic as in BuildFriendlyUrl, but slightly different as we aren't building
-        //    //up the standard urls, just processing them to make sure they obey the 301 redirect settings
-        //    var cultureHasCustomRedirectWith200 = new Dictionary<string, bool>();
-        //    //cycle through all of the custom redirects, looking to see for the different culture codes/custom redirects
-        //    foreach (TabRedirectInfo redirect in tab.TabRedirects)
-        //    {
-        //        if (redirect.FixedUrl == false)
-        //        {
-        //            if (redirect.HttpStatus == "200")
-        //            {
-        //                if (!cultureHasCustomRedirectWith200.ContainsKey(redirect.CultureCode))
-        //                {
-        //                    cultureHasCustomRedirectWith200.Add(redirect.CultureCode, true);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    //all the 'fixed' urls should be 301'd
-        //    TabRedirectInfo bestRedirect = null;
-        //    var bestRedirects = new Dictionary<string, TabRedirectInfo>();
-        //    foreach (TabRedirectInfo redirect in tab.TabRedirects)
-        //    {
-        //        //see if this culture has a custom redirect
-        //        bool customRedirectWith200 = false;
-        //        if (cultureHasCustomRedirectWith200.ContainsKey(redirect.CultureCode))
-        //        {
-        //            customRedirectWith200 = cultureHasCustomRedirectWith200[redirect.CultureCode];
-        //        }
-
-        //        if (customRedirectWith200 && settings.RedirectUnfriendly)
-        //        {
-        //            if (redirect.FixedUrl && redirect.HttpStatus == "200")
-        //            {
-        //                redirect.HttpStatus = "301";
-        //            }
-        //        }
-
-        //        if (customRedirectWith200 == false)
-        //            //no custom urls with 200 status on them (ie,on this page, no custom urls which are not redirects)
-        //        {
-        //            if (redirect.FixedUrl && settings.RedirectUnfriendly == false)
-        //            {
-        //                redirect.HttpStatus = "200"; //no redirect unfriendly, so all fixed Url's are 200 status
-        //            }
-        //            else if (redirect.FixedUrl && settings.RedirectUnfriendly)
-        //            {
-        //                bestRedirect = redirect;
-        //                    //redirect unfriendly, we just want to get the last fixed url, because tihs is the 'friendliest' (per the buildFriendlyUrl procedure)
-        //                SetAsBestRedirect(redirect, bestRedirects);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!redirect.FixedUrl && changingKey != null && redirect.Key == changingKey &&
-        //                redirect.HttpStatus == "200")
-        //            {
-        //                //not a fixed url (custom redirect), the changing key is known, and this is the item that 
-        //                //the key change was for, and this is a 200, well : we have our best redriect
-        //                bestRedirect = redirect;
-        //                SetAsBestRedirect(redirect, bestRedirects);
-        //            }
-        //        }
-        //    }
-        //    //the best redirect is the last fixed url
-        //    /*
-        //    if (bestRedirect != null)
-        //    {
-        //        bestRedirect.HttpStatus = "200";
-        //        //if the best Redirect isn't a fixed url, and the redirectUnfriendly switch is on
-        //        //then set all the other redirects to 301's
-        //        if (bestRedirect.FixedUrl == false && settings.RedirectUnfriendly)
-        //        {
-        //            foreach (TabRedirectInfo redirect in tab.TabRedirects)
-        //            {
-        //                //any custom redirect that isn't the chosen redirect and
-        //                //is http status 200 will be changed to 301
-        //                if (redirect.FixedUrl == false 
-        //                && redirect.Key != bestRedirect.Key 
-        //                && redirect.HttpStatus == "200" )
-        //                {
-        //                    //final check : this is a candidate for setting to 301 redirect, unless it's a different culture code to the bestRedirect
-        //                    if (redirect.CultureCode == bestRedirect.CultureCode)
-        //                        redirect.HttpStatus = "301";
-        //                    //else
-        //                        //don't change httpStatus for redirects in a different culture code to the changing one
-        //                }
-        //            }
-        //        }
-        //    }*/
-        //    if (bestRedirects.Count > 0)
-        //    {
-        //        foreach (string cultureCode in bestRedirects.Keys)
-        //        {
-        //            //if the best redirect isn't a fixed url, and the redirectUnfriendly switch is on
-        //            //every other url for this culture is a 301 redirect to the bestFriendlyUrl for this culture
-        //            TabRedirectInfo bestRedirectForCulture = bestRedirects[cultureCode];
-        //            foreach (TabRedirectInfo redirect in tab.TabRedirects)
-        //            {
-        //                if (redirect.CultureCode == cultureCode //same culture
-        //                    && redirect.Key != bestRedirectForCulture.Key // not the best redirect 
-        //                    && redirect.HttpStatus == "200" // not already set as redirect
-        //                    && redirect.FixedUrl == false) //not a fixed url
-        //                {
-        //                    //change this to a 301
-        //                    redirect.HttpStatus = "301";
-        //                }
-        //                else if (redirect.CultureCode == cultureCode //same culture
-        //                         && redirect.Key == bestRedirectForCulture.Key //is the best redirect
-        //                         && redirect.HttpStatus != "200") //not 200 status
-        //                {
-        //                    redirect.HttpStatus = "200";
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private static void SetAsBestRedirect(TabRedirectInfo redirect,
-        //                                      Dictionary<string, TabRedirectInfo> bestRedirects)
-        //{
-        //    string culture = redirect.CultureCode;
-        //    if (bestRedirects.ContainsKey(culture))
-        //    {
-        //        bestRedirects[culture] = redirect;
-        //    }
-        //    else
-        //    {
-        //        bestRedirects.Add(culture, redirect);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Saves any changes to the Tabs objects
-        ///// </summary>
-        ///// <param name="tabs"></param>
-        //public static void Save(Dictionary<int, TabInfo> tabs)
-        //{
-        //    throw new NotImplementedException("Tabs Save");
-        //}
-
         #endregion
 
         private static bool IsMobileClient()
         {
             return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
+        }
+
+        private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
+        {
+            var resultingCh = new StringBuilder(ch.Length);
+            foreach (char c in ch) //ch could contain several chars from the pre-defined replacement list
+            {
+                if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
+                {
+                    replacedUnwantedChars = true;
+                }
+                else
+                {
+                    resultingCh.Append(c);
+                }
+            }
+            ch = resultingCh.ToString();
+        }
+
+        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
+            ref bool replacedUnwantedChars)
+        {
+            if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
+            {
+                return;
+            }
+
+            if (ch != " ") // if not replacing spaces, which are implied
+            {
+                replacedUnwantedChars = true;
+            }
+
+            ch = options.PunctuationReplacement; //in list of replacment chars
+
+            //If we still have a space ensure it's encoded
+            if (ch == " ")
+            {
+                ch = options.SpaceEncoding;
+            }
         }
 
         #region Internal Methods
@@ -1053,10 +878,8 @@ namespace DotNetNuke.Entities.Urls
                 options = new FriendlyUrlOptions();
             }
             bool convertDiacritics = options.ConvertDiacriticChars;
-            string regexMatch = options.RegexMatch;
-            string illegalChars = options.IllegalChars;
-            string replaceWith = options.PunctuationReplacement;
-            string replaceChars = options.ReplaceChars;
+            Regex regexMatch = options.RegexMatchRegex;
+            string replaceWith = options.PunctuationReplacement;            
             bool replaceDoubleChars = options.ReplaceDoubleChars;
             Dictionary<string, string> replacementChars = options.ReplaceCharWithChar;
 
@@ -1066,86 +889,57 @@ namespace DotNetNuke.Entities.Urls
             }
             var result = new StringBuilder(urlName.Length);
             int i = 0;
-            int last = urlName.ToCharArray().GetUpperBound(0);
             string normalisedUrl = urlName;
             if (convertDiacritics)
             {
                 normalisedUrl = urlName.Normalize(NormalizationForm.FormD);
-                if (string.CompareOrdinal(normalisedUrl, urlName) != 0)
+                if (!string.Equals(normalisedUrl, urlName, StringComparison.Ordinal))
                 {
                     replacedUnwantedChars = true; //replaced an accented character
                 }
             }
+
+            int last = normalisedUrl.Length - 1;
             bool doublePeriod = false;
             foreach (char c in normalisedUrl)
             {
                 //look for a double period in the name
-                if (!doublePeriod && c == '.' && i > 0 && urlName[i - 1] == '.')
+                if (!doublePeriod && i > 0 && c == '.' && normalisedUrl[i - 1] == '.')
                 {
                     doublePeriod = true;
                 }
+
                 //use string for manipulation
-                string ch = c.ToString();
+                string ch = c.ToString(CultureInfo.InvariantCulture);
+
                 //do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(c.ToString()))
+                if (replacementChars != null && replacementChars.ContainsKey(ch))
                 {
                     //replace with value
-                    ch = replacementChars[c.ToString()];
+                    ch = replacementChars[ch];
+                    replacedUnwantedChars = true;
+                }
+                else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
+                {
+                    ch = string.Empty;
                     replacedUnwantedChars = true;
                 }
                 else
                 {
+                    //Check if ch is in the replace list
+                    CheckCharsForReplace(options, ref ch, ref replacedUnwantedChars);
+
                     //not in replacement list, check if valid char
-                    if (Regex.IsMatch(ch, regexMatch, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                    if (regexMatch.IsMatch(ch))
                     {
-                        //check replace character with the punctuation replacmenet
-                        if (replaceChars.ToLower().Contains(ch.ToLower()))
-                        {
-                            ch = replaceWith; //in list of replacment chars
-                            if (ch != " ") // if not replacing spaces, which are implied
-                            {
-                                replacedUnwantedChars = true;
-                            }
-                        }
-                        else
-                        {
-                            ch = ""; //not a replacement or allowed char, so doesn't go into Url
-                            replacedUnwantedChars = true;
-                            //if we are here, this character isn't going into the output Url
-                        }
-                    }
-                    else
-                    {
-                        //this char is allowed because it didn't match the regexMatch pattern
-                        //however we may still want to replace it in Urls
-                        if (illegalChars.ToLower().Contains(ch.ToLower()))
-                        {
-                            ch = ""; //illegal character, removed from list
-                            replacedUnwantedChars = true;
-                        }
-                        else
-                        {
-                            //but we also want to check the list of illegal chars - these must never be allowed,
-                            //even if the settings inadvertently let them through.  This is a double check
-                            //to prevent accidental modification to regex taking down a site
-                            if (replaceChars.ToLower().Contains(ch.ToLower()))
-                            {
-                                if (ch != " ") // if not replacing spaces, which are implied
-                                {
-                                    replacedUnwantedChars = true;
-                                }
-                                ch = replaceWith; //in list of replacment chars
-                                
-                                //If we still have a space ensure its encoded
-                                if (ch == " ")
-                                {
-                                    ch = options.SpaceEncoding;
-                                }
-                            }
-                        }
+                        ch = ""; //not a replacement or allowed char, so doesn't go into Url
+                        replacedUnwantedChars = true;
+                        //if we are here, this character isn't going into the output Url                        
                     }
                 }
 
+                //Check if the final ch is an illegal char
+                CheckIllegalChars(options.IllegalChars, ref ch, ref replacedUnwantedChars);
                 if (i == last)
                 {
                     //834 : strip off last character if it is a '.'
@@ -1288,6 +1082,44 @@ namespace DotNetNuke.Entities.Urls
                 //Try and get a tab by the url
                 int tabId = TabController.GetTabByTabPath(settings.PortalId, "//" + url, settings.CultureCode);
                 isUnique = (tabId == -1 || tabId == validateUrlForTabId);
+            }
+
+            if (isUnique) //check whether have a tab which use the url.
+            {
+                var friendlyUrlSettings = new FriendlyUrlSettings(settings.PortalId);
+                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId);
+                foreach (TabInfo tab in tabs.Values)
+                {
+                    if (tab.TabID == validateUrlForTabId)
+                    {
+                        continue;
+                    }
+
+                    if (tab.TabUrls.Count == 0)
+                    {
+                        var baseUrl = Globals.AddHTTP(settings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
+                        var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                                                                                    baseUrl,
+                                                                                    Globals.glbDefaultPage,
+                                                                                    settings.PortalAlias.HTTPAlias,
+                                                                                    false,
+                                                                                    friendlyUrlSettings,
+                                                                                    Guid.Empty);
+
+                        var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), "");
+
+                        if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            isUnique = false;
+                            break;
+                        }
+                    }
+                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        isUnique = false;
+                        break;
+                    }
+                }
             }
             return isUnique;
         }

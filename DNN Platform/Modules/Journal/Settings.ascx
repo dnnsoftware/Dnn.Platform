@@ -19,6 +19,11 @@
 </div>
 
 <div class="dnnFormItem">
+    <dnn:label controlname="chkAllowResize" resourcekey="AllowResize" Text="Allow Resize Photos" Suffix=":" runat="server" />    
+    <asp:CheckBox id="chkAllowResize" runat="server" />
+</div>
+
+<div class="dnnFormItem">
     <dnn:label controlname="drpDefaultPageSize" resourcekey="DefaultPageSize" Suffix=":" runat="server" />
     <asp:DropDownList ID="drpDefaultPageSize" runat="server">
         <asp:ListItem Value="5">5</asp:ListItem>
@@ -39,6 +44,7 @@
         <asp:ListItem Value="500">500</asp:ListItem>
         <asp:ListItem Value="1000">1000</asp:ListItem>
         <asp:ListItem Value="2000">2000</asp:ListItem>
+        <asp:ListItem Value="-1" resourcekey="MessageLength_Unlimited"></asp:ListItem>
     </asp:DropDownList>
   
 </div>
@@ -47,14 +53,26 @@
     <asp:CheckBoxList ID="chkJournalFilters" runat="server" />
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function () {        
         $('#<%=chkEnableEditor.ClientID %>').click(function (event) {
             if (this.checked) {
                 $('#<%=chkAllowFiles.ClientID %>').removeAttr("disabled");
                 $('#<%=chkAllowPhotos.ClientID %>').removeAttr("disabled");
+                if ($('#<%=chkAllowPhotos.ClientID %>')[0].checked) {
+                    $('#<%=chkAllowResize.ClientID %>').removeAttr("disabled");                    
+                }
             } else {
                 $('#<%=chkAllowFiles.ClientID %>').attr("disabled", true);
                 $('#<%=chkAllowPhotos.ClientID %>').attr("disabled", true);
+                $('#<%=chkAllowResize.ClientID %>').attr("disabled", true);
+            }
+        });
+
+        $('#<%=chkAllowPhotos.ClientID %>').click(function(event) {
+            if (this.checked) {
+                $('#<%=chkAllowResize.ClientID %>').removeAttr("disabled");                
+            } else {                
+                $('#<%=chkAllowResize.ClientID %>').attr("disabled", true);
             }
         });
     });

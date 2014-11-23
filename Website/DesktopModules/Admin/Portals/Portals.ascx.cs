@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,7 +31,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -78,7 +77,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
 		    int totalRecords = 0;
 		    ArrayList portals;
-            if (Filter == Localization.GetString("Expired", LocalResourceFile))
+            if (Filter.Equals(Localization.GetString("Expired", LocalResourceFile), StringComparison.InvariantCultureIgnoreCase))
             {
                 portals = PortalController.GetExpiredPortals();
                 totalRecords = portals.Count;
@@ -185,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             var str = new StringBuilder();
             try
             {
-                var arr = TestablePortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
+                var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalID).ToList();
                 foreach ( PortalAliasInfo portalAliasInfo in arr)
                 {
                     var httpAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
@@ -230,8 +229,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                     {
                         //so first create the format string with a dummy value and then
                         //replace the dummy value with the FormatString place holder
-                        var formatString = EditUrl("pid", "KEYFIELD", "Edit");
-                        formatString = formatString.Replace("KEYFIELD", "{0}");
+                        var formatString = EditUrl("pid", "keyfield", "Edit");
+                        formatString = formatString.Replace("keyfield", "{0}");
                         imageColumn.NavigateURLFormatString = formatString;
                     }
 					
@@ -271,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     Filter = Request.QueryString["filter"];
                 }
-                if (Filter == Localization.GetString("All"))
+                if (Filter.Equals(Localization.GetString("All"), StringComparison.InvariantCultureIgnoreCase))
                 {
                     Filter = "";
                 }
@@ -291,15 +290,13 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             try
             {
-                var objPortalController = new PortalController();
-                var portal = objPortalController.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
+                var portal = PortalController.Instance.GetPortal(Int32.Parse(e.CommandArgument.ToString()));
                 if (portal != null)
                 {
                     var strMessage = PortalController.DeletePortal(portal, Globals.GetAbsoluteServerPath(Request));
                     if (string.IsNullOrEmpty(strMessage))
                     {
-                        var objEventLog = new EventLogController();
-                        objEventLog.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
+                        EventLogController.Instance.AddLog("PortalName", portal.PortalName, PortalSettings, UserId, EventLogController.EventLogType.PORTAL_DELETED);
                         UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PortalDeleted", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                     }
                     else

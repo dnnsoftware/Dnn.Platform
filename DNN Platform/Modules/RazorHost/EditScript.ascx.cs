@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -104,8 +104,7 @@ namespace DotNetNuke.Modules.RazorHost
             if (isCurrentScript.Checked)
             {
                 //Update setting
-                var controller = new ModuleController();
-                controller.UpdateModuleSetting(ModuleContext.ModuleId, "ScriptFile", scriptList.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "ScriptFile", scriptList.SelectedValue);
             }
         }
 

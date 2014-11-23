@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -270,26 +270,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
         }
-		
-        private string getSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName,string startWith)
-        {
-            string result = String.Empty;
-            var foldernameNav = manifestNav.Select(xpath);
-            
-            if (foldernameNav != null)
-            {
-                while(foldernameNav.MoveNext())
-                {
-                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if(!String.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
-                    {
-                        result = elementValue;                        
-                        break;
-                    }
-                }
-            }
-            return result;
-        }
 
         private void ReadEventMessageNode(XPathNavigator manifestNav)
         {
@@ -367,6 +347,7 @@ namespace DotNetNuke.Services.Installer.Installers
             //Add Event Message
             if (_eventMessage != null && !String.IsNullOrEmpty(_eventMessage.Attributes["UpgradeVersionsList"]))
             {
+                _eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
                 EventQueueController.SendMessage(_eventMessage, "Application_Start");
             }
 
@@ -431,9 +412,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name);
+                Log.AddFailure(Util.INSTALL_Aborted + " - " + Package.Name + ":" + ex.Message);
             }
             if (isCompleted)
             {
@@ -497,11 +478,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (packageType.SupportsSideBySideInstallation)
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.Version == Package.Version);                
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name
+                                                                                                            && p.PackageType == Package.PackageType
+                                                                                                            && p.Version == Package.Version);                
             }
             else
             {
-                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name);
+                _installedPackage = PackageController.Instance.GetExtensionPackage(Package.PortalID, p => p.Name == Package.Name && p.PackageType == Package.PackageType);
             }
 
             if (_installedPackage != null)
@@ -532,7 +515,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 case "Module":
                     //In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                     //To ensure that FolderName is DesktopModules...
-                    var folderNameValue = getSpecificFolderName(manifestNav, "components/component/files", "basePath", "DesktopModules");
+                    var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                     if (!String.IsNullOrEmpty(folderNameValue)) Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
                 case "Auth_System":
@@ -562,6 +545,10 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (iconFileNav.Value.StartsWith("~/"))
                     {
                         Package.IconFile = iconFileNav.Value;
+                    }
+                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
                     }
                     else
                     {

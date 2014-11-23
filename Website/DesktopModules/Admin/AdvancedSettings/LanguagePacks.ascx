@@ -32,11 +32,12 @@
                             <asp:Label ID="lblVersion" runat="server" Text='<%# FormatVersion(Container.DataItem) %>' />
                         </ItemTemplate>
                     </asp:TemplateColumn>
-                    <asp:TemplateColumn headerStyle-width="75px">
+                    <asp:TemplateColumn headerStyle-width="160px">
                         <ItemStyle HorizontalAlign="Center"/>
                         <ItemTemplate>
                             <asp:HyperLink id="cmdInstall"  runat="server" CssClass="dnnSecondaryAction installAction" ResourceKey="installExtension" />
-                            <asp:LinkButton runat="server" OnClick="downloadlanguage" ID="downloadLanguage" CssClass="dnnSecondaryAction installAction" Text="Deploy" Visible="False"></asp:LinkButton>
+                            <asp:LinkButton runat="server" OnClick="DeployLanguage" ID="downloadLanguage" CssClass="dnnSecondaryAction installAction" Text="Deploy" Visible="False"></asp:LinkButton>
+                            <asp:LinkButton id="cmdDownload"  runat="server" CssClass="dnnSecondaryAction" ResourceKey="Download" OnClick="DownloadLanguage" />
                         </ItemTemplate>
                     </asp:TemplateColumn>
                 </Columns>

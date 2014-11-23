@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-
+using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -64,7 +64,8 @@ namespace DotNetNuke.Entities.Users
         private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
-        private IDictionary<int, UserSocial> _social;
+        //private IDictionary<int, UserSocial> _social;
+        private readonly SharedDictionary<int, UserSocial> _social = new SharedDictionary<int, UserSocial>();
 
         #endregion
 
@@ -279,17 +280,23 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-				if (_social == null)
-				{
-					_social = new Dictionary<int, UserSocial>();
-				}
+                UserSocial userSocial;
+                var exists = false;
+                using (_social.GetReadLock())
+                {
+                    exists = _social.TryGetValue(PortalID, out userSocial);
+                }
 
-				if (!_social.ContainsKey(PortalID))
-				{
-					_social.Add(PortalID, new UserSocial(this));
-				}
+                if (!exists)
+                {
+                    using (_social.GetWriteLock())
+                    {
+                        userSocial = new UserSocial(this);
+                        _social.Add(PortalID, userSocial);
+                    }
+                }
 
-                return _social[PortalID];
+                return userSocial;
             }
         }
 
@@ -474,7 +481,7 @@ namespace DotNetNuke.Entities.Users
             }
             if (String.IsNullOrEmpty(_administratorRoleName))
             {
-                PortalInfo ps = new PortalController().GetPortal(accessingUser.PortalID);
+                PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
                 _administratorRoleName = ps.AdministratorRoleName;
             }
             return accessingUser.IsInRole(_administratorRoleName) || accessingUser.IsSuperUser;
@@ -496,7 +503,13 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
-            if (IsSuperUser || role == Globals.glbRoleAllUsersName)
+            //super users should always be verified.
+            if (IsSuperUser)
+            {
+                return role != "Unverified Users";
+            }
+
+            if (role == Globals.glbRoleAllUsersName)
             {
                 return true;
             }
@@ -543,7 +556,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, Profile.PreferredTimeZone);
             }
-            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.GetCurrentPortalSettings().TimeZone);
+            return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
 
         /// -----------------------------------------------------------------------------

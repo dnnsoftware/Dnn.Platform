@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,12 +21,14 @@
 #region Usings
 
 using System;
+using System.IO;
 using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
@@ -87,7 +89,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", "").Replace("/install", "").Replace("/runinstall", "");
             }
 
-            var portalController = new PortalController();
             var serverPath = Globals.ApplicationMapPath + "\\";
 
             //Get the Portal Alias
@@ -95,7 +96,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.PortAliases.Count > 0) portalAlias = portal.PortAliases[0];
 
             //Verify that portal alias is not present
-            if (PortalAliasController.GetPortalAliasLookup(portalAlias.ToLower()) != null)
+            if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLower()) != null)
             {
                 string description = Localization.Localization.GetString("SkipCreatingSite", LocalInstallResourceFile);
                 Details = string.Format(description, portalAlias);
@@ -134,8 +135,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.IsChild)
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
             
+            //Create Folder Mappings config
+            if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+            {
+                FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
+            }
             //Create Portal
-            var portalId = portalController.CreatePortal(portal.PortalName,
+            var portalId = PortalController.Instance.CreatePortal(portal.PortalName,
                                                      userInfo,
                                                      portal.Description,
                                                      portal.Keywords,
@@ -150,7 +156,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 foreach (var alias in portal.PortAliases)
                 {
-                    portalController.AddPortalAlias(portalId, alias);
+                    PortalController.Instance.AddPortalAlias(portalId, alias);
                 }
             }
 
@@ -167,6 +173,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             InstallController.Instance.RemoveFromInstallConfig("//dotnetnuke/superuser/password");
         }
+
+        //private void CreateFolderMappingConfig(string folderMappinsSettings)
+        //{
+        //    string folderMappingsConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
+        //    if (!File.Exists(folderMappingsConfigPath))
+        //    {
+        //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
+        //    }
+        //}
 
         #endregion
 

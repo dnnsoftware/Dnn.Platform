@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Controllers;
 namespace DotNetNuke.Entities.Host
 {
     [Obsolete("Replaced in DotNetNuke 5.0 by Host class because of Namespace clashes with Obsolete Globals.HostSetting Property")]
+    [Serializable]
     public class HostSettings : BaseEntityInfo
     {
         public static string GetHostSetting(string key)

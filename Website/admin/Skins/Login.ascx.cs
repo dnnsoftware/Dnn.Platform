@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -159,10 +159,18 @@ namespace DotNetNuke.UI.Skins.Controls
 				        loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
 				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
 
+                        //avoid issues caused by multiple clicks of login link
+                        var oneclick = "this.disabled=true;";
+			            if (Request.UserAgent != null && Request.UserAgent.Contains("MSIE 8.0")==false)
+			            {
+                            loginLink.Attributes.Add("onclick", oneclick);
+                            enhancedLoginLink.Attributes.Add("onclick", oneclick);
+			            }
+                        
 				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !HasSocialAuthenticationEnabled())
 				        {
 					        //To avoid duplicated encodes of URL
-					        var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
+                            var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
 					        loginLink.Attributes.Add("onclick", clickEvent);
 					        enhancedLoginLink.Attributes.Add("onclick", clickEvent);
 				        }

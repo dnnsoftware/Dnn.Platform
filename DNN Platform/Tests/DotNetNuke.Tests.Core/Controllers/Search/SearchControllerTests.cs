@@ -1,7 +1,7 @@
-﻿#region Copyright
+﻿ #region Copyright
 //
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -30,7 +30,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Controllers;
@@ -54,12 +53,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     {
 
         #region Constants
-        private const int ModuleSearchTypeId = 1;
-        private const int TabSearchTypeId = 2;
-        private const int DocumentSearchTypeId = 3;
-        private const int UrlSearchTypeId = 4;
-        private const int OtherSearchTypeId = 5;
-        private const int UnknownSearchTypeId = 6;
+
+        public enum SearchTypeIds
+        {
+            ModuleSearchTypeId = 1,
+            TabSearchTypeId,
+            DocumentSearchTypeId,
+            UrlSearchTypeId,
+            OtherSearchTypeId,
+            UnknownSearchTypeId
+        }
+
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+        private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
+        private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
+        private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
         private const int PortalId0 = 0;
         private const int PortalId12 = 12;
         private const int IdeasModuleDefId = 201;
@@ -122,6 +132,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string Line3 = "the quick fox jumps over the black dog";
         private const string Line4 = "the red fox jumped over the lazy dark gray dog";
 
+        private const int CustomBoost = 80;
+
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         #endregion
@@ -163,13 +175,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SetupLocaleController();
 
             _mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-            TestableUserController.SetTestableInstance(_mockUserController.Object);
+            UserController.SetTestableInstance(_mockUserController.Object);
 
-            DeleteIndexFolder();
-            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
 
-            _internalSearchController = InternalSearchController.Instance;
-            _searchController = new SearchControllerImpl();
             CreateNewLuceneControllerInstance();
         }
 
@@ -178,21 +186,35 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             _luceneController.Dispose();
             DeleteIndexFolder();
+            InternalSearchController.ClearInstance();
+            UserController.ClearInstance();
+            SearchHelper.ClearInstance();
+	        LuceneController.ClearInstance();
+	        _luceneController = null;
         }
 
         #endregion
 
         #region Private Methods
 
-        private void CreateNewLuceneControllerInstance()
+        private void CreateNewLuceneControllerInstance(bool reCreate = false)
         {
-            if (_luceneController != null)
+            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
+            _internalSearchController = InternalSearchController.Instance;
+            _searchController = new SearchControllerImpl();
+
+            if (!reCreate)
             {
-                LuceneController.ClearInstance();
-                _luceneController.Dispose();
+                DeleteIndexFolder();
+
+                if (_luceneController != null)
+                {
+                    LuceneController.ClearInstance();
+                    _luceneController.Dispose();
+                }
+                _luceneController = new LuceneControllerImpl();
+                LuceneController.SetTestableInstance(_luceneController);
             }
-            _luceneController = new LuceneControllerImpl();
-            LuceneController.SetTestableInstance(_luceneController);
         }
 
         private void SetupHostController()
@@ -211,7 +233,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupLocaleController()
         {
-            _mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = Null.NullInteger, Code = string.Empty });
+            _mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
             _mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
             _mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
             _mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
@@ -244,14 +266,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IDataReader GetPortalCallBack(int portalId, string culture)
         {
-            DataTable table = new DataTable("Portal");
+            var table = new DataTable("Portal");
 
-            var cols = new string[]
+            var cols = new[]
 			           	{
 			           		"PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
 			           		"HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
 			           		"ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-			           		"UserTabId", "SearchTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+			           		"UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
 			           	};
 
             foreach (var col in cols)
@@ -259,8 +281,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 table.Columns.Add(col);
             }
 
-            var homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null, "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0", null, homePage.ToString(), null, null, "57", "56", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
+                    "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
+                    "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@change.me", "en-US", "-8", "58", "Portals/0",
+                    null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
 
             return table.CreateDataReader();
         }
@@ -269,17 +294,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             _mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
             _mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(GetSynonymsCallBack);
-            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>()))
-                              .Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
+            _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
             _mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(GetSearchTypeByNameCallback);
             _mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(GetSearchTypes());
-            /*_mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEnUs,
-                    StopWords = "the,over",
-                });*/
             _mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
                 new SearchStopWords
                 {
@@ -384,10 +401,34 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument> {
-                new SearchDocument { Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
-                new SearchDocument { Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
-                new SearchDocument { Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
-                new SearchDocument { Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
+            };
+
+            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
+            var i = 0;
+
+            foreach (var searchDocument in searchDocs)
+            {
+                searchDocument.SearchTypeId = searchTypeId;
+                searchDocument.UniqueKey = Guid.NewGuid().ToString();
+                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
+                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
+                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
+            }
+
+            return searchDocs;
+        }
+
+        private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var searchDocs = new List<SearchDocument> {
+                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = {{"title", "Hello"}}, Body = "Hello1 World"},
+                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = {{"subject", "Hello"}}, Body = "Hello2 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = {{"comments", "Hello"}}, Body = "Hello3 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = {{"authorname", "Hello"}}, Body = "Hello4 World" },
             };
 
             var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
@@ -412,6 +453,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var docs = GetStandardSearchDocs(searchTypeId).ToArray();
+            _internalSearchController.AddSearchDocuments(docs);
+            return docs.Length;
+        }
+
+        private int AddSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var docs = GetSearchDocsForCustomBoost(searchTypeId).ToArray();
             _internalSearchController.AddSearchDocuments(docs);
             return docs.Length;
         }
@@ -959,12 +1007,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
 
             var result = _searchController.SiteSearch(query);
-            var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
+            var ids = result.Results.Select(doc => doc.AuthorUserId).Skip(1).ToArray();
 
             //Assert
-            Assert.AreEqual(30, result.TotalHits);
+            Assert.AreEqual(maxDocs, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
-            Assert.AreEqual(Enumerable.Range(0, 10).ToArray(), ids);
+            Assert.AreEqual(Enumerable.Range(1, 9).ToArray(), ids);
         }
 
         [Test]
@@ -1093,7 +1141,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(maxDocs - 18, result.TotalHits);
-            Assert.AreEqual(4, result.Results.Count);
+            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 26, 27, 28, 29 }, ids);
         }
 
@@ -1171,7 +1219,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(maxDocs - 10 * 6, result.TotalHits);
-            Assert.AreEqual(8, result.Results.Count);
+            Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
             Assert.AreEqual(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }, ids);
         }
 
@@ -1245,6 +1293,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var modifiedDateTime = DateTime.UtcNow;
             var doc = new SearchDocument
             {
+                PortalId = PortalId0,
                 Title = "Title",
                 UniqueKey = "key",
                 SearchTypeId = OtherSearchTypeId,
@@ -1256,7 +1305,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert -
             Assert.AreEqual(1, search.Results.Count);
-            Assert.AreEqual(0, search.Results[0].PortalId);
+            Assert.AreEqual(PortalId0, search.Results[0].PortalId);
             Assert.AreEqual(0, search.Results[0].TabId);
             Assert.AreEqual(0, search.Results[0].ModuleDefId);
             Assert.AreEqual(0, search.Results[0].ModuleId);
@@ -1264,7 +1313,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(null, search.Results[0].Description);
             Assert.AreEqual(null, search.Results[0].Body);
             Assert.AreEqual(0, search.Results[0].AuthorUserId);
-            Assert.AreEqual(0, search.Results[0].RoleId);
+            Assert.AreEqual(-1, search.Results[0].RoleId);
             Assert.AreEqual(modifiedDateTime.ToString(Constants.DateTimeFormat), search.Results[0].ModifiedTimeUtc.ToString(Constants.DateTimeFormat));
             Assert.AreEqual(null, search.Results[0].Permissions);
             Assert.AreEqual(null, search.Results[0].QueryString);
@@ -1888,6 +1937,95 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Assert
             Assert.AreEqual(added, search.Results.Count);
             Assert.AreEqual(true, search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndTitleKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+            CreateNewLuceneControllerInstance(true);
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello1"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndSubjectKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello2"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndCommentKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello3"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndAuthorKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello4"));
         }
 
         [Test]

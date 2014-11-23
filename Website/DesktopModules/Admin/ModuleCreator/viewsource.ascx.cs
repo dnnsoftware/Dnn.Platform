@@ -66,6 +66,14 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        private string ReturnURL
+        {
+            get
+            {
+                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? Globals.NavigateURL();
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -322,8 +330,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private string CreateModuleControl()
         {
-            EventLogController objEventLog = new EventLogController();
-
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
@@ -332,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var moduleTemplatePath = Server.MapPath(ModulePath) + "Templates\\" + optLanguage.SelectedValue + "\\" + cboTemplate.SelectedValue + "\\";
 
 
-            objEventLog.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+            EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
 
             var controlName = Null.NullString;
@@ -352,14 +358,20 @@ namespace DotNetNuke.Modules.Admin.Modules
                 tr.Close();
 
                 //replace tokens
-                sourceCode = sourceCode.Replace("[OWNER]", objPackage.Owner.Replace(" ", ""));
-                sourceCode = sourceCode.Replace("[MODULE]", objDesktopModule.FriendlyName.Replace(" ", ""));
-                sourceCode = sourceCode.Replace("[CONTROL]", GetControl());
-                sourceCode = sourceCode.Replace("[YEAR]", DateTime.Now.Year.ToString());
+                var owner = objPackage.Owner.Replace(" ", "");
+                if (string.IsNullOrEmpty(owner))
+                {
+                    owner = "DNN";
+                }
+                sourceCode = sourceCode.Replace("_OWNER_", owner);
+                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("_CONTROL_", GetControl());
+                sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
                 {
@@ -406,7 +418,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     tw.WriteLine(sourceCode);
                     tw.Close();
 
-                    objEventLog.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
+                    EventLogController.Instance.AddLog("Created File", modulePath + fileName, PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
                 }
             }
@@ -467,8 +479,8 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (Page.IsPostBack == false)
             {
-                cmdCancel1.NavigateUrl = Globals.NavigateURL();
-                cmdCancel2.NavigateUrl = Globals.NavigateURL();
+                cmdCancel1.NavigateUrl = ReturnURL;
+                cmdCancel2.NavigateUrl = ReturnURL;
 
                 var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
                 if (objModuleControl != null)
@@ -522,8 +534,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
-            ModuleController objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "PackageWriter", "rtab=" + TabId.ToString(), "packageId=" + objDesktopModule.PackageID.ToString(), "mid=" + objModule.ModuleID.ToString()) + "?popUp=true", true);
         }
 
@@ -532,8 +543,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var objModuleControl = ModuleControlController.GetModuleControl(ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
-            ModuleController objModules = new ModuleController();
-            ModuleInfo objModule = objModules.GetModuleByDefinition(-1, "Extensions");
+            ModuleInfo objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
             Response.Redirect(Globals.NavigateURL(objModule.TabID, "Edit", "mid=" + objModule.ModuleID.ToString(), "PackageID=" + objDesktopModule.PackageID.ToString()) + "?popUp=true", true);
         }
 

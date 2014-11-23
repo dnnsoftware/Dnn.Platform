@@ -441,4 +441,10 @@
   <data name="Search.Text" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="lblRedirect.Text" xml:space="preserve">
+    <value>Page redirection</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Page Management</value>
+  </data>
 </root>

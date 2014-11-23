@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
@@ -34,6 +35,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
@@ -56,23 +58,12 @@ namespace DotNetNuke.Common
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CacheMappedDirectory caches the Portal Mapped Directory(s)
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Caching Module
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void CacheMappedDirectory()
         {
             //This code is only retained for binary compatability.
 #pragma warning disable 612,618
             var objFolderController = new FolderController();
-            var objPortalController = new PortalController();
-            ArrayList arrPortals = objPortalController.GetPortals();
+            ArrayList arrPortals = PortalController.Instance.GetPortals();
             int i;
             for (i = 0; i <= arrPortals.Count - 1; i++)
             {
@@ -82,16 +73,6 @@ namespace DotNetNuke.Common
 #pragma warning restore 612,618
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CheckVersion determines whether the App is synchronized with the DB
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    2/17/2005   created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string CheckVersion(HttpApplication app)
         {
             HttpServerUtility Server = app.Server;
@@ -176,59 +157,9 @@ namespace DotNetNuke.Common
             }
         }
 
-        private static string InitializeApp(HttpApplication app, ref bool initialized)
+        private static Version GetDatabaseEngineVersion()
         {
-            var request = app.Request;
-            var redirect = Null.NullString;
-
-            Logger.Trace("Request " + request.Url.LocalPath);
-
-            //Don't process some of the AppStart methods if we are installing
-            if (!IsUpgradeOrInstallRequest(app.Request))
-            {
-                //Check whether the current App Version is the same as the DB Version
-                redirect = CheckVersion(app);
-                if (string.IsNullOrEmpty(redirect))
-                {
-                    Logger.Info("Application Initializing");
-
-                    //Cache Mapped Directory(s)
-                    CacheMappedDirectory();
-                    //Set globals
-                    Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
-                    Globals.OperatingSystemVersion = Environment.OSVersion.Version;
-                    Globals.NETFrameworkVersion = GetNETFrameworkVersion();
-                    Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
-                    //Try and Upgrade to Current Framewok
-                    Upgrade.TryUpgradeNETFramework();
-
-                    //Start Scheduler
-                    StartScheduler();
-                    //Log Application Start
-                    LogStart();
-                    //Process any messages in the EventQueue for the Application_Start event
-                    EventQueueController.ProcessMessages("Application_Start");
-
-                    ServicesRoutingManager.RegisterServiceRoutes();
-
-                    ModuleInjectionManager.RegisterInjectionFilters();
-
-                    //Set Flag so we can determine the first Page Request after Application Start
-                    app.Context.Items.Add("FirstRequest", true);
-
-                    //Log Server information
-                    ServerController.UpdateServerActivity(new ServerInfo());
-                    Logger.Info("Application Initialized");
-
-                    initialized = true;
-                }
-            }
-            else
-            {
-                //NET Framework version is neeed by Upgrade
-                Globals.NETFrameworkVersion = GetNETFrameworkVersion();
-            }
-            return redirect;
+            return DataProvider.Instance().GetDatabaseEngineVersion();
         }
 
         private static Version GetNETFrameworkVersion()
@@ -260,15 +191,76 @@ namespace DotNetNuke.Common
             return new Version(version);
         }
 
-        private static Version GetDatabaseEngineVersion()
+        private static string InitializeApp(HttpApplication app, ref bool initialized)
         {
-            return DataProvider.Instance().GetDatabaseEngineVersion();
+            var request = app.Request;
+            var redirect = Null.NullString;
+
+            Logger.Trace("Request " + request.Url.LocalPath);
+
+            //Don't process some of the AppStart methods if we are installing
+            if (!IsUpgradeOrInstallRequest(app.Request))
+            {
+                //Check whether the current App Version is the same as the DB Version
+                redirect = CheckVersion(app);
+                if (string.IsNullOrEmpty(redirect))
+                {
+                    Logger.Info("Application Initializing");
+
+                    //Cache Mapped Directory(s)
+                    CacheMappedDirectory();
+                    //Set globals
+                    Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
+                    Globals.OperatingSystemVersion = Environment.OSVersion.Version;
+                    Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+                    Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
+                    //Try and Upgrade to Current Framewok
+                    Upgrade.TryUpgradeNETFramework();
+
+                    //Log Server information
+                    ServerController.UpdateServerActivity(new ServerInfo());
+                    //Start Scheduler
+                    StartScheduler();
+                    //Log Application Start
+                    LogStart();
+                    //Process any messages in the EventQueue for the Application_Start event
+                    EventQueueController.ProcessMessages("Application_Start");
+
+                    ServicesRoutingManager.RegisterServiceRoutes();
+
+                    ModuleInjectionManager.RegisterInjectionFilters();
+
+                    //Set Flag so we can determine the first Page Request after Application Start
+                    app.Context.Items.Add("FirstRequest", true);
+
+                    Logger.Info("Application Initialized");
+
+                    initialized = true;
+                }
+            }
+            else
+            {
+                //NET Framework version is neeed by Upgrade
+                Globals.NETFrameworkVersion = GetNETFrameworkVersion();
+            }
+            return redirect;
         }
 
+        private static bool IsUpgradeOrInstallRequest(HttpRequest request)
+        {
+            var url = request.Url.LocalPath.ToLower();
+
+            return url.EndsWith("/install.aspx")
+                || url.Contains("/upgradewizard.aspx")
+                || url.Contains("/installwizard.aspx");
+        }
+
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Inits the app.
         /// </summary>
         /// <param name="app">The app.</param>
+        /// -----------------------------------------------------------------------------
         public static void Init(HttpApplication app)
         {
             string redirect;
@@ -297,30 +289,21 @@ namespace DotNetNuke.Common
         /// <summary>
         /// LogStart logs the Application Start Event
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Logging Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LogStart()
         {
-            var objEv = new EventLogController();
-            var objEventLogInfo = new LogInfo();
-            objEventLogInfo.BypassBuffering = true;
-            objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString();
-            objEv.AddLog(objEventLogInfo);
+            var log = new LogInfo
+            {
+                BypassBuffering = true,
+                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString()
+            };
+            LogController.Instance.AddLog(log);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LogEnd logs the Application Start Event
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/28/2005   Moved back to App_End from Logging Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LogEnd()
         {
@@ -376,12 +359,13 @@ namespace DotNetNuke.Common
                         shutdownDetail = "No shutdown reason provided.";
                         break;
                 }
-                var objEv = new EventLogController();
-                var objEventLogInfo = new LogInfo();
-                objEventLogInfo.BypassBuffering = true;
-                objEventLogInfo.LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString();
-                objEventLogInfo.AddProperty("Shutdown Details", shutdownDetail);
-                objEv.AddLog(objEventLogInfo);
+                var log = new LogInfo
+                {
+                    BypassBuffering = true,
+                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString()
+                };
+                log.AddProperty("Shutdown Details", shutdownDetail);
+                LogController.Instance.AddLog(log);
 
                 Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
             }
@@ -396,13 +380,43 @@ namespace DotNetNuke.Common
             }
         }
 
-        private static bool IsUpgradeOrInstallRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLower();
 
-            return url.EndsWith("/install.aspx")
-                || url.Contains("/upgradewizard.aspx")
-                || url.Contains("/installwizard.aspx");
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Tests whether this request should be processed in an HttpModule
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
+        {
+            // ReSharper disable ReplaceWithSingleAssignment.True
+            bool canProcess = true;
+
+            if (request.Url.LocalPath.ToLower().EndsWith("install.aspx")
+                    || request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
+                    || request.Url.LocalPath.ToLower().Contains("installwizard.aspx")
+                    || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
+                    || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
+                    || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            {
+                canProcess = false;
+            }
+            // ReSharper restore ReplaceWithSingleAssignment.True
+
+            if (allowUnknownExtensions == false
+                    && request.Url.LocalPath.ToLower().EndsWith(".aspx") == false
+                    && request.Url.LocalPath.ToLower().EndsWith(".asmx") == false
+                    && request.Url.LocalPath.ToLower().EndsWith(".ashx") == false
+                    && request.Url.LocalPath.ToLower().EndsWith(".svc") == false)
+            {
+                canProcess = false;
+            }
+
+            if (checkOmitFromRewriteProcessing && RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath))
+            {
+                canProcess = false;
+            }
+
+            return canProcess;
         }
 
         public static void RunSchedule(HttpRequest request)
@@ -429,45 +443,40 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// StartScheduler starts the Scheduler
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public static void StartScheduler()
+        {
+            var scheduler = SchedulingProvider.Instance();
+            scheduler.RunEventSchedule(EventName.APPLICATION_START);
+
+            //instantiate APPLICATION_START scheduled jobs
+            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+            {
+                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                var newThread = new Thread(scheduler.Start)
+                {
+                    IsBackground = true,
+                    Name = "Scheduler Thread"
+                };
+                newThread.Start();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// StopScheduler stops the Scheduler
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/28/2005   Moved back to App_End from Scheduling Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void StopScheduler()
         {
             //stop scheduled jobs
             SchedulingProvider.Instance().Halt("Stopped by Application_End");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// StartScheduler starts the Scheduler
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Scheduling Module
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public static void StartScheduler()
-        {
-            //instantiate APPLICATION_START scheduled jobs
-            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
-            {
-                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
-                var scheduler = SchedulingProvider.Instance();
-                scheduler.RunEventSchedule(EventName.APPLICATION_START);
-                var newThread = new Thread(scheduler.Start)
-                    {
-                        IsBackground = true,
-                        Name = "Scheduler Thread"
-                    };
-                newThread.Start();
-            }
         }
     }
 }

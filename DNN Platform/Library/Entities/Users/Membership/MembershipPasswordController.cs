@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -143,8 +143,8 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>true if value matches (so has not been used before) and is within expiration window</returns>
         public bool IsValidToken(int userId, Guid resetToken)
         {
-            if (UserController.GetCurrentUserInfo().PasswordResetToken == resetToken &&
-                UserController.GetCurrentUserInfo().PasswordResetExpiration <= DateTime.Now)
+            if (UserController.Instance.GetCurrentUserInfo().PasswordResetToken == resetToken &&
+                UserController.Instance.GetCurrentUserInfo().PasswordResetExpiration <= DateTime.Now)
             {
                 return true;
             }
@@ -162,7 +162,7 @@ namespace DotNetNuke.Entities.Users.Membership
             const string listName = "BannedPasswords";
 
             var listController = new ListController();
-            PortalSettings settings = PortalController.GetCurrentPortalSettings();
+            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
             IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, "",
                 Null.NullInteger);

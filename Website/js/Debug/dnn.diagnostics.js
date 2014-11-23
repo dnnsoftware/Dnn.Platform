@@ -9,7 +9,7 @@ dnn.extend(dnn.diagnostics, {
 	ns: 'diagnostics',
 	parserName: null,
 	debugCtl: null,
-	debugWait: (document.all != null),
+	debugWait: (document.getElementById != null),
 	debugArray: [],
 
     clearDebug: function()

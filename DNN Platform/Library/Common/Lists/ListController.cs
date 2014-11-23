@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -40,14 +40,25 @@ namespace DotNetNuke.Common.Lists
 {
     public class ListController
     {
-        private void ClearCache(int PortalId)
+
+        public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+
+        #region Private Methods
+
+        private void ClearListCache(int portalId)
         {
-            DataCache.ClearListsCache(PortalId);
+            DataCache.ClearListsCache(portalId);
+        }
+
+        private void ClearEntriesCache(string listName, int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            DataCache.RemoveCache(cacheKey);
         }
 
         private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
         {
-            ListInfo objListInfo = null;
+            ListInfo list = null;
             // read datareader
             bool canContinue = true;
             if (CheckForOpenDataReader)
@@ -60,21 +71,21 @@ namespace DotNetNuke.Common.Lists
             }
             if (canContinue)
             {
-                objListInfo = new ListInfo(Convert.ToString(dr["ListName"]));
+                list = new ListInfo(Convert.ToString(dr["ListName"]));
                 {
-                    objListInfo.Level = Convert.ToInt32(dr["Level"]);
-                    objListInfo.PortalID = Convert.ToInt32(dr["PortalID"]);
-                    objListInfo.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
-                    objListInfo.EntryCount = Convert.ToInt32(dr["EntryCount"]);
-                    objListInfo.ParentID = Convert.ToInt32(dr["ParentID"]);
-                    objListInfo.ParentKey = Convert.ToString(dr["ParentKey"]);
-                    objListInfo.Parent = Convert.ToString(dr["Parent"]);
-                    objListInfo.ParentList = Convert.ToString(dr["ParentList"]);
-                    objListInfo.EnableSortOrder = (Convert.ToInt32(dr["MaxSortOrder"]) > 0);
-                    objListInfo.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
+                    list.Level = Convert.ToInt32(dr["Level"]);
+                    list.PortalID = Convert.ToInt32(dr["PortalID"]);
+                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
+                    list.EntryCount = Convert.ToInt32(dr["EntryCount"]);
+                    list.ParentID = Convert.ToInt32(dr["ParentID"]);
+                    list.ParentKey = Convert.ToString(dr["ParentKey"]);
+                    list.Parent = Convert.ToString(dr["Parent"]);
+                    list.ParentList = Convert.ToString(dr["ParentList"]);
+                    list.EnableSortOrder = (Convert.ToInt32(dr["MaxSortOrder"]) > 0);
+                    list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
                 }
             }
-            return objListInfo;
+            return list;
         }
 
         private Dictionary<string, ListInfo> FillListInfoDictionary(IDataReader dr)
@@ -82,14 +93,13 @@ namespace DotNetNuke.Common.Lists
             var dic = new Dictionary<string, ListInfo>();
             try
             {
-                ListInfo obj;
                 while (dr.Read())
-				{
+                {
                     // fill business object
-                    obj = FillListInfo(dr, false);
-                    if (!dic.ContainsKey(obj.Key))
+                    ListInfo list = FillListInfo(dr, false);
+                    if (!dic.ContainsKey(list.Key))
                     {
-                        dic.Add(obj.Key, obj);
+                        dic.Add(list.Key, list);
                     }
                 }
             }
@@ -98,64 +108,91 @@ namespace DotNetNuke.Common.Lists
                 Exceptions.LogException(exc);
             }
             finally
-			{
+            {
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return dic;
         }
 
-        private object GetListInfoDictionaryCallBack(CacheItemArgs cacheItemArgs)
+        private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
-            var portalId = (int) cacheItemArgs.ParamList[0];
-            return FillListInfoDictionary(DataProvider.Instance().GetLists(portalId));
+            string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey,
+                                                                        DataCache.ListsCacheTimeOut,
+                                                                        DataCache.ListsCachePriority),
+                                                                c => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
 
-        private Dictionary<string, ListInfo> GetListInfoDictionary(int PortalId)
+        private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListsCacheKey, PortalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey, DataCache.ListsCacheTimeOut, DataCache.ListsCachePriority, PortalId), GetListInfoDictionaryCallBack);
+
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(new CacheItemArgs(cacheKey,
+                                                                        DataCache.ListsCacheTimeOut,
+                                                                        DataCache.ListsCachePriority),
+                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, String.Empty, portalId)));
         }
 
-        public int AddListEntry(ListEntryInfo ListEntry)
+        #endregion
+
+        /// <summary>
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be 
+        /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
+        /// </summary>
+        /// <param name="listEntry">The list entry.</param>
+        /// <returns></returns>
+        public int AddListEntry(ListEntryInfo listEntry)
         {
-            bool EnableSortOrder = (ListEntry.SortOrder > 0);
-            ClearCache(ListEntry.PortalID);
-            int entryId = DataProvider.Instance().AddListEntry(ListEntry.ListName,
-                                                        ListEntry.Value,
-                                                        ListEntry.Text,
-                                                        ListEntry.ParentID,
-                                                        ListEntry.Level,
+            bool EnableSortOrder = (listEntry.SortOrder > 0);
+            ClearListCache(listEntry.PortalID);
+            int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
+                                                        listEntry.Value,
+                                                        listEntry.TextNonLocalized,
+                                                        listEntry.ParentID,
+                                                        listEntry.Level,
                                                         EnableSortOrder,
-                                                        ListEntry.DefinitionID,
-                                                        ListEntry.Description,
-                                                        ListEntry.PortalID,
-                                                        ListEntry.SystemList,
-                                                        UserController.GetCurrentUserInfo().UserID);
+                                                        listEntry.DefinitionID,
+                                                        listEntry.Description,
+                                                        listEntry.PortalID,
+                                                        listEntry.SystemList,
+                                                        UserController.Instance.GetCurrentUserInfo().UserID);
 
             if (entryId != Null.NullInteger)
             {
-                var objEventLog = new EventLogController();
-                objEventLog.AddLog(ListEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
+                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
-
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name != DotNetNuke.Services.Localization.Localization.SystemLocale && !NonLocalizedLists.Contains(listEntry.ListName))
+            {
+				if (string.IsNullOrEmpty(listEntry.ParentKey))
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+				else
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+            }
+            ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
 
-        public void DeleteList(string ListName, string ParentKey)
+        public void DeleteList(string listName, string parentKey)
         {
-            DeleteList(ListName, ParentKey, Null.NullInteger);
+            DeleteList(listName, parentKey, Null.NullInteger);
         }
 
-		public void DeleteList(string ListName, string ParentKey, int portalId)
-		{
-			ListInfo list = GetListInfo(ListName, ParentKey, portalId);
-			var objEventLog = new EventLogController();
-			objEventLog.AddLog("ListName", ListName, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
-			DataProvider.Instance().DeleteList(ListName, ParentKey);
-			if (list != null)
-				ClearCache(list.PortalID);
-		}
+        public void DeleteList(string listName, string parentKey, int portalId)
+        {
+            ListInfo list = GetListInfo(listName, parentKey, portalId);
+            EventLogController.Instance.AddLog("ListName", listName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
+            DataProvider.Instance().DeleteList(listName, parentKey);
+            if (list != null)
+            {
+                ClearListCache(list.PortalID);
+                ClearEntriesCache(list.Name, list.PortalID);
+            }
+        }
 
         public void DeleteList(ListInfo list, bool includeChildren)
         {
@@ -180,47 +217,54 @@ namespace DotNetNuke.Common.Lists
             //Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
-				DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
+                DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
             }
         }
 
-        public void DeleteListEntryByID(int EntryID, bool DeleteChild)
+        public void DeleteListEntryByID(int entryId, bool deleteChild)
         {
-            ListEntryInfo entry = GetListEntryInfo(EntryID);
-            DataProvider.Instance().DeleteListEntryByID(EntryID, DeleteChild);
-            ClearCache(entry.PortalID);
+            ListEntryInfo entry = GetListEntryInfo(entryId);
+            DataProvider.Instance().DeleteListEntryByID(entryId, deleteChild);
+            ClearListCache(entry.PortalID);
+            ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
-        public void DeleteListEntryByListName(string ListName, string Value, bool DeleteChild)
+        public void DeleteListEntryByListName(string listName, string listValue, bool deleteChild)
         {
-            ListEntryInfo entry = GetListEntryInfo(ListName, Value);
-            DataProvider.Instance().DeleteListEntryByListName(ListName, Value, DeleteChild);
-            ClearCache(entry.PortalID);
+            ListEntryInfo entry = GetListEntryInfo(listName, listValue);
+            DataProvider.Instance().DeleteListEntryByListName(listName, listValue, deleteChild);
+            ClearListCache(entry.PortalID);
+            ClearEntriesCache(listName, entry.PortalID);
         }
 
-        public ListEntryInfo GetListEntryInfo(int EntryID)
+        public ListEntryInfo GetListEntryInfo(int entryId)
         {
-            return (ListEntryInfo) CBO.FillObject(DataProvider.Instance().GetListEntry(EntryID), typeof (ListEntryInfo));
+            return CBO.FillObject<ListEntryInfo>(DataProvider.Instance().GetListEntry(entryId));
         }
 
-        public ListEntryInfo GetListEntryInfo(string ListName, string Value)
+        public ListEntryInfo GetListEntryInfo(string listName, int entryId)
         {
-            return (ListEntryInfo) CBO.FillObject(DataProvider.Instance().GetListEntry(ListName, Value), typeof (ListEntryInfo));
+            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.EntryID == entryId);
+        }
+
+        public ListEntryInfo GetListEntryInfo(string listName, string listValue)
+        {
+            return GetListEntries(listName, Null.NullInteger).SingleOrDefault(l => l.Value == listValue);
         }
 
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName)
         {
-            return GetListEntryInfoItems(listName, "", Null.NullInteger);
+            return GetListEntries(listName, Null.NullInteger);
         }
 
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey)
         {
-            return GetListEntryInfoItems(listName, parentKey, Null.NullInteger);
+            return GetListEntries(listName, Null.NullInteger).Where(l => l.ParentKey == parentKey);
         }
 
         public IEnumerable<ListEntryInfo> GetListEntryInfoItems(string listName, string parentKey, int portalId)
         {
-            return CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, parentKey, portalId));
+            return GetListEntries(listName, portalId).Where(l => l.ParentKey == parentKey);
         }
 
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
@@ -237,7 +281,7 @@ namespace DotNetNuke.Common.Lists
         {
             return ListEntryInfoItemsToDictionary(GetListEntryInfoItems(listName, parentKey, portalId));
         }
-        
+
         private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
         {
             var dict = new Dictionary<string, ListEntryInfo>();
@@ -246,29 +290,29 @@ namespace DotNetNuke.Common.Lists
             return dict;
         }
 
-        public ListInfo GetListInfo(string ListName)
+        public ListInfo GetListInfo(string listName)
         {
-            return GetListInfo(ListName, "");
+            return GetListInfo(listName, "");
         }
 
-        public ListInfo GetListInfo(string ListName, string ParentKey)
+        public ListInfo GetListInfo(string listName, string parentKey)
         {
-            return GetListInfo(ListName, ParentKey, -1);
+            return GetListInfo(listName, parentKey, -1);
         }
 
-        public ListInfo GetListInfo(string ListName, string ParentKey, int PortalID)
+        public ListInfo GetListInfo(string listName, string parentKey, int portalId)
         {
             ListInfo list = null;
             string key = Null.NullString;
-            if (!string.IsNullOrEmpty(ParentKey))
+            if (!string.IsNullOrEmpty(parentKey))
             {
-                key = ParentKey + ":";
+                key = parentKey + ":";
             }
-            key += ListName;
-            Dictionary<string, ListInfo> dicLists = GetListInfoDictionary(PortalID);
+            key += listName;
+            Dictionary<string, ListInfo> dicLists = GetListInfoDictionary(portalId);
             if (!dicLists.TryGetValue(key, out list))
             {
-                IDataReader dr = DataProvider.Instance().GetList(ListName, ParentKey, PortalID);
+                IDataReader dr = DataProvider.Instance().GetList(listName, parentKey, portalId);
                 try
                 {
                     list = FillListInfo(dr, true);
@@ -286,44 +330,67 @@ namespace DotNetNuke.Common.Lists
             return GetListInfoCollection("");
         }
 
-        public ListInfoCollection GetListInfoCollection(string ListName)
+        public ListInfoCollection GetListInfoCollection(string listName)
         {
-            return GetListInfoCollection(ListName, "");
+            return GetListInfoCollection(listName, "");
         }
 
-        public ListInfoCollection GetListInfoCollection(string ListName, string ParentKey)
+        public ListInfoCollection GetListInfoCollection(string listName, string parentKey)
         {
-            return GetListInfoCollection(ListName, ParentKey, -1);
+            return GetListInfoCollection(listName, parentKey, -1);
         }
 
-        public ListInfoCollection GetListInfoCollection(string ListName, string ParentKey, int PortalID)
+        public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
             IList lists = new ListInfoCollection();
-            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(PortalID))
+            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;
-                if ((list.Name == ListName || string.IsNullOrEmpty(ListName)) && (list.ParentKey == ParentKey || string.IsNullOrEmpty(ParentKey)) &&
-                    (list.PortalID == PortalID || PortalID == Null.NullInteger))
+                if ((list.Name == listName || string.IsNullOrEmpty(listName)) && (list.ParentKey == parentKey || string.IsNullOrEmpty(parentKey)) &&
+                    (list.PortalID == portalId || portalId == Null.NullInteger))
                 {
                     lists.Add(list);
                 }
             }
-            return (ListInfoCollection) lists;
+            return (ListInfoCollection)lists;
         }
 
-        public void UpdateListEntry(ListEntryInfo ListEntry)
+        /// <summary>
+        /// Updates the list entry in the database using the values set on the listEntry. Note that if the current thread locale is not "en-US" then the
+        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value 
+        /// will *not* be written to the database in this case (i.e. we expect the text value in the database to be the en-US text value).
+        /// </summary>
+        /// <param name="listEntry">The list entry info item to update.</param>
+        public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            DataProvider.Instance().UpdateListEntry(ListEntry.EntryID, ListEntry.Value, ListEntry.Text, ListEntry.Description, UserController.GetCurrentUserInfo().UserID);
-            var objEventLog = new EventLogController();
-            objEventLog.AddLog(ListEntry, PortalController.GetCurrentPortalSettings(), UserController.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
-            ClearCache(ListEntry.PortalID);
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale || NonLocalizedLists.Contains(listEntry.ListName))
+            {
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+                ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to be able to just update the value or description and not touch the en-US text value
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+				if (string.IsNullOrEmpty(listEntry.ParentKey))
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+				else
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+            }
+            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
+            ClearListCache(listEntry.PortalID);
+            ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
 
         public void UpdateListSortOrder(int EntryID, bool MoveUp)
         {
             DataProvider.Instance().UpdateListSortOrder(EntryID, MoveUp);
             ListEntryInfo entry = GetListEntryInfo(EntryID);
-            ClearCache(entry.PortalID);
+            ClearListCache(entry.PortalID);
+            ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead"), EditorBrowsable(EditorBrowsableState.Never)]

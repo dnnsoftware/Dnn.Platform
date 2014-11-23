@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2013
+// Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,6 +36,7 @@ using System.Web;
 using System.IO;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Log.EventLog;
 
 using Telerik.Web.UI.Widgets;
 
@@ -353,7 +354,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			get
 			{
-				string homeDir = PortalController.GetCurrentPortalSettings().HomeDirectory;
+				string homeDir = PortalController.Instance.GetCurrentPortalSettings().HomeDirectory;
 				homeDir = homeDir.Replace("\\", "/");
 
 				if (homeDir.EndsWith("/"))
@@ -382,7 +383,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 				//Return text.Replace("/", " ").Replace("\", " ").Trim()
 
-				string homeDir = PortalController.GetCurrentPortalSettings().HomeDirectory;
+				string homeDir = PortalController.Instance.GetCurrentPortalSettings().HomeDirectory;
 				homeDir = homeDir.Replace("\\", "/");
 
 				if (homeDir.EndsWith("/"))
@@ -828,8 +829,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			try
 			{
-				var portalCtrl = new PortalController(); 
-				if (! (portalCtrl.HasSpaceAvailable(PortalController.GetCurrentPortalSettings().PortalId, contentLength)))
+                if (!PortalController.Instance.HasSpaceAvailable(PortalController.Instance.GetCurrentPortalSettings().PortalId, contentLength))
 				{
 					return string.Format(Localization.GetString("DiskSpaceExceeded"), ToEndUserPath(virtualPathAndName));
 				}
@@ -949,28 +949,26 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 			if (! (string.IsNullOrEmpty(logMsg)))
 			{
-				var objEventLog = new Services.Log.EventLog.EventLogController();
-				var objEventLogInfo = new Services.Log.EventLog.LogInfo();
+				var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
 
-				objEventLogInfo.AddProperty("From", "TelerikHtmlEditorProvider Message");
+			    log.AddProperty("From", "TelerikHtmlEditorProvider Message");
 
 				if (PortalSettings.ActiveTab != null)
 				{
-					objEventLogInfo.AddProperty("TabID", PortalSettings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture));
-					objEventLogInfo.AddProperty("TabName", PortalSettings.ActiveTab.TabName);
+					log.AddProperty("TabID", PortalSettings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture));
+					log.AddProperty("TabName", PortalSettings.ActiveTab.TabName);
 				}
 
-				Entities.Users.UserInfo user = Entities.Users.UserController.GetCurrentUserInfo();
+				Entities.Users.UserInfo user = Entities.Users.UserController.Instance.GetCurrentUserInfo();
 				if (user != null)
 				{
-					objEventLogInfo.AddProperty("UserID", user.UserID.ToString(CultureInfo.InvariantCulture));
-					objEventLogInfo.AddProperty("UserName", user.Username);
+					log.AddProperty("UserID", user.UserID.ToString(CultureInfo.InvariantCulture));
+					log.AddProperty("UserName", user.Username);
 				}
 
-				objEventLogInfo.LogTypeKey = Services.Log.EventLog.EventLogController.EventLogType.ADMIN_ALERT.ToString();
-				objEventLogInfo.AddProperty("Message", logMsg);
-				objEventLogInfo.AddProperty("Path", virtualPath);
-				objEventLog.AddLog(objEventLogInfo);
+				log.AddProperty("Message", logMsg);
+				log.AddProperty("Path", virtualPath);
+				LogController.Instance.AddLog(log);
 			}
 
 			return returnValue;

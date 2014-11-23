@@ -238,7 +238,7 @@
     <value>Host User Required</value>
   </data>
   <data name="HostOnlyMessage.Text" xml:space="preserve">
-    <value>DotNetNuke's security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
+    <value>DNN's security model requires that host users must create new languages.  As a site administrator you can manage existing languages.  If you would like more languages please contact the Host User for your site.</value>
   </data>
   <data name="systemDefaultLabel.Help" xml:space="preserve">
     <value>The SystemDefault Language is language that the application uses if no other language is available.  It is the ultimate fallback.</value>
@@ -323,5 +323,38 @@
   </data>
   <data name="NeutralMessage.Text" xml:space="preserve">
     <value>This is a "Language Neutral" page, which means that the page will be visible in every language of the site. Language Neutral pages cannot be translated.</value>
+  </data>
+  <data name="Disable.Confirm" xml:space="preserve">
+    <value>Are you sure you would like to disable the language {0}?</value>
+  </data>
+  <data name="Unpublish.Confirm" xml:space="preserve">
+    <value>Are you sure you would like to deactivate the language {0}?</value>
+  </data>
+  <data name="Delete.Header" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="GetNonTranslatedPages.Text" xml:space="preserve">
+    <value>Show Pages that are not yet translated</value>
+  </data>
+  <data name="MarkAllPagesTranslated.Text" xml:space="preserve">
+    <value>Mark All Pages For {0} As Translated</value>
+  </data>
+  <data name="NonLocalizedPagesTitle.Text" xml:space="preserve">
+    <value>Pages Not Translated: </value>
+  </data>
+  <data name="Pages.Header" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Translated.Header" xml:space="preserve">
+    <value>Translated</value>
+  </data>
+  <data name="EditPage.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ViewPage.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Language Management</value>
   </data>
 </root>
