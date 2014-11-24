@@ -108,9 +108,9 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins); ;
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-			jQuery.RegisterFileUpload(Page);
+            jQuery.RegisterFileUpload(Page);
             AddIe7StyleSheet();
 
             base.OnInit(e);

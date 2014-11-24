@@ -298,6 +298,7 @@
         messageSentTitle: 'Message Sent',
         messageSentText: 'Your message has been sent successfully.',
         dismissThisText: 'Dismiss this',
+        dismissAllText: 'Dismiss all',
         throttlingText: 'Please wait before sending a new message.',
         noResultsText: 'No results',
         searchingText: 'Searching...',

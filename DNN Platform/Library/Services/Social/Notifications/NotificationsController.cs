@@ -253,6 +253,11 @@ namespace DotNetNuke.Services.Social.Notifications
             _dataService.DeleteNotification(notificationId);
         }
 
+        public int DeleteUserNotifications(UserInfo user)
+        {
+            return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
+        }
+
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
         {
             InternalMessagingController.Instance.DeleteMessageRecipient(notificationId, userId);

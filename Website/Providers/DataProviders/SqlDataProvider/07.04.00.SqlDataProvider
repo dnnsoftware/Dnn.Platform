@@ -769,6 +769,26 @@ BEGIN
 END
 GO
 
+/********************************************************
+ * SPROC: CoreMessaging_DeleteUserNotifications
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications] AS BEGIN SELECT 1 END');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
+	@UserId int,
+	@PortalId int
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages
+	WHERE PortalId = @PortalId
+	  AND MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE UserID = @UserId)
+
+	SELECT @@ROWCOUNT
+END
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDuplicateEmailCount]') AND type in (N'P', N'PC'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDuplicateEmailCount]
 GO

@@ -119,6 +119,11 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             _provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotification"), notificationId);
         }
 
+        public int DeleteUserNotifications(int userId, int portalId)
+        {
+            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("DeleteUserNotifications"), userId, portalId);
+        }
+
         public int CountNotifications(int userId, int portalId)
         {
             return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);

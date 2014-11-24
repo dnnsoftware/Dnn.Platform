@@ -214,8 +214,11 @@
         <div class="coreNotifications" id="dnnCoreNotification">
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
+                    <div class="dnnFormExpandContent dnnClear">
+                        <a href="#" data-bind="visible: TotalNotifications() > 0, click: $root.dismissAllNotifications"><%=LocalizeString("DismissAllNotifications")%></a>
+                    </div>
                     <div class="messageFolders">
-                        <p><strong data-bind="text: getNotificationPageNumbers()"></strong><%=LocalizeString("Of")%><strong data-bind="    text: TotalNotifications"></strong></p>
+                        <p><strong data-bind="text: getNotificationPageNumbers()"></strong><%=LocalizeString("Of")%><strong data-bind="text: TotalNotifications"></strong></p>
                     </div>
                 </div>
                 <div id="loadingNotifications" data-bind="visible: loadingData"><img src='<%= ResolveUrl("images/ajax-loader.gif") %>' alt="" /> <%=LocalizeString("LoadingContent") %></div>
@@ -293,6 +296,9 @@
             messageSentTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSentTitle")) %>',
             messageSentText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
             dismissThisText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DismissThis")) %>',
+            dismissAllConfirmText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DismissAllConfirm")) %>',
+            serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
+            serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
             throttlingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Throttling")) %>',
             noResultsText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoResults")) %>',
             searchingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Searching")) %>',
