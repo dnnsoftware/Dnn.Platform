@@ -25,12 +25,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
+using System.Net;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Security;
 
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {
@@ -128,7 +131,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                              Scope.DefaultSettings,
                                                              ref propertyNotFound);
 
-                    properties[property.PropertyName] = value;
+                    properties[property.PropertyName] = DotNetNuke.Common.Utilities.HtmlUtils.Clean(Localization.GetSafeJSString(WebUtility.HtmlDecode(value)), false); ;
+
                 }
                 return properties;
             }
