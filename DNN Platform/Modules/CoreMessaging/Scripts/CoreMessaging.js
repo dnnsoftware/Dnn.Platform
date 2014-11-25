@@ -761,10 +761,12 @@
                         displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
                     });
                 },
-                text: settings.dismissAllConfirmText,
+                text: String.format(settings.dismissAllConfirmText, self.TotalNotifications()),
                 yesText: settings.yesText,
                 noText: settings.noText,
-                title: settings.title
+                title: settings.title,
+                buttonYesClass: 'dnnSecondaryAction',
+                buttonNoClass: 'dnnPrimaryAction',
             };
 
             $.dnnConfirm(opts);

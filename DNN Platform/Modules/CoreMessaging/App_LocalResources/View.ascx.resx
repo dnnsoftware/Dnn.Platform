@@ -154,10 +154,10 @@
     <value>Dismiss this</value>
   </data>
   <data name="DismissAllNotifications.Text" xml:space="preserve">
-    <value>Dismiss All Notification</value>
+    <value>Dismiss All Notifications</value>
   </data>
   <data name="DismissAllConfirm.Text" xml:space="preserve">
-    <value>Are you sure you want to delete all notifications?</value>
+    <value>Are you sure you want to dismiss all {0} notification(s)?</value>
   </data>
   <data name="EditModule.Text" xml:space="preserve">
     <value>Edit Module</value>
