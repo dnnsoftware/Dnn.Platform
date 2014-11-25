@@ -508,9 +508,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("DeletePortalSetting", PortalId, SettingName, CultureCode);
         }
 
-        public virtual void DeletePortalSettings(int PortalId)
+        public virtual void DeletePortalSettings(int PortalId, string CultureCode)
         {
-            ExecuteNonQuery("DeletePortalSettings", PortalId);
+            ExecuteNonQuery("DeletePortalSettings", PortalId, CultureCode);
         }
 
         public virtual IDataReader GetExpiredPortals()

@@ -80,7 +80,7 @@ namespace DotNetNuke.Security
             RandomPassword = settings.GetValueOrDefault("Registration_RandomPassword", RandomPassword);
             RedirectAfterRegistration = settings.GetValueOrDefault("Redirect_AfterRegistration", RedirectAfterRegistration);
             RedirectAfterLogout = settings.GetValueOrDefault("Redirect_AfterLogout", RedirectAfterLogout);
-            RedirectAfterLogin = settings.GetValueOrDefault("Redirect_AfterLoging", RedirectAfterLogin);
+            RedirectAfterLogin = settings.GetValueOrDefault("Redirect_AfterLogin", RedirectAfterLogin);
             RegistrationFields = settings.GetValueOrDefault("Registration_RegistrationFields", RegistrationFields);
             ExcludeTerms = settings.GetValueOrDefault("Registration_ExcludeTerms", ExcludeTerms);
             RegistrationFormType = settings.GetValueOrDefault("Registration_RegistrationFormType", RegistrationFormType);
