@@ -182,97 +182,120 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendNotificationToAuthor(StateTransaction stateTransaction, WorkflowState state, Entities.Workflow workflow, ContentItem contentItem, WorkflowActionTypes workflowActionType)
         {
-            var user = GetUserThatHaveSubmittedDraftState(workflow, contentItem.ContentItemId);
-            if (user == null)
+            try
             {
-                Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
-                return;
+                var user = GetUserThatHaveSubmittedDraftState(workflow, contentItem.ContentItemId);
+                if (user == null)
+                {
+                    Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
+                    return;
+                }
+
+                if (user.UserID == stateTransaction.UserId)
+                {
+                    return;
+                }
+
+                var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var message = workflowAction.GetActionMessage(stateTransaction, state);
+
+                var notification = new Notification
+                {
+                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationNoActionType).NotificationTypeId,
+                    Subject = message.Subject,
+                    Body = message.Body,
+                    IncludeDismissAction = true,
+                    SenderUserID = stateTransaction.UserId
+                };
+
+                _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
-
-            if (user.UserID == stateTransaction.UserId)
+            catch (Exception ex)
             {
-                return;
-            }
-
-            var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
-            if (workflowAction == null)
-            {
-                return;
-            }
-
-            var message = workflowAction.GetActionMessage(stateTransaction, state);
-
-            var notification = new Notification
-            {
-                NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationNoActionType).NotificationTypeId,
-                Subject = message.Subject,
-                Body = message.Body,
-                IncludeDismissAction = true,
-                SenderUserID = stateTransaction.UserId
-            };
-
-            _notificationsController.SendNotification(notification, workflow.PortalID, null, new []{ user });
+                Services.Exceptions.Exceptions.LogException(ex);
+            }            
         }
 
         private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
         {
-            var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
-            if (workflowAction == null)
+            //TODO Add try-catch to every Send Notifications methods
+            try
             {
-                return;
+                var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var user = _userController.GetUser(workflow.PortalID, starterUserId);
+
+                var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
+
+                var notification = new Notification
+                {
+                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId,
+                    Subject = message.Subject,
+                    Body = message.Body,
+                    IncludeDismissAction = true,
+                    SenderUserID = stateTransaction.UserId,
+
+                    Context = GetWorkflowNotificationContext(contentItem, workflow.FirstState)
+                };
+
+                _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
-
-            var user = _userController.GetUser(workflow.PortalID, starterUserId);
-
-            var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
-
-            var notification = new Notification
+            catch (Exception ex)
             {
-                NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId,
-                Subject = message.Subject,
-                Body = message.Body,
-                IncludeDismissAction = true,
-                SenderUserID = stateTransaction.UserId,
-
-                Context = GetWorkflowNotificationContext(contentItem, workflow.FirstState)
-            };
-
-            _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+            
         }
 
         private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
         {
-            if (!state.SendNotification && !state.SendNotificationToAdministrators)
+            try
             {
-                return;
+                if (!state.SendNotification && !state.SendNotificationToAdministrators)
+                {
+                    return;
+                }
+
+                var reviewers = GetUserAndRolesForStateReviewers(portalSettings, state);
+
+                if (!reviewers.Roles.Any() && !reviewers.Users.Any())
+                {
+                    return; // If there are no receivers, the notification is avoided
+                }
+
+                var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
+                if (workflowAction == null)
+                {
+                    return;
+                }
+
+                var message = workflowAction.GetActionMessage(stateTransaction, state);
+
+                var notification = new Notification
+                {
+                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId,
+                    Subject = message.Subject,
+                    Body = message.Body,
+                    IncludeDismissAction = true,
+                    SenderUserID = stateTransaction.UserId,
+                    Context = GetWorkflowNotificationContext(contentItem, state)
+                };
+
+                _notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
             }
-
-            var reviewers = GetUserAndRolesForStateReviewers(portalSettings, state);
-
-            if (!reviewers.Roles.Any() && !reviewers.Users.Any())
+            catch (Exception ex)
             {
-                return; // If there are no receivers, the notification is avoided
-            }
-
-            var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
-            if (workflowAction == null)
-            {
-                return;
-            }
-
-            var message = workflowAction.GetActionMessage(stateTransaction, state);
-
-            var notification = new Notification
-            {
-                NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId,
-                Subject = message.Subject,
-                Body = message.Body,
-                IncludeDismissAction = true,
-                SenderUserID = stateTransaction.UserId,
-                Context = GetWorkflowNotificationContext(contentItem, state)
-            };
-
-            _notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
+                Services.Exceptions.Exceptions.LogException(ex);
+            }            
         }
 
         private class ReviewersDto
