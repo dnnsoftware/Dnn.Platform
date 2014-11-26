@@ -1011,24 +1011,29 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
     @CultureCode nVarChar(20)    -- Null|'' for neutral language
 AS
 BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = '';
+
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+					WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		FROM {databaseOwner}[{objectQualifier}Portals] 
+		WHERE PortalID = @PortalID
+
 	SELECT
-		SettingName,
-		CASE WHEN Lower(SettingValue) Like 'fileid=%'
-		 THEN {databaseOwner}[{objectQualifier}FilePath](SettingValue)
-		 ELSE SettingValue 
-		END   AS SettingValue,
-		CreatedByUserID,
-		CreatedOnDate,
-		LastModifiedByUserID,
-		LastModifiedOnDate,
-		CultureCode
-	 FROM  {databaseOwner}[{objectQualifier}PortalSettings] P
-	 JOIN  (SELECT PortalID, Max(IsNull(CultureCode, '')) CC, SettingName SN
-	        FROM {databaseOwner}[{objectQualifier}PortalSettings] 
-			WHERE COALESCE(CultureCode, @CultureCode, '') = IsNull(@CultureCode, '')
-			  AND PortalID = @PortalId
-			GROUP BY PortalID, SettingName) S 
-	   ON P.PortalID = S.PortalID AND P.SettingName = S.SN AND P.CultureCode = S.CC;
+		PS.SettingName,
+		CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			THEN {databaseOwner}{objectQualifier}FilePath(PS.SettingValue)
+			ELSE PS.SettingValue END   AS SettingValue,
+		PS.CreatedByUserID,
+		PS.CreatedOnDate,
+		PS.LastModifiedByUserID,
+		PS.LastModifiedOnDate,
+		PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+	WHERE 
+		PortalID = @PortalId  AND 
+		COALESCE(CultureCode, @CultureCode, @DefaultLanguage) = IsNull(@CultureCode, @DefaultLanguage)
 END
 GO
 
@@ -1218,7 +1223,7 @@ BEGIN
 			CultureCode,
 			SettingName,
 			SettingValue
-		FROM PortalSettings
+		FROM {databaseOwner}[{objectQualifier}PortalSettings]
 		WHERE PortalID = @PortalID AND CultureCode = @CultureCode
 
 		MERGE INTO @LocalPortalSettings target
