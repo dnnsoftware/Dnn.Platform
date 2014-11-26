@@ -26,18 +26,27 @@ namespace DotNetNuke.Entities.Tabs
     public interface ITabChangeTracker
     {
         /// <summary>
-        /// Tracks an added module
+        /// Tracks a change when a module is added to a page
         /// </summary>
+        /// <param name="module">Module which tracks the change</param>
+        /// <param name="moduleVersion">Version number corresponding to the change</param>
+        /// <param name="userId">User Id who provokes the change</param>        
         void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId);
 
         /// <summary>
-        /// Tracks a modified module
+        /// Tracks a change when a module is modified on a page
         /// </summary>
+        /// <param name="module">Module which tracks the change</param>
+        /// <param name="moduleVersion">Version number corresponding to the change</param>
+        /// <param name="userId">User Id who provokes the change</param>
         void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId);
-        
+
         /// <summary>
-        ///  Tracks a deleted module
+        /// Tracks a change when a module is deleted from a page
         /// </summary>
+        /// <param name="module">Module which tracks the change</param>
+        /// <param name="moduleVersion">Version number corresponding to the change</param>
+        /// <param name="userId">User Id who provokes the change</param>
         void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId);
     }
 }

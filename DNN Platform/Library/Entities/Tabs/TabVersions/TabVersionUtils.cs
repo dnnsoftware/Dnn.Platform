@@ -29,9 +29,18 @@ using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
+    /// <summary>
+    /// This Class ofers a set of methods useful and reusable along the Tab Version API
+    /// </summary>
     internal static class TabVersionUtils
     {
         #region Internal Methods
+        
+        /// <summary>
+        /// Try to get the version number from the current URL
+        /// </summary>
+        /// <param name="versionInt">Version number obtained. Null Integer if it is not available</param>
+        /// <returns>True if version number is available and valid from URL. Otherwise, False</returns>
         internal static bool TryGetUrlVersion(out int versionInt)
         {
             var version = GetTabVersionQueryStringValue();
@@ -43,11 +52,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return int.TryParse(version, out versionInt);
         }
 
+        /// <summary>
+        /// Check if current user can see the current page
+        /// </summary>
+        /// <returns>True if current user can see the current page. Otherwise, False</returns>
         internal static bool CanSeeVersionedPages()
         {
             return CanSeeVersionedPages(TabController.CurrentPage);
         }
 
+        /// <summary>
+        /// Check if current user can see a specific page
+        /// </summary>
+        /// <param name="tab"> The TabInfo to be checked</param>
+        /// <returns>True if current user can see the specific page. Otherwise, False</returns>
         internal static bool CanSeeVersionedPages(TabInfo tab)
         {
             if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)

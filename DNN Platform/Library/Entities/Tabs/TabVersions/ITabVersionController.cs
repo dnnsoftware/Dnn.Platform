@@ -33,7 +33,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>     
         /// <param name="tabVersionId">The Tab Version Id to be get</param>        
         /// <param name="tabId">The Tab Id to be queried</param>        
-        /// <param name="ignoreCache">If true, the method will not use the Caching Storage</param>        
+        /// <param name="ignoreCache">If true, the method will not use the Caching Storage</param>     
+        /// <returns>TabVersion filled with the specific version data</returns>
         TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false);
 
         /// <summary>
@@ -41,21 +42,28 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>        
         /// <param name="tabId">Tha Tab ID to be quiered</param>                
         /// <param name="ignoreCache">If true, the method will not use the Caching Storage</param>        
+        /// <returns>List of TabVersion objects</returns>
         IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false);
 
         /// <summary>
         /// Saves a Tab Version object. Adds or updates an existing one
         /// </summary>        
+        /// <param name="tabVersion">TabVersion object to be saved</param>        
+        /// <param name="createdByUserId">User Id who creates the TabVersion</param>   
         void SaveTabVersion(TabVersion tabVersion, int createdByUserId);
 
         /// <summary>
         /// Saves a Tab Version object. Adds or updates an existing one
         /// </summary>        
+        /// <param name="tabVersion">TabVersion object to be saved</param>        
+        /// <param name="createdByUserId">User Id who creates the TabVersion</param>   
+        /// <param name="modifiedByUserId">User Id who modifies the TabVersion</param>
         void SaveTabVersion(TabVersion tabVersion, int createdByUserId, int modifiedByUserId);
         
         /// <summary>
         /// Saves a Tab Version object. Adds or updates an existing one
         /// </summary>        
+        /// <param name="tabVersion">TabVersion object to be saved</param>        
         void SaveTabVersion(TabVersion tabVersion);
 
         /// <summary>
@@ -64,14 +72,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="tabId">The Tab Id to be queried</param>
         /// <param name="createdByUserId">User Id who creates the version</param>
         /// <param name="isPublished">If true, the version is automatically published</param>
-        /// <returns></returns>
+        /// <returns>TabVersion filled with the new version data</returns>
         TabVersion CreateTabVersion(int tabId, int createdByUserId, bool isPublished = false);
         
         /// <summary>
         /// Deletes a Tab Version
         /// </summary>
         /// <param name="tabId">The Tab Id to be queried</param>
-        /// <param name="tabVersionId">The Tab Version Id to be deleted</param>
+        /// <param name="tabVersionId">The TabVersion Id to be deleted</param>
         void DeleteTabVersion(int tabId, int tabVersionId);
     }
 }

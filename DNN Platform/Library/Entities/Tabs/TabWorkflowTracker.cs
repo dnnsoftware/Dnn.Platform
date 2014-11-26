@@ -28,8 +28,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-using Telerik.Web.UI;
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -43,7 +41,7 @@ namespace DotNetNuke.Entities.Tabs
         private readonly IWorkflowManager _workflowManager;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
         #endregion
-
+        
         public TabWorkflowTracker()
         {
             _tabController = TabController.Instance;
@@ -57,16 +55,36 @@ namespace DotNetNuke.Entities.Tabs
             return () => new TabWorkflowTracker();
         }
 
+
+        /// <summary>
+        /// Tracks a workflow instance when a module is added to a page
+        /// </summary>
+        /// <param name="module">Module which tracks the workflow instance</param>
+        /// <param name="moduleVersion">Version number corresponding to the module</param>
+        /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
-
+        
+        /// <summary>
+        /// Tracks a workflow instance when a module is modified on a page
+        /// </summary>
+        /// <param name="module">Module which tracks the workflow instance</param>
+        /// <param name="moduleVersion">Version number corresponding to the module</param>
+        /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
+
+        /// <summary>
+        /// Tracks a workflow instance when a module is deleted from a page
+        /// </summary>
+        /// <param name="module">Module which tracks the workflow instance</param>
+        /// <param name="moduleVersion">Version number corresponding to the module</param>
+        /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
