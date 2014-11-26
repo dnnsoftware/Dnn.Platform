@@ -190,45 +190,50 @@ namespace DotNetNuke.Modules.Admin.Extensions
                     return;
                 }
 
-                XPathNavigator nav = oXMLDocument.CreateNavigator();
-                XPathNodeIterator iterator = nav.Select("orders/order/orderdetails/orderdetail");
-                int i = 0;
-                while (iterator.MoveNext())
+                var nav = oXMLDocument.CreateNavigator();
+                var orderDetailIterator = nav.Select("orders/order/orderdetails/orderdetail");
+                var i = 0;
+                while (orderDetailIterator.MoveNext())
                 {
-                    //instance of a datarow  
-                    drow = dt.NewRow();
-                    //add rows to datatable  
-                    dt.Rows.Add(drow);
-                    string packageName = iterator.Current.GetAttribute("packagename", "").Replace("'", "''").Trim();
-                    string fileName = iterator.Current.SelectSingleNode("files/file").GetAttribute("filename", "");
-                    string fileId = iterator.Current.SelectSingleNode("files/file").GetAttribute("fileid", "");
-                    string deploy = iterator.Current.SelectSingleNode("files/file").GetAttribute("deploy", "");
-                    //add Column values  
-                    dt.Rows[i][dcol1] = packageName;
-                    dt.Rows[i][dcol2] = fileName;
+                    var packageName = orderDetailIterator.Current.GetAttribute("packagename", "").Replace("'", "''").Trim();
 
-                    PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    dt.Rows[i][dcol3] = "<a class='dnnPrimaryAction' href='" +
-                                        Globals.NavigateURL(_portalSettings.ActiveTab.TabID, Null.NullString,
-                                                            "fileAction",
-                                                            "download", "fileid", fileId) + "'>" +
-                                        LocalizeString("download") + "</a>";
-
-
-                    if (deploy == "true")
+                    var filesIterator = orderDetailIterator.Current.Select("files/file");
+                    while (filesIterator.MoveNext())
                     {
-                        dt.Rows[i][dcol4] = "<a class='dnnPrimaryAction' href=" + "\"" +
-                                            ModuleContext.EditUrl("fileID", fileId, "Download", "package",
-                                                                  Server.UrlPathEncode(packageName)) + "\"" + ">" +
-                                            LocalizeString("deploy") + "</a>";
+
+                        //instance of a datarow  
+                        drow = dt.NewRow();
+                        //add rows to datatable  
+                        dt.Rows.Add(drow);
+                        var fileName = filesIterator.Current.GetAttribute("filename", "");
+                        var fileId = filesIterator.Current.GetAttribute("fileid", "");
+                        var deploy = filesIterator.Current.GetAttribute("deploy", "");
+                        //add Column values  
+                        dt.Rows[i][dcol1] = packageName;
+                        dt.Rows[i][dcol2] = fileName;
+
+                        var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                        dt.Rows[i][dcol3] = "<a class='dnnPrimaryAction' href='" +
+                                            Globals.NavigateURL(portalSettings.ActiveTab.TabID, Null.NullString,
+                                                                "fileAction",
+                                                                "download", "fileid", fileId) + "'>" +
+                                            LocalizeString("download") + "</a>";
+
+
+                        if (deploy == "true")
+                        {
+                            dt.Rows[i][dcol4] = "<a class='dnnPrimaryAction' href=" + "\"" +
+                                                ModuleContext.EditUrl("fileID", fileId, "Download", "package",
+                                                                      Server.UrlPathEncode(packageName)) + "\"" + ">" +
+                                                LocalizeString("deploy") + "</a>";
+                        }
+                        else
+                        {
+                            dt.Rows[i][dcol4] = "N/A";
+                        }
+                        i = i + 1;
                     }
-                    else
-                    {
-                        dt.Rows[i][dcol4] = "N/A";
-                    }
-                    i = i + 1;
                 }
-
 
                 grdSnow.DataSource = dt;
                 grdSnow.DataBind();
