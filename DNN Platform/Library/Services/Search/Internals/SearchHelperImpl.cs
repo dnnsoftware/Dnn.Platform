@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Search.Internals
             else
             {
                 // portal level setting
-                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true, string.Empty);
+                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true);
             }
 
             return now;

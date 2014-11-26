@@ -875,6 +875,11 @@ IF NOT EXISTS (SELECT * FROM sys.key_constraints WHERE parent_object_id = OBJECT
 	 PRIMARY KEY NONCLUSTERED (PortalSettingID)
 GO
 
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET CultureCode = Null
+WHERE CultureCode = ''
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.check_constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'CK_{objectQualifier}PortalSettings_CultureCode')
 	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
 	 ADD CONSTRAINT [CK_{objectQualifier}PortalSettings_CultureCode] 
@@ -1217,7 +1222,7 @@ BEGIN
 		WHERE PortalID = @PortalID AND CultureCode = @CultureCode
 
 		MERGE INTO @LocalPortalSettings target
-		USING (SELECT * FROM dbo.[PortalSettings]
+		USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings]
 				WHERE PortalId = @PortalID and CultureCode = @MasterLanguage) source 
 		ON (target.SettingName = source.SettingName)
 		WHEN NOT MATCHED THEN 
@@ -1233,7 +1238,7 @@ BEGIN
 				source.SettingValue
 			);
 
-		MERGE INTO dbo.[PortalSettings]  target
+		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings]  target
 		USING (SELECT * FROM @LocalPortalSettings) source 
 		ON (target.PortalID = source.PortalID AND 
 			target.CultureCode = source.CultureCode AND 
