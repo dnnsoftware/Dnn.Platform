@@ -126,7 +126,8 @@ namespace DotNetNuke.Entities.Tabs
             IsVisible = true;
             HasBeenPublished = true;
             DisableLink = false;
-           
+
+            Panes = new ArrayList();
         }
 
         #endregion
@@ -212,7 +213,7 @@ namespace DotNetNuke.Entities.Tabs
         public string PageHeadText { get; set; }
 
         [XmlIgnore]
-        public ArrayList Panes { get; set; }
+        public ArrayList Panes { get; private set; }
 
         [XmlElement("parentid")]
         public int ParentId { get; set; }
@@ -972,7 +973,6 @@ namespace DotNetNuke.Entities.Tabs
             PermanentRedirect = Null.SetNullBoolean(dr["PermanentRedirect"]);
             SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);
             BreadCrumbs = null;
-            Panes = null;
             Modules = null;
         }
 
