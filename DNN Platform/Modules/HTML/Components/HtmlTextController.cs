@@ -504,6 +504,12 @@ namespace DotNetNuke.Modules.Html
                         strURL = strHTML.Substring(S).ToLower();
                     }
 
+                    if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                        continue;
+                    }
+
                     // if we are linking internally
                     if (strURL.Contains("://") == false)
                     {
