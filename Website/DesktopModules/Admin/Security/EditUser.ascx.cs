@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -93,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-				if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
+                if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -120,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else //redirect to after registration page
                 {
-					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
+                    _RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -234,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 // hide username field in UseEmailAsUserName mode
                 bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
-                if(disableUsername)
+                if (disableUsername)
                 {
                     userForm.Items[0].Visible = false;
                 }
@@ -378,9 +379,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
             //Update DisplayName to conform to Format
-			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+                User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
@@ -474,7 +475,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
             }
-            
+
             //DNN-26777 
             new PortalSecurity().SignOut();
             Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId));
@@ -494,11 +495,20 @@ namespace DotNetNuke.Modules.Admin.Users
                     //Update DisplayName to conform to Format
                     UpdateDisplayName();
 
+                    //DNN-5874 Check if unique display name is required
+                    if (PortalSettings.Registration.RequireUniqueDisplayName)
+                    {
+                        var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                        if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                        {
+                            throw new Exception("Display Name must be unique");
+                        }
+                    }
+
                     UserController.UpdateUser(UserPortalID, User);
 
                     // make sure username matches possibly changed email address
-                    bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
-                    if (disableUsername)
+                    if (PortalSettings.Registration.UseEmailAsUserName)
                     {
                         if (User.Username.ToLower() != User.Email.ToLower())
                         {
@@ -509,13 +519,19 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                     }
 
-
                     Response.Redirect(Request.RawUrl);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
+                    if (exc.Message == "Display Name must be unique")
+                    {
+                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+                    else
+                    {
+                        AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
                 }
             }
 

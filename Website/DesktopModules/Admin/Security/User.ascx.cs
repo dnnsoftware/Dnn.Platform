@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
@@ -631,16 +632,25 @@ namespace DotNetNuke.Modules.Admin.Users
                         UpdateDisplayName();
                         //either update the username or update the user details
 
-                        bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
-
-                        if (CanUpdateUsername() && !disableUsername)
+                        if (CanUpdateUsername() && !PortalSettings.Registration.UseEmailAsUserName)
                         {
                             UserController.ChangeUsername(User.UserID, renameUserName.Value.ToString());
                         }
 
+                        //DNN-5874 Check if unique display name is required
+                        if (PortalSettings.Registration.RequireUniqueDisplayName)
+                        {
+                            var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                            if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                            {
+                                UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                                return;
+                            }
+                        }
+
                         UserController.UpdateUser(UserPortalID, User);
 
-                        if (disableUsername && (User.Username.ToLower() != User.Email.ToLower()))
+                        if (PortalSettings.Registration.UseEmailAsUserName && (User.Username.ToLower() != User.Email.ToLower()))
                         {
                             UserController.ChangeUsername(User.UserID, User.Email);
                         }
