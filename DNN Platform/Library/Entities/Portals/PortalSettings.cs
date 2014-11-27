@@ -112,6 +112,7 @@ namespace DotNetNuke.Entities.Portals
 
 		public PortalSettings(int tabId, int portalId)
 		{
+		    PortalId = portalId;
             var portal = PortalController.Instance.GetPortal(portalId);
             BuildPortalSettings(tabId, portal);
         }
@@ -125,15 +126,16 @@ namespace DotNetNuke.Entities.Portals
 		/// <remarks>
 		/// </remarks>
 		///	<param name="tabId">The current tab</param>
-		///	<param name="objPortalAliasInfo">The current portal</param>
+		///	<param name="portalAliasInfo">The current portal</param>
 		/// <history>
 		/// 	[cnurse]	10/21/2004	documented
 		/// </history>
 		/// -----------------------------------------------------------------------------
-		public PortalSettings(int tabId, PortalAliasInfo objPortalAliasInfo)
+		public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
 		{
-			PortalAlias = objPortalAliasInfo;
-			var portal = PortalController.Instance.GetPortal(objPortalAliasInfo.PortalID);
+		    PortalId = portalAliasInfo.PortalID;
+			PortalAlias = portalAliasInfo;
+			var portal = PortalController.Instance.GetPortal(portalAliasInfo.PortalID);
             BuildPortalSettings(tabId, portal);
         }
 
@@ -144,6 +146,7 @@ namespace DotNetNuke.Entities.Portals
 
 		public PortalSettings(int tabId, PortalInfo portal)
 		{
+		    PortalId = portal.PortalID;
             BuildPortalSettings(tabId, portal);
 		}
 
@@ -942,7 +945,6 @@ namespace DotNetNuke.Entities.Portals
 	    ///  -----------------------------------------------------------------------------
 	    private void MapPortalInfoSettings(PortalInfo portal)
 		{
-			PortalId = portal.PortalID;
 			PortalName = portal.PortalName;
 			LogoFile = portal.LogoFile;
 			FooterText = portal.FooterText;
