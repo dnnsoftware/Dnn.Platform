@@ -236,7 +236,7 @@ namespace DotNetNuke.Entities.Urls
                         result.PortalId = requestedAlias.PortalID;
                         result.CultureCode = requestedAlias.CultureCode;
                         //get the portal alias mapping for this portal
-                        result.PortalAliasMapping = PortalSettings.GetPortalAliasMappingMode(requestedAlias.PortalID);
+                        result.PortalAliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(requestedAlias.PortalID);
 
                         //if requested alias wasn't the primary, we have a replacement, redirects are allowed and the portal alias mapping mode is redirect
                         //then do a redirect based on the wrong portal

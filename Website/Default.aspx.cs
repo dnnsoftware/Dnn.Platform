@@ -199,10 +199,13 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         private void InitializePage()
         {
+            //Configure the ActiveTab with Skin/Container information
+            PortalSettingsController.Instance().ConfigureActiveTab(PortalSettings);
+
             //redirect to a specific tab based on name
             if (!String.IsNullOrEmpty(Request.QueryString["tabname"]))
             {
-                TabInfo tab = TabController.Instance.GetTabByName(Request.QueryString["TabName"], ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).PortalId);
+                TabInfo tab = TabController.Instance.GetTabByName(Request.QueryString["TabName"], PortalSettings.PortalId);
                 if (tab != null)
                 {
                     var parameters = new List<string>(); //maximum number of elements

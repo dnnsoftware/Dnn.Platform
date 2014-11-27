@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Portals
 	/// </remarks>
 	/// -----------------------------------------------------------------------------
 	[Serializable]
-	public class PortalSettings : BaseEntityInfo, IPropertyAccess
+	public partial class PortalSettings : BaseEntityInfo, IPropertyAccess
 	{
 		#region ControlPanelPermission enum
 
@@ -160,14 +160,10 @@ namespace DotNetNuke.Entities.Portals
             MapPortalSettingsDictionary();
 
             if (portal == null) return;
+
             MapPortalInfoSettings(portal);
 
-            if (!VerifyPortalTab(PortalId, tabId)) return;
-
-            if (ActiveTab.TabID != Null.NullInteger)
-            {
-                ConfigureActiveTab();
-            }
+            ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
         }
 
         #endregion
@@ -238,7 +234,9 @@ namespace DotNetNuke.Entities.Portals
 
 		public int RegisterTabId { get; set; }
 
-		public int SearchTabId { get; set; }
+        public RegistrationSettings Registration { get; set; }
+
+        public int SearchTabId { get; set; }
 
 		public int SiteLogHistory { get; set; }
 
@@ -394,6 +392,10 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public bool HideLoginControl { get; private set; }
 
+        public string HomeDirectoryMapPath { get; private set; }
+
+        public string HomeSystemDirectoryMapPath { get; private set; }
+
         /// -----------------------------------------------------------------------------
 		/// <summary>
 		/// Gets whether the Inline Editor is enabled
@@ -515,19 +517,13 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
-		public string HomeDirectoryMapPath { get; private set; }
-
-		public string HomeSystemDirectoryMapPath { get; private set; }
-
 		public PortalAliasMapping PortalAliasMappingMode
 		{
 			get
 			{
-				return GetPortalAliasMappingMode(PortalId);
+                return PortalSettingsController.Instance().GetPortalAliasMappingMode(PortalId);
 			}
 		}
-
-        public RegistrationSettings Registration { get; set; }
 
 		public int UserId
 		{
@@ -590,28 +586,6 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		#endregion
-
-        public static PortalAliasMapping GetPortalAliasMappingMode(int portalId)
-        {
-            PortalAliasMapping aliasMapping = PortalAliasMapping.None;
-            string setting;
-            if (PortalController.GetPortalSettingsDictionary(portalId).TryGetValue("PortalAliasMapping", out setting))
-            {
-                switch (setting.ToUpperInvariant())
-                {
-                    case "CANONICALURL":
-                        aliasMapping = PortalAliasMapping.CanonicalUrl;
-                        break;
-                    case "REDIRECT":
-                        aliasMapping = PortalAliasMapping.Redirect;
-                        break;
-                    default:
-                        aliasMapping = PortalAliasMapping.None;
-                        break;
-                }
-            }
-            return aliasMapping;
-        }
 
 		#region IPropertyAccess Members
 
@@ -818,61 +792,6 @@ namespace DotNetNuke.Entities.Portals
 
         #region Private Methods
 
-        private void ConfigureActiveTab()
-		{
-			if (Globals.IsAdminSkin())
-			{
-				ActiveTab.SkinSrc = DefaultAdminSkin;
-			}
-			else if (String.IsNullOrEmpty(ActiveTab.SkinSrc))
-			{
-				ActiveTab.SkinSrc = DefaultPortalSkin;
-			}
-			ActiveTab.SkinSrc = SkinController.FormatSkinSrc(ActiveTab.SkinSrc, this);
-			ActiveTab.SkinPath = SkinController.FormatSkinPath(ActiveTab.SkinSrc);
-
-			if (Globals.IsAdminSkin())
-			{
-				ActiveTab.ContainerSrc = DefaultAdminContainer;
-			}
-			else if (String.IsNullOrEmpty(ActiveTab.ContainerSrc))
-			{
-				ActiveTab.ContainerSrc = DefaultPortalContainer;
-			}
-
-			ActiveTab.ContainerSrc = SkinController.FormatSkinSrc(ActiveTab.ContainerSrc, this);
-			ActiveTab.ContainerPath = SkinController.FormatSkinPath(ActiveTab.ContainerSrc);
-
-			ActiveTab.Panes = new ArrayList();
-			var crumbs = new ArrayList();
-			GetBreadCrumbsRecursively(ref crumbs, ActiveTab.TabID);
-			ActiveTab.BreadCrumbs = crumbs;
-		}
-
-		private void GetBreadCrumbsRecursively(ref ArrayList breadCrumbs, int tabId)
-		{
-			TabInfo tab;
-			var portalTabs = TabController.Instance.GetTabsByPortal(PortalId);
-			var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-			bool tabFound = portalTabs.TryGetValue(tabId, out tab);
-			if (!tabFound)
-			{
-				tabFound = hostTabs.TryGetValue(tabId, out tab);
-			}
-			//if tab was found
-			if (tabFound)
-			{
-				//add tab to breadcrumb collection
-				breadCrumbs.Insert(0, tab.Clone());
-
-				//get the tab parent
-				if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
-				{
-					GetBreadCrumbsRecursively(ref breadCrumbs, tab.ParentId);
-				}
-			}
-		}
-
         private void MapPortalSettingsDictionary()
         {
             AllowUserUICulture = _settings.GetValueOrDefault("AllowUserUICulture", false);
@@ -929,8 +848,6 @@ namespace DotNetNuke.Entities.Portals
                 if (timeZone != null)
                     _timeZone = timeZone;
             }
-
-
         }
 
 	    ///  -----------------------------------------------------------------------------
@@ -985,377 +902,6 @@ namespace DotNetNuke.Entities.Portals
 			Pages = portal.Pages;
 			Users = portal.Users;
 			CultureCode = portal.CultureCode;
-		}
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The VerifyPortalTab method verifies that the TabId/PortalId combination
-		/// is allowed and returns default/home tab ids if not
-		/// </summary>
-		/// <returns></returns>
-		/// <remarks>
-		/// </remarks>
-		///	<param name="portalId">The Portal's id</param>
-		///	<param name="tabId">The current tab's id</param>
-		/// <history>
-		/// </history>
-		/// -----------------------------------------------------------------------------
-		private bool VerifyPortalTab(int portalId, int tabId)
-		{
-			var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
-			var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-
-			//Check portal
-			bool isVerified = VerifyTabExists(tabId, portalTabs);
-
-			if (!isVerified)
-			{
-				//check host
-				isVerified = VerifyTabExists(tabId, hostTabs);
-			}
-
-			if (!isVerified)
-			{
-				//check splash tab
-				isVerified = VerifySpecialTab(portalId, SplashTabId);
-			}
-
-			if (!isVerified)
-			{
-				//check home tab
-				isVerified = VerifySpecialTab(portalId, HomeTabId);
-			}
-
-			if (!isVerified)
-			{
-				TabInfo tab = (from TabInfo t in portalTabs.AsList() where !t.IsDeleted && t.IsVisible && t.HasAVisibleVersion select t).FirstOrDefault();
-
-				if (tab != null)
-				{
-					isVerified = true;
-					ActiveTab = tab.Clone();
-				}
-			}
-
-			if (ActiveTab != null)
-			{
-				if (Null.IsNull(ActiveTab.StartDate))
-				{
-					ActiveTab.StartDate = DateTime.MinValue;
-				}
-				if (Null.IsNull(ActiveTab.EndDate))
-				{
-					ActiveTab.EndDate = DateTime.MaxValue;
-				}
-			}
-
-			return isVerified;
-		}
-
-		private bool VerifySpecialTab(int portalId, int tabId)
-		{
-			bool isVerified = false;
-
-			if (tabId > 0)
-			{
-				TabInfo tab = TabController.Instance.GetTab(tabId, portalId, false);
-				if (tab != null)
-				{
-					ActiveTab = tab.Clone();
-					isVerified = true;
-				}
-			}
-
-			return isVerified;
-		}
-
-		private bool VerifyTabExists(int tabId, TabCollection tabs)
-		{
-			bool isVerified = false;
-
-			if (tabId != Null.NullInteger)
-			{
-				TabInfo tab;
-				if (tabs.TryGetValue(tabId, out tab))
-				{
-					if (!tab.IsDeleted)
-					{
-						ActiveTab = tab.Clone();
-						isVerified = true;
-					}
-				}
-			}
-			return isVerified;
-		}
-
-		#endregion
-
-		#region Obsolete Methods
-
-		private ArrayList _desktopTabs;
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultAdminContainer")]
-		public SkinInfo AdminContainer { get; set; }
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultAdminSkin")]
-		public SkinInfo AdminSkin { get; set; }
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by Host.GetHostSettingsDictionary")]
-		public Hashtable HostSettings
-		{
-			get
-			{
-				var h = new Hashtable();
-				foreach (ConfigurationSetting kvp in HostController.Instance.GetSettings().Values)
-				{
-					h.Add(kvp.Key, kvp.Value);
-				}
-				return h;
-			}
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by extended UserMode property.")]
-		public bool ContentVisible
-		{
-			get
-			{
-				return UserMode != Mode.Layout;
-			}
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultPortalContainer")]
-		public SkinInfo PortalContainer { get; set; }
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultPortalSkin")]
-		public SkinInfo PortalSkin { get; set; }
-
-		[Obsolete("Deprecated in DNN 5.0. Tabs are cached independeently of Portal Settings, and this property is thus redundant")]
-		public ArrayList DesktopTabs
-		{
-			get
-			{
-				if (_desktopTabs == null)
-				{
-					_desktopTabs = new ArrayList();
-
-					//Add each portal Tab to DesktopTabs
-					TabInfo objPortalTab;
-					foreach (TabInfo objTab in TabController.GetTabsBySortOrder(PortalId, CultureCode, true))
-					{
-						// clone the tab object ( to avoid creating an object reference to the data cache )
-						objPortalTab = objTab.Clone();
-
-						// set custom properties
-						if (objPortalTab.TabOrder == 0)
-						{
-							objPortalTab.TabOrder = 999;
-						}
-						if (Null.IsNull(objPortalTab.StartDate))
-						{
-							objPortalTab.StartDate = DateTime.MinValue;
-						}
-						if (Null.IsNull(objPortalTab.EndDate))
-						{
-							objPortalTab.EndDate = DateTime.MaxValue;
-						}
-
-						_desktopTabs.Add(objPortalTab);
-					}
-
-					//Add each host Tab to DesktopTabs
-					TabInfo objHostTab;
-					foreach (TabInfo objTab in TabController.GetTabsBySortOrder(Null.NullInteger, Null.NullString, true))
-					{
-						// clone the tab object ( to avoid creating an object reference to the data cache )
-						objHostTab = objTab.Clone();
-						objHostTab.PortalID = PortalId;
-						objHostTab.StartDate = DateTime.MinValue;
-						objHostTab.EndDate = DateTime.MaxValue;
-
-						_desktopTabs.Add(objHostTab);
-					}
-				}
-
-				return _desktopTabs;
-			}
-		}
-
-		[Obsolete("Deprecated in DNN 5.1. Replaced by Application.Version")]
-		public string Version
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_version))
-				{
-					_version = DotNetNukeContext.Current.Application.Version.ToString(3);
-				}
-				return _version;
-			}
-			set
-			{
-				_version = value;
-			}
-		}
-
-		[Obsolete("Deprecated in DNN 6.0")]
-		public int TimeZoneOffset
-		{
-			get
-			{
-				return Convert.ToInt32(TimeZone.BaseUtcOffset.TotalMinutes);
-			}
-			set
-			{
-				TimeZone = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(value);
-			}
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.ExecuteScript")]
-		public static string ExecuteScript(string strScript)
-		{
-			return DataProvider.Instance().ExecuteScript(strScript);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.ExecuteScript")]
-		public static string ExecuteScript(string strScript, bool useTransactions)
-		{
-			return DataProvider.Instance().ExecuteScript(strScript);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by Globals.FindDatabaseVersion")]
-		public static bool FindDatabaseVersion(int major, int minor, int build)
-		{
-			return Globals.FindDatabaseVersion(major, minor, build);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.GetDatabaseVersion")]
-		public static IDataReader GetDatabaseVersion()
-		{
-			return DataProvider.Instance().GetDatabaseVersion();
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by Host.GetHostSettingsDictionary")]
-		public static Hashtable GetHostSettings()
-		{
-			var h = new Hashtable();
-			foreach (KeyValuePair<string, string> kvp in HostController.Instance.GetSettingsDictionary())
-			{
-				h.Add(kvp.Key, kvp.Value);
-			}
-			return h;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetModuleSettings(ModuleId)")]
-		public static Hashtable GetModuleSettings(int moduleId)
-		{
-			return new ModuleController().GetModuleSettings(moduleId);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasInfo")]
-		public static PortalAliasInfo GetPortalAliasInfo(string portalAlias)
-		{
-			return PortalAliasController.Instance.GetPortalAlias(portalAlias);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByPortal")]
-		public static string GetPortalByID(int portalId, string portalAlias)
-		{
-			return PortalAliasController.GetPortalAliasByPortal(portalId, portalAlias);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByTab")]
-		public static string GetPortalByTab(int tabID, string portalAlias)
-		{
-			return PortalAliasController.GetPortalAliasByTab(tabID, portalAlias);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasLookup")]
-		public static PortalAliasCollection GetPortalAliasLookup()
-		{
-			var portalAliasCollection = new PortalAliasCollection();
-			var aliasController = new PortalAliasController();
-			foreach (var kvp in aliasController.GetPortalAliasesInternal())
-			{
-				portalAliasCollection.Add(kvp.Key, kvp.Value);
-			}
-
-			return portalAliasCollection;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.GetProviderPath")]
-		public static string GetProviderPath()
-		{
-			return DataProvider.Instance().GetProviderPath();
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.GetPortalSettingsDictionary")]
-		public static Hashtable GetSiteSettings(int portalId)
-		{
-			var h = new Hashtable();
-			foreach (KeyValuePair<string, string> kvp in PortalController.GetPortalSettingsDictionary(portalId))
-			{
-				h.Add(kvp.Key, kvp.Value);
-			}
-			return h;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.GetPortalSettingsDictionary(portalId).TryGetValue(settingName) or for the most part by proeprties of PortalSettings")]
-		public static string GetSiteSetting(int portalId, string settingName)
-		{
-			string setting;
-			PortalController.GetPortalSettingsDictionary(portalId).TryGetValue(settingName, out setting);
-			return setting;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(TabModuleId)")]
-		public static Hashtable GetTabModuleSettings(int tabModuleId)
-		{
-			return new ModuleController().GetTabModuleSettings(tabModuleId);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(ModuleId)")]
-		public static Hashtable GetTabModuleSettings(int tabModuleId, Hashtable moduleSettings)
-		{
-			Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(tabModuleId);
-
-			// add the TabModuleSettings to the ModuleSettings
-			foreach (string strKey in tabModuleSettings.Keys)
-			{
-				moduleSettings[strKey] = tabModuleSettings[strKey];
-			}
-
-			return moduleSettings;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(ModuleId)")]
-		public static Hashtable GetTabModuleSettings(Hashtable moduleSettings, Hashtable tabModuleSettings)
-		{
-			// add the TabModuleSettings to the ModuleSettings
-			foreach (string strKey in tabModuleSettings.Keys)
-			{
-				moduleSettings[strKey] = tabModuleSettings[strKey];
-			}
-
-			//Return the modifed ModuleSettings
-			return moduleSettings;
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.UpdateDatabaseVersion")]
-		public static void UpdateDatabaseVersion(int major, int minor, int build)
-		{
-			DataProvider.Instance().UpdateDatabaseVersion(major, minor, build, DotNetNukeContext.Current.Application.Name);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.UpdatePortalSetting(Integer, String, String)")]
-		public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)
-		{
-			PortalController.UpdatePortalSetting(portalId, settingName, settingValue);
-		}
-
-		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.UpdatePortalSetting(Integer, String, String)")]
-		public static void UpdateSiteSetting(int portalId, string settingName, string settingValue)
-		{
-			PortalController.UpdatePortalSetting(portalId, settingName, settingValue);
 		}
 
 		#endregion

@@ -71,9 +71,7 @@ namespace DotNetNuke.Entities.Tabs
         private readonly SharedDictionary<string, string> _localizedTabNameDictionary = new SharedDictionary<string, string>();
         private readonly SharedDictionary<string, string> _fullUrlDictionary = new SharedDictionary<string, string>();
         private string _iconFile;
-        private string _iconFileRaw;
         private string _iconFileLarge;
-        private string _iconFileLargeRaw;
 
         private List<TabAliasSkinInfo> _aliasSkins;
         private Dictionary<string, string> _customAliases;
@@ -162,6 +160,12 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("haschildren")]
         public bool HasChildren { get; set; }
 
+        [XmlIgnore]
+        public string IconFileRaw { get; private set; }
+
+        [XmlIgnore]
+        public string IconFileLargeRaw { get; private set; }
+
         [XmlElement("isdeleted")]
         public bool IsDeleted { get; set; }
 
@@ -190,7 +194,6 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlElement("localizedVersionGuid")]
         public Guid LocalizedVersionGuid { get; set; }
-
 
         [XmlIgnore]
         public ArrayList Modules 
@@ -302,13 +305,13 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                IconFileGetter(ref _iconFile, _iconFileRaw);
+                IconFileGetter(ref _iconFile, IconFileRaw);
                 return _iconFile;
             }
 
             set
             {
-                _iconFileRaw = value;
+                IconFileRaw = value;
                 _iconFile = null;
             }
         }
@@ -318,32 +321,14 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                IconFileGetter(ref _iconFileLarge, _iconFileLargeRaw);
+                IconFileGetter(ref _iconFileLarge, IconFileLargeRaw);
                 return _iconFileLarge;
             }
 
             set
             {
-                _iconFileLargeRaw = value;
+                IconFileLargeRaw = value;
                 _iconFileLarge = null;
-            }
-        }
-
-        [XmlIgnore]
-        public string IconFileRaw
-        {
-            get
-            {
-                return _iconFileRaw;
-            }
-        }
-
-        [XmlIgnore]
-        public string IconFileLargeRaw
-        {
-            get
-            {
-                return _iconFileLargeRaw;
             }
         }
 
@@ -894,8 +879,8 @@ namespace DotNetNuke.Entities.Tabs
                 HasBeenPublished = HasBeenPublished,
                 ParentId = ParentId,
                 Level = Level,
-                IconFile = _iconFileRaw,
-                IconFileLarge = _iconFileLargeRaw,
+                IconFile = IconFileRaw,
+                IconFileLarge = IconFileLargeRaw,
                 DisableLink = DisableLink,
                 Title = Title,
                 Description = Description,

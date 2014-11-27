@@ -542,7 +542,7 @@ namespace DotNetNuke.Entities.Urls
                 if (portalMatchRegex.IsMatch(path) == false || !String.IsNullOrEmpty(cultureCode))
                 {
                     //get the portal alias mapping for this portal, which tells whether to enforce a primary portal alias or not
-                    PortalSettings.PortalAliasMapping aliasMapping = PortalSettings.GetPortalAliasMappingMode(portalId);
+                    PortalSettings.PortalAliasMapping aliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(portalId);
                     //check to see if we should be specifying this based on the culture code
                     var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
