@@ -886,10 +886,10 @@ IF NOT EXISTS (SELECT * FROM sys.check_constraints WHERE parent_object_id = OBJE
 	 CHECK (CultureCode != '')
 GO
 
-IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'IX_{objectQualifier}PortalSettings')
-CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings]
-  ON {databaseOwner}[{objectQualifier}PortalSettings]
-     (PortalID, CultureCode, SettingName)
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'IX_{objectQualifier}PortalSettings')
+	CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings]
+	  ON {databaseOwner}[{objectQualifier}PortalSettings]
+		 (PortalID, CultureCode, SettingName)
 GO
 
 -- All current entries are supposed to be neutral:
