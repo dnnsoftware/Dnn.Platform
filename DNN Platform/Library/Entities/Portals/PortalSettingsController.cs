@@ -52,30 +52,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (activeTab == null || activeTab.TabID == Null.NullInteger) return;
 
-            if (Globals.IsAdminSkin())
-            {
-                activeTab.SkinSrc = portalSettings.DefaultAdminSkin;
-            }
-            else if (String.IsNullOrEmpty(activeTab.SkinSrc))
-            {
-                activeTab.SkinSrc = portalSettings.DefaultPortalSkin;
-            }
-            activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
-            activeTab.SkinPath = SkinController.FormatSkinPath(activeTab.SkinSrc);
-
-            if (Globals.IsAdminSkin())
-            {
-                activeTab.ContainerSrc = portalSettings.DefaultAdminContainer;
-            }
-            else if (String.IsNullOrEmpty(activeTab.ContainerSrc))
-            {
-                activeTab.ContainerSrc = portalSettings.DefaultPortalContainer;
-            }
-
-            activeTab.ContainerSrc = SkinController.FormatSkinSrc(activeTab.ContainerSrc, portalSettings);
-            activeTab.ContainerPath = SkinController.FormatSkinPath(activeTab.ContainerSrc);
-
-            activeTab.Panes = new ArrayList();
+            UpdateSkinSettings(activeTab, portalSettings);
 
             activeTab.BreadCrumbs = new ArrayList(GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
@@ -132,7 +109,7 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
-        private List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
+        protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
         {
             var breadCrumbs = new List<TabInfo>();
             GetBreadCrumbsRecursively(ref breadCrumbs, tabId, portalId);
@@ -217,6 +194,32 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return activeTab;
+        }
+
+        protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)
+        {
+            if (Globals.IsAdminSkin())
+            {
+                activeTab.SkinSrc = portalSettings.DefaultAdminSkin;
+            }
+            else if (String.IsNullOrEmpty(activeTab.SkinSrc))
+            {
+                activeTab.SkinSrc = portalSettings.DefaultPortalSkin;
+            }
+            activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
+            activeTab.SkinPath = SkinController.FormatSkinPath(activeTab.SkinSrc);
+
+            if (Globals.IsAdminSkin())
+            {
+                activeTab.ContainerSrc = portalSettings.DefaultAdminContainer;
+            }
+            else if (String.IsNullOrEmpty(activeTab.ContainerSrc))
+            {
+                activeTab.ContainerSrc = portalSettings.DefaultPortalContainer;
+            }
+
+            activeTab.ContainerSrc = SkinController.FormatSkinSrc(activeTab.ContainerSrc, portalSettings);
+            activeTab.ContainerPath = SkinController.FormatSkinPath(activeTab.ContainerSrc);            
         }
     }
 }
