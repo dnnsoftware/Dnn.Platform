@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -115,6 +115,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return string.Empty;
+            }
+
             //First remove unspecified HTML Tags ("<....>")
             html = StripUnspecifiedTags(html, tagsFilter, true);
 
@@ -220,9 +225,9 @@ namespace DotNetNuke.Common.Utilities
 
             if (!string.IsNullOrEmpty(strHtml))
             {
-				strHtml = strHtml.Replace("\r\n", "<br />");
-				strHtml = strHtml.Replace("\n", "<br />");
-				strHtml = strHtml.Replace("\r", "<br />");
+                strHtml = strHtml.Replace("\r\n", "<br />");
+                strHtml = strHtml.Replace("\n", "<br />");
+                strHtml = strHtml.Replace("\r", "<br />");
             }
 
             return strHtml;
@@ -304,16 +309,12 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string Shorten(string txt, int length, string suffix)
         {
-            string results;
-            if (txt.Length > length)
+            if (!string.IsNullOrEmpty(txt) && txt.Length > length)
             {
-                results = txt.Substring(0, length) + suffix;
+                txt = txt.Substring(0, length) + suffix;
             }
-            else
-            {
-                results = txt;
-            }
-            return results;
+
+            return txt;
         }
 
         /// -----------------------------------------------------------------------------
@@ -360,6 +361,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
+            if (string.IsNullOrWhiteSpace(HTML))
+            {
+                return string.Empty;
+            }
+
             //Set up Replacement String
             string RepString;
             if (RetainSpace)
@@ -370,6 +376,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 RepString = "";
             }
+
             //Replace Tags by replacement String and return mofified string
             return Regex.Replace(HTML, "<[^>]*>", RepString);
         }
@@ -391,6 +398,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return string.Empty;
+            }
+
             var result = new StringBuilder();
 
             //Set up Replacement String
@@ -435,6 +447,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripPunctuation(string HTML, bool RetainSpace)
         {
+            if (string.IsNullOrWhiteSpace(HTML))
+            {
+                return string.Empty;
+            }
+
             //Create Regular Expression objects
             string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
             var afterRegEx = new Regex(punctuationMatch + "\\s");
@@ -480,6 +497,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
+            if (string.IsNullOrWhiteSpace(HTML))
+            {
+                return string.Empty;
+            }
+
             //Set up Replacement String
             string RepString;
             if (RetainSpace)
@@ -490,7 +512,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 RepString = "";
             }
-			
+
             //Replace Tags by replacement String and return mofified string
             if (HTML == Null.NullString)
             {
@@ -517,6 +539,11 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
+            if (string.IsNullOrWhiteSpace(HTML))
+            {
+                return string.Empty;
+            }
+
             //Set up Replacement String
             string RepString;
             if (RetainSpace)
@@ -527,15 +554,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 RepString = "";
             }
-            if (HTML == null)
-            {
-            //Replace Tags by replacement String and return modified string
-                return HTML;
-            }
-            else
-            {
-                return Regex.Replace(HTML, "\\W*", RepString);
-            }
+            return Regex.Replace(HTML, "\\W*", RepString);
         }
 
         /// <summary>
@@ -623,7 +642,7 @@ namespace DotNetNuke.Common.Utilities
             }
             if (showInstallationMessages)
             {
-				//Get the time of the feedback
+                //Get the time of the feedback
                 TimeSpan timeElapsed = Upgrade.RunTime;
                 string strMessage = "";
                 if (showtime)
@@ -672,7 +691,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void WriteHeader(HttpResponse response, string mode)
         {
-			//Set Response buffer to False
+            //Set Response buffer to False
             response.Buffer = false;
 
             //create an install page if it does not exist already
@@ -753,6 +772,11 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>html string</returns>
         public static string AbsoluteToRelativeUrls(string html, IEnumerable<string> aliases)
         {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return string.Empty;
+            }
+
             foreach (string portalAlias in aliases)
             {
                 string searchAlias = portalAlias;
