@@ -429,4 +429,34 @@
   <data name="lblSubscriptions.Text" xml:space="preserve">
     <value>Subscriptions:</value>
   </data>
+  <data name="DNNCorp_Answers_Question.Text" xml:space="preserve">
+    <value>Answers Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Blogs.Text" xml:space="preserve">
+    <value>Blogs Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Challenges_Challenge.Text" xml:space="preserve">
+    <value>Challenges Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Discussions_Topic.Text" xml:space="preserve">
+    <value>Discussions Subscriptions</value>
+  </data>
+  <data name="DNNCorp_File.Text" xml:space="preserve">
+    <value>File Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Folder.Text" xml:space="preserve">
+    <value>Folder Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Groups_CreatedApprovedGroup.Text" xml:space="preserve">
+    <value>Groups Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Ideas.Text" xml:space="preserve">
+    <value>Ideas Subscriptions</value>
+  </data>
+  <data name="DNNCorp_SocialEvents_Event.Text" xml:space="preserve">
+    <value>Events Subscriptions</value>
+  </data>
+  <data name="DNNCorp_Wiki_Page.Text" xml:space="preserve">
+    <value>Wiki Subscriptions</value>
+  </data>
 </root>
