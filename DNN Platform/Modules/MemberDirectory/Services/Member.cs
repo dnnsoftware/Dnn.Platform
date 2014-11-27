@@ -23,8 +23,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Threading;
+using System.Net;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                              Scope.DefaultSettings,
                                                              ref propertyNotFound);
 
-                    properties[property.PropertyName] = value;
+                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? "" : Common.Utilities.HtmlUtils.Clean(WebUtility.HtmlDecode(value), false);
                 }
                 return properties;
             }
