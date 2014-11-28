@@ -95,7 +95,6 @@ namespace DotNetNuke.Entities.Portals
 
         private Dictionary<string, string> _settings;
         private TimeZoneInfo _timeZone = TimeZoneInfo.Local;
-        private string _version;
 
 		#region Constructors
 

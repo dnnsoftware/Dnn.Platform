@@ -52,6 +52,7 @@ namespace DotNetNuke.Entities.Portals
 	public partial class PortalSettings
 	{
 		private ArrayList _desktopTabs;
+        private string _version;
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultAdminContainer")]
 		public SkinInfo AdminContainer { get; set; }
