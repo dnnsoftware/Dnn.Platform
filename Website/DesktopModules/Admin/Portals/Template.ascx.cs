@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString());
             writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
 
-            Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portal.PortalID);
+            Dictionary<string, string> settingsDictionary = PortalController.Instance.GetPortalSettings(portal.PortalID);
 
             string setting;
             settingsDictionary.TryGetValue("DefaultPortalSkin", out setting);
@@ -485,7 +485,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         {
             var portalInfo = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
-            Dictionary<string, string> settingsDictionary = PortalController.GetPortalSettingsDictionary(portalInfo.PortalID);
+            Dictionary<string, string> settingsDictionary = PortalController.Instance.GetPortalSettings(portalInfo.PortalID);
             string setting;
             bool contentLocalizable = false;
             settingsDictionary.TryGetValue("ContentLocalizationEnabled", out setting);

@@ -2349,6 +2349,11 @@ namespace DotNetNuke.Entities.Portals
                                                     GetPortalsCallBack);
         }
 
+        public Dictionary<string, string> GetPortalSettings(int portalId)
+        {
+            return GetPortalSettingsDictionary(portalId, string.Empty);
+        }
+
         /// <summary>
         /// Load info for a portal template
         /// </summary>
@@ -2952,7 +2957,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                GetPortalSettingsDictionary(portalID).TryGetValue(settingName, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -2999,7 +3004,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting = Null.NullString;
-                GetPortalSettingsDictionary(portalID).TryGetValue(key, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -3060,7 +3065,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting = Null.NullString;
-                GetPortalSettingsDictionary(portalID).TryGetValue(key, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;

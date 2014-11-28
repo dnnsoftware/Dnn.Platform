@@ -1238,7 +1238,7 @@ namespace DotNetNuke.Entities.Users
             var settings = GetDefaultUserSettings();
             Dictionary<string, string> settingsDictionary = (portalId == Null.NullInteger)
                                                             ? HostController.Instance.GetSettingsDictionary()
-                                                            : PortalController.GetPortalSettingsDictionary(GetEffectivePortalId(portalId));
+                                                            : PortalController.Instance.GetPortalSettings(GetEffectivePortalId(portalId));
             if (settingsDictionary != null)
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)

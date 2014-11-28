@@ -41,5 +41,22 @@ namespace DotNetNuke.Entities.Portals
         ///	<param name="portalSetting">The current PortalSettings</param>
         /// -----------------------------------------------------------------------------
         TabInfo GetActiveTab(int tabId, PortalSettings portalSetting);
+
+        ///  -----------------------------------------------------------------------------
+        ///  <summary>
+        ///  The LoadPortal method loads the properties of the portal object into the Portal Settings
+        ///  </summary>
+        /// <param name="portal">The Portal object</param>
+        /// <param name="portalSettings">The Portal Settings object</param>
+        ///  -----------------------------------------------------------------------------
+        void LoadPortal(PortalInfo portal, PortalSettings portalSettings);
+
+        ///  -----------------------------------------------------------------------------
+        ///  <summary>
+        ///  The LoadPortalSettings method loads the settings into the Portal Settings
+        ///  </summary>
+        /// <param name="portalSettings">The Portal Settings object</param>
+        ///  -----------------------------------------------------------------------------
+        void LoadPortalSettings(PortalSettings portalSettings);
     }
 }
