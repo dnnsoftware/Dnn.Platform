@@ -253,13 +253,28 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
-            var currentVersion = GetCurrentVersion(tabId);
-            if (currentVersion == null //Only when a tab is on a first version and it is not published, the currentVersion object can be null
-                || (_portalSettings != null && !_tabVersionSettings.IsVersioningEnabled(_portalSettings.PortalId, tabId)))
+            var versioningEnabled = _portalSettings != null &&
+                                    _tabVersionSettings.IsVersioningEnabled(_portalSettings.PortalId, tabId);
+            if (!versioningEnabled)
+            {
+                return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
+            }
+            
+            // If versionins is enabled but the tab doesn't have versions history, 
+            // then it's a tab never edited after version enabling.
+            var tabWithoutVersions = !_tabVersionController.GetTabVersions(tabId).Any();
+            if (tabWithoutVersions)
             {
                 return CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
             }
 
+            var currentVersion = GetCurrentVersion(tabId);
+            if (currentVersion == null)
+            {
+                //Only when a tab is on a first version and it is not published, the currentVersion object can be null
+                return new List<ModuleInfo>();
+            } 
+            
             return GetVersionModules(tabId, currentVersion.Version);
         }
         
