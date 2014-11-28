@@ -845,52 +845,77 @@ DEALLOCATE Portals_Cursor;
 /********************************************************
  * Table: PortalSettings (allow CultureCode Null, DNN-5743)
  ********************************************************/
-IF EXISTS(SELECT * FROM sys.key_constraints WHERE name = 'PK_{objectQualifier}PortalSettings' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
-	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
-	 DROP CONSTRAINT [PK_{objectQualifier}PortalSettings]
+
+--Drop Foreign Key
+ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
+    DROP CONSTRAINT FK_{objectQualifier}PortalSettings_{objectQualifier}Portals
 GO
 
-IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}PortalSettings' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
-	DROP INDEX [IX_{objectQualifier}PortalSettings] 
-	  ON {databaseOwner}[{objectQualifier}PortalSettings] 
+--Create Temp Table
+CREATE TABLE {databaseOwner}Tmp_{objectQualifier}PortalSettings
+    (
+        PortalSettingID int NOT NULL IDENTITY (1, 1),
+        PortalID int NOT NULL,
+        SettingName nvarchar(50) NOT NULL,
+        SettingValue nvarchar(2000) NULL,
+        CreatedByUserID int NULL,
+        CreatedOnDate datetime NULL,
+        LastModifiedByUserID int NULL,
+        LastModifiedOnDate datetime NULL,
+        CultureCode nvarchar(10) NULL,
+        CONSTRAINT [PK_Tmp_{objectQualifier}PortalSettings] PRIMARY KEY NONCLUSTERED ([PortalSettingID] ASC)
+    )  ON [PRIMARY]
 GO
 
-IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'PK_{objectQualifier}PasswordHistory' AND object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]'))
-	DROP INDEX [PK_{objectQualifier}PortalSettings] 
-	  ON {databaseOwner}[{objectQualifier}PortalSettings] 
+CREATE CLUSTERED INDEX IX_{objectQualifier}PortalSettings ON {databaseOwner}Tmp_{objectQualifier}PortalSettings
+    (
+       PortalID,
+       CultureCode,
+       SettingName
+    ) ON [PRIMARY]
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.all_columns WHERE Name = 'PortalSettingID' and Object_id = object_id(N'{databaseOwner}[{objectQualifier}PortalSettings]')) 
-	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings]
-	  ADD PortalSettingID Int NOT NULL IDENTITY (1, 1);
+--Copy Data to Temp Table (updating CultureCode = '' to NULL)
+IF EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}PortalSettings)
+    INSERT INTO {databaseOwner}Tmp_{objectQualifier}PortalSettings 
+        (
+            PortalID, 
+            SettingName, 
+            SettingValue, 
+            CreatedByUserID, 
+            CreatedOnDate, 
+            LastModifiedByUserID, 
+            LastModifiedOnDate, 
+            CultureCode
+        )
+        SELECT PortalID, 
+            SettingName, 
+            SettingValue, 
+            CreatedByUserID, 
+            CreatedOnDate, 
+            LastModifiedByUserID, 
+            LastModifiedOnDate, 
+            CASE WHEN CultureCode = '' THEN NULL ELSE CultureCode END
+        FROM {databaseOwner}{objectQualifier}PortalSettings
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings]
-  ALTER COLUMN CultureCode nVarChar(10) Null;
+-- drop original table
+DROP TABLE {databaseOwner}{objectQualifier}PortalSettings
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.key_constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'PK_{objectQualifier}PortalSettings')
-	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
-	 ADD CONSTRAINT [PK_{objectQualifier}PortalSettings] 
-	 PRIMARY KEY NONCLUSTERED (PortalSettingID)
+-- rename table
+EXECUTE sp_rename N'{databaseOwner}Tmp_{objectQualifier}PortalSettings', N'{objectQualifier}PortalSettings', 'OBJECT' 
 GO
 
-UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
-SET CultureCode = Null
-WHERE CultureCode = ''
+-- rename PK
+EXECUTE sp_rename N'PK_Tmp_{objectQualifier}PortalSettings', N'PK_{objectQualifier}PortalSettings', 'OBJECT' 
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.check_constraints WHERE parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'CK_{objectQualifier}PortalSettings_CultureCode')
-	ALTER TABLE {databaseOwner}[{objectQualifier}PortalSettings] 
-	 ADD CONSTRAINT [CK_{objectQualifier}PortalSettings_CultureCode] 
-	 CHECK (CultureCode != '')
+-- add back foreign key
+ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings 
+    ADD CONSTRAINT  FK_{objectQualifier}PortalSettings_{objectQualifier}Portals FOREIGN KEY ( PortalID ) REFERENCES {databaseOwner}{objectQualifier}Portals ( PortalID ) ON UPDATE NO ACTION ON DELETE CASCADE 
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') AND name = N'IX_{objectQualifier}PortalSettings')
-	CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings]
-	  ON {databaseOwner}[{objectQualifier}PortalSettings]
-		 (PortalID, CultureCode, SettingName)
-GO
 
 -- All current entries are supposed to be neutral:
 DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings] 
