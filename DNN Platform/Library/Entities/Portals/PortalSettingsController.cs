@@ -25,10 +25,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Entities.Portals
@@ -144,7 +147,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
             string setting;
-            if (PortalController.GetPortalSettingsDictionary(portalId).TryGetValue("PortalAliasMapping", out setting))
+            if (PortalController.Instance.GetPortalSettings(portalId).TryGetValue("PortalAliasMapping", out setting))
             {
                 switch (setting.ToUpperInvariant())
                 {
@@ -194,6 +197,110 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return activeTab;
+        }
+
+        public virtual void LoadPortal(PortalInfo portal, PortalSettings portalSettings)
+		{
+            portalSettings.PortalName = portal.PortalName;
+            portalSettings.LogoFile = portal.LogoFile;
+            portalSettings.FooterText = portal.FooterText;
+            portalSettings.ExpiryDate = portal.ExpiryDate;
+            portalSettings.UserRegistration = portal.UserRegistration;
+            portalSettings.BannerAdvertising = portal.BannerAdvertising;
+            portalSettings.Currency = portal.Currency;
+            portalSettings.AdministratorId = portal.AdministratorId;
+            portalSettings.Email = portal.Email;
+            portalSettings.HostFee = portal.HostFee;
+            portalSettings.HostSpace = Null.IsNull(portal.HostSpace) ? 0 : portal.HostSpace;
+            portalSettings.PageQuota = portal.PageQuota;
+            portalSettings.UserQuota = portal.UserQuota;
+            portalSettings.AdministratorRoleId = portal.AdministratorRoleId;
+            portalSettings.AdministratorRoleName = portal.AdministratorRoleName;
+            portalSettings.RegisteredRoleId = portal.RegisteredRoleId;
+            portalSettings.RegisteredRoleName = portal.RegisteredRoleName;
+            portalSettings.Description = portal.Description;
+            portalSettings.KeyWords = portal.KeyWords;
+            portalSettings.BackgroundFile = portal.BackgroundFile;
+            portalSettings.GUID = portal.GUID;
+            portalSettings.SiteLogHistory = portal.SiteLogHistory;
+            portalSettings.AdminTabId = portal.AdminTabId;
+            portalSettings.SuperTabId = portal.SuperTabId;
+            portalSettings.SplashTabId = portal.SplashTabId;
+            portalSettings.HomeTabId = portal.HomeTabId;
+            portalSettings.LoginTabId = portal.LoginTabId;
+            portalSettings.RegisterTabId = portal.RegisterTabId;
+            portalSettings.UserTabId = portal.UserTabId;
+            portalSettings.SearchTabId = portal.SearchTabId;
+            portalSettings.ErrorPage404 = portal.Custom404TabId;
+            portalSettings.ErrorPage500 = portal.Custom500TabId;
+            portalSettings.DefaultLanguage = Null.IsNull(portal.DefaultLanguage) ? Localization.SystemLocale : portal.DefaultLanguage;
+            portalSettings.HomeDirectory = Globals.ApplicationPath + "/" + portal.HomeDirectory + "/";
+            portalSettings.HomeDirectoryMapPath = portal.HomeDirectoryMapPath;
+            portalSettings.HomeSystemDirectory = Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/";
+            portalSettings.HomeSystemDirectoryMapPath = portal.HomeSystemDirectoryMapPath;
+            portalSettings.Pages = portal.Pages;
+            portalSettings.Users = portal.Users;
+            portalSettings.CultureCode = portal.CultureCode;
+        }
+
+        public virtual void LoadPortalSettings(PortalSettings portalSettings)
+        {
+            var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
+            portalSettings.Registration = new RegistrationSettings(settings);
+
+            portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+            portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
+            portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
+            portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
+            portalSettings.DefaultIconLocation = settings.GetValueOrDefault("DefaultIconLocation", "icons/sigma");
+            portalSettings.DefaultModuleId = settings.GetValueOrDefault("defaultmoduleid", Null.NullInteger);
+            portalSettings.DefaultPortalContainer = settings.GetValueOrDefault("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
+            portalSettings.DefaultPortalSkin = settings.GetValueOrDefault("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
+            portalSettings.DefaultTabId = settings.GetValueOrDefault("defaulttabid", Null.NullInteger);
+            portalSettings.EnableBrowserLanguage = settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
+            portalSettings.EnableCompositeFiles = settings.GetValueOrDefault("EnableCompositeFiles", false);
+            portalSettings.EnablePopUps = settings.GetValueOrDefault("EnablePopUps", true);
+            portalSettings.EnableModuleEffect = settings.GetValueOrDefault("EnableModuleEffect", true);
+            portalSettings.HideLoginControl = settings.GetValueOrDefault("HideLoginControl", false);
+            portalSettings.EnableSkinWidgets = settings.GetValueOrDefault("EnableSkinWidgets", true);
+            portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
+            portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
+            portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);
+            portalSettings.SearchIncludeCommon = settings.GetValueOrDefault("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
+            portalSettings.SearchIncludeNumeric = settings.GetValueOrDefault("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
+            portalSettings.SearchIncludedTagInfoFilter = settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
+            portalSettings.SearchMaxWordlLength = settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
+            portalSettings.SearchMinWordlLength = settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
+            portalSettings.SSLEnabled = settings.GetValueOrDefault("SSLEnabled", false);
+            portalSettings.SSLEnforced = settings.GetValueOrDefault("SSLEnforced", false);
+            portalSettings.SSLURL = settings.GetValueOrDefault("SSLURL", Null.NullString);
+            portalSettings.STDURL = settings.GetValueOrDefault("STDURL", Null.NullString);
+            portalSettings.EnableRegisterNotification = settings.GetValueOrDefault("EnableRegisterNotification", true);
+            portalSettings.DefaultAuthProvider = settings.GetValueOrDefault("DefaultAuthProvider", "DNN");
+            portalSettings.SMTPConnectionLimit = settings.GetValueOrDefault("SMTPConnectionLimit", 1);
+            portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 0);
+
+            portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
+            string setting = settings.GetValueOrDefault("ControlPanelSecurity", "");
+            if (setting.ToUpperInvariant() == "TAB")
+            {
+                portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
+            }
+            portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
+            setting = settings.GetValueOrDefault("ControlPanelMode", "");
+            if (setting.ToUpperInvariant() == "EDIT")
+            {
+                portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
+            }
+            setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
+            portalSettings.DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
+            setting = settings.GetValueOrDefault("TimeZone", "");
+            if (!string.IsNullOrEmpty(setting))
+            {
+                var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
+                if (timeZone != null)
+                    portalSettings.TimeZone = timeZone;
+            }
         }
 
         protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)

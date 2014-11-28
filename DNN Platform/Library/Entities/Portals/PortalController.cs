@@ -2348,6 +2348,11 @@ namespace DotNetNuke.Entities.Portals
                                                     GetPortalsCallBack);
         }
 
+        public Dictionary<string, string> GetPortalSettings(int portalId)
+        {
+            return GetPortalSettingsDictionary(portalId, string.Empty);
+        }
+
         /// <summary>
         /// Load info for a portal template
         /// </summary>
@@ -2904,16 +2909,6 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <returns>portal settings.</returns>
-        public static Dictionary<string, string> GetPortalSettingsDictionary(int portalID)
-        {
-	        return GetPortalSettingsDictionary(portalID, string.Empty);
-        }
-
-        /// <summary>
         /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
         /// </summary>
         /// <param name="settingName">the setting to read</param>
@@ -2942,7 +2937,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                GetPortalSettingsDictionary(portalID).TryGetValue(settingName, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -2965,7 +2960,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting = Null.NullString;
-                GetPortalSettingsDictionary(portalID).TryGetValue(key, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -2995,7 +2990,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting = Null.NullString;
-                GetPortalSettingsDictionary(portalID).TryGetValue(key, out setting);
+                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;

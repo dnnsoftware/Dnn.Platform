@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
             setupCredentials.NavigateUrl = ModuleContext.EditUrl("Store");
             updateCredentials.NavigateUrl = ModuleContext.EditUrl("Store");
-            Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(ModuleContext.PortalId);
+            Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(ModuleContext.PortalId);
             if (settings.ContainsKey("Store_Username"))
             {
                 fetchExtensions.Visible = true;
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             string fileCheck = Localization.GetString("StoreFile", LocalResourceFile);
             string postData = "";
-            Dictionary<string, string> settings = PortalController.GetPortalSettingsDictionary(ModuleContext.PortalId);
+            Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(ModuleContext.PortalId);
             var ps = new PortalSecurity();
             string username = ps.DecryptString(settings["Store_Username"], Config.GetDecryptionkey());
             string password = ps.DecryptString(settings["Store_Password"], Config.GetDecryptionkey());
@@ -137,8 +137,7 @@ namespace DotNetNuke.Modules.Admin.Extensions
                 string fileCheck = Localization.GetString("StoreFile", LocalResourceFile);
                 string postData = "";
                 Stream oStream;
-                Dictionary<string, string> settings =
-                    PortalController.GetPortalSettingsDictionary(ModuleContext.PortalId);
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(ModuleContext.PortalId);
                 var ps = new PortalSecurity();
                 string username = ps.DecryptString(settings["Store_Username"], Config.GetDecryptionkey());
                 string password = ps.DecryptString(settings["Store_Password"], Config.GetDecryptionkey());

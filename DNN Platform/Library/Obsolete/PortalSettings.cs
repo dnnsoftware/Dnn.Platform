@@ -26,6 +26,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -55,13 +56,16 @@ namespace DotNetNuke.Entities.Portals
         private string _version;
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultAdminContainer")]
-		public SkinInfo AdminContainer { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public SkinInfo AdminContainer { get; set; }
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultAdminSkin")]
-		public SkinInfo AdminSkin { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public SkinInfo AdminSkin { get; set; }
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by Host.GetHostSettingsDictionary")]
-		public Hashtable HostSettings
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public Hashtable HostSettings
 		{
 			get
 			{
@@ -75,7 +79,8 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by extended UserMode property.")]
-		public bool ContentVisible
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool ContentVisible
 		{
 			get
 			{
@@ -84,13 +89,16 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultPortalContainer")]
-		public SkinInfo PortalContainer { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public SkinInfo PortalContainer { get; set; }
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DefaultPortalSkin")]
-		public SkinInfo PortalSkin { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public SkinInfo PortalSkin { get; set; }
 
 		[Obsolete("Deprecated in DNN 5.0. Tabs are cached independeently of Portal Settings, and this property is thus redundant")]
-		public ArrayList DesktopTabs
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ArrayList DesktopTabs
 		{
 			get
 			{
@@ -141,7 +149,8 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.1. Replaced by Application.Version")]
-		public string Version
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Version
 		{
 			get
 			{
@@ -158,7 +167,8 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 6.0")]
-		public int TimeZoneOffset
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int TimeZoneOffset
 		{
 			get
 			{
@@ -171,31 +181,36 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.ExecuteScript")]
-		public static string ExecuteScript(string strScript)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string ExecuteScript(string strScript)
 		{
 			return DataProvider.Instance().ExecuteScript(strScript);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.ExecuteScript")]
-		public static string ExecuteScript(string strScript, bool useTransactions)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string ExecuteScript(string strScript, bool useTransactions)
 		{
 			return DataProvider.Instance().ExecuteScript(strScript);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by Globals.FindDatabaseVersion")]
-		public static bool FindDatabaseVersion(int major, int minor, int build)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static bool FindDatabaseVersion(int major, int minor, int build)
 		{
 			return Globals.FindDatabaseVersion(major, minor, build);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.GetDatabaseVersion")]
-		public static IDataReader GetDatabaseVersion()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static IDataReader GetDatabaseVersion()
 		{
 			return DataProvider.Instance().GetDatabaseVersion();
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by Host.GetHostSettingsDictionary")]
-		public static Hashtable GetHostSettings()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetHostSettings()
 		{
 			var h = new Hashtable();
 			foreach (KeyValuePair<string, string> kvp in HostController.Instance.GetSettingsDictionary())
@@ -206,31 +221,36 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetModuleSettings(ModuleId)")]
-		public static Hashtable GetModuleSettings(int moduleId)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetModuleSettings(int moduleId)
 		{
 			return new ModuleController().GetModuleSettings(moduleId);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasInfo")]
-		public static PortalAliasInfo GetPortalAliasInfo(string portalAlias)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static PortalAliasInfo GetPortalAliasInfo(string portalAlias)
 		{
 			return PortalAliasController.Instance.GetPortalAlias(portalAlias);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByPortal")]
-		public static string GetPortalByID(int portalId, string portalAlias)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string GetPortalByID(int portalId, string portalAlias)
 		{
 			return PortalAliasController.GetPortalAliasByPortal(portalId, portalAlias);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasByTab")]
-		public static string GetPortalByTab(int tabID, string portalAlias)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string GetPortalByTab(int tabID, string portalAlias)
 		{
 			return PortalAliasController.GetPortalAliasByTab(tabID, portalAlias);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalAliasController.GetPortalAliasLookup")]
-		public static PortalAliasCollection GetPortalAliasLookup()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static PortalAliasCollection GetPortalAliasLookup()
 		{
 			var portalAliasCollection = new PortalAliasCollection();
 			var aliasController = new PortalAliasController();
@@ -243,22 +263,25 @@ namespace DotNetNuke.Entities.Portals
 		}
 
         [Obsolete("Deprecated in DNN 7.4. Replaced by PortalSettingsController.Instance().GetPortalAliasMappingMode")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             return PortalSettingsController.Instance().GetPortalAliasMappingMode(portalId);
         }
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.GetProviderPath")]
-		public static string GetProviderPath()
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string GetProviderPath()
 		{
 			return DataProvider.Instance().GetProviderPath();
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.GetPortalSettingsDictionary")]
-		public static Hashtable GetSiteSettings(int portalId)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetSiteSettings(int portalId)
 		{
 			var h = new Hashtable();
-			foreach (KeyValuePair<string, string> kvp in PortalController.GetPortalSettingsDictionary(portalId))
+            foreach (KeyValuePair<string, string> kvp in PortalController.Instance.GetPortalSettings(portalId))
 			{
 				h.Add(kvp.Key, kvp.Value);
 			}
@@ -266,21 +289,24 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.GetPortalSettingsDictionary(portalId).TryGetValue(settingName) or for the most part by proeprties of PortalSettings")]
-		public static string GetSiteSetting(int portalId, string settingName)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static string GetSiteSetting(int portalId, string settingName)
 		{
 			string setting;
-			PortalController.GetPortalSettingsDictionary(portalId).TryGetValue(settingName, out setting);
+            PortalController.Instance.GetPortalSettings(portalId).TryGetValue(settingName, out setting);
 			return setting;
 		}
 
 		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(TabModuleId)")]
-		public static Hashtable GetTabModuleSettings(int tabModuleId)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetTabModuleSettings(int tabModuleId)
 		{
 			return new ModuleController().GetTabModuleSettings(tabModuleId);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(ModuleId)")]
-		public static Hashtable GetTabModuleSettings(int tabModuleId, Hashtable moduleSettings)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetTabModuleSettings(int tabModuleId, Hashtable moduleSettings)
 		{
 			Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(tabModuleId);
 
@@ -294,7 +320,8 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0.  Please use ModuleController.GetTabModuleSettings(ModuleId)")]
-		public static Hashtable GetTabModuleSettings(Hashtable moduleSettings, Hashtable tabModuleSettings)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Hashtable GetTabModuleSettings(Hashtable moduleSettings, Hashtable tabModuleSettings)
 		{
 			// add the TabModuleSettings to the ModuleSettings
 			foreach (string strKey in tabModuleSettings.Keys)
@@ -307,19 +334,22 @@ namespace DotNetNuke.Entities.Portals
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.UpdateDatabaseVersion")]
-		public static void UpdateDatabaseVersion(int major, int minor, int build)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void UpdateDatabaseVersion(int major, int minor, int build)
 		{
 			DataProvider.Instance().UpdateDatabaseVersion(major, minor, build, DotNetNukeContext.Current.Application.Name);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by DataProvider.UpdatePortalSetting(Integer, String, String)")]
-		public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void UpdatePortalSetting(int portalId, string settingName, string settingValue)
 		{
 			PortalController.UpdatePortalSetting(portalId, settingName, settingValue);
 		}
 
 		[Obsolete("Deprecated in DNN 5.0. Replaced by PortalController.UpdatePortalSetting(Integer, String, String)")]
-		public static void UpdateSiteSetting(int portalId, string settingName, string settingValue)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void UpdateSiteSetting(int portalId, string settingName, string settingValue)
 		{
 			PortalController.UpdatePortalSetting(portalId, settingName, settingValue);
 		}
