@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -1306,7 +1306,7 @@ namespace DotNetNuke.Services.Localization
         /// - [Date:Current]: Current date
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName)
@@ -1333,7 +1333,7 @@ namespace DotNetNuke.Services.Localization
         /// - [Date:Current]: Current date
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo)
@@ -1361,7 +1361,7 @@ namespace DotNetNuke.Services.Localization
         /// - [Date:Current]: Current date
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo)
@@ -1389,7 +1389,7 @@ namespace DotNetNuke.Services.Localization
         /// - [Date:Current]: Current date
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, string resourceFile)
@@ -1418,7 +1418,7 @@ namespace DotNetNuke.Services.Localization
         /// - [Date:Current]: Current date
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         /// </history>
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile)
@@ -1441,7 +1441,7 @@ namespace DotNetNuke.Services.Localization
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
         ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
         /// </history>
@@ -1467,7 +1467,7 @@ namespace DotNetNuke.Services.Localization
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
         ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
         /// </history>
@@ -1494,7 +1494,7 @@ namespace DotNetNuke.Services.Localization
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
         ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
         /// </history>
@@ -1523,7 +1523,7 @@ namespace DotNetNuke.Services.Localization
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// <history>
-        /// 	[Vicenç]	05/07/2004	Documented
+        /// 	[VicenÃ§]	05/07/2004	Documented
         ///     [cnurse]    10/06/2004  Moved from SystemMessages to Localization
         ///     [DanCaron]  10/27/2004  Simplified Profile replacement, added Membership replacement
         /// </history>
@@ -2035,6 +2035,9 @@ namespace DotNetNuke.Services.Localization
             {
                 throw new ArgumentNullException("cultureInfo");
             }
+
+            if (cultureInfo.Name == "fa-IR")
+                cultureInfo = Persian.GetPersianCultureInfo();
 
             Thread.CurrentThread.CurrentCulture = cultureInfo;
 
