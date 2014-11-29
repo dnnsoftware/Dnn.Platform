@@ -141,11 +141,11 @@ namespace DotNetNuke.Entities.Portals
 
 		public PortalSettings(int tabId, PortalInfo portal)
 		{
-		    PortalId = portal.PortalID;
-            BuildPortalSettings(tabId, portal);
+		    PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+		    BuildPortalSettings(tabId, portal);
 		}
 
-        private void BuildPortalSettings(int tabId, PortalInfo portal)
+	    private void BuildPortalSettings(int tabId, PortalInfo portal)
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 

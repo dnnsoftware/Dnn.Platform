@@ -103,6 +103,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             _mockInternalMessagingController = new Mock<InternalMessagingControllerImpl> { CallBase = true };
 
             _portalController = new Mock<IPortalController>();
+            _portalController.Setup(c => c.GetPortalSettings(It.IsAny<int>())).Returns(new Dictionary<string, string>());
             PortalController.SetTestableInstance(_portalController.Object);
 
             DataService.RegisterInstance(_mockDataService.Object);
