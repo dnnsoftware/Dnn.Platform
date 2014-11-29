@@ -2919,16 +2919,6 @@ namespace DotNetNuke.Entities.Portals
 		}
 
         /// <summary>
-        /// Gets the portal settings dictionary.
-        /// </summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <returns>portal settings.</returns>
-        public static Dictionary<string, string> GetPortalSettingsDictionary(int portalID)
-        {
-			return GetPortalSettingsDictionary(portalID, GetActivePortalLanguage(portalID));
-		}
-
-        /// <summary>
         /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
         /// </summary>
         /// <param name="settingName">the setting to read</param>

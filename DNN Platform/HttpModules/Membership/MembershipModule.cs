@@ -119,7 +119,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// Authenticates the request.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="allowUnknownExtensinons">if set to <c>true</c> to allow unknown extensinons.</param>
+        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensinons.</param>
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;

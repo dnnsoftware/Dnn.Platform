@@ -111,7 +111,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>
         /// <param name="tabId">The Tab Id to be queried</param>  
         /// <param name="createdByUserId">User Id which deletes the version</param>
-        /// <param name="versionNumber">Version Number of the version to be deleted</param>
+        /// <param name="version">Version Number of the version to be deleted</param>
         void DeleteVersion(int tabId, int createdByUserId, int version);
 
         /// <summary>

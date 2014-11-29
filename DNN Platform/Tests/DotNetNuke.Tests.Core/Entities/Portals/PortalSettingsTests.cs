@@ -22,6 +22,7 @@
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
@@ -77,10 +78,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = new PortalAliasInfo()
-                                    {
-                                        PortalID = Valid_PortalId,
-                                    };
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
 
             //Act
             var settings = new PortalSettings(Valid_TabId, portalAlias);
@@ -97,10 +95,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = new PortalAliasInfo()
-                                    {
-                                        PortalID = Valid_PortalId,
-                                    };
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
 
             //Act
             var settings = new PortalSettings(Valid_TabId, portalAlias);
@@ -115,17 +110,28 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             //Arrange
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portal = new PortalInfo()
-            {
-                PortalID = Valid_PortalId,
-            };
-
+            var portal = CreatePortal(Valid_PortalId);
 
             //Act
             var settings = new PortalSettings(Valid_TabId, portal);
 
             //Assert
             Assert.AreEqual(Valid_PortalId, settings.PortalId);
+        }
+
+        [Test]
+        public void Constructor_Does_Not_Set_PortalId_When_Passed_Null_Portal()
+        {
+            //Arrange
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portal = CreatePortal(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, (PortalInfo)null);
+
+            //Assert
+            Assert.AreEqual(InValid_PortalId, settings.PortalId);
         }
 
         [Test]
@@ -151,17 +157,277 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-            var portalAlias = new PortalAliasInfo()
-                                    {
-                                        PortalID = Valid_PortalId,
-                                    };
-
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
 
             //Act
             var settings = new PortalSettings(Valid_TabId, portalAlias);
 
             //Assert
             mockPortalController.Verify(c => c.GetPortal(Valid_PortalId));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Portal()
+        {
+            //Arrange
+             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portal = CreatePortal(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portal);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Valid_PortalAlias()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
+        }
+
+        [Test]
+        public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Portal_Is_Null()
+        {
+            //Arrange
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, (PortalInfo) null);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortal(It.IsAny<PortalInfo>(), settings), Times.Never);
+        }
+
+        [Test]
+        public void Constructor_Does_Not_Call_PortalSettingsController_LoadPortal_When_Passed_InValid_PortalAlias()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portalAlias = CreatePortalAlias(InValid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings), Times.Never);
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalId()
+        {
+            //Arrange
+            var mockPortalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(mockPortalController.Object);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, Valid_PortalId);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_Portal()
+        {
+            //Arrange
+            var mockPortalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(mockPortalController.Object);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portal = CreatePortal(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portal);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_LoadPortalSettings_When_Passed_PortalAlias()
+        {
+            //Arrange
+            var mockPortalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(mockPortalController.Object);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.LoadPortalSettings(settings));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Portal()
+        {
+            //Arrange
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portal = CreatePortal(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portal);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(Valid_TabId, settings));
+        }
+
+        [Test]
+        public void Constructor_Calls_PortalSettingsController_GetActiveTab_When_Passed_Valid_PortalAlias()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(Valid_TabId, settings));
+        }
+
+        [Test]
+        public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Portal_Is_Null()
+        {
+            //Arrange
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, (PortalInfo)null);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(Valid_TabId,settings), Times.Never);
+        }
+
+        [Test]
+        public void Constructor_Does_Not_Call_PortalSettingsController_GetActiveTab_When_Passed_InValid_PortalAlias()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+
+            var portalAlias = CreatePortalAlias(InValid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(Valid_TabId,settings), Times.Never);
+        }
+
+        [Test]
+        public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalId()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+            mockPortalSettingsController
+                .Setup(c => c.GetActiveTab(Valid_TabId, It.IsAny<PortalSettings>()))
+                .Returns(new TabInfo());
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, Valid_PortalId);
+
+            //Assert
+            Assert.NotNull(settings.ActiveTab);
+        }
+
+        [Test]
+        public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_Portal()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+            mockPortalSettingsController
+                .Setup(c => c.GetActiveTab(Valid_TabId, It.IsAny<PortalSettings>()))
+                .Returns(new TabInfo());
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portal);
+
+            //Assert
+            Assert.NotNull(settings.ActiveTab);
+        }
+
+        [Test]
+        public void Constructor_Sets_ActiveTab_Property_If_Valid_TabId_And_PortalAlias()
+        {
+            //Arrange
+            var portal = CreatePortal(Valid_PortalId);
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController.Setup(c => c.GetPortal(Valid_PortalId)).Returns(portal);
+            PortalController.SetTestableInstance(mockPortalController.Object);
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+            mockPortalSettingsController
+                .Setup(c => c.GetActiveTab(Valid_TabId, It.IsAny<PortalSettings>()))
+                .Returns(new TabInfo());
+
+            var portalAlias = CreatePortalAlias(Valid_PortalId);
+
+            //Act
+            var settings = new PortalSettings(Valid_TabId, portalAlias);
+
+            //Assert
+            Assert.NotNull(settings.ActiveTab);
+        }
+
+        private PortalInfo CreatePortal(int portalId)
+        {
+            var portal = new PortalInfo()
+            {
+                PortalID = portalId,
+            };
+
+            return portal;
+        }
+
+        private PortalAliasInfo CreatePortalAlias(int portalId)
+        {
+            var portalAlias = new PortalAliasInfo()
+            {
+                PortalID = portalId,
+            };
+
+            return portalAlias;
         }
     }
 }
