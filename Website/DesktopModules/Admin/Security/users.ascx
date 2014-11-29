@@ -57,13 +57,13 @@
                     </dnn:DnnGridTemplateColumn>
                     <dnn:DnnGridTemplateColumn HeaderText="CreatedDate">
                         <ItemTemplate>
-                            <asp:Label ID="lblLastLogin" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.CreatedDate) %>'>
+                            <asp:Label ID="lblCreateDate" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.CreatedDate) %>'>
                             </asp:Label>
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
                     <dnn:DnnGridTemplateColumn HeaderText="LastLogin">
                         <ItemTemplate>
-                            <asp:Label ID="Label7" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.LastLoginDate) %>'>
+                            <asp:Label ID="lblLastLogin" Runat="server" Text='<%# DisplayDate(((UserInfo)Container.DataItem).Membership.LastLoginDate) %>'>
                             </asp:Label>
                         </ItemTemplate>
                     </dnn:DnnGridTemplateColumn>
