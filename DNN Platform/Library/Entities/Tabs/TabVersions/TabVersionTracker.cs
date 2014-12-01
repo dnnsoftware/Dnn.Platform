@@ -28,7 +28,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
+    class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
     {
         #region Public Methods
 
@@ -44,15 +44,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                if (IsHostModule(module))
-                {
-                    return;
-                }
-
                 var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId);
-                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module,
-                    moduleVersion, TabVersionDetailAction.Added);
-                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+
+                ProcessAdditionDetail(module, moduleVersion, userId, unPublishedVersion);
             }
             catch (Exception ex)
             {
@@ -116,32 +110,106 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                if (IsHostModule(module))
-                {
-                    return;
-                }
-
                 var unPublishedVersion = GetOrCreateUnPublishedTabVersion(module.PortalID, module.TabID, userId);
-            
-                var existingTabDetail = TabVersionDetailController.Instance.GetTabVersionDetails(unPublishedVersion.TabVersionId).SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
-                if (existingTabDetail != null)
-                {
-                    TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId, existingTabDetail.TabVersionDetailId); 
-                }
-                else
-                {  
-                    var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(unPublishedVersion.TabVersionId, module, moduleVersion, TabVersionDetailAction.Deleted);
-                    TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
-                }
+
+                ProcessDeletionDetail(module, moduleVersion, userId, unPublishedVersion);
             }
             catch (Exception ex)
             {
                 Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
+        /// <summary>
+        /// Tracks a version detail when a module is copied from an exisitng page
+        /// </summary>
+        /// <param name="module">Module which tracks the version detail</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
+        /// <param name="originalTabId">Tab Id where the module originally is</param>
+        /// /// <param name="userId">User Id who provokes the version detail</param>  
+        public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            Requires.NotNull("module", module);
+
+            try
+            {
+                var targetVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID) ??
+                                    TabVersionMaker.Instance.GetCurrentVersion(module.TabID);
+                if (targetVersion == null)
+                {
+                    return;
+                }
+
+                ProcessAdditionDetail(module, moduleVersion, userId, targetVersion);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tracks a version detail when a copied module is deleted from an exisitng page
+        /// </summary>
+        /// <param name="module">Module which tracks the version detail</param>
+        /// <param name="moduleVersion">Version number corresponding to the version detail</param>
+        /// <param name="originalTabId">Tab Id where the module originally is</param>
+        /// <param name="userId">User Id who provokes the version detail</param>  
+        public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            Requires.NotNull("module", module);
+
+            try
+            {
+                var targetVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID) ??
+                                    TabVersionMaker.Instance.GetCurrentVersion(module.TabID);
+
+                ProcessDeletionDetail(module, moduleVersion, userId, targetVersion);
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
         #endregion
 
         #region Private Statics Methods
+
+        private static void ProcessAdditionDetail(ModuleInfo module, int moduleVersion, int userId, TabVersion targetVersion)
+        {
+            if (IsHostModule(module))
+            {
+                return;
+            }
+            
+            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
+                moduleVersion, TabVersionDetailAction.Added);
+            TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+        }
+
+        private static void ProcessDeletionDetail(ModuleInfo module, int moduleVersion, int userId, TabVersion targetVersion)
+        {
+            if (IsHostModule(module))
+            {
+                return;
+            }
+
+            var existingTabDetail =
+                TabVersionDetailController.Instance.GetTabVersionDetails(targetVersion.TabVersionId)
+                    .SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
+            if (existingTabDetail != null)
+            {
+                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
+                    existingTabDetail.TabVersionDetailId);
+            }
+            else
+            {
+                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
+                    moduleVersion, TabVersionDetailAction.Deleted);
+                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            }
+        }
 
         private static bool IsHostModule(ModuleInfo module)
         {

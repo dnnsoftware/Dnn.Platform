@@ -90,6 +90,31 @@ namespace DotNetNuke.Entities.Tabs
             NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
+        /// <summary>
+        /// Tracks a workflow instance when a module is copied from an exisitng page
+        /// </summary>
+        /// <param name="module">Module which tracks the workflow instance</param>
+        /// <param name="moduleVersion">Version number corresponding to the module</param>
+        /// <param name="originalTabId">Tab Id where the module originally is</param>
+        /// <param name="userId">User Id related with the workflow instance</param>  
+        public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            TrackModuleAddition(module, moduleVersion, userId);
+        }
+
+
+        /// <summary>
+        /// Tracks a workflow instance when a copied module is deleted from an exisitng page
+        /// </summary>
+        /// <param name="module">Module which tracks the workflow instance</param>
+        /// <param name="moduleVersion">Version number corresponding to the module</param>
+        /// <param name="originalTabId">Tab Id where the module originally is</param>
+        /// <param name="userId">User Id related with the workflow instance</param> 
+        public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            TrackModuleDeletion(module, moduleVersion, userId);
+        }
+
         #region Private Statics Methods
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)
         {
