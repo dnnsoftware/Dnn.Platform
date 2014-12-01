@@ -125,9 +125,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             _contentController.UpdateContentItem(item);
         }
 
-        private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem)
+        private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem, StateTransaction stateTransaction)
         {
-            bool wasDraftSubmitted = WasDraftSubmitted(workflow, contentItem.ContentItemId);
+            bool wasDraftSubmitted = WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
             if (wasDraftSubmitted)
             {
                 return GetSubmittedDraftStateUser(workflow, contentItem);
@@ -186,7 +186,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             try
             {
-                var user = GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem);
+                var user = GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
                 if (user == null)
                 {
                     Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
