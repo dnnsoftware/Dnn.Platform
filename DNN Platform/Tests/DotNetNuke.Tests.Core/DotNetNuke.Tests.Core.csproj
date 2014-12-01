@@ -226,8 +226,9 @@
       <Link>App.config</Link>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Entities\Portals\TestFiles\SettingValues.csv" />
     <None Include="Entities\Portals\TestFiles\HostSettings.csv" />
-    <None Include="Entities\Portals\TestFiles\TestFile.csv" />
+    <None Include="Entities\Portals\TestFiles\DefaultValues.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             {
                 var testData = new ArrayList();
 
-                Util.ReadStream(FilePath, "TestFile", (line, header) =>
+                Util.ReadStream(FilePath, "DefaultValues", (line, header) =>
                             {
                                 var fieldList = new Dictionary<string, string>();
                                 var testName = "Load_Default_Value";
@@ -88,6 +88,37 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
                                 testData.Add(new TestCaseData(fieldList).SetName(testName));
                             });
+
+                return testData;
+            }
+        }
+
+        internal static IEnumerable LoadPortalSettings_Loads_Setting_Value
+        {
+            get
+            {
+                var testData = new ArrayList();
+
+                Util.ReadStream(FilePath, "SettingValues", (line, header) =>
+                {
+                    var fieldList = new Dictionary<string, string>();
+                    var testName = "Load_Setting_Value";
+                    string[] headers = header.Split(',');
+                    string[] fields = line.Split(',');
+                    for (int i = 0; i < fields.Length; i++)
+                    {
+                        string key = headers[i].Trim(new[] { '\t', '"' });
+                        string val = fields[i].Trim(new[] { '\t', '"' });
+
+                        fieldList[key] = val;
+                    }
+
+                    testName += "_";
+
+                    testName += fields[0];
+
+                    testData.Add(new TestCaseData(fieldList).SetName(testName));
+                });
 
                 return testData;
             }

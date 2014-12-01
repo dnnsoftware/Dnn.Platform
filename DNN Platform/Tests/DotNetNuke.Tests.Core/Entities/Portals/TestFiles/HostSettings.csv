@@ -7,6 +7,6 @@ EnableBrowserLanguage,					true
 EnableUrlLanguage,						true
 SearchIncludeCommon,					true
 SearchIncludeNumeric,					true
-SearchIncludedTagInfoFilter,			true
+SearchIncludedTagInfoFilter,			a
 MaxSearchWordLength,					25
 MinSearchWordLength,					3

@@ -286,14 +286,17 @@ namespace DotNetNuke.Entities.Portals
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
+
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
             setting = settings.GetValueOrDefault("ControlPanelMode", "");
             if (setting.ToUpperInvariant() == "EDIT")
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
+
             setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
             portalSettings.DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
+
             setting = settings.GetValueOrDefault("TimeZone", "");
             if (!string.IsNullOrEmpty(setting))
             {
