@@ -121,12 +121,12 @@
     <value>In Use</value>
   </data>
   <data name="plSkins.Help" xml:space="preserve">
-    <value>Displays a list of the Installed Host Skins</value>
+    <value>Displays a list of the Installed Host Themes</value>
   </data>
   <data name="plSkins.Text" xml:space="preserve">
-    <value>Installed Host Skins:</value>
+    <value>Installed Host Themes:</value>
   </data>
   <data name="Skin.Header" xml:space="preserve">
-    <value>Skin</value>
+    <value>Theme</value>
   </data>
 </root>

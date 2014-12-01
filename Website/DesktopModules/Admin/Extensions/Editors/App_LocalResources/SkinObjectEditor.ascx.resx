@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ControlKey.Help" xml:space="preserve">
-    <value>Enter a key for the Skin Object.  The key must be unique.</value>
+    <value>Enter a key for the Theme Object.  The key must be unique.</value>
   </data>
   <data name="ControlKey.Text" xml:space="preserve">
     <value>Control Key:</value>
@@ -130,7 +130,7 @@
     <value>Control Src:</value>
   </data>
   <data name="Help.Text" xml:space="preserve">
-    <value>This editor allows you to configure the Skin Object.</value>
+    <value>This editor allows you to configure the Theme Object.</value>
   </data>
   <data name="HelpURL.Help" xml:space="preserve">
     <value>Enter a Help URL for this control</value>
@@ -151,6 +151,6 @@
     <value>Supports Partial Rendering:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
-    <value>Skin Object Settings</value>
+    <value>Theme Object Settings</value>
   </data>
 </root>

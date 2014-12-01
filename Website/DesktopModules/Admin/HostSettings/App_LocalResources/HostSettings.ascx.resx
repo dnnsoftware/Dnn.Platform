@@ -205,7 +205,7 @@
     <value>Host Email:</value>
   </data>
   <data name="plHostSkin.Text" xml:space="preserve">
-    <value>Host Skin:</value>
+    <value>Host Theme:</value>
   </data>
   <data name="plHostContainer.Text" xml:space="preserve">
     <value>Host Container:</value>
@@ -286,7 +286,7 @@
     <value>Allowable File Extensions:</value>
   </data>
   <data name="plSkinUpload.Text" xml:space="preserve">
-    <value>Skin Upload Permission:</value>
+    <value>Theme Upload Permission:</value>
   </data>
   <data name="plCache.Text" xml:space="preserve">
     <value>Cache Timeout (seconds):</value>
@@ -355,7 +355,7 @@
     <value>Enter a support email adress for your Hosting Account</value>
   </data>
   <data name="plHostSkin.Help" xml:space="preserve">
-    <value>Select the default skin to use for your sites</value>
+    <value>Select the default theme to use for your sites</value>
   </data>
   <data name="plHostContainer.Help" xml:space="preserve">
     <value>Select the default container to use for your sites</value>
@@ -445,7 +445,7 @@
     <value>Enter the allowable file extensions (separated by commas)</value>
   </data>
   <data name="plSkinUpload.Help" xml:space="preserve">
-    <value>Select whether Skin Upload is restricted to the "Host" Account or can be done by Site Administrators</value>
+    <value>Select whether Theme Upload is restricted to the "Host" Account or can be done by Site Administrators</value>
   </data>
   <data name="Host.Text" xml:space="preserve">
     <value>Host</value>
@@ -505,7 +505,7 @@
     <value>Host Settings</value>
   </data>
   <data name="SkinUpload.Text" xml:space="preserve">
-    <value>Upload Skin/Container</value>
+    <value>Upload Theme/Container</value>
   </data>
   <data name="ContainerUpload.Text" xml:space="preserve">
     <value>Upload Container</value>
@@ -691,10 +691,10 @@
     <value>Items</value>
   </data>
   <data name="plHostDefaultDocType.Text" xml:space="preserve">
-    <value>Fallback Skin Doctype:</value>
+    <value>Fallback Theme Doctype:</value>
   </data>
   <data name="plHostDefaultDocType.Help" xml:space="preserve">
-    <value>Sets the fallback Skin Doctype for webpages.  This is used if the Skin does not define the DocType.</value>
+    <value>Sets the fallback Theme Doctype for webpages.  This is used if the Theme does not define the DocType.</value>
   </data>
   <data name="LegacyDoctype.Text" xml:space="preserve">
     <value>HTML 4 (legacy)</value>
@@ -733,10 +733,10 @@
     <value>Edit Container:</value>
   </data>
   <data name="plAdminSkin.Help" xml:space="preserve">
-    <value>The selected skin will be applied to all edit mode (ctl=) pages on your sites.</value>
+    <value>The selected theme will be applied to all edit mode (ctl=) pages on your sites.</value>
   </data>
   <data name="plAdminSkin.Text" xml:space="preserve">
-    <value>Edit Skin:</value>
+    <value>Edit Theme:</value>
   </data>
   <data name="plJQueryDebugVersion.Help" xml:space="preserve">
     <value>If checked, then the standard jQuery script file is used.  If unchecked, then a minified version is used which  significantly reduces the size of the javascript file, but decreases readability of the javascript.</value>
@@ -817,7 +817,7 @@
     <value>Page Output Cache Provider</value>
   </data>
   <data name="plUseCustomModuleCssClass.Help" xml:space="preserve">
-    <value>Check this option to enable a custom css class based on the module definition to be rendered.  This can be used by skin designers to apply specific css styles to specific module types.</value>
+    <value>Check this option to enable a custom css class based on the module definition to be rendered.  This can be used by theme designers to apply specific css styles to specific module types.</value>
   </data>
   <data name="plUseCustomModuleCssClass.Text" xml:space="preserve">
     <value>Use Custom Module Css Class?</value>
@@ -829,10 +829,10 @@
     <value>Allow Content Localization?</value>
   </data>
   <data name="SkinPreview.Text" xml:space="preserve">
-    <value>Preview Host Skin and Container</value>
+    <value>Preview Host Theme and Container</value>
   </data>
   <data name="EditSkinPreview.Text" xml:space="preserve">
-    <value>Preview Edit Skin and Container</value>
+    <value>Preview Edit Theme and Container</value>
   </data>
   <data name="plJQueryUIHostUrl.Help" xml:space="preserve">
     <value>This is the full URL for the jQuery UI script.  By default this is set to the latest jQuery UI minified script hosted on Google's CDN servers for optimum performance.</value>
@@ -847,7 +847,7 @@
     <value>Installed jQuery UI Version</value>
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
-    <value>Please select a skin and/or container to preview.</value>
+    <value>Please select a theme and/or container to preview.</value>
   </data>
   <data name="ClientResourceManagement.Text" xml:space="preserve">
     <value>Client Resource Management</value>
