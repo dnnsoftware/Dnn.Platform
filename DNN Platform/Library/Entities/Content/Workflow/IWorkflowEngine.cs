@@ -21,6 +21,7 @@
 
 using System;
 using DotNetNuke.Entities.Content.Workflow.Dto;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Entities.Content.Workflow
 {
@@ -110,5 +111,23 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="stateTransaction">State transaction Dto</param>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowConcurrencyException">Thrown when the current state of the workflow is not the same of the current state specified in the StateTransaction Dto</exception>
         void CompleteWorkflow(StateTransaction stateTransaction);
+
+
+        /// <summary>
+        /// This method returns the user that created the contentItem.
+        /// </summary>
+        /// <param name="workflow">Workflow</param>
+        /// <param name="contentItem">ContentItem</param>
+        /// <returns>User Info</returns>
+        UserInfo GetStartedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem);
+
+        /// <summary>
+        /// This method returns the user that submitted the contentItem.
+        /// </summary>
+        /// <param name="workflow">Workflow</param>
+        /// <param name="contentItem">ContentItem</param>
+        /// <returns>User Info</returns>
+        UserInfo GetSubmittedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem);
+
     }
 }
