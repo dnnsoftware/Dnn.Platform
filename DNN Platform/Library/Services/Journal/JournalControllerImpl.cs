@@ -216,7 +216,8 @@ namespace DotNetNuke.Services.Journal
         // none of the parameters should be null; checked before calling this method
         private void PrepareSecuritySet(JournalItem journalItem, UserInfo currentUser)
         {
-            var originalSecuritySet = journalItem.SecuritySet = journalItem.SecuritySet.ToUpperInvariant();
+            var originalSecuritySet =
+                journalItem.SecuritySet = (journalItem.SecuritySet ??string.Empty).ToUpperInvariant();
 
             if (String.IsNullOrEmpty(journalItem.SecuritySet))
             {
