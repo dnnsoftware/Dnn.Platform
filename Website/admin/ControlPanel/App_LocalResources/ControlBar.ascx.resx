@@ -328,10 +328,10 @@
     <value>Create Module</value>
   </data>
   <data name="Tool.PublishPage.ConfirmText" xml:space="preserve">
-    <value>Publishing this page will make it visible to all visitors to this website, including visitors who have not registered with the site.&lt;br&gt;Do you wish to continue?</value>
+    <value>Changing this page to Public will make it visible to all visitors to this website, including visitors who have not registered with the site.&lt;br&gt;Do you wish to continue?</value>
   </data>
   <data name="Tool.PublishPage.Text" xml:space="preserve">
-    <value>Publish Page</value>
+    <value>Make Public</value>
   </data>
   <data name="ClearSearchModules.Text" xml:space="preserve">
     <value>Clear</value>
@@ -349,9 +349,9 @@
     <value>Make Page visible only to Administrators?</value>
   </data>
   <data name="Tool.UnpublishPage.ConfirmText" xml:space="preserve">
-    <value>Changing this page to unpublished means that it will only be visible to Administrators of the site. All other users will not be able to see the page, and will receive a login prompt if they follow an existing link to this page.&lt;br&gt;Do you wish to unpublish this page?</value>
+    <value>Changing this page to Private means that it will only be visible to Administrators of the site. All other users will not be able to see the page, and will receive a login prompt if they follow an existing link to this page.&lt;br&gt;Do you wish to continue?</value>
   </data>
   <data name="Tool.UnpublishPage.Text" xml:space="preserve">
-    <value>Unpublish Page</value>
+    <value>Make Private</value>
   </data>
 </root>

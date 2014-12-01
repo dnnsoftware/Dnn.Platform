@@ -75,6 +75,22 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
         
+        public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            {
+                TabVersionTracker.Instance.TrackModuleUncopy(module, moduleVersion, originalTabId, userId);
+            } 
+        }
+        
+        public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        {
+            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            {
+                TabVersionTracker.Instance.TrackModuleCopy(module, moduleVersion, originalTabId, userId);
+            }            
+        }
+        
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabChangeTracker();

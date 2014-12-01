@@ -196,10 +196,10 @@
     <value>You can choose an icon that can be used in the menu.</value>
   </data>
   <data name="plSkin.Text" xml:space="preserve">
-    <value>Page Skin</value>
+    <value>Page Theme</value>
   </data>
   <data name="plSkin.Help" xml:space="preserve">
-    <value>The selected skin will be applied to this page.</value>
+    <value>The selected theme will be applied to this page.</value>
   </data>
   <data name="plContainer.Text" xml:space="preserve">
     <value>Page Container</value>
@@ -298,7 +298,7 @@
     <value>Copy design</value>
   </data>
   <data name="plCopySkin.Help" xml:space="preserve">
-    <value>Copies the currently selected design (skin and container) for the page to descendant pages. Option only available to Website Admins and SuperUsers.</value>
+    <value>Copies the currently selected design (theme and container) for the page to descendant pages. Option only available to Website Admins and SuperUsers.</value>
   </data>
   <data name="plCopySkin.Text" xml:space="preserve">
     <value>Copy design to descendants:</value>
@@ -558,10 +558,10 @@ Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
     <value>Indicates required fields</value>
   </data>
   <data name="SkinPreview.Text" xml:space="preserve">
-    <value>Preview Skin and Container</value>
+    <value>Preview Theme and Container</value>
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
-    <value>Please select a skin and/or container to preview.</value>
+    <value>Please select a theme and/or container to preview.</value>
   </data>
   <data name="Add.Text" xml:space="preserve">
     <value>Add Page</value>
@@ -582,7 +582,7 @@ Page: &lt;a href='{1}'&gt;{0}&lt;/a&gt;&lt;br/&gt;{2}</value>
     <value>There is a site domain identical to your page path.</value>
   </data>
   <data name="CopyDesignToChildren.Confirm" xml:space="preserve">
-    <value>Skin and container will be replaced for all children of this page. Are you sure you want to continue?</value>
+    <value>Theme and container will be replaced for all children of this page. Are you sure you want to continue?</value>
   </data>
   <data name="RefreshInterval.Invalid" xml:space="preserve">
     <value>Invalid number</value>

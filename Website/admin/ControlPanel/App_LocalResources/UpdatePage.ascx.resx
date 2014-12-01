@@ -127,7 +127,7 @@
     <value>Child of</value>
   </data>
   <data name="DefaultSkin.Text" xml:space="preserve">
-    <value>&lt;Use Default Site Skin&gt;</value>
+    <value>&lt;Use Default Site Theme&gt;</value>
   </data>
   <data name="Err.DeserializePanesFailed" xml:space="preserve">
     <value>Unable to process page template.</value>
@@ -154,7 +154,7 @@
     <value>Error</value>
   </data>
   <data name="HostSkins.Text" xml:space="preserve">
-    <value>Host Skins</value>
+    <value>Host Themes</value>
   </data>
   <data name="IncludeInMenu.Text" xml:space="preserve">
     <value>Include in menu</value>
@@ -172,7 +172,7 @@
     <value>Permissions</value>
   </data>
   <data name="PortalSkins.Text" xml:space="preserve">
-    <value>Website Skins</value>
+    <value>Website Themes</value>
   </data>
   <data name="Secured.Text" xml:space="preserve">
     <value>Secure (https)</value>

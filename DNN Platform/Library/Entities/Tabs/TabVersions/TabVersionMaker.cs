@@ -679,6 +679,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
 
+            if (_moduleController.IsSharedModule(moduleInfo))
+            {
+                return;
+            }
+
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController != null)
             {
@@ -689,6 +694,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private void DiscardDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = _moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
+
+            if (_moduleController.IsSharedModule(moduleInfo))
+            {
+                return;
+            }
 
             var versionableController = GetVersionableController(moduleInfo);
             if (versionableController != null)

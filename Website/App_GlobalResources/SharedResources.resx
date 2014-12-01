@@ -259,10 +259,10 @@
     <value>Purged Site Log Successfully</value>
   </data>
   <data name="SkinObjects.Text" xml:space="preserve">
-    <value>[Skin Objects]</value>
+    <value>[Theme Objects]</value>
   </data>
   <data name="SkinObjectsDescription.Text" xml:space="preserve">
-    <value>Skin Objects are User Controls which can be used to provide custom functionality to your Skin files.</value>
+    <value>Theme Objects are User Controls which can be used to provide custom functionality to your Theme files.</value>
   </data>
   <data name="ReadError.Text" xml:space="preserve">
     <value>Could not read all the data: {0}/{1}</value>
@@ -316,7 +316,7 @@
     <value>An Unexpected Error Occurred During Registration. Please Contact The Website Administrator For Futher Information.</value>
   </data>
   <data name="PaneNotFound.Error" xml:space="preserve">
-    <value>Cannot locate ContentPane for Skin</value>
+    <value>Cannot locate ContentPane for Theme</value>
   </data>
   <data name="ContractExpired.Error" xml:space="preserve">
     <value>The hosting contract for {0} expired on {1}. Please contact &lt;a href="mailto:{2}"&gt;{2}&lt;/a&gt; for further information.</value>
@@ -361,13 +361,13 @@
     <value>{0} is a restricted file type. Valid file types include ( *.{1}). Please contact your hosting provider if you need to upload a file type which is not supported.</value>
   </data>
   <data name="Skins.Text" xml:space="preserve">
-    <value>Skins</value>
+    <value>Themes</value>
   </data>
   <data name="Containers.Text" xml:space="preserve">
     <value>Containers</value>
   </data>
   <data name="StartProcessor.Text" xml:space="preserve">
-    <value>Initialize processor for skin/container files</value>
+    <value>Initialize processor for theme/container files</value>
   </data>
   <data name="PackageLoad.Text" xml:space="preserve">
     <value>Loaded package level attribute file</value>
@@ -376,13 +376,13 @@
     <value>Error loading package level attribute file: ({0})</value>
   </data>
   <data name="DuplicateSkinObject.Error" xml:space="preserve">
-    <value>Discarding duplicate skin object for token {0}</value>
+    <value>Discarding duplicate theme object for token {0}</value>
   </data>
   <data name="DuplicateSkinObject.Detail" xml:space="preserve">
-    <value>Any skin that references this token will utilize the skin control registered first {0} rather than the one specified by the duplicate ({1}).  The skin may render incorrectly.</value>
+    <value>Any theme that references this token will utilize the theme control registered first {0} rather than the one specified by the duplicate ({1}).  The theme may render incorrectly.</value>
   </data>
   <data name="LoadingSkinToken.Text" xml:space="preserve">
-    <value>Loading skin object for token {0}</value>
+    <value>Loading theme object for token {0}</value>
   </data>
   <data name="BeginSkinFile.Text" xml:space="preserve">
     <value>Begin processing file</value>
@@ -391,7 +391,7 @@
     <value>End processing file</value>
   </data>
   <data name="EndSkinFiles.Text" xml:space="preserve">
-    <value>End processing skin/container files</value>
+    <value>End processing theme/container files</value>
   </data>
   <data name="FileFormat.Error" xml:space="preserve">
     <value>File formatting error</value>
@@ -424,7 +424,7 @@
     <value>Processing token</value>
   </data>
   <data name="SkinToken.Text" xml:space="preserve">
-    <value>Token is skin object</value>
+    <value>Token is theme object</value>
   </data>
   <data name="PaneToken.Text" xml:space="preserve">
     <value>Token is content pane</value>
@@ -448,7 +448,7 @@
     <value>Processing embedded object</value>
   </data>
   <data name="SkinObject.Text" xml:space="preserve">
-    <value>Embedded object is skin object</value>
+    <value>Embedded object is theme object</value>
   </data>
   <data name="PaneObject.Text" xml:space="preserve">
     <value>Embedded object is content pane</value>
@@ -508,7 +508,7 @@
     <value>DNN file is in valid {0} format.</value>
   </data>
   <data name="DNN_ValidSkinObject.Text" xml:space="preserve">
-    <value>DNN file is in valid 2.0 SkinObject format.</value>
+    <value>DNN file is in valid 2.0 ThemeObject format.</value>
   </data>
   <data name="EXCEPTION.Text" xml:space="preserve">
     <value>Exception</value>
@@ -1195,10 +1195,10 @@
     <value>Error Deleting User</value>
   </data>
   <data name="SKIN_BeginProcessing.Text" xml:space="preserve">
-    <value>Begin Processing of Skin Files</value>
+    <value>Begin Processing of Theme Files</value>
   </data>
   <data name="SKIN_EndProcessing.Text" xml:space="preserve">
-    <value>End Processing of Skin Files</value>
+    <value>End Processing of Theme Files</value>
   </data>
   <data name="MODULE_ControlKeyMissing.Text" xml:space="preserve">
     <value>Module Control Key Missing</value>
@@ -1240,10 +1240,10 @@
     <value>Error Saving File to Archive - {0}</value>
   </data>
   <data name="SKIN_Registered.Text" xml:space="preserve">
-    <value>Skin Package Registered successfully - {0}</value>
+    <value>Theme Package Registered successfully - {0}</value>
   </data>
   <data name="SKIN_UnRegistered.Text" xml:space="preserve">
-    <value>Skin Package Unregistered successfully - {0}</value>
+    <value>Theme Package Unregistered successfully - {0}</value>
   </data>
   <data name="WRITER_AddFileToManifest.Text" xml:space="preserve">
     <value>Added File to manifest - {0}</value>
@@ -1357,7 +1357,7 @@
     <value>Dashboard Control unregistered successfully</value>
   </data>
   <data name="SKIN_Installed.Text" xml:space="preserve">
-    <value>Skin already installed with a different Package Name</value>
+    <value>Theme already installed with a different Package Name</value>
   </data>
   <data name="ModuleEffective.Text" xml:space="preserve">
     <value>Module Effective - {0}</value>

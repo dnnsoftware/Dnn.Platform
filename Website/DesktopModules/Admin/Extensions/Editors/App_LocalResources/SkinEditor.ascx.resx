@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="cmdAdd.Text" xml:space="preserve">
-    <value>Add Skin file</value>
+    <value>Add Theme file</value>
   </data>
   <data name="ContainerHelp.Text" xml:space="preserve">
     <value>This editor allows you to configure the Container Package.</value>
@@ -127,21 +127,21 @@
     <value>Container Package Settings</value>
   </data>
   <data name="SkinHelp.Text" xml:space="preserve">
-    <value>This editor allows you to configure the Skin Package.  </value>
+    <value>This editor allows you to configure the Theme Package.  </value>
   </data>
   <data name="SkinName.Help" xml:space="preserve">
-    <value>Enter a name for the Skin Package</value>
+    <value>Enter a name for the Theme Package</value>
   </data>
   <data name="SkinName.Text" xml:space="preserve">
-    <value>Skin Package Name:</value>
+    <value>Theme Package Name:</value>
   </data>
   <data name="SkinPackageInfo_Skins.Help" xml:space="preserve">
-    <value>Enter the skins that are part of the package</value>
+    <value>Enter the themes that are part of the package</value>
   </data>
   <data name="SkinPackageInfo_Skins.Text" xml:space="preserve">
-    <value>Skins</value>
+    <value>Themes</value>
   </data>
   <data name="SkinTitle.Text" xml:space="preserve">
-    <value>Skin Package Settings</value>
+    <value>Theme Package Settings</value>
   </data>
 </root>

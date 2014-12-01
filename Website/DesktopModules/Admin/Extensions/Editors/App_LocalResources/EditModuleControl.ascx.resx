@@ -133,7 +133,7 @@
     <value>Title:</value>
   </data>
   <data name="plTitle.Help" xml:space="preserve">
-    <value>Enter a title for this control.  This will be displayed in the Module Header if supported in the skin.</value>
+    <value>Enter a title for this control.  This will be displayed in the Module Header if supported in the theme.</value>
   </data>
   <data name="plSource.Text" xml:space="preserve">
     <value>Source:</value>
@@ -154,7 +154,7 @@
     <value>Choose the type of the control from the list.</value>
   </data>
   <data name="Skin.Text" xml:space="preserve">
-    <value>Skin Object</value>
+    <value>Theme Object</value>
   </data>
   <data name="Anonymous.Text" xml:space="preserve">
     <value>Anonymous</value>
@@ -181,7 +181,7 @@
     <value>Icon:</value>
   </data>
   <data name="plIcon.Help" xml:space="preserve">
-    <value>Choose an Icon for this control.  This will displayed in the Module Header if supported by the skin.</value>
+    <value>Choose an Icon for this control.  This will displayed in the Module Header if supported by the theme.</value>
   </data>
   <data name="plHelpURL.Text" xml:space="preserve">
     <value>Help URL:</value>

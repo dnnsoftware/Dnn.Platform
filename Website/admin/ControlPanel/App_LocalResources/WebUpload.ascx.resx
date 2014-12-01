@@ -127,7 +127,7 @@
     <value>Content Files</value>
   </data>
   <data name="Skin.Text" xml:space="preserve">
-    <value>Skin Package</value>
+    <value>Theme Package</value>
   </data>
   <data name="Container.Text" xml:space="preserve">
     <value>Container Package</value>
@@ -163,7 +163,7 @@
     <value>Remove</value>
   </data>
   <data name="UploadTypeSkin.Text" xml:space="preserve">
-    <value>Install Legacy Skin Package</value>
+    <value>Install Legacy Theme Package</value>
   </data>
   <data name="UploadTypeFile.Text" xml:space="preserve">
     <value>Upload File</value>

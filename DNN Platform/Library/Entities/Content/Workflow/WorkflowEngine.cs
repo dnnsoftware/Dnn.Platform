@@ -125,15 +125,24 @@ namespace DotNetNuke.Entities.Content.Workflow
             _contentController.UpdateContentItem(item);
         }
 
-        private UserInfo GetUserThatHaveSubmittedDraftState(Entities.Workflow workflow, int contentItemId)
+        private UserInfo GetUserThatHaveStartedOrSubmittedDraftState(Entities.Workflow workflow, ContentItem contentItem)
         {
-            var logs = _workflowLogRepository.GetWorkflowLogs(contentItemId, workflow.WorkflowID);
+            bool wasDraftSubmitted = WasDraftSubmitted(workflow, contentItem.ContentItemId);
+            if (wasDraftSubmitted)
+            {
+                return GetSubmittedDraftStateUser(workflow, contentItem);
+            }
 
-            var type = GetWorkflowLogTypeForDraft(workflow);
+            return GetStartedDraftStateUser(workflow, contentItem);
+        }
+
+        private UserInfo GetUserByWorkflowLogType(Entities.Workflow workflow, ContentItem contentItem, WorkflowLogType type)
+        {
+            var logs = _workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
 
             var logDraftCompleted = logs
                 .OrderByDescending(l => l.Date)
-                .FirstOrDefault(l => l.Type == (int)type); 
+                .FirstOrDefault(l => l.Type == (int) type);
 
             if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
             {
@@ -142,18 +151,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             return null;
         }
 
-        private WorkflowLogType GetWorkflowLogTypeForDraft(Entities.Workflow workflow)
+        private bool WasDraftSubmitted(Entities.Workflow workflow, int currentStateId)
         {
-            WorkflowLogType type;
-            if (workflow.IsSystem && workflow.States.Count() == 1)
-            {
-                type = WorkflowLogType.WorkflowStarted;
-            }
-            else
-            {
-                type = WorkflowLogType.DraftCompleted;
-            }
-            return type;
+            var isDirectPublishWorkflow = workflow.IsSystem && workflow.States.Count() == 1;
+            var draftSubmitted = workflow.FirstState.StateID != currentStateId;
+            return !(isDirectPublishWorkflow || !draftSubmitted);
         }
 
         #region Notification utilities
@@ -184,7 +186,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             try
             {
-                var user = GetUserThatHaveSubmittedDraftState(workflow, contentItem.ContentItemId);
+                var user = GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem);
                 if (user == null)
                 {
                     Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
@@ -223,7 +225,6 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
         {
-            //TODO Add try-catch to every Send Notifications methods
             try
             {
                 var workflowAction = GetWorkflowActionInstance(contentItem, workflowActionType);
@@ -486,6 +487,16 @@ namespace DotNetNuke.Entities.Content.Workflow
         #endregion
 
         #region Public Methods
+        public UserInfo GetStartedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem)
+        {
+            return GetUserByWorkflowLogType(workflow, contentItem, WorkflowLogType.WorkflowStarted);
+        }
+
+        public UserInfo GetSubmittedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem)
+        {
+            return GetUserByWorkflowLogType(workflow, contentItem, WorkflowLogType.DraftCompleted);
+        }
+
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
         {
             Requires.NotNegative("workflowId", workflowId);
@@ -509,8 +520,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             //Perform action before starting workflow
             PerformWorkflowActionOnStateChanging( initialTransaction, WorkflowActionTypes.StartWorkflow);
             UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
-            //Perform action after starting workflow
-            PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
 
             //Send notifications to stater
             if (workflow.WorkflowID != _systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) //This notification is not sent in Direct Publish WF
@@ -524,6 +533,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             // Add logs
             AddWorkflowLog(contentItem, WorkflowLogType.WorkflowStarted, userId);
             AddWorkflowLog(contentItem, WorkflowLogType.StateInitiated, userId);
+
+            //Perform action after starting workflow
+            PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
         }
 
         public void CompleteState(StateTransaction stateTransaction)
@@ -577,12 +589,12 @@ namespace DotNetNuke.Entities.Content.Workflow
                     ? WorkflowLogType.WorkflowApproved
                     : WorkflowLogType.StateInitiated, stateTransaction.UserId);
 
-            // after-change action
-            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteState);
-            
             SendNotificationsToReviewers(contentItem, nextState, stateTransaction, WorkflowActionTypes.CompleteState, new PortalSettings(workflow.PortalID));
             
             DeleteWorkflowNotifications(contentItem, currentState);
+
+            // after-change action
+            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteState);
         }
 
         public void DiscardState(StateTransaction stateTransaction)
@@ -630,9 +642,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             AddWorkflowLog(contentItem, currentState, WorkflowLogType.StateDiscarded, stateTransaction.UserId);
             AddWorkflowLog(contentItem, WorkflowLogType.StateInitiated, stateTransaction.UserId);
 
-            // after-change action
-            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
-            
             if (previousState.StateID == workflow.FirstState.StateID)
             {
                 // Send to author - workflow comes back to draft state
@@ -644,6 +653,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
 
             DeleteWorkflowNotifications(contentItem, currentState);
+
+            // after-change action
+            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
         }
         
         public bool IsWorkflowCompleted(int contentItemId)
@@ -693,12 +705,12 @@ namespace DotNetNuke.Entities.Content.Workflow
             AddWorkflowCommentLog(contentItem, stateTransaction.UserId, stateTransaction.Message.UserComment);
             AddWorkflowLog(contentItem, WorkflowLogType.WorkflowDiscarded, stateTransaction.UserId);
 
-            // after-change action
-            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
-
             // Notifications
             SendNotificationToAuthor(stateTransaction, workflow.LastState, workflow, contentItem, WorkflowActionTypes.DiscardWorkflow);
             DeleteWorkflowNotifications(contentItem, currentState);
+
+            // after-change action
+            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
         }
 
         public void CompleteWorkflow(StateTransaction stateTransaction)
@@ -717,9 +729,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             var workflow = _workflowManager.GetWorkflow(contentItem);
             UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
             
-            // after-change action
-            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
-
             // Logs
             AddWorkflowCommentLog(contentItem, stateTransaction.UserId, stateTransaction.Message.UserComment);
             AddWorkflowLog(contentItem, WorkflowLogType.WorkflowApproved, stateTransaction.UserId);
@@ -727,6 +736,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             // Notifications
             SendNotificationToAuthor(stateTransaction, workflow.LastState, workflow, contentItem, WorkflowActionTypes.CompleteWorkflow);
             DeleteWorkflowNotifications(contentItem, currentState);
+
+            // after-change action
+            PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
         }
         #endregion
 
