@@ -130,14 +130,20 @@ namespace DotNetNuke.Entities.Content.Workflow
             bool wasDraftSubmitted = WasDraftSubmitted(workflow, stateTransaction.CurrentStateId);
             if (wasDraftSubmitted)
             {
-                return GetSubmittedDraftStateUser(workflow, contentItem);
+                return GetSubmittedDraftStateUser(contentItem);
             }
 
-            return GetStartedDraftStateUser(workflow, contentItem);
+            return GetStartedDraftStateUser(contentItem);
         }
 
-        private UserInfo GetUserByWorkflowLogType(Entities.Workflow workflow, ContentItem contentItem, WorkflowLogType type)
+        private UserInfo GetUserByWorkflowLogType(ContentItem contentItem, WorkflowLogType type)
         {
+            var workflow = _workflowManager.GetWorkflow(contentItem);
+            if (workflow == null)
+            {
+                return null;
+            }
+
             var logs = _workflowLogRepository.GetWorkflowLogs(contentItem.ContentItemId, workflow.WorkflowID);
 
             var logDraftCompleted = logs
@@ -487,14 +493,14 @@ namespace DotNetNuke.Entities.Content.Workflow
         #endregion
 
         #region Public Methods
-        public UserInfo GetStartedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem)
+        public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
         {
-            return GetUserByWorkflowLogType(workflow, contentItem, WorkflowLogType.WorkflowStarted);
+            return GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
         }
 
-        public UserInfo GetSubmittedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem)
+        public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
         {
-            return GetUserByWorkflowLogType(workflow, contentItem, WorkflowLogType.DraftCompleted);
+            return GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
         public void StartWorkflow(int workflowId, int contentItemId, int userId)
