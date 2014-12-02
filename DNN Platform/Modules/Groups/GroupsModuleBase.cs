@@ -48,19 +48,20 @@ namespace DotNetNuke.Modules.Groups
         {
             get
             {
+                var mode = GroupMode.Setup;
                 if (Settings.ContainsKey(Constants.GroupLoadView))
                 {
                     switch (Settings[Constants.GroupLoadView].ToString())
                     {
                         case "List":
-                            return GroupMode.List;
+                            mode = GroupMode.List;
+                            break;
                         case "View":
-                            return GroupMode.View;
-                        default:
-                            return GroupMode.Setup;
+                            mode = GroupMode.View;
+                            break;
                     }
                 }
-                return GroupMode.Setup;
+                return mode;
             }
         }
         public int GroupId
@@ -86,15 +87,12 @@ namespace DotNetNuke.Modules.Groups
 	            var roleGroupId = Null.NullInteger;
                 if (Settings.ContainsKey(Constants.DefaultRoleGroupSetting))
                 {
-					roleGroupId = Convert.ToInt32(Settings[Constants.DefaultRoleGroupSetting].ToString());
+                    int id;
+                    if (int.TryParse(Settings[Constants.DefaultRoleGroupSetting].ToString(), out id))
+                        roleGroupId = id;
                 }
 
-				//if the setting is set to all roles, then set the group id as global.
-				if (roleGroupId == -2)
-				{
-					roleGroupId = Null.NullInteger;
-				}
-				return roleGroupId;
+                return roleGroupId; // -2 is for "< All Roles >"
             }
         }
         public int GroupListTabId
@@ -181,7 +179,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         return true;
                     }
-                    return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CREATEGROUP");
+                    return ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CREATEGROUP");
                 }
                 return false;
             }
@@ -274,7 +272,7 @@ namespace DotNetNuke.Modules.Groups
 
         public string GetEditUrl()
         {
-            return ModuleContext.EditUrl("GroupId", GroupId.ToString(), "Edit");
+            return ModuleContext.EditUrl("GroupId", GroupId.ToString("D"), "Edit");
         }
         #endregion
     }
