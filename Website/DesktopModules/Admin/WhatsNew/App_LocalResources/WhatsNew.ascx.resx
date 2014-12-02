@@ -132,9 +132,9 @@
     &lt;li&gt;Fixed an issue that prevented users in certain locales from adding modules to div based panes.&lt;/li&gt;
     &lt;li&gt;Added a new default theme that is more contemporary&lt;/li&gt;
     &lt;li&gt;Added a new default template that removes much of the clutter and unnecessary information.&lt;/li&gt;
-    &lt;li&gt;Added a new Text theme object that allows you to add localized text to your theme.&lt;/li&gt;
-    &lt;li&gt;Added a new Styles theme object that allows you to insert additional stylesheets into the page header.&amp;#160; Stylesheets can be optionally included using IE Conditional Comments.&lt;/li&gt;
-    &lt;li&gt;Enhanced the Search theme object to include the option to display a dropdown list of web/site search options.&lt;/li&gt;
+    &lt;li&gt;Added a new Text skin object that allows you to add localized text to your theme.&lt;/li&gt;
+    &lt;li&gt;Added a new Styles skin object that allows you to insert additional stylesheets into the page header.&amp;#160; Stylesheets can be optionally included using IE Conditional Comments.&lt;/li&gt;
+    &lt;li&gt;Enhanced the Search skin object to include the option to display a dropdown list of web/site search options.&lt;/li&gt;
     &lt;li&gt;Enhanced the Update Notification Service to display information on new language packs that are available for locales which are currently installed.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
@@ -240,7 +240,7 @@
 	supports the use of a simple object tag based representation which means you 
 	don’t have to know JavaScript in order to add the widgets.&lt;/li&gt;
 	&lt;li&gt;
-	Added new Object notation for using theme objects in Themes.&amp;#160; Theme designers 
+	Added new Object notation for using skin objects in Themes.&amp;#160; Theme designers 
 	will no longer need to include separate XML files when creating and 
 	packaging themes.&amp;#160; No more funky “[SKINOBJECT]” tags littering your html.&amp;#160; 
 	This significantly simplifies the process of creating themes and further 
@@ -1078,7 +1078,7 @@ In addition, this supports a fallback strategy where if no record exists for a l
     &lt;li&gt;Fixed issue with email sending not recognizing HTML properly.&lt;/li&gt;
     &lt;li&gt;Fixed issue with port numbers in email address during installation.&lt;/li&gt;
     &lt;li&gt;Fixed issue with passing connection information to Sql Module.&lt;/li&gt;
-    &lt;li&gt;Fixed issue where the User Theme object was ignoring the ShowUnreadMessages attribute&lt;/li&gt;
+    &lt;li&gt;Fixed issue where the User skin object was ignoring the ShowUnreadMessages attribute&lt;/li&gt;
     &lt;li&gt;Fixed issue where the profile ImageEditControl datatype was only added to Portal
         0.&lt;/li&gt;
     &lt;li&gt;Fixed issue with url formatting when no context exists. Adding "http" is fallback
@@ -1273,7 +1273,7 @@ corrected with each release. &lt;/p&gt;
         for the Content Localization project.&lt;/li&gt;
     &lt;li&gt;Fixed UI of Resource Verifier and Language Editor to be consistent with updated
         Language Module.&lt;/li&gt;
-    &lt;li&gt;Added support for Media element in styles theme object.&lt;/li&gt;
+    &lt;li&gt;Added support for Media element in styles skin object.&lt;/li&gt;
     &lt;li&gt;Updated CoreSitemapProvider to use the ModifiedDate of the Tab and Modules on the
         Tab for the LastModified date for the PageUrl.&lt;/li&gt;
 &lt;/ul&gt;
