@@ -42,6 +42,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         private const int HostTabId = 24;
         private const int ValidPortalId = 0;
         private const int ValidTabId = 42;
+        private const int ParentTabId = 55;
         private const int SplashTabId = 41;
         private const int HomeTabId = 40;
         private const int InValidTabId = -1;
@@ -548,6 +549,62 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
             //Assert
             Assert.AreEqual(SkinController.FormatSkinSrc(GlobalTabContainer, settings), settings.ActiveTab.ContainerSrc);
+        }
+
+        [Test]
+        public void ConfigureTab_Builds_Breadcrumbs_For_Tab()
+        {
+            //Arrange
+            var controller = new PortalSettingsController();
+            var settings = new PortalSettings { PortalId = ValidPortalId };
+            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId };
+            settings.ActiveTab = validTab;
+
+            var mockLocaleController = new Mock<ILocaleController>();
+            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            LocaleController.RegisterInstance(mockLocaleController.Object);
+
+            var mockTabController = new Mock<ITabController>();
+            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
+            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
+            TabController.SetTestableInstance(mockTabController.Object);
+
+            //Act
+            controller.ConfigureActiveTab(settings);
+
+            //Assert
+            Assert.NotNull(settings.ActiveTab.BreadCrumbs);
+            Assert.AreEqual(1, settings.ActiveTab.BreadCrumbs.Count);
+        }
+
+        [Test]
+        public void ConfigureTab_Builds_Breadcrumbs_For_Tab_And_Parent()
+        {
+            //Arrange
+            var controller = new PortalSettingsController();
+            var settings = new PortalSettings { PortalId = ValidPortalId };
+            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, ParentId = ParentTabId};
+            var parentTab = new TabInfo { TabID = ParentTabId, PortalID = ValidPortalId };
+            settings.ActiveTab = validTab;
+
+            var mockLocaleController = new Mock<ILocaleController>();
+            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            LocaleController.RegisterInstance(mockLocaleController.Object);
+
+            var mockTabController = new Mock<ITabController>();
+            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab, parentTab }));
+            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
+            TabController.SetTestableInstance(mockTabController.Object);
+
+            //Act
+            controller.ConfigureActiveTab(settings);
+
+            //Assert
+            var actualParent = settings.ActiveTab.BreadCrumbs[0] as TabInfo;
+            var actualTab = settings.ActiveTab.BreadCrumbs[1] as TabInfo;
+            Assert.AreEqual(2, settings.ActiveTab.BreadCrumbs.Count);
+            Assert.AreEqual(ValidTabId, actualTab.TabID);
+            Assert.AreEqual(ParentTabId, actualParent.TabID);
         }
     }
 }
