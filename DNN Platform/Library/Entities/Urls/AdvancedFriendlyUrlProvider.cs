@@ -554,7 +554,7 @@ namespace DotNetNuke.Entities.Urls
                         cultureCode = GetCultureOfSettings(portalSettings);
                         //lookup the culture code of the portal settings object
                     }
-                    var primaryAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, null, cultureCode, settings);
+                    var primaryAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
 
                     if (primaryAlias != null)
                     {
