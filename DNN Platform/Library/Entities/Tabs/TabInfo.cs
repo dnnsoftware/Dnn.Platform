@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("visible")]
         public bool IsVisible { get; set; }
 
-        [XmlElement("hasBeenPublished")]
+        [XmlIgnore]
         public bool HasBeenPublished { get; set; }
 
         [XmlIgnore]
