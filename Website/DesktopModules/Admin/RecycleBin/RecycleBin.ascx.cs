@@ -30,6 +30,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -174,6 +175,8 @@ namespace DesktopModules.Admin.RecycleBin
                     return;
                 }
                 ModuleController.Instance.RestoreModule(module);
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                TabChangeTracker.Instance.TrackModuleAddition(module, 1, currentUser.UserID);
                 EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }
