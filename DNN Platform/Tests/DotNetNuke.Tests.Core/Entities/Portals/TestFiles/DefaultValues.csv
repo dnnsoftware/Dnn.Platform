@@ -32,4 +32,3 @@ SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				false,				0
 ControlPanelSecurity,			ControlPanelSecurity,			ControlPanelSecurity,			false,				ModuleEditor
 DefaultControlPanelMode,		DefaultControlPanelMode,		ControlPanelMode,				false,				View
 DefaultControlPanelVisibility,	DefaultControlPanelVisibility,	ControlPanelVisibility,			false,				true
-TimeZone,						TimeZone,						TimeZone,						false,				(UTC-08:00) Pacific Time (US & Canada)

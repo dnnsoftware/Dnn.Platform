@@ -32,4 +32,3 @@ SMTPMaxIdleTime,				SMTPMaxIdleTime,				SMTPMaxIdleTime,				10
 ControlPanelSecurity,			ControlPanelSecurity,			ControlPanelSecurity,			TAB,					TabEditor
 DefaultControlPanelMode,		DefaultControlPanelMode,		ControlPanelMode,				Edit
 DefaultControlPanelVisibility,	DefaultControlPanelVisibility,	ControlPanelVisibility,			true
-TimeZone,						TimeZone,						TimeZone,						Pacific Standard Time,	(UTC-08:00) Pacific Time (US & Canada)
