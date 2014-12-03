@@ -808,7 +808,7 @@ namespace DotNetNuke.Services.Localization
             string name;
 
             // Create a CultureInfo class based on culture
-            CultureInfo info = CultureInfo.CreateSpecificCulture(code);
+            CultureInfo info = CultureInfo.GetCultureInfo(code);
 
             // Based on the display type desired by the user, select the correct property
             switch (displayType)

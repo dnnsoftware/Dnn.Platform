@@ -1131,7 +1131,7 @@ namespace DotNetNuke.Entities.Portals
                 if (locale == null)
                 {
                     // if language does not exist in the installation, create it
-                    locale = new Locale {Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.CreateSpecificCulture(cultureCode).NativeName};
+                    locale = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
                     Localization.SaveLanguage(locale,false);
                     clearCache = true;
                 }
@@ -1810,7 +1810,7 @@ namespace DotNetNuke.Entities.Portals
                 var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
                 if (defaultLocale == null)
                 {
-                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.CreateSpecificCulture(portalInfo.DefaultLanguage).NativeName };
+                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
                     Localization.SaveLanguage(defaultLocale, false);
                 }
                 localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
