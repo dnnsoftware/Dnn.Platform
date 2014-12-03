@@ -1478,7 +1478,6 @@
     <Compile Include="UI\Skins\EventListeners\SkinEventListener.cs" />
     <Compile Include="UI\Skins\EventListeners\SkinEventType.cs" />
     <Compile Include="UI\Skins\ISkinControl.cs" />
-    <Compile Include="UI\Skins\ISkinInjector.cs" />
     <Compile Include="UI\Skins\NavObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1497,7 +1496,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Skins\SkinInfo.cs" />
-    <Compile Include="UI\Skins\SkinInjector.cs" />
     <Compile Include="UI\Skins\SkinObjectBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
