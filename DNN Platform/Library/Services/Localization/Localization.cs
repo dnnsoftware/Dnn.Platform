@@ -2031,6 +2031,9 @@ namespace DotNetNuke.Services.Localization
                 throw new ArgumentNullException("cultureInfo");
             }
 
+            if (cultureInfo.Name == "fa-IR")
+                cultureInfo = Persian.PersianController.GetPersianCultureInfo();
+
             Thread.CurrentThread.CurrentCulture = cultureInfo;
 
             if (portalSettings != null && portalSettings.ContentLocalizationEnabled &&
