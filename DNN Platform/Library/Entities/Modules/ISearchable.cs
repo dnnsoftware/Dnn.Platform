@@ -32,6 +32,6 @@ namespace DotNetNuke.Entities.Modules
     public interface ISearchable
     {
         [Obsolete("Deprecated in DNN 7.1. Replaced by ModuleSearchBase.GetModifiedSearchDocuments")]
-        SearchItemInfoCollection GetSearchItems(ModuleInfo ModInfo);
+        SearchItemInfoCollection GetSearchItems(ModuleInfo modInfo);
     }
 }

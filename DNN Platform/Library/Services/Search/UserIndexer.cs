@@ -78,20 +78,20 @@ namespace DotNetNuke.Services.Search
         /// Returns the collection of SearchDocuments populated with Tab MetaData for the given portal.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="startDate"></param>
+        /// <param name="startDateLocal"></param>
         /// <returns></returns>
         /// <history>
         ///     [vnguyen]   04/16/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
+        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
             if (needReindex)
             {
-                startDate = SqlDateTime.MinValue.Value;
+                startDateLocal = SqlDateTime.MinValue.Value.AddDays(1);
             }
 
             var controller = new ListController();
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Search
                 var startUserId = Null.NullInteger;
                 while (true)
                 {
-                    var reader = DataProvider.Instance().GetAvailableUsersForIndex(portalId, startDate, startUserId, BatchSize);
+                    var reader = DataProvider.Instance().GetAvailableUsersForIndex(portalId, startDateLocal, startUserId, BatchSize);
                     int rowsAffected = 0;
                     var indexedUsers = new List<int>();
 

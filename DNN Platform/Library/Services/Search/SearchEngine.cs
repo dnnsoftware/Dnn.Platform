@@ -87,14 +87,14 @@ namespace DotNetNuke.Services.Search
             IndexedSearchDocumentCount += searchDocuments.Count();
             Results.Add("Tabs", searchDocuments.Count());
 
-            //Index MODULE META-DATA from modules that inherit from SearchModuleBase
+            //Index MODULE META-DATA from modules that inherit from ModuleSearchBase
             searchDocs = GetModuleMetaData(startDate);
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
             IndexedSearchDocumentCount += searchDocuments.Count();
             Results.Add("Modules (Metadata)", searchDocuments.Count());
 
-            //Index MODULE CONTENT from modules that inherit from SearchModuleBase
+            //Index MODULE CONTENT from modules that inherit from ModuleSearchBase
             searchDocs = GetSearchDocuments(moduleIndexer, startDate);
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Search
             #pragma warning restore 0618
             IndexedSearchDocumentCount += searchItems.Count;
 
-            //Both SearchModuleBase and ISearchable module content count
+            //Both ModuleSearchBase and ISearchable module content count
             Results.Add("Modules (Content)", searchDocuments.Count() + searchItems.Count);
 
             //Index User data
@@ -191,13 +191,13 @@ namespace DotNetNuke.Services.Search
         /// Gets all the Search Documents for the given timeframe.
         /// </summary>
         /// <param name="indexer"></param>
-        /// <param name="startDate"></param>
+        /// <param name="startDateLocal"></param>
         /// <returns></returns>
         /// <history>
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private IEnumerable<SearchDocument> GetSearchDocuments(IndexingProvider indexer, DateTime startDate)
+        private IEnumerable<SearchDocument> GetSearchDocuments(IndexingProvider indexer, DateTime startDateLocal)
         {
             var searchDocs = new List<SearchDocument>();
             var portals = PortalController.Instance.GetPortals();
@@ -205,12 +205,12 @@ namespace DotNetNuke.Services.Search
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {
-                indexSince = FixedIndexingStartDate(portal.PortalID, startDate);
+                indexSince = FixedIndexingStartDate(portal.PortalID, startDateLocal);
                 searchDocs.AddRange(indexer.GetSearchDocuments(portal.PortalID, indexSince));
             }
 
             // Include Host Level Items
-            indexSince = FixedIndexingStartDate(-1, startDate);
+            indexSince = FixedIndexingStartDate(-1, startDateLocal);
             searchDocs.AddRange(indexer.GetSearchDocuments(-1, indexSince));
             
             return searchDocs;
