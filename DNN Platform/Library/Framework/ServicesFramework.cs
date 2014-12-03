@@ -34,19 +34,17 @@ namespace DotNetNuke.Framework
 
         public static string GetServiceFrameworkRoot()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalSettings.Current;
             if (portalSettings == null) return String.Empty;
             var path = portalSettings.PortalAlias.HTTPAlias;
-            int index = path.IndexOf('/');
+            var index = path.IndexOf('/');
             if (index > 0)
             {
                 path = path.Substring(index);
+                if (!path.EndsWith("/")) path += "/";
             }
             else
-            {
                 path = "/";
-            }
-            path = path.EndsWith("/") ? path : path + "/";
 
             return path;
         }

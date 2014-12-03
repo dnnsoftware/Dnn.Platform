@@ -22,9 +22,7 @@
 
 using System;
 using System.Linq;
-using System.Net;
 using System.Web;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -95,7 +93,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			}
 		}
 		
-		protected string RedirectURL
+		protected new string RedirectURL
         {
             get
             {
@@ -246,7 +244,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             {
                                 var redirectUrl = Globals.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias), string.Empty);
-                                Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl));
+                                Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = Globals.ApplicationPath });
                             }
 
 		                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("VerificationSuccess", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);

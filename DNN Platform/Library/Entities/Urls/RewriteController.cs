@@ -240,7 +240,8 @@ namespace DotNetNuke.Entities.Urls
                                     !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
                                 {
                                     tabId = portal.SplashTabId;
-                                    HttpContext.Current.Response.Cookies.Add(new HttpCookie("SplashPageView", "true"));
+                                    HttpContext.Current.Response.Cookies.Add(
+                                        new HttpCookie("SplashPageView", "true") { Path = Globals.ApplicationPath });
                                     result.Action = ActionType.Redirect302;
                                     result.Reason = RedirectReason.Requested_SplashPage;
                                 }

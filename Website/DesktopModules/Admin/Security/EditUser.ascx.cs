@@ -21,9 +21,9 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -40,6 +40,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
 
@@ -498,7 +499,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     //DNN-5874 Check if unique display name is required
                     if (PortalSettings.Registration.RequireUniqueDisplayName)
                     {
-                        var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
                         if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
                         {
                             throw new Exception("Display Name must be unique");
@@ -515,7 +516,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             UserController.ChangeUsername(User.UserID, User.Email);
 
                             //note that this effectively will cause a signout due to the cookie not matching anymore.
-                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email));
+                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = Globals.ApplicationPath });
                         }
                     }
 
@@ -655,7 +656,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void SubscriptionUpdated(object sender, MemberServices.SubscriptionUpdatedEventArgs e)
         {
-            string message = Null.NullString;
+            string message;
             if (e.Cancel)
             {
                 message = string.Format(Localization.GetString("UserUnSubscribed", LocalResourceFile), e.RoleName);

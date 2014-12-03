@@ -22,9 +22,9 @@
 
 using System;
 using System.Web;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Utilities;
 
 #endregion
 
@@ -140,7 +140,8 @@ namespace DotNetNuke.Services.Log.EventLog
             //so that this log can be picked and do more action on it later.
             if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
-                HttpContext.Current.Response.Cookies.Add(new HttpCookie("LogGUID", log.LogGUID){HttpOnly = false});
+                HttpContext.Current.Response.Cookies.Add(
+                    new HttpCookie("LogGUID", log.LogGUID) { HttpOnly = false, Path = Globals.ApplicationPath });
             }
         }
     }

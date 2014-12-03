@@ -30,13 +30,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -46,7 +42,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Log.EventLog;
@@ -1985,7 +1980,7 @@ namespace DotNetNuke.Services.Localization
         {
             try
             {
-                HttpResponse response = HttpContext.Current.Response;
+                var response = HttpContext.Current == null ? null : HttpContext.Current.Response;
                 if (response == null)
                 {
                     return;
@@ -1997,7 +1992,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("language", value);
+                        cookie = new HttpCookie("language", value) { Path = Globals.ApplicationPath };
                         response.Cookies.Add(cookie);
                     }
                 }

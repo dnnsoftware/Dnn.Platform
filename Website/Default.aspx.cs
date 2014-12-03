@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -61,7 +60,6 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.Framework
 {
     using Web.Client;
-    using DotNetNuke.Entities.Modules;
 
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
@@ -499,9 +497,11 @@ namespace DotNetNuke.Framework
                     //save the affiliateid for acquisitions
                     if (Request.Cookies["AffiliateId"] == null) //do not overwrite
                     {
-                        var objCookie = new HttpCookie("AffiliateId");
-                        objCookie.Value = affiliateId.ToString();
-                        objCookie.Expires = DateTime.Now.AddYears(1); //persist cookie for one year
+                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
+                        {
+                            Expires = DateTime.Now.AddYears(1),
+                            Path = Globals.ApplicationPath
+                        };
                         Response.Cookies.Add(objCookie);
                     }
                 }
