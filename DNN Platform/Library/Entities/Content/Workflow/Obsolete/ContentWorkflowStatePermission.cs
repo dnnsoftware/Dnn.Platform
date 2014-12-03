@@ -22,7 +22,9 @@
 using System;
 using DotNetNuke.Security.Permissions;
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
     /// <summary>
     /// This entity represents a state permission

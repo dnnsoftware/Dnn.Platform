@@ -23,7 +23,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
     /// <summary>
     /// This entity represents a Workflow State
