@@ -66,7 +66,6 @@
             dnn[this._folderPicker.id()] = this._folderPicker;
 
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
-                $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.resources.dialogHeader),
                 $element('div', { 'class': 'fu-dialog-content' }).append(
                     $element("div", { 'class': 'fu-dialog-content-header' }).append(
                         $element("div", { 'class': 'dnnLeft' }).append(
