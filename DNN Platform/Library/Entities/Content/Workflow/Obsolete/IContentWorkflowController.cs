@@ -24,116 +24,117 @@ using System.Collections.Generic;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
-    [Obsolete("Obsoleted in Platform 7.4.0.")]
+    [Obsolete("Deprecated in Platform 7.4.0.")]
     public interface IContentWorkflowController
     {
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void StartWorkflow(int workflowID, int itemID, int userID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID, string source, params string[] parameters);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void DiscardState(int itemID, string subject, string body, string comment, int portalID, int userID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         bool IsWorkflowCompleted(int itemID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         bool IsWorkflowOnDraft(int itemID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0.")]
         void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment,
                               int userID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowEngine")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine")]
         void CompleteWorkflow(int contentItemId, string comment, int portalId, int userId);
 
-        [Obsolete("Obsoleted in Platform 7.4.0")]
+        [Obsolete("Deprecated in Platform 7.4.0")]
         string ReplaceNotificationTokens(string text, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, int portalID, int userID, string comment = "");
 
-        [Obsolete("Obsoleted in Platform 7.4.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0.")]
         ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager")]
         IEnumerable<ContentWorkflow> GetWorkflows(int portalID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead ISystemWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager")]
         ContentWorkflow GetDefaultWorkflow(int portalID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager")]
         ContentWorkflow GetWorkflowByID(int workflowID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager")]
         ContentWorkflow GetWorkflow(ContentItem item);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager")]
         void AddWorkflow(ContentWorkflow workflow);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager")]
         void UpdateWorkflow(ContentWorkflow workflow);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowLogger")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger")]
         IEnumerable<ContentWorkflowLog> GetWorkflowLogs(int workflowId, int contentItemId);
 
-        [Obsolete("Obsoleted in Platform 7.4.0.")]
+        [Obsolete("Deprecated in Platform 7.4.0.")]
         void DeleteWorkflowLogs(int workflowID, int contentItemID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         IEnumerable<ContentWorkflowState> GetWorkflowStates(int workflowID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         ContentWorkflowState GetWorkflowStateByID(int stateID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         void AddWorkflowState(ContentWorkflowState state);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         void UpdateWorkflowState(ContentWorkflowState state);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         IEnumerable<ContentWorkflowStatePermission> GetWorkflowStatePermissionByState(int stateID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         void AddWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         void UpdateWorkflowStatePermission(ContentWorkflowStatePermission permission, int lasModifiedByUserId);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowStateManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager")]
         void DeleteWorkflowStatePermission(int workflowStatePermissionID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsAnyReviewer(int portalID, int userID, int workflowID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsAnyReviewer(int workflowID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsCurrentReviewer(int portalId, int userID, int itemID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsCurrentReviewer(int itemID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsReviewer(int portalId, int userID, int stateID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowSecurity")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity")]
         bool IsReviewer(int stateID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead IWorkflowLogger")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger")]
         void AddWorkflowLog(ContentItem item, string action, string comment, int userID);
 
-        [Obsolete("Obsoleted in Platform 7.4.0. Use instead ISystemWorkflowManager")]
+        [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager")]
         void CreateDefaultWorkflows(int portalId);
     }
 }

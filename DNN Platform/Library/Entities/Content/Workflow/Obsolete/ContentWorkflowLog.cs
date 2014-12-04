@@ -20,13 +20,14 @@
 #endregion
 
 using System;
-
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
     /// <summary>
     /// This entity represents a Workflow Log
     /// </summary>
-    [Obsolete("Obsoleted in Platform 7.4.0")]   
+    [Obsolete("Deprecated in Platform 7.4.0")]   
     public class ContentWorkflowLog
     {
         /// <summary>

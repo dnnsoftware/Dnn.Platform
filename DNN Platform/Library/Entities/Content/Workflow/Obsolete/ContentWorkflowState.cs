@@ -20,8 +20,6 @@
 #endregion
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using DotNetNuke.ComponentModel.DataAnnotations;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow

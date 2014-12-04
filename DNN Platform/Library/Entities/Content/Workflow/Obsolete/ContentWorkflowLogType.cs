@@ -20,13 +20,14 @@
 #endregion
 
 using System;
-
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
     /// <summary>
     /// This enum represents the possible list of WorkflowLogType
     /// </summary>
-    [Obsolete("Obsoleted in Platform 7.4.0")]   
+    [Obsolete("Deprecated in Platform 7.4.0")]   
     public enum ContentWorkflowLogType
     {
         WorkflowStarted = 0,
