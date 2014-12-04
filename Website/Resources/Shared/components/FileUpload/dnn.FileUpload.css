@@ -39,6 +39,30 @@
     border-left: none;
 }
 
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:first-child > a {
+    border-radius: 3px 0 0 3px;
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li:last-child > a {
+    border-radius: 0 3px 3px 0;    
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file {
+    background-image: url('../../../../images/icon-upload-file.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.upload-file:hover {
+    background-image: url('../../../../images/icon-upload-file_hover.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url {
+    background-image: url('../../../../images/icon-from-url.png');
+}
+
+.fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a.from-url:hover {
+    background-image: url('../../../../images/icon-from-url_hover.png');
+}
+
 .fu-container .fu-dialog-content-header ul.dnnButtonGroup {
     float: left;
 }
@@ -48,7 +72,14 @@
 }
 
 .fu-container .fu-dialog-content-header ul.dnnButtonGroup > li > a {
-    padding: 7px 12px 6px 12px;
+    padding: 7px 16px 6px 44px;
+    background-repeat: no-repeat;
+    background-position: 12px 7px;    
+}
+
+.fu-container .dnnDropDownList .selected-item {
+    background: none repeat scroll 0 0 #fff;
+    box-shadow: none;
 }
 
 .fu-container .fu-dialog-content-header > .dnnLeft > span {

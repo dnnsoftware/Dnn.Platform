@@ -78,10 +78,10 @@
                         $element("div", { 'class': 'dnnLeft' }).append(
                             $element("ul", { 'class': 'dnnButtonGroup' }).append(
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
+                                    $element("a", { href: "javascript:void(0);", 'class': 'upload-file active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
                                 ),
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);" }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
+                                    $element("a", { href: "javascript:void(0);", 'class': 'from-url' }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
                                 )
                             ),
                             this._$decompressOption = $element("span").append(
