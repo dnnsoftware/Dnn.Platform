@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="MSBuild.Community.Tasks.Targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\MicrosoftAjax\AjaxMin.tasks" />
+
+  <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Deploy|AnyCPU' ">
+    <XmlRead Prefix="n"
+                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                    XPath="dotnetnuke/packages/package[starts-with(@name,'DotNetNuke.CKHtmlEditorProvider')]/@version"
+                    XmlFileName="$(MSBuildProjectDirectory)\Install\$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+    <ItemGroup>
+      <DefaultExclude Include="**\.svn\**" />
+      <DefaultExclude Include="**\bin\**" />
+      <DefaultExclude Include="**\obj\**" />
+      <DefaultExclude Include="**\Release\**" />
+      <DefaultExclude Include="**\Debug\**" />
+      <DefaultExclude Include="**\Test\**" />
+      <DefaultExclude Include="**\TestResults\**" />
+      <DefaultExclude Include="**\doc\**" />
+      <DefaultExclude Include="**\www\**" />
+      <DefaultExclude Include="**\*.user" />
+      <DefaultExclude Include="**\*.suo" />
+      <DefaultExclude Include="**\*.zip" />
+      <DefaultExclude Include="**\*.db" />
+      <DefaultExclude Include="**\*.txt" />
+      <DefaultExclude Include="**\*ReSharper.*\**" />
+      <DefaultExclude Include="**\VRK.Controls\**" />
+      <DefaultExclude Include="**\packages\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <InstallInclude Include="$(MSBuildProjectDirectory)\..\CKEditor\**\*.*" Exclude="$(MSBuildProjectDirectory)\..\CKEditor\ckeditor_source.js;$(MSBuildProjectDirectory)\..\CKEditor\ckeditor_basic_source.js;$(MSBuildProjectDirectory)\..\CKEditor\**\Thumbs.db;$(MSBuildProjectDirectory)\..\CKEditor\**\_source\**;" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.ashx" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.ascx" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.asmx" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.css" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.xsl" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.html" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.htm" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.resx" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.xml" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.aspx" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.js" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.txt" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.jpg" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.png" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.swf" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.jpeg" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.gif" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.cs" Exclude="$(MSBuildProjectDirectory)\..\**\packages\**;$(MSBuildProjectDirectory)\..\**\obj\**;$(MSBuildProjectDirectory)\..\**\_ReSharper*\**;" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.cs.designer" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.csproj" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.targets" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.sln" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.as" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.flp" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.fla" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.dnn" />
+      <SourceInclude Include="$(MSBuildProjectDirectory)\..\**\*.sqldataprovider" />
+    </ItemGroup>
+    
+    <CreateItem Include="$(MSBuildProjectDirectory)\Install\$(DNNFileName).dnn">
+      <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
+    </CreateItem>
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Install\*.sqldataprovider">
+      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
+    </CreateItem>
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Install\*.Cleanup.txt">
+      <Output TaskParameter="Include" ItemName="PackageCleanupFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Install\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageCleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Install\CKLicense.html" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Install\CKReleaseNotes.html" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\..\CKEditorDefaultSettings.xml" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\..\CKToolbarButtons.xml" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\..\CKToolbarSets.xml" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+
+    <!-- create the INSTALL RESOURCES.ZIP file -->
+    <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\CKEditorOptions.ascx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Options.aspx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\UrlControl.ascx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Tabs.ashx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Browser\Browser.aspx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Browser\FileUploader.ashx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Browser\ProcessImage.ashx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\CKFinder\config.ascx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\CKFinder"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Module\EditorConfigManager.ascx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Module"/>
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\EditorConfigManager.ascx.de-DE.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Module\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\EditorConfigManager.ascx.pl-PL.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Module\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\EditorConfigManager.ascx.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Module\App_LocalResources"/>
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Browser.aspx.de-DE.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Browser.aspx.pl-PL.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Browser.aspx.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\Browser\App_LocalResources"/>
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Options.aspx.de-DE.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Options.aspx.pl-PL.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\App_LocalResources"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\App_LocalResources\Options.aspx.resx" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\App_LocalResources"/>
+
+    <!-- Minify JS and CSS Files -->
+    <ItemGroup>
+      <JS Include="$(MSBuildProjectDirectory)\ResourcesZip\Browser\*.js" Exclude="**\*.min.js" />
+      <JS Include="$(MSBuildProjectDirectory)\ResourcesZip\js\*.js" Exclude="**\*.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <CSS Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.css" Exclude="**\*.min.css;$(MSBuildProjectDirectory)\ResourcesZip\skins\**\*.css;$(MSBuildProjectDirectory)\ResourcesZip\plugins\**\*.css;" />
+    </ItemGroup>
+    <AjaxMin JsSourceFiles="@(JS)" JsSourceExtensionPattern="\.js$" JsTargetExtension=".js" CssSourceFiles="@(CSS)" CssSourceExtensionPattern="\.css$" CssTargetExtension=".css"  />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
+      <Output TaskParameter="Include" ItemName="ResourcesContent" />
+    </CreateItem>
+    
+    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="package/" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+    <!-- Create the Install package -->    
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install_DNN53.$(Extension)" />
+    <!-- Copy the Install package to the Packages folder -->
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install_DNN53.$(Extension)" DestinationFolder="$(MSBuildProjectDirectory)/../packages/Install/DNN 5.3" />
+    
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\ResourcesZip\**\*" ContinueOnError="true"/>
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" ContinueOnError="true" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\Resources.$(Extension)" />
+   
+
+    <!-- create the SOURCE RESOURCES.ZIP file -->
+    <Copy SourceFiles="@(SourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputSource" />
+    </CreateItem>
+
+    <Zip Files="@(OutputSource)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Source.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.$(Extension)" DestinationFolder="$(MSBuildProjectDirectory)/../packages" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install_DNN53.$(Extension)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.$(Extension)" />
+
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\packages\Install\**\*.*">
+      <Output TaskParameter="Include" ItemName="InstallCompleteContent" />
+    </CreateItem>
+
+    <!-- Create the Install package -->
+    <Zip Files="@(InstallCompleteContent)" WorkingDirectory="$(MSBuildProjectDirectory)\..\packages\Install" ZipFileName="$(PackageName)_$(Version)-UNZIP_FIRST.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)-UNZIP_FIRST.$(Extension)" DestinationFolder="$(MSBuildProjectDirectory)/../packages" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)-UNZIP_FIRST.$(Extension)" />
+
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\..\packages\Install" />
+    
+  </Target>
+</Project>

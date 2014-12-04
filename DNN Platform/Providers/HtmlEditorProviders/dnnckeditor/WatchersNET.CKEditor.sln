@@ -1,0 +1,99 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNN 5.3", "DNN 5.3", "{66E78903-6D7F-40E8-9CDD-FC2CD765264A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNN 6", "DNN 6", "{DDE034B3-6ED8-48C6-B80A-5ACE6AF1B943}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor - DNN53", "DNN 5.3\WatchersNET.CKEditor - DNN53.csproj", "{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277} = {AE7E021E-7C7B-4003-9BD6-5A04C781C277}
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE} = {488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor - DNN6", "DNN 6\WatchersNET.CKEditor - DNN6.csproj", "{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNN 7", "DNN 7", "{9EA2F6AC-913E-41BD-9A33-127E2F7B22FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor - DNN7", "DNN 7\WatchersNET.CKEditor - DNN7.csproj", "{AE7E021E-7C7B-4003-9BD6-5A04C781C277}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56390B0B-DDEC-4A87-A81F-1504CCA1FA67}"
+	ProjectSection(SolutionItems) = preProject
+		BuildPackages.bat = BuildPackages.bat
+		CKEditorDefaultSettings.xml = CKEditorDefaultSettings.xml
+		CKToolbarButtons.xml = CKToolbarButtons.xml
+		CKToolbarSets.xml = CKToolbarSets.xml
+		readme.html = readme.html
+		WE-settings.xml = WE-settings.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CKEditor", "CKEditor", "{60E6AFFA-BD7F-488B-A565-4EA5D1B1F5DF}"
+	ProjectSection(SolutionItems) = preProject
+		CKEditor\CHANGES.md = CKEditor\CHANGES.md
+		CKEditor\ckeditor.js = CKEditor\ckeditor.js
+		CKEditor\contents.css = CKEditor\contents.css
+		CKEditor\editor.css = CKEditor\editor.css
+		CKEditor\LICENSE.md = CKEditor\LICENSE.md
+		CKEditor\README.md = CKEditor\README.md
+		CKEditor\styles.js = CKEditor\styles.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Browser", "Browser", "{EE09520F-E6D1-4FBB-A186-6EA7840D88C0}"
+	ProjectSection(SolutionItems) = preProject
+		CKEditor\Browser\js\Browser.js = CKEditor\Browser\js\Browser.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{99F2558C-4775-47EB-8305-494FD6377F7B}"
+	ProjectSection(SolutionItems) = preProject
+		CKEditor\css\jquery.notification.css = CKEditor\css\jquery.notification.css
+		CKEditor\css\Options.css = CKEditor\css\Options.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{3C355F50-802D-431C-8077-B8CE4C6A92B4}"
+	ProjectSection(SolutionItems) = preProject
+		CKEditor\js\jquery.ckeditor.adapter.js = CKEditor\js\jquery.ckeditor.adapter.js
+		CKEditor\js\jquery.notification.js = CKEditor\js\jquery.notification.js
+		CKEditor\js\jquery.ui.controls.js = CKEditor\js\jquery.ui.controls.js
+		CKEditor\js\Options.js = CKEditor\js\Options.js
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Deploy|Any CPU = Deploy|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B1A3E03E-4A64-4E5E-A95C-ECE1B0A74486} = {66E78903-6D7F-40E8-9CDD-FC2CD765264A}
+		{488A2DA7-817F-42DA-A3CD-8F50D1AE51AE} = {DDE034B3-6ED8-48C6-B80A-5ACE6AF1B943}
+		{AE7E021E-7C7B-4003-9BD6-5A04C781C277} = {9EA2F6AC-913E-41BD-9A33-127E2F7B22FC}
+		{EE09520F-E6D1-4FBB-A186-6EA7840D88C0} = {60E6AFFA-BD7F-488B-A565-4EA5D1B1F5DF}
+		{99F2558C-4775-47EB-8305-494FD6377F7B} = {60E6AFFA-BD7F-488B-A565-4EA5D1B1F5DF}
+		{3C355F50-802D-431C-8077-B8CE4C6A92B4} = {60E6AFFA-BD7F-488B-A565-4EA5D1B1F5DF}
+	EndGlobalSection
+EndGlobal

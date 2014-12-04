@@ -1,0 +1,1 @@
+﻿<%@ language="c#" Codebehind="Tabs.ashx.cs" Class="WatchersNET.CKEditor.Tabs" %>

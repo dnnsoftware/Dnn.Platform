@@ -1,0 +1,108 @@
+﻿if not exists (select top 1 1 from sys.objects where object_id = object_id(N'{databaseOwner}{objectQualifier}CKEditorProviderSettings') and OBJECTPROPERTY(object_id, N'IsTable') = 1)
+	CREATE TABLE {databaseOwner}{objectQualifier}CKEditorProviderSettings (
+		 [SettingName] [nvarchar] (300)   NOT NULL,
+		 [SettingValue] [ntext]   NOT NULL
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CKEditorProviderSettings] ADD CONSTRAINT [PK_{objectQualifier}CKEditorProviderSettings] PRIMARY KEY CLUSTERED  ([SettingName])
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllChildPageSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllChildPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteCurrentPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteCurrentPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllPortalSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPortalSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllChildPageSettings
+  @TabID int
+	AS
+	SET NOCOUNT ON
+	DELETE  hs
+  FROM {databaseOwner}{objectQualifier}CKEditorProviderSettings hs
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}Tabs t  ON t.ParentId = @TabID
+  Where SettingName like 'DNNCKT#%' AND t.TabID  = t.TabID
+GO
+
+/*** Migrate old settings from the HostSettings table to the new CKEditorProviderSettings table ***/
+insert into {databaseOwner}{objectQualifier}CKEditorProviderSettings(SettingName,SettingValue)
+select SettingName, SettingValue 
+from {databaseOwner}{objectQualifier}HostSettings
+where SettingName like 'DNNCK%'
+go
+
+/*** Delete old Settings **/
+delete  from {databaseOwner}{objectQualifier}HostSettings
+where SettingName like 'DNNCK#%'
+go
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_GetEditorHostSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_GetEditorHostSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_GetEditorHostSettings
+  AS
+	SET NOCOUNT ON
+    SELECT SettingName,
+	       SettingValue
+    FROM {databaseOwner}{objectQualifier}CKEditorProviderSettings
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_AddOrUpdateEditorHostSetting') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_AddOrUpdateEditorHostSetting
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_AddOrUpdateEditorHostSetting
+    @SettingName		nvarchar(300),
+	@SettingValue		ntext
+AS
+    if exists (select 1 from {databaseOwner}{objectQualifier}CKEditorProviderSettings where SettingName = @SettingName)
+	    begin
+		    update {databaseOwner}{objectQualifier}CKEditorProviderSettings 
+			   set
+			       SettingValue = @SettingValue
+			   where
+			       SettingName = @SettingName
+		end
+    else 
+	    begin
+		    insert into {databaseOwner}{objectQualifier}CKEditorProviderSettings (SettingName, SettingValue) 
+	                    values (@SettingName,@SettingValue)
+		end
+go
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPageSettings
+  @PortalID varchar
+	AS
+	SET NOCOUNT ON
+	DELETE  hs
+  FROM {databaseOwner}{objectQualifier}CKEditorProviderSettings hs
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}Tabs t  ON t.PortalID = @PortalID
+   Where SettingName like 'DNNCKT#%' AND t.TabID  = t.TabID
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteCurrentPageSettings
+  @TabID varchar
+	AS
+	SET NOCOUNT ON
+	delete from {databaseOwner}{objectQualifier}CKEditorProviderSettings where SettingName like 'DNNCKT#' + @TabID + '%'
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPortalSettings
+  @PortalID varchar
+	AS
+	SET NOCOUNT ON
+	delete from {databaseOwner}{objectQualifier}CKEditorProviderSettings where SettingName like 'DNNCKP#' + @PortalID + '%'
+GO

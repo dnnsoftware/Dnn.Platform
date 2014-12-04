@@ -1,0 +1,44 @@
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllModuleSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllModuleSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteCurrentPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteCurrentPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllPortalSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllPortalSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllChildPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllChildPageSettings
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_GetEditorHostSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_GetEditorHostSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_DeleteAllModuleSettingsByTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_DeleteAllModuleSettingsByTab
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKEditor_AddOrUpdateEditorHostSetting') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKEditor_AddOrUpdateEditorHostSetting
+GO
+
+/** Delete All settings **/
+
+delete from {databaseOwner}{objectQualifier}HostSettings where SettingName like 'DNNCK%'
+GO
+
+delete from {databaseOwner}{objectQualifier}ModuleSettings where SettingName like 'DNNCKMI#%'
+GO
+
+
+if exists (select top 1 1 from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CKEditorProviderSettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}CKEditorProviderSettings
+GO
