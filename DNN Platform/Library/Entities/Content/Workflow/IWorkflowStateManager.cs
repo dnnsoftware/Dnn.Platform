@@ -94,6 +94,17 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowDoesNotExistException">Thrown when moving a state that does not exist</exception>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when state cannot be moved (i.e.: is the first/last state, etc...)</exception>
         void MoveWorkflowStateUp(int stateId);
+
+        /// <summary>
+        /// This method move the state up to index position in the workflow state order
+        /// </summary>
+        /// <remarks>This method takes care of state reordering.</remarks>
+        /// <param name="stateId">State Id</param>
+        /// <param name="index">Index where the stateId will be moved. Since first and last states can't be moved, this index has to be a number between 1 and the number of states minus 2.</param>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowDoesNotExistException">Thrown when moving a state that does not exist</exception>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when state cannot be moved (i.e.: is the first/last state, etc...)</exception>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when index is not a valid value (index = 0 or index >= number of states - 2)</exception>
+        void MoveState(int stateId, int index);
         
         /// <summary>
         /// This method returns the list of State Permission of a specific state
