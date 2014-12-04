@@ -45,6 +45,13 @@
             this._initPanel();
         },
 
+        setUploadPath: function (path) {
+            this.options.folderPath = path;
+            var folder = path == '' ? this.options.folderPicker.initialState.selectedItem.value
+                : path.split('/').slice(-2)[0];
+            this.$this[0].$element.find("div.fu-folder-picker-container > span").text(folder);
+        },
+
         _selectUpload: function (uploadMethod, eventObject) {
             var isLocal = uploadMethod === this._uploadMethods.local;
             this.$element.find(".fu-dialog-content-fileupload-local").toggle(isLocal);
