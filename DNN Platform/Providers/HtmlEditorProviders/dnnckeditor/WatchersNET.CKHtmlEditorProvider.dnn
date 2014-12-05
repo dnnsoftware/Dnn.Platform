@@ -9,8 +9,8 @@
     <url>http://www.watchersnet.de</url>
     <email>thewatcher@watchersnet.de</email>
   </owner>
-  <license src="CKLicense.html" />
-  <releaseNotes src="CKReleaseNotes.html" />
+  <license src="license.txt" />
+  <releaseNotes src="releaseNotes.txt" />
   <dependencies>
     <dependency type="CoreVersion">07.00.00</dependency>
   </dependencies>

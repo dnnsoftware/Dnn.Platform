@@ -45,8 +45,8 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>Install\bin\</OutputPath>
-    <DocumentationFile>bin\WatchersNET.CKEditor.XML</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -55,23 +55,11 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>Install\bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\WatchersNET.CKEditor.xml</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>Install\bin\</OutputPath>
-    <Optimize>true</Optimize>
-    <NoWarn>1591</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript" />
@@ -213,16 +201,19 @@
     <Content Include="Browser\Browser.css" />
     <Content Include="Browser\jquery.fileupload-ui.css" />
     <Content Include="Browser\jquery.fileupload.css" />
+    <Content Include="CKEditorConfig.png" />
+    <Content Include="CKEditorDefaultSettings.xml" />
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="CKFinder\config.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Install\CKLicense.html" />
-    <Content Include="Install\CKReleaseNotes.html" />
-    <Content Include="Install\02.00.00.Cleanup.txt" />
-    <Content Include="Install\LogoCKEditor.png" />
+    <Content Include="CKToolbarButtons.xml" />
+    <Content Include="CKToolbarSets.xml" />
+    <Content Include="license.txt" />
+    <Content Include="releaseNotes.txt" />
+    <Content Include="LogoCKEditor.png" />
     <Content Include="Module\EditorConfigManager.ascx" />
     <Content Include="Options.aspx">
       <SubType>ASPXCodeBehind</SubType>
@@ -260,18 +251,12 @@
   <ItemGroup>
     <Content Include="Browser\FileUploader.ashx" />
     <Content Include="Browser\Browser.comb.css.bundle" />
-    <None Include="BuildScripts\ModulePackage.targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Install\01.14.03.SqlDataProvider" />
-    <Content Include="Install\02.00.00.SqlDataProvider" />
-    <Content Include="Install\02.00.09.SqlDataProvider" />
-    <Content Include="Install\02.01.00.SqlDataProvider" />
-    <None Include="Install\Uninstall.SqlDataProvider" />
-    <None Include="Install\WatchersNET.CKHtmlEditorProvider.dnn">
+    <None Include="01.14.03.SqlDataProvider" />
+    <Content Include="02.00.00.SqlDataProvider" />
+    <Content Include="02.00.09.SqlDataProvider" />
+    <Content Include="02.01.00.SqlDataProvider" />
+    <None Include="Uninstall.SqlDataProvider" />
+    <None Include="WatchersNET.CKHtmlEditorProvider.dnn">
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
