@@ -997,17 +997,16 @@ namespace DotNetNuke.Entities.Urls
             var browserType = BrowserTypes.Normal;
             if (request != null && settings != null)
             {
-                var isCookieSet = false;
-                var isMobile = false;
+                bool isCookieSet = false;
+                bool isMobile = false;
                 if (CanUseMobileDevice(request, response))
                 {
-                    var viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
+                    HttpCookie viewMobileCookie = response.Cookies[MobileViewSiteCookieName];
                     if (viewMobileCookie != null && bool.TryParse(viewMobileCookie.Value, out isMobile))
                     {
                         isCookieSet = true;
                     }
-
-                    if (!isMobile)
+                    if (isMobile == false)
                     {
                         if (!isCookieSet)
                         {
@@ -1018,13 +1017,14 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             // Store the result as a cookie.
-	                        if (viewMobileCookie == null)
-	                        {
-                            response.Cookies.Set(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
-	                        }
-	                        else
+                            if (viewMobileCookie == null)
                             {
-                            response.Cookies.Set(cookie);
+                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+                            }
+                            else
+                            {
+                                viewMobileCookie.Value = isMobile.ToString();
+                            }
                         }
                     }
                     else
@@ -1035,6 +1035,7 @@ namespace DotNetNuke.Entities.Urls
             }
             return browserType;
         }
+
 
         public static string ValidateUrl(string cleanUrl, int validateUrlForTabId, PortalSettings settings, out bool modified)
         {
