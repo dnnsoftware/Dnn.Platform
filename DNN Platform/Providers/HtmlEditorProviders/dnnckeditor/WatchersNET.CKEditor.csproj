@@ -188,6 +188,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="02.00.00.Cleanup.txt" />
     <Content Include="Browser\Browser.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -306,7 +307,7 @@
   </Target>
   <Target Name="GetFiles">
     <ItemGroup>
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt;*.Cleanup.txt" />
     </ItemGroup>
     <ItemGroup>
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
@@ -320,6 +321,10 @@
     <ItemGroup>
       <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);" />
     </ItemGroup>
+    <ItemGroup>
+      <CleanupFiles Include="*.Cleanup.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
   </Target>
   <Target Name="CopyBin">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />

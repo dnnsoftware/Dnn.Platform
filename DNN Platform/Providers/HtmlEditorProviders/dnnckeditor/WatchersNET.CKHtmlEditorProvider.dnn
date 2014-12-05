@@ -117,7 +117,7 @@
         <email>thewatcher@watchersnet.de</email>
       </owner>
       <iconFile>~/Providers/HtmlEditorProviders/CKEditor/CKEditorConfig.png</iconFile>
-      <license src="CKLicense.html" />
+      <license src="license.txt" />
       <releaseNotes />
       <dependencies>
         <dependency type="CoreVersion">07.00.00</dependency>
