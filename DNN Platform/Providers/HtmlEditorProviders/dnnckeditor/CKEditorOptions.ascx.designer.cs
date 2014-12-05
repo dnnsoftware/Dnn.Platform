@@ -184,22 +184,13 @@ namespace WatchersNET.CKEditor {
         protected global::System.Web.UI.WebControls.HiddenField LastTabId;
         
         /// <summary>
-        /// InfoTabLi control.
+        /// pnlEditor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl InfoTabLi;
-        
-        /// <summary>
-        /// lblHeader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHeader;
+        protected global::System.Web.UI.WebControls.Panel pnlEditor;
         
         /// <summary>
         /// lblMainSet control.
@@ -209,15 +200,6 @@ namespace WatchersNET.CKEditor {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMainSet;
-        
-        /// <summary>
-        /// lblEditorConfig control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEditorConfig;
         
         /// <summary>
         /// lblBrowsSec control.
@@ -238,76 +220,31 @@ namespace WatchersNET.CKEditor {
         protected global::System.Web.UI.WebControls.Label lblCustomToolbars;
         
         /// <summary>
-        /// InfoTabHolder control.
+        /// lblEditorConfig control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder InfoTabHolder;
+        protected global::System.Web.UI.WebControls.Label lblEditorConfig;
         
         /// <summary>
-        /// ProviderVersion control.
+        /// InfoTabLi control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ProviderVersion;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl InfoTabLi;
         
         /// <summary>
-        /// lblPortal control.
+        /// lblHeader control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPortal;
-        
-        /// <summary>
-        /// lblPage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPage;
-        
-        /// <summary>
-        /// lblModType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModType;
-        
-        /// <summary>
-        /// lblModName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModName;
-        
-        /// <summary>
-        /// lblModInst control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblModInst;
-        
-        /// <summary>
-        /// lblUName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUName;
+        protected global::System.Web.UI.WebControls.Label lblHeader;
         
         /// <summary>
         /// lblBlanktext control.
@@ -346,22 +283,40 @@ namespace WatchersNET.CKEditor {
         protected global::System.Web.UI.WebControls.DropDownList ddlSkin;
         
         /// <summary>
-        /// CodeMirrorLabel control.
+        /// lblWidth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label CodeMirrorLabel;
+        protected global::System.Web.UI.WebControls.Label lblWidth;
         
         /// <summary>
-        /// CodeMirrorTheme control.
+        /// txtWidth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList CodeMirrorTheme;
+        protected global::System.Web.UI.WebControls.TextBox txtWidth;
+        
+        /// <summary>
+        /// lblHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHeight;
+        
+        /// <summary>
+        /// txtHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtHeight;
         
         /// <summary>
         /// lblToolbars control.
@@ -400,40 +355,22 @@ namespace WatchersNET.CKEditor {
         protected global::WatchersNET.CKEditor.Controls.UrlControl ctlConfigUrl;
         
         /// <summary>
-        /// lblWidth control.
+        /// CodeMirrorLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWidth;
+        protected global::System.Web.UI.WebControls.Label CodeMirrorLabel;
         
         /// <summary>
-        /// txtWidth control.
+        /// CodeMirrorTheme control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWidth;
-        
-        /// <summary>
-        /// lblHeight control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHeight;
-        
-        /// <summary>
-        /// txtHeight control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHeight;
+        protected global::System.Web.UI.WebControls.DropDownList CodeMirrorTheme;
         
         /// <summary>
         /// lblInjectSyntaxJs control.
@@ -760,24 +697,6 @@ namespace WatchersNET.CKEditor {
         protected global::System.Web.UI.WebControls.DropDownList DefaultLinkMode;
         
         /// <summary>
-        /// EditorConfigWarning control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label EditorConfigWarning;
-        
-        /// <summary>
-        /// EditorConfigHolder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel EditorConfigHolder;
-        
-        /// <summary>
         /// lblToolbarList control.
         /// </summary>
         /// <remarks>
@@ -929,6 +848,96 @@ namespace WatchersNET.CKEditor {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dDlToolbarPrio;
+        
+        /// <summary>
+        /// EditorConfigWarning control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label EditorConfigWarning;
+        
+        /// <summary>
+        /// EditorConfigHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel EditorConfigHolder;
+        
+        /// <summary>
+        /// InfoTabHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder InfoTabHolder;
+        
+        /// <summary>
+        /// ProviderVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ProviderVersion;
+        
+        /// <summary>
+        /// lblPortal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPortal;
+        
+        /// <summary>
+        /// lblPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPage;
+        
+        /// <summary>
+        /// lblModType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblModType;
+        
+        /// <summary>
+        /// lblModName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblModName;
+        
+        /// <summary>
+        /// lblModInst control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblModInst;
+        
+        /// <summary>
+        /// lblUName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUName;
         
         /// <summary>
         /// btnOk control.

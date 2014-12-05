@@ -15,6 +15,7 @@ namespace WatchersNET.CKEditor
     #region
 
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web;
     using System.Web.UI.HtmlControls;
@@ -24,8 +25,6 @@ namespace WatchersNET.CKEditor
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-
-    using Microsoft.VisualBasic;
 
     using WatchersNET.CKEditor.Controls;
 
@@ -168,29 +167,28 @@ namespace WatchersNET.CKEditor
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            int iMid = -1;
-            int iTid = -1;
-
             ModuleInfo modInfo = null;
             ModuleController db = new ModuleController();
 
             try
             {
                 // Get ModuleID from Url
-                if (this.request.QueryString["mid"] != null && Information.IsNumeric(this.Request.QueryString["mid"]))
+                int moduleId;
+                if (!int.TryParse(this.request.QueryString["mid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out moduleId))
                 {
-                    iMid = Convert.ToInt32(this.request.QueryString["mid"]);
+                    moduleId = -1;
                 }
 
                 // Get TabId from Url
-                if (this.request.QueryString["tid"] != null && Information.IsNumeric(this.Request.QueryString["tid"]))
+                int tabId;
+                if (!int.TryParse(this.request.QueryString["tid"], NumberStyles.Integer, CultureInfo.InvariantCulture, out tabId))
                 {
-                    iTid = Convert.ToInt32(this.request.QueryString["tid"]);
+                    tabId = -1;
                 }
 
-                if (iMid != -1 && iTid != -1)
+                if (moduleId != -1 && tabId != -1)
                 {
-                    modInfo = db.GetModule(iMid, iTid);
+                    modInfo = db.GetModule(moduleId, tabId, false);
                 }
                 else
                 {
