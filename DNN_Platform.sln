@@ -223,7 +223,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5EC5DB
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebUtility", "DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj", "{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor - DNN7", "DNN Platform\Providers\HtmlEditorProviders\dnnckeditor\DNN 7\WatchersNET.CKEditor - DNN7.csproj", "{AE7E021E-7C7B-4003-9BD6-5A04C781C277}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor", "DNN Platform\Providers\HtmlEditorProviders\dnnckeditor\WatchersNET.CKEditor.csproj", "{AE7E021E-7C7B-4003-9BD6-5A04C781C277}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

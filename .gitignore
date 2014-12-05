@@ -151,6 +151,9 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Cc]ontainers/*/thumbnail*.jpg
 [Ww]ebsite/[Pp]ortals/_default/[Ss]kins/*/thumbnail*.jpg
+[Ww]ebsite/[Pp]ortals/_default/CKEditorDefaultSettings.xml
+[Ww]ebsite/[Pp]ortals/_default/CKToolbarButtons.xml
+[Ww]ebsite/[Pp]ortals/_default/CKToolbarSets.xml
 
 [Ww]ebsite/[Pp]ortals/_default/[Uu]ser*
 [Ww]ebsite/[Pp]ortals/[0-9]*/
@@ -159,6 +162,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Pp]roviders/*/*/license.txt
 [Ww]ebsite/[Pp]roviders/*/*/release[Nn]otes.txt
 [Ww]ebsite/[Pp]roviders/[Ff]older[Pp]roviders
+[Ww]ebsite/[Pp]roviders/[Hh]tml[Ee]ditor[Pp]roviders
 
 [Ww]ebsite/[Rr]esources/[Ll]ibraries
 
@@ -196,4 +200,3 @@ Thumbs.db
 
 # Folder config file
 Desktop.ini
-

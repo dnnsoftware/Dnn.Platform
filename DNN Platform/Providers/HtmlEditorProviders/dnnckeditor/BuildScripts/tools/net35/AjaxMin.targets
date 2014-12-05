@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    
+    <UsingTask AssemblyFile="AjaxMinTask.dll" TaskName="AjaxMin" /> 
+    <UsingTask AssemblyFile="AjaxMinTask.dll" TaskName="AjaxMinBundleTask" />
+    <UsingTask AssemblyFile="AjaxMinTask.dll" TaskName="AjaxMinManifestTask" />
+    <UsingTask AssemblyFile="AjaxMinTask.dll" TaskName="AjaxMinManifestCleanTask" />
+
+    <PropertyGroup>
+        <!-- if the project has a Content folder, we want that to be the root output; otherwise just dump everything relative to the project root -->
+        <AjaxMinOutputFolder Condition="$(AjaxMinOutputFolder)=='' and Exists('$(ProjectDir)Content\')">$(ProjectDir)Content\</AjaxMinOutputFolder>
+        <AjaxMinOutputFolder Condition="$(AjaxMinOutputFolder)==''">$(ProjectDir)</AjaxMinOutputFolder>
+        
+        <!-- default is to NOT treat warnings as errors -->
+        <AjaxMinTreatWarningsAsErrors Condition="$(AjaxMinTreatWarningsAsErrors)==''">false</AjaxMinTreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <AjaxMinManifests Include="**/*.ajaxmin"/>
+    </ItemGroup>
+
+    <!-- target to clean output for all ajaxmin manifest files in the project -->
+    <Target Name="CleanAjaxMinManifests" AfterTargets="Clean" Inputs="@AjaxMinManifests" Outputs="@(AjaxMinManifests->'%(FullPath).cleantrigger')">
+        <Message Text="Cleaning AjaxMin Manifests" Importance="high" />
+        <AjaxMinManifestCleanTask OutputFolder="$(AjaxMinOutputFolder)" Manifests="@(AjaxMinManifests)" />
+    </Target>
+
+    <!-- target to build all ajaxmin manifest files in the project -->
+    <Target Name="BuildAjaxMinManifests" AfterTargets="Build" Inputs="@AjaxMinManifests" Outputs="@(AjaxMinManifests->'%(FullPath).buildtrigger')">
+        <Message Text="Processing AjaxMin Manifests" Importance="high" />
+        <AjaxMinManifestTask ProjectDefaultSwitches="-define:$(DefineConstants) $(AjaxMinProjectDefaultSwitches)"
+                             Configuration="$(Configuration)"
+                             TreatWarningsAsErrors="$(AjaxMinTreatWarningsAsErrors)"
+                             InputFolder="$(ProjectDir)"
+                             OutputFolder="$(AjaxMinOutputFolder)"
+                             Manifests="@(AjaxMinManifests)" />
+    </Target>
+</Project>
