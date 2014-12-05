@@ -25,6 +25,7 @@ namespace WatchersNET.CKEditor.Module
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -290,10 +291,6 @@ namespace WatchersNET.CKEditor.Module
         {
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                "//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css");
-
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
                 this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/jquery.notification.css"));
 
             ClientResourceManager.RegisterStyleSheet(
@@ -302,47 +299,10 @@ namespace WatchersNET.CKEditor.Module
 
             this.pageType = typeof(Page);
 
-            var scriptHolder = this.Page.FindControl("SCRIPTS") as PlaceHolder;
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
 
-            if (scriptHolder != null)
-            {
-                var jqueryScriptLink = new HtmlGenericControl("script");
-
-                jqueryScriptLink.Attributes["type"] = "text/javascript";
-                jqueryScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js";
-
-                scriptHolder.Controls.Add(jqueryScriptLink);
-
-                var jqueryMigrateScriptLink = new HtmlGenericControl("script");
-
-                jqueryMigrateScriptLink.Attributes["type"] = "text/javascript";
-                jqueryMigrateScriptLink.Attributes["src"] = "//code.jquery.com/jquery-migrate-1.1.0.min.js";
-
-                scriptHolder.Controls.Add(jqueryMigrateScriptLink);
-
-                var jqueryUiScriptLink = new HtmlGenericControl("script");
-
-                jqueryUiScriptLink.Attributes["type"] = "text/javascript";
-                jqueryUiScriptLink.Attributes["src"] = "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js";
-
-                scriptHolder.Controls.Add(jqueryUiScriptLink);
-            }
-            else
-            {
-                ScriptManager.RegisterClientScriptInclude(
-                    this, this.pageType, "jquery.Latest", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
-
-                ScriptManager.RegisterClientScriptInclude(
-                        this, this.pageType, "jquery.Migrate", "//code.jquery.com/jquery-migrate-1.0.0.js");
-
-                ScriptManager.RegisterClientScriptInclude(
-                    this,
-                    this.pageType,
-                    "jquery.ui.Latest",
-                    "//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
-            }
-
-           ScriptManager.RegisterClientScriptInclude(
+            ScriptManager.RegisterClientScriptInclude(
                 this,
                 this.pageType,
                 "jquery.notification",
