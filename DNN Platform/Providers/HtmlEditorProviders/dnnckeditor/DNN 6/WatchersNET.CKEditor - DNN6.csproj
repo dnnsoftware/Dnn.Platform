@@ -255,17 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="UrlControl.ascx" />
-    <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Browser\FileUploader.ashx" />
