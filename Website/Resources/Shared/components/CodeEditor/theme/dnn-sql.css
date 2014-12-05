@@ -1,0 +1,164 @@
+/*
+Solarized theme for code-mirror
+http://ethanschoonover.com/solarized
+*/
+
+/*
+Solarized color pallet
+http://ethanschoonover.com/solarized/img/solarized-palette.png
+*/
+
+.solarized.base03 { color: #002b36; }
+.solarized.base02 { color: #073642; }
+.solarized.base01 { color: #586e75; }
+.solarized.base00 { color: #657b83; }
+.solarized.base0 { color: #839496; }
+.solarized.base1 { color: #93a1a1; }
+.solarized.base2 { color: #eee8d5; }
+.solarized.base3  { color: #fdf6f6; }
+.solarized.solar-yellow  { color: #b58900; }
+.solarized.solar-orange  { color: #cb4b16; }
+.solarized.solar-red { color: #dc322f; }
+.solarized.solar-magenta { color: #d33682; }
+.solarized.solar-violet  { color: #6c71c4; }
+.solarized.solar-blue { color: #268bd2; }
+.solarized.solar-cyan { color: #2aa198; }
+.solarized.solar-green { color: #859900; }
+
+/* Color scheme for code-mirror */
+
+.cm-s-dnn-sql {
+}
+.cm-s-dnn-sql.cm-s-dark {
+  color: #839496;
+  background-color:  #002b36;
+}
+.cm-s-dnn-sql.cm-s-light {
+  border:solid 1px #ccc;
+  background-color: #fff;
+  color: #657b83;
+}
+
+.cm-s-dnn-sql .CodeMirror-widget {
+}
+
+
+.cm-s-dnn-sql .cm-keyword { color: #268bd2 }
+.cm-s-dnn-sql .cm-atom { color: #d33682; }
+.cm-s-dnn-sql .cm-number { color: #d33682; }
+.cm-s-dnn-sql .cm-def { color: #2aa198; }
+
+.cm-s-dnn-sql .cm-variable { color: #268bd2; }
+.cm-s-dnn-sql .cm-variable-2 { color: #b58900; }
+.cm-s-dnn-sql .cm-variable-3 { color: #6c71c4; }
+
+.cm-s-dnn-sql .cm-property { color: #2aa198; }
+.cm-s-dnn-sql .cm-operator {color: #6c71c4;}
+
+.cm-s-dnn-sql .cm-comment { color: #859900; font-style:italic; }
+
+.cm-s-dnn-sql .cm-string { color: #dc322f; }
+.cm-s-dnn-sql .cm-string-2 { color: #dc322f; }
+
+.cm-s-dnn-sql .cm-meta { color: #859900; }
+.cm-s-dnn-sql .cm-error,
+.cm-s-dnn-sql .cm-invalidchar {
+  color: #586e75;
+  border-bottom: 1px dotted #dc322f;
+}
+.cm-s-dnn-sql .cm-qualifier { color: #b58900; }
+.cm-s-dnn-sql .cm-builtin { color: #d33682; }
+.cm-s-dnn-sql .cm-bracket { color: #cb4b16; }
+.cm-s-dnn-sql .CodeMirror-matchingbracket { color: #859900; }
+.cm-s-dnn-sql .CodeMirror-nonmatchingbracket { color: #dc322f; }
+.cm-s-dnn-sql .cm-tag { color: #93a1a1 }
+.cm-s-dnn-sql .cm-attribute {  color: #2aa198; }
+.cm-s-dnn-sql .cm-header { color: #586e75; }
+.cm-s-dnn-sql .cm-quote { color: #93a1a1; }
+.cm-s-dnn-sql .cm-hr {
+  color: transparent;
+  border-top: 1px solid #586e75;
+  display: block;
+}
+.cm-s-dnn-sql .cm-link { color: #93a1a1; cursor: pointer; }
+.cm-s-dnn-sql .cm-special { color: #6c71c4; }
+.cm-s-dnn-sql .cm-em {
+  color: #999;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.cm-s-dnn-sql .cm-strong { color: #eee; }
+
+/*visualize tab character*/
+/*.cm-s-dnn-sql .cm-tab:before {
+  content: "➤";   
+  color: #586e75;
+}*/
+
+.cm-s-dnn-sql.cm-s-dark .CodeMirror-selected {
+  background: #073642;
+}
+
+.cm-s-dnn-sql.cm-s-light .CodeMirror-selected {
+  background: #eee8d5;
+}
+
+/* Editor styling */
+
+
+
+/* Little shadow on the view-port of the buffer view */
+.cm-s-dnn-sql.CodeMirror {
+}
+
+/* Gutter border and some shadow from it  */
+.cm-s-dnn-sql .CodeMirror-gutters {
+  padding: 0 15px 0 10px;
+  border-right: 1px solid;
+}
+
+/* Gutter colors and line number styling based of color scheme (dark / light) */
+
+/* Dark */
+.cm-s-dnn-sql.cm-s-dark .CodeMirror-gutters {
+  background-color: #dcdcdc;
+  border-color: #00232c;
+}
+
+.cm-s-dnn-sql.cm-s-dark .CodeMirror-linenumber {
+}
+
+/* Light */
+.cm-s-dnn-sql.cm-s-light .CodeMirror-gutters {
+  background-color: #dcdcdc;
+  border-color: #eee8d5;
+}
+
+/* Common */
+.cm-s-dnn-sql .CodeMirror-linenumber {
+  color: #586e75;
+}
+
+.cm-s-dnn-sql .CodeMirror-gutter .CodeMirror-gutter-text {
+  color: #586e75;
+}
+
+.cm-s-dnn-sql .CodeMirror-lines {
+  padding-left: 10px;
+}
+
+.cm-s-dnn-sql .CodeMirror-lines .CodeMirror-cursor {
+  border-left: 1px solid #819090;
+}
+
+/*
+Active line. Negative margin compensates left padding of the text in the
+view-port
+*/
+.cm-s-dnn-sql.cm-s-dark .CodeMirror-activeline-background {
+  background: rgba(255, 255, 255, 0.05);
+}
+.cm-s-dnn-sql.cm-s-light .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.05);
+}
+
