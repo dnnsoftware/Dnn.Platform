@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -1017,10 +1018,12 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             // Store the result as a cookie.
-                            var cookie = new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
+	                        if (viewMobileCookie == null)
+	                        {
+                            response.Cookies.Set(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+	                        }
+	                        else
                             {
-                                Path = Globals.ApplicationPath
-                            };
                             response.Cookies.Set(cookie);
                         }
                     }
