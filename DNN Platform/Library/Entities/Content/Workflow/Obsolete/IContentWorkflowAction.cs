@@ -21,9 +21,11 @@
 
 using System;
 
+// ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+// ReSharper enable CheckNamespace
 {
-    [Obsolete("Obsoleted in Platform 7.4.0.")]
+    [Obsolete("Deprecated in Platform 7.4.0.")]
     public interface IContentWorkflowAction
     {
         string GetAction(string[] parameters);

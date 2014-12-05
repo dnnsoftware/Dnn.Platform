@@ -431,6 +431,7 @@ namespace DesktopModules.Admin.Portals
                 chkOverrideDefaultSettings.Checked = overrideDefaultSettings;
                 BindClientResourceManagementUi(portal.PortalID, overrideDefaultSettings);
                 ManageMinificationUi();
+                BindPageOutputSettings(portal);
             }
 
             BindUserAccountSettings(portal, activeLanguage);
@@ -766,6 +767,16 @@ namespace DesktopModules.Admin.Portals
                 }
             }
 
+        }
+        private void BindPageOutputSettings(PortalInfo portal)
+        {
+            if (portal != null)
+            {
+                var portalSettings = new PortalSettings(portal);
+                txtPageHeadText.Text = portalSettings.PageHeadText;
+                chkInjectModuleHyperLink.Checked = portalSettings.InjectModuleHyperLink;
+                txtAddCompatibleHttpHeader.Text = portalSettings.AddCompatibleHttpHeader;
+            }
         }
 
         #endregion
@@ -1556,6 +1567,10 @@ namespace DesktopModules.Admin.Portals
                                                                     : item.Value.ToString()
                                                                 );
                     }
+
+                    PortalController.UpdatePortalSetting(_portalId, "PageHeadText", string.IsNullOrEmpty(txtPageHeadText.Text) ? "false" : txtPageHeadText.Text); // Hack to store empty string portalsetting with non empty default value
+                    PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
+                    PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
 
                     profileDefinitions.Update();
 

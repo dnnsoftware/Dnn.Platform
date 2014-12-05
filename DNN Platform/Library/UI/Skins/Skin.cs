@@ -486,13 +486,9 @@ namespace DotNetNuke.UI.Skins
                 {
                     if ((PortalSettings.ActiveTab.StartDate < DateAndTime.Now && PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
                     {
-                        //dynamically populate the panes with modules
-                        if (PortalSettings.ActiveTab.Modules.Count > 0)
+                        foreach (var objModule in PortalSettingsController.Instance().GetTabModules(PortalSettings))
                         {
-                            foreach (ModuleInfo objModule in PortalSettings.ActiveTab.Modules)
-                            {
-                                success = ProcessModule(objModule);
-                            }
+                            success = ProcessModule(objModule);
                         }
                     }
                     else

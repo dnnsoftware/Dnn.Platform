@@ -12,9 +12,6 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "title")]
         public string Title;
 
-        [DataMember(Name = "dialogHeader")]
-        public string DialogHeader;
-
         [DataMember(Name = "decompressLabel")]
         public string DecompressLabel;
 
@@ -150,7 +147,6 @@ namespace DotNetNuke.Web.UI.WebControls
             Resources = new DnnFileUploadResources
             {
                 Title = Utilities.GetLocalizedString("FileUpload.Title.Text"),
-                DialogHeader = Utilities.GetLocalizedString("FileUpload.DialogHeader.Text"),
                 DecompressLabel = Utilities.GetLocalizedString("FileUpload.DecompressLabel.Text"),
                 UploadToFolderLabel = Utilities.GetLocalizedString("FileUpload.UploadToFolderLabel.Text"),
                 DragAndDropAreaTitle = Utilities.GetLocalizedString("FileUpload.DragAndDropAreaTitle.Text"),

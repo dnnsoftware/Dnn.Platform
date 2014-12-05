@@ -285,8 +285,7 @@ namespace DotNetNuke.Services.Scheduling
                                                 scheduleItem.Enabled,
                                                 scheduleItem.ObjectDependencies,
                                                 scheduleItem.Servers,
-                                                scheduleItem.FriendlyName,
-                                                scheduleItem.ScheduleStartDate);
+                                                scheduleItem.FriendlyName);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 

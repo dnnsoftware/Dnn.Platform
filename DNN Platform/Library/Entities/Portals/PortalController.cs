@@ -1480,6 +1480,18 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(PortalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", "")))
+            {
+                UpdatePortalSetting(PortalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", ""));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", "")))
+            {
+                UpdatePortalSetting(PortalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", ""));
+            }
+            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", "")))
+            {
+                UpdatePortalSetting(PortalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
+            }
         }
 
         private void ParseRoleGroups(XPathNavigator nav, int portalID, int administratorId)

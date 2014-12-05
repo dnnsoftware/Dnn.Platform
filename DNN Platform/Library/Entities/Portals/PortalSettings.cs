@@ -575,6 +575,60 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+
+        public string PageHeadText 
+        {
+            get
+            {
+                // For New Install
+                string PageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
+                                  "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
+                                  "<meta name=\"RATING\" content=\"GENERAL\" />";
+                string setting;
+                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    PageHead = (setting == "false") ? "" : setting;
+                }
+                return PageHead;
+            }
+        }
+
+        /*
+         * add <a name="[moduleid]"></a> on the top of the module
+         * 
+         * Desactivate this remove the html5 compatibility warnings
+         * (and make the output smaller)
+         * 
+         */
+        public bool InjectModuleHyperLink
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", PortalId, true);
+            }
+        }
+        /*
+         * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
+         * 
+         
+         */
+        public string AddCompatibleHttpHeader
+        {
+            get
+            {
+                string CompatibleHttpHeader = "IE=edge";
+                string setting;
+                if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                {
+                    // Hack to store empty string portalsetting with non empty default value
+                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
+                }
+                return CompatibleHttpHeader;
+            }
+        }
+
+
 		#endregion
 
 		#region IPropertyAccess Members

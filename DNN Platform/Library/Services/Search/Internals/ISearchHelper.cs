@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Search.Internals
         bool IsReindexRequested(int portalId, DateTime startDate);
         IEnumerable<int> GetPortalsToReindex(DateTime startDate);
         DateTime GetLastSuccessfulIndexingDateTime(int scheduleId);
-        void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDate);
+        void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal);
         #endregion
 
         #region Other Search Helper methods

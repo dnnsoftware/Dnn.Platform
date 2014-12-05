@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Search.Internals
         //internal const string FileNameTag = "filename";
 
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
-        internal const string ReinsdexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+        internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
         internal static Version LuceneVersion = Version.LUCENE_30;
 

@@ -1257,73 +1257,53 @@ namespace DotNetNuke.Entities.Urls
 
         private static void RemoveExcludedPartsOfPath(FriendlyUrlSettings settings, ref string newPath, ref string qs)
         {
-            if (!string.IsNullOrEmpty(newPath)) //if no path, no point in checking
+            // Do nothing, if path is empty
+            if (string.IsNullOrWhiteSpace(newPath)) return;
+
+            // Do nothing, if DoNotIncludeInPathRegex is not defined
+            if (string.IsNullOrWhiteSpace(settings.DoNotIncludeInPathRegex)) return;
+            
+            // Split path by "/" to extract keys and values
+            var pathParts = newPath.Trim('/').Split('/');
+
+            var pathBuilder = new StringBuilder();
+            var queryStringBuilder = new StringBuilder();
+            var notInPath = new Regex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+            // Iterate over each key/value parameter pair in path and test whether the parameter
+            // should be excluded in the path and moved to the query string
+            for (var i = 0; i < pathParts.Length; i = i + 2)
             {
-                //661 : separate out querystring items if regex match is made
-                //string path = rgxMatch.Groups["path"].Value; //work with newPath, not path, in case of language parms
-                if (!string.IsNullOrEmpty(settings.DoNotIncludeInPathRegex))
+                // Just append to path, if no value exists
+                if (pathParts.Length <= i+1)
                 {
-                    //inspect each path for an item which should be in the querystring, not in the path
-                    var notInPath = new Regex(settings.DoNotIncludeInPathRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    if (notInPath.IsMatch(newPath))
-                    {
-                        MatchCollection pathMatches = notInPath.Matches(newPath);
-                        //remove the part from the path
-                        string removedPath = notInPath.Replace(newPath, "");
-                        //new replace the removedPath in the main 'newPath' value
-                        newPath = newPath.Replace(newPath, removedPath);
-                        //this prior line replaces the original path (ie key/value/k2/v2) in the overall page path (ie tabid/56/key/value/k2/v2) with 
-                        //the original path less the items identified in the regex (ie, remove k2/v2) : leaving tabid/56/key/value
-                        //then, those identified path items are returned to the querystring ?k2=v2
-                        var qsValueBuilder = new StringBuilder();
-                        foreach (Match pathMatch in pathMatches)
-                        {
-                            if (pathMatch.Value != "")
-                            {
-                                //return to querystring
-                                string[] parts = pathMatch.Value.Split('/'); //split up the matching path
-                                bool even = true;
-                                foreach (string part in parts)
-                                {
-                                    if (part != "") //ignore empty parts, generally caused by the split function
-                                    {
-                                        if (even) //if even, forms the key part of a querystring key/value pair
-                                        {
-                                            if (qsValueBuilder.Length == 0) //not yet started
-                                            {
-                                                qsValueBuilder.Append(part);
-                                            }
-                                            else
-                                            {
-                                                qsValueBuilder.Append("&");
-                                                qsValueBuilder.Append(part);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //if odd, forms the value part
-                                            qsValueBuilder.Append("=");
-                                            qsValueBuilder.Append(part);
-                                        }
-                                        even = !even;
-                                    }
-                                }
-                            }
-                        }
-                        //now stick the querystring bit back onto the querystring part of this procedure
-                        if (string.IsNullOrEmpty(qs))
-                        {
-                            qs = qsValueBuilder.ToString();
-                        }
-                        else
-                        {
-                            qsValueBuilder.Insert(0, "&"); //start with & character
-                            //910: append rather than replace
-                            qs += qsValueBuilder.ToString();
-                        }
-                    }
+                    pathBuilder.Append(string.Format("/{0}", pathParts[i]));
+                    continue;
+                }
+
+                // Either add key/value parameter pair to path or to query
+                var key = pathParts[i];
+                var value = pathParts[i + 1];
+                if (notInPath.IsMatch(string.Format("/{0}/{1}", key, value)))
+                {
+                    if (queryStringBuilder.Length > 0) queryStringBuilder.Append("&");
+                    queryStringBuilder.Append(string.Format("{0}={1}", key, value));
+                }
+                else
+                {
+                    pathBuilder.Append(string.Format("/{0}/{1}", key, value));
                 }
             }
+
+            // No param was added to query string, return (newPath remain unchanged)
+            if (queryStringBuilder.Length == 0) return;
+
+            // Build new path and query string
+            newPath = pathBuilder.ToString();
+            qs = string.IsNullOrWhiteSpace(qs) ? 
+                queryStringBuilder.ToString() : 
+                string.Format("{0}&{1}", qs, queryStringBuilder);
+
         }
 
         private static bool TransformStandardPath(ref string newPath, ref string newTabPath)

@@ -1462,6 +1462,24 @@ AS
 			 DROP TABLE #Skip_Folders
 		END
 GO
+
+/***************************************************
+ * SPROC: add ordering to SearchDeletedItems_Select
+ ***************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Select]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+    @CutoffTime	DATETIME
+AS
+BEGIN
+	SELECT document
+	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
+	WHERE [DateCreated] < @CutoffTime
+	ORDER BY [DateCreated]
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

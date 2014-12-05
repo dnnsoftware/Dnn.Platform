@@ -25,6 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Web.Services.Description;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -32,6 +33,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -432,6 +434,15 @@ namespace DotNetNuke.Security.Permissions
             }
             return dic;
         }
+
+        private IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
+        {
+            return new List<RoleInfo>
+            {
+                RoleController.Instance.GetRoleById(portalId,
+                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId)
+            };
+        } 
 
         #endregion
 
@@ -935,6 +946,26 @@ namespace DotNetNuke.Security.Permissions
         #endregion
 
         #region TabPermission Methods
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Tabs
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public virtual IEnumerable<RoleInfo> ImplicitRolesForPages(int portalId)
+        {
+            return DefaultImplicitRoles(portalId);
+        }
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Folders
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the permissions are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public virtual IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
+        {
+            return DefaultImplicitRoles(portalId);
+        } 
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add content to a page

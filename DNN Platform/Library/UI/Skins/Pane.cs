@@ -490,7 +490,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-                if (!Globals.IsAdminControl())
+                if (!Globals.IsAdminControl() && PortalSettings.InjectModuleHyperLink)
                 {
                     _containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
                 }

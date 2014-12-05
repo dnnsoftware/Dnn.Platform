@@ -411,6 +411,24 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
+                    <xs:element name="layouts" minOccurs="0" maxOccurs="1">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="layout" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType> 
+                              <xs:all>
+                                <xs:element name="control" type="xs:string" minOccurs="1" maxOccurs="1" />
+                              </xs:all>
+                              <xs:attribute name="id" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="paneName" form="unqualified" type="xs:string" />
+                              <xs:attribute name="position" form="unqualified" type="xs:integer" />
+                              <xs:attribute name="columnSizes" form="unqualified" type="xs:string" />
+                              <xs:attribute name="enabled" form="unqualified" type="xs:string" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
                   </xs:all>
                   <xs:attribute name="sku" type="xs:string"/>
                 </xs:complexType>

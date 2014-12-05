@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using DotNetNuke.Entities.Tabs.Dto;
+
 namespace DotNetNuke.Entities.Tabs
 {
     /// <summary>
@@ -33,5 +35,12 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabId">Tab Id</param>
         /// <returns>Returns true if changes control is available for both Portal and Tab, false otherwise</returns>
         bool IsChangeControlEnabled(int portalId, int tabId);
+
+        /// <summary>
+        /// Get the full state of the tab changes control in a specific tab and its master portal
+        /// </summary>
+        /// <param name="portalId">Portal Id</param>
+        /// <param name="tabId">Tab Id</param>
+        ChangeControlState GetChangeControlState(int portalId, int tabId);
     }
 }
