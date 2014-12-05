@@ -431,7 +431,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     }
 
     function showDialog(controlKey, params, width, height) {
-        var url = settings.navigateUrl.replace('ControlKey', controlKey);
+        var url = settings.navigateUrl.replace(/ControlKey/i, controlKey);
         params.skinSrc = 'Portals/_default/Skins/_default/popUpSkin';
         for (var p in params) {
             if (params[p]) {
