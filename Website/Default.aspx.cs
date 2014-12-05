@@ -275,6 +275,11 @@ namespace DotNetNuke.Framework
             {
                 Page.Header.Controls.Add(new LiteralControl(PortalSettings.ActiveTab.PageHeadText));
             }
+
+            if (!string.IsNullOrEmpty(PortalSettings.PageHeadText))
+            {
+                metaPanel.Controls.Add(new LiteralControl(PortalSettings.PageHeadText));
+            }
             
             //set page title
             if (UrlUtils.InPopUp())
@@ -811,14 +816,22 @@ namespace DotNetNuke.Framework
                 MetaGenerator.Content = Generator;
                 MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
                 MetaAuthor.Content = PortalSettings.PortalName;
-                MetaCopyright.Content = Copyright;
-                MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                /*
+                 * Never show to be html5 compatible and stay backward compatible
+                 * 
+                 * MetaCopyright.Content = Copyright;
+                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                 */
                 MetaKeywords.Content = KeyWords;
                 MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
                 MetaDescription.Content = Description;
                 MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
             }
             Page.Header.Title = Title;
+            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader))
+            {
+                Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
+            }
         }
 
 		protected override void Render(HtmlTextWriter writer)
