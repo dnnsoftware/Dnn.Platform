@@ -1,3 +1,0 @@
-﻿UPDATE {databaseOwner}{objectQualifier}Packages SET IconFile = N'~/Providers/HtmlEditorProviders/CKEditor/CKEditorConfig.png' 
-Where Name Like 'CKEditor.EditorConfigManager' and IconFile = '~/CKEditorConfig.png'
-GO
