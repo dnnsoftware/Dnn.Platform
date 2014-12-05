@@ -1354,7 +1354,8 @@ namespace WatchersNET.CKEditor.Web
                 editorFixedId);
 
             // Render EditorConfig
-            editorScript.AppendFormat("var editorConfig{0} = {{", editorVar);
+            var test = new StringBuilder();
+            test.AppendFormat("var editorConfig{0} = {{", editorVar);
 
             var keysCount = this.Settings.Keys.Count;
             var currentCount = 0;
@@ -1380,9 +1381,9 @@ namespace WatchersNET.CKEditor.Web
                         value = "false";
                     } 
 
-                    editorScript.AppendFormat("{0}:{1}", key, value);
+                    test.AppendFormat("{0}:{1}", key, value);
 
-                    editorScript.Append(currentCount == keysCount ? "};" : ",");
+                    test.Append(currentCount == keysCount ? "};" : ",");
                 }
                 else
                 {
@@ -1391,12 +1392,13 @@ namespace WatchersNET.CKEditor.Web
                         continue;
                     }
 
-                    editorScript.AppendFormat("{0}:\'{1}\'", key, value);
+                    test.AppendFormat("{0}:\'{1}\'", key, value);
 
-                    editorScript.Append(currentCount == keysCount ? "};" : ",");
+                    test.Append(currentCount == keysCount ? "};" : ",");
                 }
             }
 
+            editorScript.Append(test);
             editorScript.AppendFormat(
                 "if (CKEDITOR.instances.{0}){{return;}}",
                 editorFixedId);

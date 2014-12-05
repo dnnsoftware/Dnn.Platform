@@ -34,7 +34,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -46,8 +46,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>Install\bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\WatchersNET.CKEditor.XML</DocumentationFile>
     <NOWARN>1591</NOWARN>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -309,17 +308,56 @@
   <Import Project="$(MSBuildBinPath)/Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>WatchersNET.CKHtmlEditorProvider</DNNFileName>
+    <PackageName>CKEditor-Provider</PackageName>
+    <Providers>/Providers</Providers>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\..\..\..\Build\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\..\..\..\Website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Provider</WebsiteInstallPath>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\Package.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;Package">
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
+    </ItemGroup>
+    <ItemGroup>
+      <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
+    </ItemGroup>
+    <ItemGroup>
+      <ResourceFiles Include="App_LocalResources\*.resx" />
+    </ItemGroup>
+    <ItemGroup>
+      <CKEditor Include="..\CKEditor\**\*.*" />
+    </ItemGroup>
+    <ItemGroup>
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);" />
+    </ItemGroup>
+  </Target>
+  <Target Name="CopyBin">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="@(Views)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\%(RecursiveDir)" />
+    <Copy SourceFiles="@(CKEditor)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\%(RecursiveDir)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(WebsitePath)\Providers\HtmlEditorProviders\CKEditor\App_LocalResources\" />
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2213</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dnn56</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/dnn56</IISAppRootUrl>
+          <IISUrl>http://localhost:51101/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -329,13 +367,4 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>WatchersNET.CKHtmlEditorProvider</DNNFileName>
-    <PackageName>CKEditor-Provider</PackageName>
-    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\BuildScripts</MSBuildCommunityTasksPath>
-  </PropertyGroup>
-  <Import Project="BuildScripts\ModulePackage.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="PackageModule">
-  </Target>
 </Project>

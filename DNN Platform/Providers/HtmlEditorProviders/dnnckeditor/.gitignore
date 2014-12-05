@@ -2,3 +2,5 @@ obj
 
 *.user
 thumbs.db
+**/bin/*
+packages
