@@ -211,6 +211,31 @@ namespace DotNetNuke.Entities.Content.Workflow
             _workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
+        public void MoveState(int stateId, int index)
+        {
+            var state = _workflowStateRepository.GetWorkflowStateByID(stateId);
+            if (state == null)
+            {
+                throw new WorkflowDoesNotExistException();
+            }
+
+            var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            if (index < 1 || index > states.Length - 2)
+            {
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
+            }
+
+            var currentIndex = GetStateIndex(states, state);
+
+            if (currentIndex == 0 
+                || currentIndex == states.Length - 1)
+            {
+                throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
+            }
+
+            MoveState(state, index, currentIndex);
+        }
+
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
         {
             return _workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
@@ -232,6 +257,45 @@ namespace DotNetNuke.Entities.Content.Workflow
         }
         #endregion
 
+        #region Private Methods
+        private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
+        {
+            int i = 0;
+
+            foreach (var state in states)
+            {
+                if (state.StateID == currentState.StateID)
+                {
+                    return i;
+                }
+                i++;
+            }
+
+            return i;
+        }
+        private void MoveState(WorkflowState state, int targetIndex, int currentIndex)
+        {
+            if (currentIndex == targetIndex)
+            {
+                return;
+            }
+
+            var moveUp = currentIndex < targetIndex;
+            var numberOfMovements = moveUp ? targetIndex - currentIndex : currentIndex - targetIndex;
+
+            for (var i = 0; i < numberOfMovements; i++)
+            {
+                if (moveUp)
+                {
+                    MoveWorkflowStateUp(state.StateID);
+                }
+                else
+                {
+                    MoveWorkflowStateDown(state.StateID);
+                }
+            }
+        }
+        #endregion
         #region Service Locator
         protected override Func<IWorkflowStateManager> GetFactory()
         {

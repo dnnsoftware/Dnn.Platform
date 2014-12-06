@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -69,13 +70,13 @@ namespace DotNetNuke.Services.Search
         /// This replaces "GetSearchIndexItems" as a newer implementation of search.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="startDate"></param>
+        /// <param name="startDateLocal"></param>
         /// <returns></returns>
         /// <history>
         ///     [vnguyen]   04/16/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
+        public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             var searchDocuments = new List<SearchDocument>();
             var searchModuleCollection = GetSearchModules(portalId);
@@ -87,16 +88,16 @@ namespace DotNetNuke.Services.Search
                     //Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
                     //We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate
                     //LastContentModifiedOnDate remains minvalue for modules that don't update this property
-                    if (module.LastContentModifiedOnDate != DateTime.MinValue && module.LastContentModifiedOnDate < startDate)
+                    if (module.LastContentModifiedOnDate > SqlDateTime.MinValue.Value && module.LastContentModifiedOnDate < startDateLocal)
                     {
                         continue;
                     }
 
                     var controller =  Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
                     var contentInfo = new SearchContentModuleInfo {ModSearchBaseControllerType= (ModuleSearchBase) controller, ModInfo = module};
-                    var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDate);
+                    var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
-                    if (searchItems != null)
+                    if (searchItems != null && searchItems.Count > 0)
                     {
                         //Add Module MetaData
                         foreach (var searchItem in searchItems)

@@ -22,12 +22,13 @@
 
 using System;
 using System.Collections;
-
+using System.Collections.Generic;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Log.EventLog;
 
 #endregion
@@ -62,6 +63,16 @@ namespace DotNetNuke.Security.Permissions
 		#endregion
 		
 		#region Public Shared Methods
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Tabs
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
+        {
+            return _provider.ImplicitRolesForPages(portalId);
+        }
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add content to the current page

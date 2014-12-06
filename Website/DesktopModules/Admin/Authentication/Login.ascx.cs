@@ -49,7 +49,6 @@ using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Messaging;
 using DotNetNuke.Services.Messaging.Data;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
@@ -853,7 +852,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			        var redirectUrl = RedirectURL;
 
                     //Clear the cookie
-                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "") { Expires = DateTime.Now.AddDays(-1) });
+                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "")
+                    {
+                        Expires = DateTime.Now.AddDays(-1),
+                        Path = Globals.ApplicationPath
+                    });
 
                     Response.Redirect(redirectUrl, true);
 					break;

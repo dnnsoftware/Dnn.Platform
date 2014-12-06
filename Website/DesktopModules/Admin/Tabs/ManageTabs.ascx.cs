@@ -23,15 +23,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -55,7 +52,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using Reflection = DotNetNuke.Framework.Reflection;
@@ -1761,7 +1757,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     if (tabId != Null.NullInteger)
                     {
-                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId));
+                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId))
+                        {
+                            Path = Globals.ApplicationPath
+                        };
                         Response.Cookies.Add(newCookie);
 
                         if (PortalSettings.UserMode != PortalSettings.Mode.Edit)

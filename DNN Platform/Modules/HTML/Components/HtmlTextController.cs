@@ -807,13 +807,15 @@ namespace DotNetNuke.Modules.Html
 
         #region ModuleSearchBase
 
-        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDate)
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var workflowId = GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
             var searchDocuments = new List<SearchDocument>();
             var htmlTextInfo = GetTopHtmlText(modInfo.ModuleID, true, workflowId);
 
-            if (htmlTextInfo != null && (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDate.ToUniversalTime() && htmlTextInfo.LastModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
+            if (htmlTextInfo != null &&
+                (htmlTextInfo.LastModifiedOnDate.ToUniversalTime() > beginDateUtc &&
+                 htmlTextInfo.LastModifiedOnDate.ToUniversalTime() < DateTime.UtcNow))
             {
                 var strContent = HtmlUtils.Clean(htmlTextInfo.Content, false);
 

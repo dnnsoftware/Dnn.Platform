@@ -147,6 +147,8 @@
     <Compile Include="Controllers\Messaging\NotificationsControllerTests.cs" />
     <Compile Include="Controllers\Search\SearchQueryStringParserTests.cs" />
     <Compile Include="Controllers\Social\RelationshipControllerTests.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsControllerTestFactory.cs" />
+    <Compile Include="Entities\Portals\PortalSettingsControllerTests.cs" />
     <Compile Include="Entities\Portals\PortalSettingsTests.cs" />
     <Compile Include="Entities\Urls\FriendlyUrlControllerTests.cs" />
     <Compile Include="Framework\ServicesFrameworkTests.cs" />
@@ -224,6 +226,9 @@
       <Link>App.config</Link>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Entities\Portals\TestFiles\SettingValues.csv" />
+    <None Include="Entities\Portals\TestFiles\HostSettings.csv" />
+    <None Include="Entities\Portals\TestFiles\DefaultValues.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

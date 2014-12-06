@@ -22,6 +22,7 @@
 #endregion
 
 using System.Collections.Generic;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Entities.Portals
@@ -38,9 +39,18 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <returns></returns>
         ///	<param name="tabId">The current tab's id</param>
-        ///	<param name="portalSetting">The current PortalSettings</param>
+        ///	<param name="portalSettings">The current PortalSettings</param>
         /// -----------------------------------------------------------------------------
-        TabInfo GetActiveTab(int tabId, PortalSettings portalSetting);
+        TabInfo GetActiveTab(int tabId, PortalSettings portalSettings);
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The GetTabModules method gets the list of modules for the active Tab
+        /// </summary>
+        /// <returns></returns>
+        ///	<param name="portalSettings">The current PortalSettings</param>
+        /// -----------------------------------------------------------------------------
+        IList<ModuleInfo> GetTabModules(PortalSettings portalSettings);
 
         ///  -----------------------------------------------------------------------------
         ///  <summary>

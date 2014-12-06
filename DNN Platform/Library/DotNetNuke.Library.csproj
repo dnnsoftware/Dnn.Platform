@@ -150,6 +150,7 @@
     <Compile Include="Entities\Tabs\Actions\TabSyncEventArgs.cs" />
     <Compile Include="Entities\Tabs\Actions\ITabEventHandler.cs" />
     <Compile Include="Entities\Tabs\Actions\TabEventArgs.cs" />
+    <Compile Include="Entities\Tabs\Dto\ChangeControlState.cs" />
     <Compile Include="Entities\Users\RelationshipEventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -648,6 +649,8 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
+    <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
     <Compile Include="Services\Search\Controllers\IModuleSearchResultController.cs" />

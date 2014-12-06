@@ -114,20 +114,20 @@ namespace DotNetNuke.Entities.Content.Workflow
 
 
         /// <summary>
-        /// This method returns the user that created the contentItem.
+        /// This method returns the user that started the workflow for the contentItem.
         /// </summary>
-        /// <param name="workflow">Workflow</param>
+        /// <remarks>If Content Item has no workflow, returns null.</remarks>
         /// <param name="contentItem">ContentItem</param>
         /// <returns>User Info</returns>
-        UserInfo GetStartedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem);
+        UserInfo GetStartedDraftStateUser(ContentItem contentItem);
 
         /// <summary>
         /// This method returns the user that submitted the contentItem.
         /// </summary>
-        /// <param name="workflow">Workflow</param>
+        /// <remarks>If Content Item has no workflow or the content has not submitted yet, returns null.</remarks>
         /// <param name="contentItem">ContentItem</param>
         /// <returns>User Info</returns>
-        UserInfo GetSubmittedDraftStateUser(Entities.Workflow workflow, ContentItem contentItem);
+        UserInfo GetSubmittedDraftStateUser(ContentItem contentItem);
 
     }
 }

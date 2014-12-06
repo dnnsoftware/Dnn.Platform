@@ -24,7 +24,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -44,7 +43,6 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.Personalization;
 
 #endregion
 
@@ -114,7 +112,6 @@ namespace DotNetNuke.Security
         private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
             var roleType = GetRoleType(roleName);
-            roleAllowed = null;
             switch (roleType)
             {
                 case RoleType.Friend:
@@ -250,7 +247,7 @@ namespace DotNetNuke.Security
         private string FilterStrings(string strInput)
         {
 			//setup up list of search terms as items may be used twice
-            string TempInput = strInput;
+            var tempInput = strInput;
             var listStrings = new List<string>
                                   {
                                       "<script[^>]*>.*?</script[^><]*>",
@@ -282,20 +279,20 @@ namespace DotNetNuke.Security
             const string replacement = " ";
 
             //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
-            if (TempInput.Contains("&gt;") && TempInput.Contains("&lt;"))
+            if (tempInput.Contains("&gt;") && tempInput.Contains("&lt;"))
             {
 				//text is encoded, so decode and try again
-                TempInput = HttpUtility.HtmlDecode(TempInput);
-                TempInput = listStrings.Aggregate(TempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = HttpUtility.HtmlDecode(tempInput);
+                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
 
                 //Re-encode
-                TempInput = HttpUtility.HtmlEncode(TempInput);
+                tempInput = HttpUtility.HtmlEncode(tempInput);
             }
             else
             {
-                TempInput = listStrings.Aggregate(TempInput, (current, s) => Regex.Replace(current, s, replacement, options));
+                tempInput = listStrings.Aggregate(tempInput, (current, s) => Regex.Replace(current, s, replacement, options));
             }
-            return TempInput;
+            return tempInput;
         }
 
         ///-----------------------------------------------------------------------------
@@ -312,13 +309,13 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            string TempInput = strInput;
+            var tempInput = strInput;
             if (strInput==" " || String.IsNullOrEmpty(strInput))
             {
-                return TempInput; 
+                return tempInput; 
             }
-            TempInput = FilterStrings(TempInput); 
-            return TempInput;
+            tempInput = FilterStrings(tempInput); 
+            return tempInput;
         }
 
         ///-----------------------------------------------------------------------------
@@ -336,9 +333,9 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatAngleBrackets(string strInput)
         {
-            string TempInput = strInput.Replace("<", "");
-            TempInput = TempInput.Replace(">", "");
-            return TempInput;
+            var tempInput = strInput.Replace("<", "");
+            tempInput = tempInput.Replace(">", "");
+            return tempInput;
         }
 
         ///-----------------------------------------------------------------------------
@@ -614,9 +611,9 @@ namespace DotNetNuke.Security
                 //Create a custom auth cookie
 
                 //first, create the authentication ticket     
-                FormsAuthenticationTicket authenticationTicket = createPersistentCookie
-                                                                     ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
-                                                                     : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
+                var authenticationTicket = createPersistentCookie
+                    ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
+                    : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
 
                 //encrypt it     
                 var encryptedAuthTicket = FormsAuthentication.Encrypt(authenticationTicket);
@@ -651,18 +648,18 @@ namespace DotNetNuke.Security
             {
                 FormsAuthentication.SetAuthCookie(user.Username, false);
             }
+
             if (user.IsSuperUser)
             {
                 //save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
-
                 HostController.Instance.Update(String.Format("GettingStarted_Display_{0}", user.UserID), "true");
             }
         }
 
         public void SignOut()
         {
-			//Log User Off from Cookie Authentication System
+            //Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
             {
@@ -675,35 +672,35 @@ namespace DotNetNuke.Security
                 var domain = domainCookie.Value;
 
                 //Create a new Cookie
-                string str = String.Empty;
+                var str = String.Empty;
                 if (HttpContext.Current.Request.Browser["supportsEmptyStringInCookieValue"] == "false")
                 {
                     str = "NoCookie";
                 }
 
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, str)
-                                    {
-                                        Expires = new DateTime(1999, 1, 1),
-                                        Domain = domain,
-                                        Path = FormsAuthentication.FormsCookiePath,
-                                        Secure = FormsAuthentication.RequireSSL
-                    
-                                    };
+                {
+                    Expires = new DateTime(1999, 1, 1),
+                    Domain = domain,
+                    Path = FormsAuthentication.FormsCookiePath,
+                    Secure = FormsAuthentication.RequireSSL
+
+                };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
 
                 var siteGroupCookie = new HttpCookie("SiteGroup", str)
-                                    {
-                                        Expires = new DateTime(1999, 1, 1),
-                                        Domain = domain,
-                                        Path = FormsAuthentication.FormsCookiePath,
-                                        Secure = FormsAuthentication.RequireSSL
-                                    };
+                {
+                    Expires = new DateTime(1999, 1, 1),
+                    Domain = domain,
+                    Path = FormsAuthentication.FormsCookiePath,
+                    Secure = FormsAuthentication.RequireSSL
+                };
 
                 HttpContext.Current.Response.Cookies.Set(siteGroupCookie);
             }
 
-			//Remove current userinfo from context items
+            //Remove current userinfo from context items
 			HttpContext.Current.Items.Remove("UserInfo");
 
             //remove language cookie
@@ -721,20 +718,20 @@ namespace DotNetNuke.Security
             }
 
             //expire cookies
-            var httpCookie1 = HttpContext.Current.Response.Cookies["portalaliasid"];
-            if (httpCookie1 != null)
+            cookie = HttpContext.Current.Response.Cookies["portalaliasid"];
+            if (cookie != null)
             {
-                httpCookie1.Value = null;
-                httpCookie1.Path = "/";
-                httpCookie1.Expires = DateTime.Now.AddYears(-30);
+                cookie.Value = null;
+                cookie.Path = Globals.ApplicationPath;
+                cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            var cookie1 = HttpContext.Current.Response.Cookies["portalroles"];
-            if (cookie1 != null)
+            cookie = HttpContext.Current.Response.Cookies["portalroles"];
+            if (cookie != null)
             {
-                cookie1.Value = null;
-                cookie1.Path = "/";
-                cookie1.Expires = DateTime.Now.AddYears(-30);
+                cookie.Value = null;
+                cookie.Path = Globals.ApplicationPath;
+                cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
             //clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
@@ -747,7 +744,7 @@ namespace DotNetNuke.Security
                     if (auth != null)
                     {
                         auth.Value = null;
-                        auth.Path = "/";
+                        auth.Path = Globals.ApplicationPath;
                         auth.Expires = DateTime.Now.AddYears(-30);
                     }
                 }
@@ -778,23 +775,23 @@ namespace DotNetNuke.Security
         public static void ForceSecureConnection()
         {
 			//get current url
-            string URL = HttpContext.Current.Request.Url.ToString();
+            var url = HttpContext.Current.Request.Url.ToString();
 			//if unsecure connection
-            if (URL.StartsWith("http://"))
+            if (url.StartsWith("http://"))
             {
 				//switch to secure connection
-                URL = URL.Replace("http://", "https://");
+                url = url.Replace("http://", "https://");
                 //append ssl parameter to querystring to indicate secure connection processing has already occurred
-                if (URL.IndexOf("?", StringComparison.Ordinal) == -1)
+                if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {
-                    URL = URL + "?ssl=1";
+                    url = url + "?ssl=1";
                 }
                 else
                 {
-                    URL = URL + "&ssl=1";
+                    url = url + "&ssl=1";
                 }
                 //redirect to secure connection
-                HttpContext.Current.Response.Redirect(URL, true);
+                HttpContext.Current.Response.Redirect(url, true);
             }
         }
 
@@ -947,7 +944,7 @@ namespace DotNetNuke.Security
             if (httpCookie != null)
             {
                 httpCookie.Value = null;
-                httpCookie.Path = "/";
+                httpCookie.Path = Globals.ApplicationPath;
                 httpCookie.Expires = DateTime.Now.AddYears(-30);
             }
         }

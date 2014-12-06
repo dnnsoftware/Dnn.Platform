@@ -23,12 +23,10 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -381,7 +379,7 @@ namespace DotNetNuke.Services.Authentication
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("authentication", value);
+                        cookie = new HttpCookie("authentication", value) { Path = Globals.ApplicationPath };
                         if (CreatePersistentCookie)
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);

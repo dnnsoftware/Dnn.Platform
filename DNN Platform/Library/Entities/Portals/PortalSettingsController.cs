@@ -29,6 +29,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
@@ -199,6 +200,11 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
+        public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
+        {
+            return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
+        }
+
         public virtual void LoadPortal(PortalInfo portal, PortalSettings portalSettings)
 		{
             portalSettings.PortalName = portal.PortalName;
@@ -286,14 +292,17 @@ namespace DotNetNuke.Entities.Portals
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
+
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
             setting = settings.GetValueOrDefault("ControlPanelMode", "");
             if (setting.ToUpperInvariant() == "EDIT")
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
+
             setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
             portalSettings.DefaultControlPanelVisibility = setting.ToUpperInvariant() != "MIN";
+
             setting = settings.GetValueOrDefault("TimeZone", "");
             if (!string.IsNullOrEmpty(setting))
             {

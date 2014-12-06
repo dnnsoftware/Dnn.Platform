@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -61,7 +60,6 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.Framework
 {
     using Web.Client;
-    using DotNetNuke.Entities.Modules;
 
     /// -----------------------------------------------------------------------------
     /// Project	 : DotNetNuke
@@ -277,6 +275,11 @@ namespace DotNetNuke.Framework
             {
                 Page.Header.Controls.Add(new LiteralControl(PortalSettings.ActiveTab.PageHeadText));
             }
+
+            if (!string.IsNullOrEmpty(PortalSettings.PageHeadText))
+            {
+                metaPanel.Controls.Add(new LiteralControl(PortalSettings.PageHeadText));
+            }
             
             //set page title
             if (UrlUtils.InPopUp())
@@ -388,8 +391,8 @@ namespace DotNetNuke.Framework
                 Generator = "";
             }
 
-            //META Robots
-            if (!UrlUtils.InPopUp())
+            //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
+            if (!UrlUtils.InPopUp() && !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline))
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
@@ -499,9 +502,11 @@ namespace DotNetNuke.Framework
                     //save the affiliateid for acquisitions
                     if (Request.Cookies["AffiliateId"] == null) //do not overwrite
                     {
-                        var objCookie = new HttpCookie("AffiliateId");
-                        objCookie.Value = affiliateId.ToString();
-                        objCookie.Expires = DateTime.Now.AddYears(1); //persist cookie for one year
+                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
+                        {
+                            Expires = DateTime.Now.AddYears(1),
+                            Path = Globals.ApplicationPath
+                        };
                         Response.Cookies.Add(objCookie);
                     }
                 }
@@ -811,14 +816,22 @@ namespace DotNetNuke.Framework
                 MetaGenerator.Content = Generator;
                 MetaGenerator.Visible = (!String.IsNullOrEmpty(Generator));
                 MetaAuthor.Content = PortalSettings.PortalName;
-                MetaCopyright.Content = Copyright;
-                MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                /*
+                 * Never show to be html5 compatible and stay backward compatible
+                 * 
+                 * MetaCopyright.Content = Copyright;
+                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                 */
                 MetaKeywords.Content = KeyWords;
                 MetaKeywords.Visible = (!String.IsNullOrEmpty(KeyWords));
                 MetaDescription.Content = Description;
                 MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
             }
             Page.Header.Title = Title;
+            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader))
+            {
+                Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
+            }
         }
 
 		protected override void Render(HtmlTextWriter writer)

@@ -3818,22 +3818,42 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
         /// </summary>        
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl()
+        {
+            return UserProfilePicRelativeUrl(true);
+        }
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
         /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
         /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
         /// </returns>
         /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
         /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
         /// </remarks>
-        public static string UserProfilePicRelativeUrl(bool includeCdv = true)
+        public static string UserProfilePicRelativeUrl(bool includeCdv)
         {
+            const string query = "/profilepic.ashx?userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
-            var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+
             var cdv = "";
             if (includeCdv)
             {
                 cdv = "&cdv=" + DateTime.Now.Ticks;
             }
-            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}"+cdv;
+
+            if (childPortalAlias.StartsWith(Globals.ApplicationPath))
+                return childPortalAlias + query + cdv;
+
+            return Globals.ApplicationPath + childPortalAlias + query + cdv;
 
         }
 

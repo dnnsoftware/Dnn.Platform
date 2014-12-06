@@ -259,10 +259,10 @@
     <value>Purged Site Log Successfully</value>
   </data>
   <data name="SkinObjects.Text" xml:space="preserve">
-    <value>[Theme Objects]</value>
+    <value>[Skin Objects]</value>
   </data>
   <data name="SkinObjectsDescription.Text" xml:space="preserve">
-    <value>Theme Objects are User Controls which can be used to provide custom functionality to your Theme files.</value>
+    <value>Skin Objects are User Controls which can be used to provide custom functionality to your Theme files.</value>
   </data>
   <data name="ReadError.Text" xml:space="preserve">
     <value>Could not read all the data: {0}/{1}</value>
@@ -376,13 +376,13 @@
     <value>Error loading package level attribute file: ({0})</value>
   </data>
   <data name="DuplicateSkinObject.Error" xml:space="preserve">
-    <value>Discarding duplicate theme object for token {0}</value>
+    <value>Discarding duplicate skin object for token {0}</value>
   </data>
   <data name="DuplicateSkinObject.Detail" xml:space="preserve">
     <value>Any theme that references this token will utilize the theme control registered first {0} rather than the one specified by the duplicate ({1}).  The theme may render incorrectly.</value>
   </data>
   <data name="LoadingSkinToken.Text" xml:space="preserve">
-    <value>Loading theme object for token {0}</value>
+    <value>Loading skin object for token {0}</value>
   </data>
   <data name="BeginSkinFile.Text" xml:space="preserve">
     <value>Begin processing file</value>
@@ -424,7 +424,7 @@
     <value>Processing token</value>
   </data>
   <data name="SkinToken.Text" xml:space="preserve">
-    <value>Token is theme object</value>
+    <value>Token is skin object</value>
   </data>
   <data name="PaneToken.Text" xml:space="preserve">
     <value>Token is content pane</value>
@@ -448,7 +448,7 @@
     <value>Processing embedded object</value>
   </data>
   <data name="SkinObject.Text" xml:space="preserve">
-    <value>Embedded object is theme object</value>
+    <value>Embedded object is skin object</value>
   </data>
   <data name="PaneObject.Text" xml:space="preserve">
     <value>Embedded object is content pane</value>

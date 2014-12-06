@@ -21,12 +21,10 @@
 #region Usings
 
 using System;
-using System.Collections;
-
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using System.Collections.Generic;
 
@@ -82,6 +80,16 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearFolderPermissionsCache(PortalID);
             DataCache.ClearCache(string.Format("Folders|{0}|", PortalID));
             DataCache.ClearFolderCache(PortalID);
+        }
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Folders
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
+        {
+            return provider.ImplicitRolesForPages(portalId);
         }
 
         /// <summary>
@@ -212,9 +220,9 @@ namespace DotNetNuke.Security.Permissions
         {
             bool clearCache = Null.NullBoolean;
             IEnumerable<IFolderInfo> childFolders = FolderManager.Instance.GetFolders(folder);
-            foreach (FolderInfo f in childFolders)
+            foreach (var f in childFolders)
             {
-                if (CanAdminFolder(f))
+                if (CanAdminFolder((FolderInfo)f))
                 {
                     f.FolderPermissions.Clear();
                     f.FolderPermissions.AddRange(newPermissions);

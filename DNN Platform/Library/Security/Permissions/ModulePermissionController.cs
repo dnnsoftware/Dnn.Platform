@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using DotNetNuke.Common;
@@ -30,6 +31,7 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 
 #endregion
 
@@ -63,6 +65,16 @@ namespace DotNetNuke.Security.Permissions
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Modules
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are</param>
+        /// <returns>A List with the implicit roles</returns>
+        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
+        {
+            return _provider.ImplicitRolesForPages(portalId);
+        }
 
         /// <summary>
         /// Returns a flag indicating whether the current user can administer a module

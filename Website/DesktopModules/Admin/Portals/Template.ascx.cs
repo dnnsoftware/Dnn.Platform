@@ -402,6 +402,22 @@ namespace DotNetNuke.Modules.Admin.Portals
             writer.WriteElementString("userquota", portal.UserQuota.ToString());
             writer.WriteElementString("pagequota", portal.PageQuota.ToString());
 
+            settingsDictionary.TryGetValue("PageHeadText", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("pageheadtext", setting);
+            }
+            settingsDictionary.TryGetValue("InjectModuleHyperLink", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("injectmodulehyperlink", setting);
+            }
+            settingsDictionary.TryGetValue("AddCompatibleHttpHeader", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("addcompatiblehttpheader", setting);
+            }
+
             //End Portal Settings
             writer.WriteEndElement();
         }

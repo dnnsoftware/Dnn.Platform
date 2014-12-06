@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace DotNetNuke.Tests.Utilities
@@ -77,6 +78,70 @@ namespace DotNetNuke.Tests.Utilities
             FieldInfo field = type.GetField(fieldName, privateBindings);
 
             field.SetValue(instance, value);
+        }
+
+        public static string GetFileName(string testFilesFolder, string fileName)
+        {
+            string fullName = String.Format("{0}\\{1}", testFilesFolder, fileName);
+            if (!fullName.ToLower().EndsWith(".csv") && !fullName.ToLower().EndsWith(".sql"))
+            {
+                fullName += ".csv";
+            }
+
+            return fullName;
+        }
+
+        public static Stream GetFileStream(string testFilesFolder, string fileName)
+        {
+            var filePath = GetFileName(testFilesFolder, fileName);
+            FileStream stream = null;
+            if (File.Exists(filePath))
+            {
+                stream = new FileStream(GetFileName(testFilesFolder, fileName), FileMode.Open, FileAccess.Read);
+            }
+            return stream;
+        }
+
+        public static string ReadStream(string testFilesFolder, string fileName)
+        {
+            string text = String.Empty;
+            Stream stream = GetFileStream(testFilesFolder,fileName);
+            if (stream != null)
+            {
+                using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))
+                {
+                    text = reader.ReadToEnd();
+                }
+            }
+            return text;
+        }
+
+        public static void ReadStream(string testFilesFolder, string fileName, Action<string, string> onReadLine)
+        {
+            string text = String.Empty;
+            var stream = GetFileStream(testFilesFolder, fileName);
+            if (stream != null)
+            {
+                using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))
+                {
+                    string line;
+                    string header = String.Empty;
+                    int count = 0;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        //Ignore first line
+                        if (count > 0)
+                        {
+                            onReadLine(line, header);
+                        }
+                        else
+                        {
+                            header = line;
+                        }
+                        count++;
+                    }
+                }
+            }
         }
     }
 

@@ -1,0 +1,12 @@
+﻿Key,									Value
+DefaultAdminContainer,					DefaultAdminContainer
+DefaultAdminSkin,						DefaultAdminSkin
+DefaultPortalContainer,					DefaultPortalContainer
+DefaultPortalSkin,						DefaultPortalSkin
+EnableBrowserLanguage,					true
+EnableUrlLanguage,						true
+SearchIncludeCommon,					true
+SearchIncludeNumeric,					true
+SearchIncludedTagInfoFilter,			a
+MaxSearchWordLength,					25
+MinSearchWordLength,					3

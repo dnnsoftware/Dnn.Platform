@@ -49,6 +49,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
@@ -505,8 +506,8 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
-                    && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
+                if (!FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "WRITE")
+                    && !FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "ADD"))
                 {
                     result.Message = GetLocalizedString("NoPermission");
                     return result;

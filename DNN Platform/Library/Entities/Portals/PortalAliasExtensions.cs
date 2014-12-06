@@ -107,6 +107,7 @@ namespace DotNetNuke.Entities.Portals
                 foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
                                                          (String.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
+                                                         && a.IsPrimary
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias == result.HttpAlias);
                 if (foundAlias == null) //let us try again using Startswith()
@@ -114,6 +115,7 @@ namespace DotNetNuke.Entities.Portals
                     foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
                                                          (String.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
+                                                         && a.IsPrimary
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias.StartsWith(result.HttpAlias + "/"));
                 }
@@ -121,7 +123,7 @@ namespace DotNetNuke.Entities.Portals
             //27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
             if (foundAlias == null)
             {
-                foundAlias = aliasList.Where(a => a.BrowserType == browserType 
+                foundAlias = aliasList.Where(a => a.BrowserType == browserType
                                             && (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
                                             && a.PortalID == portalId)
                     .OrderByDescending(a => a.IsPrimary)
