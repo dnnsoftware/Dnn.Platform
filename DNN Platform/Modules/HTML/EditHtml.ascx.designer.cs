@@ -22,6 +22,24 @@ namespace DotNetNuke.Modules.Html {
         protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnCssInclude customJS;
         
         /// <summary>
+        /// phEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phEdit;
+        
+        /// <summary>
+        /// phMasterContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phMasterContent;
+        
+        /// <summary>
         /// ehmContent control.
         /// </summary>
         /// <remarks>
@@ -74,6 +92,15 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litCurrentContentPreview;
+        
+        /// <summary>
+        /// phCurrentVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phCurrentVersion;
         
         /// <summary>
         /// divCurrentVersion control.
@@ -175,31 +202,22 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.CheckBox chkPublish;
         
         /// <summary>
-        /// cmdSave control.
+        /// phPreview control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSave;
+        protected global::System.Web.UI.WebControls.PlaceHolder phPreview;
         
         /// <summary>
-        /// cmdPreview control.
+        /// phPreviewVersion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdPreview;
-        
-        /// <summary>
-        /// hlCancel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+        protected global::System.Web.UI.WebControls.PlaceHolder phPreviewVersion;
         
         /// <summary>
         /// divPreviewVersion control.
@@ -337,13 +355,13 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.Label lblNoRecords;
         
         /// <summary>
-        /// dnnVersions control.
+        /// phHistory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dnnVersions;
+        protected global::System.Web.UI.WebControls.PlaceHolder phHistory;
         
         /// <summary>
         /// plMaxVersions control.
@@ -434,5 +452,77 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoRecords1;
+        
+        /// <summary>
+        /// cmdSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdSave;
+        
+        /// <summary>
+        /// hlCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlCancel;
+        
+        /// <summary>
+        /// cmdPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdPreview;
+        
+        /// <summary>
+        /// cmdEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdEdit;
+        
+        /// <summary>
+        /// cmdHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdHistory;
+        
+        /// <summary>
+        /// cmdMasterContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdMasterContent;
+        
+        /// <summary>
+        /// ddlRender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRender;
+        
+        /// <summary>
+        /// hfEditor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfEditor;
     }
 }
