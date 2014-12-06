@@ -89,8 +89,9 @@
                 <nodes>
                   <node path="/configuration/dotnetnuke/htmlEditor" action="updateattribute" name="defaultProvider" value="CKHtmlEditorProvider" />
                   <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="ignore">
-                    <add name="CKHtmlEditorProvider"  type="WatchersNET.CKEditor.CKHtmlEditorProvider, WatchersNET.CKEditor" providerPath="~/Providers/HtmlEditorProviders/CKEditor/" />
+                    <add name="CKHtmlEditorProvider" type="WatchersNET.CKEditor.CKHtmlEditorProvider, WatchersNET.CKEditor" providerPath="~/Providers/HtmlEditorProviders/CKEditor/" settingsControlPath="~/Providers/HtmlEditorProviders/CKEditor/CKEditorOptions.ascx" />
                   </node>
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='CKHtmlEditorProvider']" action="updateattribute" name="settingsControlPath" value="~/Providers/HtmlEditorProviders/CKEditor/CKEditorOptions.ascx" collision="ignore" />
                 </nodes>
               </configuration>
             </install>
@@ -117,7 +118,7 @@
         <email>thewatcher@watchersnet.de</email>
       </owner>
       <iconFile>~/Providers/HtmlEditorProviders/CKEditor/CKEditorConfig.png</iconFile>
-      <license src="CKLicense.html" />
+      <license src="License.txt" />
       <releaseNotes />
       <dependencies>
         <dependency type="CoreVersion">07.00.00</dependency>
