@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -224,6 +224,8 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebUtility", "DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj", "{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchersNET.CKEditor", "DNN Platform\Providers\HtmlEditorProviders\dnnckeditor\WatchersNET.CKEditor.csproj", "{AE7E021E-7C7B-4003-9BD6-5A04C781C277}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.HtmlEditorManager", "DNN Platform\Modules\HtmlEditorManager\DotNetNuke.Modules.HtmlEditorManager.csproj", "{000181C6-C95F-4302-9130-A66B693FFFD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -529,6 +531,12 @@ Global
 		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE7E021E-7C7B-4003-9BD6-5A04C781C277}.Release|x86.ActiveCfg = Release|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000181C6-C95F-4302-9130-A66B693FFFD2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -599,5 +607,6 @@ Global
 		{A765907D-1AB9-4CF4-AAAB-FC2F8049EEBA} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 		{AE7E021E-7C7B-4003-9BD6-5A04C781C277} = {EE7E8588-93C6-4532-AF74-AFC679A71161}
+		{000181C6-C95F-4302-9130-A66B693FFFD2} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 	EndGlobalSection
 EndGlobal

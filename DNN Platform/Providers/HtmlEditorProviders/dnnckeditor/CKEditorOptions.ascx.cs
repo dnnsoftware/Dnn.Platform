@@ -155,7 +155,13 @@ namespace WatchersNET.CKEditor
         {
             get
             {
-                return (int)this.ViewState["CurrentTabId"];
+                var o = this.ViewState["CurrentTabId"];
+                if (o != null)
+                {
+                    return (int)o;
+                }
+
+                return 1;
             }
 
             set
