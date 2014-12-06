@@ -279,12 +279,6 @@
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
   <ItemGroup>
     <Folder Include="CKEditor\css\" />
   </ItemGroup>
@@ -317,7 +311,6 @@
   <Target Name="GetFiles">
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt;*.Cleanup.txt" />
-      <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
     </ItemGroup>
     <ItemGroup>
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
