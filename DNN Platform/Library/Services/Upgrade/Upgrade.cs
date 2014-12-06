@@ -1143,7 +1143,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
+        public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
