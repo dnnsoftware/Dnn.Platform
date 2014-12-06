@@ -206,6 +206,12 @@
     <Content Include="CKEditorOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="css\jquery.notification.css" />
+    <Content Include="css\Options.css" />
+    <Content Include="js\jquery.ckeditor.adapter.js" />
+    <Content Include="js\jquery.notification.js" />
+    <Content Include="js\jquery.ui.controls.js" />
+    <Content Include="js\Options.js" />
     <Content Include="CKFinder\config.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -279,9 +285,7 @@
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CKEditor\css\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -316,16 +320,22 @@
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
     </ItemGroup>
     <ItemGroup>
+      <CssFiles Include="css\*.css" />
+    </ItemGroup>
+    <ItemGroup>
+      <JsFiles Include="js\*.js" />
+    </ItemGroup>
+    <ItemGroup>
       <ResourceFiles Include="App_LocalResources\*.resx" />
     </ItemGroup>
     <ItemGroup>
       <CKEditor Include="CKEditor\**\*.*" />
     </ItemGroup>
     <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);" />
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);" />
     </ItemGroup>
     <ItemGroup>
-      <CleanupFiles Include="*.Cleanup.txt"/>
+      <CleanupFiles Include="*.Cleanup.txt" />
     </ItemGroup>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
   </Target>
