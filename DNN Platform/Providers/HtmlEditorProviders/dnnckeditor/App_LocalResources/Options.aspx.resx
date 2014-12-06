@@ -405,7 +405,7 @@
     <value>Icon Legend</value>
   </data>
   <data name="EditorConfigWarning.Text" xml:space="preserve">
-    <value>&lt;strong&gt;Info:&lt;/strong&gt; The Settings bellow are only for Experts, please modify them only if you are know what you are doing. To find out more about the Settings bellow visit the &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;CKEditor JavaScript API Documentation Page&lt;/strong&gt;&lt;/a&gt;. You can leave the Settings blank to load the default Settings, when the Editor is loaded.</value>
+    <value>&lt;strong&gt;Info:&lt;/strong&gt; The Settings below are only for Experts, please modify them only if you are know what you are doing. To find out more about the Settings below visit the &lt;a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html"&gt;&lt;strong&gt;CKEditor JavaScript API Documentation Page&lt;/strong&gt;&lt;/a&gt;. You can leave the Settings blank to load the default Settings, when the Editor is loaded.</value>
   </data>
   <data name="ModuleInstance.Text" xml:space="preserve">
     <value>Module</value>

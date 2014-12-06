@@ -72,6 +72,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Telerik.Web.UI">
       <HintPath>..\..\..\Components\Telerik\bin\Telerik.Web.UI.dll</HintPath>
       <Private>False</Private>
@@ -261,6 +262,7 @@
     <Content Include="02.00.00.SqlDataProvider" />
     <Content Include="02.00.09.SqlDataProvider" />
     <Content Include="02.01.00.SqlDataProvider" />
+    <Content Include="03.00.00.SqlDataProvider" />
     <None Include="Uninstall.SqlDataProvider" />
     <None Include="WatchersNET.CKHtmlEditorProvider.dnn">
       <SubType>Designer</SubType>

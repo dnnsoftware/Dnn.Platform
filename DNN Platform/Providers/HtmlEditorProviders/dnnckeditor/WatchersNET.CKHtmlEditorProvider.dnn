@@ -50,6 +50,10 @@
           <name>02.01.00.SqlDataProvider</name>
           <version>02.01.00</version>
         </script>
+        <script type="Install">
+          <name>03.00.00.SqlDataProvider</name>
+          <version>03.00.00</version>
+        </script>
         <script type="UnInstall">
           <name>Uninstall.SqlDataProvider</name>
         </script>
@@ -108,67 +112,5 @@
     <component type="Cleanup" version="02.00.00" fileName="02.00.00.Cleanup.txt" />
   </components>
 </package>
-    <package name="CKEditor.EditorConfigManager" type="Module" version="02.01.00">
-      <friendlyName>CKEditor Config Manager</friendlyName>
-      <description>Configuration Manager for the CKEditor Editor Provider</description>
-      <owner>
-        <name>Ingo Herbote</name>
-        <organization>WatchersNET</organization>
-        <url>http://www.watchersnet.de</url>
-        <email>thewatcher@watchersnet.de</email>
-      </owner>
-      <iconFile>~/Providers/HtmlEditorProviders/CKEditor/CKEditorConfig.png</iconFile>
-      <license src="license.txt" />
-      <releaseNotes />
-      <dependencies>
-        <dependency type="CoreVersion">07.00.00</dependency>
-      </dependencies>
-      <components>
-        <component type="Module">
-          <desktopModule>
-            <moduleName>CKEditor.EditorConfigManager</moduleName>
-            <foldername />
-            <businessControllerClass />
-            <supportedFeatures />
-            <moduleDefinitions>
-              <moduleDefinition>
-                <friendlyName>CKEditor Config Manager</friendlyName>
-                <defaultCacheTime>0</defaultCacheTime>
-                <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>Providers/HtmlEditorProviders/CKEditor/Module/EditorConfigManager.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                </moduleControls>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-          <eventMessage>
-            <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
-            <processorCommand>UpgradeModule</processorCommand>
-            <attributes>
-              <businessControllerClass>WatchersNET.CKEditor.Module.UpgradeController, WatchersNET.CKEditor</businessControllerClass>
-              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>02.00.05</upgradeVersionsList>
-            </attributes>
-          </eventMessage>
-        </component>
-        <component type="File">
-          <files>
-            <basePath>Providers\HtmlEditorProviders\CKEditor</basePath>
-            <file>
-              <name>CKEditorConfig.png</name>
-              <sourceFileName>CKEditorConfig.png</sourceFileName>
-            </file>
-          </files>
-        </component>
-      </components>
-    </package>
 </packages>
 </dotnetnuke>

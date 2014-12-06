@@ -41,11 +41,6 @@ namespace WatchersNET.CKEditor.Module
     public partial class EditorConfigManager : ModuleSettingsBase
     {
         /// <summary>
-        /// The page type
-        /// </summary>
-        private Type pageType;
-
-        /// <summary>
         ///   Gets Current Language from Url
         /// </summary>
         protected string LangCode
@@ -93,8 +88,6 @@ namespace WatchersNET.CKEditor.Module
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.AddJavaScripts();
-
             try
             {
                 this.EditorOptions =
@@ -282,37 +275,6 @@ namespace WatchersNET.CKEditor.Module
             this.IconLegendLabel.Text = Localization.GetString(
                 "IconLegendLabel.Text", this.ResXFile, this.LangCode);
             this.ModuleInstanceInfo.Text = Localization.GetString("ModuleError.Text", this.ResXFile, this.LangCode);
-        }
-
-        /// <summary>
-        /// Adds the Java scripts.
-        /// </summary>
-        private void AddJavaScripts()
-        {
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/jquery.notification.css"));
-
-            ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/Options.css"));
-
-            this.pageType = typeof(Page);
-
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
-
-            ScriptManager.RegisterClientScriptInclude(
-                this,
-                this.pageType,
-                "jquery.notification",
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/jquery.notification.js"));
-
-            ScriptManager.RegisterClientScriptInclude(
-                this,
-                this.pageType,
-                "OptionsJs",
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/Options.js"));
         }
 
         /// <summary>
