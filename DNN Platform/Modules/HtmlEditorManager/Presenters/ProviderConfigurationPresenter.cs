@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web.UI;
     using System.Xml;
@@ -100,6 +101,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
                     var controlPath = settingsAttribute.Value;
                     var control = (PortalModuleBase)((TemplateControl)this.View).LoadControl(controlPath);
                     control.ModuleConfiguration = this.ModuleContext.Configuration;
+                    control.ID = Path.GetFileNameWithoutExtension(controlPath);
                     this.View.Model.CanSave = true;
                     return control;
                 }
