@@ -26,6 +26,7 @@ namespace WatchersNET.CKEditor.Web
     using System.Text;
     using System.Threading;
     using System.Web;
+    using System.Web.Script.Serialization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
     using System.Xml.Serialization;
@@ -35,12 +36,16 @@ namespace WatchersNET.CKEditor.Web
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.Client;
 
     using WatchersNET.CKEditor.Constants;
     using WatchersNET.CKEditor.Extensions;
@@ -340,18 +345,26 @@ namespace WatchersNET.CKEditor.Web
                         this._settings["skin"] = this.currentSettings.Config.Skin;
                     }
                 }
+                var cssFiles = new List<string>();
+                var skinSrc = this.GetSkinSource();
+                var containerSrc = this.GetContainerSource();
+
+                cssFiles.Add("~/portals/_default/default.css");
+                cssFiles.Add(skinSrc.Replace(skinSrc.Substring(skinSrc.LastIndexOf('/'), skinSrc.Length - skinSrc.Substring(0, skinSrc.LastIndexOf('/')).Length), "/skin.css"));
+                cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
+                cssFiles.Add("~/DesktopModules/" + this.myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
+                cssFiles.Add("~" + this._portalSettings.HomeDirectory + "portal.css");
+
+                var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(this.MapPathSecure(cssFile))).Select(Globals.ResolveUrl).ToList();
 
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.ContentsCss))
                 {
-                    this._settings["contentsCss"] = string.Format(
-                        "['{0}', '{1}']",
-                        Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/contents.css"),
-                        this.FormatUrl(this.currentSettings.Config.ContentsCss));
+                    var customCss = Globals.ResolveUrl(this.ReFormatURL(this.currentSettings.Config.ContentsCss));
+                    resolvedCssFiles.Add(customCss);
                 }
-                else
-                {
-                    this._settings["contentsCss"] = Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/contents.css");
-                }
+
+                var serializer = new JavaScriptSerializer();
+                this._settings["contentsCss"] = serializer.Serialize(resolvedCssFiles);
 
                 if (!string.IsNullOrEmpty(this.currentSettings.Config.Templates_Files))
                 {
@@ -583,6 +596,50 @@ namespace WatchersNET.CKEditor.Web
 
                 return this._settings;
             }
+        }
+
+        /// <summary>
+        /// Re-Formats Url from the Url Control
+        /// </summary>
+        /// <param name="inputUrl">The input Url.</param>
+        /// <returns>
+        /// Returns the Formatted Url.
+        /// </returns>
+        private string ReFormatURL(string inputUrl)
+        {
+            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("FileID="))
+            {
+                return inputUrl;
+            }
+
+            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this._portalSettings.PortalId));
+        }
+
+        /// <summary>Gets the container source.</summary>
+        /// <returns>The container source path</returns>
+        private string GetContainerSource()
+        {
+            var containerSource = this._portalSettings.ActiveTab.ContainerSrc ?? this._portalSettings.DefaultPortalContainer;
+            containerSource = this.ResolveSourcePath(containerSource);
+            return containerSource;
+        }
+
+        /// <summary>Gets the skin source.</summary>
+        /// <returns>The skin source path</returns>
+        private string GetSkinSource()
+        {
+            var skinSource = this._portalSettings.ActiveTab.SkinSrc ?? this._portalSettings.DefaultPortalSkin;
+            skinSource = this.ResolveSourcePath(skinSource);
+            return skinSource;
+        }
+
+        /// <summary>Resolves the source path.</summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The source path of the select resource</returns>
+        private string ResolveSourcePath(string source)
+        {
+            source = "~" + source;
+            return source;
         }
 
         /// <summary>
