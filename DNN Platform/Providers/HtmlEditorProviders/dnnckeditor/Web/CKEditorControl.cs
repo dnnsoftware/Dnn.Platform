@@ -903,16 +903,17 @@ namespace WatchersNET.CKEditor.Web
 
             if (PortalSecurity.IsInRoles(this._portalSettings.AdministratorRoleName))
             {
+                var editorUrl = Globals.NavigateURL(
+                    "CKEditorOptions",
+                    "ModuleId=" + this.parentModulId,
+                    "minc=" + this.ID,
+                    "PortalID=" + this._portalSettings.PortalId,
+                    "langCode=" + CultureInfo.CurrentCulture.Name,
+                    "popUp=true");
+
                 outWriter.Write(
-                    "<a href=\"javascript:void(0)\" onclick=\"window.open('{0}','Options','width=850,height=750,resizable=yes')\" class=\"CommandButton\" id=\"{1}\">{2}</a>",
-                    string.Format(
-                        "{0}?mid={1}&amp;tid={2}&amp;minc={3}&amp;PortalID={4}&amp;langCode={5}",
-                        Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/Options.aspx"),
-                        this.parentModulId,
-                        this._portalSettings.ActiveTab.TabID,
-                        this.ID,
-                        this._portalSettings.PortalId,
-                        CultureInfo.CurrentCulture.Name),
+                    "<a href=\"javascript:void(0)\" onclick='window.open({0},\"Options\", \"width=850,height=750,resizable=yes\")' class=\"CommandButton\" id=\"{1}\">{2}</a>",
+                    HttpUtility.HtmlAttributeEncode(HttpUtility.JavaScriptStringEncode(editorUrl, true)),
                     string.Format("{0}_ckoptions", this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty)),
                     Localization.GetString("Options.Text", SResXFile));
             }

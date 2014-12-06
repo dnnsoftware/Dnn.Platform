@@ -28,24 +28,30 @@ namespace WatchersNET.CKEditor
     using System.Web.UI.WebControls;
     using System.Xml.Serialization;
 
-    using DotNetNuke.Common;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using WatchersNET.CKEditor.Constants;
     using WatchersNET.CKEditor.Controls;
     using WatchersNET.CKEditor.Extensions;
     using WatchersNET.CKEditor.Objects;
     using WatchersNET.CKEditor.Utilities;
+
+    using DataCache = DotNetNuke.Common.Utilities.DataCache;
+    using Globals = DotNetNuke.Common.Globals;
 
     #endregion
 
@@ -304,6 +310,31 @@ namespace WatchersNET.CKEditor
             }
         }
 
+        private ModuleInfo _currentModule;
+        private ModuleInfo CurrentModule
+        {
+            get
+            {
+                if (this._currentModule != null)
+                {
+                    return this._currentModule;
+                }
+
+                if (this.ModuleConfiguration != null && !Null.IsNull(this.ModuleConfiguration.ModuleID))
+                {
+                    this._currentModule = this.ModuleConfiguration;
+                    return this._currentModule;
+                }
+
+                this._currentModule = new ModuleController().GetModule(
+                    this.Request.QueryString.GetValueOrDefault("ModuleId", -1),
+                    this.TabId,
+                    false);
+
+                return this._currentModule;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -401,6 +432,8 @@ namespace WatchersNET.CKEditor
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.AddJavaScripts();
+
             if (Utility.IsInRoles(this._portalSettings.AdministratorRoleName, this._portalSettings))
             {
                 if (this.Page.IsPostBack)
@@ -446,6 +479,40 @@ namespace WatchersNET.CKEditor
                     true);
             }
         }
+
+        /// <summary>
+        /// Adds the Java scripts.
+        /// </summary>
+        private void AddJavaScripts()
+        {
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/jquery.notification.css"));
+
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/Options.css"));
+
+            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+            ScriptManager.RegisterClientScriptInclude(
+                this,
+                typeof(Page),
+                "jquery.notification",
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/jquery.notification.js"));
+
+            ScriptManager.RegisterClientScriptInclude(
+                this,
+                typeof(Page),
+                "OptionsJs",
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/Options.js"));
+        }
+
+
 
         /// <summary>
         /// Import Current Settings
@@ -1126,7 +1193,7 @@ namespace WatchersNET.CKEditor
             try
             {
                 moduleDefinitionInfo =
-                    ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleConfiguration.ModuleDefID);
+                    ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {
@@ -1149,20 +1216,19 @@ namespace WatchersNET.CKEditor
             if (moduleDefinitionInfo != null)
             {
                 this.lblModType.Text += moduleDefinitionInfo.FriendlyName;
+                if (!this.IsHostMode && moduleDefinitionInfo.FriendlyName.Equals("User Accounts"))
+                {
+                    this.rBlSetMode.Items.RemoveAt(2);
+                }
             }
             else
             {
                 this.lblModType.Text = string.Empty;
             }
 
-            if (!this.IsHostMode && moduleDefinitionInfo.FriendlyName.Equals("User Accounts"))
-            {
-                this.rBlSetMode.Items.RemoveAt(2);
-            }
-
             try
             {
-                this.lblModName.Text += this.ModuleConfiguration.ModuleTitle;
+                this.lblModName.Text += this.CurrentModule.ModuleTitle;
             }
             catch (Exception)
             {
@@ -2889,7 +2955,7 @@ namespace WatchersNET.CKEditor
                 }
             }
         }
-
+        
         /// <summary>
         /// Save all Settings for the Current Selected Mode
         /// </summary>
@@ -2901,7 +2967,7 @@ namespace WatchersNET.CKEditor
 
             try
             {
-                objm = ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleConfiguration.ModuleDefID);
+                objm = ModuleDefinitionController.GetModuleDefinitionByID(this.CurrentModule.ModuleDefID);
             }
             catch (Exception)
             {

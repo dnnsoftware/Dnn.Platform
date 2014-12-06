@@ -1,8 +1,7 @@
-﻿.html-editor-manager { padding: 1em; background: #eee; border: solid 1px #ccc; overflow:hidden;}
-.html-editor-manager h2 {float:left; width: 33%; padding:0;}
-.html-editor-manager h2, .html-editor-manager h4 { display:inline-block; margin: 0;}
-.html-editor-manager span {font-style:italic; color: #666;}
+﻿.html-editor-manager {padding: 1em; background: #eee; border: solid 1px #ccc; overflow:hidden;}
+.html-editor-manager .current-provider > h4 {display:inline-block; margin: 0;}
+.html-editor-manager .current-provider > span {font-style:italic; color: #666;}
 .html-editor-manager .current-provider, .html-editor-manager .change-provider {float:left; text-align:right; width:30%; padding-left: 1em;}
 .html-editor-manager .current-provider {padding-top: .5em; padding-bottom: .5em;}
-.html-editor-manager .change-provider {float:right; }
+.html-editor-manager .change-provider {float:right;}
 .html-editor-manager .change-provider select {padding: .5em; width: 70%;}
