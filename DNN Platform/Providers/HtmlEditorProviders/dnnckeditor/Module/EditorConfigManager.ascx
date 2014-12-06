@@ -14,7 +14,7 @@
 <div>
     <h3><asp:Label runat="server" ID="ModuleHeader"></asp:Label></h3>
 
-    <div style=" float:left;width:250px; vertical-align:top;">
+    <div class="optionsSidebar">
     <div class="managerSettingHeader">
         <asp:Label runat="server" ID="PortalOnlyLabel"></asp:Label>
     </div>  

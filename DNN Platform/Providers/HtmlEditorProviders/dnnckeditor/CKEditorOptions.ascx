@@ -5,69 +5,25 @@
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 
-<style>
-    .dnnUrl { float: left;}
-</style>
-
 <div id="SettingsBox">
-  <h2 style="display:none;">CKEditor Provider <asp:Label id="lblSettings" runat="server">Settings</asp:Label></h2>    
-    <!-- TODO: fix up this table -->
-  <table style="width:100%; background-color: #fffafa;">
-    <tr>
-      <td>
-        <asp:Label id="lblSetFor" runat="server">Modify Settings for...</asp:Label>
-      </td>
-      <td>
-        <asp:RadioButtonList id="rBlSetMode" runat="server" RepeatDirection="Horizontal" AutoPostBack="true">
-          <asp:ListItem Text="Portal" Value="portal" Selected="True"></asp:ListItem>
-          <asp:ListItem Text="Page" Value="page"></asp:ListItem>
-          <asp:ListItem Text="Module Instance" Value="minstance"></asp:ListItem>
-        </asp:RadioButtonList>
-      </td>
-    </tr>
-    <tr>
-        <td></td>
-        <td>
-            <div class="Toolbar">
-                <asp:LinkButton id="CopyToAllChild" runat="server" Text="Copy Settings to Child Pages" CssClass="copyButton"></asp:LinkButton>
-            </div>
-            <div class="Toolbar">
-                <asp:LinkButton id="lnkRemoveAll" runat="server" Text="Delete All Settings" CssClass="removeButton"></asp:LinkButton>
-                <asp:LinkButton id="lnkRemoveChild" runat="server" Text="Delete Child Settings" CssClass="removeButton"></asp:LinkButton>
-                <asp:LinkButton id="lnkRemove" runat="server" Text="Delete Settings" CssClass="removeButton"></asp:LinkButton>
-            </div>
-            <div class="Toolbar">
-                <a onclick="showDialog('ImportDialog');" id="ckeditoroptions_lnkImport" class="importButton" href="#"><asp:Label id="lblImport" runat="server" Text="Import"></asp:Label></a>
-                <a onclick="showDialog('ExportDialog');" id="ckeditoroptions_Export" href="#" class="exportButton"><asp:Label id="lblExport" runat="server" Text="Export"></asp:Label></a>
-            </div>
-      </td>
-    </tr>
-  </table>
+  <h2>CKEditor Provider <asp:Label id="lblSettings" runat="server">Settings</asp:Label></h2>    
 
-  <div id="ExportDialog" title='<%= DotNetNuke.Services.Localization.Localization.GetString("SettingsExportTitle.Text", this.ResXFile, this.LangCode) %>' style="display:none">
-  <asp:UpdatePanel ID="ExportDialogUpdatePanel" UpdateMode="Conditional" ChildrenAsTriggers="true" runat="server">
-            <ContentTemplate>
-                <div><asp:DropDownList id="ExportDir" runat="server" Width="300"></asp:DropDownList></div>
-                <div style="margin-top:6px"><asp:TextBox id="ExportFileName" runat="server" Width="294"></asp:TextBox></div>
-                <asp:LinkButton id="ExportNow" runat="server" OnClick="Export_Click" Text="Export Now" Visible="true" CssClass="Hidden ExportHidden"></asp:LinkButton>
-                <asp:HiddenField id="HiddenMessage" runat="server" Value=""/>
-            </ContentTemplate>
-            </asp:UpdatePanel>
-  </div>
-  <div id="ImportDialog" title='<%= DotNetNuke.Services.Localization.Localization.GetString("SettingsImportTitle.Text", this.ResXFile, this.LangCode) %>' style="display:none">
-  <asp:UpdatePanel ID="upNewUpdatePanel" UpdateMode="Conditional" ChildrenAsTriggers="true" runat="server">
-            <ContentTemplate>
-                <dnn:url id="ctlImportFile" runat="server" width="300" showtabs="False" Required="False" filefilter="xml" showupload="False" showfiles="True" showUrls="False"
-					urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>
-    <asp:LinkButton id="lnkImportNow" runat="server" OnClick="Import_Click" Text="Import Now" Visible="true" CssClass="Hidden ImportHidden"></asp:LinkButton>
-            </ContentTemplate>
-            </asp:UpdatePanel>
-  </div>
-  
     <asp:UpdatePanel ID="upOptions" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
         <asp:HiddenField id="LastTabId" runat="server" Value="1"/>           
-		<asp:Panel ID="pnlEditor" runat="server" CssClass="dnnForm">                   
+		<asp:Panel ID="pnlEditor" runat="server" CssClass="dnnForm">
+
+            <div class="SettingsHeader">
+                <div class="dnnFormItem">
+                    <asp:Label id="lblSetFor" runat="server" CssClass="dnnLabel">Modify Settings for:</asp:Label>
+                    <asp:RadioButtonList id="rBlSetMode" runat="server" RepeatDirection="Horizontal" AutoPostBack="true">
+                        <asp:ListItem Text="Portal" Value="portal" Selected="True"></asp:ListItem>
+                        <asp:ListItem Text="Page" Value="page"></asp:ListItem>
+                        <asp:ListItem Text="Module Instance" Value="minstance"></asp:ListItem>
+                    </asp:RadioButtonList>
+                </div>
+            </div>                
+                               
 			<ul class="dnnAdminTabNav dnnClear">
 				<li><a href="#dnnMainSettings"><asp:label id="lblMainSet" runat="server">Main Settings</asp:label></a></li>
 				<li><a href="#dnnFileBrowserSettings"><asp:label id="lblBrowsSec" runat="server">File Browser Settings</asp:label></a></li>
@@ -81,7 +37,7 @@
 			  <fieldset>                
 				<div class="dnnFormItem">
 					<asp:label id="lblBlanktext" runat="server" CssClass="dnnLabel">Blank Text:</asp:label>
-					<dnn:DnnTextBox runat="server" id="txtBlanktext" />
+				    <asp:TextBox runat="server" id="txtBlanktext" />
 				</div>
 				<div class="dnnFormItem">
                     <asp:label id="lblSkin" runat="server" CssClass="dnnLabel">Skin:</asp:label>
@@ -125,10 +81,8 @@
 			    <fieldset>
 				    <div class="dnnFormItem">
 				        <asp:label id="lblCustomConfig" runat="server" CssClass="dnnLabel">Custom Config File</asp:label> 
-                        <div class="dnnUrl">
                             <dnn:url id="ctlConfigUrl" runat="server" showtabs="False" Required="False" filefilter="js" showupload="False" showfiles="True" showUrls="True"
 					                urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>                 
-                        </div>
                     </div>
                     <div class="dnnFormItem">
                         <asp:label id="CodeMirrorLabel" runat="server" CssClass="dnnLabel">CodeMirror Theme (for Source Syntax Highlighting):</asp:label>
@@ -140,24 +94,18 @@
                     </div>
 				    <div class="dnnFormItem">
 				        <asp:label id="lblCssurl" runat="server" CssClass="dnnLabel">Editor area CSS</asp:label>   
-                        <div class="dnnUrl">
                             <dnn:url id="ctlCssurl" runat="server" showtabs="False" Required="False" filefilter="css" showupload="False" showfiles="True" showUrls="True"
 					            urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>   
-                        </div>              
                     </div>
 				    <div class="dnnFormItem">
                         <asp:label id="lblTemplFiles" runat="server" CssClass="dnnLabel">Editor Templates File</asp:label>	
-                        <div class="dnnUrl">
                             <dnn:url id="ctlTemplUrl" runat="server" showtabs="False" Required="False" filefilter="xml,js" showupload="False" showfiles="True" showUrls="True"
 					            urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>    
-                        </div>                    			        
                     </div>
                     <div class="dnnFormItem">
                         <asp:label id="CustomJsFileLabel" runat="server" CssClass="dnnLabel">Custom JS File</asp:label>
-                        <div class="dnnUrl">
                             <dnn:url id="ctlCustomJsFile" runat="server" showtabs="False" Required="False" filefilter="js" showupload="False" showfiles="True" showUrls="True"
 					            urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>
-                        </div>
                     </div>
                 </fieldset>
 
@@ -262,18 +210,14 @@
 				<div class="dnnFormItem">
 				    <asp:label id="lblToolbarList" runat="server" CssClass="dnnLabel">Custom Toolbars List</asp:label>
 				    <asp:DropDownList id="dDlCustomToolbars" runat="server"></asp:DropDownList>
+                    <asp:ImageButton id="iBEdit" runat="server" ImageUrl="~/images/edit.gif" CssClass="DefaultButton" Text="Edit" />
+                    <asp:ImageButton id="iBDelete" runat="server" ImageUrl="~/images/delete.gif" CssClass="DefaultButton" Text="Delete" />                   
 				</div>
-                <div class="dnnFormItem">
-                    <asp:ImageButton id="iBEdit" runat="server" ImageUrl="~/images/edit.gif" CssClass="DefaultButton" />
-                    <asp:ImageButton id="iBDelete" runat="server" ImageUrl="~/images/delete.gif" CssClass="DefaultButton" />                   
-                </div>
                 <div class="dnnFormItem">
                     <asp:label id="lblToolbName" runat="server" CssClass="dnnLabel">Add/Edit Toolbar Name</asp:label>
                     <asp:TextBox id="dnnTxtToolBName" runat="server" />
-                </div>
-                <div class="dnnFormItem">
-                    <asp:ImageButton id="iBAdd" runat="server" ImageUrl="~/images/add.gif" CssClass="DefaultButton" />
-                    <asp:ImageButton id="iBCancel" runat="server" ImageUrl="~/images/cancel.gif" Visible="false" CssClass="DefaultButton" />
+                    <asp:ImageButton id="iBAdd" runat="server" ImageUrl="~/images/add.gif" CssClass="DefaultButton" Text="Add" />
+                    <asp:ImageButton id="iBCancel" runat="server" ImageUrl="~/images/cancel.gif" Visible="false" CssClass="DefaultButton" Text="Cancel" />
                 </div>
                 <table>
                     <tr>
@@ -373,9 +317,7 @@
                 <asp:Panel runat="server" ID="EditorConfigHolder"></asp:Panel>
 			</div>
 			<div id="dnnAbout">
-                <!-- BEGIN Info Tab -->
                 <asp:PlaceHolder runat="server" ID="InfoTabHolder">
-                <div id="InfoTab">
                 <ul>
                     <li><asp:Label id="ProviderVersion" runat="server">Editor Provider Version:</asp:Label></li>
                     <li><asp:Label id="lblPortal" runat="server">Portal:</asp:Label></li>
@@ -385,19 +327,48 @@
                     <li><asp:Label id="lblModInst" runat="server">Module Instance:</asp:Label></li>
                     <li><asp:Label id="lblUName" runat="server">User Name:</asp:Label></li>
                 </ul>
-                </div>
                 </asp:PlaceHolder>
-                
-                <!-- END Info Tab -->
 			</div>
 
         </asp:Panel>
+
         <ul class="dnnActions dnnClear">
             <li><asp:Button id="btnOk" runat="server" Text="OK" CssClass="dnnPrimaryAction" /></li>
 	        <li><asp:Button id="btnCancel" runat="server" Text="Close" CssClass="dnnSecondaryAction" /></li>
         </ul>
+            
+        <ul class="dnnActions dnnClear">
+            <li><asp:LinkButton id="CopyToAllChild" runat="server" Text="Copy Settings to Child Pages" CssClass="dnnSecondaryAction copyButton"></asp:LinkButton></li>
+            <li><asp:LinkButton id="lnkRemoveAll" runat="server" Text="Delete All Settings" CssClass="dnnSecondaryAction removeButton"></asp:LinkButton></li>
+            <li><asp:LinkButton id="lnkRemoveChild" runat="server" Text="Delete Child Settings" CssClass="removeButton dnnSecondaryAction"></asp:LinkButton></li>
+            <li><asp:LinkButton id="lnkRemove" runat="server" Text="Delete Settings" CssClass="dnnSecondaryAction removeButton"></asp:LinkButton></li>
+            <li><a onclick="showDialog('ImportDialog');" id="ckeditoroptions_lnkImport" class="dnnSecondaryAction importButton" href="#"><asp:Label id="lblImport" runat="server" Text="Import"></asp:Label></a></li>
+            <li><a onclick="showDialog('ExportDialog');" id="ckeditoroptions_Export" href="#" class="dnnSecondaryAction exportButton"><asp:Label id="lblExport" runat="server" Text="Export"></asp:Label></a></li>
+        </ul>
+
         </ContentTemplate>
     </asp:UpdatePanel>
+</div>
+
+<div id="ExportDialog" title='<%= DotNetNuke.Services.Localization.Localization.GetString("SettingsExportTitle.Text", this.ResXFile, this.LangCode) %>' style="display:none">
+<asp:UpdatePanel ID="ExportDialogUpdatePanel" UpdateMode="Conditional" ChildrenAsTriggers="true" runat="server">
+    <ContentTemplate>
+        <div><asp:DropDownList id="ExportDir" runat="server" Width="300"></asp:DropDownList></div>
+        <div style="margin-top:6px"><asp:TextBox id="ExportFileName" runat="server" Width="294"></asp:TextBox></div>
+        <asp:LinkButton id="ExportNow" runat="server" OnClick="Export_Click" Text="Export Now" Visible="true" CssClass="Hidden ExportHidden"></asp:LinkButton>
+        <asp:HiddenField id="HiddenMessage" runat="server" Value=""/>
+    </ContentTemplate>
+</asp:UpdatePanel>
+</div>
+
+<div id="ImportDialog" title='<%= DotNetNuke.Services.Localization.Localization.GetString("SettingsImportTitle.Text", this.ResXFile, this.LangCode) %>' style="display:none">
+<asp:UpdatePanel ID="upNewUpdatePanel" UpdateMode="Conditional" ChildrenAsTriggers="true" runat="server">
+    <ContentTemplate>
+        <dnn:url id="ctlImportFile" runat="server" width="300" showtabs="False" Required="False" filefilter="xml" showupload="False" showfiles="True" showUrls="False"
+			urltype="F" showlog="False" shownewwindow="False" showtrack="False"></dnn:url>
+        <asp:LinkButton id="lnkImportNow" runat="server" OnClick="Import_Click" Text="Import Now" Visible="true" CssClass="Hidden ImportHidden"></asp:LinkButton>
+    </ContentTemplate>
+</asp:UpdatePanel>
 </div>
 
 <!-- Loading screen -->

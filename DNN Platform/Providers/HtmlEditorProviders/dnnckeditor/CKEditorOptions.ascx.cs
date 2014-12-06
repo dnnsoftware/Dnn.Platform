@@ -159,7 +159,7 @@ namespace WatchersNET.CKEditor
                 if (o != null)
                 {
                     return (int)o;
-                }
+            }
 
                 return 1;
             }
@@ -2031,18 +2031,15 @@ namespace WatchersNET.CKEditor
 
                 var isSubSetting = info.Name == "CodeMirror" || info.Name == "WordCount";
 
-                var settingNameContainer = new HtmlGenericControl("div");
-                settingNameContainer.Attributes.Add("class", "settingNameContainer");
-
                 var settingValueContainer = new HtmlGenericControl("div");
-                settingValueContainer.Attributes.Add("class", "settingValueContainer");
+                settingValueContainer.Attributes.Add("class", "dnnFormItem");
 
                 // TODO : Load Localized Setting Name
                 if (!isSubSetting)
                 {
                     var settingNameLabel = new Label { Text = string.Format("{0}:", info.Name) };
-
-                    settingNameContainer.Controls.Add(settingNameLabel);
+                    settingNameLabel.Attributes.Add("class", "dnnLabel");
+                    settingValueContainer.Controls.Add(settingNameLabel);
                 }
 
                 switch (info.PropertyType.Name)
@@ -2173,15 +2170,12 @@ namespace WatchersNET.CKEditor
                             {
                                 var codeMirrorDescription = codeMirrorInfo.GetCustomAttribute<DescriptionAttribute>(true);
                                 
-                                var settingNameContainer2 = new HtmlGenericControl("div");
-                                settingNameContainer2.Attributes.Add("class", "settingNameContainer");
-
                                 var settingValueContainer2 = new HtmlGenericControl("div");
-                                settingValueContainer2.Attributes.Add("class", "settingValueContainer");
+                                settingValueContainer2.Attributes.Add("class", "dnnFormItem");
 
                                 var settingNameLabel2 = new Label { Text = string.Format("{0} - {1}:", info.Name, codeMirrorInfo.Name) };
-
-                                settingNameContainer2.Controls.Add(settingNameLabel2);
+                                settingNameLabel2.Attributes.Add("class", "dnnLabel");
+                                settingValueContainer2.Controls.Add(settingNameLabel2);
 
                                 switch (codeMirrorInfo.PropertyType.Name)
                                 {
@@ -2214,7 +2208,6 @@ namespace WatchersNET.CKEditor
                                         break;
                                 }
 
-                                this.EditorConfigHolder.Controls.Add(settingNameContainer2);
                                 this.EditorConfigHolder.Controls.Add(settingValueContainer2);
                             }
                         }
@@ -2226,15 +2219,12 @@ namespace WatchersNET.CKEditor
                             {
                                 var wordCountDescription = wordCountInfo.GetCustomAttribute<DescriptionAttribute>(true);
 
-                                var settingNameContainer2 = new HtmlGenericControl("div");
-                                settingNameContainer2.Attributes.Add("class", "settingNameContainer");
-
                                 var settingValueContainer2 = new HtmlGenericControl("div");
-                                settingValueContainer2.Attributes.Add("class", "settingValueContainer");
+                                settingValueContainer2.Attributes.Add("class", "dnnFormItem");
 
                                 var settingNameLabel2 = new Label { Text = string.Format("{0} - {1}:", info.Name, wordCountInfo.Name) };
-
-                                settingNameContainer2.Controls.Add(settingNameLabel2);
+                                settingNameLabel2.Attributes.Add("class", "dnnLabel");
+                                settingValueContainer2.Controls.Add(settingNameLabel2);
 
                                 switch (wordCountInfo.PropertyType.Name)
                                 {
@@ -2267,7 +2257,6 @@ namespace WatchersNET.CKEditor
                                         break;
                                 }
 
-                                this.EditorConfigHolder.Controls.Add(settingNameContainer2);
                                 this.EditorConfigHolder.Controls.Add(settingValueContainer2);
                             }
                         }
@@ -2280,7 +2269,6 @@ namespace WatchersNET.CKEditor
                     continue;
                 }
 
-                this.EditorConfigHolder.Controls.Add(settingNameContainer);
                 this.EditorConfigHolder.Controls.Add(settingValueContainer);
             }
         }

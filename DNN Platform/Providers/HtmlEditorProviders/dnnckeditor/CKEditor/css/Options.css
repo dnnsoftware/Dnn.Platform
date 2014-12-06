@@ -68,16 +68,18 @@ h1 {font-weight: bold;margin: 0;font-size:medium;font-family:Arial, Helvetica, s
 .managerLeftPane {float:left;width:250px; vertical-align:top}
 .managerSettingHeader {font-weight:bold;min-height: 30px;margin-left:5px}
 .managerSettingContent {margin-left:20px}
-.optionsContainer {margin-left:255px;width: 700px}
+.optionsContainer {/*margin-left:255px; width: 700px;*/ width:70%; float:left; margin:0; padding-left:2.5em;}
 .iconLegend {
 	margin:5px 0;padding:5px 0;border:1px solid #ccc; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
 	-ms-border-radius: 0.4em;
 	border-radius: 0.4em;background-color:white;
 }
 
+.optionsSidebar {float:left; /*width:250px;*/ width:25%; vertical-align:top;}
+
 .iconLegend ul li {list-style:none;}
 .ui-state-error p {padding:10px;}
-.portalTabsAndModulesTree {margin-left:47px}
+/*.portalTabsAndModulesTree {margin-left:47px}*/
 .portalOnlyCheckBox {margin:10px 0 0 50px}
 
 /* Settings Container */

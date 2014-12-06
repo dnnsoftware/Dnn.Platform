@@ -1,4 +1,5 @@
 ﻿<%@ Page language="c#" Codebehind="Options.aspx.cs" AutoEventWireup="True" Inherits="WatchersNET.CKEditor.Options" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,6 +18,7 @@
     <style type="text/css">
         .groupButtons li {margin-left: -36px;}
     </style>
+
   </head>
   <body>
     <form id="ckOptionsForm" runat="server">
