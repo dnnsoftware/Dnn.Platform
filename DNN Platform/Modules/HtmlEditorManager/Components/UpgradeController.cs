@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                         TabInfo editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
 
                         // Find the RadEditor control and remove it
-                        Upgrade.RemoveModule("DotNetNuke.RadEditorProvider", editorPage.TabName, editorPage.TabID, false);
+                        Upgrade.RemoveModule("RadEditor Manager", editorPage.TabName, editorPage.ParentId, false);
 
                         // Add Module To Page
                         int moduleDefId = this.GetModuleDefinitionID("DotNetNuke.HtmlEditorManager", "Html Editor Management");
