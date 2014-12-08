@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Localization
 {
     public static class LocalizationExtensions
     {
-        public const string ResxFileLocaleRegex = "(?i)(.*)\\.((\\w\\w-)?\\w\\w-\\w{2,3})(\\.resx)$(?-i)";
+        public const string ResxFileLocaleRegex = "(?i)(.*)\\.((\\w\\w-)?\\w{2,3}-\\w{2,3})(\\.resx)$(?-i)";
 
         /// <summary>
         /// Gets the name of the locale code from a resource file.
