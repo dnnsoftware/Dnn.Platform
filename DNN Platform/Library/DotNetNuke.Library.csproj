@@ -650,6 +650,7 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
+    <Compile Include="Services\Localization\LocalizationExtensions.cs" />
     <Compile Include="Services\Localization\Persian\PersianCalendar.cs" />
     <Compile Include="Services\Localization\Persian\PersianController.cs" />
     <Compile Include="Services\Log\EventLog\ILogController.cs" />
