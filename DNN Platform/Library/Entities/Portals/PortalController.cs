@@ -1069,7 +1069,7 @@ namespace DotNetNuke.Entities.Portals
         private string GetCultureCode(string languageFileName)
         {
             //e.g. "default template.template.en-US.resx"
-            return languageFileName.Substring(1 + languageFileName.Length - ".xx-XX.resx".Length, "xx-XX".Length);
+            return languageFileName.GetLocaleCodeFromFileName();
         }
 
         private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
@@ -1116,7 +1116,7 @@ namespace DotNetNuke.Entities.Portals
         private string GetTemplateName(string languageFileName)
         {
             //e.g. "default template.template.en-US.resx"
-            return languageFileName.Substring(0, languageFileName.Length - ".xx-XX.resx".Length);
+            return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
         private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int PortalId)
