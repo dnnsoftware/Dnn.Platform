@@ -3035,6 +3035,26 @@ namespace DotNetNuke.Services.Upgrade
             {
                 PortalController.UpdatePortalSetting(portal.PortalID, "PageHeadText", PageHeadTextForUpgrade);
             }
+
+            RemoveContentListModuleFromSearchResultsPage();
+        }
+
+        private static void RemoveContentListModuleFromSearchResultsPage()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.SearchTabId))
+                {
+                    var module = kvp.Value;
+                    if (module.DesktopModule.FriendlyName == "ContentList")
+                    {
+                        //Delete the Module from the Modules list
+                        ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
+                        break;
+                    }
+                }
+            }
         }
 
         private static void AddManageUsersModulePermissions()
