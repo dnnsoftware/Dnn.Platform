@@ -138,7 +138,13 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return Globals.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "popUp=true", "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+                var url = Globals.NavigateURL(TabId, "ControlKey", "mid=" + ModuleId, "ReturnUrl=" + Server.UrlEncode(Globals.NavigateURL()));
+
+                //append popUp parameter
+                var delimiter = url.Contains("?") ? "&" : "?";
+                url = string.Format("{0}{1}popUp=true", url, delimiter);
+
+                return url;
             }
         }
 
