@@ -77,6 +77,18 @@ namespace DotNetNuke.Modules.Admin.Languages
         #endregion
 
         #region Private Methods
+        
+        /// <summary>
+        /// This Write/Flush is needed periodically to avoid issue in Azure.
+        /// Azure Load Balancer silently dropping idle connections after 4 minutes.
+        /// Sending some data from time to time to the client from server side, 
+        /// the Azure Load balancer doesn't kill the TCP connection
+        /// </summary>
+        private void KeepConnectionAlive()
+        {
+            Response.Write(' ');
+            Response.Flush();
+        }
 
         protected bool IsDefaultLanguage(string code)
         {
@@ -151,9 +163,13 @@ namespace DotNetNuke.Modules.Admin.Languages
                 {
                     TabController.Instance.CreateLocalizedCopy(currentTab, locale, false);
                 }
+                
+                if ((i % 10) == 0)
+                {
+                    KeepConnectionAlive();
+                }
             }
         }
-
         #endregion
 
         #region Event Handlers
@@ -183,6 +199,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 //Do not display SelectedFilesCount progress indicator.
                 pageCreationProgressArea.ProgressIndicators &= ~ProgressIndicators.SelectedFilesCount;
             }
+            
             pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TimeEstimated;
             pageCreationProgressArea.ProgressIndicators &=  ~ProgressIndicators.TransferSpeed;
 
@@ -213,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             int languageCounter = 0;
             if (chkAllPagesTranslatable.Checked)
             {
-            ProcessLanguage(pageList, LocaleController.Instance.GetLocale(PortalDefault), languageCounter, languageCount);
+                ProcessLanguage(pageList, LocaleController.Instance.GetLocale(PortalDefault), languageCounter, languageCount);
             }
             PublishLanguage(PortalDefault, true);
 
