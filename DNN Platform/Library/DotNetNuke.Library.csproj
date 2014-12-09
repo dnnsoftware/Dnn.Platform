@@ -585,6 +585,8 @@
     <Compile Include="Security\Roles\DNNRoleProvider.cs" />
     <Compile Include="Obsolete\TestableRoleController.cs" />
     <Compile Include="Security\Roles\IRoleController.cs" />
+    <Compile Include="Security\Roles\IRoleEventHandlers.cs" />
+    <Compile Include="Security\Roles\RoleEventArgs.cs" />
     <Compile Include="Security\Roles\SecurityMode.cs" />
     <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
