@@ -70,7 +70,7 @@ namespace DotNetNuke.Security.Roles
             return () => new RoleController();
         }
 
-        public RoleController()
+        static RoleController()
         {
             foreach (var handlers in EventHandlersContainer<IRoleEventHandlers>.Instance.EventHandlers)
             {
