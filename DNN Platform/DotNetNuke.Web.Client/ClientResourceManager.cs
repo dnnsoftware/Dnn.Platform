@@ -63,9 +63,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
             filePath = RemoveQueryString(filePath);
 
-            // Checking the file disk for every css file on every page load is a waste of resources. 
-            // This function alone accounts for 8% of loading a simple page. 
-            // So let's at least use some caching
+            // cache css file paths
             if (!_fileExistsCache.ContainsKey(filePath)) {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _lockFileExistsCache.EnterWriteLock();
