@@ -1,0 +1,116 @@
+﻿<dotnetnuke type="Package" version="5.0">
+  <packages><package name="DotNetNuke.CKHtmlEditorProvider" type="Provider" version="03.00.00">
+  <friendlyName>CKEditor Editor Provider</friendlyName>
+  <description>CKEditor Editor Provider for DNN</description>
+  <iconFile>~/Providers/HtmlEditorProviders/CKEditor/LogoCKEditor.png</iconFile>
+  <owner>
+    <name>Ingo Herbote</name>
+    <organization>WatchersNET</organization>
+    <url>http://www.watchersnet.de</url>
+    <email>thewatcher@watchersnet.de</email>
+  </owner>
+  <license src="license.txt" />
+  <releaseNotes src="releaseNotes.txt" />
+  <dependencies>
+    <dependency type="CoreVersion">07.00.00</dependency>
+  </dependencies>
+  <components>
+    <component type="Assembly">
+      <assemblies>
+        <assembly>
+          <path>bin</path>
+          <name>WatchersNET.CKEditor.dll</name>
+        </assembly>
+      </assemblies>
+    </component>
+    <component type="ResourceFile">
+      <resourceFiles>
+        <basePath>Providers\HtmlEditorProviders\CKEditor</basePath>
+        <resourceFile>
+          <name>Resources.zip</name>
+        </resourceFile>
+      </resourceFiles>
+    </component>
+    <component type="Script">
+      <scripts>
+        <basePath>Providers/HtmlEditorProviders/CKEditor/</basePath>
+        <script type="Install">
+          <name>01.14.03.SqlDataProvider</name>
+          <version>01.14.03</version>
+        </script>
+        <script type="Install">
+          <name>02.00.00.SqlDataProvider</name>
+          <version>02.00.00</version>
+        </script>
+        <script type="Install">
+          <name>02.00.09.SqlDataProvider</name>
+          <version>02.00.09</version>
+        </script>
+        <script type="Install">
+          <name>02.01.00.SqlDataProvider</name>
+          <version>02.01.00</version>
+        </script>
+        <script type="Install">
+          <name>03.00.00.SqlDataProvider</name>
+          <version>03.00.00</version>
+        </script>
+        <script type="UnInstall">
+          <name>Uninstall.SqlDataProvider</name>
+        </script>
+      </scripts>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>Portals\_default</basePath>
+        <file>
+          <name>CKEditorDefaultSettings.xml</name>
+          <sourceFileName>CKEditorDefaultSettings.xml</sourceFileName>
+        </file>
+        <file>
+          <name>CKToolbarButtons.xml</name>
+          <sourceFileName>CKToolbarButtons.xml</sourceFileName>
+        </file>
+        <file>
+          <name>CKToolbarSets.xml</name>
+          <sourceFileName>CKToolbarSets.xml</sourceFileName>
+        </file>
+      </files>
+    </component>
+    <component type="File">
+      <files>
+        <basePath>Providers\HtmlEditorProviders\CKEditor</basePath>
+        <file>
+          <name>LogoCKEditor.png</name>
+          <sourceFileName>LogoCKEditor.png</sourceFileName>
+        </file>
+      </files>
+    </component>
+    <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor" action="updateattribute" name="defaultProvider" value="CKHtmlEditorProvider" />
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers" action="update" key="name" collision="ignore">
+                    <add name="CKHtmlEditorProvider" type="WatchersNET.CKEditor.CKHtmlEditorProvider, WatchersNET.CKEditor" providerPath="~/Providers/HtmlEditorProviders/CKEditor/" settingsControlPath="~/Providers/HtmlEditorProviders/CKEditor/CKEditorOptions.ascx" />
+                  </node>
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='CKHtmlEditorProvider']" action="updateattribute" name="settingsControlPath" value="~/Providers/HtmlEditorProviders/CKEditor/Module/EditorConfigManager.ascx" collision="ignore" />
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/dotnetnuke/htmlEditor" action="updateattribute" name="defaultProvider" value="DotNetNuke.RadEditorProvider" />
+                  <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='CKHtmlEditorProvider']" action="remove" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
+    </component>
+    <component type="Cleanup" version="02.00.00" fileName="02.00.00.Cleanup.txt" />
+  </components>
+</package>
+</packages>
+</dotnetnuke>

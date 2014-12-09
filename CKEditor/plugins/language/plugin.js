@@ -1,0 +1,6 @@
+﻿/*
+ Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+(function(){CKEDITOR.plugins.add("language",{requires:"menubutton",lang:"en",icons:"language",hidpi:!0,init:function(a){var f=a.config.language_list||["ar:Arabic:rtl","fr:French","es:Spanish"],c={},e,b,d;a.addCommand("language",{allowedContent:"span[!lang,!dir]",requiredContent:"span[lang,dir]",exec:function(a,b){c[b]&&a.applyStyle(c[b].style)}});for(d=0;d<f.length;d++)e=f[d].split(":"),b=e[0],c[b]={label:e[1],langId:b,group:"language",order:d,ltr:"rtl"!=(""+e[2]).toLowerCase(),style:null,onClick:function(){a.execCommand("language",
+this.langId)}},c[b].style=new CKEDITOR.style({element:"span",attributes:{lang:b,dir:c[b].ltr?"ltr":"rtl"}});a.addMenuGroup("language",1);a.addMenuItems(c);a.ui.add("language",CKEDITOR.UI_MENUBUTTON,{label:a.lang.language.button,allowedContent:"span[!lang,!dir]",requiredContent:"span[lang,dir]",toolbar:"bidi,30",modes:{wysiwyg:1},className:"cke_button_language",onMenu:function(){var a={},b;for(b in c)a[b]=CKEDITOR.TRISTATE_ON;return a}})}})})();

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="language" content="en" />
+    <title>CKEditor Provider Readme</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>CKEditor 4.4.5 Editor Provider 2.01.00 <small>For DotNetNuke® 07.00.00 (or higher)</small></h1>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+               <strong>Whats New</strong>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>Upgraded to CKEditor 4.4.5</li>
+                    <li>New Option to set the Max. Allowed Upload limit per Role</li>
+                    <li>File-Browser: Modal Dialogs are now draggable</li>
+                    <li>File-Browser: Added Support for Multiple File Uploads</li>
+                    <li>File-Browser: Added Drag &amp; Drop Support for the Upload Dialog</li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+               changes
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>Fixed Issue #7721</li>
+                    <li>Fixed Issue #7904</li>
+                    <li>Removed the 'Refresh Editor' link bellow the editor #7879</li>
+                    <li>List of available Styles can now be entered in the Settings instead of loading an xml/js file</li>
+                    <li>Editor now supports Font Awesome icons html code</li>
+                    <li>AllowedContent setting can now set correctly</li>
+                    <li>New Editor Config settings added</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

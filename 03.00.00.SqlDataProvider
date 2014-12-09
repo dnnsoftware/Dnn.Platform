@@ -1,0 +1,16 @@
+﻿IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ModuleDefID IS NULL AND ControlKey = 'CKEditorOptions')
+BEGIN
+	EXEC {databaseOwner}[{objectQualifier}AddModuleControl]
+		@ModuleDefId=NULL, 
+		@ControlKey='CKEditorOptions', 
+		@ControlTitle='CKEditor Options', 
+		@ControlSrc='Providers/HtmlEditorProviders/CKEditor/CKEditorOptions.ascx', 
+		@IconFile='~/Providers/HtmlEditorProviders/CKEditor/LogoCKEditor.png', 
+		@ControlType=-1, 
+		@ViewOrder=NULL, 
+		@HelpUrl=NULL, 
+		@SupportsPartialRendering=0, 
+		@SupportsPopUps=1, 
+		@CreatedByUserID=-1;
+END;
+GO
