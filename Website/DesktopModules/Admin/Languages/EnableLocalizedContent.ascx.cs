@@ -180,14 +180,14 @@ namespace DotNetNuke.Modules.Admin.Languages
             updateButton.Click += updateButton_Click;
 
             LocalResourceFile = Localization.GetResourceFile(this, "EnableLocalizedContent.ascx");
-
-            //Set AJAX timeout to 1 hr for large sites
-            AJAX.GetScriptManager(Page).AsyncPostBackTimeout = timeout;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            
+            //Set AJAX timeout to 1 hr for large sites
+            AJAX.GetScriptManager(Page).AsyncPostBackTimeout = timeout;
 
             _PortalDefault = PortalSettings.DefaultLanguage;
             defaultLanguageLabel.Language = PortalSettings.DefaultLanguage;
