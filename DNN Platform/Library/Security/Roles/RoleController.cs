@@ -299,7 +299,7 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
-            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName);
+            return GetRoles(portalId).SingleOrDefault(r => r.RoleName == roleName && r.PortalID == portalId);
         }
 
         public IList<RoleInfo> GetRoles(int portalId)
