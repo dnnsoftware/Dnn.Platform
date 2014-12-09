@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -218,6 +217,10 @@ namespace DotNetNuke.Modules.Admin.Languages
 
         protected void updateButton_Click(object sender, EventArgs e)
         {
+            // Set RedirectLocation header before make any Write/Flush to keep connection alive
+            // This prevents "Cannot redirect after HTTP headers have been sent" error
+            Response.RedirectLocation = Globals.NavigateURL();
+            
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
             List<TabInfo> pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
                                       where !kvp.Value.TabPath.StartsWith("//Admin")
@@ -263,7 +266,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             //clear portal cache
             DataCache.ClearPortalCache(PortalId, true);
             //'Redirect to refresh page (and skinobjects)
-            Response.Redirect(Globals.NavigateURL(), true);
+            Response.End();
         }
 
         #endregion
