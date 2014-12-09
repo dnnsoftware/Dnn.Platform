@@ -1462,9 +1462,33 @@ AS
 			 DROP TABLE #Skip_Folders
 		END
 GO
-/***** New Exception Management in Event Log *****/
+
+/***************************************************
+ * SPROC: add ordering to SearchDeletedItems_Select
+ ***************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Select]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
+    @CutoffTime	DATETIME
+AS
+BEGIN
+	SELECT document
+	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
+	WHERE [DateCreated] < @CutoffTime
+	ORDER BY [DateCreated]
+END
+GO
+
+/***************************************************
+ * New Exception Management in Event Log
+ ***************************************************/
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
  ADD ExceptionHash varchar(100) NULL
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
+ ALTER COLUMN LogProperties XML
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
@@ -1679,29 +1703,10 @@ VALUES
  @UserAgent)
 GO
 
-/***************************************************
- * SPROC: add ordering to SearchDeletedItems_Select
- ***************************************************/
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SearchDeletedItems_Select]', N'P') IS NOT NULL
-    DROP PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}SearchDeletedItems_Select]
-    @CutoffTime	DATETIME
-AS
-BEGIN
-	SELECT document
-	FROM {databaseOwner}{objectQualifier}SearchDeletedItems
-	WHERE [DateCreated] < @CutoffTime
-	ORDER BY [DateCreated]
-END
-GO
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_EventLog'))
-DROP VIEW {databaseOwner}{objectQualifier}vw_EventLog
+	DROP VIEW {databaseOwner}{objectQualifier}vw_EventLog
 GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+
 CREATE VIEW {databaseOwner}{objectQualifier}vw_EventLog
 AS
 SELECT
@@ -1780,7 +1785,6 @@ WHERE LogNotificationPending = 1
 AND LogConfigID = @LogConfigID
 
 GO
-
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
