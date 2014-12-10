@@ -3037,6 +3037,16 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             RemoveContentListModuleFromSearchResultsPage();
+            ReIndexUserSearch();
+        }
+
+        private static void ReIndexUserSearch()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "TRUE");
+            }
         }
 
         private static void RemoveContentListModuleFromSearchResultsPage()

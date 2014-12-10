@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -111,13 +112,15 @@ namespace DotNetNuke.Services.Search
             Results.Add("Modules (Content)", searchDocuments.Count() + searchItems.Count);
 
             //Index User data
+            if (HostController.Instance.GetBoolean("DisableUserCrawling", false)) return;
             searchDocs = GetSearchDocuments(userIndexer, startDate);
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
             var userIndexed =
-                searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal)))
-                               .Distinct()
-                               .Count();
+                searchDocuments.Select(
+                    d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal)))
+                    .Distinct()
+                    .Count();
             IndexedSearchDocumentCount += userIndexed;
             Results.Add("Users", userIndexed);
         }

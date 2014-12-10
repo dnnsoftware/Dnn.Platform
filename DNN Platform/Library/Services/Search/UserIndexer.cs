@@ -99,61 +99,29 @@ namespace DotNetNuke.Services.Search
             var richTextDataType = controller.GetListEntryInfo("DataType", "RichText");
 
             var profileDefinitions = ProfileController.GetPropertyDefinitionsByPortal(portalId, false, false)
-                                        .Cast<ProfilePropertyDefinition>()
-                                        .Where(d => (textDataType != null && d.DataType == textDataType.EntryID) 
-                                                        || (richTextDataType != null && d.DataType == richTextDataType.EntryID)).ToList();
+                .Cast<ProfilePropertyDefinition>()
+                .Where(d => (textDataType != null && d.DataType == textDataType.EntryID)
+                            || (richTextDataType != null && d.DataType == richTextDataType.EntryID)).ToList();
 
             try
             {
                 var startUserId = Null.NullInteger;
                 while (true)
                 {
-                    var reader = DataProvider.Instance().GetAvailableUsersForIndex(portalId, startDateLocal, startUserId, BatchSize);
+                    var reader = DataProvider.Instance()
+                        .GetAvailableUsersForIndex(portalId, startDateLocal, startUserId, BatchSize);
                     int rowsAffected = 0;
                     var indexedUsers = new List<int>();
 
                     while (reader.Read())
                     {
-                        var userId = Convert.ToInt32(reader["UserId"]);
-                        var displayName = reader["DisplayName"].ToString();
-                        var firstName = reader["FirstName"].ToString();
-                        if (!string.IsNullOrEmpty(firstName) && firstName.Contains(ValueSplitFlag))
-                        {
-                            firstName = Regex.Split(firstName, Regex.Escape(ValueSplitFlag))[0];
-                        }
-
-                        var lastModifiedOnDate = Convert.ToDateTime(reader["LastModifiedOnDate"]).ToUniversalTime();
-                        if (!searchDocuments.ContainsKey(
-                                string.Format("{0}_{1}", userId, UserVisibilityMode.AllUsers)
-                                    .ToLowerInvariant()))
-                        {
-                            if (!indexedUsers.Contains(userId))
-                            {
-                                indexedUsers.Add(userId);
-                            }
-                            //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                            //so that can make sure DisplayName will be indexed
-                            var searchDoc = new SearchDocument
-                            {
-                                SearchTypeId = UserSearchTypeId,
-                                UniqueKey =
-                                    string.Format("{0}_{1}", userId,
-                                        UserVisibilityMode.AllUsers).ToLowerInvariant(),
-                                PortalId = portalId,
-                                ModifiedTimeUtc = lastModifiedOnDate,
-                                Body = string.Empty,
-                                Description = firstName,
-                                Title = displayName
-                            };
-
-                            searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
-                        }
-
-
+                        var userSearch = GetUserSearch(reader, profileDefinitions);
+                        AddBasicInformation(searchDocuments, indexedUsers, userSearch, portalId);
+                        
                         //log the userid so that it can get the correct user collection next time.
-                        if (userId > startUserId)
+                        if (userSearch.UserId > startUserId)
                         {
-                            startUserId = userId;
+                            startUserId = userSearch.UserId;
                         }
 
                         foreach (var definition in profileDefinitions)
@@ -175,7 +143,7 @@ namespace DotNetNuke.Services.Search
                             var splitValues = Regex.Split(propertyValue, Regex.Escape(ValueSplitFlag));
 
                             propertyValue = splitValues[0];
-                            var visibilityMode = ((UserVisibilityMode)Convert.ToInt32(splitValues[1]));
+                            var visibilityMode = ((UserVisibilityMode) Convert.ToInt32(splitValues[1]));
                             var extendedVisibility = splitValues[2];
                             var modifiedTime = Convert.ToDateTime(splitValues[3]).ToUniversalTime();
 
@@ -184,7 +152,7 @@ namespace DotNetNuke.Services.Search
                                 continue;
                             }
 
-                            var uniqueKey = string.Format("{0}_{1}", userId, visibilityMode).ToLowerInvariant();
+                            var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
                             if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                             {
                                 uniqueKey = string.Format("{0}_{1}", uniqueKey, extendedVisibility);
@@ -193,7 +161,7 @@ namespace DotNetNuke.Services.Search
                             if (searchDocuments.ContainsKey(uniqueKey))
                             {
                                 var document = searchDocuments[uniqueKey];
-                                document.Body += string.Format(" {0}", propertyValue);
+                                document.Keywords.Add(propertyName, propertyValue);
 
                                 if (modifiedTime > document.ModifiedTimeUtc)
                                 {
@@ -203,24 +171,23 @@ namespace DotNetNuke.Services.Search
                             else
                             {
                                 //Need remove use exists index for all visibilities.
-                                if (!indexedUsers.Contains(userId))
+                                if (!indexedUsers.Contains(userSearch.UserId))
                                 {
-                                    indexedUsers.Add(userId);
+                                    indexedUsers.Add(userSearch.UserId);
                                 }
 
                                 if (!string.IsNullOrEmpty(propertyValue))
                                 {
                                     var searchDoc = new SearchDocument
-                                                    {
-                                                        SearchTypeId = UserSearchTypeId,
-                                                        UniqueKey = uniqueKey,
-                                                        PortalId = portalId,
-                                                        ModifiedTimeUtc = modifiedTime,
-                                                        Body = propertyValue,
-                                                        Description = firstName,
-                                                        Title = displayName
-                                                    };
-
+                                    {
+                                        SearchTypeId = UserSearchTypeId,
+                                        UniqueKey = uniqueKey,
+                                        PortalId = portalId,
+                                        ModifiedTimeUtc = modifiedTime,
+                                        Description = userSearch.FirstName,
+                                        Title = userSearch.DisplayName
+                                    };
+                                    searchDoc.Keywords.Add(propertyName, propertyValue);
                                     searchDocuments.Add(uniqueKey, searchDoc);
                                 }
                             }
@@ -254,6 +221,84 @@ namespace DotNetNuke.Services.Search
             return searchDocuments.Values;
         }
 
+        private void AddBasicInformation(Dictionary<string, SearchDocument> searchDocuments, List<int> indexedUsers, UserSearch userSearch, int portalId)
+        {
+            if (!searchDocuments.ContainsKey(
+                            string.Format("{0}_{1}", userSearch.UserId, UserVisibilityMode.AllUsers)
+                                .ToLowerInvariant()))
+            {
+                if (!indexedUsers.Contains(userSearch.UserId))
+                {
+                    indexedUsers.Add(userSearch.UserId);
+                }
+                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                //so that can make sure DisplayName will be indexed
+                var searchDoc = new SearchDocument
+                {
+                    SearchTypeId = UserSearchTypeId,
+                    UniqueKey =
+                        string.Format("{0}_{1}", userSearch.UserId,
+                            UserVisibilityMode.AllUsers).ToLowerInvariant(),
+                    PortalId = portalId,
+                    ModifiedTimeUtc = userSearch.LastModifiedOnDate,
+                    Body = string.Empty,
+                    Description = userSearch.FirstName,
+                    Title = userSearch.DisplayName
+                };
+
+                searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
+            }
+
+            if (!searchDocuments.ContainsKey(
+                            string.Format("{0}_{1}", userSearch.UserId, UserVisibilityMode.AdminOnly)
+                                .ToLowerInvariant()))
+            {
+                if (!indexedUsers.Contains(userSearch.UserId))
+                {
+                    indexedUsers.Add(userSearch.UserId);
+                }
+                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                //so that can make sure DisplayName will be indexed
+                var searchDoc = new SearchDocument
+                {
+                    SearchTypeId = UserSearchTypeId,
+                    UniqueKey =
+                        string.Format("{0}_{1}", userSearch.UserId,
+                            UserVisibilityMode.AdminOnly).ToLowerInvariant(),
+                    PortalId = portalId,
+                    ModifiedTimeUtc = userSearch.LastModifiedOnDate,
+                    Body = string.Empty,
+                    Description = userSearch.FirstName,
+                    Title = userSearch.DisplayName
+                };
+
+                searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
+                searchDoc.Keywords.Add("username", userSearch.UserName);
+                searchDoc.Keywords.Add("email", userSearch.Email);
+                searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
+            }
+        }
+
+        private UserSearch GetUserSearch(IDataReader reader, List<ProfilePropertyDefinition> profileDefinitions)
+        {
+            var userSearch = new UserSearch
+            {
+                UserId = Convert.ToInt32(reader["UserId"]),
+                DisplayName = reader["DisplayName"].ToString(),
+                
+                Email = reader["Email"].ToString(),
+                UserName = reader["Username"].ToString(),
+                SuperUser = Convert.ToBoolean(reader["IsSuperUser"]),
+                LastModifiedOnDate = Convert.ToDateTime(reader["LastModifiedOnDate"]).ToUniversalTime()
+            };
+            if (!string.IsNullOrEmpty(userSearch.FirstName) && userSearch.FirstName.Contains(ValueSplitFlag))
+            {
+                userSearch.FirstName = Regex.Split(userSearch.FirstName, Regex.Escape(ValueSplitFlag))[0];
+            }
+
+            return userSearch;
+        }
+
         #endregion
 
         #region Private Methods
@@ -265,7 +310,7 @@ namespace DotNetNuke.Services.Search
                 return;
             }
 
-            Array values = Enum.GetValues(typeof(UserVisibilityMode));
+            Array values = Enum.GetValues(typeof (UserVisibilityMode));
 
             var clauseCount = 0;
             foreach (var item in values)
@@ -273,10 +318,12 @@ namespace DotNetNuke.Services.Search
                 var keyword = new StringBuilder("(");
                 foreach (var userId in usersList)
                 {
-                    var mode = Enum.GetName(typeof(UserVisibilityMode), item);
-                    keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode, keyword.Length > 1 ? "OR " : string.Empty);
+                    var mode = Enum.GetName(typeof (UserVisibilityMode), item);
+                    keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode,
+                        keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
-                    if (clauseCount >= ClauseMaxCount) //max cluaseCount is 1024, if reach the max value, perform a delete action. 
+                    if (clauseCount >= ClauseMaxCount)
+                        //max cluaseCount is 1024, if reach the max value, perform a delete action. 
                     {
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());
@@ -284,7 +331,7 @@ namespace DotNetNuke.Services.Search
                         clauseCount = 0;
                     }
                 }
-                
+
                 if (keyword.Length > 1)
                 {
                     keyword.Append(")");
@@ -296,12 +343,16 @@ namespace DotNetNuke.Services.Search
         private void PerformDelete(int portalId, string keyword)
         {
             var query = new BooleanQuery
+            {
+                {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
                 {
-                    {NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
-                    {NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true), Occur.MUST}
-                };
+                    NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true),
+                    Occur.MUST
+                }
+            };
 
-            var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag, new SearchQueryAnalyzer(true));
+            var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag,
+                new SearchQueryAnalyzer(true));
             var parsedQueryContent = parserContent.Parse(keyword.ToLowerInvariant());
             query.Add(parsedQueryContent, Occur.MUST);
 
@@ -325,5 +376,17 @@ namespace DotNetNuke.Services.Search
         }
 
         #endregion
+
+    }
+
+    internal class UserSearch
+    {
+        public int UserId { get; set; }
+        public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
+        public bool SuperUser { get; set; }
+        public DateTime LastModifiedOnDate { get; set; }
     }
 }
