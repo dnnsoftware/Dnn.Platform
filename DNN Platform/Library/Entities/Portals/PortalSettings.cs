@@ -581,16 +581,14 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 // For New Install
-                string PageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
-                                  "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
-                                  "<meta name=\"RATING\" content=\"GENERAL\" />";
+                string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
                 string setting;
                 if (PortalController.GetPortalSettingsDictionary(PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    PageHead = (setting == "false") ? "" : setting;
+                    pageHead = (setting == "false") ? "" : setting;
                 }
-                return PageHead;
+                return pageHead;
             }
         }
 
