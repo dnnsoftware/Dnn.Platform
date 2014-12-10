@@ -45,7 +45,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI;
-
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 using DotNetNuke.UI.Utilities;
 
@@ -941,13 +941,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
             string strSaveTemplateDialogPath = _panel.Page.ResolveUrl(moduleFolderPath + "Dialogs/SaveTemplate.aspx?Path=" + PortalPath + "&TabId=" + PortalSettings.ActiveTab.TabID + "&ModuleId=" + moduleId);
 
 			AJAX.AddScriptManager(_panel.Page);
-        	var scriptManager = AJAX.GetScriptManager(_panel.Page);
-
-            string strRegisterClientScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/ClientScripts.js");
-            ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "ClientScripts", strRegisterClientScriptPath);
-
-            string strRegisterDialogScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/RegisterDialogs.js");
-            ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "RegisterDialogs", strRegisterDialogScriptPath);
+        	ClientResourceManager.EnableAsyncPostBackHandler();
+            ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/ClientScripts.js");
+            ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/RegisterDialogs.js");
 
             _editor.ContentAreaCssFile = "~/DesktopModules/Admin/RadEditorProvider/Css/EditorContentAreaOverride.css";
 
@@ -957,8 +953,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 var setEditorOverrideCSSPath = "<script type=\"text/javascript\">var __editorOverrideCSSPath = \"" + editorOverrideCSSPath + "\";</script>";
                 _panel.Page.ClientScript.RegisterClientScriptBlock(GetType(), "EditorOverrideCSSPath", setEditorOverrideCSSPath);
 
-                string styleOverrideScriptPath = _panel.Page.ResolveUrl(moduleFolderPath + "js/overrideCSS.js");
-                ScriptManager.RegisterClientScriptInclude(_panel.Page, _panel.Page.GetType(), "OverrideCSS", styleOverrideScriptPath);
+                ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js");
                 //_editor.Skin = "Black";
 	            _editor.PreventDefaultStylesheet = true;
             }
