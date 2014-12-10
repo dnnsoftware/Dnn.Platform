@@ -392,7 +392,10 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
-            if (!UrlUtils.InPopUp() && !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline))
+            if (!UrlUtils.InPopUp() && 
+                !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline) &&
+                !Regex.IsMatch(PortalSettings.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline)
+                )
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
