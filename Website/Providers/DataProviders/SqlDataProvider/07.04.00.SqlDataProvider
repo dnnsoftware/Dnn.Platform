@@ -1931,6 +1931,7 @@ AS
 			   u.Username,
 			   u.IsSuperUser,
 			   u.Email,
+			   u.CreatedOnDate,
 			   p.PropertyName,
 			   p.PropertyValue + ''$$$'' + 
 			   CAST(CASE WHEN (p.Visibility IS NULL) THEN 0 ELSE p.Visibility END AS VARCHAR(10)) + ''$$$'' +

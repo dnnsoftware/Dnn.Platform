@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Search
 
                     while (reader.Read())
                     {
-                        var userSearch = GetUserSearch(reader, profileDefinitions);
+                        var userSearch = GetUserSearch(reader);
                         AddBasicInformation(searchDocuments, indexedUsers, userSearch, portalId);
                         
                         //log the userid so that it can get the correct user collection next time.
@@ -275,11 +275,12 @@ namespace DotNetNuke.Services.Search
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDoc.Keywords.Add("username", userSearch.UserName);
                 searchDoc.Keywords.Add("email", userSearch.Email);
+                searchDoc.NumericKeys.Add("createdondate", int.Parse(userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat)));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
         }
 
-        private UserSearch GetUserSearch(IDataReader reader, List<ProfilePropertyDefinition> profileDefinitions)
+        private UserSearch GetUserSearch(IDataReader reader)
         {
             var userSearch = new UserSearch
             {
@@ -289,7 +290,8 @@ namespace DotNetNuke.Services.Search
                 Email = reader["Email"].ToString(),
                 UserName = reader["Username"].ToString(),
                 SuperUser = Convert.ToBoolean(reader["IsSuperUser"]),
-                LastModifiedOnDate = Convert.ToDateTime(reader["LastModifiedOnDate"]).ToUniversalTime()
+                LastModifiedOnDate = Convert.ToDateTime(reader["LastModifiedOnDate"]).ToUniversalTime(),
+                CreatedOnDate = Convert.ToDateTime(reader["CreatedOnDate"]).ToUniversalTime()
             };
             if (!string.IsNullOrEmpty(userSearch.FirstName) && userSearch.FirstName.Contains(ValueSplitFlag))
             {
@@ -388,5 +390,6 @@ namespace DotNetNuke.Services.Search
         public string UserName { get; set; }
         public bool SuperUser { get; set; }
         public DateTime LastModifiedOnDate { get; set; }
+        public DateTime CreatedOnDate { get; set; }
     }
 }
