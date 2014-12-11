@@ -188,6 +188,7 @@ namespace DotNetNuke.Services.Search
                                         Title = userSearch.DisplayName
                                     };
                                     searchDoc.Keywords.Add(propertyName, propertyValue);
+                                    searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                                     searchDocuments.Add(uniqueKey, searchDoc);
                                 }
                             }
@@ -245,7 +246,7 @@ namespace DotNetNuke.Services.Search
                     Description = userSearch.FirstName,
                     Title = userSearch.DisplayName
                 };
-
+                searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
 
