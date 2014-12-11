@@ -111,6 +111,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
             if(Mappers.GetMapper(typeof(T)) is StandardMapper)
             {
+                Mappers.Revoke(typeof(T));
                 Mappers.Register(typeof(T), mapper);
             }        
         }
