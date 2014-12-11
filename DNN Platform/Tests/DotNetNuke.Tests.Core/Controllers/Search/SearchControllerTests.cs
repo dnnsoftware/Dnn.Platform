@@ -121,7 +121,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int NumericValue1 = 77777;
         private const int NumericValue2 = 55555;
         private const int NumericValue50 = 50;
+        private const int NumericValue100 = 100;
         private const int NumericValue200 = 200;
+        private const int NumericValue500 = 500;
         private const int NumericValue1000 = 1000;
         private const string KeyWord1Name = "keyword1";
         private const string KeyWord1Value = "value1";
@@ -305,6 +307,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "los,de,el",
                 });
             _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>())).Returns<string, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
 
@@ -470,6 +473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Title = "Title",
                 UniqueKey = "key1",
+                Body = "hello",
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
@@ -482,7 +486,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
             };
             var doc3 = new SearchDocument
             {
@@ -491,10 +495,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() {doc1, doc2, doc3};
+            var docs = new List<SearchDocument>() {doc1, doc2, doc3, doc4, doc5};
 
             _internalSearchController.AddSearchDocuments(docs);
 
@@ -2845,7 +2867,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert
             Assert.AreEqual(1, search.Results.Count);
-            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[0].NumericKeys[NumericKey1]);
+            Assert.AreEqual(NumericValue50, search.Results[0].NumericKeys[NumericKey1]);
         }
 
         #endregion
