@@ -1955,6 +1955,35 @@ AS
     END
 GO
 
+/* DNN-6233: Search Profile Property Values */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}SearchProfilePropertyValues') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
+ @PortalId INT,
+ @PropertyName NVARCHAR(50),
+ @SearchString NVARCHAR(100)
+AS
+SELECT DISTINCT
+ up.PropertyValue
+FROM
+ {databaseOwner}{objectQualifier}UserProfile up
+ INNER JOIN {databaseOwner}{objectQualifier}ProfilePropertyDefinition ppd ON ppd.PropertyDefinitionID = up.PropertyDefinitionID
+WHERE
+ ppd.PortalID = @PortalId
+ AND ppd.PropertyName = @PropertyName
+ AND up.PropertyValue LIKE '%' + @SearchString + '%'
+ AND up.PropertyValue IS NOT NULL
+ORDER BY
+ up.PropertyValue
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

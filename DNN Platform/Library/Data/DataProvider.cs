@@ -2498,7 +2498,12 @@ namespace DotNetNuke.Data
 									  lastModifiedByUserId);
 		}
 
-		#endregion
+	    public virtual IDataReader SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+	    {
+            return ExecuteReader("SearchProfilePropertyValues", portalId, propertyName, searchString);
+	    }
+
+	    #endregion
 
 		#region SkinControls
 
