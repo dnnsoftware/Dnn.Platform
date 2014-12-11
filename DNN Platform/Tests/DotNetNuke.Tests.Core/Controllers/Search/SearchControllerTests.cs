@@ -2827,5 +2827,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+
+        #region custom numeric key test
+        [Test]
+        public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
+        {
+            AddDocumentsWithNumericKeys();
+
+            //Act
+            var query = new SearchQuery
+            {
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.Greater(search.Results[1].NumericKeys[NumericKey1], search.Results[0].NumericKeys[NumericKey1]);
+        }
+
+        #endregion
+
     }
 }
