@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -224,8 +225,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             SetupFirstVersionForExistingTab(portalid, tabId);
 
             DeleteOldestVersionIfTabHasMaxNumberOfVersions(portalid, tabId);
-
-            return _tabVersionController.CreateTabVersion(tabId, createdByUserID);
+            try
+            {
+                return _tabVersionController.CreateTabVersion(tabId, createdByUserID);
+            }
+            catch (InvalidOperationException e)
+            {
+                Services.Exceptions.Exceptions.LogException(e);
+                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
+            }
+            catch (SqlException sqlException)
+            {
+                Services.Exceptions.Exceptions.LogException(sqlException);
+                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
+            }
         }
 
         public IEnumerable<ModuleInfo> GetUnPublishedVersionModules(int tabId)

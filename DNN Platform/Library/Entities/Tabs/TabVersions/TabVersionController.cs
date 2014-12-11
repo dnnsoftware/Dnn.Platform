@@ -26,6 +26,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
@@ -72,8 +73,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var lastTabVersion = GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
             var newVersion = 1;
+
             if (lastTabVersion != null)
             {
+                if (!lastTabVersion.IsPublished && !isPublished)
+                {
+                    throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
+                }
                 newVersion = lastTabVersion.Version + 1;
             }
             

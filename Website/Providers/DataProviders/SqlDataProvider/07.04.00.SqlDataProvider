@@ -36,7 +36,8 @@ BEGIN
 		[CreatedOnDate] [DATETIME] NOT NULL,
 		[LastModifiedByUserID] [INT] NOT NULL,
 		[LastModifiedOnDate] [DATETIME] NOT NULL,
-        CONSTRAINT [PK_{objectQualifier}TabVersions] PRIMARY KEY CLUSTERED ([TabVersionId] ASC)
+        CONSTRAINT [PK_{objectQualifier}TabVersions] PRIMARY KEY CLUSTERED ([TabVersionId] ASC),
+		CONSTRAINT [IX_{objectQualifier}TabVersions] UNIQUE NONCLUSTERED ( [TabId] ASC, [Version] DESC )
     ) ON [PRIMARY]
 
     ALTER TABLE {databaseOwner}[{objectQualifier}TabVersions] 

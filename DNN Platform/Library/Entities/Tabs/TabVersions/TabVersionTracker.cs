@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -91,6 +92,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
 
                 TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                throw; 
             }
             catch (Exception ex)
             {
