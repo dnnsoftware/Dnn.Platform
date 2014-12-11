@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.Search
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDoc.Keywords.Add("username", userSearch.UserName);
                 searchDoc.Keywords.Add("email", userSearch.Email);
-                searchDoc.NumericKeys.Add("createdondate", int.Parse(userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat)));
+                searchDoc.Keywords.Add("createdondate", userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
         }
