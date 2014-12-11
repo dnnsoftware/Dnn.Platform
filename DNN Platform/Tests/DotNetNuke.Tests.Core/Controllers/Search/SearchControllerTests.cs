@@ -129,6 +129,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string KeyWord1Value = "value1";
         private const string KeyWord2Name = "keyword2";
         private const string KeyWord2Value = "value2";
+        private const string KeyWord3Value = "value3";
+        private const string KeyWord4Value = "value4";
+        private const string KeyWord5Value = "value5";
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
         private const string Line3 = "the quick fox jumps over the black dog";
@@ -517,6 +520,62 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
 
             var docs = new List<SearchDocument>() {doc1, doc2, doc3, doc4, doc5};
+
+            _internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
+        {
+            var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                Body = "hello",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } }
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } }
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } }
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } }
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } }
+            };
+
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
             _internalSearchController.AddSearchDocuments(docs);
 
@@ -2850,7 +2909,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #endregion
 
-        #region custom numeric key test
+        #region custom numeric key and keyword test
         [Test]
         public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
         {
@@ -2868,6 +2927,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Assert
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual(NumericValue50, search.Results[0].NumericKeys[NumericKey1]);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Works_With_CustomKeyword_Querirs()
+        {
+
+            AddDocumentsWithKeywords();
+            
+            //Act
+            var query = new SearchQuery
+            {
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.AreEqual(KeyWord1Value, search.Results[0].Keywords[KeyWord1Name]);
         }
 
         #endregion
