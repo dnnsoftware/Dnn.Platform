@@ -1595,6 +1595,7 @@
     <Compile Include="UI\WebControls\PropertyEditor\Adapters\SettingsEditorInfoAdapter.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Adapters\StandardEditorInfoAdapter.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\CollectionEditorControl.cs" />
+    <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\AutoCompleteControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\CheckEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateEditControl.cs" />
     <Compile Include="UI\WebControls\PropertyEditor\Edit Controls\DateTimeEditControl.cs" />
