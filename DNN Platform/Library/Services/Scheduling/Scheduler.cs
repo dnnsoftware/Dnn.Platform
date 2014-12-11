@@ -260,7 +260,16 @@ namespace DotNetNuke.Services.Scheduling
 
             internal static ServerInfo GetServer(string executingServer)
             {
-                    return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase));
+                try
+                {
+                    return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled == true);
+                }
+                catch (Exception)
+                {
+                    //catches edge-case where schedule runs before webserver registration
+                    return null;
+                }
+                    
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
@@ -655,6 +664,10 @@ namespace DotNetNuke.Services.Scheduling
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
                 Logger.Debug("loadqueue executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
+                if (thisServer == null)
+                {
+                    return;}
+                ;
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -685,6 +698,11 @@ namespace DotNetNuke.Services.Scheduling
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
                 Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
+                if (thisServer == null)
+                {
+                    return;
+                }
+                ;
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
                 
                 var serverGroupServers = ServerGroupServers(thisServer);

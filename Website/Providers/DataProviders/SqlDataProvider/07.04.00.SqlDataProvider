@@ -8,6 +8,21 @@
 /*****                                                  *****/
 /************************************************************/
 
+/***** DNN-6159: update database compatibility to sql 2008 when its below than 2008. *****/
+DECLARE @ProductEdition INT
+SET @ProductEdition = CAST(ServerProperty('EngineEdition') as INT)
+
+IF (@ProductEdition <> 5)
+    DECLARE @Name NVARCHAR(260), @CompatibilityLevel INT
+    SELECT @Name = DB_NAME()
+    SELECT @CompatibilityLevel = compatibility_level FROM sys.databases WHERE name = @Name
+
+    IF @CompatibilityLevel < 100
+	    DECLARE @sql NVARCHAR(max)
+	    SELECT @sql = N'ALTER DATABASE [' + @Name + '] SET COMPATIBILITY_LEVEL = 100'
+	    EXECUTE sp_executesql @sql
+GO
+
 /***** Tab Versioning table and Sprocs *****/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabVersions]') AND type in (N'U'))
 BEGIN

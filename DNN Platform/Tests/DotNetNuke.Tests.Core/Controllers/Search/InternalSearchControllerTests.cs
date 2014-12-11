@@ -274,6 +274,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 });
             _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns<string, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
 
