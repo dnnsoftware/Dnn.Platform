@@ -1955,7 +1955,7 @@ AS
     END
 GO
 
-/* DNN-6233: Search Profile Property Values */
+/* DNN-6233: Auto Complete Control for Profile Properties */
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}SearchProfilePropertyValues') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
@@ -1983,6 +1983,13 @@ WHERE
 ORDER BY
  up.PropertyValue
 GO
+
+IF NOT EXISTS(SELECT * FROM {databaseOwner}[{objectQualifier}Lists] WHERE [ListName]='DataType' AND [Value]='AutoComplete')
+INSERT INTO {databaseOwner}[{objectQualifier}Lists]
+        ([ListName], [Value], [Text], [ParentID], [Level], [SortOrder], [DefinitionID], [Description], [PortalID], [SystemList], [CreatedByUserID], [CreatedOnDate], [LastModifiedByUserID], [LastModifiedOnDate])
+ VALUES (N'DataType', N'AutoComplete', N'DotNetNuke.UI.WebControls.AutoCompleteControl, DotNetNuke', 0, 0, 0, -1, NULL, -1, 1, NULL, NULL, NULL, NULL)
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

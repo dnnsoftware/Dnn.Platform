@@ -651,6 +651,12 @@ namespace DotNetNuke.Entities.Profile
         public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
         {
             var res = new List<string> {};
+            var autoCompleteType = new ListController().GetListEntryInfo("DataType", "AutoComplete");
+            var def = GetPropertyDefinitionByName(portalId, propertyName);
+            if (def.DataType != autoCompleteType.EntryID)
+            {
+                return res;
+            }
             using (
                 IDataReader ir = Data.DataProvider.Instance()
                     .SearchProfilePropertyValues(portalId, propertyName, searchString))
