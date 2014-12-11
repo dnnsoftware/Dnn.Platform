@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Scheduling
 
             internal static ServerInfo GetServer(string executingServer)
             {
-                    return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase));
+                    return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled==true);
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
