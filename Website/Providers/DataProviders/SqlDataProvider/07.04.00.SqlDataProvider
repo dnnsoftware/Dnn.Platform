@@ -13,14 +13,18 @@ DECLARE @ProductEdition INT
 SET @ProductEdition = CAST(ServerProperty('EngineEdition') as INT)
 
 IF (@ProductEdition <> 5)
+BEGIN
     DECLARE @Name NVARCHAR(260), @CompatibilityLevel INT
     SELECT @Name = DB_NAME()
     SELECT @CompatibilityLevel = compatibility_level FROM sys.databases WHERE name = @Name
 
     IF @CompatibilityLevel < 100
+    BEGIN
 	    DECLARE @sql NVARCHAR(max)
 	    SELECT @sql = N'ALTER DATABASE [' + @Name + '] SET COMPATIBILITY_LEVEL = 100'
 	    EXECUTE sp_executesql @sql
+    END
+END
 GO
 
 /***** Tab Versioning table and Sprocs *****/
