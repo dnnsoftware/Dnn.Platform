@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             }
         }
 
-        private void ProcessLanguage(List<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
+        private void ProcessLanguage(IEnumerable<TabInfo> pageList, Locale locale, int languageCount, int totalLanguages)
         {
             RadProgressContext progress = RadProgressContext.Current;
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             progress.PrimaryValue = languageCount;
             
 
-            int total = pageList.Count;
+            int total = pageList.Count();
             if (total == 0)
             {
                 progress.SecondaryTotal = 0;
@@ -129,9 +129,9 @@ namespace DotNetNuke.Modules.Admin.Languages
                 progress.SecondaryPercent = 100;
             }
 
-            for (int i = 0; i <= total - 1; i++)
+            for (int i = 0; i < total ; i++)
             {
-                TabInfo currentTab = pageList[i];
+                TabInfo currentTab = pageList.ElementAt(i);
                 int stepNo = i + 1;
 
                 progress.SecondaryTotal = total;
@@ -169,6 +169,15 @@ namespace DotNetNuke.Modules.Admin.Languages
                 }
             }
         }
+
+        private IEnumerable<TabInfo> GetPages(int portalId)
+        {
+            return (from kvp in TabController.Instance.GetTabsByPortal(portalId)
+                                      where !kvp.Value.TabPath.StartsWith("//Admin")
+                                            && !kvp.Value.IsDeleted 
+                                            && !kvp.Value.IsSystem
+                                      select kvp.Value);
+        } 
         #endregion
 
         #region Event Handlers
@@ -222,10 +231,8 @@ namespace DotNetNuke.Modules.Admin.Languages
             Response.RedirectLocation = Globals.NavigateURL();
             
             int languageCount = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Count;
-            List<TabInfo> pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
-                                      where !kvp.Value.TabPath.StartsWith("//Admin")
-                                            && !kvp.Value.IsDeleted
-                                      select kvp.Value).ToList(); ;
+
+            var pageList = GetPages(PortalId);
 
             int scriptTimeOut = Server.ScriptTimeout;
             Server.ScriptTimeout = timeout;
@@ -240,17 +247,14 @@ namespace DotNetNuke.Modules.Admin.Languages
             PortalController.UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", "True");
 
             // populate other languages
+            var defaultLanguage = PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
             foreach (Locale locale in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
             {
                 if (!IsDefaultLanguage(locale.Code))
                 {
                     languageCounter += 1;
-                    pageList = (from kvp in TabController.Instance.GetTabsByPortal(PortalId)
-                                where !kvp.Value.TabPath.StartsWith("//Admin")
-                                      && kvp.Value.CultureCode == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage
-                                      && !kvp.Value.IsDeleted
-                                select kvp.Value).ToList();
-
+                    pageList = GetPages(PortalId).Where(p => p.CultureCode == defaultLanguage);
+                        
                     //add translator role
                     Localization.AddTranslatorRole(PortalId, locale);
 

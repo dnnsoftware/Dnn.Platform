@@ -25,7 +25,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 
 using DotNetNuke.Common;
@@ -100,9 +99,9 @@ namespace DotNetNuke.Modules.Admin.Portals
                     writer.WriteElementString("contenttype", objFile.ContentType);
                     writer.WriteElementString("extension", objFile.Extension);
                     writer.WriteElementString("filename", objFile.FileName);
-                    writer.WriteElementString("height", objFile.Height.ToString());
-                    writer.WriteElementString("size", objFile.Size.ToString());
-                    writer.WriteElementString("width", objFile.Width.ToString());
+                    writer.WriteElementString("height", objFile.Height.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteElementString("size", objFile.Size.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteElementString("width", objFile.Width.ToString(CultureInfo.InvariantCulture));
 
                     writer.WriteEndElement();
 
@@ -196,7 +195,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         private void SerializeProfileDefinitions(XmlWriter writer, PortalInfo objportal)
         {
             var objListController = new ListController();
-            ListEntryInfo objList;
 
             writer.WriteStartElement("profiledefinitions");
             foreach (ProfilePropertyDefinition objProfileProperty in
@@ -207,17 +205,10 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("propertycategory", objProfileProperty.PropertyCategory);
                 writer.WriteElementString("propertyname", objProfileProperty.PropertyName);
 
-                objList = objListController.GetListEntryInfo("DataType", objProfileProperty.DataType);
-                if (objList == null)
-                {
-                    writer.WriteElementString("datatype", "Unknown");
-                }
-                else
-                {
-                    writer.WriteElementString("datatype", objList.Value);
-                }
-                writer.WriteElementString("length", objProfileProperty.Length.ToString());
-                writer.WriteElementString("defaultvisibility", Convert.ToInt32(objProfileProperty.DefaultVisibility).ToString());
+                var objList = objListController.GetListEntryInfo("DataType", objProfileProperty.DataType);
+                writer.WriteElementString("datatype", objList == null ? "Unknown" : objList.Value);
+                writer.WriteElementString("length", objProfileProperty.Length.ToString(CultureInfo.InvariantCulture));
+                writer.WriteElementString("defaultvisibility", Convert.ToInt32(objProfileProperty.DefaultVisibility).ToString(CultureInfo.InvariantCulture));
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
@@ -284,13 +275,17 @@ namespace DotNetNuke.Modules.Admin.Portals
             if (chkMultilanguage.Checked)
             {
                 //Process Default Language first
-                SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(portal.DefaultLanguage, true));
+                SerializeTabs(writer, portal, tabs, 
+                    GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(portal.DefaultLanguage, true)));
 
                 //Process other locales
                 foreach (ListItem language in chkLanguages.Items)
                 {
                     if (language.Selected && language.Value != portal.DefaultLanguage)
-                        SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language.Value, false));
+                    {
+                        SerializeTabs(writer, portal, tabs,
+                            GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language.Value, false)));
+                    }                        
                 }
             }
             else
@@ -299,15 +294,23 @@ namespace DotNetNuke.Modules.Admin.Portals
                 {
                     // only export 1 language
                     string language = languageComboBox.SelectedValue;
-                    SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language, true));
+                    SerializeTabs(writer, portal, tabs, 
+                        GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(language, true)));
                 }
                 else
                 {
-                    SerializeTabs(writer, portal, tabs, TabController.Instance.GetTabsByPortal(portal.PortalID));
+                    SerializeTabs(writer, portal, tabs, 
+                        GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID)));
                 }
             }
 
             writer.WriteEndElement();
+        }
+
+        private TabCollection GetExportableTabs(TabCollection tabs)
+        {
+            var exportableTabs = tabs.Where(kvp => !kvp.Value.IsSystem).Select(kvp => kvp.Value);
+            return new TabCollection(exportableTabs);
         }
 
         private void SerializePortalSettings(XmlWriter writer, PortalInfo portal)
@@ -316,8 +319,8 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             writer.WriteElementString("logofile", portal.LogoFile);
             writer.WriteElementString("footertext", portal.FooterText);
-            writer.WriteElementString("userregistration", portal.UserRegistration.ToString());
-            writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString());
+            writer.WriteElementString("userregistration", portal.UserRegistration.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("banneradvertising", portal.BannerAdvertising.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("defaultlanguage", portal.DefaultLanguage);
 
             Dictionary<string, string> settingsDictionary = PortalController.Instance.GetPortalSettings(portal.PortalID);
@@ -354,7 +357,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("portalaliasmapping", setting);
             }
 
-            writer.WriteElementString("contentlocalizationenabled", this.chkMultilanguage.Checked.ToString());
+            writer.WriteElementString("contentlocalizationenabled", chkMultilanguage.Checked.ToString());
 
             settingsDictionary.TryGetValue("TimeZone", out setting);
             if (!string.IsNullOrEmpty(setting))
@@ -398,9 +401,9 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("controlpanelvisibility", setting);
             }
 
-            writer.WriteElementString("hostspace", portal.HostSpace.ToString());
-            writer.WriteElementString("userquota", portal.UserQuota.ToString());
-            writer.WriteElementString("pagequota", portal.PageQuota.ToString());
+            writer.WriteElementString("hostspace", portal.HostSpace.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("userquota", portal.UserQuota.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("pagequota", portal.PageQuota.ToString(CultureInfo.InvariantCulture));
 
             settingsDictionary.TryGetValue("PageHeadText", out setting);
             if (!string.IsNullOrEmpty(setting))
@@ -428,7 +431,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             if (enabledLocales.Count > 1)
             {
                 writer.WriteStartElement("locales");
-                if (this.chkMultilanguage.Checked)
+                if (chkMultilanguage.Checked)
                 {
                     foreach (ListItem item in this.chkLanguages.Items)
                     {
@@ -663,7 +666,6 @@ namespace DotNetNuke.Modules.Admin.Portals
         }
         private string GetNodeIcon(TabInfo tab, out string toolTip)
         {
-            toolTip = "";
             if (PortalSettings.HomeTabId == tab.TabID)
             {
                 toolTip = LocalizeString("lblHome");
@@ -709,36 +711,9 @@ namespace DotNetNuke.Modules.Admin.Portals
             rootNode.Attributes.Add("isPortalRoot", "True");
 
             //var tabs = new TabCollection();
-            List<TabInfo> tabs;
-            if (chkMultilanguage.Checked)
-            {
-                tabs = TabController.GetPortalTabs(TabController.GetTabsBySortOrder(portal.PortalID, portal.DefaultLanguage, true),
-                     Null.NullInteger,
-                     false,
-                     "<" + Localization.GetString("None_Specified") + ">",
-                     true,
-                     false,
-                     true,
-                     false,
-                     false);
+            var tabs = TabController.GetPortalTabs(chkMultilanguage.Checked ? TabController.GetTabsBySortOrder(portal.PortalID, portal.DefaultLanguage, true) : TabController.GetTabsBySortOrder(portal.PortalID, languageComboBox.SelectedValue, true), Null.NullInteger, false, "<" + Localization.GetString("None_Specified") + ">", true, false, true, false, false).Where(t => !t.IsSystem).ToList();
 
-                //Tabs = tabController.GetTabsByPortal(portal.PortalID).WithCulture(portal.DefaultLanguage, true);
-            }
-            else
-            {
-                tabs = TabController.GetPortalTabs(TabController.GetTabsBySortOrder(portal.PortalID, languageComboBox.SelectedValue, true),
-                     Null.NullInteger,
-                     false,
-                     "<" + Localization.GetString("None_Specified") + ">",
-                     true,
-                     false,
-                     true,
-                     false,
-                     false);
-                //tabs = tabController.GetTabsByPortal(portal.PortalID);
-            }
-
-            foreach (var tab in tabs) //.Values)
+            foreach (var tab in tabs) 
             {
                 if (tab.Level == 0 && tab.TabID != portal.AdminTabId)
                 {
@@ -767,10 +742,10 @@ namespace DotNetNuke.Modules.Admin.Portals
 
             var parentId = int.Parse(parentNode.Value);
 
-            var Tabs = TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(languageComboBox.SelectedValue, true).WithParentId(parentId);
+            var tabs = GetExportableTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(languageComboBox.SelectedValue, true)).WithParentId(parentId);
 
 
-            foreach (var tab in Tabs)
+            foreach (var tab in tabs)
             {
                 if (tab.ParentId == parentId)
                 {
@@ -795,24 +770,7 @@ namespace DotNetNuke.Modules.Admin.Portals
         #endregion
 
         #region "EventHandlers"
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[VMasanas]	23/09/2004	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
+        
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -891,13 +849,13 @@ namespace DotNetNuke.Modules.Admin.Portals
                 }
                 if (!isValid)
                 {
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("ErrorAncestorPages"), ModuleMessage.ModuleMessageType.RedError);
+                    UI.Skins.Skin.AddModuleMessage(this, LocalizeString("ErrorAncestorPages"), ModuleMessage.ModuleMessageType.RedError);
                 }
 
                 if (ctlPages.CheckedNodes.Count == 0)
                 {
                     isValid = false;
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, LocalizeString("ErrorPages"), ModuleMessage.ModuleMessageType.RedError);
+                    UI.Skins.Skin.AddModuleMessage(this, LocalizeString("ErrorPages"), ModuleMessage.ModuleMessageType.RedError);
                 }
 
                 if (!Page.IsValid || !isValid)
@@ -905,15 +863,12 @@ namespace DotNetNuke.Modules.Admin.Portals
                     return;
                 }
 
-                ZipOutputStream resourcesFile;
-                var sb = new StringBuilder();
                 var settings = new XmlWriterSettings();
                 settings.ConformanceLevel = ConformanceLevel.Fragment;
                 settings.OmitXmlDeclaration = true;
                 settings.Indent = true;
 
-                string filename;
-                filename = Globals.HostMapPath + txtTemplateName.Text;
+                var filename = Globals.HostMapPath + txtTemplateName.Text;
                 if (!filename.EndsWith(".template"))
                 {
                     filename += ".template";
@@ -929,8 +884,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                 //Serialize portal settings
                 var portal = PortalController.Instance.GetPortal(Convert.ToInt32(cboPortals.SelectedValue));
 
-                this.SerializePortalSettings(writer, portal);
-                this.SerializeEnabledLocales(writer, portal);
+                SerializePortalSettings(writer, portal);
+                SerializeEnabledLocales(writer, portal);
                 SerializeExtensionUrlProviders(writer, portal.PortalID);
 
                 if (chkProfile.Checked)
@@ -957,7 +912,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 if (chkFiles.Checked)
                 {
                     //Create Zip File to hold files
-                    resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
+                    var resourcesFile = new ZipOutputStream(File.Create(filename + ".resources"));
                     resourcesFile.SetLevel(6);
 
                     //Serialize folders (while adding files to zip file)
@@ -971,7 +926,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 
                 writer.Close();
 
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.GreenSuccess);
+                UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.GreenSuccess);
             }
             catch (Exception exc)
             {

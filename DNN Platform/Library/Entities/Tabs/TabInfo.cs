@@ -128,6 +128,8 @@ namespace DotNetNuke.Entities.Tabs
             DisableLink = false;
 
             Panes = new ArrayList();
+
+            IsSystem = false;
         }
 
         #endregion
@@ -175,6 +177,9 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlElement("visible")]
         public bool IsVisible { get; set; }
+
+        [XmlElement("issystem")]
+        public bool IsSystem { get; set; }
 
         [XmlIgnore]
         public bool HasBeenPublished { get; set; }
@@ -974,6 +979,7 @@ namespace DotNetNuke.Entities.Tabs
             SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);
             BreadCrumbs = null;
             Modules = null;
+            IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
         }
 
         public string GetCurrentUrl(string cultureCode)

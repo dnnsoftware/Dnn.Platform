@@ -1955,7 +1955,8 @@ namespace DotNetNuke.Entities.Tabs
                                updatedTab.PermanentRedirect,
                                updatedTab.SiteMapPriority,
                                UserController.Instance.GetCurrentUserInfo().UserID,
-                               updatedTab.CultureCode);
+                               updatedTab.CultureCode,
+                               updatedTab.IsSystem);
 
             //Update Tags
             List<Term> terms = updatedTab.Terms;
@@ -2114,7 +2115,8 @@ namespace DotNetNuke.Entities.Tabs
                                        tab.PermanentRedirect,
                                        tab.SiteMapPriority,
                                        UserController.Instance.GetCurrentUserInfo().UserID,
-                                       tab.CultureCode);
+                                       tab.CultureCode,
+                                       tab.IsSystem);
 
                     UpdateTabVersion(tab.TabID);
 

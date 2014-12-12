@@ -88,7 +88,8 @@ namespace DotNetNuke.Entities.Tabs
                                    tab.PermanentRedirect,
                                    tab.SiteMapPriority,
                                    UserController.Instance.GetCurrentUserInfo().UserID,
-                                   tab.CultureCode);
+                                   tab.CultureCode,
+                                   tab.IsSystem);
                 EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(),
                                 UserController.Instance.GetCurrentUserInfo().UserID, "",
                                 EventLogController.EventLogType.TAB_UPDATED);
