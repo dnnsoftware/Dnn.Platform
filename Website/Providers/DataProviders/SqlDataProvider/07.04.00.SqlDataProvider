@@ -1939,7 +1939,7 @@ AS
                                             INNER JOIN ValidDataType dt ON dt.EntryID = pd.DataType
                                   WHERE     (up.PortalId = @PortalId OR up.PortalId IS NULL)
                                             AND (u.LastModifiedOnDate > @StartDate OR (p.LastUpdatedDate IS NOT NULL AND (p.LastUpdatedDate > @StartDate OR pd.LastModifiedOnDate > @StartDate)))
-                                            AND ((p.PropertyValue IS NOT NULL AND p.PropertyValue <> '''') OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
+                                            AND ((p.PropertyValue IS NOT NULL AND p.PropertyValue <> '''') OR u.LastModifiedOnDate > @StartDate OR p.LastUpdatedDate IS NULL OR p.LastUpdatedDate > @StartDate)
                                 ) AS T WHERE UserID > @startUserId) AS T
                                 WHERE rownumber <= @numberOfUsers
                      )
