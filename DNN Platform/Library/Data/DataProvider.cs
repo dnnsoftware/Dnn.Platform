@@ -3530,40 +3530,58 @@ namespace DotNetNuke.Data
 								   string logPortalName, DateTime logCreateDate, string logServerName,
 							string logProperties, int logConfigID, ExceptionInfo exception)
 		{
-			if (!string.IsNullOrEmpty(exception.ExceptionHash))
-			{
-				ExecuteNonQuery("AddException",
-					exception.ExceptionHash,
-					exception.Message,
-					exception.StackTrace,
-					exception.InnerMessage,
-					exception.InnerStackTrace,
-					exception.Source);
-			}
-			int logEventID = ExecuteScalar<int>("AddEventLog",
-												  logGUID,
-												  logTypeKey,
-												  GetNull(logUserID),
-												  GetNull(logUserName),
-												  GetNull(logPortalID),
-												  GetNull(logPortalName),
-												  logCreateDate,
-												  logServerName,
-												  logProperties,
-												  logConfigID,
-												  exception.ExceptionHash);
-			if (!string.IsNullOrEmpty(exception.AssemblyVersion) && exception.AssemblyVersion != "-1")
-			{
-				ExecuteNonQuery("AddExceptionEvent",
-					logEventID,
-					exception.AssemblyVersion,
-					exception.PortalId,
-					exception.UserId,
-					exception.TabId,
-					exception.RawUrl,
-					exception.Referrer,
-					exception.UserAgent);
-			}
+            int logEventID;
+            if (exception != null)
+            {
+                if (!string.IsNullOrEmpty(exception.ExceptionHash))
+                    ExecuteNonQuery("AddException",
+                                    exception.ExceptionHash,
+                                    exception.Message,
+                                    exception.StackTrace,
+                                    exception.InnerMessage,
+                                    exception.InnerStackTrace,
+                                    exception.Source);
+
+                logEventID = ExecuteScalar<int>("AddEventLog",
+                                                logGUID,
+                                                logTypeKey,
+                                                GetNull(logUserID),
+                                                GetNull(logUserName),
+                                                GetNull(logPortalID),
+                                                GetNull(logPortalName),
+                                                logCreateDate,
+                                                logServerName,
+                                                logProperties,
+                                                logConfigID,
+                                                exception.ExceptionHash);
+
+                if (!string.IsNullOrEmpty(exception.AssemblyVersion) && exception.AssemblyVersion != "-1")
+                {
+                    ExecuteNonQuery("AddExceptionEvent",
+                        logEventID,
+                        exception.AssemblyVersion,
+                        exception.PortalId,
+                        exception.UserId,
+                        exception.TabId,
+                        exception.RawUrl,
+                        exception.Referrer,
+                        exception.UserAgent);
+                }
+            }
+            else
+            {
+                logEventID = ExecuteScalar<int>("AddEventLog",
+                                                logGUID,
+                                                logTypeKey,
+                                                GetNull(logUserID),
+                                                GetNull(logUserName),
+                                                GetNull(logPortalID),
+                                                GetNull(logPortalName),
+                                                logCreateDate,
+                                                logServerName,
+                                                logProperties,
+                                                logConfigID);
+            }
 		}
 
 		public virtual void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription,

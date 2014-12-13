@@ -1615,10 +1615,10 @@ CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
 	@LogServerName nvarchar(50),
 	@LogProperties ntext,
 	@LogConfigID int,
-	@ExceptionHash varchar(100)
+	@ExceptionHash varchar(100) = NULL
 AS
 	IF NOT EXISTS (SELECT * FROM  {databaseOwner}[{objectQualifier}EventLogTypes] WHERE LogTypeKey = @LogTypeKey)
-		BEGIN
+	BEGIN
 		-- Add new Event Type
 			EXEC  {databaseOwner}[{objectQualifier}AddEventLogType] @LogTypeKey, @LogTypeKey, N'', N'DotNetNuke.Logging.EventLogType', N'GeneralAdminOperation'
 
@@ -1626,9 +1626,9 @@ AS
 			EXEC  {databaseOwner}[{objectQualifier}AddEventLogConfig] @LogTypeKey, NULL, 0, -1, 0, 1, 1, 1, N'', N''
 		-- As the new log config is unlogged, exit without logging
 			Return
-		END
+	END
 
- DECLARE @LogEventID bigint
+	DECLARE @LogEventID bigint
 
 	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
 		(LogGUID,
@@ -1655,7 +1655,7 @@ AS
 		@LogConfigID,
 		@ExceptionHash)
 
- SELECT @LogEventID = SCOPE_IDENTITY()
+	SELECT @LogEventID = SCOPE_IDENTITY()
 
 	DECLARE @NotificationActive bit
 	DECLARE @NotificationThreshold bit
@@ -1696,7 +1696,6 @@ AS
 		WHERE LogCreateDate > @MinDateTime
 
 		IF @ThresholdQueue >= @NotificationThreshold
-
 		BEGIN
 			UPDATE  {databaseOwner}[{objectQualifier}EventLog]
 			SET LogNotificationPending = 1 
