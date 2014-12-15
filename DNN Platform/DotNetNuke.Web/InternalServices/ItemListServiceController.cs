@@ -29,7 +29,6 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
-using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.DataStructures;
 using DotNetNuke.Entities.Portals;
@@ -37,7 +36,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
@@ -440,6 +438,7 @@ namespace DotNetNuke.Web.InternalServices
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
                                             && (includeAllTypes || tab.TabType == TabType.Normal)
+                                            && !tab.IsSystem
                                        )
                                  .OrderBy(tab => tab.TabOrder)
                                  .ToList();
@@ -447,7 +446,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
                     tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList()
-                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink)
+                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink && !tab.IsSystem)
                         .OrderBy(tab => tab.TabOrder)
                         .ToList());
                 }
@@ -458,7 +457,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
 
                     tabs = TabController.Instance.GetTabsByPortal(-1).AsList()
-                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink)
+                        .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink && !tab.IsSystem)
                         .OrderBy(tab => tab.TabOrder)
                         .ToList();
                 }
@@ -519,14 +518,15 @@ namespace DotNetNuke.Web.InternalServices
                                         && (includeHiddenTabs || tab.Value.IsVisible)
                                         && (includeDisabled || !tab.Value.DisableLink) 
                                         && (includeAllTypes || tab.Value.TabType == TabType.Normal) 
-                                        && searchFunc(tab.Value))
+                                        && searchFunc(tab.Value)
+                                        && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList();
 
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
-                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value))
+                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value) && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList());
@@ -536,7 +536,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    tabs = TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value))
+                    tabs = TabController.Instance.GetTabsByPortal(-1).Where(tab => !tab.Value.DisableLink && searchFunc(tab.Value) && !tab.Value.IsSystem)
                     .OrderBy(tab => tab.Value.TabOrder)
                     .Select(tab => tab.Value)
                     .ToList();
@@ -582,19 +582,19 @@ namespace DotNetNuke.Web.InternalServices
             {
                 var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
 				tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, includeHiddenTabs, false, includeAllTypes, true, false)
-					.Where(t => !t.DisableLink || includeDisabled)
+					.Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
                 if (PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
-                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList());
+                    tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList());
                 }
             }
             else
             {
                 if (PortalSettings.UserInfo.IsSuperUser)
                 {
-                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink).ToList();
+                    tabs = TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList();
                 }
             }
 
