@@ -2938,7 +2938,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             //Act
             var query = new SearchQuery
             {
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
+                CustomKeywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 WildCardSearch = false
             };

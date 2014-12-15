@@ -158,11 +158,11 @@ namespace DotNetNuke.Services.Search.Entities
         public IDictionary<string, string> SearchContext { get; set; }
 
         /// <summary>
-        /// Restrict search to specific Keywords. This field is optional.
+        /// Restrict search to specific Keywords. This field is optional. Lookup is done in the SearchDocument.Keywords collection.
         /// </summary>
         /// <remarks>This is key-value pair, e.g. "AliasName","something"</remarks>
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
-        public IDictionary<string, string> Keywords { get; set; }
+        public IDictionary<string, string> CustomKeywords { get; set; }
 
         /// <summary>
         /// Restrict search to specific NumericKeys. This field is optional.
@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Search.Entities
             PageSize = 10;
             PageIndex = 1;
             SearchContext = new Dictionary<string, string>();
-            Keywords = new Dictionary<string, string>();
+            CustomKeywords = new Dictionary<string, string>();
             NumericKeys = new Dictionary<string, int>();
         }
 
