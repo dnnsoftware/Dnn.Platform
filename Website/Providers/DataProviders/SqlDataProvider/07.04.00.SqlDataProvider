@@ -1600,8 +1600,8 @@ ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
  ALTER COLUMN LogProperties XML
 GO
 
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddEventLog]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}{objectQualifier}AddEventLog
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddEventLog]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddEventLog
 GO
 
 CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
@@ -1617,6 +1617,7 @@ CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
 	@LogConfigID int,
 	@ExceptionHash varchar(100) = NULL
 AS
+BEGIN
 	IF NOT EXISTS (SELECT * FROM  {databaseOwner}[{objectQualifier}EventLogTypes] WHERE LogTypeKey = @LogTypeKey)
 	BEGIN
 		-- Add new Event Type
@@ -1624,6 +1625,7 @@ AS
 
 		-- Add new Event Type Config
 			EXEC  {databaseOwner}[{objectQualifier}AddEventLogConfig] @LogTypeKey, NULL, 0, -1, 0, 1, 1, 1, N'', N''
+
 		-- As the new log config is unlogged, exit without logging
 			Return
 	END
@@ -1667,7 +1669,6 @@ AS
 
 	SET @CurrentDateTime = getDate()
 
-
 	SELECT TOP 1 @NotificationActive = EmailNotificationIsActive,
 		@NotificationThreshold = NotificationThreshold,
 		@NotificationThresholdTime = NotificationThresholdTime,
@@ -1706,8 +1707,8 @@ AS
 
 	END
  
- SELECT @LogEventID
-
+	SELECT @LogEventID
+END
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Exceptions]') AND type in (N'U'))

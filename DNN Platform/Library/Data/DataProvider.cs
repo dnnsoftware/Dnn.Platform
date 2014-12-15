@@ -3542,18 +3542,42 @@ namespace DotNetNuke.Data
                                     exception.InnerStackTrace,
                                     exception.Source);
 
-                logEventID = ExecuteScalar<int>("AddEventLog",
-                                                logGUID,
-                                                logTypeKey,
-                                                GetNull(logUserID),
-                                                GetNull(logUserName),
-                                                GetNull(logPortalID),
-                                                GetNull(logPortalName),
-                                                logCreateDate,
-                                                logServerName,
-                                                logProperties,
-                                                logConfigID,
-                                                exception.ExceptionHash);
+
+                // DNN-6218 + DNN-6239 + DNN-6242: Due to change in the AddEventLog stored
+                // procedure in 7.4.0, we need to try a fallback especially during upgrading
+                try
+                {
+                    logEventID = ExecuteScalar<int>("AddEventLog",
+                        logGUID,
+                        logTypeKey,
+                        GetNull(logUserID),
+                        GetNull(logUserName),
+                        GetNull(logPortalID),
+                        GetNull(logPortalName),
+                        logCreateDate,
+                        logServerName,
+                        logProperties,
+                        logConfigID,
+                        GetNull(exception.ExceptionHash));
+                }
+                catch (SqlException)
+                {
+                    var s = ExecuteScalar<string>("AddEventLog",
+                        logGUID,
+                        logTypeKey,
+                        GetNull(logUserID),
+                        GetNull(logUserName),
+                        GetNull(logPortalID),
+                        GetNull(logPortalName),
+                        logCreateDate,
+                        logServerName,
+                        logProperties,
+                        logConfigID);
+
+                    // old SPROC wasn't returning anything; trying a workaround
+                    if (!int.TryParse(s ?? "-1", out logEventID))
+                        logEventID = Null.NullInteger;
+                }
 
                 if (!string.IsNullOrEmpty(exception.AssemblyVersion) && exception.AssemblyVersion != "-1")
                 {
