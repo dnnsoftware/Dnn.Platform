@@ -173,7 +173,7 @@ When the AutoResizeHeight property is set to true, then the editor's content are
     <value>HTML Editor Manager</value>
   </data>
   <data name="CssFile.Help" xml:space="preserve">
-    <value>The css file to be used by the editor in wysiwyg mode. This file must reside either in the theme directory or in the website directory. The path set here is relative to its parent (e.g. /editor.css is a file in the root of your skin)</value>
+    <value>The css file to be used by the editor in wysiwyg mode. This file must reside either in the theme directory or in the website directory. The path set here is relative to its parent (e.g. /editor.css is a file in the root of your Theme)</value>
   </data>
   <data name="CssFile.Text" xml:space="preserve">
     <value>CSS File:</value>
