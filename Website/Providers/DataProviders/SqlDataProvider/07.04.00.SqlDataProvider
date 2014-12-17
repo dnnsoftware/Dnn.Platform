@@ -553,41 +553,6 @@ UPDATE {databaseOwner}[{objectQualifier}ContentWorkflowStates] SET IsSystem = 1
   AND IsSystem = 0;
 GO
 
-/* Get Workflow Usage */
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsage]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
-	@WorkflowId INT,
-	@PageIndex INT,
-	@PageSize INT
-AS
-	DECLARE @StartIndex INT = ((@PageIndex - 1) * @PageSize) + 1
-	DECLARE @EndIndex INT = (@PageIndex * @PageSize)
-	
-	;WITH ContentItemSet AS
-    (
-		SELECT ci.*, ROW_NUMBER() OVER (Order BY ci.ContentItemId) AS [Index]
-		FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
-		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws ON ci.StateID = ws.StateID
-		WHERE ws.WorkflowID = @WorkflowId
-    )
-   SELECT * FROM ContentItemSet WHERE [Index] BETWEEN @StartIndex AND @EndIndex 
-GO
-
-/* Get Workflow Usage Count */
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
-	@WorkflowId INT
-AS
-	SELECT COUNT(ci.ContentItemID)
-	FROM {databaseOwner}[{objectQualifier}ContentItems] ci 
-	INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws ON ci.StateID = ws.StateID
-	WHERE ws.WorkflowID = @WorkflowId
-GO
-
 /* Get Workflow State Usage Count */
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]', N'P') IS NOT NULL
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowStateUsageCount]
@@ -2614,6 +2579,100 @@ AS
 
 		SELECT @TabId
 	END
+GO
+
+/* Get Workflow Usage */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]', N'V') IS NOT NULL
+	DROP VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+GO
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage]
+AS
+    SELECT ci.Content as 'ContentName', ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType != 'Tab' -- Tabs will be managed specifically
+		AND ct.ContentType != 'File' -- Exclude Files
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, ws.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
+			ON ci.StateID = ws.StateID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) not like '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) not like '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NOT NULL
+	UNION ALL
+	SELECT t.TabPath, ct.ContentType, 
+		(SELECT CAST(ps.SettingValue AS INT) value 
+			FROM {databaseOwner}[{objectQualifier}PortalSettings] ps
+			WHERE ps.SettingName = 'DefaultTabWorkflowKey' 
+			AND ps.PortalID = t.PortalID) as WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}ContentItems] ci
+		INNER JOIN {databaseOwner}[{objectQualifier}ContentTypes] ct
+			ON ci.ContentTypeID = ct.ContentTypeID
+		INNER JOIN {databaseOwner}[{objectQualifier}Tabs] t
+			ON ci.TabID = t.TabID
+	WHERE ct.ContentType = 'Tab'
+		AND LOWER(t.TabPath) NOT LIKE '//admin/%'
+		AND LOWER(t.TabPath) != '//admin'
+		AND t.IsSystem = 0
+		AND LOWER(t.TabPath) NOT LIKE '//host/%'
+		AND LOWER(t.TabPath) != '//host'
+		AND ci.StateID IS NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', f.WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NOT NULL
+	UNION ALL
+	SELECT '/' + f.FolderPath, 'Folder', 
+		(SELECT wf.WorkflowID 
+			FROM {databaseOwner}[{objectQualifier}ContentWorkflows] wf
+			WHERE wf.WorkflowKey = 'DirectPublish' 
+			AND wf.PortalID = f.PortalID) AS WorkflowID 
+	FROM {databaseOwner}[{objectQualifier}Folders] f
+	WHERE f.WorkflowID IS NULL
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsage]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsage]
+	@WorkflowId INT,
+	@PageIndex INT,
+	@PageSize INT
+AS
+	DECLARE @StartIndex INT = ((@PageIndex - 1) * @PageSize) + 1
+	DECLARE @EndIndex INT = (@PageIndex * @PageSize)
+	
+	;WITH ContenResourcesSet AS
+    (
+		SELECT wu.*, ROW_NUMBER() OVER (Order BY wu.ContentType, wu.ContentName) AS [Index]
+		FROM {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage] wu 		
+		WHERE wu.WorkflowID = @WorkflowId
+    )
+   SELECT * FROM ContenResourcesSet WHERE [Index] BETWEEN @StartIndex AND @EndIndex
+GO
+
+/* Get Workflow Usage Count */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetContentWorkflowUsageCount]
+	@WorkflowId INT
+AS
+	SELECT COUNT(*)
+	FROM {databaseOwner}[{objectQualifier}vw_ContentWorkflowUsage] wu 	
+	WHERE wu.WorkflowID = @WorkflowId
 GO
 
 /************************************************************/

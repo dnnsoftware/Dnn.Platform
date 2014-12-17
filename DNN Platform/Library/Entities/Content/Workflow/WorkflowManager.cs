@@ -118,9 +118,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             _workflowRepository.UpdateWorkflow(workflow);
         }
 
-        public IEnumerable<ContentItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize)
+        public IEnumerable<WorkflowUsageItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize)
         {
-            return CBO.FillCollection<ContentItem>(_dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
+            return CBO.FillCollection<WorkflowUsageItem>(_dataProvider.GetContentWorkflowUsage(workflowId, pageIndex, pageSize));
         }
 
         public int GetWorkflowUsageCount(int workflowId)
