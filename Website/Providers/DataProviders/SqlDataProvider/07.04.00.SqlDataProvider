@@ -2675,6 +2675,23 @@ AS
 	WHERE wu.WorkflowID = @WorkflowId
 GO
 
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+delete from {databaseOwner}{objectQualifier}schedulehistory where schedulehistoryid in (
+	select top 50000 ScheduleHistoryID from {databaseOwner}{objectQualifier}ScheduleHistory sh 
+		inner join {databaseOwner}{objectQualifier}schedule s on s.ScheduleID = sh.ScheduleID and s.Enabled = 1
+	where 
+		(select count(*) from {databaseOwner}{objectQualifier}ScheduleHistory sh where sh.ScheduleID = s.ScheduleID) > s.RetainHistoryNum
+		AND s.RetainHistoryNum <> -1
+		AND s.ScheduleID = sh.ScheduleID
+	order by ScheduleHistoryID
+)
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
