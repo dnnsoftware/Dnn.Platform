@@ -138,8 +138,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                var targetVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID) ??
-                                    TabVersionMaker.Instance.GetCurrentVersion(module.TabID);
+                var targetVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??
+                                    TabVersionBuilder.Instance.GetCurrentVersion(module.TabID);
                 if (targetVersion == null)
                 {
                     return;
@@ -166,8 +166,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             try
             {
-                var targetVersion = TabVersionMaker.Instance.GetUnPublishedVersion(module.TabID) ??
-                                    TabVersionMaker.Instance.GetCurrentVersion(module.TabID);
+                var targetVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID) ??
+                                    TabVersionBuilder.Instance.GetCurrentVersion(module.TabID);
 
                 ProcessDeletionDetail(module, moduleVersion, userId, targetVersion);
             }
@@ -223,9 +223,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static TabVersion GetOrCreateUnPublishedTabVersion(int portalId, int tabId, int createdByUserID)
         {
-            var unPublishedVersion = TabVersionMaker.Instance.GetUnPublishedVersion(tabId);
+            var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(tabId);
             return unPublishedVersion == null ?
-                TabVersionMaker.Instance.CreateNewVersion(portalId, tabId, createdByUserID) :
+                TabVersionBuilder.Instance.CreateNewVersion(portalId, tabId, createdByUserID) :
                 TabVersionController.Instance.GetTabVersions(tabId).SingleOrDefault(tv => !tv.IsPublished);
         }
 

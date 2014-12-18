@@ -349,7 +349,7 @@
     <Compile Include="Entities\Tabs\TabVersions\Exceptions\DnnTabVersionException.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionController.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionDetailController.cs" />
-    <Compile Include="Entities\Tabs\TabVersions\ITabVersionMaker.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\ITabVersionBuilder.cs" />
     <Compile Include="Entities\Tabs\TabVersions\ITabVersionSettings.cs" />
     <Compile Include="Entities\Tabs\ITabChangeTracker.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersion.cs" />
@@ -357,7 +357,7 @@
     <Compile Include="Entities\Tabs\TabVersions\TabVersionDetail.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersionDetailAction.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersionDetailController.cs" />
-    <Compile Include="Entities\Tabs\TabVersions\TabVersionMaker.cs" />
+    <Compile Include="Entities\Tabs\TabVersions\TabVersionBuilder.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersionSettings.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersionTracker.cs" />
     <Compile Include="Entities\Tabs\TabVersions\TabVersionUtils.cs" />

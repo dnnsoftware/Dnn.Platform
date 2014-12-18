@@ -34,9 +34,9 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionMaker : ServiceLocator<ITabVersionMaker, TabVersionMaker>, ITabVersionMaker
+    public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionMaker));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
 
         #region Members
         private readonly ITabController _tabController;
@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #endregion
 
         #region Constructor
-        public TabVersionMaker()
+        public TabVersionBuilder()
         {
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
@@ -808,9 +808,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
         #endregion
 
-        protected override Func<ITabVersionMaker> GetFactory()
+        protected override Func<ITabVersionBuilder> GetFactory()
         {
-            return () => new TabVersionMaker();
+            return () => new TabVersionBuilder();
         }
     }
 }

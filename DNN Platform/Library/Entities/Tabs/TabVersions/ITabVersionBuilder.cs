@@ -24,7 +24,7 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public interface ITabVersionMaker
+    public interface ITabVersionBuilder
     {
         /// <summary>
         /// Creates a new Tab Version checking current portal settings
