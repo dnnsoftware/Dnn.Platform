@@ -215,6 +215,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
+        void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
     }
 }
         

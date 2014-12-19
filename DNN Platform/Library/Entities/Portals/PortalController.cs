@@ -2018,6 +2018,22 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        {
+            string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+
+            if (currentSetting != settingValue)
+            {
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode);
+                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                if (clearCache)
+                {
+                    DataCache.ClearPortalCache(portalID, false);
+                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+                }
+            }
+        }
+
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
                                        int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int adminTabId, string cultureCode)
         {
@@ -2610,7 +2626,12 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalInternal(portal, true);
         }
 
-		#endregion
+        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        {
+            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode);
+        }
+
+        #endregion
 
         #region Public Static Methods
 
@@ -3177,18 +3198,8 @@ namespace DotNetNuke.Entities.Portals
 		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
 		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
 		{
-			string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode);
 
-			if (currentSetting != settingValue)
-			{
-				DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode);
-				EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-				if (clearCache)
-				{
-					DataCache.ClearPortalCache(portalID, false);
-					DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-				}
-			}
 		}
 
         /// <summary>
