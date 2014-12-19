@@ -244,7 +244,7 @@ namespace DotNetNuke.Services.Search
 
             // Include Host Level Items
             indexSince = FixedIndexingStartDate(-1, startDate);
-            searchDocs.AddRange(indexer.GetSearchDocuments(-1, indexSince));
+            searchDocs.AddRange(indexer.GetModuleMetaData(-1, indexSince));
 
             return searchDocs;
         }
