@@ -905,7 +905,8 @@ namespace DotNetNuke.Entities.Tabs
                 RefreshInterval = RefreshInterval,
                 PageHeadText = PageHeadText,
                 IsSecure = IsSecure,
-                PermanentRedirect = PermanentRedirect
+                PermanentRedirect = PermanentRedirect,
+                IsSystem = IsSystem
             };
 
             if (BreadCrumbs != null)
