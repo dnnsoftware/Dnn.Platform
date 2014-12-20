@@ -162,10 +162,10 @@ namespace DotNetNuke.Framework
             get
             {
                 string fileRoot;
-                string[] page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
+                var page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
                 if (String.IsNullOrEmpty(_localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + page[page.GetUpperBound(0)] + ".resx";
+                    fileRoot = string.Concat(TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
                 else
                 {
@@ -187,11 +187,15 @@ namespace DotNetNuke.Framework
         {
             if (Request.QueryString["error"] != null)
             {
-                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=terminate";
+                url += string.Concat((url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"), "error=terminate");
             }
             else
             {
-                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=" + (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message));
+                url += string.Concat(
+                    (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"),
+                    "error=",
+                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message))
+                );
                 if (!Globals.IsAdminControl() && hideContent)
                 {
                     url += "&content=0";
@@ -262,7 +266,7 @@ namespace DotNetNuke.Framework
 
                 if (PortalSettings.ErrorPage500 != -1)
                 {
-                    string url = GetErrorUrl("~/Default.aspx?tabid=" + PortalSettings.ErrorPage500, exc, false);
+                    var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc, false);
                     HttpContext.Current.Response.Redirect(url);
                 }
                 else
