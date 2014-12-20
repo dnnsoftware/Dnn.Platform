@@ -271,7 +271,7 @@ namespace DotNetNuke.UI.UserControls
 				var c = Parent.FindControl(ControlName);
 				if (c != null)
 				{
-					//label.Attributes["for"] = c.ClientID;
+					label.Attributes["for"] = c.ClientID;
 				}
 			}
 		}
