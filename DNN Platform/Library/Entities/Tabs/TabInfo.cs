@@ -797,7 +797,10 @@ namespace DotNetNuke.Entities.Tabs
         #endregion
 
         #region Private Methods
-        
+
+        static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
@@ -809,36 +812,55 @@ namespace DotNetNuke.Entities.Tabs
         /// </history>
         private string CheckIfDoctypeConfigExists()
         {
-            string doctypeConfig = string.Empty;
-            if (!string.IsNullOrEmpty(SkinSrc))
-            {
-                string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
-                string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
-                if (File.Exists(packageFileName) || File.Exists(skinFileName))
-                {
-                    try
-                    {
-                        var xmlSkinDocType = new XmlDocument();
-                        if (File.Exists(skinFileName))
-                        {
-                            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-                            xmlSkinDocType.Load(skinFileName);
-                        }
-                        else
-                        {
-                            // use the skin.doctype.xml file
-                            xmlSkinDocType.Load(packageFileName);
-                        }
-                        string strDocType = xmlSkinDocType.FirstChild.InnerText;
-                        doctypeConfig = strDocType;
-                    }
-                    catch (Exception ex)
-                    {
-                        Exceptions.LogException(ex);
-                    }
+            if (string.IsNullOrEmpty(SkinSrc))
+                return string.Empty;
+
+            // loading an XML document from disk for each page request is expensive
+            // let's implement some local caching
+            if (!_docTypeCache.ContainsKey(SkinSrc)) {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _docTypeCacheLock.EnterWriteLock();
+                try {
+
+                    var docType = LoadDocType();
+                    _docTypeCache[SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
+
+                } catch (Exception ex) {
+                    Exceptions.LogException(ex);
+                } finally {
+                    _docTypeCacheLock.ExitWriteLock();
                 }
             }
-            return doctypeConfig;
+
+            // return if file exists from cache
+            _docTypeCacheLock.EnterReadLock();
+            try {
+                return _docTypeCache[SkinSrc];
+            } finally {
+                _docTypeCacheLock.ExitReadLock();
+            }
+        }
+
+        XmlDocument LoadDocType()
+        {
+            var xmlSkinDocType = new XmlDocument();
+
+            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
+            string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
+            if (File.Exists(skinFileName)) {
+                xmlSkinDocType.Load(skinFileName);
+                return xmlSkinDocType;
+            }
+
+            // use the skin.doctype.xml file
+            string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
+            if (File.Exists(packageFileName)) {
+                xmlSkinDocType.Load(packageFileName);
+                return xmlSkinDocType;
+            }
+
+            // no doctype
+            return null;
         }
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
