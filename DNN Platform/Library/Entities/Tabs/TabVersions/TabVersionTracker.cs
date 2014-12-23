@@ -217,12 +217,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
             }
-            else
-            {
-                var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
-                    moduleVersion, TabVersionDetailAction.Deleted);
-                TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
-            }
+
+            var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
+                moduleVersion, TabVersionDetailAction.Deleted);            
+            TabVersionDetailController.Instance.SaveTabVersionDetail(tabVersionDetail, userId);
+
         }
 
         private static bool IsHostModule(ModuleInfo module)

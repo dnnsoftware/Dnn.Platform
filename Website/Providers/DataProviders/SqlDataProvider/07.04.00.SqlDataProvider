@@ -164,6 +164,12 @@ BEGIN
     ON DELETE CASCADE
 
     CREATE NONCLUSTERED INDEX IX_{objectQualifier}TabVersionDetails_TabVersionId ON {databaseOwner}[{objectQualifier}TabVersionDetails](TabVersionId) 
+
+	ALTER TABLE {databaseOwner}[{objectQualifier}TabVersionDetails] ADD CONSTRAINT [IX_{objectQualifier}TabVersionDetails_Unique(TabVersionId_ModuleId)] UNIQUE NONCLUSTERED 
+	(
+		[TabVersionId] ASC,
+		[ModuleId] ASC
+	)
 END
 GO
 
