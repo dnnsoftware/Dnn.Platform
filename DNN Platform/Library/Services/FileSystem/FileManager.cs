@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -1735,7 +1736,8 @@ namespace DotNetNuke.Services.FileSystem
                     throw new ArgumentOutOfRangeException("contentDisposition");
             }
 
-            objResponse.AppendHeader("Content-Length", file.Size.ToString());
+            // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
+            if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
             objResponse.ContentType = GetContentType(file.Extension.Replace(".", ""));
 
             try
