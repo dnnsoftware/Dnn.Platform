@@ -28,6 +28,10 @@
 //
 // Some modifications by Shannon Whitley
 // Author Url: http://voiceoftech.com/
+//
+// Additional modifications by Evan Smith (DNN-4143 & DNN-6265)
+// Author Url: http://skydnn.com
+
 
 #endregion
 
@@ -78,6 +82,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private readonly Random random = new Random();
 
         private const string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
+        
+        //DNN-6265 - Support OAuth V2 optional parameter resource, which is required by Microsoft Azure Active
+        //Directory implementation of OAuth V2
+        private const string OAuthResourceKey = "resource";
 
         #endregion
 
@@ -137,6 +145,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
         }
+        
+        //DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
+        protected string APIResource { get; set; }
 
         #endregion
 
@@ -248,9 +259,16 @@ namespace DotNetNuke.Services.Authentication.OAuth
             IList<QueryParameter> parameters = new List<QueryParameter>();
             parameters.Add(new QueryParameter(OAuthClientIdKey, APIKey));
             parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())));
-            parameters.Add(new QueryParameter(OAuthClientSecretKey, APISecret));
+            //DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
+            parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(APISecret.ToString())));
             parameters.Add(new QueryParameter(OAuthGrantTyepKey, "authorization_code"));
             parameters.Add(new QueryParameter(OAuthCodeKey, VerificationCode));
+
+            //DNN-6265 Support for OAuth V2 optional parameter
+            if (!String.IsNullOrEmpty(APIResource))
+            {
+                parameters.Add(new QueryParameter("resource", APIResource));
+            }
 
             string responseText = ExecuteWebRequest(TokenMethod, TokenEndpoint, parameters.ToNormalizedString(), String.Empty);
 
