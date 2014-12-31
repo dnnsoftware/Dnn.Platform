@@ -31,6 +31,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
@@ -233,24 +234,24 @@ namespace DotNetNuke.UI.Skins.Controls
         private string NewUrl(string newLanguage)
         {
             var objSecurity = new PortalSecurity();
-            Locale newLocale = LocaleController.Instance.GetLocale(newLanguage);
+            var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language
-            int tabId = objPortal.ActiveTab.TabID;
-            bool islocalized = false;
+            var tabId = objPortal.ActiveTab.TabID;
+            var islocalized = false;
 
-            TabInfo localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            var localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;
                 if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
                 {
-                    PortalInfo localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
+                    var localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
                     tabId = localizedPortal.HomeTabId;
                 }
                 else
                 {
-                    string fullurl = "";
+                    var fullurl = string.Empty;
                     switch (localizedTab.TabType)
                     {
                         case TabType.Normal:
@@ -277,14 +278,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
 
-            // on localised pages most of the querystring parameters have no sense and generate duplicate urls for the same content
-            // because we are on a other tab with other modules (example : ?returntab=/en-US/about)
-            string rawQueryString = "";
-            if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls && !islocalized )
-            {
-                rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
-            }
-
+            var rawQueryString = new Uri(string.Concat(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority), HttpContext.Current.Request.RawUrl)).Query;
             return
                 objSecurity.InputFilter(
                     TestableGlobals.Instance.NavigateURL(tabId, objPortal.ActiveTab.IsSuperTab, objPortal, HttpContext.Current.Request.QueryString["ctl"], newLanguage, GetQsParams(newLocale.Code, islocalized)) +
