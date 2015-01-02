@@ -75,24 +75,6 @@ namespace DotNetNuke.UI
         /// </summary>
         /// <param name="parentAction">Parent action</param>
         /// <param name="parentNode">Parent node</param>
-        /// <param name="objActionControl">ActionControl to base actions off of</param>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        /// 	[Jon Henning]	8/9/2005	Created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        private static void AddChildActions(ModuleAction parentAction, DNNNode parentNode, IActionControl objActionControl)
-        {
-            AddChildActions(parentAction, parentNode, parentNode, objActionControl, -1);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Recursive function to add module's actions to the DNNNodeCollection based off of passed in ModuleActions
-        /// </summary>
-        /// <param name="parentAction">Parent action</param>
-        /// <param name="parentNode">Parent node</param>
         /// <param name="rootNode">Root Node.</param>
         /// <param name="actionControl">ActionControl to base actions off of</param>
         /// <param name="intDepth">How many levels deep should be populated</param>
@@ -332,23 +314,10 @@ namespace DotNetNuke.UI
         {
             if (intStartTabId == -1)
             {
-                if (objTab.ParentId == -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return objTab.ParentId == -1;
             }
-            else if (objTab.ParentId == ((TabInfo) objTabLookup[intStartTabId]).ParentId)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return objTab.ParentId == ((TabInfo) objTabLookup[intStartTabId]).ParentId;
         }
 
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
@@ -431,8 +400,7 @@ namespace DotNetNuke.UI
 
         public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)
         {
-          bool showHidden = false;
-          return CanShowTab(objTab, isAdminMode, showDisabled, showHidden);
+          return CanShowTab(objTab, isAdminMode, showDisabled, false);
         }
 
         public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
@@ -644,12 +612,11 @@ namespace DotNetNuke.UI
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
         {
             int i;
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
+            var objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var objBreadCrumbs = new Hashtable();
             var objTabLookup = new Hashtable();
-            DNNNodeCollection objRootNodes = objRootNode.DNNNodes;
-            int intLastBreadCrumbId = 0;
+            var objRootNodes = objRootNode.DNNNodes;
+            var intLastBreadCrumbId = 0;
 
             //--- cache breadcrumbs in hashtable so we can easily set flag on node denoting it as a breadcrumb node (without looping multiple times) ---
             for (i = 0; i <= (objPortalSettings.ActiveTab.BreadCrumbs.Count - 1); i++)
@@ -657,38 +624,31 @@ namespace DotNetNuke.UI
                 objBreadCrumbs.Add(((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID, 1);
                 intLastBreadCrumbId = ((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID;
             }
-            List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
-            List<TabInfo> hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
-            foreach (TabInfo objTab in portalTabs)
+            var portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
+            var hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
+
+            var cachedPortalTabs = new List<TabInfo>(portalTabs);
+            foreach (var objTab in cachedPortalTabs)
             {
                 objTabLookup.Add(objTab.TabID, objTab);
             }
-            foreach (TabInfo objTab in hostTabs)
+
+            var cachedHostTabs = new List<TabInfo>(hostTabs);
+            foreach (var objTab in cachedHostTabs)
             {
                 objTabLookup.Add(objTab.TabID, objTab);
             }
-            foreach (TabInfo objTab in portalTabs)
+
+            foreach (var objTab in cachedPortalTabs)
             {
-                try
-                {
-                    ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
             }
-            foreach (TabInfo objTab in hostTabs)
+
+            foreach (var objTab in cachedHostTabs)
             {
-                try
-                {
-                    ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                ProcessTab(objRootNode, objTab, objTabLookup, objBreadCrumbs, intLastBreadCrumbId, eToolTips, intStartTabId, intDepth, intNavNodeOptions);
             }
+
             return objRootNodes;
         }
 		

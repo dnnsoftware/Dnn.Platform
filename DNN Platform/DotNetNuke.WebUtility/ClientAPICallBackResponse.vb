@@ -69,12 +69,14 @@ Namespace DotNetNuke.UI.Utilities
             Select Case Me.TransportType
                 Case TransportTypeCode.IFRAMEPost
                     Dim strContextID As String = m_objPage.Request.Form("ctx")                    'if context passed in then we are using IFRAME Implementation
-                    m_objPage.Response.Write("<html><head></head><body onload=""window.parent.dnn.xmlhttp.requests['" & strContextID & "'].complete(window.parent.dnn.dom.getById('txt', document).value);""><form>")
-                    m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSID & """ value=""" & CInt(Me.StatusCode).ToString & """>")
-                    m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSDESCID & """ value=""" & Me.StatusDesc & """>")
-                    m_objPage.Response.Write("<textarea id=""txt"">")
-                    m_objPage.Response.Write(HttpUtility.HtmlEncode(MSAJAX.Serialize(New With {.d = Response})))
-                    m_objPage.Response.Write("</textarea></body></html>")
+                    If IsNumeric(strContextID) Then
+                        m_objPage.Response.Write("<html><head></head><body onload=""window.parent.dnn.xmlhttp.requests['" & strContextID & "'].complete(window.parent.dnn.dom.getById('txt', document).value);""><form>")
+                        m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSID & """ value=""" & CInt(Me.StatusCode).ToString & """>")
+                        m_objPage.Response.Write("<input type=""hidden"" id=""" & ClientAPI.SCRIPT_CALLBACKSTATUSDESCID & """ value=""" & Me.StatusDesc & """>")
+                        m_objPage.Response.Write("<textarea id=""txt"">")
+                        m_objPage.Response.Write(HttpUtility.HtmlEncode(MSAJAX.Serialize(New With {.d = Response})))
+                        m_objPage.Response.Write("</textarea></body></html>")
+                    End If
                 Case TransportTypeCode.XMLHTTP
                     m_objPage.Response.AppendHeader(ClientAPI.SCRIPT_CALLBACKSTATUSID, CInt(Me.StatusCode).ToString)
                     m_objPage.Response.AppendHeader(ClientAPI.SCRIPT_CALLBACKSTATUSDESCID, Me.StatusDesc)

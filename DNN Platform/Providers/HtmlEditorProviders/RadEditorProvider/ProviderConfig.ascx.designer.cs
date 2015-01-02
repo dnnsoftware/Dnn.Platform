@@ -22,51 +22,6 @@ namespace DotNetNuke.Providers.RadEditorProvider {
         protected global::System.Web.UI.WebControls.Panel dnnProviderConfig;
         
         /// <summary>
-        /// pnlSelectProvider control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSelectProvider;
-        
-        /// <summary>
-        /// lblSelectedProvider control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSelectedProvider;
-        
-        /// <summary>
-        /// editorState control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label editorState;
-        
-        /// <summary>
-        /// editorList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnComboBox editorList;
-        
-        /// <summary>
-        /// btnEnable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnEnable;
-        
-        /// <summary>
         /// treeTools control.
         /// </summary>
         /// <remarks>
@@ -83,15 +38,6 @@ namespace DotNetNuke.Providers.RadEditorProvider {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlTabContent;
-        
-        /// <summary>
-        /// MessagePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel MessagePanel;
         
         /// <summary>
         /// pnlEditor control.

@@ -26,7 +26,6 @@ using System.Text;
 using System.Threading;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
@@ -166,7 +165,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     using (ScheduleInProgress.GetWriteLock(LockTimeout))
                     {
-                        ScheduleHistoryItem item = ScheduleInProgress.Where(si => si.ScheduleID == scheduleItem.ScheduleID).SingleOrDefault();
+                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         if (item != null)
                         {
                             ScheduleInProgress.Remove(item);
@@ -192,7 +191,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     using (ScheduleInProgress.GetWriteLock(LockTimeout))
                     {
-                        ScheduleHistoryItem item = ScheduleInProgress.Where(si => si.ScheduleID == scheduleItem.ScheduleID).SingleOrDefault();
+                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         return item;
                     }
                     
@@ -260,7 +259,17 @@ namespace DotNetNuke.Services.Scheduling
 
             internal static ServerInfo GetServer(string executingServer)
             {
-                    return ServerController.GetServers().Single(s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase));
+                try
+                {
+                    return ServerController.GetServers().FirstOrDefault(
+                        s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled);
+                }
+                catch (Exception)
+                {
+                    //catches edge-case where schedule runs before webserver registration
+                    return null;
+                }
+                    
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
@@ -367,7 +376,7 @@ namespace DotNetNuke.Services.Scheduling
 			                }
 
 			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
-				            var result = delegateFunc.BeginInvoke(new ScheduleHistoryItem(scheduleItem), null, null);
+				            delegateFunc.BeginInvoke(new ScheduleHistoryItem(scheduleItem), null, null);
 				            Thread.Sleep(1000);
 
 				            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
@@ -599,8 +608,7 @@ namespace DotNetNuke.Services.Scheduling
 					return;
 				}
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
-                var log = new LogInfo();
-                log.LogTypeKey = "SCHEDULER_SHUTTING_DOWN";
+                var log = new LogInfo {LogTypeKey = "SCHEDULER_SHUTTING_DOWN"};
                 log.AddProperty("Initiator", sourceOfHalt);
                 LogController.Instance.AddLog(log);
 
@@ -655,6 +663,11 @@ namespace DotNetNuke.Services.Scheduling
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
                 Logger.Debug("loadqueue executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
+                if (thisServer == null)
+                {
+                    return;
+                }
+
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -685,6 +698,11 @@ namespace DotNetNuke.Services.Scheduling
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
                 Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
                 var thisServer = GetServer(executingServer);
+                if (thisServer == null)
+                {
+                    return;
+                }
+
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
                 
                 var serverGroupServers = ServerGroupServers(thisServer);
@@ -745,7 +763,7 @@ namespace DotNetNuke.Services.Scheduling
                     using (ScheduleQueue.GetWriteLock(LockTimeout))
                     {
                         //the scheduleitem instances may not be equal even though the scheduleids are equal
-                        ScheduleItem item = ScheduleQueue.Where(si => si.ScheduleID == scheduleItem.ScheduleID).SingleOrDefault();
+                        var item = ScheduleQueue.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         if (item != null)
                         {
                             ScheduleQueue.Remove(item);

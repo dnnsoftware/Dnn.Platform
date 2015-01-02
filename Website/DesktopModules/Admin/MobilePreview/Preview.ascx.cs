@@ -205,7 +205,8 @@ namespace DotNetNuke.Modules.Admin.MobilePreview
                     continue;
                 }
 
-                var cookie = new Cookie(key, Request.Cookies[key].Value, "/", proxyRequest.RequestUri.Host);
+                var value = Request.Cookies[key] == null ? string.Empty : Request.Cookies[key].Value;
+                var cookie = new Cookie(key, value, Globals.ApplicationPath, proxyRequest.RequestUri.Host);
                 proxyRequest.CookieContainer.Add(cookie);
             }
         }

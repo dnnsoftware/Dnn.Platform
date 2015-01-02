@@ -873,9 +873,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					pnlProceed.Visible = true;
 					break;
 				case UserValidStatus.UPDATEPASSWORD:
-					AddModuleMessage("PasswordUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
-					PageNo = 2;
-					pnlProceed.Visible = false;
+					//AddModuleMessage("PasswordUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
+					//PageNo = 2;
+					//pnlProceed.Visible = false;
+                    var redirTo = string.Format("/default.aspx?ctl=PasswordReset&resetToken={0}&forced=true", objUser.PasswordResetToken);
+			        Response.Redirect(redirTo);
 					break;
 				case UserValidStatus.UPDATEPROFILE:
 					//Save UserID in ViewState so that can update profile later.

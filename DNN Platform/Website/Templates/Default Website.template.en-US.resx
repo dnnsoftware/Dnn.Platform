@@ -302,7 +302,7 @@ Fax: (555) 555-4564</value>
     <value>Extensions</value>
   </data>
   <data name="Tab.Extensions.Description.Text" xml:space="preserve">
-    <value>Install, add, modify and delete extensions, such as modules, skins and language packs.</value>
+    <value>Install, add, modify and delete extensions, such as modules, themes and language packs.</value>
   </data>
   <data name="Tab.Extensions.Name.Text" xml:space="preserve">
     <value>Extensions</value>

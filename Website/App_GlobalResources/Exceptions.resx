@@ -348,6 +348,12 @@
   <data name="TabVersionCannotBeRolledBack_UnpublishedVersionExists.Text" xml:space="preserve">
     <value>For Tab {0}, the version {1} cannot be rolled back because an unpublished version exists</value>
   </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists. Maybe another user has taken action on the page and its state has been changed. Please, refresh the page to see the current state.</value>
+  </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists.</value>
+  </data>
   <data name="TabVersioningNotEnabled.Text" xml:space="preserve">
     <value>Tab Versioning is not enabled</value>
   </data>

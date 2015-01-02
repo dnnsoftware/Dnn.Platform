@@ -31,13 +31,13 @@ namespace DotNetNuke.Entities.Content.Workflow
     public interface IWorkflowManager
     {
         /// <summary>
-        /// This method returns the paginated list of Content Items that are associated with any State of a workflow (even the Published state)
+        /// This method returns the paginated list of Items that are associated with a workflow 
         /// </summary>
         /// <param name="workflowId">Workflow Id</param>
         /// <param name="pageIndex">Page index (where 1 is the index of the first page)</param>
         /// <param name="pageSize">Page size</param>
-        /// <returns>List of Content Items</returns>
-        IEnumerable<ContentItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize);
+        /// <returns>List of Usage Items</returns>
+        IEnumerable<WorkflowUsageItem> GetWorkflowUsage(int workflowId, int pageIndex, int pageSize);
 
         /// <summary>
         /// This method returns the total number of Content Items that are associated with any State of a workflow (even the Published state)

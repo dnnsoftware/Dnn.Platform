@@ -53,3 +53,4 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Professional")]

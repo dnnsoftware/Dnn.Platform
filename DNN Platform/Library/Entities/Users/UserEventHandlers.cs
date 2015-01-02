@@ -32,6 +32,10 @@ namespace DotNetNuke.Entities.Users
     [Export(typeof(IUserEventHandlers))]
     public class UserEventHandlers : IUserEventHandlers
     {
+        public void UserAuthenticated(object sender, UserEventArgs args)
+        {
+        }
+
         public void UserCreated(object sender, UserEventArgs args)
         {
         }

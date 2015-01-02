@@ -21,7 +21,7 @@
       <Templates Include="Templates/*.htm" />
       <DataFiles Include="Resources/*.xml" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);
-                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls)" />
+                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views)" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">

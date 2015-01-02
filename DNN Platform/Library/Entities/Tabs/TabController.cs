@@ -82,6 +82,8 @@ namespace DotNetNuke.Entities.Tabs
         private static event EventHandler<TabEventArgs> TabUpdated;
         private static event EventHandler<TabEventArgs> TabRemoved; // soft delete
         private static event EventHandler<TabEventArgs> TabDeleted; // hard delete
+        private static event EventHandler<TabEventArgs> TabRestored;
+        private static event EventHandler<TabEventArgs> TabMarkedAsPublished; 
 
         private static event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
         private static event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
@@ -94,6 +96,8 @@ namespace DotNetNuke.Entities.Tabs
                 TabUpdated += handlers.Value.TabUpdated;
                 TabRemoved += handlers.Value.TabRemoved;
                 TabDeleted += handlers.Value.TabDeleted;
+                TabRestored += handlers.Value.TabRestored;
+                TabMarkedAsPublished += handlers.Value.TabMarkedAsPublished;
             }
 
             foreach (var handlers in EventHandlersContainer<ITabSyncEventHandler>.Instance.EventHandlers)
@@ -1799,6 +1803,10 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             ClearCache(tab.PortalID);
+
+            if (TabRestored != null)
+                TabRestored(null, new TabEventArgs { Tab = tab });
+
         }
 
         /// <summary>
@@ -1947,7 +1955,8 @@ namespace DotNetNuke.Entities.Tabs
                                updatedTab.PermanentRedirect,
                                updatedTab.SiteMapPriority,
                                UserController.Instance.GetCurrentUserInfo().UserID,
-                               updatedTab.CultureCode);
+                               updatedTab.CultureCode,
+                               updatedTab.IsSystem);
 
             //Update Tags
             List<Term> terms = updatedTab.Terms;
@@ -2036,7 +2045,10 @@ namespace DotNetNuke.Entities.Tabs
             Provider.MarkAsPublished(tab.TabID);
             
             //Clear Tab Caches
-            ClearCache(tab.PortalID);            
+            ClearCache(tab.PortalID);
+
+            if (TabMarkedAsPublished != null)
+                TabMarkedAsPublished(null, new TabEventArgs { Tab = tab });
         }
 
         #endregion
@@ -2103,7 +2115,8 @@ namespace DotNetNuke.Entities.Tabs
                                        tab.PermanentRedirect,
                                        tab.SiteMapPriority,
                                        UserController.Instance.GetCurrentUserInfo().UserID,
-                                       tab.CultureCode);
+                                       tab.CultureCode,
+                                       tab.IsSystem);
 
                     UpdateTabVersion(tab.TabID);
 

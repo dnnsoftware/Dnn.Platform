@@ -29,11 +29,11 @@ namespace DotNetNuke.Entities.Users
     {
         internal RelationshipEventArgs(UserRelationship relationship, int portalId)
         {
-            Relashionship = relationship;
+            Relationship = relationship;
             PortalID = portalId;
         }
 
-        public UserRelationship Relashionship { get; private set; }
+        public UserRelationship Relationship { get; private set; }
         public int PortalID { get; private set; }
     }
 }

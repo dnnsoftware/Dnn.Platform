@@ -316,7 +316,7 @@ namespace DotNetNuke.Tests.Urls
             if (!String.IsNullOrEmpty(language))
             {
                 _customLocale = new Locale { Code = language, Fallback = "en-US" };
-                _customLocale.Text = CultureInfo.CreateSpecificCulture(_customLocale.Code).NativeName;
+                _customLocale.Text = CultureInfo.GetCultureInfo(_customLocale.Code).NativeName;
                 Localization.SaveLanguage(_customLocale);
                 Localization.AddLanguageToPortals(_customLocale.LanguageId);
 
