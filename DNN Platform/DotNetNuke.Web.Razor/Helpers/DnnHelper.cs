@@ -20,35 +20,55 @@
 #endregion
 #region Usings
 
-using System.Web;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.UI.Modules;
 
 #endregion
 
-namespace DotNetNuke.UI.Modules.Razor
+namespace DotNetNuke.Web.Razor.Helpers
 {
-    public class HtmlHelper
+    public class DnnHelper
     {
-        private readonly string _resourceFile;
+        private readonly ModuleInstanceContext _context;
 
-        public HtmlHelper(string resourcefile)
+        public DnnHelper(ModuleInstanceContext context)
         {
-            _resourceFile = resourcefile;
+            _context = context;
         }
 
-        public object GetLocalizedString(string key)
+        public ModuleInfo Module
         {
-            return Localization.GetString(key, _resourceFile);
+            get
+            {
+                return _context.Configuration;
+            }
         }
 
-        public object GetLocalizedString(string key, string culture)
+        public TabInfo Tab
         {
-            return Localization.GetString(key, _resourceFile, culture);
+            get
+            {
+                return _context.PortalSettings.ActiveTab;
+            }
         }
 
-        public HtmlString Raw(string text)
+        public PortalSettings Portal
         {
-            return new HtmlString(text);
+            get
+            {
+                return _context.PortalSettings;
+            }
+        }
+
+        public UserInfo User
+        {
+            get
+            {
+                return _context.PortalSettings.UserInfo;
+            }
         }
     }
 }

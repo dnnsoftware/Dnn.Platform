@@ -22,66 +22,58 @@
 
 using System;
 using System.IO;
-using System.Web;
 using System.Web.UI;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.UI.Modules;
 
 #endregion
 
-namespace DotNetNuke.UI.Modules.Razor
+namespace DotNetNuke.Web.Razor
 {
-    public class RazorHostControl : ModuleControlBase, IActionable
+    public class RazorModuleBase : ModuleUserControlBase
     {
-        private readonly string _razorScriptFile;
-
-        public RazorHostControl(string scriptFile)
-        {
-            _razorScriptFile = scriptFile;
-        }
-
         protected virtual string RazorScriptFile
         {
-            get { return _razorScriptFile; }
+            get
+            {
+                var scriptFolder = AppRelativeTemplateSourceDirectory;
+                var fileRoot = Path.GetFileNameWithoutExtension(AppRelativeVirtualPath);
+                var scriptFile = scriptFolder + "_" + fileRoot + ".cshtml";
+
+                if (! (File.Exists(Server.MapPath(scriptFile))))
+                {
+                    //Try VB (vbhtml)
+                    scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
+
+                    if (!(File.Exists(Server.MapPath(scriptFile))))
+                    {
+                        //Return ""
+                        scriptFile = "";
+                    }
+                }
+
+                return scriptFile;
+            }
         }
-
-	    private RazorEngine _engine;
-	    private  RazorEngine Engine
-	    {
-		    get
-		    {
-				if (_engine == null)
-			    {
-					_engine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
-			    }
-
-			    return _engine;
-		    }
-	    }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-
-            if (!(string.IsNullOrEmpty(RazorScriptFile)))
+            try
             {
-                var writer = new StringWriter();
-				Engine.Render(writer);
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(writer.ToString())));
+                if (! (string.IsNullOrEmpty(RazorScriptFile)))
+                {
+                    var razorEngine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
+                    var writer = new StringWriter();
+                    razorEngine.Render(writer);
+
+                    Controls.Add(new LiteralControl(Server.HtmlDecode(writer.ToString())));
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
-
-		public ModuleActionCollection ModuleActions
-		{
-			get
-			{
-				if (Engine.Webpage is IActionable)
-				{
-					return (Engine.Webpage as IActionable).ModuleActions;
-				}
-
-				return new ModuleActionCollection();
-			}
-		}
-	}
+    }
 }

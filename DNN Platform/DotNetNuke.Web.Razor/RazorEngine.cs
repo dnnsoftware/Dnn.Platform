@@ -29,10 +29,12 @@ using System.Web.Compilation;
 using System.Web.WebPages;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Razor.Helpers;
 
 #endregion
 
-namespace DotNetNuke.UI.Modules.Razor
+namespace DotNetNuke.Web.Razor
 {
     public class RazorEngine
     {
@@ -126,7 +128,7 @@ namespace DotNetNuke.UI.Modules.Razor
         private void InitHelpers(DotNetNukeWebPage webPage)
         {
             webPage.Dnn = new DnnHelper(ModuleContext);
-            webPage.Html = new HtmlHelper(LocalResourceFile);
+            webPage.Html = new HtmlHelper(ModuleContext, LocalResourceFile);
             webPage.Url = new UrlHelper(ModuleContext);
         }
 

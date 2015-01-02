@@ -26,9 +26,6 @@ using System.Web.UI;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
-using DotNetNuke.UI.Modules.Html5;
-using DotNetNuke.UI.Modules.Razor;
-using Telerik.Web.UI;
 
 #endregion
 
@@ -54,7 +51,11 @@ namespace DotNetNuke.UI.Modules
                     break;
                 case ".cshtml":
                 case ".vbhtml":
-                    controlFactory = new RazorModuleControlFactory();
+                    Type factoryType = Reflection.CreateType("DotNetNuke.Web.Razor.RazorModuleControlFactory");
+                    if (factoryType != null)
+                    {
+                        controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
+                    }
                     break;
                 default:
                     // load from a typename in an assembly ( ie. server control)
