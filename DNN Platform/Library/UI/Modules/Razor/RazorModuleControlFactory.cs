@@ -18,40 +18,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System.Web;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
+using System.Web.UI;
+using DotNetNuke.Entities.Modules;
 
-#endregion
-
-namespace DotNetNuke.Web.Razor.Helpers
+namespace DotNetNuke.UI.Modules.Razor
 {
-    public class HtmlHelper
+    public class RazorModuleControlFactory : IModuleControlFactory
     {
-        private readonly string _resourceFile;
-        private ModuleInstanceContext _context;
-
-        public HtmlHelper(ModuleInstanceContext context, string resourcefile)
+        public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            _context = context;
-            _resourceFile = resourcefile;
-        }
-
-        public object GetLocalizedString(string key)
-        {
-            return Localization.GetString(key, _resourceFile);
-        }
-
-        public object GetLocalizedString(string key, string culture)
-        {
-            return Localization.GetString(key, _resourceFile, culture);
-        }
-
-        public HtmlString Raw(string text)
-        {
-            return new HtmlString(text);
+            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
         }
     }
 }

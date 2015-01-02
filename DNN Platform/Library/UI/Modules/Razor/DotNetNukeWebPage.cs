@@ -20,24 +20,39 @@
 #endregion
 #region Usings
 
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
+using System.Web.WebPages;
 
 #endregion
 
-namespace DotNetNuke.Web.Razor
+namespace DotNetNuke.UI.Modules.Razor
 {
-    public class RazorModuleControlFactory : IModuleControlFactory
+    public abstract class DotNetNukeWebPage : WebPageBase
     {
-        #region IModuleControlFactory Members
+        #region Helpers
 
-        public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        protected internal DnnHelper Dnn { get; internal set; }
+
+        protected internal HtmlHelper Html { get; internal set; }
+
+        protected internal UrlHelper Url { get; internal set; }
+
+        #endregion
+
+        #region BaseClass Overrides
+
+        protected override void ConfigurePage(WebPageBase parentPage)
         {
-            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            base.ConfigurePage(parentPage);
+
+            //Child pages need to get their context from the Parent
+            Context = parentPage.Context;
         }
 
         #endregion
+    }
+
+    public abstract class DotNetNukeWebPage<T>:DotNetNukeWebPage
+    {
+        public T Model { get; set; }
     }
 }

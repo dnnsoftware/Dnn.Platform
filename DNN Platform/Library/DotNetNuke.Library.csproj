@@ -1449,6 +1449,7 @@
     </Compile>
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
+    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
@@ -1463,6 +1464,13 @@
     <Compile Include="UI\Modules\ModuleUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Modules\Razor\DnnHelper.cs" />
+    <Compile Include="UI\Modules\Razor\DotNetNukeWebPage.cs" />
+    <Compile Include="UI\Modules\Razor\HtmlHelper.cs" />
+    <Compile Include="UI\Modules\Razor\RazorEngine.cs" />
+    <Compile Include="UI\Modules\Razor\RazorHostControl.cs" />
+    <Compile Include="UI\Modules\Razor\RazorModuleControlFactory.cs" />
+    <Compile Include="UI\Modules\Razor\UrlHelper.cs" />
     <Compile Include="UI\Modules\StandardModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\WebFormsModuleControlFactory.cs" />
     <Compile Include="UI\Navigation.cs">

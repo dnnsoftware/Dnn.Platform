@@ -20,30 +20,54 @@
 #endregion
 #region Usings
 
-using DotNetNuke.Common;
-using DotNetNuke.UI.Modules;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
 
 #endregion
 
-namespace DotNetNuke.Web.Razor.Helpers
+namespace DotNetNuke.UI.Modules.Razor
 {
-    public class UrlHelper
+    public class DnnHelper
     {
         private readonly ModuleInstanceContext _context;
 
-        public UrlHelper(ModuleInstanceContext context)
+        public DnnHelper(ModuleInstanceContext context)
         {
             _context = context;
         }
 
-        public string NavigateToControl()
+        public ModuleInfo Module
         {
-            return Globals.NavigateURL(_context.TabId);
+            get
+            {
+                return _context.Configuration;
+            }
         }
 
-        public string NavigateToControl(string controlKey)
+        public TabInfo Tab
         {
-            return Globals.NavigateURL(_context.TabId, controlKey, "mid=" + _context.ModuleId);
+            get
+            {
+                return _context.PortalSettings.ActiveTab;
+            }
+        }
+
+        public PortalSettings Portal
+        {
+            get
+            {
+                return _context.PortalSettings;
+            }
+        }
+
+        public UserInfo User
+        {
+            get
+            {
+                return _context.PortalSettings.UserInfo;
+            }
         }
     }
 }
