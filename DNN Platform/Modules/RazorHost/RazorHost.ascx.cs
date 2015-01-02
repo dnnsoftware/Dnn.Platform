@@ -24,7 +24,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules.Razor;
+using DotNetNuke.Web.Razor;
 
 #endregion
 

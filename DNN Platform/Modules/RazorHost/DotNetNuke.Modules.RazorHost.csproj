@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="RazorHost.ascx.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="RazorHostSettingsExtensions.cs" />
     <Compile Include="Settings.ascx.designer.cs">
@@ -177,6 +178,11 @@
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj">
+      <Project>{58FD62C7-3F26-4945-B810-428481E6300A}</Project>
+      <Name>DotNetNuke.Web.Razor</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{B1699614-39D4-468A-AB1D-A2FBA97CADDF}</Project>
