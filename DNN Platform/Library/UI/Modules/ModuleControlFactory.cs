@@ -48,10 +48,10 @@ namespace DotNetNuke.UI.Modules
                 case ".ascx":
                     controlFactory = new WebFormsModuleControlFactory();
                     break;
-                //case ".html":
-                //case ".htm":
-                //    controlFactory = new Html5ModuleControlFactory();
-                //    break;
+                case ".html":
+                case ".htm":
+                    controlFactory = new Html5ModuleControlFactory();
+                    break;
                 case ".cshtml":
                 case ".vbhtml":
                     controlFactory = new RazorModuleControlFactory();

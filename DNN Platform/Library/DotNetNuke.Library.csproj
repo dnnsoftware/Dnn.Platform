@@ -1449,8 +1449,13 @@
     </Compile>
     <Compile Include="UI\ControlUtilities.cs" />
     <Compile Include="UI\FavIcon.cs" />
-    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs" />
     <Compile Include="UI\Modules\CachedModuleControl.cs" />
+    <Compile Include="UI\Modules\Html5\Html5HostControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Modules\Html5\Html5ModuleControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />
     <Compile Include="UI\Modules\IModuleInjectionFilter.cs" />
