@@ -4,9 +4,8 @@ using System.Dynamic;
 using System.IO;
 using System.Text;
 using System.Web.UI;
-
+using DotNetNuke.UI.Modules.Razor;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
-using DotNetNuke.Web.Razor;
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
