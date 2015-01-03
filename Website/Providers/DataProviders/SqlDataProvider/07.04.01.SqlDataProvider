@@ -1563,8 +1563,11 @@ GO
 /***************************************************
  * New Exception Management in Event Log
  ***************************************************/
-ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
- ADD ExceptionHash varchar(100) NULL
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EventLog]') AND name = 'ExceptionHash')
+BEGIN
+  ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
+   ADD ExceptionHash varchar(100) NULL
+ END
 GO
 
 ALTER TABLE {databaseOwner}[{objectQualifier}EventLog]
@@ -1742,10 +1745,13 @@ BEGIN
 END
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}ExceptionEvents] 
-  WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}ExceptionEvents_LogEventId] FOREIGN KEY([LogEventID])
-  REFERENCES {databaseOwner}[{objectQualifier}EventLog] ([LogEventID])
-  ON DELETE CASCADE
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_{objectQualifier}ExceptionEvents_LogEventId' AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ExceptionEvents]'))
+BEGIN
+  ALTER TABLE {databaseOwner}[{objectQualifier}ExceptionEvents] 
+    WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}ExceptionEvents_LogEventId] FOREIGN KEY([LogEventID])
+    REFERENCES {databaseOwner}[{objectQualifier}EventLog] ([LogEventID])
+    ON DELETE CASCADE
+END
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddExceptionEvent]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
