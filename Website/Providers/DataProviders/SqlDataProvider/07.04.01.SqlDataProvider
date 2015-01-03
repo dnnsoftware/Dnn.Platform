@@ -394,32 +394,32 @@ IF NOT EXISTS( SELECT * FROM sys.columns
 GO
 
 /* Added a default value to IsDeleted column */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'IsDeleted'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'IsDeleted'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_IsDeleted DEFAULT 0 FOR IsDeleted
 	END
 GO
 
 /* Added a default value to StartAfterCreating column */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterCreating'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterCreating'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterCreating DEFAULT 1 FOR StartAfterCreating
 	END
 GO
 
 /* Added a default value to StartAfterEditing column */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterEditing'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'StartAfterEditing'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_StartAfterEditing DEFAULT 1 FOR StartAfterEditing
 	END
 GO
 
 /* Added a default value to DispositionEnabled column */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'DispositionEnabled'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflows') AND name = 'DispositionEnabled'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflows ADD CONSTRAINT DF_ContentWorkflows_DispositionEnabled DEFAULT 0 FOR DispositionEnabled
 	END
@@ -435,64 +435,64 @@ IF NOT EXISTS( SELECT * FROM sys.columns
 GO
 
 /* Added a default value to column IsActive */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsActive'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsActive'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsActive DEFAULT 1 FOR IsActive
 	END
 GO
 
 /* Added a default value to column SendEmail */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendEmail'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendEmail'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendEmail DEFAULT 0 FOR SendEmail
 	END
 GO
 
 /* Added a default value to column SendMessage */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendMessage'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'SendMessage'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_SendMessage DEFAULT 0 FOR SendMessage
 	END
 GO
 
 /* Added a default value to column IsDisposalState */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsDisposalState'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'IsDisposalState'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_IsDisposalState DEFAULT 0 FOR IsDisposalState
 	END
 GO
 
 /* Added a default value to column OnCompleteMessageSubject */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageSubject'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageSubject'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageSubject DEFAULT N'' FOR OnCompleteMessageSubject
 	END
 GO
 
 /* Added a default value to column OnCompleteMessageBody */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageBody'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnCompleteMessageBody'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnCompleteMessageBody DEFAULT N'' FOR OnCompleteMessageBody
 	END
 GO
 
 /* Added a default value to column OnDiscardMessageSubject */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageSubject'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageSubject'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageSubject DEFAULT N'' FOR OnDiscardMessageSubject
 	END
 GO
 
 /* Added a default value to column OnDiscardMessageBody */
-IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') 
-                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = (SELECT object_id FROM sys.objects WHERE name = '{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageBody'))
+IF NOT EXISTS(SELECT * FROM sys.default_constraints WHERE parent_object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') 
+                     AND parent_column_id = (SELECT column_id FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentWorkflowStates') AND name = 'OnDiscardMessageBody'))
 	BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentWorkflowStates ADD CONSTRAINT DF_ContentWorkflowStates_OnDiscardMessageBody DEFAULT N'' FOR OnDiscardMessageBody
 	END
