@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Cache
 
         private void ClearPortalCacheInternal(int portalId, bool cascade, bool clearRuntime)
         {
-            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId);
+            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, string.Empty);
 
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
