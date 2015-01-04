@@ -233,24 +233,24 @@ namespace DotNetNuke.UI.Skins.Controls
         private string NewUrl(string newLanguage)
         {
             var objSecurity = new PortalSecurity();
-            Locale newLocale = LocaleController.Instance.GetLocale(newLanguage);
+            var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language
-            int tabId = objPortal.ActiveTab.TabID;
-            bool islocalized = false;
+            var tabId = objPortal.ActiveTab.TabID;
+            var islocalized = false;
 
-            TabInfo localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            var localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;
                 if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
                 {
-                    PortalInfo localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
+                    var localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
                     tabId = localizedPortal.HomeTabId;
                 }
                 else
                 {
-                    string fullurl = "";
+                    var fullurl = string.Empty;
                     switch (localizedTab.TabType)
                     {
                         case TabType.Normal:
@@ -277,12 +277,17 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
 
-            // on localised pages most of the querystring parameters have no sense and generate duplicate urls for the same content
-            // because we are on a other tab with other modules (example : ?returntab=/en-US/about)
-            string rawQueryString = "";
-            if (DotNetNuke.Entities.Host.Host.UseFriendlyUrls && !islocalized )
+            var rawQueryString = string.Empty;
+            if (Entities.Host.Host.UseFriendlyUrls)
             {
-                rawQueryString = new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query;
+                // Remove returnurl from query parameters to prevent that the language is changed back after the user has logged in
+                // Example: Accessing protected page /de-de/Page1 redirects to /de-DE/Login?returnurl=%2f%2fde-de%2fPage1 and changing language to en-us on the login page
+                // using the language links won't change the language in the returnurl parameter and the user will be redirected to the de-de version after logging in
+                // Assumption: Loosing the returnurl information is better than confusing the user by switching the language back after the login
+                var queryParams = HttpUtility.ParseQueryString(new Uri(string.Concat(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority), HttpContext.Current.Request.RawUrl)).Query);
+                queryParams.Remove("returnurl");
+                var queryString = queryParams.ToString();
+                if (queryString.Length > 0) rawQueryString = string.Concat("?", queryString);
             }
 
             return
