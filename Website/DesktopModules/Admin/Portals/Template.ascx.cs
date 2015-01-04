@@ -365,7 +365,7 @@ namespace DotNetNuke.Modules.Admin.Portals
                 writer.WriteElementString("timezone", setting);
             }
 
-            settingsDictionary.TryGetValue("EnablePopups", out setting);
+            settingsDictionary.TryGetValue("EnablePopUps", out setting);
             if (!string.IsNullOrEmpty(setting))
             {
                 writer.WriteElementString("enablepopups", setting);
