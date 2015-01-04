@@ -73,6 +73,9 @@
     font-weight: normal;
     margin-top: 0;
 }
+.dnnFormItem .dnnLanguageCombo > div {
+    width: 100%;
+}
 
 .dnnLanguagePackWriter .lpwCheckBoxes {
     display: block;
