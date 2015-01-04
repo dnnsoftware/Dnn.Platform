@@ -781,49 +781,46 @@ namespace DotNetNuke.Entities.Portals
         private static object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
-            var dicSettings = new Dictionary<string, string>();
-            string key = null;
+            var dicSettings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            if (portalId > -1)
+            if (portalId <= -1) return dicSettings;
+            
+            var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
+            if (string.IsNullOrEmpty(cultureCode))
             {
-                var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = GetActivePortalLanguage(portalId);
-                }
+                cultureCode = GetActivePortalLanguage(portalId);
+            }
 
-                IDataReader dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
-                try
+            var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
+            try
+            {
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if (dr.IsDBNull(1)) continue;
+                    
+                    var key = dr.GetString(0);
+                    if (dicSettings.ContainsKey(key))
                     {
-                        if (!dr.IsDBNull(1))
-                        {
-                            key = dr.GetString(0);
-                            if (dicSettings.ContainsKey(key))
-                            {
-                                dicSettings[key] = dr.GetString(1);
-                                var log = new LogInfo { 
-                                    LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() 
-                                };
-                                log.AddProperty("Duplicate PortalSettings Key", key);
-                                LogController.Instance.AddLog(log);
-                            } 
-                            else
-                            {
-                                dicSettings.Add(key, dr.GetString(1));
-                            }                           
-                        }
+                        dicSettings[key] = dr.GetString(1);
+                        var log = new LogInfo { 
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() 
+                        };
+                        log.AddProperty("Duplicate PortalSettings Key", key);
+                        LogController.Instance.AddLog(log);
+                    } 
+                    else
+                    {
+                        dicSettings.Add(key, dr.GetString(1));
                     }
                 }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
             }
             return dicSettings;
         }
@@ -1458,7 +1455,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablepopups")))
             {
-                UpdatePortalSetting(PortalId, "EnablePopups", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
+                UpdatePortalSetting(PortalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled")))
