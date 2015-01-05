@@ -1,8 +1,9 @@
 ﻿#region Copyright
+
 // 
-// DotNetNuke® - http://www.dnnsoftware.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
-// by DNN Corporation
+// by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -17,24 +18,41 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using DotNetNuke.Tests.Web.Mvc.Fakes;
+using DotNetNuke.Web.Mvc.Framework;
+using DotNetNuke.Web.Mvc.Framework.Modules;
+using DotNetNuke.Web.Mvc.Helpers;
+using NUnit.Framework;
 
-namespace DotNetNuke.Web.Mvc.Common
+namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
-    public class DesktopModuleControllerAdapter : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
+    [TestFixture]
+    public class ResultCapturingActionInvokerTests
     {
-        protected override Func<IDesktopModuleController> GetFactory()
+        [Test]
+        public void InvokeActionResult_Sets_ResultOfLastInvoke()
         {
-            return () => new DesktopModuleControllerAdapter();
-        }
+            //Arrange
+            HttpContextBase context = MockHelper.CreateMockHttpContext();
+            context.SetSiteContext(new SiteContext(context));
 
-        public DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId)
-        {
-            return Entities.Modules.DesktopModuleController.GetDesktopModule(desktopModuleId, portalId);
+            var controller = new FakeController();
+            controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
+            
+            var actionInvoker = new ResultCapturingActionInvoker();
+
+            //Act
+            actionInvoker.InvokeAction(controller.ControllerContext, "Index");
+
+            //Assert
+            Assert.IsNotNull(actionInvoker.ResultOfLastInvoke);
+            Assert.IsInstanceOf<ViewResult>(actionInvoker.ResultOfLastInvoke);
         }
     }
 }

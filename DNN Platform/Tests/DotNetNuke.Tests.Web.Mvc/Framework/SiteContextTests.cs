@@ -1,8 +1,9 @@
 ﻿#region Copyright
+
 // 
-// DotNetNuke® - http://www.dnnsoftware.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
-// by DNN Corporation
+// by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -17,24 +18,31 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
+using System.Web;
+using DotNetNuke.Web.Mvc.Framework;
+using NUnit.Framework;
 
-namespace DotNetNuke.Web.Mvc.Common
+namespace DotNetNuke.Tests.Web.Mvc.Framework
 {
-    public class DesktopModuleControllerAdapter : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
+    [TestFixture]
+    public class SiteContextTests
     {
-        protected override Func<IDesktopModuleController> GetFactory()
+        [Test]
+        public void Constructor_Requires_Non_Null_HttpContext()
         {
-            return () => new DesktopModuleControllerAdapter();
+            HttpContextBase context = null;
+            Assert.Throws<ArgumentNullException>(() => new SiteContext(context));
         }
 
-        public DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId)
+        [Test]
+        public void Constructor_Sets_HttpContext_Property()
         {
-            return Entities.Modules.DesktopModuleController.GetDesktopModule(desktopModuleId, portalId);
+            HttpContextBase context = MockHelper.CreateMockHttpContext();
+            Assert.AreSame(context, new SiteContext(context).HttpContext);
         }
     }
 }

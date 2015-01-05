@@ -1,8 +1,9 @@
 ﻿#region Copyright
+
 // 
-// DotNetNuke® - http://www.dnnsoftware.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
-// by DNN Corporation
+// by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -17,24 +18,29 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
+using System.Collections.Generic;
+using System.Web.Routing;
+using NUnit.Framework;
 
-namespace DotNetNuke.Web.Mvc.Common
+namespace DotNetNuke.Tests.Web.Mvc
 {
-    public class DesktopModuleControllerAdapter : ServiceLocator<IDesktopModuleController, DesktopModuleControllerAdapter>, IDesktopModuleController
+    public static class DictionaryAssert
     {
-        protected override Func<IDesktopModuleController> GetFactory()
+        public static void ContainsEntries(object expected, IDictionary<string, object> actual)
         {
-            return () => new DesktopModuleControllerAdapter();
+            ContainsEntries(new RouteValueDictionary(expected), actual);
         }
 
-        public DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId)
+        public static void ContainsEntries(IDictionary<string, object> expected, IDictionary<string, object> actual)
         {
-            return Entities.Modules.DesktopModuleController.GetDesktopModule(desktopModuleId, portalId);
+            foreach (KeyValuePair<string, object> pair in expected)
+            {
+                Assert.IsTrue(actual.ContainsKey(pair.Key));
+                Assert.AreEqual(pair.Value, actual[pair.Key]);
+            }
         }
     }
 }

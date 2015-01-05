@@ -80,7 +80,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Common\DesktopModuleControllerAdapter.cs" />
-    <Compile Include="Common\IDesktopModuleControllerAdapter.cs" />
+    <Compile Include="Common\IDesktopModuleController.cs" />
     <Compile Include="Framework\ActionResults\DnnRedirecttoRouteResult.cs" />
     <Compile Include="Framework\ActionResults\DnnViewResult.cs" />
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />

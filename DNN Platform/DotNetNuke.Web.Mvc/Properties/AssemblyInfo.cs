@@ -18,3 +18,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b1e2ff0c-06b0-4e4d-a828-a7cab3817220")]
 
+[assembly: InternalsVisibleTo("DotNetNuke.Tests.Web.Mvc")]
