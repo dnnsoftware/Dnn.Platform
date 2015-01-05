@@ -5,7 +5,6 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Mvc.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Mvc.pdb" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Mvc.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Optimization.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.Razor.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Web.WebPages.Deployment.dll" DestinationFolder="..\..\Website\bin\" />
