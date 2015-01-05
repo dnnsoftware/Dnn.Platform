@@ -47,9 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\..\Packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
@@ -118,14 +115,6 @@
     <Compile Include="Routing\RouteValuesHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DNN MVC\Dnn.Mvc.Core\Dnn.Mvc.Core.csproj">
-      <Project>{927cffda-9723-4b61-83e2-43efa617a90b}</Project>
-      <Name>Dnn.Mvc.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DNN MVC\Dnn.Mvc.Utils\Dnn.Mvc.Utils.csproj">
-      <Project>{e8bf981f-e09c-43d9-bdd1-40d3fbd5376b}</Project>
-      <Name>Dnn.Mvc.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
       <Project>{6B29ADED-7B56-4484-BEA5-C0E09079535B}</Project>
       <Name>DotNetNuke.Library</Name>
