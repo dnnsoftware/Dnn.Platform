@@ -253,66 +253,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, false, false, Constants.CONTENTTYPE_ValidContentType);
         }
 
-        [Test]
-        public void AddFile_Calls_FolderProvider_AddFile_When_Overwritting_Or_File_Does_Not_Exist()
-        {
-            _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            _folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
-            _folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            _folderInfo.Setup(fi => fi.WorkflowID).Returns(Null.NullInteger);
-
-            var fileContent = new MemoryStream();
-
-            _portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
-
-            _globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            _folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            _mockFolder.Setup(mf => mf.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName)).Returns(false);
-            _mockFolder.Setup(mf => mf.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent)).Verifiable();
-
-            _mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
-            _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
-            _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
-            _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
-
-            _workflowManager.Setup(wc => wc.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
-
-            _mockData.Setup(
-                md =>
-                md.AddFile(It.IsAny<int>(),
-                           It.IsAny<Guid>(),
-                           It.IsAny<Guid>(),
-                           It.IsAny<string>(),
-                           It.IsAny<string>(),
-                           It.IsAny<long>(),
-                           It.IsAny<int>(),
-                           It.IsAny<int>(),
-                           It.IsAny<string>(),
-                           It.IsAny<string>(),
-                           It.IsAny<int>(),
-                           It.IsAny<int>(),
-                           It.IsAny<string>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<string>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<DateTime>(),
-                           It.IsAny<bool>(),
-                           It.IsAny<int>()))
-               .Returns(Constants.FOLDER_ValidFileId);
-
-            _mockData.Setup(md => md.UpdateFileLastModificationTime(It.IsAny<int>(), It.IsAny<DateTime>()));
-
-            _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
-
-            _mockFolder.Verify();
-        }
-
-        [Test]
+         [Test]
         public void AddFile_Does_Not_Call_FolderProvider_AddFile_When_Not_Overwritting_And_File_Exists()
         {
             _folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
