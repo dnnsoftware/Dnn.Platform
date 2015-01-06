@@ -462,6 +462,15 @@ namespace DotNetNuke.Entities.Urls
             //set it to lower case if so allowed by settings
             friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
 
+            // Replace http:// by https:// if SSL is enabled an site is marked as secure 
+            // (i.e. requests to http://... will be redirected to https://...)
+            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
+                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
+                friendlyPath = regex.Replace(friendlyPath, "https://");
+            }
+
             return friendlyPath;
         }
 
@@ -534,7 +543,7 @@ namespace DotNetNuke.Entities.Urls
             string friendlyPath = path;
             bool done = false;
             string httpAliasFull = null;
-            //this regex identifies if the correct http://portalAlias already is in the path
+            //this regex identifies if the correct http(s)://portalAlias already is in the path
             var portalMatchRegex = new Regex("^http[s]*://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             string cultureCode = GetCultureOfPath(path);
             if (portalSettings != null)
