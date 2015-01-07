@@ -679,6 +679,13 @@ namespace DotNetNuke.Entities.Tabs
 
         private bool SoftDeleteTabInternal(TabInfo tabToDelete, PortalSettings portalSettings)
         {
+            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tabToDelete.PortalID, tabToDelete.TabID);
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, false);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, false);
+            }
+
             var deleted = false;
             if (!IsSpecialTab(tabToDelete.TabID, portalSettings))
             {
@@ -698,6 +705,12 @@ namespace DotNetNuke.Entities.Tabs
                     if (TabRemoved != null)
                         TabRemoved(null, new TabEventArgs { Tab = tabToDelete });
                 }
+            }
+
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tabToDelete.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tabToDelete.PortalID, tabToDelete.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
             }
 
             return deleted;
@@ -1869,13 +1882,6 @@ namespace DotNetNuke.Entities.Tabs
             TabInfo tab = GetTab(tabId, portalSettings.PortalId, false);
             if (tab != null)
             {
-                var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tab.PortalID, tab.TabID);
-                if (changeControlStateForTab.IsChangeControlEnabledForTab)
-                {
-                    TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
-                    TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
-                }
-
                 if (tab.DefaultLanguageTab != null && LocaleController.Instance.GetLocales(portalSettings.PortalId).ContainsKey(tab.CultureCode))
                 {
                     //We are trying to delete the child, so recall this function with the master language's tab id
@@ -1892,12 +1898,6 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         SoftDeleteTabInternal(localizedtab, portalSettings);
                     }
-                }
-
-                if (changeControlStateForTab.IsChangeControlEnabledForTab)
-                {
-                    TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
-                    TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
                 }
             }
             else
