@@ -379,7 +379,7 @@ namespace DotNetNuke.Services.Authentication
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("authentication", value) { Path = Globals.ApplicationPath };
+                        cookie = new HttpCookie("authentication", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
                         if (CreatePersistentCookie)
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);

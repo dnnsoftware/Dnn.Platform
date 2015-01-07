@@ -784,7 +784,7 @@ namespace DotNetNuke.Entities.Urls
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
                     {
-                        Path = Globals.ApplicationPath
+                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                     };
                     response.Cookies.Set(cookie);
                 }
@@ -798,7 +798,7 @@ namespace DotNetNuke.Entities.Urls
                         cookie = new HttpCookie(DisableMobileViewCookieName)
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
-                            Path = Globals.ApplicationPath
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                         };
                         response.Cookies.Set(cookie);
                     }
@@ -1019,7 +1019,8 @@ namespace DotNetNuke.Entities.Urls
                             // Store the result as a cookie.
                             if (viewMobileCookie == null)
                             {
-                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()));
+                                response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString()) 
+                                    { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
                             }
                             else
                             {

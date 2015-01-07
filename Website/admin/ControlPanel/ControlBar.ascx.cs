@@ -872,7 +872,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void SetLastPageHistory(string pageId)
         {
-            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = Globals.ApplicationPath });
+            Response.Cookies.Add(new HttpCookie("LastPageId", pageId) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
         }
 
         private string GetLastPageHistory()

@@ -784,7 +784,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             {
                 var pageCookie = new HttpCookie(PageSelectorCookieName, ddlPages.SelectedPage.TabID.ToString(CultureInfo.InvariantCulture) )
                 {
-                    Path = Globals.ApplicationPath
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                 };
                 Response.Cookies.Add(pageCookie);
             }

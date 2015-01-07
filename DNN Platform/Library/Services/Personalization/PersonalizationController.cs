@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Personalization
                             var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
                             {
                                 Expires = DateTime.Now.AddDays(30),
-                                Path = Globals.ApplicationPath
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                             };
                             context.Response.Cookies.Add(personalizationCookie);
                         }
