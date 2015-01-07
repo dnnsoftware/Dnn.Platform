@@ -508,7 +508,7 @@ namespace DotNetNuke.Framework
                         var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
                         {
                             Expires = DateTime.Now.AddYears(1),
-                            Path = Globals.ApplicationPath
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                         };
                         Response.Cookies.Add(objCookie);
                     }

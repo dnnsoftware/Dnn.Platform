@@ -1992,7 +1992,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("language", value) { Path = Globals.ApplicationPath };
+                        cookie = new HttpCookie("language", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
                         response.Cookies.Add(cookie);
                     }
                 }
