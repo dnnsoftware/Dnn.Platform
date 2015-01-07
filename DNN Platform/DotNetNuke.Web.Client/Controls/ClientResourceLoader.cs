@@ -63,7 +63,10 @@ Sys.WebForms.PageRequestManager.getInstance().add_pageLoading(function (sender, 
                 for(var i = 0; i < scripts.length; i++){
                     var src = scripts[i].match(/src=""(.+?)""/i)[1];
                     if($('script[src=""' + src + '""]').length == 0){
-                        $(document.body).append(scripts[i]);
+                        var s = document.createElement( 'script' );
+                        s.type = 'text/javascript';
+                        s.src = src;
+                        document.body.appendChild(s);
                     }
                 }
             }
