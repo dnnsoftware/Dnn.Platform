@@ -855,7 +855,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "")
                     {
                         Expires = DateTime.Now.AddDays(-1),
-                        Path = Globals.ApplicationPath
+                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                     });
 
                     Response.Redirect(redirectUrl, true);

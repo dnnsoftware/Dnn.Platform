@@ -516,7 +516,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             UserController.ChangeUsername(User.UserID, User.Email);
 
                             //note that this effectively will cause a signout due to the cookie not matching anymore.
-                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = Globals.ApplicationPath });
+                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
                         }
                     }
 

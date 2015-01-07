@@ -1759,7 +1759,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId))
                         {
-                            Path = Globals.ApplicationPath
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                         };
                         Response.Cookies.Add(newCookie);
 

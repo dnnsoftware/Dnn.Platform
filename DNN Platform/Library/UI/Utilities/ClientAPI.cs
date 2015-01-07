@@ -447,7 +447,7 @@ namespace DotNetNuke.UI.Utilities
                         var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLower())
                         {
                             Expires = DateTime.MaxValue,
-                            Path = Common.Globals.ApplicationPath
+                            Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")
                         };
                         HttpContext.Current.Response.AppendCookie(objModuleVisible);
                         break;
