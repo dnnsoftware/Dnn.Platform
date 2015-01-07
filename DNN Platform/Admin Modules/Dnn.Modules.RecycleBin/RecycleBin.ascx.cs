@@ -176,8 +176,10 @@ namespace DesktopModules.Admin.RecycleBin
                     return;
                 }
                 ModuleController.Instance.RestoreModule(module);
+                
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                TabChangeTracker.Instance.TrackModuleAddition(module, 1, currentUser.UserID);
+                var currentModuleVersion = TabVersionBuilder.Instance.GetModuleContentLatestVersion(module);
+                TabChangeTracker.Instance.TrackModuleAddition(module, currentModuleVersion, currentUser.UserID);
                 EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }
