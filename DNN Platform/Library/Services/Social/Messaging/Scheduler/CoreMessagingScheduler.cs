@@ -266,13 +266,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "AcceptFriend");
                 var profileUrl = GetProfileUrl(portalSettings, authorId);
                 var linkContent = GetFriendRequestActionsTemplate(defaultLanguage);
-                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
-                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
-            }
-            if (messageDetails.NotificationTypeID == 2) //no actions for followback notifications
-            {
-                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
-                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");
+                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));                
             }
             if (messageDetails.NotificationTypeID == 3)
             {
@@ -283,10 +277,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var acceptUrl = GetRelationshipAcceptRequestUrl(portalSettings, authorId, "FollowBack");
                 var profileUrl = GetProfileUrl(portalSettings, authorId);
                 var linkContent = GetFollowRequestActionsTemplate(defaultLanguage);
-                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));
-                emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");
+                emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", string.Format(linkContent, acceptUrl, profileUrl));            
             }
 
+            //No social actions for the rest of notifications types
+            emailItemContent = emailItemContent.Replace("[FOLLOWREQUESTACTIONS]", "");
+            emailItemContent = emailItemContent.Replace("[FRIENDREQUESTACTIONS]", "");    
+            
             return emailItemContent;
         }
 
