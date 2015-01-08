@@ -1,0 +1,23 @@
+﻿@inherits Dnn.Mvc.Framework.DnnWebViewPage<Dnn.Mvc.Modules.Html.Models.HtmlText>
+
+@using System.Web.Mvc.Html
+
+
+<form method="POST" action="@Url.Action("Index", "Page", new { moduleId = Model.ModuleID, moduleRoute = "Html/Edit" })">
+    <div>
+        <div class="form-horizontal" role="form">
+            @*@Html.AntiForgeryToken()*@
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Content, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Content, 5, 40, new { @class = "form-control", id = "HtmlContent" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default">Close</button>
+        <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
+    </div>
+</form>
