@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
         #region Protected Methods
 
         protected string GetInitialEntries()
-            {
+        {
             int id;
             UserInfo user;
             RoleInfo role;
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                     entities.AppendFormat(@"{{ id: ""role-{0}"", name: ""{1}"" }},", role.RoleID, role.RoleName.Replace("\"", ""));
 
             return entities.Append(']').ToString();
-            }
+        }
         #endregion
 
         #region Event Handlers
@@ -166,13 +166,13 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                 List<UserInfo> users;
                 GetRecipients(out roleNames, out users);
 
-                if(IsReadyToSend(roleNames, users, ref message, ref messageType))
+                if (IsReadyToSend(roleNames, users, ref message, ref messageType))
                 {
                     SendEmail(roleNames, users, ref message, ref messageType);
                 }
-                
+
                 UI.Skins.Skin.AddModuleMessage(this, message, messageType);
-                ((CDefault) Page).ScrollToControl(Page.Form);
+                ((CDefault)Page).ScrollToControl(Page.Form);
             }
             catch (Exception exc)
             {
@@ -183,14 +183,14 @@ namespace DotNetNuke.Modules.Admin.Newsletters
         private void SendEmail(List<string> roleNames, List<UserInfo> users, ref string message, ref ModuleMessage.ModuleMessageType messageType)
         {
             //it is awkward to ensure that email is disposed correctly because when sent asynch it should be disposed by the  asynch thread
-			var email = new SendTokenizedBulkEmail(roleNames, users, /*removeDuplicates*/ true, txtSubject.Text, ConvertToAbsoluteUrls(teMessage.Text));
+            var email = new SendTokenizedBulkEmail(roleNames, users, /*removeDuplicates*/ true, txtSubject.Text, ConvertToAbsoluteUrls(teMessage.Text));
 
             bool isValid;
             try
             {
                 isValid = PrepareEmail(email, ref message, ref messageType);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 email.Dispose();
                 throw;
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             //First send off a test message
             var strStartSubj = Localization.GetString("EMAIL_BulkMailStart_Subject.Text", Localization.GlobalResourceFile);
             if (!string.IsNullOrEmpty(strStartSubj)) strStartSubj = string.Format(strStartSubj, txtSubject.Text);
-            
+
             var strStartBody = Localization.GetString("EMAIL_BulkMailStart_Body.Text", Localization.GlobalResourceFile);
             if (!string.IsNullOrEmpty(strStartBody)) strStartBody = string.Format(strStartBody, txtSubject.Text, UserInfo.DisplayName, email.Recipients().Count);
 
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
         private void SendAndDispose(SendTokenizedBulkEmail email)
         {
-            using(email)
+            using (email)
             {
                 email.Send();
             }
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                     email.BodyFormat = MailFormat.Text;
                     break;
             }
-                        
+
             switch (cboPriority.SelectedItem.Value)
             {
                 case "1":
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 
             if (txtReplyTo.Text != string.Empty && email.ReplyTo.Email != txtReplyTo.Text)
             {
-                var myUser = new UserInfo {Email = txtReplyTo.Text};
+                var myUser = new UserInfo { Email = txtReplyTo.Text };
                 email.ReplyTo = myUser;
             }
 
@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                 int fileId = int.Parse(ctlAttachment.Url.Substring(7));
                 var objFileInfo = FileManager.Instance.GetFile(fileId);
                 //TODO: support secure storage locations for attachments! [sleupold 06/15/2007]
-                email.AddAttachment(FileManager.Instance.GetFileContent(objFileInfo), 
+                email.AddAttachment(FileManager.Instance.GetFileContent(objFileInfo),
                                                new ContentType { MediaType = objFileInfo.ContentType, Name = objFileInfo.FileName });
             }
 
@@ -362,19 +362,19 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             }
 
             email.SuppressTokenReplace = !chkReplaceTokens.Checked;
-            
+
             return isValid;
         }
 
         private bool IsReadyToSend(List<string> roleNames, List<UserInfo> users, ref string message, ref ModuleMessage.ModuleMessageType messageType)
         {
-             if (String.IsNullOrEmpty(txtSubject.Text) || String.IsNullOrEmpty(teMessage.Text))
+            if (String.IsNullOrEmpty(txtSubject.Text) || String.IsNullOrEmpty(teMessage.Text))
             {
                 message = Localization.GetString("MessageValidation", LocalResourceFile);
                 messageType = ModuleMessage.ModuleMessageType.RedError;
                 return false;
             }
-                 
+
             if (users.Count == 0 && roleNames.Count == 0)
             {
                 message = string.Format(Localization.GetString("NoRecipients", LocalResourceFile), -1);
@@ -395,7 +395,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
                 Array arrEmail = txtEmail.Text.Split(';');
                 foreach (string strEmail in arrEmail)
                 {
-                    var objUser = new UserInfo {UserID = Null.NullInteger, Email = strEmail, DisplayName = strEmail};
+                    var objUser = new UserInfo { UserID = Null.NullInteger, Email = strEmail, DisplayName = strEmail };
                     objUsers.Add(objUser);
                 }
             }
@@ -418,16 +418,16 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             {
                 if (String.IsNullOrEmpty(txtSubject.Text) || String.IsNullOrEmpty(teMessage.Text))
                 {
-					//no subject or message
+                    //no subject or message
                     var strResult = Localization.GetString("MessageValidation", LocalResourceFile);
                     const ModuleMessage.ModuleMessageType msgResult = ModuleMessage.ModuleMessageType.YellowWarning;
                     UI.Skins.Skin.AddModuleMessage(this, strResult, msgResult);
-                    ((CDefault) Page).ScrollToControl(Page.Form);
+                    ((CDefault)Page).ScrollToControl(Page.Form);
                     return;
                 }
-				
-				//convert links to absolute
-				var strBody = ConvertToAbsoluteUrls(teMessage.Text);
+
+                //convert links to absolute
+                var strBody = ConvertToAbsoluteUrls(teMessage.Text);
 
                 if (chkReplaceTokens.Checked)
                 {
@@ -454,12 +454,12 @@ namespace DotNetNuke.Modules.Admin.Newsletters
             }
         }
 
-		private static string ConvertToAbsoluteUrls(string content)
-		{
-			//convert links to absolute
-			const string pattern = "<(a|link|img|script|object).[^>]*(href|src|action)=(\\\"|'|)(?<url>(.[^\\\"']*))(\\\"|'|)[^>]*>";
-			return Regex.Replace(content, pattern, FormatUrls);
-		}
+        private static string ConvertToAbsoluteUrls(string content)
+        {
+            //convert links to absolute
+            const string pattern = "<(a|link|img|script|object).[^>]*(href|src|action)=(\\\"|'|)(?<url>(.[^\\\"']*))(\\\"|'|)[^>]*>";
+            return Regex.Replace(content, pattern, FormatUrls);
+        }
 
         #endregion
 

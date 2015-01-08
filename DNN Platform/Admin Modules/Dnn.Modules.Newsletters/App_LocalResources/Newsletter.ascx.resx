@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BasicSettings.Text" xml:space="preserve">
+    <value>Basic Settings</value>
+  </data>
+  <data name="plAddressees.Text" xml:space="preserve">
+    <value>Addressees</value>
+  </data>
+  <data name="plRoles.Text" xml:space="preserve">
+    <value>Send To Users or Roles</value>
+  </data>
+  <data name="plRoles.Help" xml:space="preserve">
+    <value>Select the User or Roles that are to receive this message, e.g. 'User1', 'Administrators' or 'Registered Users'.</value>
+  </data>
+  <data name="plLanguages.Text" xml:space="preserve">
+    <value>Language Filter</value>
+  </data>
+  <data name="plLanguages.Help" xml:space="preserve">
+    <value>Specify a filter for users according to the languages in their profiles.</value>
+  </data>
+  <data name="plEmail.Text" xml:space="preserve">
+    <value>Additional Emails</value>
+  </data>
+  <data name="plEmail.Help" xml:space="preserve">
+    <value>You can add Email addresses, separated by a ";".</value>
+  </data>
+  <data name="plFrom.Text" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="plFrom.Help" xml:space="preserve">
+    <value>Enter the 'From' email address of the email message.</value>
+  </data>
+  <data name="plReplyTo.Text" xml:space="preserve">
+    <value>Reply To</value>
+  </data>
+  <data name="plReplyTo.Help" xml:space="preserve">
+    <value>Enter the 'ReplyTo' email address for the email message.</value>
+  </data>
+  <data name="revEmailAddress.ErrorMessage" xml:space="preserve">
+    <value>The email address is in an invalid format!</value>
+  </data>
+  <data name="plSubject.Text" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="plSubject.Help" xml:space="preserve">
+    <value>Enter the subject of this message.</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="AdvancedSettings.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="plAttachment.Text" xml:space="preserve">
+    <value>Attachment</value>
+  </data>
+  <data name="plAttachment.Help" xml:space="preserve">
+    <value>Select an Attachment for this message.</value>
+  </data>
+  <data name="plPriority.Text" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="plPriority.Help" xml:space="preserve">
+    <value>Select the priority for this message.</value>
+  </data>
+  <data name="Normal.Text" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="High.Text" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Low.Text" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="plReplaceTokens.Text" xml:space="preserve">
+    <value>Replace Tokens</value>
+  </data>
+  <data name="plReplaceTokens.Help" xml:space="preserve">
+    <value>Does the text contain any tokens, that shall be replaced with current environment values?&lt;br&gt; Note: User tokens are not replaced, if send method is "BCC"</value>
+  </data>
+  <data name="plNoDuplicates.Text" xml:space="preserve">
+    <value>No duplicate addresses</value>
+  </data>
+  <data name="plNoDuplicates.Help" xml:space="preserve">
+    <value>Activate this option to remove duplicate email addresses from the addressees list.</value>
+  </data>
+  <data name="SendTo.Text" xml:space="preserve">
+    <value>TO: One Message Per Email Address ( Personalized )</value>
+  </data>
+  <data name="SendBCC.Text" xml:space="preserve">
+    <value>BCC: One Email To Blind Distribution List ( Not Personalized )</value>
+  </data>
+  <data name="SendRelay.Text" xml:space="preserve">
+    <value>Relay: One Message Per Email Address ( Personalized ) to a specified relay server</value>
+  </data>
+  <data name="plRelayAddress.Text" xml:space="preserve">
+    <value>Relay Address</value>
+  </data>
+  <data name="plSendMethod.Help" xml:space="preserve">
+    <value>Select the method for this email to be sent.</value>
+  </data>
+  <data name="plSendMethod.Text" xml:space="preserve">
+    <value>Send Method</value>
+  </data>
+  <data name="plSendAction.Text" xml:space="preserve">
+    <value>Send Action</value>
+  </data>
+  <data name="plSendAction.Help" xml:space="preserve">
+    <value>Select, how emails should be sent -  Synchronous - emails are sent immediately - you will not be able to return to the application until this has completed or Asynchronous - emails are sent as a background task - you will be able to continue to do other tasks while this is being completed..</value>
+  </data>
+  <data name="Synchronous.Text" xml:space="preserve">
+    <value>Synchronous</value>
+  </data>
+  <data name="Asynchronous.Text" xml:space="preserve">
+    <value>Asynchronous</value>
+  </data>
+  <data name="cmdSend.Text" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="ControlTitle_.Text" xml:space="preserve">
+    <value>Newsletters</value>
+  </data>
+  <data name="MessageSent.Text" xml:space="preserve">
+    <value>Bulk mail sent (asynchronous mode). Please check confirmation email for result.</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;About Newsletters&lt;/h1&gt;
+&lt;p&gt;Administrators can send bulk email to all users belonging to&amp;nbsp;one or multiple&amp;nbsp;selected &lt;strong&gt;roles&lt;/strong&gt; and can also specify &lt;strong&gt;additional email addresses&lt;/strong&gt; manually. In Multilingual websites, there is a &lt;strong&gt;language filter&lt;/strong&gt; displayed, in order to send language specific content.&lt;/p&gt;
+&lt;p&gt;The author can specify a &lt;strong&gt;sender's email address&lt;/strong&gt; (default&amp;nbsp;is taken from his own profile)&amp;nbsp;and optionally a &lt;strong&gt;&amp;quot;ReplyTo&amp;quot; address&lt;/strong&gt;. The &lt;strong&gt;format&lt;/strong&gt; (plain text or HTML) of the email is determined by the editor used.&lt;/p&gt;
+&lt;p&gt;Text in the &lt;strong&gt;subject&lt;/strong&gt; and &lt;strong&gt;body&lt;/strong&gt; can contain tokens for properties for environment objects like Portal, User and Date/Time, that will get replaced by the current values, if &lt;strong&gt;Replace Tokens&lt;/strong&gt; is enabled. An &lt;strong&gt;Attachment&lt;/strong&gt; file can be specified as well as &lt;strong&gt;priority&lt;/strong&gt; and whether to &lt;strong&gt;suppress multiple emails&lt;/strong&gt; sent to same address.&lt;/p&gt;
+&lt;p&gt;There are 3 &lt;strong&gt;send methods&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;TO&lt;/strong&gt; sends the address individually to each addressee, replacing all available tokens&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;BCC&lt;/strong&gt; sends a single email to the sender, including all addressees as hidden recipients.&lt;br /&gt;
+    All user individual&amp;nbsp;tokens will not get replaced&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;RELAY&lt;/strong&gt; is used like TO, but all individual emails get send to the specified RELAY address. You need to use tokens for users' mobile&amp;nbsp;phone or fax number to&amp;nbsp;get the message delivered.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you send&amp;nbsp;&lt;strong&gt;synchronously&lt;/strong&gt;, you need to wait until all mails are sent, before you can continue. In Asynchronous mode, you can continue immediately. The success of the send out will be delivered as a report to the&amp;nbsp;&amp;quot;FROM&amp;quot; email address.&lt;/p&gt;</value>
+  </data>
+  <data name="Heading.Text" xml:space="preserve">
+    <value>Dear </value>
+  </data>
+  <data name="MessageValidation.Text" xml:space="preserve">
+    <value>You must include a Subject and Message</value>
+  </data>
+  <data name="MessagesSentCount.Text" xml:space="preserve">
+    <value>{0} Messages were sent out successfully</value>
+  </data>
+  <data name="NoMessagesSent.Text" xml:space="preserve">
+    <value>No Messages were sent. A confirmation email has been sent to {0} with a description of the errors that happened during the sending process.</value>
+  </data>
+  <data name="cmdPreview.Text" xml:space="preserve">
+    <value>Preview Email</value>
+  </data>
+  <data name="NoMessagesSentPlusError.Text" xml:space="preserve">
+    <value>An error occurred while sending the email: {0}</value>
+  </data>
+  <data name="NoRecipients.Text" xml:space="preserve">
+    <value>No Messages were sent because there are no recipients for this email.</value>
+  </data>
+  <data name="cmdCancelPreview.Text" xml:space="preserve">
+    <value>Cancel Preview</value>
+  </data>
+</root>
