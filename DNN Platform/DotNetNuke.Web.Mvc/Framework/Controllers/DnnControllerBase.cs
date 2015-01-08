@@ -49,23 +49,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (SiteContext == null) ? null : SiteContext.ActiveSiteAlias; }
         }
 
-        protected internal virtual ResourceNotFoundResult ResourceNotFound()
-        {
-            return new ResourceNotFoundResult();
-        }
-
-        protected internal virtual ResourceNotFoundResult ResourceNotFound(string viewName)
-        {
-            Requires.NotNullOrEmpty("viewName", viewName);
-            return ResourceNotFound(View(viewName));
-        }
-
-        protected internal virtual ResourceNotFoundResult ResourceNotFound(ActionResult innerResult)
-        {
-            Requires.NotNull("innerResult", innerResult);
-            return new ResourceNotFoundResult { InnerResult = innerResult };
-        }
-
         public SiteContext SiteContext
         {
             get { return HttpContext.GetSiteContext(); }

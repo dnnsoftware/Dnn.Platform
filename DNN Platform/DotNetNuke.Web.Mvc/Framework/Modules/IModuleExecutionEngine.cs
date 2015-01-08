@@ -29,8 +29,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     {
         ModuleRequestResult ExecuteModule(HttpContextBase httpContext, ModuleInfo module, string moduleRoute);
 
-        void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult);
-
         void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult, TextWriter writer);
 
         ModuleApplication GetModuleApplication(ModuleInfo module);

@@ -83,6 +83,8 @@ DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
+DNN [Pp]latform/Admin Modules/*/[Bb]in/*
+DNN [Pp]latform/MVC Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
@@ -144,6 +146,8 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Ii]nstall/upgradestat.log.resources.txt
 
 [Ww]ebsite/[Ll]icenses/*.txt
+
+[Ww]ebsite/[Mm]odules
 
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
 [Ww]ebsite/[Pp]ortals/_default/[Mm]erged[Tt]emplate

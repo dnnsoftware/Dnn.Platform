@@ -82,8 +82,6 @@
     <Compile Include="Framework\ActionResults\DnnViewResult.cs" />
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />
     <Compile Include="Framework\ActionResults\PageOverrideResult.cs" />
-    <Compile Include="Framework\ActionResults\RenderModuleResult.cs" />
-    <Compile Include="Framework\ActionResults\ResourceNotFoundResult.cs" />
     <Compile Include="Framework\Controllers\DnnController.cs" />
     <Compile Include="Framework\Controllers\DnnControllerAdapter.cs" />
     <Compile Include="Framework\Controllers\DnnControllerBase.cs" />

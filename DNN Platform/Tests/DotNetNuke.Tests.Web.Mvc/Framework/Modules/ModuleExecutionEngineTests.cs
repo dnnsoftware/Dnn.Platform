@@ -190,29 +190,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
-        public void ExecuteModuleResult_Overload_Calls_ActionResult_ExecuteResult()
-        {
-            //Arrange
-            var engine = new ModuleExecutionEngine();
-
-            var actionResultMock = new Mock<ActionResult>();
-
-            var controllerContext = MockHelper.CreateMockControllerContext();
-            var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
-                                            };
-
-            //Act
-            engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult);
-
-
-            //Arrange
-            actionResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>()));
-        }
-
-        [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
         {
             //Arrange
@@ -235,29 +212,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             //Arrange
             viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));
-        }
-
-        [Test]
-        public void ExecuteModuleResult_Overload_Calls_ActionResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
-        {
-            //Arrange
-            var engine = new ModuleExecutionEngine();
-
-            var actionResultMock = new Mock<ActionResult>();
-
-            var controllerContext = MockHelper.CreateMockControllerContext();
-            var moduleRequestResult = new ModuleRequestResult
-                                                {
-                                                    ActionResult = actionResultMock.Object,
-                                                    ControllerContext = controllerContext
-                                                };
-
-            //Act
-            engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult);
-
-
-            //Arrange
-            actionResultMock.Verify(v => v.ExecuteResult(controllerContext));
         }
 
         [Test]

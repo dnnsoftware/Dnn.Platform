@@ -19,8 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-
-
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;

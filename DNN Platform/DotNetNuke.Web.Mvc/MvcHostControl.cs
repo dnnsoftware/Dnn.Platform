@@ -39,6 +39,20 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
+
+        private IModuleExecutionEngine GetModuleExecutionEngine()
+        {
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            if (moduleExecutionEngine == null)
+            {
+                moduleExecutionEngine = new ModuleExecutionEngine();
+                ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
+            }
+
+            return moduleExecutionEngine;
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -50,7 +64,7 @@ namespace DotNetNuke.Web.Mvc
 
             HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
 
-            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+            var moduleExecutionEngine = GetModuleExecutionEngine();
 
             string moduleRoute = "";
 

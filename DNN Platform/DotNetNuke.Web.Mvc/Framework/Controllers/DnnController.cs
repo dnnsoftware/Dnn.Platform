@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             _actionInvoker = new ResultCapturingActionInvoker();
             ActionInvoker = _actionInvoker;
         }
+
         protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
 

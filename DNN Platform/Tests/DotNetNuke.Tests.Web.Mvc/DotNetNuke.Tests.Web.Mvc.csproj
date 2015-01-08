@@ -68,12 +68,10 @@
     <Compile Include="Framework\Modules\ModuleDelegatingViewEngineTests.cs" />
     <Compile Include="Framework\Modules\ModuleExecutionEngineTests.cs" />
     <Compile Include="Framework\Modules\PageOverrideResultTests.cs" />
-    <Compile Include="Framework\Modules\RenderModuleResultTests.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvokerTests.cs" />
     <Compile Include="Framework\SiteContextTests.cs" />
     <Compile Include="Helpers\DnnHelperTests.cs" />
     <Compile Include="Helpers\HttpContextBaseExtensionsTests.cs" />
-    <Compile Include="Helpers\ResourceNotFoundResultTests.cs" />
     <Compile Include="Helpers\ViewResultExtensionsTests.cs" />
     <Compile Include="MockHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,6 +27,7 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
 using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
 
@@ -71,13 +72,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return null;
         }
 
-        public virtual void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult)
-        {
-            RunInModuleResultContext(siteContext,
-                                     moduleResult,
-                                     () => moduleResult.ActionResult.ExecuteResult(moduleResult.ControllerContext));
-        }
-
         public virtual void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult, TextWriter writer)
         {
             RunInModuleResultContext(siteContext, moduleResult, () => 
@@ -99,14 +93,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
 
-            var moduleApplications = ComponentFactory.GetComponent<IDictionary<string, ModuleApplication>>();
+            Type moduleType = Reflection.CreateType(desktopModule.BusinessControllerClass);
 
-            ModuleApplication app;
-            if (desktopModule != null && moduleApplications.TryGetValue(desktopModule.ModuleName, out app))
-            {
-                return app;
-            }
-            return null;
+            return Reflection.CreateInstance(moduleType) as ModuleApplication;
         }
 
         protected internal void RunInModuleResultContext(SiteContext siteContext, ModuleRequestResult moduleResult, Action action)

@@ -35,23 +35,6 @@ namespace DotNetNuke.Tests.Web.Mvc
         {
             Assert.IsInstanceOf<EmptyResult>(result);
         }
-        public static void IsResourceNotFound(ActionResult result)
-        {
-            IsResourceNotFound(result, innerResult => Assert.IsNull(innerResult,
-                                                                    "Expected that the default inner result would be used"));
-        }
-
-        public static void IsResourceNotFound(ActionResult result, Action<ActionResult> innerResultAssert)
-        {
-            var notFoundResult = result.AssertCast<ResourceNotFoundResult>();
-            innerResultAssert(notFoundResult.InnerResult);
-        }
-
-        public static void IsResourceNotFound(ActionResult result, string viewName)
-        {
-            var notFoundResult = result.AssertCast<ResourceNotFoundResult>();
-            IsView(notFoundResult.InnerResult, viewName);
-        }
 
         public static void IsUnauthorized(ActionResult result)
         {
