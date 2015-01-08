@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Mobile
                             var cookie = new HttpCookie(DisableMobileRedirectCookieName)
                             {
                                 Expires = DateTime.Now.AddMinutes(-1),
-                                Path = Globals.ApplicationPath
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                             };
                             app.Response.Cookies.Add(cookie);      
                         }
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Mobile
 							var cookie = new HttpCookie(DisableRedirectPresistCookieName)
 							{
 							    Expires = DateTime.Now.AddMinutes(-1),
-                                Path = Globals.ApplicationPath
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
 							};
 						    app.Response.Cookies.Add(cookie);
 						}   
@@ -116,14 +116,14 @@ namespace DotNetNuke.Services.Mobile
 				var presistCookie = new HttpCookie(DisableRedirectPresistCookieName)
 				{
 				    Expires = DateTime.Now.AddMinutes(20),
-                    Path = Globals.ApplicationPath
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
 				};
                 app.Response.Cookies.Add(presistCookie);
 
 				//this cookie is set to re-enable redirect after close browser.
                 var cookie = new HttpCookie(DisableMobileRedirectCookieName)
                 {
-                    Path = Globals.ApplicationPath
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                 };
 				app.Response.Cookies.Add(cookie);    
             }

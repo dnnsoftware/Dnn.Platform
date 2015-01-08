@@ -241,6 +241,7 @@ Namespace DotNetNuke.UI.Utilities
             ElseIf AlternateJavaScriptSerializerType IsNot Nothing Then
                 Return Reflection.InvokeMethod(AlternateJavaScriptSerializerType, "DeserializeObject", Nothing, New Object() {Data})
             End If
+            Return Nothing
         End Function
 
         Public Shared Function Serialize(ByVal Obj As Object) As String
@@ -252,7 +253,6 @@ Namespace DotNetNuke.UI.Utilities
                 Dim json As String = CType(Reflection.InvokeMethod(AlternateJavaScriptSerializerType, "SerializeObject", Nothing, New Object() {Obj}), String)
                 'HACK
                 Return json.Replace("'", "\u0027") 'make same as MSAJAX - escape single quote
-                Return json
             End If
             Return ""
         End Function

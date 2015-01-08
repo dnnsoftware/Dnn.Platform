@@ -24,7 +24,7 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public interface ITabVersionMaker
+    public interface ITabVersionBuilder
     {
         /// <summary>
         /// Creates a new Tab Version checking current portal settings
@@ -120,5 +120,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="portalId">portalId</param>
         /// <param name="tabId">tabId</param>
         void SetupFirstVersionForExistingTab(int portalId, int tabId);
+
+        /// <summary>
+        /// Get the latest version or 1 if module is not versionable
+        /// </summary>
+        /// <param name="module">The ModuleInfo to be queried</param>  
+        /// <returns>The latest version of the module</returns>
+        int GetModuleContentLatestVersion(ModuleInfo module);
+
     }
 }

@@ -392,7 +392,10 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
-            if (!UrlUtils.InPopUp() && !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline))
+            if (!UrlUtils.InPopUp() && 
+                !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline) &&
+                !Regex.IsMatch(PortalSettings.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline)
+                )
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
@@ -505,7 +508,7 @@ namespace DotNetNuke.Framework
                         var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
                         {
                             Expires = DateTime.Now.AddYears(1),
-                            Path = Globals.ApplicationPath
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                         };
                         Response.Cookies.Add(objCookie);
                     }

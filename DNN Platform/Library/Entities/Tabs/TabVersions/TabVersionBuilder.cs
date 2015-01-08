@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -33,9 +34,10 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionMaker : ServiceLocator<ITabVersionMaker, TabVersionMaker>, ITabVersionMaker
+    public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionMaker));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
+        private static readonly int DefaultVersionNumber = 1;
 
         #region Members
         private readonly ITabController _tabController;
@@ -47,7 +49,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #endregion
 
         #region Constructor
-        public TabVersionMaker()
+        public TabVersionBuilder()
         {
             _tabController = TabController.Instance;
             _moduleController = ModuleController.Instance;
@@ -224,8 +226,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             SetupFirstVersionForExistingTab(portalid, tabId);
 
             DeleteOldestVersionIfTabHasMaxNumberOfVersions(portalid, tabId);
-
-            return _tabVersionController.CreateTabVersion(tabId, createdByUserID);
+            try
+            {
+                return _tabVersionController.CreateTabVersion(tabId, createdByUserID);
+            }
+            catch (InvalidOperationException e)
+            {
+                Services.Exceptions.Exceptions.LogException(e);
+                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
+            }
+            catch (SqlException sqlException)
+            {
+                Services.Exceptions.Exceptions.LogException(sqlException);
+                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
+            }
         }
 
         public IEnumerable<ModuleInfo> GetUnPublishedVersionModules(int tabId)
@@ -281,6 +295,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
         {
             return ConvertToModuleInfo(GetVersionModulesDetails(tabId, version), tabId);
+        }
+
+        public int GetModuleContentLatestVersion(ModuleInfo module)
+        {
+            var versionableController = GetVersionableController(module);
+            return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
         }
         #endregion
 
@@ -795,9 +815,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
         #endregion
 
-        protected override Func<ITabVersionMaker> GetFactory()
+        protected override Func<ITabVersionBuilder> GetFactory()
         {
-            return () => new TabVersionMaker();
+            return () => new TabVersionBuilder();
         }
     }
 }

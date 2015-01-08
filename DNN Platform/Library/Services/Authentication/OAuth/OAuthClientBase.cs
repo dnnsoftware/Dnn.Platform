@@ -517,7 +517,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private void SaveTokenCookie(string suffix)
         {
-            var authTokenCookie = new HttpCookie(AuthTokenName + suffix) { Path = Globals.ApplicationPath };
+            var authTokenCookie = new HttpCookie(AuthTokenName + suffix) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
             authTokenCookie.Values[OAuthTokenKey] = AuthToken;
             authTokenCookie.Values[OAuthTokenSecretKey] = TokenSecret;
             authTokenCookie.Values[UserGuidKey] = UserGuid;
@@ -731,7 +731,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var authTokenCookie = new HttpCookie(AuthTokenName)
             {
                 Expires = DateTime.Now.AddDays(-30),
-                Path = Globals.ApplicationPath
+                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
             };
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }

@@ -25,7 +25,7 @@
         <asp:Label ID="SkinError" runat="server" CssClass="NormalRed" Visible="False"></asp:Label>
         <asp:PlaceHolder ID="SkinPlaceHolder" runat="server" />
         <input id="ScrollTop" runat="server" name="ScrollTop" type="hidden" />
-        <input id="__dnnVariable" runat="server" name="__dnnVariable" type="hidden" />
+        <input id="__dnnVariable" runat="server" name="__dnnVariable" type="hidden" autocomplete="off" />
         <asp:placeholder runat="server" ID="ClientResourcesFormBottom" />
     </dnn:Form>
     <asp:placeholder runat="server" id="ClientResourceIncludes" />

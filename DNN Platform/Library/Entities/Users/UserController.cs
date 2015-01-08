@@ -90,6 +90,8 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
+        private static event EventHandler<UserEventArgs> UserAuthenticated;
+
         private static event EventHandler<UserEventArgs> UserCreated;
 
         private static event EventHandler<UserEventArgs> UserDeleted;
@@ -100,8 +102,9 @@ namespace DotNetNuke.Entities.Users
 
         static UserController()
         {            
-            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)            
+            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
             {
+                UserAuthenticated += handlers.Value.UserAuthenticated;
                 UserCreated += handlers.Value.UserCreated;
                 UserDeleted += handlers.Value.UserDeleted;
                 UserRemoved += handlers.Value.UserRemoved;
@@ -1873,6 +1876,11 @@ namespace DotNetNuke.Entities.Users
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
             security.SignIn(user, createPersistentCookie);
+
+            if (UserAuthenticated != null)
+            {
+                UserAuthenticated(null, new UserEventArgs() {User = user});
+            }
         }
 
         /// -----------------------------------------------------------------------------

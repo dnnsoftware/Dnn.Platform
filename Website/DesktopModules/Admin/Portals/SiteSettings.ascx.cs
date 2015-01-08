@@ -1405,7 +1405,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "DefaultAdminContainer", editContainerCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalContainer", portalContainerCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultIconLocation", "icons/" + iconSetCombo.SelectedValue, false, SelectedCultureCode);
-                    PortalController.UpdatePortalSetting(_portalId, "EnablePopups", enablePopUpsCheckBox.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "EnablePopUps", enablePopUpsCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "EnableModuleEffect", enableModuleEffectCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "InlineEditorEnabled", chkInlineEditor.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "HideFoldersEnabled", chkHideSystemFolders.Checked.ToString(), false);

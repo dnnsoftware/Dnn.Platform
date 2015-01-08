@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -781,49 +781,46 @@ namespace DotNetNuke.Entities.Portals
         private static object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
-            var dicSettings = new Dictionary<string, string>();
-            string key = null;
+            var dicSettings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            if (portalId > -1)
+            if (portalId <= -1) return dicSettings;
+            
+            var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
+            if (string.IsNullOrEmpty(cultureCode))
             {
-                var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = GetActivePortalLanguage(portalId);
-                }
+                cultureCode = GetActivePortalLanguage(portalId);
+            }
 
-                IDataReader dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
-                try
+            var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
+            try
+            {
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if (dr.IsDBNull(1)) continue;
+                    
+                    var key = dr.GetString(0);
+                    if (dicSettings.ContainsKey(key))
                     {
-                        if (!dr.IsDBNull(1))
-                        {
-                            key = dr.GetString(0);
-                            if (dicSettings.ContainsKey(key))
-                            {
-                                dicSettings[key] = dr.GetString(1);
-                                var log = new LogInfo { 
-                                    LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() 
-                                };
-                                log.AddProperty("Duplicate PortalSettings Key", key);
-                                LogController.Instance.AddLog(log);
-                            } 
-                            else
-                            {
-                                dicSettings.Add(key, dr.GetString(1));
-                            }                           
-                        }
+                        dicSettings[key] = dr.GetString(1);
+                        var log = new LogInfo { 
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() 
+                        };
+                        log.AddProperty("Duplicate PortalSettings Key", key);
+                        LogController.Instance.AddLog(log);
+                    } 
+                    else
+                    {
+                        dicSettings.Add(key, dr.GetString(1));
                     }
                 }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    CBO.CloseDataReader(dr, true);
-                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
             }
             return dicSettings;
         }
@@ -1069,7 +1066,7 @@ namespace DotNetNuke.Entities.Portals
         private string GetCultureCode(string languageFileName)
         {
             //e.g. "default template.template.en-US.resx"
-            return languageFileName.Substring(1 + languageFileName.Length - ".xx-XX.resx".Length, "xx-XX".Length);
+            return languageFileName.GetLocaleCodeFromFileName();
         }
 
         private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
@@ -1107,7 +1104,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
-            string cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId);
+            string cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
             return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
                                                                    GetPortalSettingsDictionaryCallback,
                                                                    true);
@@ -1116,7 +1113,7 @@ namespace DotNetNuke.Entities.Portals
         private string GetTemplateName(string languageFileName)
         {
             //e.g. "default template.template.en-US.resx"
-            return languageFileName.Substring(0, languageFileName.Length - ".xx-XX.resx".Length);
+            return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
         private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int PortalId)
@@ -1131,7 +1128,7 @@ namespace DotNetNuke.Entities.Portals
                 if (locale == null)
                 {
                     // if language does not exist in the installation, create it
-                    locale = new Locale {Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.CreateSpecificCulture(cultureCode).NativeName};
+                    locale = new Locale { Code = cultureCode, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(cultureCode).NativeName };
                     Localization.SaveLanguage(locale,false);
                     clearCache = true;
                 }
@@ -1458,7 +1455,7 @@ namespace DotNetNuke.Entities.Portals
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablepopups")))
             {
-                UpdatePortalSetting(PortalId, "EnablePopups", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
+                UpdatePortalSetting(PortalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled")))
@@ -1810,7 +1807,7 @@ namespace DotNetNuke.Entities.Portals
                 var defaultLocale = LocaleController.Instance.GetLocale(portalInfo.DefaultLanguage);
                 if (defaultLocale == null)
                 {
-                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.CreateSpecificCulture(portalInfo.DefaultLanguage).NativeName };
+                    defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
                     Localization.SaveLanguage(defaultLocale, false);
                 }
                 localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
@@ -2015,6 +2012,22 @@ namespace DotNetNuke.Entities.Portals
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
+            }
+        }
+
+        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        {
+            string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+
+            if (currentSetting != settingValue)
+            {
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode);
+                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                if (clearCache)
+                {
+                    DataCache.ClearPortalCache(portalID, false);
+                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+                }
             }
         }
 
@@ -2610,7 +2623,12 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalInternal(portal, true);
         }
 
-		#endregion
+        void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        {
+            UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode);
+        }
+
+        #endregion
 
         #region Public Static Methods
 
@@ -3177,18 +3195,8 @@ namespace DotNetNuke.Entities.Portals
 		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
 		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
 		{
-			string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode);
 
-			if (currentSetting != settingValue)
-			{
-				DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode);
-				EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-				if (clearCache)
-				{
-					DataCache.ClearPortalCache(portalID, false);
-					DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-				}
-			}
 		}
 
         /// <summary>

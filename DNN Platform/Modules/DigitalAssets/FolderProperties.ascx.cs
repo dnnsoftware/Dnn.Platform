@@ -58,13 +58,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        protected bool HasFullControl
-        {
-            get
-            {
-                return UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(Folder.FolderPermissions, "FULLCONTROL");
-            }
-        }
+        protected bool HasFullControl { get; private set; }
 
         protected string DialogTitle
         {
@@ -92,6 +86,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 var folderId = Convert.ToInt32(Request.Params["FolderId"]);
                 Folder = FolderManager.Instance.GetFolder(folderId);
+                HasFullControl = UserInfo.IsSuperUser || FolderPermissionController.HasFolderPermission(Folder.FolderPermissions, "FULLCONTROL");
 
                 FolderViewModel rootFolder;
                 switch (SettingsRepository.GetMode(ModuleId))

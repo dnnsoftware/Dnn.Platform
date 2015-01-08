@@ -1143,7 +1143,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
+        public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
@@ -3034,6 +3034,36 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in portals)
             {
                 PortalController.UpdatePortalSetting(portal.PortalID, "PageHeadText", PageHeadTextForUpgrade);
+            }
+
+            RemoveContentListModuleFromSearchResultsPage();
+            ReIndexUserSearch();
+        }
+
+        private static void ReIndexUserSearch()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "TRUE");
+            }
+        }
+
+        private static void RemoveContentListModuleFromSearchResultsPage()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.SearchTabId))
+                {
+                    var module = kvp.Value;
+                    if (module.DesktopModule.FriendlyName == "ContentList")
+                    {
+                        //Delete the Module from the Modules list
+                        ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
+                        break;
+                    }
+                }
             }
         }
 

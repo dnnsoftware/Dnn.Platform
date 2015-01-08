@@ -193,8 +193,8 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-	            if (OldValue == null || string.IsNullOrEmpty((string)OldValue))
-	            {
+                if (OldValue == null || string.IsNullOrEmpty(OldValue.ToString()))
+                {
 					return intValue;
 	            }
 	            try

@@ -377,7 +377,22 @@ namespace DotNetNuke.UI.UserControls
 		}
 		#endregion
 
-		#region Event Handlers
+        #region Public Methods
+
+        public void ChangeMode(string mode)
+        {
+            OptView.SelectedItem.Value = mode;
+            OptViewSelectedIndexChanged(OptView, EventArgs.Empty);
+        }
+        public void ChangeTextRenderMode(string textRenderMode)
+        {
+            OptRender.SelectedItem.Value = textRenderMode;
+            OptRenderSelectedIndexChanged(OptRender, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {

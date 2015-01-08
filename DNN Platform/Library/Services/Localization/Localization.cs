@@ -808,7 +808,7 @@ namespace DotNetNuke.Services.Localization
             string name;
 
             // Create a CultureInfo class based on culture
-            CultureInfo info = CultureInfo.CreateSpecificCulture(code);
+            CultureInfo info = CultureInfo.GetCultureInfo(code);
 
             // Based on the display type desired by the user, select the correct property
             switch (displayType)
@@ -1992,7 +1992,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("language", value) { Path = Globals.ApplicationPath };
+                        cookie = new HttpCookie("language", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
                         response.Cookies.Add(cookie);
                     }
                 }

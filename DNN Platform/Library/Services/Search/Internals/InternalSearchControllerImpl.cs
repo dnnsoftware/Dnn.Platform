@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.Search.Internals
         private void AddSearchDocumentParamters(Document doc, SearchDocument searchDocument, StringBuilder sb)
         {
             //mandatory fields
-            doc.Add(new Field(Constants.UniqueKeyTag, StripTagsNoAttributes(searchDocument.UniqueKey, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            doc.Add(new Field(Constants.UniqueKeyTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.UniqueKey, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new NumericField(Constants.PortalIdTag, Field.Store.YES, true).SetIntValue(searchDocument.PortalId));
             doc.Add(new NumericField(Constants.SearchTypeTag, Field.Store.YES, true).SetIntValue(searchDocument.SearchTypeId));
             doc.Add(!string.IsNullOrEmpty(searchDocument.CultureCode)
@@ -423,7 +423,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.Url))
             {
-                doc.Add(new Field(Constants.UrlTag, StripTagsNoAttributes(searchDocument.Url, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                doc.Add(new Field(Constants.UrlTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Url, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
             if (!string.IsNullOrEmpty(searchDocument.QueryString))
@@ -435,7 +435,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var key = kvp.Key.ToLower();
                 var needAnalyzed = Constants.FieldsNeedAnalysis.Contains(key);
-                var field = new Field(StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, needAnalyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
+                var field = new Field(SearchHelper.Instance.StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true), Field.Store.YES, needAnalyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
                 switch (key)
                 {
                     case Constants.TitleTag:
@@ -465,17 +465,17 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 doc.Add(field);
-                sb.Append(StripTagsNoAttributes(kvp.Value, true)).Append(" ");
+                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(" ");
             }
 
             foreach (var kvp in searchDocument.NumericKeys)
             {
-                doc.Add(new NumericField(StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
+                doc.Add(new NumericField(SearchHelper.Instance.StripTagsNoAttributes(Constants.NumericKeyPrefixTag + kvp.Key, true), Field.Store.YES, true).SetIntValue(kvp.Value));
             }
 
             foreach (var tag in searchDocument.Tags)
             {
-                var field = new Field(Constants.Tag, StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var field = new Field(Constants.Tag, SearchHelper.Instance.StripTagsNoAttributes(tag.ToLower(), true), Field.Store.YES, Field.Index.NOT_ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (_tagBoost > 0 && _tagBoost != Constants.StandardLuceneBoost) field.Boost = _tagBoost / 10f;
                 doc.Add(field);
             }
@@ -499,14 +499,14 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.Permissions))
             {
-                doc.Add(new Field(Constants.PermissionsTag, StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
+                doc.Add(new Field(Constants.PermissionsTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.Permissions, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             }
 
             doc.Add(new NumericField(Constants.ModifiedTimeTag, Field.Store.YES, true).SetLongValue(long.Parse(searchDocument.ModifiedTimeUtc.ToString(Constants.DateTimeFormat))));
 
             if (sb.Length > 0)
             {
-                var field = new Field(Constants.ContentTag, StripTagsNoAttributes(sb.ToString(), true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var field = new Field(Constants.ContentTag, SearchHelper.Instance.StripTagsNoAttributes(sb.ToString(), true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 doc.Add(field);
                 if (_contentBoost > 0 && _contentBoost != Constants.StandardLuceneBoost) field.Boost = _contentBoost/10f;
             }
@@ -520,16 +520,6 @@ namespace DotNetNuke.Services.Search.Internals
         {
             if (fieldValue > 0)
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
-        }
-
-        private static string StripTagsNoAttributes(string html, bool retainSpace)
-        {
-            var strippedString = !String.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;
-
-            // Encode and Strip again
-            strippedString = !String.IsNullOrEmpty(strippedString) ? HtmlUtils.StripTags(html, retainSpace) : html;
-
-            return strippedString;
         }
 
         private const string HtmlTagsWithAttrs = "<[A-Za-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";

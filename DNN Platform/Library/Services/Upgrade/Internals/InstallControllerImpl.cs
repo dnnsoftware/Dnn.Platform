@@ -511,10 +511,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
-            //todo: will need to generate a unique faketable name and introduce the dbo user
-            string databaseActions = "CREATE TABLE [dbo].[faketable]([fakeColumn] [int] NULL);select * from faketable;drop table faketable;";
+            var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
+            var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
             //TODO: this is an obsolete member, need a better solution to support querystring from install.config (i think)
-            string strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
+            var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
             //if no exceptions we have necessary drop etc permissions
             return string.IsNullOrEmpty(strExceptions);
         }

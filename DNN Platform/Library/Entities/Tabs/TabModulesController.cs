@@ -91,15 +91,15 @@ namespace DotNetNuke.Entities.Tabs
             int urlVersion;
             if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
             {
-                return TabVersionMaker.Instance.GetVersionModules(tab.TabID, urlVersion);
+                return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
             }
             
             if (Globals.IsEditMode())
             {
-                return TabVersionMaker.Instance.GetUnPublishedVersionModules(tab.TabID);
+                return TabVersionBuilder.Instance.GetUnPublishedVersionModules(tab.TabID);
             }
 
-            return TabVersionMaker.Instance.GetCurrentModules(tab.TabID);
+            return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
         #endregion
 

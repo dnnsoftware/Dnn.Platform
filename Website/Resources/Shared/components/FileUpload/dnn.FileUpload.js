@@ -52,6 +52,10 @@
             this.$this[0].$element.find("div.fu-folder-picker-container > span").text(folder);
         },
 
+        addFiles: function (files) {
+            this._$inputFileControl.fileupload('add', { files: files });
+        },
+
         _selectUpload: function (uploadMethod, eventObject) {
             var isLocal = uploadMethod === this._uploadMethods.local;
             this.$element.find(".fu-dialog-content-fileupload-local").toggle(isLocal);
@@ -308,6 +312,7 @@
         _add: function (e, data) {
             if (!this._$fileUploadStatusesContainer.is(':visible')) {
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
+                this.$element.trigger("show-statuses-container");
             }
 
             var count = data.originalFiles.length;

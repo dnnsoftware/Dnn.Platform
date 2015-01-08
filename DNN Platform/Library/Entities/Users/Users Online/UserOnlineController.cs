@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = Globals.ApplicationPath
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                 };
                 context.Response.Cookies.Add(cookie);
 
@@ -235,7 +235,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = Globals.ApplicationPath
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                 };
                 context.Response.Cookies.Add(cookie);
             }

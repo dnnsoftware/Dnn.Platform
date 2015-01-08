@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -66,7 +67,7 @@ namespace DotNetNuke.Services.Sitemap
 
             this.ps = ps;
 
-            foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values)
+            foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem))
             {
                 if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
                     (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
