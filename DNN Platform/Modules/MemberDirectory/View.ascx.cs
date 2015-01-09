@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
 
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
             AddIe7StyleSheet();
