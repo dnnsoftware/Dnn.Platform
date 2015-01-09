@@ -32,7 +32,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Admin.Security;
 using DotNetNuke.Security;
@@ -416,8 +415,6 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
 
             jQuery.RequestDnnPluginsRegistration();
-            JavaScript.RequestRegistration(CommonJs.Knockout);
-
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";
