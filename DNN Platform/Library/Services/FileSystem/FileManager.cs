@@ -75,29 +75,26 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-            	lock (this)
+                if (_contentTypes == null)
                 {
-                	if (_contentTypes == null)
-                	{
-                    	var listController = new ListController();
-                    	var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-                    	if (listEntries == null || !listEntries.Any())
-                    	{
-                        	_contentTypes = GetDefaultContentTypes();
-                    	}
-                    	_contentTypes = new Dictionary<string, string>();
-                    	if (listEntries != null)
-                    	{
-                        	foreach (var contentTypeEntry in listEntries)
-                        	{
-                            	_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
-                        	}
-                    	}
-                	}
+                    var listController = new ListController();
+                    var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+                    if (listEntries == null || !listEntries.Any())
+                    {
+                        _contentTypes = GetDefaultContentTypes();
+                    }
+                    _contentTypes = new Dictionary<string, string>();
+                    if (listEntries != null)
+                    {
+                        foreach (var contentTypeEntry in listEntries)
+                        {
+                            _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+                        }
+                    }
+                }
 
-                	return _contentTypes;
-            	}
-        	}
+                return _contentTypes;
+            }
         }
 
         private bool IgnoreWhiteList
@@ -537,32 +534,18 @@ namespace DotNetNuke.Services.FileSystem
 
                 try
                 {
-                    var providerLastModificationTime = DateTime.UtcNow;  
-                    
-                    try
+                    if (needToWriteFile)
                     {
-                        providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+                        folderProvider.AddFile(folder, contentFileName, fileContent);
                     }
-                    catch (Exception fileNotFound) 
-                    {
-                        Logger.Error("Fault tolerant!!!!!!!! = GetLastModificationTime  " + fileName);
-                    }
-                    
+
+                    var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
                     }
 
-                    var providerHash = String.Empty;
-                    
-                    try
-                    {
-                        providerHash = folderProvider.GetHashCode(file);
-                    }
-                    catch (Exception fileNotFound)
-                    {
-                        Logger.Error("Fault tolerant!!!!!!!! =GetHashCode  " + fileName);
-                    }
+                    var providerHash = folderProvider.GetHashCode(file);
                     if (fileHash != providerHash)
                     {
                         DataProvider.Instance()
