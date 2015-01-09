@@ -53,6 +53,7 @@ namespace DotNetNuke.Modules.Journal {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(CommonJs.Knockout);
             
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journal.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/Scripts/journalcomments.js");
