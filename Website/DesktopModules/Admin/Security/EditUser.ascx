@@ -106,8 +106,6 @@
     } (jQuery, window.Sys));
 </script>
 
-<dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" PathNameAlias="SharedScripts" FilePath="knockout.js" />
-
 <div class="dnnForm dnnEditUser dnnClear" id="dnnEditUser" runat="server" ClientIDMode="Static">
     <ul class="dnnAdminTabNav dnnClear" id="adminTabNav" runat="server">
         <li><a href="#dnnUserDetails"><%=LocalizeString("cmdUser")%></a></li>
