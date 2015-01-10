@@ -157,8 +157,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage CreateNewFolder(CreateNewFolderRequest request)
         {
-            var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId, request.FolderMappingId, request.MappedName);
-            return Request.CreateResponse(HttpStatusCode.OK, folder);
+            try
+            {
+                var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
+                    request.FolderMappingId, request.MappedName);
+                return Request.CreateResponse(HttpStatusCode.OK, folder);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
