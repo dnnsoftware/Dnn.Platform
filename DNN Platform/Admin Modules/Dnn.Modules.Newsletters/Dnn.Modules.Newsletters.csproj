@@ -61,30 +61,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
+    <Compile Include="Components\NewsletterController.cs" />
+    <Compile Include="Newsletter.ascx.designer.cs">
+      <DependentUpon>Newsletter.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Newsletter.ascx.cs">
       <DependentUpon>Newsletter.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Newsletter.ascx.designer.cs">
-      <DependentUpon>Newsletter.ascx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="07.05.00.txt" />
     <Content Include="App_LocalResources\Newsletter.ascx.resx" />
     <Content Include="license.txt" />
     <Content Include="module.css" />
-    <Content Include="releaseNotes.txt" />
     <Content Include="Newsletter.ascx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Module.build" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="dnn_Newsletters.dnn" />
+    <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
@@ -103,6 +96,14 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dnn_Newsletters.dnn">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

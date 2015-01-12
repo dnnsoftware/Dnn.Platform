@@ -3040,6 +3040,12 @@ namespace DotNetNuke.Services.Upgrade
             ReIndexUserSearch();
         }
 
+        private static void UpgradeToVersion750()
+        {
+            //Remove Admin Newsletter Page
+            RemoveAdminPages("//Admin//Newsletters");
+        }
+
         private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -5210,6 +5216,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.4.0":
                         UpgradeToVersion740();
+                        break;
+                    case "7.5.0":
+                        UpgradeToVersion750();
                         break;
                 }
             }

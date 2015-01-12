@@ -1,0 +1,1 @@
+﻿DesktopModules/Admin/Newsletters/Nesletter.ascx.cs

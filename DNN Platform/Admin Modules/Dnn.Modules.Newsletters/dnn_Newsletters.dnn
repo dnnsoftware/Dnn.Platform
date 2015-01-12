@@ -1,9 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module" version="07.05.00">
-      <friendlyName>HTML</friendlyName>
-      <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
-      <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
+    <package name="DotNetNuke.Newsletters" type="Module" version="07.05.00">
+      <friendlyName>Newsletters</friendlyName>
+      <description>Administrators can send bulk email to all users belonging to a particular Role.</description>
+      <iconFile>~/Icons/Sigma/Newsletters_32X32.png</iconFile>
       <owner>
         <name>DNN</name>
         <organization>DNN Corp.</organization>
@@ -16,60 +16,23 @@
       <components>
         <component type="Module">
           <desktopModule>
-            <moduleName>DNN_HTML</moduleName>
-            <foldername>HTML</foldername>
-            <shareable>Supported</shareable>
-            <businessControllerClass>DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html</businessControllerClass>
+            <moduleName>Newsletters</moduleName>
+            <foldername>Admin/Newsletters</foldername>
+            <businessControllerClass>Dnn.Modules.Newsletters.Components.NewsletterController</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Portable" />
-              <supportedFeature type="Searchable" />
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>Text/HTML</friendlyName>
-                <defaultCacheTime>1200</defaultCacheTime>
+                <friendlyName>Newsletters</friendlyName>
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/HTML/HtmlModule.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <controlSrc>DesktopModules/Admin/Newsletters/Newsletter.ascx</controlSrc>
                     <controlTitle />
                     <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/HTML/About the Text HTML Module.htm</helpUrl>
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Edit</controlKey>
-                    <controlSrc>DesktopModules/HTML/EditHTML.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Edit Content</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl></helpUrl>
-                    <viewOrder>0</viewOrder>
-                    <supportsPopUps>True</supportsPopUps>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>MyWork</controlKey>
-                    <controlSrc>DesktopModules/HTML/MyWork.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>My Work</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl></helpUrl>
-                    <viewOrder>0</viewOrder>
-                    <supportsPopUps>True</supportsPopUps>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/HTML/Settings.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl></helpUrl>
+                    <iconFile>~/Icons/Sigma/BulkMail_32X32_Standard.png</iconFile>
+                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Newsletters/About the Newsletters Module.html</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>
@@ -80,9 +43,9 @@
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
-              <businessControllerClass>DotNetNuke.Modules.Html.HtmlTextController</businessControllerClass>
+              <businessControllerClass>Dnn.Modules.Newsletters.Components.NewsletterController</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>05.01.02,06.00.00,06.02.00</upgradeVersionsList>
+              <upgradeVersionsList>07.05.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -90,30 +53,19 @@
           <assemblies>
             <assembly>
               <path>bin</path>
-              <name>DotNetNuke.Modules.Html.dll</name>
+              <name>Dnn.Modules.Newsletters.dll</name>
             </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/HTML</basePath>
+            <basePath>DesktopModules/Admin/Newsletters</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
           </resourceFiles>
         </component>
-        <component type="Cleanup" version="04.05.00" fileName ="04.05.00.txt" />
-        <component type="Cleanup" version="04.06.00" fileName ="04.06.00.txt" />
-        <component type="Cleanup" version="04.06.01" fileName ="04.06.01.txt" />
-        <component type="Cleanup" version="04.07.00" fileName ="04.07.00.txt" />
-        <component type="Cleanup" version="04.08.01" fileName ="04.08.01.txt" />
-        <component type="Cleanup" version="05.01.00" fileName ="05.01.00.txt" />
-        <component type="Cleanup" version="05.01.02" fileName ="05.01.02.txt" />
-        <component type="Cleanup" version="05.01.03" fileName ="05.01.03.txt" />
-        <component type="Cleanup" version="05.01.04" fileName ="05.01.04.txt" />
-        <component type="Cleanup" version="05.02.00" fileName ="05.02.00.txt" />
-        <component type="Cleanup" version="05.04.03" fileName ="05.04.03.txt" />
-        <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
+        <component type="Cleanup" version="07.05.00" fileName ="07.05.00.txt" />
       </components>
     </package>
   </packages>

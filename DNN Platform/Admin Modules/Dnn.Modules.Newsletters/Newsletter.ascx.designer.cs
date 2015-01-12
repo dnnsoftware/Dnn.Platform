@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.UI.UserControls.LabelControl plSendMethod;
+        protected global::System.Web.UI.UserControl plSendMethod;
         
         /// <summary>
         /// cboSendMethod control.

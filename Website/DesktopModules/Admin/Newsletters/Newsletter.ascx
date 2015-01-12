@@ -1,4 +1,4 @@
-﻿<%@ Control Inherits="DotNetNuke.Modules.Admin.Newsletters.Newsletter" Language="C#" AutoEventWireup="false" CodeBehind="Newsletter.ascx.cs" %>
+﻿<%@ Control Inherits="DotNetNuke.Modules.Admin.Newsletters.Newsletter" Language="C#" AutoEventWireup="false" Codebehind="Newsletter.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="URLControl" Src="~/controls/DnnUrlControl.ascx" %>
