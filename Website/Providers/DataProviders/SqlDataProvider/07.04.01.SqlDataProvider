@@ -8,6 +8,8 @@
 /*****                                                  *****/
 /************************************************************/
 
+UPDATE {databaseOwner}{objectQualifier}HostSettings Set SettingValue ='http://www.dnnsoftware.com/help' Where SettingName='HelpURL'
+GO
 
 
 /************************************************************/

@@ -36,7 +36,7 @@
                     <controlTitle>Html Editor Management</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Host Console/HTML Editor Manager/About the HTML Editor Manager.html</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

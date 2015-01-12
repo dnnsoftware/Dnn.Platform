@@ -36,7 +36,7 @@
 										<controlTitle>Device Preview Management</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
-										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Device Preview Management/About the Device Preview Management Module.html</helpUrl>
+										<helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 								</moduleControls>

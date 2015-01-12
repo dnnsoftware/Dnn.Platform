@@ -37,7 +37,7 @@
                     <controlTitle />
                     <controlType>View</controlType>
                     <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/File Management/01AboutDAM.htm</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>                  
                   <moduleControl>
