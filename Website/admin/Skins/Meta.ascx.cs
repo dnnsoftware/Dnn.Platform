@@ -36,24 +36,27 @@ namespace DotNetNuke.UI.Skins.Controls
     /// </history>
     /// -----------------------------------------------------------------------------
     public partial class Meta : SkinObjectBase
-	{
-		#region "Public Properties"
+    {
+        ///<summary>Backing field for <see cref="Http" /></summary>
+        private readonly HttpPlaceholder http = new HttpPlaceholder();
 
-		public string Name { get; set; }
+        public string Name { get; set; }
 
-		public string Content { get; set; }
+        public string Content { get; set; }
+    
+        public HttpPlaceholder Http { get { return this.http; } }
 
-        public string HttpEquiv { get; set; }
+        public string HttpEquiv 
+        {
+            get { return this.Http.Equiv; } 
+            set { this.Http.Equiv = value; } 
+        }
 
         public bool InsertFirst { get; set; }
 
-		#endregion
-
-		#region "Event Handlers"
-
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
 
             //if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Content))
             //{
@@ -79,8 +82,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 else
                     Page.Header.Controls.Add(metaTag);
             }
-		}
+        }
 
-		#endregion
-	}
+        public class HttpPlaceholder 
+        {
+            public string Equiv { get; set; }
+        }
+    }
 }
