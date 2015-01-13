@@ -87,7 +87,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				        UpdateConfigFilesName();
                         UpdateToolsFilesName();
                         break;
-                    case "07.04.01":
+                    case "07.04.00":
                         // Find the RadEditor page.  It should already exist and this will return it's reference.
                         var editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
 

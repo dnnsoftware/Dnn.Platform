@@ -49,7 +49,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Providers.RadEditorProvider.UpgradeController, DotNetNuke.RadEditorProvider</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>06.00.00,07.00.06,07.03.00</upgradeVersionsList>
+              <upgradeVersionsList>06.00.00,07.00.06,07.03.00,07.04.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
