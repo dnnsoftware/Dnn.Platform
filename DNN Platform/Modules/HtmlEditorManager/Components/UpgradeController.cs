@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             {
                 switch (version)
                 {
-                    case "07.04.00":
+                    case "07.04.01":
                         const string ResourceFile = ModuleFolder + "/App_LocalResources/ProviderConfiguration.ascx.resx";
                         string pageName = Localization.GetString("HTMLEditorPageName", ResourceFile);
                         string pageDescription = Localization.GetString("HTMLEditorPageDescription", ResourceFile);
