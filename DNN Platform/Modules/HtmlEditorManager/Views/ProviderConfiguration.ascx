@@ -11,5 +11,7 @@
         <asp:DropDownList ID="ProvidersDropDownList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ProvidersDropDownList_SelectedIndexChanged" DataSource="<%#this.Model.Editors %>" SelectedValue="<%#this.Model.SelectedEditor %>" />
         <asp:Button ID="SaveButton" runat="server" class="dnnPrimaryAction" OnClick="SaveButton_Click" Text="Change" Enabled="<%#this.Model.CanSave %>" />
     </div>
-    <div><asp:PlaceHolder runat="server" ID="EditorPanel"></asp:PlaceHolder></div>
+    <div>
+        <asp:PlaceHolder runat="server" ID="EditorPanel"></asp:PlaceHolder>
+    </div>
 </div>
