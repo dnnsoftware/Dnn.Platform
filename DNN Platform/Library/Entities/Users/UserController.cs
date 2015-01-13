@@ -874,7 +874,9 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            // If the HTTP Current Context is unavailable (e.g. when called from within a SchedulerClient) GetCurrentPortalSettings() returns null and the 
+            // PortalSettings are created/loaded for the portal (originally) assigned to the user.
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings() ?? new PortalSettings(portalId);
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -887,7 +889,7 @@ namespace DotNetNuke.Entities.Users
 
             if (canDelete)
             {
-                //Obtain PortalSettings from Current Context
+                //Obtain PortalSettings from Current Context or from the users (original) portal if the HTTP Current Context is unavailable.
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
