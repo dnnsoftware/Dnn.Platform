@@ -28,6 +28,8 @@ using System.Collections.Specialized;
 using DotNetNuke.Authentication.Facebook.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
@@ -72,7 +74,12 @@ namespace DotNetNuke.Authentication.Facebook
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            OAuthClient.Authorize();
+            AuthorisationResult result = OAuthClient.Authorize();
+            if (result == AuthorisationResult.Denied)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                
+            }
         }
     }
 }
