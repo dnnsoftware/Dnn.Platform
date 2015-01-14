@@ -474,7 +474,14 @@ namespace DotNetNuke.Services.FileSystem
                         file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
-                            UpdateFile(file);
+                            if (file.FileId == Null.NullInteger)
+                            {
+                                AddFile(file, fileHash, createdByUserID);
+                            }  
+                            else
+                            {
+                                UpdateFile(file);
+                            }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
                         else
@@ -511,25 +518,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (folderWorkflow == null || !fileExists)
                 {
-                    file.FileId = DataProvider.Instance().AddFile(file.PortalId,
-                                                              file.UniqueId,
-                                                              file.VersionGuid,
-                                                              file.FileName,
-                                                              file.Extension,
-                                                              file.Size,
-                                                              file.Width,
-                                                              file.Height,
-                                                              file.ContentType,
-                                                              file.Folder,
-                                                              file.FolderId,
-                                                              createdByUserID,
-                                                              fileHash,
-                                                              file.LastModificationTime,
-                                                              file.Title,
-                                                              file.StartDate,
-                                                              file.EndDate,
-                                                              file.EnablePublishPeriod,
-                                                              file.ContentItemID);
+                    AddFile(file, fileHash, createdByUserID);
                 }
 
                 try
@@ -595,6 +584,30 @@ namespace DotNetNuke.Services.FileSystem
                     fileContent.Dispose();
                 }
             }
+        }
+
+        private void AddFile(IFileInfo file, string fileHash, int createdByUserID)
+        {
+            file.FileId = DataProvider.Instance().AddFile(file.PortalId,
+                                                    file.UniqueId,
+                                                    file.VersionGuid,
+                                                    file.FileName,
+                                                    file.Extension,
+                                                    file.Size,
+                                                    file.Width,
+                                                    file.Height,
+                                                    file.ContentType,
+                                                    file.Folder,
+                                                    file.FolderId,
+                                                    createdByUserID,
+                                                    fileHash,
+                                                    file.LastModificationTime,
+                                                    file.Title,
+                                                    file.StartDate,
+                                                    file.EndDate,
+                                                    file.EnablePublishPeriod,
+                                                    file.ContentItemID);
+          
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
