@@ -4671,6 +4671,12 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         if ((node != null))
                         {
+                            //add item to identity install from install wizard.
+                            if (HttpContext.Current != null)
+                            {
+                                HttpContext.Current.Items.Add("InstallFromWizard", true);
+                            }
+
                             int portalId = AddPortal(node, true, 2);
                             if (portalId > -1)
                             {

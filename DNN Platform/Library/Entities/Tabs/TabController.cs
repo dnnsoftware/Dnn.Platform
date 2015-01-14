@@ -2209,6 +2209,19 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
+            //if deserialize tab from install wizard, we need parse desiralize handlers first.
+            var installFromWizard = HttpContext.Current != null && HttpContext.Current.Items.Contains("InstallFromWizard");
+            if (installFromWizard && TabDeserialize == null)
+            {
+                HttpContext.Current.Items.Remove("InstallFromWizard");
+                foreach (var handlers in new EventHandlersContainer<ITabSyncEventHandler>().EventHandlers)
+                {
+                    TabSerialize += handlers.Value.TabSerialize;
+                    TabDeserialize += handlers.Value.TabDeserialize;
+                }
+            }
+
+
             if (TabDeserialize != null)
             {
                 var tab = Instance.GetTab(tabId, portalId);
