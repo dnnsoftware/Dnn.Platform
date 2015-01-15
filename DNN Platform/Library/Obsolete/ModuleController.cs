@@ -191,20 +191,6 @@ namespace DotNetNuke.Entities.Modules
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3. Replaced by GetModule(moduleID, Null.NullInteger, true)")]
-        public ModuleInfo GetModule(int moduleID)
-        {
-            return GetModule(moduleID, Null.NullInteger, true);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprectaed in DNN 7.3. Replaced by GetModule(moduleID, tabID, false)")]
-        public ModuleInfo GetModule(int moduleID, int tabID)
-        {
-            return GetModule(moduleID, tabID, false);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3.  Please use the ModuleSettings property of the ModuleInfo object")]
         public Hashtable GetModuleSettings(int ModuleId)
         {
