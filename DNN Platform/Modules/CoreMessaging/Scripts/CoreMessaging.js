@@ -743,6 +743,35 @@
             }
         };
 
+        self.dismissAllNotifications = function () {
+            var opts = {
+                callbackTrue: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: baseServicepath + 'DismissAllNotifications',
+                        beforeSend: serviceFramework.setModuleHeaders
+                    }).done(function (data) {
+                        if (data.Result === "success") {
+                            displayMessage("#dnnCoreNotification", settings.actionPerformedText, "dnnFormSuccess");
+                            location.href = window.location.href;
+                        } else {
+                            displayMessage("#dnnCoreMessaging", settings.serverErrorText, "dnnFormWarning");
+                        }
+                    }).fail(function (xhr, status) {
+                        displayMessage("#dnnCoreMessaging", settings.serverErrorWithDescriptionText + status, "dnnFormWarning");
+                    });
+                },
+                text: String.format(settings.dismissAllConfirmText, self.TotalNotifications()),
+                yesText: settings.yesText,
+                noText: settings.noText,
+                title: settings.title,
+                buttonYesClass: 'dnnSecondaryAction',
+                buttonNoClass: 'dnnPrimaryAction',
+            };
+
+            $.dnnConfirm(opts);
+        };
+
         self.apiCallRequest = function (action) {
             $.ajax({
                 type: "POST",

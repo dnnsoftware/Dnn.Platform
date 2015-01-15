@@ -33,22 +33,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
-
-using System.Collections.Specialized;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Installer.Log;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
@@ -520,7 +517,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private void SaveTokenCookie(string suffix)
         {
-            var authTokenCookie = new HttpCookie(AuthTokenName + suffix);
+            var authTokenCookie = new HttpCookie(AuthTokenName + suffix) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
             authTokenCookie.Values[OAuthTokenKey] = AuthToken;
             authTokenCookie.Values[OAuthTokenSecretKey] = TokenSecret;
             authTokenCookie.Values[UserGuidKey] = UserGuid;
@@ -731,7 +728,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public void RemoveToken()
         {
-            var authTokenCookie = new HttpCookie(AuthTokenName) {Expires = DateTime.Now.AddDays(-30)};
+            var authTokenCookie = new HttpCookie(AuthTokenName)
+            {
+                Expires = DateTime.Now.AddDays(-30),
+                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+            };
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }
 

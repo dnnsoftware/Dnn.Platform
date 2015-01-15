@@ -23,12 +23,10 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -317,8 +315,7 @@ namespace DotNetNuke.Services.Authentication
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
             string _RedirectURL = "";
-            object setting = UserModuleBase.GetSetting(settings.PortalId, "Redirect_AfterLogout");
-            if (Convert.ToInt32(setting) == Null.NullInteger)
+            if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
                 {
@@ -345,7 +342,7 @@ namespace DotNetNuke.Services.Authentication
             }
             else //redirect to after logout page
             {
-                _RedirectURL = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(setting));
+				_RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
             return _RedirectURL;
         }
@@ -382,7 +379,7 @@ namespace DotNetNuke.Services.Authentication
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("authentication", value);
+                        cookie = new HttpCookie("authentication", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
                         if (CreatePersistentCookie)
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);

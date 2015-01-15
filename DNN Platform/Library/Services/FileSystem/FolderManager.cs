@@ -384,6 +384,25 @@ namespace DotNetNuke.Services.FileSystem
             return defaultMappedPath.ToString();
         }
 
+        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, bool allSubFolders)
+        {
+            Requires.NotNull("parentFolder", parentFolder);
+
+            if (allSubFolders)
+            {
+                var subFolders =
+                    GetFolders(parentFolder.PortalID)
+                        .Where(
+                            f =>
+                                f.FolderPath.StartsWith(parentFolder.FolderPath,
+                                    StringComparison.InvariantCultureIgnoreCase));
+
+                return subFolders.Where(f => f.FolderID != parentFolder.FolderID);
+            }
+
+            return GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
+        }
+
         #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
@@ -646,9 +665,9 @@ namespace DotNetNuke.Services.FileSystem
 
             if (recursive)
             {
-                foreach (var subFolder in GetFolders(folder))
+                foreach (var subFolder in GetFolders(folder, true))
                 {
-                    files.AddRange(GetFiles(subFolder, true, retrieveUnpublishedFiles));
+                    files.AddRange(GetFiles(subFolder, false, retrieveUnpublishedFiles));
                 }
             }
 
@@ -748,9 +767,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when parentFolder is null.</exception>
         public virtual IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder)
         {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            return GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
+            return GetFolders(parentFolder, false);
         }
 
         /// <summary>
@@ -1742,11 +1759,8 @@ namespace DotNetNuke.Services.FileSystem
                 //Add any folders from non-core providers
                 if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
                 {
-                    if (!isRecursive)
-                    {
-                        mergedItem.ExistsInFolderMapping = true;
-                    }
-                    else
+                    mergedItem.ExistsInFolderMapping = true;
+                    if (isRecursive)
                     {
                         var folder = GetFolder(portalId, mergedItem.FolderPath);
                         mappedFolders = MergeFolderLists(mappedFolders, GetFolderMappingFoldersRecursive(folderMapping, folder));
@@ -2045,7 +2059,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!folderProvider.FileExists(folder, file.FileName))
                         {
-                            FileManager.Instance.DeleteFile(file);
+                            FileDeletionController.Instance.DeleteFileData(file);
                         }
                     }
                     catch (Exception ex)

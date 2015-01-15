@@ -189,9 +189,6 @@
   <data name="FileUpload.Title.Text" xml:space="preserve">
     <value>Upload Files</value>
   </data>
-  <data name="FileUpload.DialogHeader.Text" xml:space="preserve">
-    <value>Use one of the methods below to upload files</value>
-  </data>
   <data name="FileUpload.DecompressLabel.Text" xml:space="preserve">
     <value>Decompress Zip Files</value>
   </data>
@@ -205,7 +202,7 @@
     <value>Upload File</value>
   </data>
   <data name="FileUpload.UploadFromWebMethod.Text" xml:space="preserve">
-    <value>From Web</value>
+    <value>From URL</value>
   </data>
   <data name="FileUpload.CloseButton.Text" xml:space="preserve">
     <value>Close</value>

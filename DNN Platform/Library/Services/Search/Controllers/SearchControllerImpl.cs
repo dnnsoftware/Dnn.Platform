@@ -141,6 +141,17 @@ namespace DotNetNuke.Services.Search.Controllers
                 query.Add(new TermQuery(new Term(Constants.Tag, tag.ToLower())), Occur.MUST);
             }
 
+            foreach (var kvp in searchQuery.CustomKeywords)
+            {
+                query.Add(new TermQuery(new Term(
+                    SearchHelper.Instance.StripTagsNoAttributes(Constants.KeywordsPrefixTag + kvp.Key, true), kvp.Value)), Occur.MUST);
+            }
+
+            foreach (var kvp in searchQuery.NumericKeys)
+            {
+                query.Add(NumericRangeQuery.NewIntRange(Constants.NumericKeyPrefixTag + kvp.Key, kvp.Value, kvp.Value, true, true), Occur.MUST); 
+            }
+
             if (!string.IsNullOrEmpty(searchQuery.CultureCode))
             {
                 var localeQuery = new BooleanQuery();
@@ -467,6 +478,7 @@ namespace DotNetNuke.Services.Search.Controllers
             FillTagsValues(doc, result);
             return result;
         }
+
 
         #endregion
     }

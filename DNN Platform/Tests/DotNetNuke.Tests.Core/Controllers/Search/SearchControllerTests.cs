@@ -121,16 +121,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int NumericValue1 = 77777;
         private const int NumericValue2 = 55555;
         private const int NumericValue50 = 50;
+        private const int NumericValue100 = 100;
         private const int NumericValue200 = 200;
+        private const int NumericValue500 = 500;
         private const int NumericValue1000 = 1000;
         private const string KeyWord1Name = "keyword1";
         private const string KeyWord1Value = "value1";
         private const string KeyWord2Name = "keyword2";
         private const string KeyWord2Value = "value2";
+        private const string KeyWord3Value = "value3";
+        private const string KeyWord4Value = "value4";
+        private const string KeyWord5Value = "value5";
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
         private const string Line3 = "the quick fox jumps over the black dog";
         private const string Line4 = "the red fox jumped over the lazy dark gray dog";
+
+        private const int CustomBoost = 80;
 
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
@@ -195,19 +202,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #region Private Methods
 
-        private void CreateNewLuceneControllerInstance()
+        private void CreateNewLuceneControllerInstance(bool reCreate = false)
         {
-            DeleteIndexFolder();
             InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
             _internalSearchController = InternalSearchController.Instance;
             _searchController = new SearchControllerImpl();
-            if (_luceneController != null)
+
+            if (!reCreate)
             {
-                LuceneController.ClearInstance();
-                _luceneController.Dispose();
+                DeleteIndexFolder();
+
+                if (_luceneController != null)
+                {
+                    LuceneController.ClearInstance();
+                    _luceneController.Dispose();
+                }
+                _luceneController = new LuceneControllerImpl();
+                LuceneController.SetTestableInstance(_luceneController);
             }
-            _luceneController = new LuceneControllerImpl();
-            LuceneController.SetTestableInstance(_luceneController);
         }
 
         private void SetupHostController()
@@ -298,6 +310,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "los,de,el",
                 });
             _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>())).Returns<string, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
 
@@ -415,6 +428,30 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return searchDocs;
         }
 
+        private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var searchDocs = new List<SearchDocument> {
+                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = {{"title", "Hello"}}, Body = "Hello1 World"},
+                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = {{"subject", "Hello"}}, Body = "Hello2 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = {{"comments", "Hello"}}, Body = "Hello3 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = {{"authorname", "Hello"}}, Body = "Hello4 World" },
+            };
+
+            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
+            var i = 0;
+
+            foreach (var searchDocument in searchDocs)
+            {
+                searchDocument.SearchTypeId = searchTypeId;
+                searchDocument.UniqueKey = Guid.NewGuid().ToString();
+                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
+                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
+                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
+            }
+
+            return searchDocs;
+        }
+
         /// <summary>
         /// Adds standarad SearchDocs in Lucene Index
         /// </summary>
@@ -426,12 +463,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return docs.Length;
         }
 
+        private int AddSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var docs = GetSearchDocsForCustomBoost(searchTypeId).ToArray();
+            _internalSearchController.AddSearchDocuments(docs);
+            return docs.Length;
+        }
+
         private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
         {
              var doc1 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key1",
+                Body = "hello",
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
@@ -444,7 +489,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
             };
             var doc3 = new SearchDocument
             {
@@ -453,10 +498,84 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() {doc1, doc2, doc3};
+            var docs = new List<SearchDocument>() {doc1, doc2, doc3, doc4, doc5};
+
+            _internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
+        {
+            var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                Body = "hello",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } }
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } }
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } }
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } }
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } }
+            };
+
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
             _internalSearchController.AddSearchDocuments(docs);
 
@@ -1902,6 +2021,95 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndTitleKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+            CreateNewLuceneControllerInstance(true);
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello1"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndSubjectKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello2"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndCommentKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello3"));
+        }
+
+        [Test]
+        public void SearchController_GetResult_Sorty_By_RelevanceAndAuthorKeyword_Returns_TopHit_Docs_First()
+        {
+            _mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
+            CreateNewLuceneControllerInstance(true);
+            //Arrange
+            var added = AddSearchDocsForCustomBoost();
+
+            //Act
+            var query = new SearchQuery
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "Hello"
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(added, search.Results.Count);
+            Assert.AreEqual(true, search.Results[0].Body.Contains("Hello4"));
+        }
+
+        [Test]
         public void SearchController_GetResult_Sorty_By_Relevance_Ascending_Does_Not_Change_Sequence_Of_Results()
         {
             //Arrange
@@ -2700,5 +2908,48 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+
+        #region custom numeric key and keyword test
+        [Test]
+        public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
+        {
+            AddDocumentsWithNumericKeys();
+
+            //Act
+            var query = new SearchQuery
+            {
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.AreEqual(NumericValue50, search.Results[0].NumericKeys[NumericKey1]);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Works_With_CustomKeyword_Querirs()
+        {
+
+            AddDocumentsWithKeywords();
+            
+            //Act
+            var query = new SearchQuery
+            {
+                CustomKeywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.AreEqual(KeyWord1Value, search.Results[0].Keywords[KeyWord1Name]);
+        }
+
+        #endregion
+
     }
 }

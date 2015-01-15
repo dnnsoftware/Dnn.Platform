@@ -1,12 +1,12 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.CoreMessaging.View" CodeBehind="View.ascx.cs" %>
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Services.Localization" %>
+<%@ Import Namespace="DotNetNuke.UI.Utilities" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register src="Subscriptions.ascx" tagPrefix="dnn" tagName="Subscriptions" %>
 
 <asp:Panel runat="server" ID="CoreMessagingContainer">
 
-<dnn:DnnJsInclude ID="DnnJsInclude1" runat="server" PathNameAlias="SharedScripts" FilePath="knockout.js" />
 <dnn:DnnJsInclude ID="DnnJsInclude2" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.js" Priority="101" />
 <dnn:DnnCssInclude ID="DnnCssInclude1" runat="server" FilePath="~/Resources/Shared/Components/ComposeMessage/ComposeMessage.css" />
 <dnn:DnnJsInclude ID="DnnJsInclude3" runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="102" />
@@ -214,8 +214,11 @@
         <div class="coreNotifications" id="dnnCoreNotification">
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
+                    <div class="dnnFormExpandContent dnnClear">
+                        <a href="#" data-bind="visible: TotalNotifications() > 0, click: $root.dismissAllNotifications"><%=LocalizeString("DismissAllNotifications")%></a>
+                    </div>
                     <div class="messageFolders">
-                        <p><strong data-bind="text: getNotificationPageNumbers()"></strong><%=LocalizeString("Of")%><strong data-bind="    text: TotalNotifications"></strong></p>
+                        <p><strong data-bind="text: getNotificationPageNumbers()"></strong><%=LocalizeString("Of")%><strong data-bind="text: TotalNotifications"></strong></p>
                     </div>
                 </div>
                 <div id="loadingNotifications" data-bind="visible: loadingData"><img src='<%= ResolveUrl("images/ajax-loader.gif") %>' alt="" /> <%=LocalizeString("LoadingContent") %></div>
@@ -257,21 +260,22 @@
 	jQuery(document).ready(function ($) {		
         var sm = new CoreMessaging($, ko, {
             profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
-            conversationSetAsReadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
-            conversationSetAsUnreadText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
-            loadingText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',
-            loadMoreText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("LoadMore"))%>',
-            conversationArchivedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationArchived"))%>',
-            conversationUnarchivedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ConversationUnarchived"))%>',
-            notificationConfirmTitleText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmTitle"))%>',
-            notificationConfirmYesText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmYes"))%>',
-            notificationConfirmNoText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
-            actionPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
-            actionNotPerformedText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
-            replyHasNoRecipientsText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
-            messageSentText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
-            serverErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
-            serverErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
+            conversationSetAsReadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
+            conversationSetAsUnreadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
+            loadingText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',
+            loadMoreText: '<%= ClientAPI.GetSafeJSString(LocalizeString("LoadMore"))%>',
+            conversationArchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationArchived"))%>',
+            conversationUnarchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationUnarchived"))%>',
+            notificationConfirmTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmTitle"))%>',
+            notificationConfirmYesText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmYes"))%>',
+            notificationConfirmNoText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
+            actionPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
+            actionNotPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
+            replyHasNoRecipientsText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
+            messageSentText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
+            serverErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
+            serverErrorWithDescriptionText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
+            dismissAllConfirmText: '<%= ClientAPI.GetSafeJSString(LocalizeString("DismissAllConfirm")) %>',
             text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
@@ -279,43 +283,43 @@
         }, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',
-            title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Title")) %>',
-            toText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("To")) %>',
-            subjectText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Subject")) %>',
-            messageText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Message")) %>',
-            sendText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Send")) %>',
-            cancelText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
-            attachmentsText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Attachments")) %>',
-            browseText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Browse")) %>',
-            uploadText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Upload")) %>',
+            title: '<%= ClientAPI.GetSafeJSString(LocalizeString("Title")) %>',
+            toText: '<%= ClientAPI.GetSafeJSString(LocalizeString("To")) %>',
+            subjectText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Subject")) %>',
+            messageText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Message")) %>',
+            sendText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Send")) %>',
+            cancelText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
+            attachmentsText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Attachments")) %>',
+            browseText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Browse")) %>',
+            uploadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Upload")) %>',
             maxFileSize: <%=Config.GetMaxUploadSize()%>,
-            removeText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Remove")) %>',
-            messageSentTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSentTitle")) %>',
-            messageSentText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
-            dismissThisText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DismissThis")) %>',
-            throttlingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Throttling")) %>',
-            noResultsText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoResults")) %>',
-            searchingText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Searching")) %>',
-            createMessageErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CreateMessageError"))%>',
-            createMessageErrorWithDescriptionText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CreateMessageErrorWithDescription"))%>',
-            autoSuggestErrorText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("AutoSuggestError"))%>',
+            removeText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Remove")) %>',
+            messageSentTitle: '<%= ClientAPI.GetSafeJSString(LocalizeString("MessageSentTitle")) %>',
+            messageSentText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
+            dismissThisText: '<%= ClientAPI.GetSafeJSString(LocalizeString("DismissThis")) %>',
+            throttlingText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Throttling")) %>',
+            noResultsText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NoResults")) %>',
+            searchingText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Searching")) %>',
+            createMessageErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("CreateMessageError"))%>',
+            createMessageErrorWithDescriptionText: '<%= ClientAPI.GetSafeJSString(LocalizeString("CreateMessageErrorWithDescription"))%>',
+            autoSuggestErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("AutoSuggestError"))%>',
             showAttachments: <%= ShowAttachments %>,
             onMessageSent: function () {
                 var context = ko.contextFor(document.getElementById($("#<%= coreMessaging.ClientID %>").attr("id")));
                 if (!context.$root.showReplies()) context.$root.reloadBoxes();
             },
             userFileManagerOptions: {
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("UserFileManagerTitle")) %>',
-                cancelText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
-                attachText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Attach")) %>',
+                title: '<%= ClientAPI.GetSafeJSString(LocalizeString("UserFileManagerTitle")) %>',
+                cancelText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Cancel")) %>',
+                attachText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Attach")) %>',
                 getItemsServiceUrl: $.ServicesFramework(<%=ModuleId %>).getServiceRoot('InternalServices') + 'UserFile/GetItems',
                 templatePath: '<%=Page.ResolveUrl("~/Resources/Shared/Components/UserFileManager/Templates/") %>',
                 templateName: 'Default',
                 templateExtension: '.html',
-                nameHeaderText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Name.Header")) %>',
-                typeHeaderText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("Type.Header")) %>',
-                lastModifiedHeaderText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("LastModified.Header")) %>',
-                fileSizeText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("FileSize.Header")) %>'
+                nameHeaderText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Name.Header")) %>',
+                typeHeaderText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Type.Header")) %>',
+                lastModifiedHeaderText: '<%= ClientAPI.GetSafeJSString(LocalizeString("LastModified.Header")) %>',
+                fileSizeText: '<%= ClientAPI.GetSafeJSString(LocalizeString("FileSize.Header")) %>'
             },
             servicesFramework: $.ServicesFramework(<%=ModuleId %>)
         });

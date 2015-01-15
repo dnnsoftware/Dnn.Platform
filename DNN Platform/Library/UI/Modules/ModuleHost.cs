@@ -141,6 +141,17 @@ namespace DotNetNuke.UI.Modules
         #endregion
 
         #region Private Methods
+        
+        private void InjectVersionToTheModuleIfSupported()
+        {
+            if (!(_control is IVersionableControl)) return;
+
+            var versionableControl = _control as IVersionableControl;
+            if (_moduleConfiguration.ModuleVersion != Null.NullInteger)
+            {
+                versionableControl.SetModuleVersion(_moduleConfiguration.ModuleVersion);
+            }
+        }
 
         private void InjectModuleContent(Control content)
         {
@@ -256,7 +267,7 @@ namespace DotNetNuke.UI.Modules
                 viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
                                                               moduleInfo)); 
             }
-
+            
             return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
@@ -505,6 +516,8 @@ namespace DotNetNuke.UI.Modules
                 {
                     //inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
                     InjectMessageControl(this);
+
+                    InjectVersionToTheModuleIfSupported();
 
                     //inject the module into the panel
                     InjectModuleContent(_control);

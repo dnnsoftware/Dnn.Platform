@@ -503,7 +503,13 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
-            if (IsSuperUser || role == Globals.glbRoleAllUsersName)
+            //super users should always be verified.
+            if (IsSuperUser)
+            {
+                return role != "Unverified Users";
+            }
+
+            if (role == Globals.glbRoleAllUsersName)
             {
                 return true;
             }

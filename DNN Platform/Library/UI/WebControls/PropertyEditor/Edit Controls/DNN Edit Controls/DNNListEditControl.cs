@@ -61,6 +61,7 @@ namespace DotNetNuke.UI.WebControls
             ValueField = ListBoundField.Value;
             TextField = ListBoundField.Text;
             ParentKey = "";
+            SortAlphabetically = false;
         }
 
         /// -----------------------------------------------------------------------------
@@ -73,7 +74,17 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected bool AutoPostBack { get; set; }
 
-		#region "Protected Properties"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// If true the list will be sorted on the value of Text before rendering
+        /// </summary>
+        /// <history>
+        ///     [pdonker]	07/18/2014	created
+        /// </history>
+        /// -----------------------------------------------------------------------------
+        protected bool SortAlphabetically { get; set; }
+        
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -89,7 +100,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+				if (Value == null || string.IsNullOrEmpty((string)Value))
+				{
+					return intValue;
+				}
+				try
                 {
                     intValue = Convert.ToInt32(Value);
                 }
@@ -125,7 +140,14 @@ namespace DotNetNuke.UI.WebControls
                 if(_listEntries == null)
                 {
                     var listController = new ListController();
-                    _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).ToList();
+                    if (SortAlphabetically)
+                    {
+                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                    }
+                    else
+                    {
+                        _listEntries = listController.GetListEntryInfoItems(ListName, ParentKey, PortalId).ToList();
+                    }
                 }
 
                 return _listEntries;
@@ -171,7 +193,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+                if (OldValue == null || string.IsNullOrEmpty(OldValue.ToString()))
+                {
+					return intValue;
+	            }
+	            try
                 {
 					//Try and cast the value to an Integer
                     intValue = Convert.ToInt32(OldValue);
@@ -421,6 +447,10 @@ namespace DotNetNuke.UI.WebControls
             ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+			writer.AddAttribute("data-name", Name);
+			writer.AddAttribute("data-list", ListName);
+			writer.AddAttribute("data-category", Category);
+			writer.AddAttribute("data-editor", "DNNListEditControl");
             if (AutoPostBack)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, Page.ClientScript.GetPostBackEventReference(this, ID));

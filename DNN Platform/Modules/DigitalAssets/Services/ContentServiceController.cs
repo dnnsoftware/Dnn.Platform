@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -51,9 +52,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [HttpPost]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
-            var moduleId = Request.FindModuleId();
-            var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
-            return Request.CreateResponse(HttpStatusCode.OK, p);
+            try
+            {
+                var moduleId = Request.FindModuleId();
+                var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
+                return Request.CreateResponse(HttpStatusCode.OK, p);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
@@ -125,9 +133,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
-            var moduleId = Request.FindModuleId();
-            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
-            return Request.CreateResponse(HttpStatusCode.OK, subFolders);
+            try
+            {
+                var moduleId = Request.FindModuleId();
+                var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
+                return Request.CreateResponse(HttpStatusCode.OK, subFolders);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
@@ -142,8 +157,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage CreateNewFolder(CreateNewFolderRequest request)
         {
-            var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId, request.FolderMappingId, request.MappedName);
-            return Request.CreateResponse(HttpStatusCode.OK, folder);
+            try
+            {
+                var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
+                    request.FolderMappingId, request.MappedName);
+                return Request.CreateResponse(HttpStatusCode.OK, folder);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]

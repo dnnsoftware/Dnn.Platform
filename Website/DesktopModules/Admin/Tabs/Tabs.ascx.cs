@@ -1136,7 +1136,7 @@ namespace DesktopModules.Admin.Tabs
         private static bool IsSecuredTab(TabInfo tab)
         {
             var perms = tab.TabPermissions;
-            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName != "All Users" || !perm.AllowAccess);
+            return perms.Cast<TabPermissionInfo>().All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
         }
 
         private void LocalizeControl()

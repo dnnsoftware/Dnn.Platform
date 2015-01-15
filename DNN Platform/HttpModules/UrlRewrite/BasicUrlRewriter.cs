@@ -68,12 +68,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             //'Carry out first time initialization tasks
             Initialize.Init(app);
-            if (request.Url.LocalPath.ToLower().EndsWith("/install/install.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/upgradewizard.aspx")
-                || request.Url.LocalPath.ToLower().Contains("/install/installwizard.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                || request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                || request.Url.LocalPath.ToLower().EndsWith("webresource.axd"))
+            if (!Initialize.ProcessHttpModule(request, false, false))
             {
                 return;
             }
@@ -273,7 +268,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                app.Context.Items.Add("PortalSettingsDictionary", PortalController.GetPortalSettingsDictionary(portalId));
+                app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect &&

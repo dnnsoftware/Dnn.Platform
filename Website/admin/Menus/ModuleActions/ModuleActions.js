@@ -102,20 +102,24 @@
                 });
             }
 
+            var htmlStringContainer = "";
+
             //Add move to pane entries
             for (i = 0; i < panes.length; i++) {
                 var pane = panes[i];
                 if (paneName !== pane) {
                     id = pane + moduleId;
                     //htmlString = "<li id=\"" + id + "\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_move.gif\"><span>" + opts.movePaneText.replace("{0}", pane) + "</span></a>";
-                    htmlString = "<li id=\"" + id + "\">" + opts.movePaneText.replace("{0}", pane);
-                    parent.append(htmlString);
-
-                    //Add click event handler to just added element
-                    parent.find("li#" + id).click(function () {
-                        moveToPane($(this).attr("id").replace(moduleId, ""));
-                    });
+                    htmlStringContainer += "<li id=\"" + id + "\">" + opts.movePaneText.replace("{0}", pane);
                 }
+            }
+
+            if (htmlStringContainer) {
+                // loop is done, append the HTML and add moveToPane function on click event
+                parent.append(htmlStringContainer);
+                parent.find("li").click(function () {
+                    moveToPane($(this).attr("id").replace(moduleId, ""));
+                });
             }
         }
 

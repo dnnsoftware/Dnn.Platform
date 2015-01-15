@@ -36,8 +36,8 @@ namespace DotNetNuke.Services.Search
         {
             return ComponentFactory.GetComponent<IndexingProvider>();
         }
-        
-        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDate)
+
+        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             return new List<SearchDocument>();
         }

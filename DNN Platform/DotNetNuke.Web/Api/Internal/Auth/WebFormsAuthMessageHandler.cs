@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     {
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensinons: true);
+            MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);
 
             return request;
         }

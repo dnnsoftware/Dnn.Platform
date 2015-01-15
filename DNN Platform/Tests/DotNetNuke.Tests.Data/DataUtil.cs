@@ -24,7 +24,7 @@ using System.Data;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Text.RegularExpressions;
-
+using DotNetNuke.Data;
 using DotNetNuke.Tests.Utilities;
 
 namespace DotNetNuke.Tests.Data
@@ -55,12 +55,12 @@ namespace DotNetNuke.Tests.Data
 
         public static void ExecuteNonQuery(string databaseName, string sqlScript)
         {
-            ExecuteNonQuery(databaseName, sqlScript, (cmd) => cmd.ExecuteNonQuery());
+            ExecuteNonQuery(databaseName, ReplaceTokens(sqlScript), (cmd) => cmd.ExecuteNonQuery());
         }
 
         public static int ExecuteScalar(string databaseName, string sqlScript)
         {
-            return ExecuteQuery(databaseName, sqlScript, (cmd) => (int)cmd.ExecuteScalar());
+            return ExecuteQuery(databaseName, ReplaceTokens(sqlScript), (cmd) => (int)cmd.ExecuteScalar());
         }
 
         public static string GetConnectionString(string databaseName)
@@ -139,5 +139,10 @@ namespace DotNetNuke.Tests.Data
             }
         }
 
+        private static string ReplaceTokens(string sql)
+        {
+            return sql.Replace("{databaseOwner}", DataProvider.Instance().DatabaseOwner)
+                        .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
+        }
     }
 }

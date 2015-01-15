@@ -38,9 +38,13 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Modules.Communications;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -455,18 +459,36 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                // Versioning checks.
+                if (!TabController.CurrentPage.HasAVisibleVersion)
+                {
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                }
+
+                int urlVersion;
+                if (TabVersionUtils.TryGetUrlVersion(out urlVersion))
+                {
+                    if (!TabVersionUtils.CanSeeVersionedPages())
+                    {
+                        AddPageMessage(this, "", Localization.GetString("TabAccess.Error"),
+                            ModuleMessage.ModuleMessageType.YellowWarning);
+                        return true;
+                    }
+
+                    if (TabVersionController.Instance.GetTabVersions(TabController.CurrentPage.TabID).All(tabVersion => tabVersion.Version != urlVersion))
+                    {
+                        Response.Redirect(Globals.NavigateURL(PortalSettings.ErrorPage404, string.Empty, "status=404"));
+                    }
+                }
+
                 //check portal expiry date
                 if (!CheckExpired())
                 {
                     if ((PortalSettings.ActiveTab.StartDate < DateAndTime.Now && PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
                     {
-                        //dynamically populate the panes with modules
-                        if (PortalSettings.ActiveTab.Modules.Count > 0)
+                        foreach (var objModule in PortalSettingsController.Instance().GetTabModules(PortalSettings))
                         {
-                            foreach (ModuleInfo objModule in PortalSettings.ActiveTab.Modules)
-                            {
-                                success = ProcessModule(objModule);
-                            }
+                            success = ProcessModule(objModule);
                         }
                     }
                     else
@@ -644,8 +666,8 @@ namespace DotNetNuke.UI.Skins
             base.OnPreRender(e);
 
             InvokeSkinEvents(SkinEventType.OnSkinPreRender);
-
-            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !UrlUtils.InPopUp())
+            var isSpecialPageMode = UrlUtils.InPopUp() || Request.QueryString["dnnprintmode"] == "true";
+            if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
             {
                 //Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);

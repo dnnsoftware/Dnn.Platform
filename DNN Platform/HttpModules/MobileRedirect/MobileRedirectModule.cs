@@ -79,23 +79,15 @@ namespace DotNetNuke.HttpModules
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             
             //First check if we are upgrading/installing
-            if (app.Request.Url.LocalPath.ToLower().EndsWith("install.aspx")
-                    || app.Request.Url.LocalPath.ToLower().Contains("upgradewizard.aspx")
-                    || app.Request.Url.LocalPath.ToLower().Contains("installwizard.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("captcha.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("scriptresource.axd")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("webresource.axd")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith("sitemap.aspx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".asmx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".ashx")
-                    || app.Request.Url.LocalPath.ToLower().EndsWith(".svc")
-                    || app.Request.HttpMethod == "POST" 
-                    || ServicesModule.ServiceApi.IsMatch(app.Context.Request.RawUrl)
-					|| IsSpecialPage(app.Request.RawUrl)
+            if (!Initialize.ProcessHttpModule(app.Request, false, false)
+                    || app.Request.HttpMethod == "POST"
+                    || ServicesModule.ServiceApi.IsMatch(app.Request.RawUrl) 
+                    || IsSpecialPage(app.Request.RawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(app.Request.RawUrl, app, portalSettings)))
             {
                 return;
-            } 
+            }
+ 
             if (_redirectionController != null)
             {
                 if (portalSettings != null && portalSettings.ActiveTab != null)

@@ -79,7 +79,7 @@
                         <dnn:DnnFormLiteralItem ID="version" runat="server" DataField = "Version" />
                         <dnn:DnnFormLiteralItem ID="owner" runat="server" DataField = "Owner" />
                         <dnn:DnnFormLiteralItem ID="organization" runat="server" DataField = "Organization" />
-                        <dnn:DnnFormLiteralItem ID="url" runat="server" DataField = "URL" />
+                        <dnn:DnnFormLiteralItem ID="url" runat="server" DataField = "Url" ResourceKey="URL" />
                         <dnn:DnnFormLiteralItem ID="email" runat="server" DataField = "Email" />
                     </Items>
                 </dnn:DnnFormEditor>

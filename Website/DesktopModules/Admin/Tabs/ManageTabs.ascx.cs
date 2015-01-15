@@ -23,15 +23,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -55,7 +52,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using Reflection = DotNetNuke.Framework.Reflection;
@@ -335,6 +331,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             if (Tab != null)
             {
                 BindPageDetails();
+                PageDetailsExtensionControl.BindAction(PortalId, Tab.TabID, ModuleId);
 
                 ctlURL.Url = Tab.Url;
                 bool newWindow = false;
@@ -1073,6 +1070,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
             }
 
+            PageDetailsExtensionControl.SaveAction(PortalId, Tab.TabID, ModuleId);
+
             // url tracking
             var objUrls = new UrlController();
             objUrls.UpdateUrl(PortalId, ctlURL.Url, ctlURL.UrlType, 0, Null.NullDate, Null.NullDate, ctlURL.Log, ctlURL.Track, Null.NullInteger, ctlURL.NewWindow);
@@ -1758,7 +1757,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     if (tabId != Null.NullInteger)
                     {
-                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId));
+                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId))
+                        {
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
                         Response.Cookies.Add(newCookie);
 
                         if (PortalSettings.UserMode != PortalSettings.Mode.Edit)
@@ -1903,11 +1905,22 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             CLControl1.SaveData();
 
-            // saved data may have impact on current page, so we need to reload the current controls
-            BindTab();
+            var returnPath = Globals.NavigateURL();
 
-            // reload localization control
-            BindCLControl();
+            if (Request.QueryString["returntabid"] != null)
+            {
+                // return to admin tab
+                var navigateUrl = Globals.NavigateURL(Convert.ToInt32(Request.QueryString["returntabid"]));
+                // add location hash to let it select in admin tab intially
+                var hash = "#" + (Tab.PortalID == Null.NullInteger ? "H" : "P") + "&" + Tab.TabID;
+                returnPath = navigateUrl + hash;
+            }
+            else if (!string.IsNullOrEmpty(UrlUtils.ValidReturnUrl(Request.QueryString["returnurl"])))
+            {
+                returnPath = Request.QueryString["returnurl"];
+            }
+            Response.Redirect(returnPath);
+         
         }
 
 

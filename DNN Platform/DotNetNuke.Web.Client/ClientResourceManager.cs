@@ -41,6 +41,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.IO;
 	using System.Web.UI;
 	using ClientDependency.Core;
+    using System.Collections.Generic;
+    using System.Threading;
 
     /// <summary>
     /// Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.
@@ -51,6 +53,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
         internal const string DefaultJsProvider = "DnnBodyProvider";
 
+        static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
+        static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
+
         #region Private Methods
 
         private static bool FileExists(Page page, string filePath)
@@ -58,7 +63,24 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
             filePath = RemoveQueryString(filePath);
 
-            return IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+            // cache css file paths
+            if (!_fileExistsCache.ContainsKey(filePath)) {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _lockFileExistsCache.EnterWriteLock();
+                try {
+                    _fileExistsCache[filePath] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                } finally {
+                    _lockFileExistsCache.ExitWriteLock();
+                }
+            }
+
+            // return if file exists from cache
+            _lockFileExistsCache.EnterReadLock();
+            try {
+                return _fileExistsCache[filePath];
+            } finally {
+                _lockFileExistsCache.ExitReadLock();
+            }
         }
 
         private static bool IsAbsoluteUrl(string url)

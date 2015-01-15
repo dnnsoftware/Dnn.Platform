@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Mobile
 		private List<PreviewProfile> CreateDefaultDevices(int portalId)
 		{
 			string defaultPreviewProfiles;
-			var settings = PortalController.GetPortalSettingsDictionary(portalId);
+            var settings = PortalController.Instance.GetPortalSettings(portalId);
 			List<PreviewProfile> profiles = new List<PreviewProfile>();
 
 			if (!settings.TryGetValue("DefPreviewProfiles_Created", out defaultPreviewProfiles) || defaultPreviewProfiles != DotNetNukeContext.Current.Application.Name)

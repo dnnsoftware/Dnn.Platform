@@ -30,6 +30,8 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -174,6 +176,10 @@ namespace DesktopModules.Admin.RecycleBin
                     return;
                 }
                 ModuleController.Instance.RestoreModule(module);
+                
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
+                var currentModuleVersion = TabVersionBuilder.Instance.GetModuleContentLatestVersion(module);
+                TabChangeTracker.Instance.TrackModuleAddition(module, currentModuleVersion, currentUser.UserID);
                 EventLogController.Instance.AddLog(module, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_RESTORED);
             }
         }
@@ -193,6 +199,13 @@ namespace DesktopModules.Admin.RecycleBin
 				}
 				else
 				{
+                    var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tab.PortalID, tab.TabID);
+                    if (changeControlStateForTab.IsChangeControlEnabledForTab)
+                    {
+                        TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
+                        TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+                    }
+
                     TabController.Instance.RestoreTab(tab, PortalSettings);
 					DeletedTabs.Remove(tab);
 
@@ -207,6 +220,12 @@ namespace DesktopModules.Admin.RecycleBin
 																				RestoreModule(moduleId, tabId);
 																			}
 					                                                   	});
+
+                    if (changeControlStateForTab.IsChangeControlEnabledForTab)
+                    {
+                        TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
+                        TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
+                    }
 				}
 			}
 			return success;

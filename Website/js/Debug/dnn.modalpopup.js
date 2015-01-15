@@ -92,7 +92,7 @@
                 $modal.remove();
             }
 
-            $modal = $("<iframe id=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
+            $modal = $("<iframe id=\"iPopUp\" name=\"iPopUp\" src=\"about:blank\" scrolling=\"auto\" frameborder=\"0\"></iframe>");
             $(document.body).append($modal);
             $(document).find('html').css('overflow', 'hidden'); 
 			
@@ -120,7 +120,8 @@
             var hideLoading = function() {
                 $modal.prev(".dnnLoading").remove();
             };			
-			var dialogOpened = function(){				
+            var dialogOpened = function () {
+                
 				$modal.bind("load", function() {
 					hideLoading();
 					var iframe = document.getElementById("iPopUp");
@@ -168,8 +169,10 @@
 				});
 				
 				$modal[0].src = url;
-				
-			};
+
+                if (typeof $.ui.dialog.prototype.options.open === 'function')
+                    $.ui.dialog.prototype.options.open();
+            };
 			
             if (!isMobile) {
                 $modal.dialog({
@@ -274,7 +277,6 @@
                 if (typeof url === "undefined" || url == "") {
                     url = windowTop.location.href;
                 }
-                
                 windowTop.location.href = url;
                 popup.hide();
             } else {

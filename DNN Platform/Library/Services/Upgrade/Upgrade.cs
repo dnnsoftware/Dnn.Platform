@@ -1143,7 +1143,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
+        public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
@@ -2794,8 +2794,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 ImportDocumentLibraryCategories();
                 ImportDocumentLibraryCategoryAssoc(fileContentType);
-
-                AddDefaultContentWorkflows();
             }
             
             //fixes issue introduced by eventlog's being defined in upgrade.cs
@@ -2833,11 +2831,11 @@ namespace DotNetNuke.Services.Upgrade
             {
                 //the username maybe html encode when register in 7.1.2, it will caught unicode charactors changed, need use InputFilter to correct the value.
                 var portalSecurity = new PortalSecurity();
-                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserId, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
+                using (var reader = DataProvider.Instance().ExecuteSQL("SELECT UserID, Username FROM {databaseOwner}[{objectQualifier}Users] WHERE Username LIKE '%&%'"))
                 {
                     while (reader.Read())
                     {
-                        var userId = Convert.ToInt32(reader["UserId"]);
+                        var userId = Convert.ToInt32(reader["UserID"]);
                         var userName = reader["Username"].ToString();
 
                         if (userName != HttpUtility.HtmlDecode(userName))
@@ -3023,6 +3021,52 @@ namespace DotNetNuke.Services.Upgrade
             NotificationsController.Instance.SetNotificationTypeActions(actions, notificationType.NotificationTypeId);
         }
 
+        private static void UpgradeToVersion740()
+        {
+            string PageHeadTextForUpgrade = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />" + "\n" +
+                                               "<meta name=\"REVISIT-AFTER\" content=\"1 DAYS\" />" + "\n" +
+                                               "<meta name=\"RATING\" content=\"GENERAL\" />" + "\n" +
+
+                                                "<meta name=\"RESOURCE-TYPE\" content=\"DOCUMENT\" />" + "\n" +
+                                                "<meta content=\"text/javascript\" http-equiv=\"Content-Script-Type\" />" + "\n" +
+                                                "<meta content=\"text/css\" http-equiv=\"Content-Style-Type\" />" + "\n";
+            ArrayList portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, "PageHeadText", PageHeadTextForUpgrade);
+            }
+
+            RemoveContentListModuleFromSearchResultsPage();
+            ReIndexUserSearch();
+        }
+
+        private static void ReIndexUserSearch()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                PortalController.UpdatePortalSetting(portal.PortalID, UserIndexer.UserIndexResetFlag, "TRUE");
+            }
+        }
+
+        private static void RemoveContentListModuleFromSearchResultsPage()
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (PortalInfo portal in portals)
+            {
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.SearchTabId))
+                {
+                    var module = kvp.Value;
+                    if (module.DesktopModule.FriendlyName == "ContentList")
+                    {
+                        //Delete the Module from the Modules list
+                        ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
+                        break;
+                    }
+                }
+            }
+        }
+
         private static void AddManageUsersModulePermissions()
         {
            var permCtl = new PermissionController();
@@ -3083,14 +3127,6 @@ namespace DotNetNuke.Services.Upgrade
                    //suppress
                }
             
-        }
-
-        private static void AddDefaultContentWorkflows()
-        {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                ContentWorkflowController.Instance.CreateDefaultWorkflows(portal.PortalID);
-            }
         }
 
         private static ContentItem CreateFileContentItem()
@@ -4628,6 +4664,12 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         if ((node != null))
                         {
+                            //add item to identity install from install wizard.
+                            if (HttpContext.Current != null)
+                            {
+                                HttpContext.Current.Items.Add("InstallFromWizard", true);
+                            }
+
                             int portalId = AddPortal(node, true, 2);
                             if (portalId > -1)
                             {
@@ -5171,6 +5213,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.3.3":
                         UpgradeToVersion733();
+                        break;
+                    case "7.4.0":
+                        UpgradeToVersion740();
                         break;
                 }
             }

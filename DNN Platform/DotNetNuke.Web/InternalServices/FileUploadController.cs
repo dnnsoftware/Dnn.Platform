@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,13 +32,15 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.UI.WebControls;
-
+using ClientDependency.Core;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -46,6 +49,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
@@ -224,11 +228,7 @@ namespace DotNetNuke.Web.InternalServices
                                     Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
                                 }, mediaTypeFormatter, "text/plain");
                         }
-
-                        var root = AppDomain.CurrentDomain.BaseDirectory;
-                        returnFileDto.FilePath = returnFileDto.FilePath.Replace(root, "~/");
-                        returnFileDto.FilePath = VirtualPathUtility.ToAbsolute(returnFileDto.FilePath);
-
+                        
                         return Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
                     });
 
@@ -252,7 +252,7 @@ namespace DotNetNuke.Web.InternalServices
             var savedFileDto = new SavedFileDTO();
             try
             {
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
@@ -287,6 +287,10 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
+                // FIX DNN-5917
+                fileName = SanitizeFileName(fileName);
+                // END FIX
+
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -304,8 +308,8 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 errorMessage = "";
-                savedFileDto.FileId = file.FileId.ToString();
-                savedFileDto.FilePath = Path.Combine(folderInfo.PhysicalPath, fileName);
+                savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
+                savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
             }
             catch (Exception ex)
@@ -314,6 +318,55 @@ namespace DotNetNuke.Web.InternalServices
                 errorMessage = ex.Message;
                 return savedFileDto;
             }
+        }
+
+        /// <summary>
+        /// Sanitizes the upload filename to follow RFC2396 URL spec
+        /// </summary>
+        public static string SanitizeFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return null;
+
+            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+            if (string.IsNullOrEmpty(fileNameWithoutExt)) return null;
+
+            var fileNameExt = Path.GetExtension(fileName);
+
+            var disallowedChars = new[]
+                {
+                    ';',
+                    '/',
+                    '?',
+                    ':',
+                    '@',
+                    '&',
+                    '=',
+                    '+',
+                    '$',
+                    ',',
+                    '<',
+                    '>',
+                    '#',
+                    '%',
+                    '"',
+                    '\'',
+                    '{',
+                    '}',
+                    '|',
+                    '\\',
+                    '^',
+                    '[',
+                    ']',
+                    '`'
+                };
+
+            foreach (var c in disallowedChars)
+            {
+                if (fileNameWithoutExt.Contains(c))
+                    fileNameWithoutExt = fileNameWithoutExt.Replace(c, '_');
+            }
+
+            return string.Format("{0}{1}", fileNameWithoutExt, fileNameExt);
         }
 
         private static string GetLocalizedString(string key)
@@ -422,7 +475,7 @@ namespace DotNetNuke.Web.InternalServices
             Stream fileContent = null;
             try
             {
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).TextOrEmpty().Replace(".", "");
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLower().Contains(extension.ToLower()))
@@ -453,14 +506,18 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
-                    && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
+                if (!FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "WRITE")
+                    && !FolderPermissionController.HasFolderPermission(portalSettings.PortalId, folder, "ADD"))
                 {
                     result.Message = GetLocalizedString("NoPermission");
                     return result;
                 }
 
                 IFileInfo file;
+
+                // FIX DNN-5917
+                fileName = SanitizeFileName(fileName);
+                // END FIX
 
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
@@ -493,9 +550,23 @@ namespace DotNetNuke.Web.InternalServices
                 var path = GetUrl(result.FileId);
                 using (reader = new BinaryReader(fileContent))
                 {
-                    var size = IsImage(fileName) ?
-                        ImageHeader.GetDimensions(reader) :
-                        new Size(32, 32);
+                    Size size;
+                    if (IsImage(fileName))
+                    {
+                        try
+                        {
+                            size = ImageHeader.GetDimensions(reader);
+                        }
+                        catch (ArgumentException exc)
+                        {
+                            Logger.Warn("Unable to get image dimensions for image file", exc);
+                            size = new Size(32, 32);
+                        }
+                    }
+                    else
+                    {
+                        size = new Size(32, 32);
+                    }
 
                     result.Orientation = size.Orientation();
                 }
@@ -657,7 +728,7 @@ namespace DotNetNuke.Web.InternalServices
 
                     var segments = dto.Url.Split('/');
                     var fileName = segments[segments.Length - 1];
-                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
+                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
                         fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
                     /* Response Content Type cannot be application/json 

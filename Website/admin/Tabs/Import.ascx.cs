@@ -86,11 +86,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                 if (folder != null)
                 {
-                    var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
-                    foreach (var file in files)
+                    //var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
+                    var files = Globals.GetFileList(PortalId, "page.template", false, folder.FolderPath);
+                    foreach (FileItem file in files)
                     {
-                        var f = file.Replace(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "");
-                        cboTemplate.AddItem(f.Replace(".page.template", ""), f);
+                        cboTemplate.AddItem(file.Text.Replace(".page.template", ""), file.Value);
                     }
                     cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
                     cboTemplate.SelectedIndex = 0;
@@ -183,8 +183,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var selectedFolder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
                 if (selectedFolder == null) return;
 
+                var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument();
-                xmlDoc.Load(PortalSettings.HomeDirectoryMapPath + selectedFolder.FolderPath + cboTemplate.SelectedValue);
+                using (var content = FileManager.Instance.GetFileContent(selectedFile))
+                {
+                    xmlDoc.Load(content);
+                }
 
                 var tabNodes = new List<XmlNode>();
                 var selectSingleNode = xmlDoc.SelectSingleNode("//portal/tabs");
@@ -302,21 +306,22 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 if (cboTemplate.SelectedIndex > 0 && cboFolders.SelectedItem != null)
                 {
-
-                    var selectedFolder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
-                    var filename = PortalSettings.HomeDirectoryMapPath + selectedFolder.FolderPath + cboTemplate.SelectedValue;
+                    var selectedFile = FileManager.Instance.GetFile(Convert.ToInt32(cboTemplate.SelectedValue));
                     var xmldoc = new XmlDocument();
-                    xmldoc.Load(filename);
-                    var node = xmldoc.SelectSingleNode("//portal/description");
-                    if (node != null && !String.IsNullOrEmpty(node.InnerXml))
+                    using (var fileContent = FileManager.Instance.GetFileContent(selectedFile))
                     {
-                        lblTemplateDescription.Visible = true;
-                        lblTemplateDescription.Text = Server.HtmlDecode(node.InnerXml);
-                        txtTabName.Text = cboTemplate.SelectedItem.Text;
-                    }
-                    else
-                    {
-                        lblTemplateDescription.Visible = false;
+                        xmldoc.Load(fileContent);
+                        var node = xmldoc.SelectSingleNode("//portal/description");
+                        if (node != null && !String.IsNullOrEmpty(node.InnerXml))
+                        {
+                            lblTemplateDescription.Visible = true;
+                            lblTemplateDescription.Text = Server.HtmlDecode(node.InnerXml);
+                            txtTabName.Text = cboTemplate.SelectedItem.Text;
+                        }
+                        else
+                        {
+                            lblTemplateDescription.Visible = false;
+                        }
                     }
                 }
                 else

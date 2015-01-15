@@ -49,12 +49,12 @@ namespace DotNetNuke.Services.Authentication
             try
             {
                 string setting = Null.NullString;
-                if (PortalController.GetPortalSettingsDictionary(portalID).TryGetValue("DNN_Enabled", out setting))
+                if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_Enabled", out setting))
                 {
                     Enabled = bool.Parse(setting);
                 }
                 setting = Null.NullString;
-                if (PortalController.GetPortalSettingsDictionary(portalID).TryGetValue("DNN_UseCaptcha", out setting))
+                if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_UseCaptcha", out setting))
                 {
                     UseCaptcha = bool.Parse(setting);
                 }

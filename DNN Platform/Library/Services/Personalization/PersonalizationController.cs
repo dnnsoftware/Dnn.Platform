@@ -24,7 +24,6 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -87,14 +86,8 @@ namespace DotNetNuke.Services.Personalization
                     profileData = context.Request.Cookies["DNNPersonalization"].Value;
                 }
             }
-            if (string.IsNullOrEmpty(profileData))
-            {
-                personalization.Profile = new Hashtable();
-            }
-            else
-            {
-                personalization.Profile = Globals.DeserializeHashTableXml(profileData);
-            }
+            personalization.Profile = string.IsNullOrEmpty(profileData)
+                ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
             return personalization;
         }
 
@@ -117,19 +110,22 @@ namespace DotNetNuke.Services.Personalization
             {
                 if (personalization.IsModified)
                 {
-                    string ProfileData = Globals.SerializeHashTableXml(personalization.Profile);
+                    var profileData = Globals.SerializeHashTableXml(personalization.Profile);
                     if (userId > Null.NullInteger)
                     {
-                        DataProvider.Instance().UpdateProfile(userId, portalId, ProfileData);
+                        DataProvider.Instance().UpdateProfile(userId, portalId, profileData);
                     }
                     else
                     {
 						//Anon User - so try and use cookie.
-                        HttpContext context = HttpContext.Current;
+                        var context = HttpContext.Current;
                         if (context != null)
                         {
-                            var personalizationCookie = new HttpCookie("DNNPersonalization")
-                                                            {Value = ProfileData, Expires = DateTime.Now.AddDays(30)};
+                            var personalizationCookie = new HttpCookie("DNNPersonalization", profileData)
+                            {
+                                Expires = DateTime.Now.AddDays(30),
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                            };
                             context.Response.Cookies.Add(personalizationCookie);
                         }
                     }

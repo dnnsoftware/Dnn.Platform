@@ -27,6 +27,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -107,7 +108,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
             else
             {
-                Response.Redirect("AccessDenied", false);
+                Response.Redirect(Globals.AccessDeniedURL(), false);
             }
         }
 
@@ -124,7 +125,12 @@ namespace DotNetNuke.Modules.CoreMessaging
             var portalSettings = PortalSettings.Current;
             var userPreferenceController = UserPreferencesController.Instance;
             var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
-            var userPreference = userPreferenceController.GetUserPreference(user);
+            UserPreference userPreference=null;
+            if (user != null)
+            {
+                userPreference = userPreferenceController.GetUserPreference(user);
+            }
+           
 
             const int notifyFrequency = 2;
             const int messageFrequency = 0;

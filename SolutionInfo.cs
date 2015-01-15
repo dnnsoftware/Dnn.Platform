@@ -43,5 +43,5 @@ using System.Reflection;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("7.3.3.0")]
-[assembly: AssemblyFileVersion("7.3.3.0")]
+[assembly: AssemblyVersion("7.4.1.0")]
+[assembly: AssemblyFileVersion("7.4.1.0")]

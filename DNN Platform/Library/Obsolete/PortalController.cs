@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 
@@ -105,6 +106,13 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.4.0.  Replaced by PortalController.Instance.GetPortalSettings")]
+        public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
+        {
+            return Instance.GetPortalSettings(portalId);
+        }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 5.0. This function has been replaced by GetPortalSpaceUsedBytes")]

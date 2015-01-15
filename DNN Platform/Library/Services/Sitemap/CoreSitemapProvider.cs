@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -66,14 +67,14 @@ namespace DotNetNuke.Services.Sitemap
 
             this.ps = ps;
 
-            foreach (TabInfo objTab in TabController.Instance.GetTabsByPortal(portalId).Values)
+            foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem))
             {
-                if (!objTab.IsDeleted && !objTab.DisableLink && objTab.TabType == TabType.Normal && (Null.IsNull(objTab.StartDate) || objTab.StartDate < DateTime.Now) &&
-                    (Null.IsNull(objTab.EndDate) || objTab.EndDate > DateTime.Now) && IsTabPublic(objTab.TabPermissions))
+                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
                 {
-                    if (includeHiddenPages || objTab.IsVisible)
+                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
                     {
-                        pageUrl = GetPageUrl(objTab, (ps.ContentLocalizationEnabled) ? objTab.CultureCode : null);
+                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
                         urls.Add(pageUrl);
                     }
                 }
@@ -120,7 +121,7 @@ namespace DotNetNuke.Services.Sitemap
                         (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
                         (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
                         (IsTabPublic(localized.TabPermissions)) &&
-                        (includeHiddenPages || localized.IsVisible))
+                        (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
                         alternates.Add(new AlternateUrl() 

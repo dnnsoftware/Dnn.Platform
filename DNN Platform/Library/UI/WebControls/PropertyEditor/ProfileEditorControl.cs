@@ -96,38 +96,35 @@ namespace DotNetNuke.UI.WebControls
                 //We need to wire up the RegionControl to the CountryControl
                 if (editor.Editor is DNNRegionEditControl)
                 {
-                    ListEntryInfo country = null;
+                    string country = null;
 
                     foreach (FieldEditorControl checkEditor in Fields)
                     {
                         if (checkEditor.Editor is DNNCountryEditControl)
                         {
-                            var countryEdit = (DNNCountryEditControl) checkEditor.Editor;
-                            var objListController = new ListController();
-                            var countries = objListController.GetListEntryInfoItems("Country");
-                            foreach (ListEntryInfo checkCountry in countries)
-                            {
-                                if (checkCountry.Text == Convert.ToString(countryEdit.Value))
-                                {
-                                    country = checkCountry;
-                                    break;
-                                }
-                            }
+							if (editor.Editor.Category == checkEditor.Editor.Category)
+							{
+								var countryEdit = (DNNCountryEditControl)checkEditor.Editor;
+								country = Convert.ToString(countryEdit.Value);
+							}
                         }
                     }
 					
                     //Create a ListAttribute for the Region
-                    string countryKey;
-                    if (country != null)
-                    {
-                        countryKey = "Country." + country.Value;
-                    }
-                    else
-                    {
-                        countryKey = "Country.Unknown";
-                    }
+					string countryKey = "Unknown";
+					int entryId;
+					if (int.TryParse(country, out entryId))
+					{
+						ListController lc = new ListController();
+						ListEntryInfo item = lc.GetListEntryInfo(entryId);
+						if (item != null)
+						{
+							countryKey = item.Value;
+						}
+					}
+					countryKey = "Country." + countryKey;
                     var attributes = new object[1];
-                    attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Text, ListBoundField.Text);
+                    attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Id, ListBoundField.Text);
                     editor.Editor.CustomAttributes = attributes;
                 }
             }

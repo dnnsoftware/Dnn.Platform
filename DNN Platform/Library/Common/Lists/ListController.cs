@@ -40,6 +40,9 @@ namespace DotNetNuke.Common.Lists
 {
     public class ListController
     {
+
+        public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
+
         #region Private Methods
 
         private void ClearListCache(int portalId)
@@ -105,7 +108,7 @@ namespace DotNetNuke.Common.Lists
                 Exceptions.LogException(exc);
             }
             finally
-			{
+            {
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
@@ -115,8 +118,8 @@ namespace DotNetNuke.Common.Lists
         private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
             string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey, 
-                                                                        DataCache.ListsCacheTimeOut, 
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey,
+                                                                        DataCache.ListsCacheTimeOut,
                                                                         DataCache.ListsCachePriority),
                                                                 c => FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
@@ -133,13 +136,19 @@ namespace DotNetNuke.Common.Lists
 
         #endregion
 
+        /// <summary>
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be 
+        /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
+        /// </summary>
+        /// <param name="listEntry">The list entry.</param>
+        /// <returns></returns>
         public int AddListEntry(ListEntryInfo listEntry)
         {
             bool EnableSortOrder = (listEntry.SortOrder > 0);
             ClearListCache(listEntry.PortalID);
             int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
                                                         listEntry.Value,
-                                                        listEntry.Text,
+                                                        listEntry.TextNonLocalized,
                                                         listEntry.ParentID,
                                                         listEntry.Level,
                                                         EnableSortOrder,
@@ -153,6 +162,17 @@ namespace DotNetNuke.Common.Lists
             {
                 EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
             }
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name != DotNetNuke.Services.Localization.Localization.SystemLocale && !NonLocalizedLists.Contains(listEntry.ListName))
+            {
+				if (string.IsNullOrEmpty(listEntry.ParentKey))
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+				else
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+            }
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
@@ -162,17 +182,17 @@ namespace DotNetNuke.Common.Lists
             DeleteList(listName, parentKey, Null.NullInteger);
         }
 
-		public void DeleteList(string listName, string parentKey, int portalId)
-		{
-			ListInfo list = GetListInfo(listName, parentKey, portalId);
+        public void DeleteList(string listName, string parentKey, int portalId)
+        {
+            ListInfo list = GetListInfo(listName, parentKey, portalId);
             EventLogController.Instance.AddLog("ListName", listName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.LISTENTRY_DELETED);
-			DataProvider.Instance().DeleteList(listName, parentKey);
-		    if (list != null)
-		    {
+            DataProvider.Instance().DeleteList(listName, parentKey);
+            if (list != null)
+            {
                 ClearListCache(list.PortalID);
                 ClearEntriesCache(list.Name, list.PortalID);
             }
-		}
+        }
 
         public void DeleteList(ListInfo list, bool includeChildren)
         {
@@ -197,7 +217,7 @@ namespace DotNetNuke.Common.Lists
             //Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
-				DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
+                DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
             }
         }
 
@@ -261,7 +281,7 @@ namespace DotNetNuke.Common.Lists
         {
             return ListEntryInfoItemsToDictionary(GetListEntryInfoItems(listName, parentKey, portalId));
         }
-        
+
         private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
         {
             var dict = new Dictionary<string, ListEntryInfo>();
@@ -323,7 +343,7 @@ namespace DotNetNuke.Common.Lists
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey, int portalId)
         {
             IList lists = new ListInfoCollection();
-            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId))
+            foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(portalId).OrderBy(l => l.Value.DisplayName))
             {
                 ListInfo list = listPair.Value;
                 if ((list.Name == listName || string.IsNullOrEmpty(listName)) && (list.ParentKey == parentKey || string.IsNullOrEmpty(parentKey)) &&
@@ -332,12 +352,34 @@ namespace DotNetNuke.Common.Lists
                     lists.Add(list);
                 }
             }
-            return (ListInfoCollection) lists;
+            return (ListInfoCollection)lists;
         }
 
+        /// <summary>
+        /// Updates the list entry in the database using the values set on the listEntry. Note that if the current thread locale is not "en-US" then the
+        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value 
+        /// will *not* be written to the database in this case (i.e. we expect the text value in the database to be the en-US text value).
+        /// </summary>
+        /// <param name="listEntry">The list entry info item to update.</param>
         public void UpdateListEntry(ListEntryInfo listEntry)
         {
-            DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.Text, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            if (System.Threading.Thread.CurrentThread.CurrentCulture.Name == DotNetNuke.Services.Localization.Localization.SystemLocale || NonLocalizedLists.Contains(listEntry.ListName))
+            {
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, listEntry.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+            }
+            else
+            {
+                ListEntryInfo oldItem = GetListEntryInfo(listEntry.EntryID); // look up existing db record to be able to just update the value or description and not touch the en-US text value
+                DataProvider.Instance().UpdateListEntry(listEntry.EntryID, listEntry.Value, oldItem.TextNonLocalized, listEntry.Description, UserController.Instance.GetCurrentUserInfo().UserID);
+				if (string.IsNullOrEmpty(listEntry.ParentKey))
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+				else
+				{
+					DotNetNuke.Services.Localization.LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, "App_GlobalResources/List_" + listEntry.ListName + ".resx", System.Threading.Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), Services.Localization.LocalizationProvider.CustomizedLocale.None, true, true);
+				}
+            }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
             ClearListCache(listEntry.PortalID);
             ClearEntriesCache(listEntry.ListName, listEntry.PortalID);

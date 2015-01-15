@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Services.FileSystem;
 
 using System.Xml.Serialization;
+using DotNetNuke.Common.Lists;
 
 #endregion
 
@@ -47,9 +48,9 @@ namespace DotNetNuke.Entities.Users
     /// The UserProfile class provides a Business Layer entity for the Users Profile
     /// </summary>
     [Serializable]
-    public class UserProfile: IIndexable
+    public class UserProfile : IIndexable
     {
-		#region Public Constants
+        #region Public Constants
 
         //Name properties
         public const string USERPROFILE_FirstName = "FirstName";
@@ -80,9 +81,9 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_PreferredTimeZone = "PreferredTimeZone";
         public const string USERPROFILE_Biography = "Biography";
 
-		#endregion
+        #endregion
 
-		#region Private Members
+        #region Private Members
 
         private bool _IsDirty;
 
@@ -91,7 +92,7 @@ namespace DotNetNuke.Entities.Users
         //collection to store all profile properties.
         private ProfilePropertyDefinitionCollection _profileProperties;
 
-		#endregion
+        #endregion
 
         public UserProfile()
         {
@@ -101,9 +102,9 @@ namespace DotNetNuke.Entities.Users
         {
             _user = user;
         }
-		
-		#region Public Properties
-		
+
+        #region Public Properties
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Cell/Mobile Phone
@@ -156,7 +157,18 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Country);
+                string _country = GetPropertyValue(USERPROFILE_Country);
+                ListController lc = new ListController();
+				int entryId;
+				if (int.TryParse(_country, out entryId))
+				{
+					ListEntryInfo item = lc.GetListEntryInfo(entryId);
+					if (item != null)
+					{
+						return item.Text;
+					}
+				}
+				return _country;
             }
             set
             {
@@ -371,18 +383,18 @@ namespace DotNetNuke.Entities.Users
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
                         if ((fileInfo != null))
                         {
-                            string rootFolder="";
+                            string rootFolder = "";
                             if (fileInfo.PortalId == Null.NullInteger)
-                                {
-                                    //Host
-                                    rootFolder = Globals.HostPath;
-                                }
-                                else
-                                {
-                                    rootFolder = settings.HomeDirectory;
-                                }
-                                photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
-                        }                     
+                            {
+                                //Host
+                                rootFolder = Globals.HostPath;
+                            }
+                            else
+                            {
+                                rootFolder = settings.HomeDirectory;
+                            }
+                            photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
+                        }
                     }
                 }
                 return photoURLFile;
@@ -490,7 +502,18 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return GetPropertyValue(USERPROFILE_Region);
+                string _region = GetPropertyValue(USERPROFILE_Region);
+                ListController lc = new ListController();
+				int entryId;
+				if (int.TryParse(_region, out entryId))
+				{
+					ListEntryInfo item = lc.GetListEntryInfo(entryId);
+					if (item != null)
+					{
+						return item.Text;
+					}
+				}
+				return _region;
             }
             set
             {
@@ -594,10 +617,10 @@ namespace DotNetNuke.Entities.Users
                 SetProfileProperty(USERPROFILE_Website, value);
             }
         }
-		
+
         #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -702,12 +725,12 @@ namespace DotNetNuke.Entities.Users
         /// 	[cnurse]	02/10/2006	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-		public void SetProfileProperty(string propName, string propValue)
+        public void SetProfileProperty(string propName, string propValue)
         {
             ProfilePropertyDefinition profileProp = GetProperty(propName);
             if (profileProp != null)
             {
-				profileProp.PropertyValue = propValue;
+                profileProp.PropertyValue = propValue;
 
                 //Set the IsDirty flag
                 if (profileProp.IsDirty)
@@ -716,13 +739,13 @@ namespace DotNetNuke.Entities.Users
                 }
             }
         }
-		
-		#endregion
+
+        #endregion
 
         #region Obsolete
 
         [Obsolete("Deprecated in DNN 6.0. Replaced by PreferredTimeZone.")]
-        [Browsable(false)]    
+        [Browsable(false)]
         public int TimeZone
         {
             get

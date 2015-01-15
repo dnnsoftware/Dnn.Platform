@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.XPath;
@@ -250,12 +251,18 @@ namespace DotNetNuke.Modules.Admin.Extensions
 
         private bool IconExists(string imagePath)
         {
-            bool exists = !String.IsNullOrEmpty(imagePath);
-            if (exists)
+            if (String.IsNullOrWhiteSpace(imagePath)) return false;
+
+            string path;
+            try
             {
-                exists = File.Exists(Server.MapPath(imagePath));
+                path = Server.MapPath(imagePath);
             }
-            return exists;
+            catch (HttpException)
+            {
+                return false;
+            }
+            return File.Exists(path);
         }
 
         protected string GetPackageType(object dataItem)

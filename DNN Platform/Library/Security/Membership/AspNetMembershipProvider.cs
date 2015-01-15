@@ -1745,12 +1745,21 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
+                    
                     //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
-                    if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
+                        if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
                     {
-                        user.Membership.Approved = true;
-                        UserController.UpdateUser(portalId, user);
-                        UserController.ApproveUser(user);
+                        if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
+                            (int) Globals.PortalRegistrationType.PublicRegistration)
+                        {
+                            user.Membership.Approved = true;
+                            UserController.UpdateUser(portalId, user);
+                            UserController.ApproveUser(user);    
+                        }
+                        else
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        }
                     }
                     else
                     {

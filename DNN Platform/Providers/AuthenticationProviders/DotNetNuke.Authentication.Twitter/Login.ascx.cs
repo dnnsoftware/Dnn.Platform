@@ -27,6 +27,8 @@ using System;
 using DotNetNuke.Authentication.Twitter.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins.Controls;
 
 #endregion
 
@@ -72,7 +74,12 @@ namespace DotNetNuke.Authentication.Twitter
         private void loginButton_Click(object sender, EventArgs e)
         {
             OAuthClient.CallbackUri = new Uri(OAuthClient.CallbackUri + "?state=Twitter");
-            OAuthClient.Authorize();
+            AuthorisationResult result = OAuthClient.Authorize();
+            if (result == AuthorisationResult.Denied)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+
+            }
         }
     }
 }

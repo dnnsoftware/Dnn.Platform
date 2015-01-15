@@ -566,7 +566,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             if ((Request.QueryString["UserId"] != null))
             {
-                UserId = Int32.Parse(Request.QueryString["UserId"]);
+                int userId;
+                // Use Int32.MaxValue as invalid UserId
+                UserId = Int32.TryParse(Request.QueryString["UserId"], out userId) ? userId : Int32.MaxValue;
             }
 
             CurrentPage = 1;

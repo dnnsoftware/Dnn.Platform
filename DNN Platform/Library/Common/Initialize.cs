@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
@@ -34,6 +35,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Urls;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
@@ -56,16 +58,6 @@ namespace DotNetNuke.Common
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CacheMappedDirectory caches the Portal Mapped Directory(s)
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Caching Module
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static void CacheMappedDirectory()
         {
             //This code is only retained for binary compatability.
@@ -81,16 +73,6 @@ namespace DotNetNuke.Common
 #pragma warning restore 612,618
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CheckVersion determines whether the App is synchronized with the DB
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    2/17/2005   created
-        /// </history>
-        /// -----------------------------------------------------------------------------
         private static string CheckVersion(HttpApplication app)
         {
             HttpServerUtility Server = app.Server;
@@ -175,6 +157,40 @@ namespace DotNetNuke.Common
             }
         }
 
+        private static Version GetDatabaseEngineVersion()
+        {
+            return DataProvider.Instance().GetDatabaseEngineVersion();
+        }
+
+        private static Version GetNETFrameworkVersion()
+        {
+            string version = Environment.Version.ToString(2);
+            if (version == "2.0")
+            {
+                //Try and load a 3.0 Assembly
+                try
+                {
+                    AppDomain.CurrentDomain.Load("System.Runtime.Serialization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
+                    version = "3.0";
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+                //Try and load a 3.5 Assembly
+                try
+                {
+                    AppDomain.CurrentDomain.Load("System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
+                    version = "3.5";
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+                }
+            }
+            return new Version(version);
+        }
+
         private static string InitializeApp(HttpApplication app, ref bool initialized)
         {
             var request = app.Request;
@@ -230,44 +246,21 @@ namespace DotNetNuke.Common
             return redirect;
         }
 
-        private static Version GetNETFrameworkVersion()
+        private static bool IsUpgradeOrInstallRequest(HttpRequest request)
         {
-            string version = Environment.Version.ToString(2);
-            if (version == "2.0")
-            {
-                //Try and load a 3.0 Assembly
-                try
-                {
-                    AppDomain.CurrentDomain.Load("System.Runtime.Serialization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
-                    version = "3.0";
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-                //Try and load a 3.5 Assembly
-                try
-                {
-                    AppDomain.CurrentDomain.Load("System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089");
-                    version = "3.5";
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-            }
-            return new Version(version);
+            var url = request.Url.LocalPath.ToLower();
+
+            return url.EndsWith("/install.aspx")
+                || url.Contains("/upgradewizard.aspx")
+                || url.Contains("/installwizard.aspx");
         }
 
-        private static Version GetDatabaseEngineVersion()
-        {
-            return DataProvider.Instance().GetDatabaseEngineVersion();
-        }
-
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Inits the app.
         /// </summary>
         /// <param name="app">The app.</param>
+        /// -----------------------------------------------------------------------------
         public static void Init(HttpApplication app)
         {
             string redirect;
@@ -296,11 +289,6 @@ namespace DotNetNuke.Common
         /// <summary>
         /// LogStart logs the Application Start Event
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/27/2005   Moved back to App_Start from Logging Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LogStart()
         {
@@ -316,11 +304,6 @@ namespace DotNetNuke.Common
         /// <summary>
         /// LogEnd logs the Application Start Event
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    1/28/2005   Moved back to App_End from Logging Module
-        /// </history>
         /// -----------------------------------------------------------------------------
         public static void LogEnd()
         {
@@ -397,13 +380,36 @@ namespace DotNetNuke.Common
             }
         }
 
-        private static bool IsUpgradeOrInstallRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLower();
 
-            return url.EndsWith("/install.aspx")
-                || url.Contains("/upgradewizard.aspx")
-                || url.Contains("/installwizard.aspx");
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Tests whether this request should be processed in an HttpModule
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
+        {
+            var toLowerLocalPath = request.Url.LocalPath.ToLower();
+
+            if (toLowerLocalPath.EndsWith("webresource.axd")
+                    || toLowerLocalPath.EndsWith("scriptresource.axd")
+                    || toLowerLocalPath.EndsWith("captcha.aspx")
+                    || toLowerLocalPath.Contains("upgradewizard.aspx")
+                    || toLowerLocalPath.Contains("installwizard.aspx")
+                    || toLowerLocalPath.EndsWith("install.aspx"))
+            {
+                return false;
+            }
+
+            if (allowUnknownExtensions == false
+                    && toLowerLocalPath.EndsWith(".aspx") == false
+                    && toLowerLocalPath.EndsWith(".asmx") == false
+                    && toLowerLocalPath.EndsWith(".ashx") == false
+                    && toLowerLocalPath.EndsWith(".svc") == false)
+            {
+                return false;
+            }
+
+            return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
         public static void RunSchedule(HttpRequest request)

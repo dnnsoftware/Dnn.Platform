@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
-using System.Web.UI;
+using DotNetNuke.Common;
 
 #endregion
 
@@ -56,7 +56,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 //Save the return Url in the cookie
                 HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", RedirectURL)
-                                                             {Expires = DateTime.Now.AddMinutes(5)});
+                {
+                    Expires = DateTime.Now.AddMinutes(5),
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                });
             }
 
             bool shouldAuthorize = OAuthClient.IsCurrentService() && OAuthClient.HaveVerificationCode();

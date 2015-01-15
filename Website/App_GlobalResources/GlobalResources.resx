@@ -196,7 +196,7 @@
     <value>Event Viewer</value>
   </data>
   <data name="//Host//Skins.String" xml:space="preserve">
-    <value>Skins</value>
+    <value>Themes</value>
   </data>
   <data name="//Host.String" xml:space="preserve">
     <value>Host</value>
@@ -881,7 +881,7 @@ Thank you,
         &lt;p&gt;{0}&lt;/p&gt;
         &lt;p&gt;Your DotNetNuke installation appears to have a security settings problem (most likely
         permissions). DotNetNuke has extensive file upload capabilities for content, modules,
-        and skins. These features require custom security settings so that the application
+        and themes. These features require custom security settings so that the application
         is able to create and remove files in your website.&lt;/p&gt;
         &lt;p&gt;Using Windows Explorer, browse to the root folder of the website ( C:\DotNetNuke
         by default ). Right-click the folder and select Sharing and Security from the popup
@@ -964,7 +964,7 @@ Operation Completed:  [Custom:3]
     <value>Languages</value>
   </data>
   <data name="//Admin//Skins.String" xml:space="preserve">
-    <value>Skins</value>
+    <value>Themes</value>
   </data>
   <data name="//Host//Vendors.String" xml:space="preserve">
     <value>Vendors</value>
@@ -995,7 +995,7 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
     <value>Extensions</value>
   </data>
   <data name="SkinLoadError.Text" xml:space="preserve">
-    <value>Could Not Load Skin: {0},  Error: {1}&lt;br/&gt;</value>
+    <value>Could Not Load Theme: {0},  Error: {1}&lt;br/&gt;</value>
   </data>
   <data name="EMAIL_ROLE_UPDATE_SUBJECT.Text" xml:space="preserve">
     <value>[Portal:PortalName] User Account Update</value>
@@ -1479,7 +1479,7 @@ Please do not reply to this email.</value>
                                     &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
                                         &lt;tr&gt;
                                             &lt;td align="center"&gt;
-                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;
+                                                &lt;a href="[UNSUBSCRIBEURL]" &gt; Manage your Subscriptions&lt;/a&gt; &amp;nbsp; |  &amp;nbsp;&lt;a href="[NOTIFICATIONURL]" &gt; View online&lt;/a&gt;
                                             &lt;/td&gt;
                                         &lt;/tr&gt;
                                     &lt;/table&gt;
@@ -1521,12 +1521,12 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;[CONTENT]&lt;/td&gt;
+                    &lt;td&gt;[CONTENT][FRIENDREQUESTACTIONS][FOLLOWREQUESTACTIONS]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
         &lt;/td&gt;
@@ -1566,5 +1566,14 @@ Sincerely,
   </data>
   <data name="WebPermission.Text" xml:space="preserve">
     <value>This extension requires Web permission.</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FRIENDREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Accept&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.Text" xml:space="preserve">
+    <value>&lt;p&gt;&lt;a href="{0}"&gt;Follow back&lt;/a&gt; | &lt;a href="{1}"&gt;View Profile&lt;/a&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="MESSAGE_USERNAME_CHANGED_INSTRUCTIONS.Text" xml:space="preserve">
+    <value>Please verify your e-mail address change by re-entering your password.</value>
   </data>
 </root>

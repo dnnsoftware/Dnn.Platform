@@ -130,9 +130,9 @@
     &lt;li&gt;Fixed longstanding issue in the file based caching provider.&amp;#160; There was invalid logic in the caching provider which prevented it from working correctly.&amp;#160; The provider has been re-written to resolve the problem and provide a stable platform for web-farm scenarios.&lt;/li&gt;
     &lt;li&gt;Fixed several dictionary errors.&amp;#160; These errors mostly occurred under heavy load or were otherwise intermittent.&amp;#160; Dictionary usage was evaluated throughout DNN and updated to utilize thread-safe approaches for updating and caching the dictionary.&lt;/li&gt;
     &lt;li&gt;Fixed an issue that prevented users in certain locales from adding modules to div based panes.&lt;/li&gt;
-    &lt;li&gt;Added a new default skin that is more contemporary&lt;/li&gt;
+    &lt;li&gt;Added a new default theme that is more contemporary&lt;/li&gt;
     &lt;li&gt;Added a new default template that removes much of the clutter and unnecessary information.&lt;/li&gt;
-    &lt;li&gt;Added a new Text skin object that allows you to add localized text to your skin.&lt;/li&gt;
+    &lt;li&gt;Added a new Text skin object that allows you to add localized text to your theme.&lt;/li&gt;
     &lt;li&gt;Added a new Styles skin object that allows you to insert additional stylesheets into the page header.&amp;#160; Stylesheets can be optionally included using IE Conditional Comments.&lt;/li&gt;
     &lt;li&gt;Enhanced the Search skin object to include the option to display a dropdown list of web/site search options.&lt;/li&gt;
     &lt;li&gt;Enhanced the Update Notification Service to display information on new language packs that are available for locales which are currently installed.&lt;/li&gt;
@@ -141,7 +141,7 @@
 &lt;ul&gt;
     &lt;li&gt;&lt;span class="NormalRed"&gt;Critical &lt;/span&gt;- &lt;a target="_blank" href="http://www.dotnetnuke.com/News/SecurityPolicy/Securitybulletinno21/tabid/1174/Default.aspx"&gt;Authentication blindspot in User functions&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;span class="NormalRed"&gt;Critical &lt;/span&gt;- &lt;a target="_blank" href="http://www.dotnetnuke.com/Community/Blogs/tabid/825/EntryID/1987/Default.aspx"&gt;Validation failure in Repository Module&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;span class="NormalRed"&gt;Critical &lt;/span&gt;- &lt;a target="_blank" href="http://www.dotnetnuke.com/News/SecurityPolicy/Securitybulletinno23/tabid/1176/Default.aspx"&gt;Validation failure when loading skins&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span class="NormalRed"&gt;Critical &lt;/span&gt;- &lt;a target="_blank" href="http://www.dotnetnuke.com/News/SecurityPolicy/Securitybulletinno23/tabid/1176/Default.aspx"&gt;Validation failure when loading themes&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;span class="Normal"&gt;Low &lt;/span&gt;- &lt;a target="_blank" href="http://www.dotnetnuke.com/News/SecurityPolicy/Securitybulletinno22/tabid/1175/Default.aspx"&gt;Information leakage in Install Wizard&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 class="SubSubHead"&gt;Updated Modules/Providers&lt;/h3&gt;
@@ -222,7 +222,7 @@
 	application to any group of users.&lt;/li&gt;
 	&lt;li&gt;
 	Updated the installation services to support manifest files for all 
-	extension types.&amp;#160; Now skins, containers, providers and modules are all first 
+	extension types.&amp;#160; Now themes, containers, providers and modules are all first 
 	class citizens that can be installed and uninstalled.&lt;/li&gt;
 	&lt;li&gt;
 	Expanded XHTML, WCAG and ADA compliance.&lt;/li&gt;
@@ -240,13 +240,13 @@
 	supports the use of a simple object tag based representation which means you 
 	don’t have to know JavaScript in order to add the widgets.&lt;/li&gt;
 	&lt;li&gt;
-	Added new Object notation for using skin objects in Skins.&amp;#160; Skin designers 
+	Added new Object notation for using skin objects in Themes.&amp;#160; Theme designers 
 	will no longer need to include separate XML files when creating and 
-	packaging skins.&amp;#160; No more funky “[SKINOBJECT]” tags littering your html.&amp;#160; 
-	This significantly simplifies the process of creating skins and further 
-	opens up skin development to a broader group of designers.&amp;#160; If you include a 
-	simple JavaScript reference in your HTML skin, you can even get a full 
-	WYSIWYG experience when designing your skin.&lt;/li&gt;
+	packaging themes.&amp;#160; No more funky “[SKINOBJECT]” tags littering your html.&amp;#160; 
+	This significantly simplifies the process of creating themes and further 
+	opens up theme development to a broader group of designers.&amp;#160; If you include a 
+	simple JavaScript reference in your HTML theme, you can even get a full 
+	WYSIWYG experience when designing your theme.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
@@ -311,13 +311,13 @@ were corrected with each release.&lt;/p&gt;
 	correctly for a previously &amp;quot;deleted&amp;quot; user.&lt;/li&gt;
 	&lt;li&gt;Added IP logging to the User&amp;#39;s table to capture the last IP address from 
 	which a user logged in. &lt;/li&gt;
-	&lt;li&gt;Fixed breaking change with case sensitivity in the name of skin panes.&amp;nbsp; 
+	&lt;li&gt;Fixed breaking change with case sensitivity in the name of theme panes.&amp;nbsp; 
 	This fix restores the case-insensitivity of previous DotNetNuke releases.&lt;/li&gt;
 	&lt;li&gt;Fixed breaking change with ModuleId in DotNetNuke 5.0 which changed 
 	ModuleId to a readonly value.&lt;/li&gt;
 	&lt;li&gt;Fixed breaking change in CBO.FillDictionary to restore previous 
 	behavior.&lt;/li&gt;
-	&lt;li&gt;Fixed breaking change which prevented legacy skins from being installed 
+	&lt;li&gt;Fixed breaking change which prevented legacy themes from being installed 
 	when using the auto-install option.&lt;/li&gt;
 	&lt;li&gt;Fixed breaking change which prevented updated DLLs from being replaced 
 	when repairing a module installation.&lt;/li&gt;
@@ -328,7 +328,7 @@ were corrected with each release.&lt;/p&gt;
 	&lt;li&gt;Fixed breaking change in legacy modules which ignored zip directories.&amp;nbsp; 
 	DNN 5 changed this behavior.&lt;/li&gt;
 	&lt;li&gt;Fixed breaking change in default.css which resulted in changes to 
-	existing skin layouts.&lt;/li&gt;
+	existing theme layouts.&lt;/li&gt;
 	&lt;li&gt;Fixed issue with roles module which prevented users from delegating role 
 	administration to a non-admin user.&lt;/li&gt;
 	&lt;li&gt;Fixed issue which prevented some users from logging out due to the 
@@ -423,7 +423,7 @@ were corrected with each release.&lt;/p&gt;
 	&lt;li&gt;Added Content Versioning and simple workflow to the HTML module.&lt;/li&gt;
 	&lt;li&gt;Added Admin Console module to simplify access to administrator and host 
 	pages&lt;/li&gt;
-	&lt;li&gt;Added publicly accessbile skin engine lifecycle events&lt;/li&gt;
+	&lt;li&gt;Added publicly accessbile theme engine lifecycle events&lt;/li&gt;
 	&lt;li&gt;Added audit trails to core system tables&lt;/li&gt;
 	&lt;li&gt;Added built in support for Google Analytics&lt;/li&gt;
 	&lt;li&gt;Added custom sitemap priorities&lt;/li&gt;
@@ -442,7 +442,7 @@ were corrected with each release.&lt;/p&gt;
 	&lt;li&gt;Fixed issue with deleting users which was not fully recognized by the 
 	rest of the application.&lt;/li&gt;
 	&lt;li&gt;Fixed issue with upgrades which would fail if .Net 3.5 was installed&lt;/li&gt;
-	&lt;li&gt;Fixed issue with skins installed using the batch installer.&lt;/li&gt;
+	&lt;li&gt;Fixed issue with themes installed using the batch installer.&lt;/li&gt;
 	&lt;li&gt;Fixed change to GetModulesByDefinition API method which resulted in 
 	breaking change from DotNetNuke 4.x&lt;/li&gt;
 	&lt;li&gt;Fixed CloakText API method which was broken in 5.0.1&lt;/li&gt;
@@ -631,14 +631,14 @@ were corrected with each release.&lt;/p&gt;
 	Settings.&lt;/li&gt;
 	&lt;li&gt;Fixed issue which caused an error trying to retrieve a role group by 
 	name&lt;/li&gt;
-	&lt;li&gt;Fixed an issue which prevented a skin from being able to be re-installed 
+	&lt;li&gt;Fixed an issue which prevented a theme from being able to be re-installed 
 	or uninstalled.&lt;/li&gt;
 	&lt;li&gt;Fixed issue where Html module was displaying unpublished content&lt;/li&gt;
 	&lt;li&gt;Fixed issue where URLs for pages within the site were always being 
 	created as relative which is a change from previous versions.&lt;/li&gt;
 	&lt;li&gt;Removed solution explorer page from the Admin menu and removed the 
 	Marketplace feed from the OPML file.&lt;/li&gt;
-	&lt;li&gt;Fixed issue with upgrading DotNetNuke 4.x skins when upgrading site to 
+	&lt;li&gt;Fixed issue with upgrading DotNetNuke 4.x themes when upgrading site to 
 	DotNetNuke 5.x&lt;/li&gt;
 	&lt;li&gt;Fixed issue which resulted in incorrect URL for SiteMap in a child 
 	portal&lt;/li&gt;
@@ -1078,7 +1078,7 @@ In addition, this supports a fallback strategy where if no record exists for a l
     &lt;li&gt;Fixed issue with email sending not recognizing HTML properly.&lt;/li&gt;
     &lt;li&gt;Fixed issue with port numbers in email address during installation.&lt;/li&gt;
     &lt;li&gt;Fixed issue with passing connection information to Sql Module.&lt;/li&gt;
-    &lt;li&gt;Fixed issue where the User Skin object was ignoring the ShowUnreadMessages attribute&lt;/li&gt;
+    &lt;li&gt;Fixed issue where the User skin object was ignoring the ShowUnreadMessages attribute&lt;/li&gt;
     &lt;li&gt;Fixed issue where the profile ImageEditControl datatype was only added to Portal
         0.&lt;/li&gt;
     &lt;li&gt;Fixed issue with url formatting when no context exists. Adding "http" is fallback
@@ -1505,7 +1505,7 @@ corrected with each release. &lt;/p&gt;
     &lt;ul&gt;
         &lt;li&gt;Removed the ability to reactivate user profiles of soft-deleted users&lt;/li&gt;
         &lt;li&gt;Fixed issue related to Module Settings access rights&lt;/li&gt;
-        &lt;li&gt;Removed legacy functionality that allowed users to upload skins / containers from the file manager&lt;/li&gt;
+        &lt;li&gt;Removed legacy functionality that allowed users to upload themes / containers from the file manager&lt;/li&gt;
         &lt;li&gt;Fixed issue with logging private data in text&lt;/li&gt;
         &lt;li&gt;Updated the file manager to work well with event validation set to enabled&lt;/li&gt;
     &lt;/ul&gt;
@@ -1575,7 +1575,7 @@ corrected with each release. &lt;/p&gt;
 	&lt;li&gt;Included the RadEditor in the upgrade package &lt;/li&gt;
 	&lt;li&gt;Fixed issue caused by loading a DotNetNuke site in an iFrame with Modal 
 	Popus enabled &lt;/li&gt;
-	&lt;li&gt;Fixed issue with having the same skin in the _default folder and site skin 
+	&lt;li&gt;Fixed issue with having the same theme in the _default folder and site skin 
 	folder &lt;/li&gt;
 	&lt;li&gt;Fixed issue with managing Users in Role &lt;/li&gt;
 	&lt;li&gt;Resolved the conflict between the Whitespace Filter and the File Manager
@@ -1652,7 +1652,7 @@ corrected with each release. &lt;/p&gt;
           &lt;ul&gt;
           &lt;li&gt;Implemented a new way of managing client resources which dramatically improves
           the performance of the product&lt;/li&gt;
-          &lt;li&gt;Implemented a device capability API that allows module and skin developers
+          &lt;li&gt;Implemented a device capability API that allows module and theme developers
           to build mobile solutions&lt;/li&gt;
           &lt;li&gt;Implemented a site redirection API that allows mobile visitors to be shown
           a custom experience&lt;/li&gt;
@@ -1818,7 +1818,7 @@ corrected with each release. &lt;/p&gt;
   <data name="WhatsNew.06.01.04" xml:space="preserve">
     <value>&lt;h3 class="SubSubHead"&gt;Major Highlights&lt;/h3&gt;
 &lt;ul&gt;
-		&lt;li&gt;Fixed issue with loading the splash page skin in the login, privacy and terms of use pages&lt;/li&gt;
+		&lt;li&gt;Fixed issue with loading the splash page theme in the login, privacy and terms of use pages&lt;/li&gt;
 	&lt;li&gt;Fixed issue when searching for words with special characters in them&lt;/li&gt;
 	&lt;li&gt;Fixed redirection issue when the user does not have permissions to access a resource&lt;/li&gt;
 	&lt;li&gt;Fixed issue when clearing the cache using the ClearHostCache() function&lt;/li&gt;
@@ -1833,13 +1833,13 @@ corrected with each release. &lt;/p&gt;
 	&lt;li&gt;Fixed upgrade issue when upgrading from 5.6.3 to 6.0.1&lt;/li&gt;
 	&lt;li&gt;Fixed duplicate key exception in the File Manager&lt;/li&gt;
 	&lt;li&gt;Fixed issue in the creation of language packs for the RadEditor Provider&lt;/li&gt;
-	&lt;li&gt;Fixed issue with the font used in the Dark Knight skin and languages that contain accents&lt;/li&gt;
+	&lt;li&gt;Fixed issue with the font used in the Dark Knight theme and languages that contain accents&lt;/li&gt;
 	&lt;li&gt;Fixed issue with language retention when using stating localization&lt;/li&gt;
 	&lt;li&gt;Fixed issue that stopped host users from deleting their lists entries&lt;/li&gt;
 	&lt;li&gt;Fixed CSS problem in the login / registration pages when using IE7 and IE8&lt;/li&gt;
 	&lt;li&gt;Fixed issue cause by URL's changing to small caps after login&lt;/li&gt;
 	&lt;li&gt;Created a new configuration that forces the host user to change the default password on the first login&lt;/li&gt;
-	&lt;li&gt;Updated the Dark Knight skin to use HTML5 as the doctype and dded HTML5 doctype as an option under fallback skin doctype&lt;/li&gt;
+	&lt;li&gt;Updated the Dark Knight theme to use HTML5 as the doctype and dded HTML5 doctype as an option under fallback skin doctype&lt;/li&gt;
 	&lt;li&gt;Fixed issues created by the system requiring multiple configurations for the applyCSS dropdown in the Telerik Editor Provider&lt;/li&gt;&lt;/ul&gt;
 &lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
 &lt;ul&gt;
@@ -1871,7 +1871,7 @@ corrected with each release. &lt;/p&gt;
       &lt;li&gt;Fixed issue that was causing the wrong container to be loaded in modules when in edit mode&lt;/li&gt;
       &lt;li&gt;Fixed exception thrown in modulesettings.ascx.cs when the start or end dates are before the current date&lt;/li&gt;
       &lt;li&gt;Fixed ordering problem when restoring pages with children from the recycle bin&lt;/li&gt;
-      &lt;li&gt;Fixed issue when applying a skin and a container to the host pages from the Pages module&lt;/li&gt;
+      &lt;li&gt;Fixed issue when applying a theme and a container to the host pages from the Pages module&lt;/li&gt;
       &lt;li&gt;Fixed issue when a page is given a name that ends with the word "install"&lt;/li&gt;
       &lt;li&gt;Fixed issue where the delete folder action did not function as expected within the Image Manager&lt;/li&gt;
       &lt;li&gt;Fixed issue that caused pop up not to close when the retrieve password action was cancelled&lt;/li&gt;
@@ -1998,7 +1998,7 @@ corrected with each release. &lt;/p&gt;
 &lt;li&gt;Fixed the can not create type 'DotNetNuke.Modules.Journal.ProfilePic' error when using DotNetNuke.Modules.Journal.dll&lt;/li&gt;
 &lt;li&gt;Improved the performance of the login control&lt;/li&gt;
 &lt;li&gt;Fixed issue in the DDR Menu that was causing rendering issues when visiting the site using a mobile device&lt;/li&gt;
-&lt;li&gt;Updated the Dark Knight skin to use HTML5 as the doctype and dded HTML5 doctype as an option under fallback skin doctype&lt;/li&gt;
+&lt;li&gt;Updated the Dark Knight theme to use HTML5 as the doctype and dded HTML5 doctype as an option under fallback skin doctype&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 class="SubSubHead"&gt;Security Fixes&lt;/h3&gt;
 &lt;ul&gt;
@@ -2479,8 +2479,8 @@ corrected with each release. &lt;/p&gt;
 	&lt;li&gt;Added search capabilities in the page management section&lt;/li&gt;
 	&lt;li&gt;Added new funtionality to the Member Directory so that users can choose between the different search options&lt;/li&gt;
 	&lt;li&gt;When creating a social group the newly created role group is now set as the default group&lt;/li&gt;
-	&lt;li&gt;Implemented new functionality to allow users to hid the login button in the default skin&lt;/li&gt;
-	&lt;li&gt;Removed the module and skin templates from the Starter Kit package&lt;/li&gt;
+	&lt;li&gt;Implemented new functionality to allow users to hid the login button in the default theme&lt;/li&gt;
+	&lt;li&gt;Removed the module and theme templates from the Starter Kit package&lt;/li&gt;
 	&lt;li&gt;Fixed issue that shows an error when registration is set to unique display name&lt;/li&gt;
 	&lt;li&gt;Fixed issue that made child site files not to show when managing sites&lt;/li&gt;
 	&lt;li&gt;Fixed UX issue when changing the file size in the configuration management section&lt;/li&gt;
@@ -2521,7 +2521,7 @@ corrected with each release. &lt;/p&gt;
   <data name="WhatsNew.07.01.00" xml:space="preserve">
     <value>&lt;h3 class="SubSubHead"&gt;Major Highlights&lt;/h3&gt;
 &lt;ul&gt;
-	&lt;li&gt;Implemented functionality so that users are able to assign custom CSS to pages without modifying the skin&lt;/li&gt;
+	&lt;li&gt;Implemented functionality so that users are able to assign custom CSS to pages without modifying the theme&lt;/li&gt;
 	&lt;li&gt;Updated to JQuery 1.9.1&lt;/li&gt;
 	&lt;li&gt;Implemented auto-complete functinoality in the taxonomy module&lt;/li&gt;
 	&lt;li&gt;Updated the page and  user selector controls to improve the experience in larger sites with multiple users&lt;/li&gt;

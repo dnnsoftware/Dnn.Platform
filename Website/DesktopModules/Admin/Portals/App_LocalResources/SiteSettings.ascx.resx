@@ -193,13 +193,13 @@
     <value>Logo:</value>
   </data>
   <data name="plLogo.Help" xml:space="preserve">
-    <value>Depending on the skin chosen, this image will appear in the top left corner of the page.</value>
+    <value>Depending on the theme chosen, this image will appear in the top left corner of the page.</value>
   </data>
   <data name="plPortalSkin.Text" xml:space="preserve">
-    <value>Site Skin:</value>
+    <value>Site Theme:</value>
   </data>
   <data name="plPortalSkin.Help" xml:space="preserve">
-    <value>The selected skin will be applied to all pages on the site, unless overridden at the Page level.</value>
+    <value>The selected theme will be applied to all pages on the site, unless overridden at the Page level.</value>
   </data>
   <data name="plPortalContainer.Text" xml:space="preserve">
     <value>Site Container:</value>
@@ -208,10 +208,10 @@
     <value>The selected container will be applied to all modules on the site, unless overridden at the Page or Module level.</value>
   </data>
   <data name="plAdminSkin.Text" xml:space="preserve">
-    <value>Edit Skin:</value>
+    <value>Edit Theme:</value>
   </data>
   <data name="plAdminSkin.Help" xml:space="preserve">
-    <value>The selected skin will be applied to all edit mode (ctl=) pages on the site.</value>
+    <value>The selected theme will be applied to all edit mode (ctl=) pages on the site.</value>
   </data>
   <data name="plAdminContainer.Text" xml:space="preserve">
     <value>Edit Container:</value>
@@ -229,7 +229,7 @@
     <value>Body Background:</value>
   </data>
   <data name="plBackground.Help" xml:space="preserve">
-    <value>Depending on the skin, if selected, an image will display in the background of all pages.</value>
+    <value>Depending on the theme, if selected, an image will display in the background of all pages.</value>
   </data>
   <data name="plFavIcon.Text" xml:space="preserve">
     <value>Favicon.ico:</value>
@@ -373,7 +373,7 @@
     <value>Copyright:</value>
   </data>
   <data name="plFooterText.Help" xml:space="preserve">
-    <value>If supported by the skin this Copyright text is displayed on your site.</value>
+    <value>If supported by the theme this Copyright text is displayed on your site.</value>
   </data>
   <data name="Site.Text" xml:space="preserve">
     <value>Site</value>
@@ -475,7 +475,7 @@
     <value>Edit Site Settings</value>
   </data>
   <data name="SkinUpload.Text" xml:space="preserve">
-    <value>Upload Skin/Container</value>
+    <value>Upload Theme/Container</value>
   </data>
   <data name="ContainerUpload.Text" xml:space="preserve">
     <value>Upload Container</value>
@@ -550,10 +550,10 @@
     <value>Remove Module</value>
   </data>
   <data name="plSkinWidgestEnabled.Help" xml:space="preserve">
-    <value>Check this box to enable Skin Widgets for this site.</value>
+    <value>Check this box to enable Theme Widgets for this site.</value>
   </data>
   <data name="plSkinWidgestEnabled.Text" xml:space="preserve">
-    <value>Enable Skin Widgets:</value>
+    <value>Enable Theme Widgets:</value>
   </data>
   <data name="PortalAliases.Text" xml:space="preserve">
     <value>Site Aliases</value>
@@ -643,16 +643,16 @@
     <value>Site Marketing</value>
   </data>
   <data name="EditSkinPreview.Text" xml:space="preserve">
-    <value>Preview Edit Skin and Container</value>
+    <value>Preview Edit Theme and Container</value>
   </data>
   <data name="SkinPreview.Text" xml:space="preserve">
-    <value>Preview Site Skin and Container</value>
+    <value>Preview Site Theme and Container</value>
   </data>
   <data name="ExpandAll.Text" xml:space="preserve">
     <value>Expand All</value>
   </data>
   <data name="PreviewNoSelectionMessage.Text" xml:space="preserve">
-    <value>Please select a skin and/or container to preview.</value>
+    <value>Please select a theme and/or container to preview.</value>
   </data>
   <data name="valExpiryDate.ErrorMessage" xml:space="preserve">
     <value>Invalid expiry date</value>
@@ -1185,6 +1185,7 @@ The host-level settings are currently set as follows:
     <value>Enter the Password for the SMTP Server</value>
   </data>
   <data name="plSMTPServer.Help" xml:space="preserve">
+    <value>Please enter name (address) and port of the SMTP server to be used for sending mails from this website.</value>
   </data>
   <data name="plSMTPServer.Text" xml:space="preserve">
     <value>SMTP Server and port:</value>
@@ -1249,5 +1250,29 @@ The host-level settings are currently set as follows:
   </data>
   <data name="pl500TabId.Text" xml:space="preserve">
     <value>500 Error Page</value>
+  </data>
+  <data name="ContainsDuplicateAddresses.Text" xml:space="preserve">
+    <value>The user base of this portal contains duplicate e-mail addresses. If you would like to use e-mail addresses as usernames you must fix those entries first.</value>
+  </data>
+  <data name="PageHeaders.Text" xml:space="preserve">
+    <value>Page Output Settings</value>
+  </data>
+  <data name="plPageHeadText.Help" xml:space="preserve">
+    <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="plPageHeadText.Text" xml:space="preserve">
+    <value>Html Page Header Tags</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Help" xml:space="preserve">
+    <value>Inject a empty hyperlink on the top of the module with name equals moduleid.</value>
+  </data>
+  <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
+    <value>Inject Module Hyperlinks</value>
+  </data>
+  <data name="plAddCompatibleHttpHeader.Help" xml:space="preserve">
+    <value>Add X-UA-Compatible to the hhtp response headers (ex. : IE=edge)</value>
+  </data>
+  <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
+    <value>X-UA-Compatible Http Header</value>
   </data>
 </root>

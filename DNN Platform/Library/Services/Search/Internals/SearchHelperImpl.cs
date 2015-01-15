@@ -18,22 +18,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Entities.Controllers;
 using System.IO;
@@ -235,7 +236,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (reindexRequest != Null.NullString)
             {
-                DateTime.TryParseExact(reindexRequest, Constants.ReinsdexDateTimeFormat, null, DateTimeStyles.None, out requestedOn);
+                DateTime.TryParseExact(reindexRequest, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out requestedOn);
             }
 
             return requestedOn;
@@ -244,7 +245,7 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime SetSearchReindexRequestTime(int portalId)
         {
             var now = DateTime.Now;
-            var text = now.ToString(Constants.ReinsdexDateTimeFormat);
+            var text = now.ToString(Constants.ReindexDateTimeFormat);
 
             if (portalId < 0)
             {
@@ -254,7 +255,7 @@ namespace DotNetNuke.Services.Search.Internals
             else
             {
                 // portal level setting
-                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true, string.Empty);
+                PortalController.UpdatePortalSetting(portalId, Constants.SearchReindexSettingName, text, true);
             }
 
             return now;
@@ -299,23 +300,42 @@ namespace DotNetNuke.Services.Search.Internals
             return portals2Reindex.ToArray();
         }
 
+        /// <summary>
+        /// Returns the last time search indexing was completed successfully.
+        /// The returned value in local server time (not UTC).
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
-            var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
-            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value;
-            var lastValue = HostController.Instance.GetString(name, Null.NullString);
-            if (lastValue != Null.NullString)
+            var lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
+            var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
+            var lastValue = settings[Constants.SearchLastSuccessIndexName] as string;
+
+            if (string.IsNullOrEmpty(lastValue))
             {
-                DateTime.TryParseExact(lastValue, Constants.ReinsdexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
+                // try to fallback to old location where this was stored
+                var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
+                lastValue = HostController.Instance.GetString(name, Null.NullString);
+            }
+
+            if (!string.IsNullOrEmpty(lastValue))
+            {
+                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
+
+                if (lastSuccessfulDateTime <= SqlDateTime.MinValue.Value)
+                    lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
+                else if (lastSuccessfulDateTime >= SqlDateTime.MaxValue.Value)
+                    lastSuccessfulDateTime = SqlDateTime.MaxValue.Value.AddDays(-1);
             }
 
             return lastSuccessfulDateTime;
         }
 
-        public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDate)
+        public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
-            var name = string.Format(LastIndexKeyFormat, Constants.SearchLastSuccessIndexName, scheduleId);
-            HostController.Instance.Update(name, startDate.ToString(Constants.ReinsdexDateTimeFormat));
+            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
+                Constants.SearchLastSuccessIndexName, startDateLocal.ToString(Constants.ReindexDateTimeFormat));
         }
 
         #endregion
@@ -406,6 +426,16 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return newPhraseBulder.ToString().Trim().Replace("  ", " ");
+        }
+
+        public string StripTagsNoAttributes(string html, bool retainSpace)
+        {
+            var strippedString = !String.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;
+
+            // Encode and Strip again
+            strippedString = !String.IsNullOrEmpty(strippedString) ? HtmlUtils.StripTags(html, retainSpace) : html;
+
+            return strippedString;
         }
 
         #endregion

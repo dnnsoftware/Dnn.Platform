@@ -134,7 +134,7 @@ namespace DesktopModules.Admin.Security
 
             var ctlEntry = new ListController();
             ListEntryInfo entry = ctlEntry.GetListEntryInfo("Frequency", frequency);
-            return entry.Text;
+            return entry != null ? entry.Text : frequency;
         }
 
         #endregion

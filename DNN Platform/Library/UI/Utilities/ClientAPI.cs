@@ -26,7 +26,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -445,13 +444,12 @@ namespace DotNetNuke.UI.Utilities
                         ClientAPI.RegisterClientVariable(objButton.Page, objButton.ClientID + ":exp", Convert.ToInt32(value).ToString(), true);
                         break;
                     case MinMaxPersistanceType.Cookie:
-                        var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible");
-                        if (objModuleVisible != null)
+                        var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLower())
                         {
-                            objModuleVisible.Value = value.ToString().ToLower();
-                            objModuleVisible.Expires = DateTime.MaxValue;
-                            HttpContext.Current.Response.AppendCookie(objModuleVisible);
-                        }
+                            Expires = DateTime.MaxValue,
+                            Path = (!string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/")
+                        };
+                        HttpContext.Current.Response.AppendCookie(objModuleVisible);
                         break;
                     case MinMaxPersistanceType.Personalization:
                         Personalization.SetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey"), value.ToString());

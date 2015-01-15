@@ -40,11 +40,6 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name="portalId">Id of the portal</param>
         /// <param name="portalAlias">Portal Alias to be created</param>
-        /// <remarks>
-        /// </remarks>
-        /// <history>
-        ///     [cnurse]    01/11/2005  created
-        /// </history>
         /// -----------------------------------------------------------------------------
         void AddPortalAlias(int portalId, string portalAlias);
 
@@ -137,6 +132,13 @@ namespace DotNetNuke.Entities.Portals
         ArrayList GetPortals();
 
         /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>portal settings.</returns>
+        Dictionary<string, string> GetPortalSettings(int portalId);
+
+        /// <summary>
         /// Gets the portal space used bytes.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
@@ -213,6 +215,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         void UpdatePortalInfo(PortalInfo portal);
 
+        void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
     }
 }
         

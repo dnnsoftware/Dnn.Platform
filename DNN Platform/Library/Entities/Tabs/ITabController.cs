@@ -291,6 +291,13 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="publishTab">The tab that is checked</param>
         /// <returns>true if tab is published</returns>
         bool IsTabPublished(TabInfo publishTab);
+
+        /// <summary>
+        /// Determines whether is host or admin tab.
+        /// </summary>
+        /// <param name="tab">The tab info.</param>
+        /// <returns></returns>
+        bool IsHostOrAdminPage(TabInfo tab);
         
         /// <summary>
         /// Localizes the tab.
@@ -343,16 +350,22 @@ namespace DotNetNuke.Entities.Tabs
         void PopulateBreadCrumbs(int portalID, ref ArrayList breadCrumbs, int tabID);
 
         /// <summary>
-        /// Publishes the tab.
+        /// Publishes the tab. Set the VIEW permissions to All Users
         /// </summary>
         /// <param name="publishTab">The publish tab.</param>
         void PublishTab(TabInfo publishTab);
 
         /// <summary>
-        /// Publishes the tabs.
+        /// Publishes the tab. Set the VIEW permissions to All Users
         /// </summary>
         /// <param name="tabs">The tabs.</param>
         void PublishTabs(List<TabInfo> tabs);
+
+        /// <summary>
+        /// It marks a page as published at least once
+        /// </summary>
+        /// <param name="tab">The Tab to be marked</param>
+        void MarkAsPublished(TabInfo tab);
         
         /// <summary>
         /// Restores the tab.

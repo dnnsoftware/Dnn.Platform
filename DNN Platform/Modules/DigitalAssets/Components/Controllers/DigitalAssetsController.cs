@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         private string GetUnlinkAllowedStatus(IFolderInfo folder)
         {
-            if (AreMappedPathsSupported(folder.FolderMappingID) && GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
+            if (AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
             {
                 return "onlyUnlink";
             }
@@ -657,7 +657,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
-                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath);
+                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
                 return GetFolderViewModel(folder);
             }
             catch (FolderAlreadyExistsException)

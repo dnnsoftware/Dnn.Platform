@@ -65,6 +65,7 @@ namespace DotNetNuke.Entities.Urls
             bool checkForDupUrls = settings.CheckForDuplicateUrls;
             //697 : custom url rewrites with large number of path depths fail because of incorrect path depth calculation
             int maxTabPathDepth = 1;
+            string origRewritePath = rewritePath;
             string newRewritePath = rewritePath;
             string aliasCulture = null;
             //get the culture for this alias
@@ -76,6 +77,7 @@ namespace DotNetNuke.Entities.Urls
             }
             foreach (var redirect in tab.TabUrls)
             {
+                rewritePath = origRewritePath;
                 //allow for additional qs parameters
                 if (!String.IsNullOrEmpty(redirect.QueryString))
                 {

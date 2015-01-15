@@ -236,7 +236,7 @@ namespace DotNetNuke.UI.Containers
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
-            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo\">{0}</div>", message)));
+            ContentPane.Controls.Add(new LiteralControl(string.Format("<div class=\"dnnFormMessage dnnFormInfo dnnFormInfoAdminErrMssg\">{0}</div>", message)));
         }
 
         /// -----------------------------------------------------------------------------

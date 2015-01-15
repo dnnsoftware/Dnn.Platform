@@ -361,6 +361,7 @@ namespace DotNetNuke.Modules.Admin.Host
             {
                 optSiteLogStorage.Items.FindByValue(Entities.Host.Host.SiteLogStorage).Selected = true;
             }
+            
             txtSiteLogBuffer.Text = Entities.Host.Host.SiteLogBuffer.ToString();
             txtSiteLogHistory.Text = Entities.Host.Host.SiteLogHistory.ToString();
 

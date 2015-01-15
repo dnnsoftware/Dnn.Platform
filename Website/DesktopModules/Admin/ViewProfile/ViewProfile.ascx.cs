@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
+using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -40,6 +40,9 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
+using DotNetNuke.Services.Social.Notifications;
 
 #endregion
 
@@ -80,14 +83,17 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnInit(e);
 
-			//redirect to home page if the user has been deleted
+			//throw 404 so that deleted profile is not reindexed
 			if(ProfileUser == null || ProfileUser.IsDeleted)
 			{
-				Response.Redirect(GetRedirectUrl(), true);
+    		    throw new HttpException(404, "Not Found");
 			}
+
+            ProcessQuerystring();
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
         }
 
 		/// <summary>
@@ -183,9 +189,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     var clientName = Localization.GetSafeJSString(property.PropertyName);
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
-                    value = Localization.GetSafeJSString(Server.HtmlDecode(value));
-                    value = value.Replace("\r", string.Empty).Replace("\n",  " ");
-                    value = value.Replace(";", string.Empty).Replace("//",string.Empty);
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        value = Localization.GetSafeJSString(Server.HtmlDecode(value));
+                        value = value.Replace("\r", string.Empty).Replace("\n", " ");
+                        value = value.Replace(";", string.Empty).Replace("//", string.Empty);
+                    }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");
@@ -241,6 +250,63 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			return redirectUrl;
 		}
+
+        private void ProcessQuerystring()
+        {
+            //in case someone is being redirected to here from an e-mail link action we need to process that here
+
+            var action = Request.QueryString["action"];
+
+            if (!Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in. 
+            {
+                string loginUrl = Common.Globals.LoginURL(Request.RawUrl, false);
+                Response.Redirect(loginUrl);
+            }
+            if (Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
+            {
+                //current user, i.e. the one that the request was for
+                var currentUser = UserController.Instance.GetCurrentUserInfo();               
+                // the initiating user,i.e. the one who wanted to be friend
+                // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
+                var initiatingUser = UserController.Instance.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(Request.QueryString["UserID"]));
+
+                if (initiatingUser.UserID == currentUser.UserID)
+                {
+                    return; //do not further process for users who are on their own profile page
+                }
+            
+                var friendRelationship = RelationshipController.Instance.GetFriendRelationship(currentUser, initiatingUser);
+
+                if (friendRelationship != null)
+                {                   
+                    if (action.ToLower() == "acceptfriend")
+                    {
+                        var friend = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        FriendsController.Instance.AcceptFriend(friend);                        
+                    }
+
+                    if (action.ToLower() == "followback")
+                    {
+                        var follower = UserController.GetUserById(PortalSettings.Current.PortalId, friendRelationship.UserId);
+                        try
+                        {
+                            FollowersController.Instance.FollowUser(follower);
+                            var notifications = NotificationsController.Instance.GetNotificationByContext(3, initiatingUser.UserID.ToString());
+                            if (notifications.Count > 0)
+                            {
+                                NotificationsController.Instance.DeleteNotificationRecipient(notifications[0].NotificationID, currentUser.UserID);
+                            }
+                        }
+                        catch 
+                        {}
+
+
+                    }                    
+                }
+
+                Response.Redirect(Common.Globals.UserProfileURL(initiatingUser.UserID));
+            }
+        }
 
 		#endregion
 	}
