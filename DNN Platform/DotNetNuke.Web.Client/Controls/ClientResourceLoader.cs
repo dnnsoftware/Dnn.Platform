@@ -96,6 +96,7 @@ if(typeof window.dnnLoadScriptsInAjaxModeComplete == 'undefined'){
             for(var i = 0; i < window.dnnLoadScriptsInAjaxMode.length; i++){
                 if(window.dnnLoadScriptsInAjaxMode[i] == src){
                     window.dnnLoadScriptsInAjaxMode.splice(i, 1);
+                    break;
                 }
             }
             if(window.dnnLoadScriptsInAjaxMode.length == 0){
