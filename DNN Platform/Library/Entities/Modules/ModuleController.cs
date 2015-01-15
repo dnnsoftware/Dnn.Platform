@@ -1382,9 +1382,34 @@ namespace DotNetNuke.Entities.Modules
         /// get a Module object
         /// </summary>
         /// <param name="moduleID">ID of the module</param>
+        /// <returns>ModuleInfo object</returns>
+        /// <remarks>This overload ignores any cached values and always retrieves the latest data
+        /// from the database.</remarks>
+        public ModuleInfo GetModule(int moduleID)
+        {
+            return GetModule(moduleID, Null.NullInteger, true);
+        }
+
+        /// <summary>
+        /// get a Module object
+        /// </summary>
+        /// <param name="moduleID">ID of the module</param>
+        /// <param name="tabID">ID of the page</param>
+        /// <returns>ModuleInfo object</returns>
+        /// <remarks>This overload ignores any cached values and always retrieves the latest data
+        /// from the database.</remarks>
+        public ModuleInfo GetModule(int moduleID, int tabID)
+        {
+            return GetModule(moduleID, tabID, false);
+        }
+
+        /// <summary>
+        /// get a Module object
+        /// </summary>
+        /// <param name="moduleID">ID of the module</param>
         /// <param name="tabID">ID of the page</param>
         /// <param name="ignoreCache">flag, if data shall not be taken from cache</param>
-        /// <returns>ArrayList of ModuleInfo objects</returns>
+        /// <returns>ModuleInfo object</returns>
         public ModuleInfo GetModule(int moduleID, int tabID, bool ignoreCache)
         {
             ModuleInfo modInfo = null;
