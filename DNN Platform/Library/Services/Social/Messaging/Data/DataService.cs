@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>count of recipients</returns>
         public int CheckReplyHasRecipients(int conversationId, int userId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
         }
 
         public IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus)
@@ -154,42 +154,42 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         public int CountNewThreads(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
         }
 
         public int CountTotalConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
         }
 
         public int CountMessagesByConversation(int conversationId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
+            return conversationId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
         }
 
         public int CountArchivedMessagesByConversation(int conversationId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
+            return conversationId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
         }
 
         public int CountSentMessages(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
         }
 
         public int CountArchivedMessages(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
         }
 
         public int CountSentConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
         }
 
         public int CountArchivedConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
         #endregion
