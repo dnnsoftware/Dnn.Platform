@@ -521,9 +521,11 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
-            if (Roles != null)
+
+            var roles = Roles;
+            if (roles != null)
             {
-                return Roles.Any(s => s == role);
+                return roles.Any(s => s == role);
             }
             return false;
         }
