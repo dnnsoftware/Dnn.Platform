@@ -1295,11 +1295,15 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>tab info.</returns>
         public TabInfo GetTab(int tabId, int portalId, bool ignoreCache)
         {
-            TabInfo tab;
+            TabInfo tab = null;
 
-            //if we are using the cache
-            if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
+            if (tabId <= 0)
             {
+                Logger.WarnFormat("Invalid tabId {0} of portal {1}", tabId, portalId);
+            }
+            else if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
+            {
+                //if we are using the cache
                 tab = CBO.FillObject<TabInfo>(Provider.GetTab(tabId));
             }
             else
