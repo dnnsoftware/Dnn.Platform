@@ -17,13 +17,14 @@ namespace ClientDependency.Core.Config
         /// <summary>
         /// used for singleton
         /// </summary>
-        private static ClientDependencySettings _settings;
+        private static volatile ClientDependencySettings _settings;
         private static readonly object Lock = new object();
+        private static Action _loadProviders = null;
 
         /// <summary>
-        /// Default constructor, for use with a web context app
+        /// Default constructor for use with the Singletone instance with a web context app
         /// </summary>
-        internal ClientDependencySettings()
+        private ClientDependencySettings()
         {
             if (HttpContext.Current == null)
             {
@@ -31,15 +32,44 @@ namespace ClientDependency.Core.Config
                     "HttpContext.Current must exist when using the empty constructor for ClientDependencySettings, otherwise use the alternative constructor");
             }
 
-            LoadProviders((ClientDependencySection)ConfigurationManager.GetSection("clientDependency"), new HttpContextWrapper(HttpContext.Current));
-            
+            ConfigSection = GetDefaultSection();
+
+            _loadProviders = () =>
+                LoadProviders(new HttpContextWrapper(HttpContext.Current));
+
         }
 
-        internal ClientDependencySettings(FileInfo configFile, HttpContextBase ctx)
+        /// <summary>
+        /// Generally for unit testing when not using the singleton instance
+        /// </summary>
+        /// <param name="configFile"></param>
+        /// <param name="ctx"></param>
+        internal ClientDependencySettings(FileSystemInfo configFile, HttpContextBase ctx)
         {
             var fileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFile.FullName };
             var configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
-            LoadProviders((ClientDependencySection)configuration.GetSection("clientDependency"), ctx);            
+
+            ConfigSection = (ClientDependencySection)configuration.GetSection("clientDependency");
+
+            _loadProviders = () =>
+                LoadProviders(ctx);
+
+            _loadProviders();
+        }
+
+        /// <summary>
+        /// Generally for unit testing when not using the singleton instance
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="ctx"></param>
+        internal ClientDependencySettings(ClientDependencySection section, HttpContextBase ctx)
+        {
+            ConfigSection = section;
+
+            _loadProviders = () =>
+                LoadProviders(ctx);
+
+            _loadProviders();
         }
 
         /// <summary>
@@ -51,18 +81,41 @@ namespace ClientDependency.Core.Config
             {
                 if (_settings == null)
                 {
-                    lock(Lock)
+                    lock (Lock)
                     {
                         //double check
                         if (_settings == null)
                         {
                             _settings = new ClientDependencySettings();
+                            _loadProviders();
                         }
                     }
                 }
                 return _settings;
             }
         }
+
+        internal static ClientDependencySection GetDefaultSection()
+        {
+            return (ClientDependencySection)ConfigurationManager.GetSection("clientDependency");
+        }
+
+        private ClientDependencySection _configSection;
+        public ClientDependencySection ConfigSection
+        {
+            get { return _configSection; }
+            internal set
+            {
+                lock (Lock)
+                {
+                    _configSection = value;
+                }
+            }
+        }
+
+        
+
+        private List<string> _fileBasedDependencyExtensionList;
 
         /// <summary>
         /// The file extensions of Client Dependencies that are file based as opposed to request based.
@@ -75,9 +128,78 @@ namespace ClientDependency.Core.Config
         /// <remarks>
         /// If this is not explicitly set, then the extensions 'js' and 'css' are the defaults.
         /// </remarks>
-        public List<string> FileBasedDependencyExtensionList { get; set; }
-        
-        public int Version { get; set; }
+        public List<string> FileBasedDependencyExtensionList
+        {
+            get
+            {
+                if (_fileBasedDependencyExtensionList == null)
+                {
+                    //Here we are checking for backwards compatibility config sections.
+                    if (ConfigSection.FileRegistrationElement.FileBasedDependencyExtensions != ".js,.css"
+                        && ConfigSection.FileBasedDepdendenyExtensions == ".js,.css")
+                    {
+                        //if the legacy section is not the default and the non-legacy section IS the default, 
+                        //then we will use the legacy settings.
+                        _fileBasedDependencyExtensionList = ConfigSection.FileRegistrationElement.FileBasedDependencyExtensionList.ToList();
+                    }
+                    else
+                    {
+                        _fileBasedDependencyExtensionList = ConfigSection.FileBasedDependencyExtensionList.ToList();
+                    }
+
+                    //always force uppercase
+                    _fileBasedDependencyExtensionList = _fileBasedDependencyExtensionList.Select(x => x.ToUpper()).Distinct().ToList();
+
+                }
+                return _fileBasedDependencyExtensionList;
+            }
+            set
+            {
+                //always force uppercase
+                _fileBasedDependencyExtensionList = value.Select(x => x.ToUpper()).Distinct().ToList();
+            }
+        }
+
+        private bool? _allowOnlyFipsAlgorithms;
+
+        /// <summary>
+        /// Indicates whether CDF should enforce the policy to create only Federal Information Processing Standard (FIPS) certified algorithms.
+        /// </summary>
+        public bool AllowOnlyFipsAlgorithms
+        {
+            get
+            {
+                if (!_allowOnlyFipsAlgorithms.HasValue)
+                {
+                    _allowOnlyFipsAlgorithms = ConfigSection.AllowOnlyFipsAlgorithms;
+                }
+                return _allowOnlyFipsAlgorithms.Value;
+            }
+            set { _allowOnlyFipsAlgorithms = value; }
+        }
+
+        private int? _version;
+
+        /// <summary>
+        /// Gets/sets the file version
+        /// </summary>
+        public int Version
+        {
+            get
+            {
+                if (!_version.HasValue)
+                {
+                    _version = ConfigSection.Version;
+                }
+
+                //grab any settings from dnn
+                var dnnConfig = new DnnConfiguration();
+                var dnnVersion = dnnConfig.GetVersion();
+
+                return dnnVersion == null ? _version.Value : dnnVersion.Value;
+            }
+            set { _version = value; }
+        }
 
         public ILogger Logger { get; private set; }
 
@@ -121,40 +243,48 @@ namespace ClientDependency.Core.Config
         /// </summary>
         public FileMapProviderCollection FileMapProviderCollection { get; private set; }
 
-        public ClientDependencySection ConfigSection { get; private set; }
-       
         public string CompositeFileHandlerPath { get; set; }
-       
-        internal void LoadProviders(ClientDependencySection section, HttpContextBase http)
+
+        internal void LoadProviders(HttpContextBase http)
         {
-         
-            ConfigSection = section;
+
+            // if there is no section found, then create one
+            if (ConfigSection == null)
+            {
+                //create a new section with the default settings
+                ConfigSection = new ClientDependencySection();
+            }
 
             FileRegistrationProviderCollection = new FileRegistrationProviderCollection();
             CompositeFileProcessingProviderCollection = new CompositeFileProcessingProviderCollection();
             MvcRendererCollection = new RendererCollection();
             FileMapProviderCollection = new FileMapProviderCollection();
 
-            // if there is no section found, then create one
-            if (ConfigSection == null)
-            {
-                //create a new section with the default settings
-                ConfigSection = new ClientDependencySection();                            
-            }
+            var rootPath = HttpRuntime.AppDomainAppVirtualPath ?? "/";
+            
 
             //need to check if it's an http path or a lambda path
             var path = ConfigSection.CompositeFileElement.CompositeFileHandlerPath;
             CompositeFileHandlerPath = path.StartsWith("~/")
-                ? VirtualPathUtility.ToAbsolute(ConfigSection.CompositeFileElement.CompositeFileHandlerPath, http.Request.ApplicationPath)
+                ? VirtualPathUtility.ToAbsolute(ConfigSection.CompositeFileElement.CompositeFileHandlerPath, rootPath)
                 : ConfigSection.CompositeFileElement.CompositeFileHandlerPath;
-            Version = ConfigSection.Version;
-            FileBasedDependencyExtensionList = ConfigSection.FileBasedDependencyExtensionList.ToList();
 
             //load the providers from the config, if there isn't config sections then add default providers
             // and then load the defaults.
-            
+
             LoadDefaultCompositeFileConfig(ConfigSection, http);
 
+            ////Here we need to detect legacy settings
+            //if (ConfigSection.CompositeFileElement.DefaultFileProcessingProviderLegacy != "CompositeFileProcessor"
+            //    && ConfigSection.CompositeFileElement.DefaultFileProcessingProvider == "CompositeFileProcessor")
+            //{
+            //    //if the legacy section is not the default and the non-legacy section IS the default, then use the legacy section
+            //    DefaultCompositeFileProcessingProvider = CompositeFileProcessingProviderCollection[ConfigSection.CompositeFileElement.DefaultFileProcessingProviderLegacy];
+            //}
+            //else
+            //{
+            //    DefaultCompositeFileProcessingProvider = CompositeFileProcessingProviderCollection[ConfigSection.CompositeFileElement.DefaultFileProcessingProvider];   
+            //}            
             DefaultCompositeFileProcessingProvider = CompositeFileProcessingProviderCollection[ConfigSection.CompositeFileElement.DefaultFileProcessingProvider];
             if (DefaultCompositeFileProcessingProvider == null)
                 throw new ProviderException("Unable to load default composite file provider");
@@ -179,7 +309,7 @@ namespace ClientDependency.Core.Config
 
             if (string.IsNullOrEmpty(ConfigSection.LoggerType))
             {
-                Logger = new NullLogger();
+                Logger = new TraceLogger();
             }
             else
             {
@@ -191,7 +321,7 @@ namespace ClientDependency.Core.Config
 
                 Logger = (ILogger)Activator.CreateInstance(t);
             }
-                    
+
         }
 
         private void LoadDefaultFileRegConfig(ClientDependencySection section)
@@ -210,6 +340,10 @@ namespace ClientDependency.Core.Config
                 var lcp = new LoaderControlProvider();
                 lcp.Initialize(LoaderControlProvider.DefaultName, null);
                 FileRegistrationProviderCollection.Add(lcp);
+
+                var plhp = new PlaceHolderProvider();
+                plhp.Initialize(PlaceHolderProvider.DefaultName, null);
+                FileRegistrationProviderCollection.Add(plhp);
             }
             else
             {
@@ -253,12 +387,12 @@ namespace ClientDependency.Core.Config
             {
                 ProvidersHelper.InstantiateProviders(section.CompositeFileElement.FileProcessingProviders, CompositeFileProcessingProviderCollection, typeof(BaseCompositeFileProcessingProvider));
                 //since the BaseCompositeFileProcessingProvider is an IHttpProvider, we need to do the http init
-                foreach(var p in CompositeFileProcessingProviderCollection.Cast<BaseCompositeFileProcessingProvider>())
+                foreach (var p in CompositeFileProcessingProviderCollection.Cast<BaseCompositeFileProcessingProvider>())
                 {
                     p.Initialize(http);
                 }
             }
-            
+
         }
 
         private void LoadDefaultMvcFileConfig(ClientDependencySection section)
