@@ -143,35 +143,41 @@ namespace DotNetNuke.UI.Skins.Controls
 
             registerLink.NavigateUrl = RegisterUrl;
             loginLink.NavigateUrl = LoginUrl;
-            viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
-            viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
-            logoffLink.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
-            editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=3");
-            accountLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
-            messagesLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
-            notificationsLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
 
-            var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(PortalSettings.UserId, PortalSettings.PortalId);
-            var unreadAlerts = NotificationsController.Instance.CountNotifications(PortalSettings.UserId, PortalSettings.PortalId);
-
-            if(unreadMessages > 0)
+            if (PortalSettings.UserId > 0)
             {
-                messageCount.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
-                messageCount.Visible = true;
+                viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
+                viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
+                logoffLink.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
+                editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=3");
+                accountLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
+                messagesLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
+                notificationsLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
 
-                messages.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
-                messages.ToolTip = unreadMessages == 1 
-                                    ? LocalizeString("OneMessage") 
-                                    : String.Format(LocalizeString("MessageCount"), unreadMessages);
-                messages.Visible = true;
+                var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(PortalSettings.UserId, PortalSettings.PortalId);
+                var unreadAlerts = NotificationsController.Instance.CountNotifications(PortalSettings.UserId, PortalSettings.PortalId);
+
+                if (unreadMessages > 0)
+                {
+                    messageCount.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
+                    messageCount.Visible = true;
+
+                    messages.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
+                    messages.ToolTip = unreadMessages == 1
+                                        ? LocalizeString("OneMessage")
+                                        : String.Format(LocalizeString("MessageCount"), unreadMessages);
+                    messages.Visible = true;
+                }
+
+                if (unreadAlerts > 0)
+                {
+                    notificationCount.Text = unreadAlerts.ToString(CultureInfo.InvariantCulture);
+                    notificationCount.Visible = true;
+                }
+
+                profilePicture.ImageUrl = AvatarImageUrl;
+                profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
             }
-
-            if (unreadAlerts > 0)
-            {
-                notificationCount.Text = unreadAlerts.ToString(CultureInfo.InvariantCulture);
-                notificationCount.Visible = true;
-            }
-
 
             if (UsePopUp)
             {
@@ -179,8 +185,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 loginLink.Attributes.Add("onclick", LoginUrl);
             }
 
-            profilePicture.ImageUrl = AvatarImageUrl;
-            profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
         }
 
         private int GetMessageTab()
