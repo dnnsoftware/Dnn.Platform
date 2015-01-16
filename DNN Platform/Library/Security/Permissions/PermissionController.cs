@@ -124,10 +124,11 @@ namespace DotNetNuke.Security.Permissions
 
         public static string BuildPermissions(IList Permissions, string PermissionKey)
         {
+            PermissionKey = PermissionKey.ToUpperInvariant();
             var permissionsBuilder = new StringBuilder();
             foreach (PermissionInfoBase permission in Permissions)
             {
-                if (permission.PermissionKey.ToLowerInvariant() == PermissionKey.ToLowerInvariant())
+                if (PermissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
                 {
 					//Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : "";
