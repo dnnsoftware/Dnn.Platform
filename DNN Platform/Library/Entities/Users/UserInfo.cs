@@ -259,6 +259,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
+                var socialRoles = Social.Roles;
+                if (socialRoles.Count == 0)
+                    return new string[0];
+
                 return (from r in Social.Roles
                         where
                             r.Status == RoleStatus.Approved &&

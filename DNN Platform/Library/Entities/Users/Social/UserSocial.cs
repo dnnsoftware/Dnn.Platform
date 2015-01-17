@@ -161,7 +161,7 @@ namespace DotNetNuke.Entities.Users.Social
             get 
             {
                 return _roles ?? (_roles = (_userInfo.PortalID == -1 && _userInfo.UserID == -1)
-                                            ? new List<UserRoleInfo>()
+                                            ? new List<UserRoleInfo>(0)
                                             : RoleController.Instance.GetUserRoles(_userInfo, true)
                                 ); 
             }
