@@ -611,7 +611,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    if (TabPermissionController.CanAddContentToPage() && PaneControl.Visible == false)
+                    if (PaneControl.Visible == false && TabPermissionController.CanAddContentToPage())
                     {
                         PaneControl.Visible = true;
                     }
@@ -634,7 +634,7 @@ namespace DotNetNuke.UI.Skins
                     }
 
                     //Add support for drag and drop
-                    if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode())
+                    if (Globals.IsEditMode()) // this call also checks for permission
                     {
                         if (PaneControl.Attributes["class"] != null)
                         {
