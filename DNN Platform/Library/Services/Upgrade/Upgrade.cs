@@ -3042,8 +3042,9 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion750()
         {
-            //Remove Admin Newsletter Page
+            //Remove Admin Pages
             RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//RecycleBin");
         }
 
         private static void ReIndexUserSearch()
