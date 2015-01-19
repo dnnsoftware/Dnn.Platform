@@ -144,4 +144,10 @@
   <data name="saveRule.Text" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="Language.Header" xml:space="preserve">
+    <value>Language code</value>
+  </data>
+  <data name="currentAliasHelpLabel.Text" xml:space="preserve">
+    <value>Current Alias</value>
+  </data>
 </root>
