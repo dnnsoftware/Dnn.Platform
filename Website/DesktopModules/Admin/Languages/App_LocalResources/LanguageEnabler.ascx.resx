@@ -337,7 +337,7 @@
     <value>Show Pages that are not yet translated</value>
   </data>
   <data name="MarkAllPagesTranslated.Text" xml:space="preserve">
-    <value>Mark All Pages For {0} As Translated</value>
+    <value>Mark All Pages As Translated</value>
   </data>
   <data name="NonLocalizedPagesTitle.Text" xml:space="preserve">
     <value>Pages Not Translated: </value>
