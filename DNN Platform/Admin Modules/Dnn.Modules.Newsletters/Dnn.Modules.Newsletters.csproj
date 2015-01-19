@@ -61,6 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Components\NewsletterController.cs" />
     <Compile Include="Newsletter.ascx.designer.cs">
       <DependentUpon>Newsletter.ascx</DependentUpon>

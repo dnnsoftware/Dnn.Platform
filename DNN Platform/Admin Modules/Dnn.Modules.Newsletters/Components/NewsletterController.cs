@@ -49,8 +49,8 @@ namespace Dnn.Modules.Newsletters.Components
                             //Add Module to Admin Page for all Portals
                             Upgrade.AddAdminPages("Newsletters",
                                                     "Send email messages to users, security roles and specific email addresses.",
-                                                    "~/Icons/Sigma/BulkMail_16X16_Standard.png.gif",
-                                                    "~/Icons/Sigma/BulkMail_32X32_Standard.pngf",
+                                                    "~/Icons/Sigma/BulkMail_16X16_Standard.png",
+                                                    "~/Icons/Sigma/BulkMail_32X32_Standard.png",
                                                     true,
                                                     moduleDefinition.ModuleDefID,
                                                     "Newsletters",
