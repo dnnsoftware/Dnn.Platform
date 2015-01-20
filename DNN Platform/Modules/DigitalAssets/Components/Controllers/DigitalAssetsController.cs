@@ -368,21 +368,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             var portalId = GetCurrentPortalId(moduleId);
 
-            var folderProviderValues = new List<FolderMappingInfo>
+            return new List<FolderMappingInfo>
                 {                        
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Standard"),
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Secure"),
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Database")
                 };
-
-            // DNN-6091: Add the default provider to the list of default folder provider values
-            var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
-            if (defaultFolderMapping != null && folderProviderValues.All(x => x.FolderMappingID != defaultFolderMapping.FolderMappingID))
-            {
-                folderProviderValues.Add(defaultFolderMapping);
-            }
-            return folderProviderValues;
-
         }
 
         public int? GetDefaultFolderTypeId(int moduleId)
@@ -392,14 +383,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            var folderTypeId = SettingsRepository.GetDefaultFolderTypeId(moduleId);
-            if (!folderTypeId.HasValue)
-            {
-                folderTypeId = FolderMappingController.Instance.GetDefaultFolderMapping(GetCurrentPortalId(moduleId)).FolderMappingID;
-            }
-            return folderTypeId;
-        }                         
-
+            return SettingsRepository.GetDefaultFolderTypeId(moduleId);
+        }
 
         public int GetCurrentPortalId(int moduleId)
         {
