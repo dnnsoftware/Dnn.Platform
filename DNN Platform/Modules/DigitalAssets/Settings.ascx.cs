@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
@@ -75,14 +76,23 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             try
             {
-                DefaultFolderTypeComboBox.DataSource = new List<FolderMappingInfo>
-                    {
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Standard"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Secure"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Database")
-                    };
+                var folderProviderValues = new List<FolderMappingInfo>
+                {                        
+                    FolderMappingController.Instance.GetFolderMapping(PortalId, "Standard"),
+                    FolderMappingController.Instance.GetFolderMapping(PortalId, "Secure"),
+                    FolderMappingController.Instance.GetFolderMapping(PortalId, "Database")
+                };
 
+                // DNN-6091: Add the default provider to the list of default folder provider values
+                var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(PortalId);
+                if (defaultFolderMapping != null && folderProviderValues.All(x => x.FolderMappingID != defaultFolderMapping.FolderMappingID))
+                {
+                    folderProviderValues.Add(defaultFolderMapping);
+                }
+
+                DefaultFolderTypeComboBox.DataSource = folderProviderValues;
                 DefaultFolderTypeComboBox.DataBind();
+
 
                 var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
                 if (defaultFolderTypeId.HasValue)
