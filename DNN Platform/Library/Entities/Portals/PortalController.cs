@@ -987,6 +987,7 @@ namespace DotNetNuke.Entities.Portals
             var providers = ExtensionUrlProviderController.GetProviders(portalId);
             foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var providerName = XmlUtils.GetNodeValue(providerNavigator, "name");
                 var provider = providers.SingleOrDefault(p => p.ProviderName.Equals(providerName, StringComparison.OrdinalIgnoreCase));
                 if (provider == null)
@@ -1160,6 +1161,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
                 {
+                    HtmlUtils.WriteKeepAlive();
                     folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
 
                     //First check if the folder exists
@@ -1313,6 +1315,7 @@ namespace DotNetNuke.Entities.Portals
             DesktopModuleInfo desktopModule = null;
             foreach (XPathNavigator desktopModuleNav in nav.Select("portalDesktopModule"))
             {
+                HtmlUtils.WriteKeepAlive();
                 friendlyName = XmlUtils.GetNodeValue(desktopModuleNav, "friendlyname");
                 if (!string.IsNullOrEmpty(friendlyName))
                 {
@@ -1500,6 +1503,7 @@ namespace DotNetNuke.Entities.Portals
 
             foreach (XPathNavigator roleGroupNav in nav.Select("rolegroup"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var roleGroup = CBO.DeserializeObject<RoleGroupInfo>(new StringReader(roleGroupNav.OuterXml));
                 if (roleGroup.RoleGroupName != "GlobalRoles")
                 {
@@ -1560,6 +1564,7 @@ namespace DotNetNuke.Entities.Portals
 
             foreach (XPathNavigator roleNav in nav.Select("role"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var role = CBO.DeserializeObject<RoleInfo>(new StringReader(roleNav.OuterXml));
                 role.PortalID = portalID;
                 role.RoleGroupID = Null.NullInteger;
@@ -1733,12 +1738,14 @@ namespace DotNetNuke.Entities.Portals
             }
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
+                HtmlUtils.WriteKeepAlive();
                 ParseTab(nodeTab, PortalId, IsAdminTemplate, mergeTabs, ref hModules, ref hTabs, IsNewPortal);
             }
 
             //Process tabs that are linked to tabs
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'Tab']"))
             {
+                HtmlUtils.WriteKeepAlive();
                 int tabId = XmlUtils.GetNodeValueInt(nodeTab, "tabid", Null.NullInteger);
                 string tabPath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
@@ -1753,6 +1760,7 @@ namespace DotNetNuke.Entities.Portals
             //Process tabs that are linked to files
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'File']"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var tabId = XmlUtils.GetNodeValueInt(nodeTab, "tabid", Null.NullInteger);
                 var filePath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
@@ -1794,11 +1802,13 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/settings");
             if (node != null && isNewPortal)
             {
+                HtmlUtils.WriteKeepAlive();
                 ParsePortalSettings(node, portalId);
             }
             node = xmlPortal.SelectSingleNode("//locales");
             if (node != null && isNewPortal)
             {
+                HtmlUtils.WriteKeepAlive();
                 localeCollection = ParseEnabledLocales(node, portalId);
             }
             else
