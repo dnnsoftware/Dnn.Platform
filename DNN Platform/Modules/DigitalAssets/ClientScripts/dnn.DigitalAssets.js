@@ -2287,8 +2287,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
 
         var defaultFolderProviders = resources.defaultFolderProviderValues == "" ? [] : resources.defaultFolderProviderValues.split(',');
-        if ((node.get_value() != rootFolderId && folderProviderValue.toString() == settings.defaultFolderTypeId)
-            || $.inArray(folderProviderValue.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
+        if ($.inArray(folderProviderValue.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
         {
             comboFolderType.set_visible(false);
             $("#" + controls.comboBoxFolderTypeId).addClass('dnnModuleDigitalAssetsHideFolderTypeDropDowList');
