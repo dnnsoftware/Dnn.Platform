@@ -2278,16 +2278,18 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         resetClientValidations("CreateFolder");
 
-        var folderProviderValue = node.get_value() == rootFolderId && settings.defaultFolderTypeId != '' ? settings.defaultFolderTypeId : node.get_category();
+        var parentFolderProvider = node.get_category();
+        var defaultFolderProvider = node.get_value() == rootFolderId && settings.defaultFolderTypeId != '' ? settings.defaultFolderTypeId : parentFolderProvider;
 
-        var item = comboFolderType.findItemByValue(folderProviderValue);
+        var item = comboFolderType.findItemByValue(defaultFolderProvider);
         if (item != null) {
             item.select();
             spanFolderTypeNoEditable.text(item.get_text());
         }
 
         var defaultFolderProviders = resources.defaultFolderProviderValues == "" ? [] : resources.defaultFolderProviderValues.split(',');
-        if ($.inArray(folderProviderValue.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
+
+        if ($.inArray(parentFolderProvider.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
         {
             comboFolderType.set_visible(false);
             $("#" + controls.comboBoxFolderTypeId).addClass('dnnModuleDigitalAssetsHideFolderTypeDropDowList');

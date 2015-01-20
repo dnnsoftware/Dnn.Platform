@@ -383,8 +383,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            return SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            var folderTypeId = SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            if (!folderTypeId.HasValue)
+            {
+                folderTypeId = FolderMappingController.Instance.GetDefaultFolderMapping(GetCurrentPortalId(moduleId)).FolderMappingID;
+            }
+            return folderTypeId;
         }
+
 
         public int GetCurrentPortalId(int moduleId)
         {

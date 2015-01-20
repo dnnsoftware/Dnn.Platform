@@ -75,16 +75,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             try
             {
-                DefaultFolderTypeComboBox.DataSource = new List<FolderMappingInfo>
-                    {
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Standard"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Secure"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Database")
-                    };
-
+                DefaultFolderTypeComboBox.DataSource = FolderMappingController.Instance.GetFolderMappings(PortalId);
                 DefaultFolderTypeComboBox.DataBind();
 
-                var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
+                var defaultFolderTypeId = new DigitalAssetsController().GetDefaultFolderTypeId(ModuleId);
                 if (defaultFolderTypeId.HasValue)
                 {
                     DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
