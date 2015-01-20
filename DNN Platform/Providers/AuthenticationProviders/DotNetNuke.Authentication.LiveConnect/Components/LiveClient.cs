@@ -41,8 +41,11 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 
         public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
         {
-            TokenEndpoint = new Uri("https://login.live.com/token");
-            AuthorizationEndpoint = new Uri("https://login.live.com/authorize");
+            //DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
+            // Add TokenMethod of Post to conform to other OAuth extensions
+            TokenMethod = HttpMethod.POST;
+            TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
+            AuthorizationEndpoint = new Uri("https://login.live.com/oauth20_authorize.srf");
             MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
 
             Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");
