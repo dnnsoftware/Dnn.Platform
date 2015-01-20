@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Social.Messaging
             ConversationId = Null.SetNullInteger(dr["ConversationID"]);
             ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
+            NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
             //add audit column data
             FillInternal(dr);
         }
