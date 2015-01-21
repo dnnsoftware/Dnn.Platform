@@ -1836,7 +1836,7 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.RemoveCache("GetFileById" + file.FileId);
             var updatedFile = GetFile(file.FileId);
 
-            OnFileMetadataChanged(updatedFile, GetCurrentUserID());
+            OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
             return updatedFile;
         }
 
