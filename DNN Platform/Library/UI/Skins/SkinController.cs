@@ -366,8 +366,10 @@ namespace DotNetNuke.UI.Skins
             return skinSrc.Contains(Globals.HostPath);
         }
 
+      
         public static void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {
+            var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(portalId).Code;
             switch (skinRoot)
             {
                 case "Skins":
@@ -379,7 +381,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminSkin", skinSrc, selectedCultureCode);
                         }
                     }
                     else
@@ -390,7 +392,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, selectedCultureCode);
                         }
                     }
                     break;
@@ -403,7 +405,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultAdminContainer", skinSrc, selectedCultureCode);
                         }
                     }
                     else
@@ -414,7 +416,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else
                         {
-                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc);
+                            PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, selectedCultureCode);
                         }
                     }
                     break;
