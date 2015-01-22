@@ -21,7 +21,7 @@
 #region Usings
 
 using System;
-
+using System.Web;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.Skins.Controls
             
 
             aDnnLink.InnerText = linkText;
-            aDnnLink.HRef = url + utmTerm;
+            aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);
 
         }
     }
