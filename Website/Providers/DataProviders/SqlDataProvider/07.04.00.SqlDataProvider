@@ -2706,6 +2706,77 @@ delete from {databaseOwner}{objectQualifier}schedulehistory where schedulehistor
 )
 GO
 
+/* Update AddPortalInfo Stored Procedure */
+/****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddPortalInfo]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}AddPortalInfo
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}AddPortalInfo
+	@PortalName         nvarchar(128),
+	@Currency           char(3),
+	@ExpiryDate         datetime,
+	@HostFee            money,
+	@HostSpace          int,
+	@PageQuota          int,
+	@UserQuota          int,
+	@SiteLogHistory     int,
+	@HomeDirectory		varchar(100),
+	@CultureCode		nvarchar(50),
+	@CreatedByUserID	int
+AS
+
+DECLARE @PortalID int
+
+insert into {databaseOwner}{objectQualifier}Portals (
+  ExpiryDate,
+  UserRegistration,
+  BannerAdvertising,
+  Currency,
+  HostFee,
+  HostSpace,
+  PageQuota,
+  UserQuota,
+  SiteLogHistory,
+  HomeDirectory,
+  CreatedByUserID,
+  CreatedOnDate,
+  LastModifiedByUserID,
+  LastModifiedOnDate
+)
+values (
+  @ExpiryDate,
+  0,
+  0,
+  @Currency,
+  @HostFee,
+  @HostSpace,
+  @PageQuota,
+  @UserQuota,
+  @SiteLogHistory,
+  @HomeDirectory,
+  @CreatedByUserID,
+  getdate(),
+  @CreatedByUserID,
+  getdate()
+)
+
+SET @PortalID = SCOPE_IDENTITY()
+
+IF @HomeDirectory = ''
+BEGIN
+	UPDATE {databaseOwner}{objectQualifier}Portals SET HomeDirectory = 'Portals/' + convert(varchar(10), @PortalID) WHERE PortalID = @PortalID
+END
+
+insert into {databaseOwner}{objectQualifier}PortalLocalization (PortalID,CultureCode,PortalName,Description,KeyWords)
+			values (@PortalID,@CultureCode,@PortalName,@PortalName,@PortalName)
+           
+  
+SELECT @PortalID
+
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

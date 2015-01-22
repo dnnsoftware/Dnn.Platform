@@ -481,12 +481,13 @@ namespace DotNetNuke.Data
 
 		#region Portal Methods
 
+        [Obsolete("Deprecated in Platform 7.4.0, please use CreatePortal version that contain's culturecode")]
 		public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
 										double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
 										 string HomeDirectory, int CreatedByUserID)
 		{
 			return
-				ExecuteScalar<int>("AddPortalInfo",
+				CreatePortal(
 											portalname,
 											currency,
 											GetNull(ExpiryDate),
@@ -496,8 +497,28 @@ namespace DotNetNuke.Data
 											UserQuota,
 											GetNull(SiteLogHistory),
 											HomeDirectory,
+                                            "en-US",
 											CreatedByUserID);
 		}
+
+        public virtual int CreatePortal(string portalname, string currency, DateTime ExpiryDate, double HostFee,
+                                        double HostSpace, int PageQuota, int UserQuota, int SiteLogHistory,
+                                         string HomeDirectory, string CultureCode,int CreatedByUserID )
+        {
+            return
+                ExecuteScalar<int>("AddPortalInfo",
+                                            portalname,
+                                            currency,
+                                            GetNull(ExpiryDate),
+                                            HostFee,
+                                            HostSpace,
+                                            PageQuota,
+                                            UserQuota,
+                                            GetNull(SiteLogHistory),
+                                            HomeDirectory,
+                                            CultureCode,
+                                            CreatedByUserID);
+        }
 
 		public virtual void DeletePortalInfo(int PortalId)
 		{
