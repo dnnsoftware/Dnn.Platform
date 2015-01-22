@@ -490,12 +490,12 @@ namespace DotNetNuke.Data
 				CreatePortal(
 											portalname,
 											currency,
-											GetNull(ExpiryDate),
+											ExpiryDate,
 											HostFee,
 											HostSpace,
 											PageQuota,
 											UserQuota,
-											GetNull(SiteLogHistory),
+											SiteLogHistory,
 											HomeDirectory,
                                             "en-US",
 											CreatedByUserID);
