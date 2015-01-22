@@ -477,6 +477,7 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.UserQuota,
                                                                 Host.Host.SiteLogHistory,
                                                                 homeDirectory,
+                                                                Thread.CurrentThread.CurrentCulture.Name,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
 
                 //clear portal cache
