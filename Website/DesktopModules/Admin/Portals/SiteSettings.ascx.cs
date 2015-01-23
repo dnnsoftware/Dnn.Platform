@@ -154,7 +154,7 @@ namespace DesktopModules.Admin.Portals
 
             foreach (var objDicModule in dicModules.Values)
             {
-                DnnComboBoxItem comboBoxItem = new DnnComboBoxItem(objDicModule.ModuleName, objDicModule.DesktopModuleID.ToString());
+                DnnComboBoxItem comboBoxItem = new DnnComboBoxItem(objDicModule.FriendlyName, objDicModule.DesktopModuleID.ToString());
                 foreach (var objPortalDesktopModule in dicPortalDesktopModules.Values)
                 {
                     if (objPortalDesktopModule.DesktopModuleID == objDicModule.DesktopModuleID)
