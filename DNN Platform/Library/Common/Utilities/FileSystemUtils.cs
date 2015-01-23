@@ -47,6 +47,9 @@ using ICSharpCode.SharpZipLib.Zip;
 using Telerik.Web.UI;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+using Directory = Pri.LongPath.Directory;
+using File = Pri.LongPath.File;
+using DirectoryInfo = Pri.LongPath.DirectoryInfo;
 
 #endregion
 
@@ -1550,6 +1553,68 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
             return strExceptions;
+        }
+
+        public static void DeleteFilesRecursive(string strRoot, string filter)
+        {
+            if (!String.IsNullOrEmpty(strRoot))
+            {
+                if (Directory.Exists(strRoot))
+                {
+                    foreach (string strFolder in Directory.GetDirectories(strRoot))
+                    {
+                        var directory = new DirectoryInfo(strFolder);
+                        if ((directory.Attributes & FileAttributes.Hidden) == 0 && (directory.Attributes & FileAttributes.System) == 0)
+                        {
+                            DeleteFilesRecursive(strFolder, filter);
+                        }
+                    }
+                    foreach (string strFile in Directory.GetFiles(strRoot, "*" + filter))
+                    {
+                        try
+                        {
+                            DeleteFile(strFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void DeleteFolderRecursive(string strRoot)
+        {
+            if (!String.IsNullOrEmpty(strRoot))
+            {
+                if (Directory.Exists(strRoot))
+                {
+                    foreach (string strFolder in Directory.GetDirectories(strRoot))
+                    {
+                        DeleteFolderRecursive(strFolder);
+                    }
+                    foreach (string strFile in Directory.GetFiles(strRoot))
+                    {
+                        try
+                        {
+                            DeleteFile(strFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                        }
+                    }
+                    try
+                    {
+                        Directory.Delete(strRoot);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
+                }
+            }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

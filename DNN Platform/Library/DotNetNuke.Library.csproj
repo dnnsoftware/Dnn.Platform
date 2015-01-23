@@ -98,6 +98,10 @@
       <HintPath>..\Components\PetaPoco\bin\PetaPoco.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Pri.LongPath, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Pri.LongPath.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\Components\SharpZipLib\bin\SharpZipLib.dll</HintPath>
       <Private>False</Private>

@@ -2233,35 +2233,7 @@ namespace DotNetNuke.Common
         /// <param name="strRoot">The root.</param>
         public static void DeleteFolderRecursive(string strRoot)
         {
-            if (!String.IsNullOrEmpty(strRoot))
-            {
-                if (Directory.Exists(strRoot))
-                {
-                    foreach (string strFolder in Directory.GetDirectories(strRoot))
-                    {
-                        DeleteFolderRecursive(strFolder);
-                    }
-                    foreach (string strFile in Directory.GetFiles(strRoot))
-                    {
-                        try
-                        {
-                            FileSystemUtils.DeleteFile(strFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                        }
-                    }
-                    try
-                    {
-                        Directory.Delete(strRoot);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                }
-            }
+            FileSystemUtils.DeleteFolderRecursive(strRoot);
         }
 
         /// <summary>
@@ -2271,31 +2243,7 @@ namespace DotNetNuke.Common
         /// <param name="filter">The filter.</param>
         public static void DeleteFilesRecursive(string strRoot, string filter)
         {
-            if (!String.IsNullOrEmpty(strRoot))
-            {
-                if (Directory.Exists(strRoot))
-                {
-                    foreach (string strFolder in Directory.GetDirectories(strRoot))
-                    {
-                        var directory = new DirectoryInfo(strFolder);
-                        if ((directory.Attributes & FileAttributes.Hidden) == 0 && (directory.Attributes & FileAttributes.System) == 0)
-                        {
-                            DeleteFilesRecursive(strFolder, filter);
-                        }
-                    }
-                    foreach (string strFile in Directory.GetFiles(strRoot, "*" + filter))
-                    {
-                        try
-                        {
-                            FileSystemUtils.DeleteFile(strFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                        }
-                    }
-                }
-            }
+            FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
         }
 
         /// <summary>
