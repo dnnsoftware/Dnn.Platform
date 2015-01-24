@@ -1333,7 +1333,7 @@
     <value>Unable to determine jQuery Version.</value>
   </data>
   <data name="SendMail.Error" xml:space="preserve">
-    <value>There was an error sending confirmation emails - {0}.  However, your user account was created successfully.</value>
+    <value>There was an error sending confirmation emails - {0}  However, your user account was created successfully.</value>
   </data>
   <data name="TokenReplaceUnknownObject.Text" xml:space="preserve">
     <value>Error accessing [{0}:{1}], {0} is an unknown datasource.</value>
