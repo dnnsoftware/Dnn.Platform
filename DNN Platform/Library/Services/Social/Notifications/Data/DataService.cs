@@ -121,12 +121,12 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         public int DeleteUserNotifications(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("DeleteUserNotifications"), userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>(GetFullyQualifiedName("DeleteUserNotifications"), userId, portalId);
         }
 
         public int CountNotifications(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);
         }
 
         public IDataReader GetNotifications(int userId, int portalId, int afterNotificationId, int numberOfRecords)
