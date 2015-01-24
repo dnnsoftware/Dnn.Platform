@@ -208,6 +208,7 @@ namespace DotNetNuke.Services.Cache
         private void ClearModuleCacheInternal(int tabId, bool clearRuntime)
         {
             RemoveFormattedCacheKey(DataCache.TabModuleCacheKey, clearRuntime, tabId);
+            RemoveFormattedCacheKey(DataCache.PublishedTabModuleCacheKey, clearRuntime, tabId);
             RemoveFormattedCacheKey(DataCache.ModulePermissionCacheKey, clearRuntime, tabId);
         }
 
