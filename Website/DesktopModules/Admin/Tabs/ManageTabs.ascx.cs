@@ -31,6 +31,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -91,6 +92,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         case "copy":
                             var originalTab = TabController.Instance.GetTab(TabId, PortalId, false);
                             _tab = originalTab.Clone();
+                            InitializeWorkflow(_tab);
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -134,6 +136,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
         #endregion
 
         #region Private Methods
+        private void InitializeWorkflow(ContentItem contentItem)
+        {
+            contentItem.StateID = Null.NullInteger;
+        }
 
         private void AddTranslationSubmittedNotification(TabInfo tabInfo, UserInfo translator)
         {
