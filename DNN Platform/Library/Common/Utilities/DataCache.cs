@@ -154,6 +154,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority TabModuleCachePriority = CacheItemPriority.AboveNormal;
         public const int TabModuleCacheTimeOut = 20;
 
+        public const string PublishedTabModuleCacheKey = "PublishedTabModules{0}";
+        public const CacheItemPriority PublishedTabModuleCachePriority = CacheItemPriority.AboveNormal;
+        public const int PublishedTabModuleCacheTimeOut = 20;
+
         public const string ModulePermissionCacheKey = "ModulePermissions{0}";
         public const CacheItemPriority ModulePermissionCachePriority = CacheItemPriority.AboveNormal;
         public const int ModulePermissionCacheTimeOut = 20;

@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
-        private static readonly int DefaultVersionNumber = 1;
+        private const int DefaultVersionNumber = 1;
 
         #region Members
         private readonly ITabController _tabController;
@@ -267,6 +267,28 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
+            var cacheKey = string.Format(DataCache.PublishedTabModuleCacheKey, tabId);
+            return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(new CacheItemArgs(cacheKey,
+                                                                    DataCache.PublishedTabModuleCacheTimeOut,
+                                                                    DataCache.PublishedTabModuleCachePriority),
+                                                                    c => GetCurrentModulesInternal(tabId));
+        }
+        
+        public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
+        {
+            return ConvertToModuleInfo(GetVersionModulesDetails(tabId, version), tabId);
+        }
+
+        public int GetModuleContentLatestVersion(ModuleInfo module)
+        {
+            var versionableController = GetVersionableController(module);
+            return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
+        }
+        #endregion
+
+        #region Private Methods
+        private IEnumerable<ModuleInfo> GetCurrentModulesInternal(int tabId)
+        {
             var versioningEnabled = _portalSettings != null &&
                                     _tabVersionSettings.IsVersioningEnabled(_portalSettings.PortalId, tabId);
             if (!versioningEnabled)
@@ -287,24 +309,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 //Only when a tab is on a first version and it is not published, the currentVersion object can be null
                 return new List<ModuleInfo>();
-            } 
-            
+            }
+
             return GetVersionModules(tabId, currentVersion.Version);
         }
-        
-        public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)
-        {
-            return ConvertToModuleInfo(GetVersionModulesDetails(tabId, version), tabId);
-        }
-
-        public int GetModuleContentLatestVersion(ModuleInfo module)
-        {
-            var versionableController = GetVersionableController(module);
-            return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
-        }
-        #endregion
-
-        #region Private Methods
 
         private void DiscardDetailWithoutPublishedTabVersions(int tabId, TabVersionDetail unPublishedDetail)
         {
