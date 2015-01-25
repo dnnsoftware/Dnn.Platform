@@ -540,22 +540,22 @@ namespace DesktopModules.Admin.Portals
 
         private void BindSkins(PortalInfo portal)
         {
-            portalSkinCombo.PortalId = PortalId;
+            portalSkinCombo.PortalId = portal.PortalID;
             portalSkinCombo.RootPath = SkinController.RootSkin;
             portalSkinCombo.Scope = SkinScope.All;
             portalSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin, SelectedCultureCode);
 
-            portalContainerCombo.PortalId = PortalId;
+            portalContainerCombo.PortalId = portal.PortalID;
             portalContainerCombo.RootPath = SkinController.RootContainer;
             portalContainerCombo.Scope = SkinScope.All;
             portalContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer, SelectedCultureCode);
 
-            editSkinCombo.PortalId = PortalId;
+            editSkinCombo.PortalId = portal.PortalID;
             editSkinCombo.RootPath = SkinController.RootSkin;
             editSkinCombo.Scope = SkinScope.All;
             editSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin, SelectedCultureCode);
 
-            editContainerCombo.PortalId = PortalId;
+            editContainerCombo.PortalId = portal.PortalID;
             editContainerCombo.RootPath = SkinController.RootContainer;
             editContainerCombo.Scope = SkinScope.All;
             editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer, SelectedCultureCode);
