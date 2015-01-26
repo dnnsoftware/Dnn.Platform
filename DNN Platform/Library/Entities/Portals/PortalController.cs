@@ -2028,7 +2028,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
 
             if (currentSetting != settingValue)
             {
