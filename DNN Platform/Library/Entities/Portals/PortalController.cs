@@ -2081,7 +2081,7 @@ namespace DotNetNuke.Entities.Portals
             //If alias does not exist add new
             if (portalAliasInfo == null)
             {
-                portalAliasInfo = new PortalAliasInfo {PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true};
+                portalAliasInfo = new PortalAliasInfo {PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true, CultureCode = Thread.CurrentThread.CurrentCulture.Name};
                 PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
             }
         }
