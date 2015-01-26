@@ -216,6 +216,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
+                
+                //When a module is added in the same version, then we should do nothing with it
+                if (existingTabDetail.Action == TabVersionDetailAction.Added)
+                {
+                    return;
+                }
             }
 
             var tabVersionDetail = CreateNewTabVersionDetailObjectFromModule(targetVersion.TabVersionId, module,
