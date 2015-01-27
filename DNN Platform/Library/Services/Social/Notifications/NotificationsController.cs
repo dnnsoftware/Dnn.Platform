@@ -315,7 +315,9 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
-            return CBO.FillCollection<Notification>(_dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
+            return userId <= 0
+                ? new List<Notification>(0)
+                : CBO.FillCollection<Notification>(_dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
         }
 
         public virtual NotificationType GetNotificationType(int notificationTypeId)
