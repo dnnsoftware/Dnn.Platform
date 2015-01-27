@@ -554,6 +554,11 @@ namespace DotNetNuke.Data
 			return reader;
 		}
 
+        public virtual IDataReader GetAllPortals()
+        {
+            return ExecuteReader("GetAllPortals");
+        }
+
 		public virtual IDataReader GetPortalsByName(string nameToMatch, int pageIndex, int pageSize)
 		{
 			return ExecuteReader("GetPortalsByName", nameToMatch, pageIndex, pageSize);

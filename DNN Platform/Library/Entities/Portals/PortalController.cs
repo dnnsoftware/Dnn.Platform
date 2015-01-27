@@ -2028,7 +2028,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
 
             if (currentSetting != settingValue)
             {
@@ -2081,7 +2081,7 @@ namespace DotNetNuke.Entities.Portals
             //If alias does not exist add new
             if (portalAliasInfo == null)
             {
-                portalAliasInfo = new PortalAliasInfo {PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true, CultureCode = Thread.CurrentThread.CurrentCulture.Name};
+                portalAliasInfo = new PortalAliasInfo {PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true};
                 PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
             }
         }
@@ -2366,6 +2366,12 @@ namespace DotNetNuke.Entities.Portals
         public ArrayList GetPortals()
         {
             return new ArrayList(GetPortalList(Localization.SystemLocale));
+        }
+
+        public List<PortalInfo> GetAllPortals()
+        {
+            List<PortalInfo> portals = CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetAllPortals());
+            return portals;
         }
 
         //public ArrayList GetPortals()
