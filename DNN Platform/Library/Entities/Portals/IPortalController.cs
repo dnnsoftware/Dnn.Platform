@@ -139,6 +139,14 @@ namespace DotNetNuke.Entities.Portals
         List<PortalInfo> GetAllPortals();
 
         /// <summary>
+        /// returns list of portals 
+        /// does not require a culturecode, as function may be called earlier than a culture is available
+        /// does not join to PortalLocalization so only one row per portal is returned
+        /// </summary>
+        /// <returns></returns>
+        List<PortalInfo> GetDistinctPortals();
+
+        /// <summary>
         /// Gets the portal settings dictionary.
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
