@@ -2795,21 +2795,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
 
 GO
 
-/* Add GetDistinctPortals Procedure */
-/*******************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDistinctPortals]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDistinctPortals]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDistinctPortals]
-	AS
-	SELECT *
-	FROM       
-    {databaseOwner}{objectQualifier}Portals
-	ORDER BY PortalName
-
-GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
