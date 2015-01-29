@@ -889,7 +889,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
         {
 
-            Requires.NotNullOrEmpty("relateivePath", relativePath);
+            Requires.NotNullOrEmpty("relativePath", relativePath);
 
             var folderPath = "";
             var seperatorIndex = relativePath.LastIndexOf('/');
