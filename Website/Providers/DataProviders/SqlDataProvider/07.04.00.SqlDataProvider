@@ -2795,6 +2795,31 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
 
 GO
 
+/* GetPortals Procedure */
+/************************/
+/* 
+   DNN-6518 - Changed GetPortals Stored Procedure to ensure that one entry per portal is always returned. 
+   The PortalController.GetPortals always calls with SProc with CultureCode 'en-US' by design. 
+   When the site is installed in other non-English language the vw_Portals does not have any entry for en-US.
+*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortals]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+    @CultureCode	nvarchar(50)
+AS
+	WITH cte_portals AS
+	(
+		SELECT *,
+        row_number() OVER(PARTITION BY PortalId ORDER BY CASE CultureCode WHEN @CultureCode THEN 0 ELSE 1 END) AS rownum
+		FROM {databaseOwner}[{objectQualifier}vw_Portals]
+	)
+	SELECT *
+	FROM cte_portals 
+	WHERE rownum = 1
+	ORDER BY PortalName
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
