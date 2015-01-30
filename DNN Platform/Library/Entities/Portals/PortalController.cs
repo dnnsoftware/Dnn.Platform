@@ -455,7 +455,7 @@ namespace DotNetNuke.Entities.Portals
             return strMessage;
         }
 
-        private static int CreatePortal(string portalName, string homeDirectory)
+        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
         {
             //add portal
             int PortalId = -1;
@@ -477,7 +477,7 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.UserQuota,
                                                                 Host.Host.SiteLogHistory,
                                                                 homeDirectory,
-                                                                Thread.CurrentThread.CurrentCulture.Name,
+                                                                cultureCode,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
 
                 //clear portal cache
@@ -2128,7 +2128,7 @@ namespace DotNetNuke.Entities.Portals
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             //Attempt to create a new portal
-            int portalId = CreatePortal(portalName, homeDirectory);
+            int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
             string message = Null.NullString;
 
@@ -2191,7 +2191,7 @@ namespace DotNetNuke.Entities.Portals
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             //Attempt to create a new portal
-            int portalId = CreatePortal(portalName, homeDirectory);
+            int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
             string message = Null.NullString;
 
