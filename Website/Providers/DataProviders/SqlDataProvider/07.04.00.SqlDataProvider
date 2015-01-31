@@ -2807,18 +2807,16 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
-    @CultureCode	nvarchar(50)
+	@CultureCode	nVarChar(50) -- pass Null|'' to return portal default language
 AS
-	WITH cte_portals AS
-	(
-		SELECT *,
-        row_number() OVER(PARTITION BY PortalId ORDER BY CASE CultureCode WHEN @CultureCode THEN 0 ELSE 1 END) AS rownum
-		FROM {databaseOwner}[{objectQualifier}vw_Portals]
-	)
-	SELECT *
-	FROM cte_portals 
-	WHERE rownum = 1
-	ORDER BY PortalName
+BEGIN
+	SELECT * 
+	 FROM  {databaseOwner}[{objectQualifier}vw_Portals]
+	 WHERE CultureCode = CASE WHEN IsNull(@CultureCode, '') = '' 
+						      THEN DefaultLanguage
+						      ELSE @CultureCode END 
+	 ORDER BY PortalName;
+END
 GO
 
 /************************************************************/
