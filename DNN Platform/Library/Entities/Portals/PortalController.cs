@@ -2350,37 +2350,41 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets the portal.
+        /// Gets the portal (in portal default language).
         /// </summary>
         /// <param name="uniqueId">The unique id.</param>
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-            return GetPortalList(Localization.SystemLocale).SingleOrDefault(p => p.GUID == uniqueId);
+            return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
         }
 
         /// <summary>
-        /// Gets information from all portals
+        /// Gets information from all portals in portal default language (passing Null as culture code)
         /// </summary>
         /// <returns>ArrayList of PortalInfo objects</returns>
         public ArrayList GetPortals()
         {
-            return new ArrayList(GetPortalList(Localization.SystemLocale));
+            return new ArrayList(GetPortalList(Null.NullString));
         }
 
+        /// <summary>
+        /// Gets information from all portals in all languages (one record per portalLocalization item
+        /// </summary>
+        /// <returns>ArrayList of PortalInfo objects</returns>
         public List<PortalInfo> GetAllPortals()
         {
             List<PortalInfo> portals = CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetAllPortals());
             return portals;
         }
 
-        //public ArrayList GetPortals()
+        //public ArrayList GetPortalList()
         //{
         //    return new ArrayList(GetPortalList(Localization.SystemLocale));
         //}
 
         /// <summary>
-        /// Get portals in specific culture.
+        /// Get portals in specific culture (from cache)
         /// </summary>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns></returns>
