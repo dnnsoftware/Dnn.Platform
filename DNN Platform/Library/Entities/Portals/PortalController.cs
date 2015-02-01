@@ -2368,12 +2368,6 @@ namespace DotNetNuke.Entities.Portals
 			return new ArrayList(GetPortalList(Null.NullString));
 		}
 
-		public List<PortalInfo> GetAllPortals()
-        {
-            List<PortalInfo> portals = CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetAllPortals());
-            return portals;
-        }
-
         //public ArrayList GetPortals()
         //{
         //    return new ArrayList(GetPortalList(Localization.SystemLocale));
