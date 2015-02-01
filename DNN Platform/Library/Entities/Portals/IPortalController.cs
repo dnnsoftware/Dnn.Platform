@@ -131,12 +131,6 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>ArrayList of PortalInfo objects</returns>
         ArrayList GetPortals();
 
-        /// <summary>
-        /// returns list of portals 
-        /// does not require a culturecode, as function may be called earlier than a culture is available
-        /// </summary>
-        /// <returns></returns>
-        List<PortalInfo> GetAllPortals();
 
         /// <summary>
         /// Gets the portal settings dictionary.
