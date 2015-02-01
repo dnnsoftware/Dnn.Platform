@@ -2356,7 +2356,6 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-			//return GetPortalList(Localization.SystemLocale).SingleOrDefault(p => p.GUID == uniqueId);
 			return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
 		}
 
@@ -2366,7 +2365,6 @@ namespace DotNetNuke.Entities.Portals
 		/// <returns>ArrayList of PortalInfo objects</returns>
 		public ArrayList GetPortals()
         {
-            //return new ArrayList(GetPortalList(Localization.SystemLocale));
 			return new ArrayList(GetPortalList(Null.NullString));
 		}
 
