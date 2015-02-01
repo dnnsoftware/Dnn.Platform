@@ -2356,19 +2356,21 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-            return GetPortalList(Localization.SystemLocale).SingleOrDefault(p => p.GUID == uniqueId);
-        }
+			//return GetPortalList(Localization.SystemLocale).SingleOrDefault(p => p.GUID == uniqueId);
+			return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
+		}
 
-        /// <summary>
-        /// Gets information from all portals
-        /// </summary>
-        /// <returns>ArrayList of PortalInfo objects</returns>
-        public ArrayList GetPortals()
+		/// <summary>
+		/// Gets information from all portals
+		/// </summary>
+		/// <returns>ArrayList of PortalInfo objects</returns>
+		public ArrayList GetPortals()
         {
-            return new ArrayList(GetPortalList(Localization.SystemLocale));
-        }
+            //return new ArrayList(GetPortalList(Localization.SystemLocale));
+			return new ArrayList(GetPortalList(Null.NullString));
+		}
 
-        public List<PortalInfo> GetAllPortals()
+		public List<PortalInfo> GetAllPortals()
         {
             List<PortalInfo> portals = CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetAllPortals());
             return portals;
