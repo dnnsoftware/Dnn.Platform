@@ -2779,21 +2779,6 @@ SELECT @PortalID
 
 GO
 
-/* Add GetAllPortals Procedure */
-/*******************************/
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetAllPortals]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetAllPortals]
-	AS
-	SELECT *
-	FROM       
-    {databaseOwner}{objectQualifier}vw_Portals
-	ORDER BY PortalName
-
-GO
 
 /* GetPortals Procedure */
 /************************/

@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.Api
                 //when a new portal is added so cache them until that time
 
                 
-                var portals = PortalController.Instance.GetAllPortals();
+                var portals = PortalController.Instance.GetPortals();
                
 
                 var segmentCounts1 = new List<int>();
