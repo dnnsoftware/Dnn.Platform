@@ -2994,7 +2994,7 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
 
             //update help url
-            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
+            HostController.Instance.Update("HelpURL", "http://www.dnnsoftware.com/help", false);
         }
 
         private static void UpgradeToVersion733()
