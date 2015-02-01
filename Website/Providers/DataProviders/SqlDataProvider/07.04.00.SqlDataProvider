@@ -2809,18 +2809,6 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
     @CultureCode	nvarchar(50)
 AS
-/*
-	WITH cte_portals AS
-	(
-		SELECT *,
-        row_number() OVER(PARTITION BY PortalId ORDER BY CASE CultureCode WHEN @CultureCode THEN 0 ELSE 1 END) AS rownum
-		FROM {databaseOwner}[{objectQualifier}vw_Portals]
-	)
-	SELECT *
-	FROM cte_portals 
-	WHERE rownum = 1
-	ORDER BY PortalName
-*/
 
 SELECT * 
 FROM   {databaseOwner}[{objectQualifier}vw_Portals]
