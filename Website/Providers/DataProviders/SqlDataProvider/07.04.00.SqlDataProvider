@@ -2809,6 +2809,7 @@ GO
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
     @CultureCode	nvarchar(50)
 AS
+/*
 	WITH cte_portals AS
 	(
 		SELECT *,
@@ -2819,6 +2820,18 @@ AS
 	FROM cte_portals 
 	WHERE rownum = 1
 	ORDER BY PortalName
+*/
+
+SELECT * 
+FROM   {databaseOwner}[{objectQualifier}vw_Portals]
+WHERE CultureCode = 
+	CASE 
+		WHEN IsNull(@CultureCode, '') = '' THEN DefaultLanguage
+		WHEN @CultureCode = 'en-US' THEN DefaultLanguage
+		ELSE @CultureCode 
+	END 
+ORDER BY PortalName;
+
 GO
 
 /************************************************************/
