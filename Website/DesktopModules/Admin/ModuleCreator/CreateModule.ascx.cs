@@ -146,6 +146,8 @@ namespace DesktopModules.Admin.ModuleCreator
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_OWNER_", GetOwner());
+                fileName = fileName.Replace("_MODULE_", GetModule());
                 fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
