@@ -371,6 +371,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                 //get filename 
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", GetControl());
+                fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", ""));
+                fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
                 fileName = fileName.Replace("_CONTROL_", GetControl());
 
                 switch (Path.GetExtension(filePath).ToLower())
