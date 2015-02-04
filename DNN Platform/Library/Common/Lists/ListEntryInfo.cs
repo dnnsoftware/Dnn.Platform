@@ -21,6 +21,8 @@
 #region Usings
 
 using System;
+using System.IO;
+using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 
@@ -85,14 +87,24 @@ namespace DotNetNuke.Common.Lists
                 string res = null;
                 try
                 {
-					if (string.IsNullOrEmpty(ParentKey))
-					{
-						res = Services.Localization.Localization.GetString(Value + ".Text", "~/App_GlobalResources/List_" + ListName + ".resx");
-					}
-					else
-					{
-						res = Services.Localization.Localization.GetString(ParentKey + '.' + Value + ".Text", "~/App_GlobalResources/List_" + ListName + ".resx");
-					}
+                    string key;
+                    if (string.IsNullOrEmpty(this.ParentKey))
+                    {
+                        key = this.Value + ".Text";
+                    }
+                    else
+                    {
+                        key = this.ParentKey + '.' + this.Value + ".Text";
+                    }
+
+                    var listName = this.ListName;
+                    if (this.ListName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                    {
+                        listName = Globals.CleanFileName(this.ListName);
+                    }
+
+                    var resourceFileRoot = "~/App_GlobalResources/List_" + listName + ".resx";
+                    res = Services.Localization.Localization.GetString(key, resourceFileRoot);
                 }
                 catch { }
                 if (string.IsNullOrEmpty(res)) { res = _Text; };
