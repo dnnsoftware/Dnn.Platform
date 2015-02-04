@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -181,7 +181,11 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                 }
             }
-            return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
+            // Unless ControlPanelSecurity (Admin > Site Settings > Usability Settings > Control Panel Settings) 
+            //			== ControlPanelPermission.ModuleEditor
+            // this will always return false.
+            //return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
+            return _IsModuleAdmin;
         }
 
         internal static bool IsPageAdminInternal()
