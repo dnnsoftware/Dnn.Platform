@@ -383,20 +383,7 @@ namespace DotNetNuke.Modules.Admin.Skins
 
 					
 					//thumbnail
-					if (File.Exists(file.Replace(".ascx", ".jpg")))
-					{
-						var imgLink = new HyperLink();
-						strURL = file.Substring(strFile.LastIndexOf("\\portals\\"));
-						imgLink.NavigateUrl = ResolveUrl("~" + strURL.Replace(".ascx", ".jpg"));
-						imgLink.Target = "_new";
-
-
-						var img = new System.Web.UI.WebControls.Image {ImageUrl = CreateThumbnail(file.Replace(".ascx", ".jpg")), BorderWidth = new Unit(1)};
-
-						imgLink.Controls.Add(img);
-						cell.Controls.Add(imgLink);
-					}
-					else
+					if (!this.AddThumbnail(file, ".jpg", cell) && !this.AddThumbnail(file, ".png", cell))
 					{
 						var img = new System.Web.UI.WebControls.Image {ImageUrl = ResolveUrl("~/images/thumbnail_black.png"), BorderWidth = new Unit(1)};
 						cell.Controls.Add(img);
@@ -482,6 +469,25 @@ namespace DotNetNuke.Modules.Admin.Skins
 			}
 		}
 
+	    private bool AddThumbnail(string file, string extension, Control cell)
+	    {
+	        if (!File.Exists(Path.ChangeExtension(file, extension)))
+	        {
+	            return false;
+	        }
+
+	        var imgLink = new HyperLink();
+	        var strURL = file.Substring(file.LastIndexOf("\\portals\\", StringComparison.OrdinalIgnoreCase));
+	        imgLink.NavigateUrl = this.ResolveUrl("~" + strURL.Replace(".ascx", extension));
+	        imgLink.Target = "_new";
+
+	        var img = new System.Web.UI.WebControls.Image { ImageUrl = CreateThumbnail(file.Replace(".ascx", extension)), BorderWidth = new Unit(1) };
+
+	        imgLink.Controls.Add(img);
+	        cell.Controls.Add(imgLink);
+	        return true;
+	    }
+	    
         private string getReducedFileName(string fileName   )
         {
             const int kMaxLength = 13;
