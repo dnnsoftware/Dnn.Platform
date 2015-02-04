@@ -8,159 +8,115 @@
 /*****                                                  *****/
 /************************************************************/
 
-/***** DNN-6547: update sp EnsureLocalizationExists to set master language value in "neither default nor system language available" case. *****/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersBasicSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch]
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
-	@PortalID       Int,
-	@CultureCode	nvarchar(10)
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsersBasicSearch] 
+(
+	@PortalID int,					-- portal
+	@PageSize int,					-- page size
+	@PageIndex int,					-- 0 based page index
+	@SortBy nvarchar(100),			-- sort field
+	@SortAscending bit,				-- sort flag indicating whether sort is asc or desc
+	@PropertyName nvarchar(256),    -- property to filter by (username, diaplayname, email)
+	@PropertyValue nvarchar(256)	-- value of property
+)
 AS
-BEGIN
-	DECLARE @MasterLanguage nvarchar(10) = Null;
-	DECLARE @LocalizationExists bit = 0;
-
-	IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Languages] L 
-					JOIN {databaseOwner}[{objectQualifier}PortalLanguages] P ON L.LanguageID = P.LanguageID 
-					WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
-		RETURN; -- language does not exist for this portal
-
-	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
-				WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
-		RETURN; -- already localized
+	-- Set up Top XX
+	DECLARE @topSql nvarchar(20)
+	SET @topSql = CONVERT(nvarchar(20), @PageSize)
 	
-	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
-					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
-					WHERE P.PortalID = @PortalID)
-		SELECT @MasterLanguage = DefaultLanguage 
-		FROM {databaseOwner}[{objectQualifier}Portals] 
-		WHERE PortalID = @PortalID
-	ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
-					WHERE CultureCode = 'en-US' and PortalID = @PortalID)
-		SET @MasterLanguage = 'en-US'
-	ELSE -- neither default nor system language available: take the language that was assigned first
-		SELECT TOP (1) @MasterLanguage = CultureCode 
-		FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
-		WHERE PortalID = @PortalID 
-		ORDER BY PortalID ASC;
-
-	IF NOT (@MasterLanguage Is Null OR @MasterLanguage LIKE @CultureCode) 
-	BEGIN  -- copy localized values from (existing and different) master language:					
-		INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization]
-		(	PortalId,
-			CultureCode,
-			PortalName,
-			LogoFile,
-			FooterText,
-			Description,
-			KeyWords,
-			BackgroundFile, 
-			HomeTabId,
-			LoginTabId,
-			UserTabId,
-			AdminTabId,
-			RegisterTabId,
-			SearchTabId,
-			Custom404TabId,
-			Custom500TabId,
-			CreatedByUserID,
-			CreatedOnDate,
-			LastModifiedByUserID,
-			LastModifiedOnDate
-		) SELECT
-			PortalId,
-			@CultureCode,
-			PortalName,
-			LogoFile,
-			FooterText,
-			Description,
-			KeyWords,
-			BackgroundFile, 
-			HomeTabId,
-			LoginTabId,
-			UserTabId,
-			AdminTabId,
-			RegisterTabId,
-			SearchTabId,
-			Custom404TabId,
-			Custom500TabId,
-			-1,
-			GETDATE(),
-			-1,
-			GETDATE()
-		 FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
-		 WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage;
+	--Set up Count
+	DECLARE @minRowNumberSql nvarchar(20)
+	SET @minRowNumberSql =  CONVERT(nvarchar(20), ((@PageIndex * @PageSize) + 1))
 	
-		-- copy missing localized settings:
-		DECLARE	
-			@LocalPortalSettings TABLE(
-		    [PortalID]             INT             NOT NULL,
-		    [CultureCode]          NVARCHAR (10)   NOT NULL,
-		    [SettingName]          NVARCHAR (50)   NOT NULL,
-		    [SettingValue]         NVARCHAR (2000) NULL
-		);
+	-- Set up Sort
+	DECLARE @sortSql nvarchar(1000)
+	SET @sortSql = {databaseOwner}{objectQualifier}GetSortSql(@SortBy, @SortAscending, 'UserID')
 
-		INSERT INTO @LocalPortalSettings
-		(
-			PortalID,
-			CultureCode,
-			SettingName,
-			SettingValue
-		)
-		SELECT
-			PortalID,
-			CultureCode,
-			SettingName,
-			SettingValue
-		FROM {databaseOwner}[{objectQualifier}PortalSettings]
-		WHERE PortalID = @PortalID AND CultureCode = @CultureCode
+	-- Setup Pivot Field List
+	DECLARE @pivotSql nvarchar(max)
+	SELECT @pivotSql = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, '')
 
-		MERGE INTO @LocalPortalSettings target
-		USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings]
-				WHERE PortalId = @PortalID and CultureCode = @MasterLanguage) source 
-		ON (target.SettingName = source.SettingName)
-		WHEN NOT MATCHED THEN 
-			INSERT (  
-				PortalID,   
-				CultureCode,   
-				SettingName,   
-				SettingValue) 
-			VALUES (
-				source.PortalID, 
-				@CultureCode, 
-				source.SettingName, 
-				source.SettingValue
-			);
+	-- Setup FieldName Field List for temporary table
+	DECLARE @fieldNames nvarchar(max)
+	SELECT @fieldNames = {databaseOwner}{objectQualifier}GetProfileFieldSql(@PortalID, ' nvarchar(max)')
+	
+	DECLARE @sql nvarchar(max)
+	SELECT @sql=
+				'
+					DECLARE @pivotedUsers TABLE
+					(
+						RowNumber int,
+						UserID int,
+						PortalID int,
+						Username nvarchar(100),
+						Email nvarchar(256),
+						DisplayName nvarchar(128),
+						IsSuperUser bit,
+						IsDeleted bit,
+						AffiliateID int,
+						UpdatePassword bit,
+						Authorised bit,
+						' + @fieldNames + '
+					);
 
-		MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings]  target
-		USING (SELECT * FROM @LocalPortalSettings) source 
-		ON (target.PortalID = source.PortalID AND 
-			target.CultureCode = source.CultureCode AND 
-			target.SettingName = source.SettingName)
-		WHEN NOT MATCHED THEN 
-			INSERT (  
-				PortalID,   
-				CultureCode,   
-				SettingName,   
-				SettingValue,
-				CreatedByUserID, 
-				CreatedOnDate, 
-				LastModifiedByUserID, 
-				LastModifiedOnDate) 
-			VALUES (
-				source.PortalID, 
-				@CultureCode, 
-				source.SettingName, 
-				source.SettingValue,
-				-1,
-				GETDATE(),
-				-1,
-				GETDATE()
-			);
-	END;
-END
+					WITH TempUsers
+					AS
+					(
+						SELECT TOP ' + @topSql + ' * FROM (
+							SELECT 	
+								ROW_NUMBER() OVER(' + @sortSql + ') AS RowNumber,
+								U.UserID,
+								U.PortalID,
+								U.Username,
+								U.Email,
+								U.DisplayName,
+								U.IsSuperUser,
+								U.IsDeleted,
+								U.AffiliateID,
+								U.UpdatePassword,
+								U.Authorised
+								FROM {databaseOwner}{objectQualifier}vw_Users AS U
+							WHERE (U.PortalID = ' + CONVERT(nvarchar(20), @PortalID) + ' OR U.PortalID Is NULL )
+								AND ((U.' + @PropertyName + ' LIKE N''' + @PropertyValue + '%'')
+									OR (U.' + @PropertyName + ' LIKE N''% ' + @PropertyValue + '%''))
+								AND U.IsDeleted = 0
+						) AS U
+						WHERE RowNumber >= ' + @minRowNumberSql + ' 
+					),
+					TempUsersWithProfile
+					AS
+					(
+						SELECT 
+							U.UserID,
+							U.PortalID,
+							U.Username,
+							U.Email,
+							U.DisplayName,
+							U.IsSuperUser,
+							U.IsDeleted,
+							U.AffiliateID,
+							U.UpdatePassword,
+							U.Authorised,
+							P.PropertyName,
+							P.PropertyValue
+						FROM TempUsers U
+							INNER JOIN {databaseOwner}{objectQualifier}vw_Profile P ON P.UserID = U.UserID
+					)
+				    SELECT  * FROM (				
+					    SELECT  * FROM TempUsersWithProfile
+					    PIVOT 
+					    (
+						    MAX(PropertyValue) for PropertyName in (' + @pivotSql + ')
+					    ) as pivotTable
+                    ) T
+					' + @sortSql
+	EXEC(@sql)
+
 GO
+
 
 
 /************************************************************/
