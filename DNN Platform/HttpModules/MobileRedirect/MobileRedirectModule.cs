@@ -50,7 +50,7 @@ namespace DotNetNuke.HttpModules
     public class MobileRedirectModule : IHttpModule
     {
         private IRedirectionController _redirectionController;
-        private IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
+        private readonly IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
         public string ModuleName
         {
             get

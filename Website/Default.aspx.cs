@@ -741,8 +741,7 @@ namespace DotNetNuke.Framework
                 //only show message to default users
                 if ((userInfo.Username.ToLower() == "admin") || (userInfo.Username.ToLower() == "host"))
                 {
-                    var messageText = "";
-                    messageText = RenderDefaultsWarning();
+                    var messageText = RenderDefaultsWarning();
                     var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
                     UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
                 }
@@ -841,11 +840,12 @@ namespace DotNetNuke.Framework
 		{
 			if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
 			{
-			    var editClass = "dnnEditState";
+			    string editClass;
 			    if (!PortalSettings.EnableModuleEffect)
-			    {
-			        editClass += " dnnOpacityDisabled";
-			    }
+			        editClass = "dnnEditState dnnOpacityDisabled";
+			    else
+			        editClass = "dnnEditState";
+
 				var bodyClass = Body.Attributes["class"];
 				if (!string.IsNullOrEmpty(bodyClass))
 				{
