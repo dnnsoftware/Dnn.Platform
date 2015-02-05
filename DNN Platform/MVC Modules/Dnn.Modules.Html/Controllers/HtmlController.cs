@@ -92,6 +92,7 @@ namespace Dnn.Modules.Html.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Edit(string content)
         {
             HtmlText item;

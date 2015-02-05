@@ -34,64 +34,13 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHttpModule : IHttpModule
     {
-        private static readonly object LockThis = new object();
-        private static bool _isInitialized;
-        private static RouteCollection _routes;
-
-        public static RouteCollection Routes
-        {
-            get { return _routes ?? (_routes = RouteTable.Routes); }
-
-            // We really don't want people playing with this outside of the test
-            internal set { _routes = value; }
-        }
-
         public void Init(HttpApplication context)
         {
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
 
-            //RegisterModules();
-
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());
             ViewEngines.Engines.Add(new RazorViewEngine());
-        }
-
-        public static void RegisterModules()
-        {
-            var moduleApplications = GetModules().ToDictionary(module => module.ModuleName);
-
-            ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(moduleApplications);
-        }
-
-        private static IEnumerable<ModuleApplication> GetModules()
-        {
-            var typeLocator = new TypeLocator();
-            IEnumerable<Type> types = typeLocator.GetAllMatchingTypes(t => t != null
-                                                                                && t.IsClass
-                                                                                && !t.IsAbstract
-                                                                                && t.IsVisible
-                                                                                && typeof(ModuleApplication).IsAssignableFrom(t));
-
-            foreach (var moduleType in types)
-            {
-                ModuleApplication module;
-                try
-                {
-                    module = Activator.CreateInstance(moduleType) as ModuleApplication;
-                }
-                catch (Exception)
-                {
-                    //Logger.ErrorFormat("Unable to create {0} while registering module injection filters.  {1}", filterType.FullName, e.Message);
-
-                    module = null;
-                }
-
-                if (module != null)
-                {
-                    yield return module;
-                }
-            }
         }
 
         public void Dispose()

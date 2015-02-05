@@ -22,6 +22,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -77,8 +78,9 @@ namespace DotNetNuke.Web.Mvc
             }
             else
             {
-                var controlKey = ModuleContext.Configuration.ModuleControl.ControlKey;
-                moduleRoute = String.Format("{0}/{1}", moduleApplication.DefaultControllerName, controlKey);
+                //var controlKey = ModuleContext.Configuration.ModuleControl.ControlKey;
+                //moduleRoute = String.Format("{0}/{1}", moduleApplication.DefaultControllerName, controlKey);
+                moduleRoute = ModuleContext.Configuration.ModuleControl.ControlSrc.Replace(".mvc", "");
             }
 
             ModuleRequestResult result = moduleExecutionEngine.ExecuteModule(httpContext, ModuleContext.Configuration, moduleRoute);
