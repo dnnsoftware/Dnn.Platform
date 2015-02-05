@@ -40,6 +40,8 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
+        private ModuleRequestResult _result;
+
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext, ModuleInfo module)
         {
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
@@ -97,11 +99,18 @@ namespace DotNetNuke.Web.Mvc
 
             LoadActions(ModuleContext.Configuration);
 
-            ModuleRequestResult result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
+            _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
+        }
 
-            if (result != null)
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+            if (_result != null)
             {
-                Controls.Add(new LiteralControl(RenderModule(result, httpContext).ToString()));
+                Controls.Add(new LiteralControl(RenderModule(_result, httpContext).ToString()));
             }
         }
 
