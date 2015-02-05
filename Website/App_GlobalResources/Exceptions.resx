@@ -405,4 +405,7 @@
   <data name="ModuleDoesNotBelongToPage.Text" xml:space="preserve">
     <value>This module does not belong to the page. Please, move to its master page to change the module</value>
   </data>
+  <data name="TabVersionCannotBeRolledBack_LastVersion.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be rolled back as is the last version</value>
+  </data>
 </root>
