@@ -175,13 +175,13 @@
     <value>Install Module</value>
   </data>
   <data name="CreateSkin.Action" xml:space="preserve">
-    <value>Create New Skin</value>
+    <value>Create New Theme</value>
   </data>
   <data name="EditSkins.Action" xml:space="preserve">
-    <value>Manage Skins</value>
+    <value>Manage Themes</value>
   </data>
   <data name="SkinInstall.Action" xml:space="preserve">
-    <value>Install New Skin</value>
+    <value>Install New Theme</value>
   </data>
   <data name="plLocales.Text" xml:space="preserve">
     <value>Find available language packs:</value>
@@ -265,7 +265,7 @@
     <value>Providers</value>
   </data>
   <data name="Skin.Type" xml:space="preserve">
-    <value>Skins</value>
+    <value>Themes</value>
   </data>
   <data name="SkinObject.Type" xml:space="preserve">
     <value>Skin Objects</value>
@@ -298,7 +298,7 @@
     <value>Search for Extensions</value>
   </data>
   <data name="CatalogSkin.Text" xml:space="preserve">
-    <value>Skin</value>
+    <value>Theme</value>
   </data>
   <data name="SearchLabel.Help" xml:space="preserve">
     <value>Hit Enter to Search, Esc will clear and Cancel</value>
@@ -395,5 +395,8 @@
   </data>
   <data name="JavaScript_Library.Type" xml:space="preserve">
     <value>JavaScript Libraries</value>
+  </data>
+  <data name="EvoqConnector.Type" xml:space="preserve">
+    <value>Evoq Connectors</value>
   </data>
 </root>

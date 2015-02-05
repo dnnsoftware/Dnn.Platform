@@ -152,7 +152,7 @@ When the AutoResizeHeight property is set to true, then the editor's content are
     <value>Filters in RadEditor for ASP.NET AJAX are small code snippets, which are called in a sequence to process the editor content, when the mode (html / design / preview) is switched or when the page is submitted. Each filter is described here: &lt;a href="http://www.telerik.com/help/aspnet-ajax/contentfilters.html" target="_blank"&gt;Telerik Onlinehelp&lt;/a&gt;</value>
   </data>
   <data name="CssFile.Help" xml:space="preserve">
-    <value>The css file to be used by the editor in wysiwyg mode. This file must reside either in the skin directory or in the website directory. The path set here is relative to its parent (e.g. /editor.css is a file in the root of your skin)</value>
+    <value>The css file to be used by the editor in wysiwyg mode. This file must reside either in the theme directory or in the website directory. The path set here is relative to its parent (e.g. /editor.css is a file in the root of your theme)</value>
   </data>
   <data name="DocumentsFilters.Help" xml:space="preserve">
     <value>A semicolon separated list of possible extensions to be used in the document manager.  The extensions must also be in the host settings list of allowed extensions.  Use the following format: *.extensionname</value>
@@ -239,7 +239,7 @@ Lists are types of paragraphs and they accept the same attributes as paragraph t
     <value>[PortalRoot]</value>
   </data>
   <data name="ScriptToLoad.Help" xml:space="preserve">
-    <value>If set the provider will load the javascript file specified here. This must be a relative path to the current skin directory.
+    <value>If set the provider will load the javascript file specified here. This must be a relative path to the current theme directory.
 
 &lt;a href="http://radeditor.codeplex.com/wikipage?title=OnClientPasteExample" target="_blank"&gt;See this example for a detailed example&lt;/a&gt;</value>
   </data>
@@ -255,7 +255,7 @@ You must set the CustomLinks tool in your toolbar configuratioon in order to mak
     <value>The folder that the silverlight manager starts with when loading the dialog</value>
   </data>
   <data name="Skin.Help" xml:space="preserve">
-    <value>The skin to used by the editor control</value>
+    <value>The theme to used by the editor control</value>
   </data>
   <data name="SpellAllowAddCustom.Help" xml:space="preserve">
     <value>Spellchecking options are rarely documented, unfortunately. In general you should leave these fields empty unless you know what you're doing. &lt;a href="http://www.telerik.com/products/aspnet-ajax/spell.aspx" target="_blank"&gt;Learn more about spell checking options at the Telerik website&lt;/a&gt;</value>
@@ -438,7 +438,7 @@ You must set the CustomLinks tool in your toolbar configuratioon in order to mak
     <value>Path:</value>
   </data>
   <data name="Skin.Text" xml:space="preserve">
-    <value>Skin:</value>
+    <value>Theme:</value>
   </data>
   <data name="SpellAllowAddCustom.Text" xml:space="preserve">
     <value>Allow Custom Spelling:</value>

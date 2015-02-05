@@ -99,6 +99,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             var filterBy = GetSetting(ActiveModule.ModuleSettings, "FilterBy", String.Empty);
             var filterValue = GetSetting(ActiveModule.ModuleSettings, "FilterValue", String.Empty);
 
+            if (filterBy == "Group" && filterValue == "-1" && groupId > 0)
+            {
+                filterValue = groupId.ToString();
+            }
+
             var sortField = GetSetting(ActiveModule.TabModuleSettings, "SortField", "DisplayName");
             var sortOrder = GetSetting(ActiveModule.TabModuleSettings, "SortOrder", "ASC");
 

@@ -1869,7 +1869,8 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit);
+            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
+                TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -2569,14 +2570,11 @@ namespace DotNetNuke.Common
         public static string ApplicationURL()
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (_portalSettings != null)
+            if (_portalSettings != null && _portalSettings.ActiveTab.HasAVisibleVersion)
             {
                 return (ApplicationURL(_portalSettings.ActiveTab.TabID));
             }
-            else
-            {
-                return (ApplicationURL(-1));
-            }
+            return (ApplicationURL(-1));            
         }
 
         /// -----------------------------------------------------------------------------
@@ -3447,9 +3445,9 @@ namespace DotNetNuke.Common
             switch (Convert.ToString(RoleID))
             {
                 case glbRoleAllUsers:
-                    return "All Users";
+                    return glbRoleAllUsersName;
                 case glbRoleUnauthUser:
-                    return "Unauthenticated Users";
+                    return glbRoleUnauthUserName;
             }
             Hashtable htRoles = null;
             if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
@@ -3825,10 +3823,35 @@ namespace DotNetNuke.Common
         /// </remarks>
         public static string UserProfilePicRelativeUrl()
         {
+            return UserProfilePicRelativeUrl(true);
+        }
+
+        /// <summary>
+        /// Return User Profile Picture relative Url. UserId, width and height can be passed to build a formatted relative Avatar Url.
+        /// </summary>        
+        /// <param name="includeCdv">Indicates if cdv (Cache Delayed Verification) has to be included in the returned URL.</param>
+        /// <returns>Formatted url,  e.g. /profilepic.ashx?userid={0}&amp;h={1}&amp;w={2} considering child portal
+        /// </returns>
+        /// <remarks>Usage: ascx - &lt;asp:Image ID="avatar" runat="server" CssClass="SkinObject" /&gt;
+        /// code behind - avatar.ImageUrl = string.Format(Globals.UserProfilePicRelativeUrl(), userInfo.UserID, 32, 32)
+        /// </remarks>
+        public static string UserProfilePicRelativeUrl(bool includeCdv)
+        {
+            const string query = "/profilepic.ashx?userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
-            var childPortalAlias = currentAlias.IndexOf('/') > 0 ? "/" + currentAlias.Substring(currentAlias.IndexOf('/') + 1) : "";
-            var cdv = DateTime.Now.Ticks;
-            return Globals.ApplicationPath + childPortalAlias + "/profilepic.ashx?userId={0}&h={1}&w={2}&cdv="+cdv;
+            var index = currentAlias.IndexOf('/');
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+
+            var cdv = "";
+            if (includeCdv)
+            {
+                cdv = "&cdv=" + DateTime.Now.Ticks;
+            }
+
+            if (childPortalAlias.StartsWith(Globals.ApplicationPath))
+                return childPortalAlias + query + cdv;
+
+            return Globals.ApplicationPath + childPortalAlias + query + cdv;
 
         }
 

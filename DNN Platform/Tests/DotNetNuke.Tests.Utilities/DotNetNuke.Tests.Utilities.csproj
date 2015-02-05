@@ -97,6 +97,7 @@
     <Compile Include="DnnWebTest.cs" />
     <Compile Include="EnumerableAssert.cs" />
     <Compile Include="ExceptionAssert.cs" />
+    <Compile Include="Fakes\FakeCachingProvider.cs" />
     <Compile Include="FileAssert.cs" />
     <Compile Include="HttpContextHelper.cs" />
     <Compile Include="AssemblyInfo.cs" />

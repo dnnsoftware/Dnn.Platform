@@ -333,4 +333,76 @@
   <data name="PublishPagePermissionsNotMet" xml:space="preserve">
     <value>Permissions are not met. The page has not been published.</value>
   </data>
+  <data name="TabHasNotAnUnpublishedVersion.Text" xml:space="preserve">
+    <value>Tha tab {0} has not an unpublished version</value>
+  </data>
+  <data name="TabVersionAlreadyPublished.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} is already published</value>
+  </data>
+  <data name="TabVersionCannotBeDeleted_UnpublishedVersion.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be deleted because it is an unpublished version</value>
+  </data>
+  <data name="TabVersionCannotBeDiscarded_OnlyOneVersion.Text" xml:space="preserve">
+    <value>The tab {0} has only one version created. It cannot be discarded</value>
+  </data>
+  <data name="TabVersionCannotBeRolledBack_UnpublishedVersionExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the version {1} cannot be rolled back because an unpublished version exists</value>
+  </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists. Maybe another user has taken action on the page and its state has been changed. Please, refresh the page to see the current state.</value>
+  </data>
+  <data name="TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists.Text" xml:space="preserve">
+    <value>For Tab {0}, the new unpublished version cannot be created since another unpublished version exists.</value>
+  </data>
+  <data name="TabVersioningNotEnabled.Text" xml:space="preserve">
+    <value>Tab Versioning is not enabled</value>
+  </data>
+  <data name="WorkflowInUsageException.Text" xml:space="preserve">
+    <value>You cannot delete a workflow in use</value>
+  </data>
+  <data name="WorkflowNameAlreadyExistsException.Text" xml:space="preserve">
+    <value>Already exists a workflow with this name</value>
+  </data>
+  <data name="SystemWorkflowDeletionException.Text" xml:space="preserve">
+    <value>System workflow cannot be deleted</value>
+  </data>
+  <data name="WorkflowDoesNotExistException.Text" xml:space="preserve">
+    <value>Workflow does not exist</value>
+  </data>
+  <data name="WorkflowStateNameAlreadyExistsException.Text" xml:space="preserve">
+    <value>Already exists a workflow state with this name</value>
+  </data>
+  <data name="WorkflowConcurrencyException.Text" xml:space="preserve">
+    <value>The current state of the workflow is not the same of the current state specified in the input parameter</value>
+  </data>
+  <data name="UserCannotReviewWorkflowState.Text" xml:space="preserve">
+    <value>User cannot review the workflow state</value>
+  </data>
+  <data name="WorkflowAlreadyStarted.Text" xml:space="preserve">
+    <value>Workflow cannot get started for this Content Item. It already has a started workflow.</value>
+  </data>
+  <data name="WorkflowAuthorNotFound.Text" xml:space="preserve">
+    <value>Author cannot be found. Notification won't be sent</value>
+  </data>
+  <data name="WorkflowCannotDiscard.Text" xml:space="preserve">
+    <value>Cannot discard on last workflow state</value>
+  </data>
+  <data name="WorkflowStateInUsageException.Text" xml:space="preserve">
+    <value>You cannot delete a state in use</value>
+  </data>
+  <data name="WorkflowNewStateCannotBeAddedToSystemWorkflows.Text" xml:space="preserve">
+    <value>New states cannot be added to system workflows</value>
+  </data>
+  <data name="WorkflowStateCannotBeMoved.Text" xml:space="preserve">
+    <value>Workflow state cannot be moved</value>
+  </data>
+  <data name="WorkflowSystemWorkflowStateCannotBeDeleted.Text" xml:space="preserve">
+    <value>System workflow state cannot be deleted</value>
+  </data>
+  <data name="WorkflowSystemWorkflowStateCannotComplete.Text" xml:space="preserve">
+    <value>System workflow state cannot be completed.</value>
+  </data>
+  <data name="ModuleDoesNotBelongToPage.Text" xml:space="preserve">
+    <value>This module does not belong to the page. Please, move to its master page to change the module</value>
+  </data>
 </root>

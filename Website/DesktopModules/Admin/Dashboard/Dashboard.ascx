@@ -10,9 +10,10 @@
     }
 
     $(document).ready(function () {
-        setUpDashboardTabs();
+        // We are waiting modules tab is ready for runs dnnTabs() method
+        setTimeout(setUpDashboardTabs, 500);
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-            setUpDashboardTabs();
+            setTimeout(setUpDashboardTabs, 500);
         });
     });
 } (jQuery, window.Sys));

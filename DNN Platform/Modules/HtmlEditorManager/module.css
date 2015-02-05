@@ -1,0 +1,32 @@
+﻿/* Legacy RADEditor Classes */
+.dnnProviderConfig{width:96%;margin:2em auto;}
+.dnnpcTabs{float:right;width:73%;}
+#dnnEditorConfig, #dnnToolbarConfig{padding-top: 20px;}
+	#dnnToolbarConfig textarea{width:82% !important;min-height:450px !important}
+.dnnTreeArea{float:left;width:22%;margin-right:2%}
+.dnnTreePages{margin-top:15px;}
+.dnnProviderSelect{padding-bottom:10px;}
+	.dnnProviderSelect h3{margin-top:10px;font-size: 14px; }
+		.dtlItem{margin-left: 10px;white-space: nowrap;margin-top:5px;}
+	.dnnProviderSelect a.dnnPrimaryAction{padding:5px 8px;line-height:1.4;margin-top:5px;}	
+#dnnProviderConfig .dnnHSRadioButtons input{float:none;}
+#dnnProviderConfig .dnnHSRadioButtons label{float:none;width:auto;display:inline;padding-left:4px;}
+#dnnProviderConfig .ucLinkTypeRadioButtons{width:100%;}
+#dnnProviderConfig .dotnetnuke_tree ul{border-bottom:none;}
+	#dnnProviderConfig .dotnetnuke_tree li{float:none;}
+#dnnProviderConfig .dnnFormExpandContent {position:static;text-align:right;}
+.dnnTreeExpand {position:static;text-align:right;padding-right:8px;}
+	#dnnProviderConfig .dnnCBItem label{width:auto;padding-left:2px;font-weight:normal;text-align:left;}
+#dnnEditorConfig .dnnFormItem > div.languageComboBox{width: 47%;margin-bottom: 18px;max-width: 445px;display: inline-block !important;}
+
+/* New CK Editor Classes */
+.html-editor-manager { padding: 1em; background: #eee; border: solid 1px #ccc; overflow:hidden;}
+/*.html-editor-manager h2 {float:left; width: 33%; padding:0;}
+.html-editor-manager h2, .html-editor-manager h4 { display:inline-block; margin: 0;}
+.html-editor-manager span {font-style:italic; color: #666;}*/ 
+.html-editor-manager .current-provider, .html-editor-manager .change-provider {float:left; text-align:right; width:30%; padding-left: 1em;}
+.html-editor-manager .current-provider {padding-top: .5em; padding-bottom: .5em;}
+.html-editor-manager .current-provider h4 { display:inline-block; margin: 0;}
+/*.html-editor-manager .change-provider {float:right; }*/
+.html-editor-manager .change-provider select {padding: .5em; width: 70%;}
+.html-editor-manager .change-provider select, .html-editor-manager .change-provider input {vertical-align: top;}

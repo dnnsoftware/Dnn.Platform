@@ -24,6 +24,7 @@ using System.Data;
 
 namespace DotNetNuke.Entities.Users.Membership
 {
+    [Serializable]
     public class PasswordHistory : BaseEntityInfo
     {
         public int PasswordHistoryId { get; set; }

@@ -30,6 +30,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.FileSystem;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFileInfo> _fileInfo;
         private Mock<IPathUtils> _pathUtils;
         private Mock<IFileVersionController> _fileVersionController;
-        private Mock<IContentWorkflowController> _contentWorkflowController;
+        private Mock<IWorkflowManager> _workflowManager;
         private Mock<IEventHandlersContainer<IFileEventHandlers>> _fileEventHandlersContainer;
         private Mock<IFileLockingController> _mockFileLockingController;
         private Mock<IFileDeletionController> _mockFileDeletionController;
@@ -86,7 +87,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _portalController = new Mock<IPortalController>();
             _folderMappingController = new Mock<IFolderMappingController>();
             _fileVersionController = new Mock<IFileVersionController>();
-            _contentWorkflowController = new Mock<IContentWorkflowController>();
+            _workflowManager = new Mock<IWorkflowManager>();
             _fileEventHandlersContainer = new Mock<IEventHandlersContainer<IFileEventHandlers>>();
             _globals = new Mock<IGlobals>();
             _cbo = new Mock<ICBO>();
@@ -102,7 +103,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CBO.SetTestableInstance(_cbo.Object);
             PathUtils.RegisterInstance(_pathUtils.Object);
             FileVersionController.RegisterInstance(_fileVersionController.Object);
-            ContentWorkflowController.RegisterInstance(_contentWorkflowController.Object);
+            WorkflowManager.SetTestableInstance(_workflowManager.Object);
             EventHandlersContainer<IFileEventHandlers>.RegisterInstance(_fileEventHandlersContainer.Object);
             _mockFileManager = new Mock<FileManager> { CallBase = true };
 
@@ -220,7 +221,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
 
-            _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
+            _workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
             //Act
             _mockFileManager.Object.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
@@ -279,7 +280,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
             _mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
 
-            _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
+            _workflowManager.Setup(wc => wc.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
             _mockData.Setup(
                 md =>
@@ -337,7 +338,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             _mockFileManager.Setup(mfm => mfm.UpdateFile(It.IsAny<IFileInfo>(), It.IsAny<Stream>()));
             _mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
 
-            _contentWorkflowController.Setup(wc => wc.GetWorkflowByID(It.IsAny<int>())).Returns((ContentWorkflow)null);
+            _workflowManager.Setup(wc => wc.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
             _mockData.Setup(
                 md =>

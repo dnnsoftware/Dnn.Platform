@@ -24,8 +24,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-using DotNetNuke.Common.Utilities;
+
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Tests.Utilities;
 
 namespace DotNetNuke.Tests.Urls
 {
@@ -98,28 +99,6 @@ namespace DotNetNuke.Tests.Urls
             return Assembly.GetExecutingAssembly().GetManifestResourceStream(GetEmbeddedFileName(fileName));
         }
 
-        internal static string GetFileName(string fileName)
-        {
-            string fullName = String.Format("{0}\\{1}", FilePath, fileName);
-            if (!fullName.ToLower().EndsWith(".csv") && !fullName.ToLower().EndsWith(".sql"))
-            {
-                fullName += ".csv";
-            }
-
-            return fullName;
-        }
-
-        internal static Stream GetFileStream(string fileName)
-        {
-            var filePath = GetFileName(fileName);
-            FileStream stream = null;
-            if (File.Exists(filePath))
-            {
-                stream = new FileStream(GetFileName(fileName), FileMode.Open, FileAccess.Read);
-            }
-            return stream;
-        }
-
         internal static void GetReplaceCharDictionary(Dictionary<string, string> testFields, Dictionary<string, string> replaceCharacterDictionary)
         {
             string replaceCharWithChar = testFields.GetValue("ReplaceChars");
@@ -150,43 +129,12 @@ namespace DotNetNuke.Tests.Urls
 
         internal static string ReadStream(string fileName)
         {
-            string text = String.Empty;
-            Stream stream = GetFileStream(fileName);
-            if (stream != null)
-            {
-                using (var reader = new StreamReader(GetFileStream(fileName)))
-                {
-                    text = reader.ReadToEnd();
-                }
-            }
-            return text;
+            return Util.ReadStream(FilePath, fileName);
         }
+
         internal static void ReadStream(string fileName, Action<string, string> onReadLine)
         {
-            string text = String.Empty;
-            var stream = GetFileStream(fileName);
-            if (stream != null)
-            {
-                using (var reader = new StreamReader(GetFileStream(fileName)))
-                {
-                    string line;
-                    string header = String.Empty;
-                    int count = 0;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        //Ignore first line
-                        if (count > 0)
-                        {
-                            onReadLine(line, header);
-                        }
-                        else
-                        {
-                            header = line;
-                        }
-                        count++;
-                    }
-                }
-            }
+            Util.ReadStream(FilePath, fileName, onReadLine);
         }
     }
 }

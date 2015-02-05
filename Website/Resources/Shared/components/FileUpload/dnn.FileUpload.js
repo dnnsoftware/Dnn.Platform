@@ -45,6 +45,17 @@
             this._initPanel();
         },
 
+        setUploadPath: function (path) {
+            this.options.folderPath = path;
+            var folder = path == '' ? this.options.folderPicker.initialState.selectedItem.value
+                : path.split('/').slice(-2)[0];
+            this.$this[0].$element.find("div.fu-folder-picker-container > span").text(folder);
+        },
+
+        addFiles: function (files) {
+            this._$inputFileControl.fileupload('add', { files: files });
+        },
+
         _selectUpload: function (uploadMethod, eventObject) {
             var isLocal = uploadMethod === this._uploadMethods.local;
             this.$element.find(".fu-dialog-content-fileupload-local").toggle(isLocal);
@@ -66,16 +77,15 @@
             dnn[this._folderPicker.id()] = this._folderPicker;
 
             var dialog = $element('div', { tabindex: '-1', 'class': 'fu-container', role: 'dialog' }).append(
-                $element('h5', { 'class': 'fu-dialog-header' }).text(this.options.resources.dialogHeader),
                 $element('div', { 'class': 'fu-dialog-content' }).append(
                     $element("div", { 'class': 'fu-dialog-content-header' }).append(
                         $element("div", { 'class': 'dnnLeft' }).append(
                             $element("ul", { 'class': 'dnnButtonGroup' }).append(
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);", 'class': 'active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
+                                    $element("a", { href: "javascript:void(0);", 'class': 'upload-file active' }).text(this.options.resources.uploadFileMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.local))
                                 ),
                                 $element("li").append(
-                                    $element("a", { href: "javascript:void(0);" }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
+                                    $element("a", { href: "javascript:void(0);", 'class': 'from-url' }).text(this.options.resources.uploadFromWebMethod).on("click", $.proxy(this._selectUpload, this, this._uploadMethods.web))
                                 )
                             ),
                             this._$decompressOption = $element("span").append(
@@ -183,7 +193,7 @@
                 success: $.proxy(this._onUploadByUrl, this, [status.fileName]),
                 error: $.onAjaxError
             };
-            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "" };
+            serviceSettings.data = { Url: status.fileName, Folder: this._selectedPath(), Overwrite: status.overwrite, Unzip: this._extract(), Filter: "", IsHostMenu: this.options.parameters.isHostPortal };
             $.extend(serviceSettings.data, this.options.parameters);
             $.ajax(serviceSettings);
         },
@@ -302,6 +312,7 @@
         _add: function (e, data) {
             if (!this._$fileUploadStatusesContainer.is(':visible')) {
                 this._$fileUploadStatusesContainer.show().jScrollbar("update");
+                this.$element.trigger("show-statuses-container");
             }
 
             var count = data.originalFiles.length;

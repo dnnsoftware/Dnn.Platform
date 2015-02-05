@@ -11,6 +11,9 @@
 *.sln.docstates
 *.local.sln
 
+## Ignore VS2015/Roslyn artifacts
+*.sln.ide/
+
 # Build results
 [Rr]elease
 *_i.c
@@ -80,6 +83,8 @@ DNN [Pp]latform/[Cc]ontrols/[Cc]ountry[Ll]ist[Bb]ox/[Bb]in/*
 DNN [Pp]latform/*/[Bb]in
 DNN [Pp]latform/Tests/*/[Bb]in/*
 DNN [Pp]latform/Modules/*/[Bb]in/*
+DNN [Pp]latform/Admin Modules/*/[Bb]in/*
+DNN [Pp]latform/MVC Modules/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
@@ -101,6 +106,7 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Rr]ad[Ee]ditor[Pp]rovider
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Tt]axonomy
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Uu]rl[Mm]anagement
+[Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]dmin/[Hh]tml[Ee]ditor[Mm]anager
 
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Ff]acebook
 [Ww]ebsite/[Dd]esktop[Mm]odules/[Aa]uthentication[Ss]ervices/[Gg]oogle
@@ -141,13 +147,18 @@ DNN [Pp]latform/Syndication/[Bb]in/*
 
 [Ww]ebsite/[Ll]icenses/*.txt
 
+[Ww]ebsite/[Mm]odules
+
 [Ww]ebsite/[Pp]ortals/_default/[Ll]ogs
 [Ww]ebsite/[Pp]ortals/_default/[Mm]erged[Tt]emplate
 [Ww]ebsite/[Pp]ortals/_default/[Bb]lank [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Dd]efault [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Mm]obile [Ww]ebsite*.*
 [Ww]ebsite/[Pp]ortals/_default/[Cc]ontainers/*/thumbnail*.jpg
+[Ww]ebsite/[Pp]ortals/_default/[Cc]ontainers/[Cc]avalier/*.*
 [Ww]ebsite/[Pp]ortals/_default/[Ss]kins/*/thumbnail*.jpg
+[Ww]ebsite/[Pp]ortals/_default/[Ss]kins/[Cc]avalier
+[Ww]ebsite/[Pp]ortals/_default/[Ss]kins/[Cc]avalier/*/*.*
 
 [Ww]ebsite/[Pp]ortals/_default/[Uu]ser*
 [Ww]ebsite/[Pp]ortals/[0-9]*/
@@ -193,3 +204,4 @@ Thumbs.db
 
 # Folder config file
 Desktop.ini
+

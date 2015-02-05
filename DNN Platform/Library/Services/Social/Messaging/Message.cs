@@ -101,6 +101,12 @@ namespace DotNetNuke.Services.Social.Messaging
         public int ConversationId { get; set; }
 
         /// <summary>
+        /// NotificationType ID of the Message. Each message is associated with a notification type.
+        /// </summary>
+        [XmlAttribute]
+        public int NotificationTypeID { get; set; }
+
+        /// <summary>
         /// ReplyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
         /// </summary>
         [XmlAttribute]
@@ -159,7 +165,7 @@ namespace DotNetNuke.Services.Social.Messaging
             ConversationId = Null.SetNullInteger(dr["ConversationID"]);
             ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            
+            NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
             //add audit column data
             FillInternal(dr);
         }

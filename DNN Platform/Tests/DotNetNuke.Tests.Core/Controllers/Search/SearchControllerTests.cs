@@ -121,12 +121,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int NumericValue1 = 77777;
         private const int NumericValue2 = 55555;
         private const int NumericValue50 = 50;
+        private const int NumericValue100 = 100;
         private const int NumericValue200 = 200;
+        private const int NumericValue500 = 500;
         private const int NumericValue1000 = 1000;
         private const string KeyWord1Name = "keyword1";
         private const string KeyWord1Value = "value1";
         private const string KeyWord2Name = "keyword2";
         private const string KeyWord2Value = "value2";
+        private const string KeyWord3Value = "value3";
+        private const string KeyWord4Value = "value4";
+        private const string KeyWord5Value = "value5";
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
         private const string Line3 = "the quick fox jumps over the black dog";
@@ -305,6 +310,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     StopWords = "los,de,el",
                 });
             _mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>())).Returns<string, bool>(new SearchHelperImpl().RephraseSearchText);
+            _mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(_mockSearchHelper.Object);
         }
 
@@ -470,6 +476,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Title = "Title",
                 UniqueKey = "key1",
+                Body = "hello",
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
@@ -482,7 +489,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
             };
             var doc3 = new SearchDocument
             {
@@ -491,10 +498,84 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() {doc1, doc2, doc3};
+            var docs = new List<SearchDocument>() {doc1, doc2, doc3, doc4, doc5};
+
+            _internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
+        {
+            var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                Body = "hello",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } }
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } }
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } }
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } }
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } }
+            };
+
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
             _internalSearchController.AddSearchDocuments(docs);
 
@@ -2827,5 +2908,48 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         #endregion
+
+        #region custom numeric key and keyword test
+        [Test]
+        public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
+        {
+            AddDocumentsWithNumericKeys();
+
+            //Act
+            var query = new SearchQuery
+            {
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.AreEqual(NumericValue50, search.Results[0].NumericKeys[NumericKey1]);
+        }
+
+        [Test]
+        public void SearchController_GetResult_Works_With_CustomKeyword_Querirs()
+        {
+
+            AddDocumentsWithKeywords();
+            
+            //Act
+            var query = new SearchQuery
+            {
+                CustomKeywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
+                SearchTypeIds = new List<int> { OtherSearchTypeId },
+                WildCardSearch = false
+            };
+            var search = _searchController.SiteSearch(query);
+
+            //Assert
+            Assert.AreEqual(1, search.Results.Count);
+            Assert.AreEqual(KeyWord1Value, search.Results[0].Keywords[KeyWord1Name]);
+        }
+
+        #endregion
+
     }
 }

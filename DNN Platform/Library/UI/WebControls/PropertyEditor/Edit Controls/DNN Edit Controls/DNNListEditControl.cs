@@ -100,7 +100,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+				if (Value == null || string.IsNullOrEmpty((string)Value))
+				{
+					return intValue;
+				}
+				try
                 {
                     intValue = Convert.ToInt32(Value);
                 }
@@ -189,7 +193,11 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 int intValue = Null.NullInteger;
-                try
+                if (OldValue == null || string.IsNullOrEmpty(OldValue.ToString()))
+                {
+					return intValue;
+	            }
+	            try
                 {
 					//Try and cast the value to an Integer
                     intValue = Convert.ToInt32(OldValue);
@@ -439,6 +447,10 @@ namespace DotNetNuke.UI.WebControls
             ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+			writer.AddAttribute("data-name", Name);
+			writer.AddAttribute("data-list", ListName);
+			writer.AddAttribute("data-category", Category);
+			writer.AddAttribute("data-editor", "DNNListEditControl");
             if (AutoPostBack)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, Page.ClientScript.GetPostBackEventReference(this, ID));

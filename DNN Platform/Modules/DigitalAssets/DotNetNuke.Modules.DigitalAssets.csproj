@@ -65,9 +65,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -102,7 +99,6 @@
     <Compile Include="Components\Controllers\Models\PageViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PermissionViewModel.cs" />
     <Compile Include="Components\ExtensionPoint\IFieldsControl.cs" />
-    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs" />
     <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -116,12 +112,14 @@
     <Compile Include="Components\ExtensionPoint\UserControls\SearchBoxExtensionPoint.cs" />
     <Compile Include="FileFieldsControl.ascx.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileFieldsControl.ascx.designer.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderProperties.ascx.cs">
       <DependentUpon>FolderProperties.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderProperties.ascx.designer.cs">
       <DependentUpon>FolderProperties.ascx</DependentUpon>
@@ -159,18 +157,21 @@
     <Compile Include="Components\Controllers\Models\Field.cs" />
     <Compile Include="EditFolderMapping.ascx.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditFolderMapping.ascx.designer.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="FileProperties.ascx.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileProperties.ascx.designer.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderMappings.ascx.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderMappings.ascx.designer.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
@@ -178,6 +179,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchBoxControl.ascx.cs">
       <DependentUpon>SearchBoxControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SearchBoxControl.ascx.designer.cs">
       <DependentUpon>SearchBoxControl.ascx</DependentUpon>
@@ -204,12 +206,14 @@
     <Compile Include="Services\Factory.cs" />
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>
@@ -261,6 +265,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>

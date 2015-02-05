@@ -122,18 +122,29 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Name is the name of the field as a string
-        /// </summary>
-        /// <value>A string representing the Name of the property</value>
-        /// <history>
-        ///     [cnurse]	02/21/2006	created
-        /// </history>
-        /// -----------------------------------------------------------------------------
-        public string Name { get; set; }
+		/// -----------------------------------------------------------------------------
+		/// <summary>
+		/// Name is the name of the field as a string
+		/// </summary>
+		/// <value>A string representing the Name of the property</value>
+		/// <history>
+		///     [cnurse]	02/21/2006	created
+		/// </history>
+		/// -----------------------------------------------------------------------------
+		public string Name { get; set; }
 
-        /// -----------------------------------------------------------------------------
+		/// -----------------------------------------------------------------------------
+		/// <summary>
+		/// The Category to which this edit control belongs
+		/// </summary>
+		/// <value>A string representing the Category of the property</value>
+		/// <history>
+		///     [cnurse]	02/21/2006	created
+		/// </history>
+		/// -----------------------------------------------------------------------------
+		public string Category { get; set; }
+
+		/// -----------------------------------------------------------------------------
         /// <summary>
         /// OldValue is the initial value of the field
         /// </summary>

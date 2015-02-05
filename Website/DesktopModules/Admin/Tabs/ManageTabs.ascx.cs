@@ -23,17 +23,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -55,7 +53,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
 using Reflection = DotNetNuke.Framework.Reflection;
@@ -95,6 +92,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         case "copy":
                             var originalTab = TabController.Instance.GetTab(TabId, PortalId, false);
                             _tab = originalTab.Clone();
+                            InitializeWorkflow(_tab);
                             _tab.TabID = Null.NullInteger;
                             _tab.VersionGuid = Guid.NewGuid();
                             _tab.LocalizedVersionGuid = Guid.NewGuid();
@@ -138,6 +136,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
         #endregion
 
         #region Private Methods
+        private void InitializeWorkflow(ContentItem contentItem)
+        {
+            contentItem.StateID = Null.NullInteger;
+        }
 
         private void AddTranslationSubmittedNotification(TabInfo tabInfo, UserInfo translator)
         {
@@ -335,6 +337,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             if (Tab != null)
             {
                 BindPageDetails();
+                PageDetailsExtensionControl.BindAction(PortalId, Tab.TabID, ModuleId);
 
                 ctlURL.Url = Tab.Url;
                 bool newWindow = false;
@@ -1073,6 +1076,8 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
             }
 
+            PageDetailsExtensionControl.SaveAction(PortalId, Tab.TabID, ModuleId);
+
             // url tracking
             var objUrls = new UrlController();
             objUrls.UpdateUrl(PortalId, ctlURL.Url, ctlURL.UrlType, 0, Null.NullDate, Null.NullDate, ctlURL.Log, ctlURL.Track, Null.NullInteger, ctlURL.NewWindow);
@@ -1758,7 +1763,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     if (tabId != Null.NullInteger)
                     {
-                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId));
+                        var newCookie = new HttpCookie("LastPageId", string.Format("{0}:{1}", PortalSettings.PortalId, tabId))
+                        {
+                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        };
                         Response.Cookies.Add(newCookie);
 
                         if (PortalSettings.UserMode != PortalSettings.Mode.Edit)

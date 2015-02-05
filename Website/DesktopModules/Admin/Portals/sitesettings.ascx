@@ -284,6 +284,7 @@
                         </asp:RadioButtonList>
                     </div>
                 </fieldset>
+                <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="SiteSettings" Group="SiteSettingsAdvancedSettingsExtensions"/>
                 <div id="hostSections" runat="server">
                     <h2 id="dnnSitePanel-PortalAliases" class="dnnFormSectionHead">
                         <a href=""><%=LocalizeString("PortalAliases")%></a>
@@ -493,7 +494,23 @@
                             <asp:CheckBox runat="server" ID="chkMinifyJs" />
                         </div>
                     </fieldset>
-                    <dnnext:EditPagePanelExtensionControl runat="server" ID="SiteSettingAdvancedSettingExtensionControl" Module="DigitalAssets" Group="SiteSettingsAdvancedSettingsExtensions"/>
+                    <h2 id="dnnSitePanel-PageHeaders" class="dnnFormSectionHead">
+                        <a href="" class="dnnSectionExpanded"><%=LocalizeString("PageHeaders")%></a>
+                    </h2>
+                    <fieldset>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plPageHeadText" runat="server" controlname="txtPageHeadText" />
+                            <asp:TextBox ID="txtPageHeadText" runat="server" TextMode="MultiLine" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plInjectModuleHyperLink" runat="server" controlname="chkInjectModuleHyperLink" />
+                            <asp:CheckBox runat="server" ID="chkInjectModuleHyperLink" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plAddCompatibleHttpHeader" runat="server" controlname="txtAddCompatibleHttpHeader" />
+                            <asp:TextBox ID="txtAddCompatibleHttpHeader" runat="server" />                            
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>

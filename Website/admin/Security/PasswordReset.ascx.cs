@@ -26,13 +26,11 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-
 
 #endregion
 
@@ -42,8 +40,6 @@ namespace DotNetNuke.Modules.Admin.Security
    
     public partial class PasswordReset : UserModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PasswordReset));
-
         #region Private Members
 
         private string _ipAddress;
@@ -61,13 +57,14 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         #endregion
-
-       
+    
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            _ipAddress = Request.UserHostAddress;
+
             if (PortalSettings.LoginTabId != -1 && PortalSettings.ActiveTab.TabID != PortalSettings.LoginTabId)
             {
                 Response.Redirect(Globals.NavigateURL(PortalSettings.LoginTabId) + Request.Url.Query);
@@ -82,6 +79,30 @@ namespace DotNetNuke.Modules.Admin.Security
                 
             }
 
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            {
+                lblUsername.Text = Localization.GetString("Email", LocalResourceFile);
+                lblUsername.HelpText = Localization.GetString("Email.Help", LocalResourceFile);
+                valUsername.Text = Localization.GetString("Email.Required", LocalResourceFile);
+            }
+            else
+            {
+                lblUsername.Text = Localization.GetString("Username", LocalResourceFile);
+                lblUsername.HelpText = Localization.GetString("Username.Help", LocalResourceFile);
+                valUsername.Text = Localization.GetString("Username.Required", LocalResourceFile);
+            }
+
+            if (Request.QueryString["forced"] == "true")
+            {
+                lblInfo.Text = Localization.GetString("ForcedResetInfo", LocalResourceFile);
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            if (!string.IsNullOrEmpty(lblHelp.Text) || !string.IsNullOrEmpty(lblInfo.Text))
+                resetMessages.Visible = true;
         }
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
@@ -122,7 +143,17 @@ namespace DotNetNuke.Modules.Admin.Security
 
             }
 
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, ResetToken) == false)
+            string username = txtUsername.Text;
+            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false))
+            {
+                var testUser = UserController.GetUserByEmail(PortalId, username); // one additonal call to db to see if an account with that email actually exists
+                if (testUser != null)
+                {
+                    username = testUser.Username; //we need the username of the account in order to change the password in the next step
+                }
+            }
+
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken) == false)
             {
                 resetMessages.Visible = true;
                 var failed = Localization.GetString("PasswordResetFailed", LocalResourceFile);
@@ -134,7 +165,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 //Log user in to site
                 LogSuccess();
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                UserController.UserLogin(PortalSettings.PortalId, txtUsername.Text, txtPassword.Text, "", "", "", ref loginStatus, false);
+                UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
                 RedirectAfterLogin();
             }           
         }

@@ -18,6 +18,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
 #region Usings
 
 using System;
@@ -27,7 +28,6 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer;
@@ -42,10 +43,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.UI.WebControls;
-
 using Telerik.Web.UI;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Framework.JavaScriptLibraries;
 
 #endregion
 
@@ -784,7 +782,10 @@ namespace DotNetNuke.Modules.Admin.Languages
         {
             if (ddlPages.SelectedPage != null)
             {
-                var pageCookie = new HttpCookie(PageSelectorCookieName) { Value = ddlPages.SelectedPage.TabID.ToString(CultureInfo.InvariantCulture) };
+                var pageCookie = new HttpCookie(PageSelectorCookieName, ddlPages.SelectedPage.TabID.ToString(CultureInfo.InvariantCulture) )
+                {
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                };
                 Response.Cookies.Add(pageCookie);
             }
             BindCLControl();

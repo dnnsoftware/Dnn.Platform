@@ -47,6 +47,7 @@ namespace DotNetNuke.Entities.Host
     /// <summary>
 	/// Contains most of the host settings.
 	/// </summary>
+    [Serializable]
     public class Host : BaseEntityInfo
     {
         #region Public Shared Properties
@@ -1076,6 +1077,8 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
+        private static Globals.PerformanceSettings? _performanceSetting;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the PerformanceSettings
@@ -1091,14 +1094,20 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                Globals.PerformanceSettings setting = Globals.PerformanceSettings.ModerateCaching;
-                string s = HostController.Instance.GetString("PerformanceSetting");
-                if (!string.IsNullOrEmpty(s))
+                if (!_performanceSetting.HasValue)
                 {
-                    setting = (Globals.PerformanceSettings) Enum.Parse(typeof (Globals.PerformanceSettings), s);
+                    var s = HostController.Instance.GetString("PerformanceSetting");
+                    if (string.IsNullOrEmpty(s))
+                    {
+                        return Globals.PerformanceSettings.ModerateCaching;
+                    }
+
+                    _performanceSetting = (Globals.PerformanceSettings)Enum.Parse(typeof(Globals.PerformanceSettings), s);
                 }
-                return setting;
+
+                return _performanceSetting.Value;
             }
+            set { _performanceSetting = value; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -1376,7 +1385,8 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                var slb = HostController.Instance.GetInteger("SiteLogBuffer", 1);
+                return slb < 1 ? 1 : slb;
             }
         }
 

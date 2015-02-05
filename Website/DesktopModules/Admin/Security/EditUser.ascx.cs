@@ -21,8 +21,9 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -31,6 +32,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Admin.Security;
 using DotNetNuke.Security;
@@ -39,6 +41,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
 
@@ -93,9 +96,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-                object setting = GetSetting(PortalId, "Redirect_AfterRegistration");
-
-                if (Convert.ToInt32(setting) == Null.NullInteger)
+                if (PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (Request.QueryString["returnurl"] != null)
                     {
@@ -122,7 +123,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else //redirect to after registration page
                 {
-                    _RedirectURL = Globals.NavigateURL(Convert.ToInt32(setting));
+                    _RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -233,6 +234,13 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
                 userForm.DataSource = User;
+
+                // hide username field in UseEmailAsUserName mode
+                bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+                if (disableUsername)
+                {
+                    userForm.Items[0].Visible = false;
+                }
 
                 if (!Page.IsPostBack)
                 {
@@ -373,10 +381,9 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UpdateDisplayName()
         {
             //Update DisplayName to conform to Format
-            object setting = GetSetting(UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
+            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(Convert.ToString(setting));
+                User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
             }
         }
 
@@ -409,6 +416,8 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
 
             jQuery.RequestDnnPluginsRegistration();
+            JavaScript.RequestRegistration(CommonJs.Knockout);
+
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";
@@ -470,7 +479,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
             }
-            
+
             //DNN-26777 
             new PortalSecurity().SignOut();
             Response.Redirect(Globals.NavigateURL(PortalSettings.HomeTabId));
@@ -490,14 +499,43 @@ namespace DotNetNuke.Modules.Admin.Users
                     //Update DisplayName to conform to Format
                     UpdateDisplayName();
 
+                    //DNN-5874 Check if unique display name is required
+                    if (PortalSettings.Registration.RequireUniqueDisplayName)
+                    {
+                        var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                        if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                        {
+                            throw new Exception("Display Name must be unique");
+                        }
+                    }
+
                     UserController.UpdateUser(UserPortalID, User);
+
+                    // make sure username matches possibly changed email address
+                    if (PortalSettings.Registration.UseEmailAsUserName)
+                    {
+                        if (User.Username.ToLower() != User.Email.ToLower())
+                        {
+                            UserController.ChangeUsername(User.UserID, User.Email);
+
+                            //note that this effectively will cause a signout due to the cookie not matching anymore.
+                            Response.Cookies.Add(new HttpCookie("USERNAME_CHANGED", User.Email) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                        }
+                    }
 
                     Response.Redirect(Request.RawUrl);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
+                    if (exc.Message == "Display Name must be unique")
+                    {
+                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
+                    else
+                    {
+                        AddModuleMessage("UserUpdatedError", ModuleMessage.ModuleMessageType.RedError, true);
+                    }
                 }
             }
 
@@ -621,7 +659,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void SubscriptionUpdated(object sender, MemberServices.SubscriptionUpdatedEventArgs e)
         {
-            string message = Null.NullString;
+            string message;
             if (e.Cancel)
             {
                 message = string.Format(Localization.GetString("UserUnSubscribed", LocalResourceFile), e.RoleName);

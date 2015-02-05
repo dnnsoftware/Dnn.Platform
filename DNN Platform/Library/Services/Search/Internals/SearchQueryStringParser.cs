@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex TypeRegex = new Regex(@"type:(\w+(,\w+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the list of tags parsing the search keywords
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Search.Internals
             var types = "";
             while (m.Success && string.IsNullOrEmpty(types))
             {
-                types = m.Groups[1].ToString();
+                types = m.Groups[1].ToString().Trim();
             }
 
             var typesList = new List<string>();

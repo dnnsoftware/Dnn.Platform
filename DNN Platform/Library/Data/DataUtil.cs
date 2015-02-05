@@ -25,6 +25,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Data
@@ -144,7 +145,8 @@ namespace DotNetNuke.Data
 
         internal static string ReplaceTokens(string sql)
         {
-            return sql.Replace("{databaseOwner}", DataProvider.Instance().DatabaseOwner)
+            var isSqlCe = DataProvider.Instance().Settings.GetValueOrDefault("isSqlCe", false);
+            return sql.Replace("{databaseOwner}", (isSqlCe) ? String.Empty : DataProvider.Instance().DatabaseOwner)
                         .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
         }
 

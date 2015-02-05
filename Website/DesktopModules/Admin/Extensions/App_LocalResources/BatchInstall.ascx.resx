@@ -133,7 +133,7 @@
     <value>Available Modules</value>
   </data>
   <data name="AvailableSkins.Text" xml:space="preserve">
-    <value>Available Skins</value>
+    <value>Available Themes</value>
   </data>
   <data name="cmdInstall.Text" xml:space="preserve">
     <value>Install Selected Extensions</value>
@@ -157,7 +157,7 @@
     <value>No Modules Available</value>
   </data>
   <data name="NoSkins.Text" xml:space="preserve">
-    <value>No Skins Available</value>
+    <value>No Themes Available</value>
   </data>
   <data name="InstallAuthSystemError.Text" xml:space="preserve">
     <value>&lt;b&gt;&lt;font color='red'&gt;Error Installing Authentication System(s):&lt;/font&gt;&lt;/b&gt;&lt;br/&gt; {0}</value>
@@ -172,7 +172,7 @@
     <value>&lt;b&gt;&lt;font color='red'&gt;Error Installing Module(s):&lt;/font&gt;&lt;/b&gt;&lt;br/&gt; {0}</value>
   </data>
   <data name="InstallSkinError.Text" xml:space="preserve">
-    <value>&lt;b&gt;&lt;font color='red'&gt;Error installing Skin:&lt;/font&gt;&lt;/b&gt;&lt;br/&gt; {0}</value>
+    <value>&lt;b&gt;&lt;font color='red'&gt;Error installing Theme:&lt;/font&gt;&lt;/b&gt;&lt;br/&gt; {0}</value>
   </data>
   <data name="NoneSelected.Text" xml:space="preserve">
     <value>No Extensions were selected for installation.</value>

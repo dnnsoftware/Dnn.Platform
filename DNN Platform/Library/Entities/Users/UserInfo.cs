@@ -259,6 +259,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
+                var socialRoles = Social.Roles;
+                if (socialRoles.Count == 0)
+                    return new string[0];
+
                 return (from r in Social.Roles
                         where
                             r.Status == RoleStatus.Approved &&
@@ -503,7 +507,13 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
-            if (IsSuperUser || role == Globals.glbRoleAllUsersName)
+            //super users should always be verified.
+            if (IsSuperUser)
+            {
+                return role != "Unverified Users";
+            }
+
+            if (role == Globals.glbRoleAllUsersName)
             {
                 return true;
             }
@@ -515,9 +525,11 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
-            if (Roles != null)
+
+            var roles = Roles;
+            if (roles != null)
             {
-                return Roles.Any(s => s == role);
+                return roles.Any(s => s == role);
             }
             return false;
         }

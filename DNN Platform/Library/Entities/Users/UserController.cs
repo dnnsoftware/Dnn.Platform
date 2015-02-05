@@ -90,6 +90,8 @@ namespace DotNetNuke.Entities.Users
 
         #endregion
 
+        private static event EventHandler<UserEventArgs> UserAuthenticated;
+
         private static event EventHandler<UserEventArgs> UserCreated;
 
         private static event EventHandler<UserEventArgs> UserDeleted;
@@ -100,8 +102,9 @@ namespace DotNetNuke.Entities.Users
 
         static UserController()
         {            
-            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)            
+            foreach (var handlers in EventHandlersContainer<IUserEventHandlers>.Instance.EventHandlers)
             {
+                UserAuthenticated += handlers.Value.UserAuthenticated;
                 UserCreated += handlers.Value.UserCreated;
                 UserDeleted += handlers.Value.UserDeleted;
                 UserRemoved += handlers.Value.UserRemoved;
@@ -581,6 +584,16 @@ namespace DotNetNuke.Entities.Users
                 objUser.UpdateDisplayName(DisplayFormat);
                 UpdateUser(portalId, objUser);
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the number count for all duplicate e-mail adresses in the database
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static int GetDuplicateEmailCount()
+        {
+            return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
         #endregion
@@ -1228,7 +1241,7 @@ namespace DotNetNuke.Entities.Users
             var settings = GetDefaultUserSettings();
             Dictionary<string, string> settingsDictionary = (portalId == Null.NullInteger)
                                                             ? HostController.Instance.GetSettingsDictionary()
-                                                            : PortalController.GetPortalSettingsDictionary(GetEffectivePortalId(portalId));
+                                                            : PortalController.Instance.GetPortalSettings(GetEffectivePortalId(portalId));
             if (settingsDictionary != null)
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
@@ -1355,6 +1368,28 @@ namespace DotNetNuke.Entities.Users
         public static ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             return GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize, ref totalRecords, false, false);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetUserByEmail gets one single user matching the email address provided
+        /// This will only be useful in portals without duplicate email addresses
+        /// filter expression
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="emailToMatch">The email address to use to find a match.</param>
+        /// <returns>A single user object or null if no user found</returns>
+        /// -----------------------------------------------------------------------------
+        public static UserInfo GetUserByEmail(int portalId, string emailToMatch)
+        {
+            int uid = DataProvider.Instance().GetSingleUserByEmail(portalId, emailToMatch);
+            if (uid > -1)
+            {
+                return GetUserById(portalId, uid);
+            }
+            return null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -1841,6 +1876,11 @@ namespace DotNetNuke.Entities.Users
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
             security.SignIn(user, createPersistentCookie);
+
+            if (UserAuthenticated != null)
+            {
+                UserAuthenticated(null, new UserEventArgs() {User = user});
+            }
         }
 
         /// -----------------------------------------------------------------------------

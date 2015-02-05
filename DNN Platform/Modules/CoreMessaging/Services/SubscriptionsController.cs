@@ -43,13 +43,15 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     public class SubscriptionsController : DnnApiController
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
+        private const string ViewControlResources = "~/DesktopModules/CoreMessaging/App_LocalResources/View.ascx.resx";
 
         #region Private Properties
         private string LocalizationFolder
 		{
 			get
 			{
-                return string.Format("~/DesktopModules/{0}/App_LocalResources/", DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", PortalSettings.PortalId).FolderName);
+                return string.Format("~/DesktopModules/{0}/App_LocalResources/",
+                    DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", PortalSettings.PortalId).FolderName);
 			}
 		}
         #endregion
@@ -202,19 +204,29 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         #endregion
 
 		#region Private Statics Methods
+
         private static SubscriptionViewModel GetSubscriptionViewModel(Subscription subscription)
         {
-            return new SubscriptionViewModel
+            var model = new SubscriptionViewModel
             {
                 SubscriptionId = subscription.SubscriptionId,
                 Description = subscription.Description,
-                SubscriptionType =
-                    SubscriptionTypeController.Instance.GetSubscriptionType(
-                        t => t.SubscriptionTypeId == subscription.SubscriptionTypeId).FriendlyName
             };
+
+            // localize the type name
+            var subscriptionType = SubscriptionTypeController.Instance.GetSubscriptionType(
+                t => t.SubscriptionTypeId == subscription.SubscriptionTypeId);
+
+            if (subscriptionType != null)
+            {
+                var localizedName = Localization.GetString(subscriptionType.SubscriptionName, ViewControlResources);
+                model.SubscriptionType = localizedName ?? subscriptionType.FriendlyName;
+            }
+
+            return model;
         }
 
-		private static bool IsLanguageSpecific(string fileName)
+        private static bool IsLanguageSpecific(string fileName)
 		{
 			var components = fileName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 			if (components.Length > 1)

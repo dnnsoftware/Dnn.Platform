@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Controllers;
 namespace DotNetNuke.Entities.Host
 {
     [Obsolete("Replaced in DotNetNuke 5.0 by Host class because of Namespace clashes with Obsolete Globals.HostSetting Property")]
+    [Serializable]
     public class HostSettings : BaseEntityInfo
     {
         public static string GetHostSetting(string key)

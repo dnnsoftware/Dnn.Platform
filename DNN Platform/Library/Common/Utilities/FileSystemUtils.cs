@@ -1347,6 +1347,7 @@ namespace DotNetNuke.Common.Utilities
                 objZipEntry = zipStream.GetNextEntry();
                 while (objZipEntry != null)
                 {
+                    HtmlUtils.WriteKeepAlive();
                     LocalFileName = objZipEntry.Name;
                     RelativeDir = Path.GetDirectoryName(objZipEntry.Name);
                     if ((RelativeDir != string.Empty) && (!Directory.Exists(Path.Combine(destPath, RelativeDir))))

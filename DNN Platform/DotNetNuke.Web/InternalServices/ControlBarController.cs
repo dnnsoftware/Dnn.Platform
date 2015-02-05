@@ -332,8 +332,9 @@ namespace DotNetNuke.Web.InternalServices
 
                     return Request.CreateResponse(HttpStatusCode.OK, new { TabModuleID = tabModuleId});
                 }
-                catch
+                catch(Exception ex)
                 {
+                    Logger.Error(ex);
                 }                
             }
 

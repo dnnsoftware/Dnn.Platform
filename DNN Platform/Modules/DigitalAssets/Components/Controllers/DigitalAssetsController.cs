@@ -383,8 +383,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            return SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            var folderTypeId = SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            if (!folderTypeId.HasValue)
+            {
+                folderTypeId = FolderMappingController.Instance.GetDefaultFolderMapping(GetCurrentPortalId(moduleId)).FolderMappingID;
+            }
+            return folderTypeId;
         }
+
 
         public int GetCurrentPortalId(int moduleId)
         {
@@ -657,7 +663,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
-                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath);
+                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
                 return GetFolderViewModel(folder);
             }
             catch (FolderAlreadyExistsException)

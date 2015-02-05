@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         #region NotificationTypes CRUD
 
-        public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId)
+        public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
-            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CreateNotificationType"), name, _provider.GetNull(description), _provider.GetNull(timeToLive), _provider.GetNull(desktopModuleId), createUpdateUserId);
+            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CreateNotificationType"), name, _provider.GetNull(description), _provider.GetNull(timeToLive), _provider.GetNull(desktopModuleId), createUpdateUserId, isTask);
         }
 
         public void DeleteNotificationType(int notificationTypeId)
@@ -119,9 +119,14 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             _provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotification"), notificationId);
         }
 
+        public int DeleteUserNotifications(int userId, int portalId)
+        {
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>(GetFullyQualifiedName("DeleteUserNotifications"), userId, portalId);
+        }
+
         public int CountNotifications(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);
+            return userId <= 0 ? 0 : _provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);
         }
 
         public IDataReader GetNotifications(int userId, int portalId, int afterNotificationId, int numberOfRecords)

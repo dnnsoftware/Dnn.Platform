@@ -2062,7 +2062,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (!folderProvider.FileExists(folder, file.FileName))
                         {
-                            FileManager.Instance.DeleteFile(file);
+                            FileDeletionController.Instance.DeleteFileData(file);
                         }
                     }
                     catch (Exception ex)

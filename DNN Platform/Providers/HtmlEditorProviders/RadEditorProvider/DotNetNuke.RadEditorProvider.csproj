@@ -46,11 +46,6 @@
     <NoWarn>1591,612,618,672</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.0.185, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -108,7 +103,9 @@
     <Compile Include="Components\DnnEditor.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="Components\DialogParams.cs" />
-    <Compile Include="Components\EditorProvider.cs" />
+    <Compile Include="Components\EditorProvider.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\ErrorCodes.cs" />
     <Compile Include="Components\FileManagerException.cs" />
     <Compile Include="Components\FileSystemValidation.cs" />
@@ -130,6 +127,7 @@
     </Compile>
     <Compile Include="Dialogs\SaveTemplate.aspx.cs">
       <DependentUpon>SaveTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DotNetNukeDialogHandler.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -150,6 +148,7 @@
     </Compile>
     <Compile Include="ProviderConfig.ascx.cs">
       <DependentUpon>ProviderConfig.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +240,14 @@
       <Project>{DDF18E36-41A0-4CA7-A098-78CA6E6F41C1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
+      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
+      <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
+      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
+      <Name>DotNetNuke.WebUtility</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{8DA31B98-5E8E-4243-8967-D4CF7DC622CB}</Project>

@@ -21,6 +21,7 @@
 #region Usings
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 #endregion
@@ -156,6 +157,20 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         public IDictionary<string, string> SearchContext { get; set; }
 
+        /// <summary>
+        /// Restrict search to specific Keywords. This field is optional. Lookup is done in the SearchDocument.Keywords collection.
+        /// </summary>
+        /// <remarks>This is key-value pair, e.g. "AliasName","something"</remarks>
+        /// <remarks>An empty dictionary means this is property is not used.</remarks>
+        public IDictionary<string, string> CustomKeywords { get; set; }
+
+        /// <summary>
+        /// Restrict search to specific NumericKeys. This field is optional.
+        /// </summary>
+        /// <remarks>This is key-value pair, e.g. "ItemId","888"</remarks>
+        /// <remarks>An empty dictionary means this is property is not used.</remarks>
+        public IDictionary<string, int> NumericKeys { get; set; }
+
         #region constructor
 
         public SearchQuery()
@@ -169,6 +184,8 @@ namespace DotNetNuke.Services.Search.Entities
             PageSize = 10;
             PageIndex = 1;
             SearchContext = new Dictionary<string, string>();
+            CustomKeywords = new Dictionary<string, string>();
+            NumericKeys = new Dictionary<string, int>();
         }
 
         #endregion 

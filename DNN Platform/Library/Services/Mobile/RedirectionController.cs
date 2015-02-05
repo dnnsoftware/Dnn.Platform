@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
-
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
@@ -81,16 +80,22 @@ namespace DotNetNuke.Services.Mobile
                     {
                         if (app.Response.Cookies[DisableMobileRedirectCookieName] != null)
                         {
-                            HttpCookie cookie = new HttpCookie(DisableMobileRedirectCookieName);
-                            cookie.Expires = DateTime.Now.AddMinutes(-1);
+                            var cookie = new HttpCookie(DisableMobileRedirectCookieName)
+                            {
+                                Expires = DateTime.Now.AddMinutes(-1),
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                            };
                             app.Response.Cookies.Add(cookie);      
                         }
 
 						if (app.Response.Cookies[DisableRedirectPresistCookieName] != null)
 						{
-							HttpCookie cookie = new HttpCookie(DisableRedirectPresistCookieName);
-							cookie.Expires = DateTime.Now.AddMinutes(-1);
-							app.Response.Cookies.Add(cookie);
+							var cookie = new HttpCookie(DisableRedirectPresistCookieName)
+							{
+							    Expires = DateTime.Now.AddMinutes(-1),
+                                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+							};
+						    app.Response.Cookies.Add(cookie);
 						}   
                     }
                     else if (val == 1) //forced disable. need to setup cookie
@@ -108,12 +113,18 @@ namespace DotNetNuke.Services.Mobile
             if (!allowed) //redirect is not setup to be allowed, keep the cookie alive
             {
 				//this cookie is set to re-enable redirect after 20 minutes
-				HttpCookie presistCookie = new HttpCookie(DisableRedirectPresistCookieName);
-				presistCookie.Expires = DateTime.Now.AddMinutes(20);
-				app.Response.Cookies.Add(presistCookie);
+				var presistCookie = new HttpCookie(DisableRedirectPresistCookieName)
+				{
+				    Expires = DateTime.Now.AddMinutes(20),
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+				};
+                app.Response.Cookies.Add(presistCookie);
 
 				//this cookie is set to re-enable redirect after close browser.
-				HttpCookie cookie = new HttpCookie(DisableMobileRedirectCookieName);
+                var cookie = new HttpCookie(DisableMobileRedirectCookieName)
+                {
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                };
 				app.Response.Cookies.Add(cookie);    
             }
 

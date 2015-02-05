@@ -236,7 +236,7 @@ namespace DotNetNuke.Entities.Urls
                         result.PortalId = requestedAlias.PortalID;
                         result.CultureCode = requestedAlias.CultureCode;
                         //get the portal alias mapping for this portal
-                        result.PortalAliasMapping = PortalSettings.GetPortalAliasMappingMode(requestedAlias.PortalID);
+                        result.PortalAliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(requestedAlias.PortalID);
 
                         //if requested alias wasn't the primary, we have a replacement, redirects are allowed and the portal alias mapping mode is redirect
                         //then do a redirect based on the wrong portal
@@ -298,11 +298,9 @@ namespace DotNetNuke.Entities.Urls
                     {
                         //not correct alias for portal : will be redirected
                         //perform a 301 redirect if one has already been found
-                        response.Status = "301 Moved Permanently";
                         response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                        response.AddHeader("Location", result.FinalUrl);
+                        response.RedirectPermanent(result.FinalUrl, false);
                         finished = true;
-                        response.End();
                     }
                     if (!finished)
                     {
@@ -417,10 +415,8 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 finished = true;
                                 //perform a 301 redirect if one has already been found
-                                response.Status = "301 Moved Permanently";
                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                response.AddHeader("Location", result.FinalUrl);
-                                response.End();
+                                response.RedirectPermanent(result.FinalUrl, false);
                             }
                         }
                     }
@@ -450,10 +446,8 @@ namespace DotNetNuke.Entities.Urls
                             switch (result.Action)
                             {
                                 case ActionType.Redirect301:
-                                    response.Status = "301 Moved Permanently";
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    response.AddHeader("Location", result.FinalUrl);
-                                    response.End();
+                                    response.RedirectPermanent(result.FinalUrl);
                                     break;
                                 case ActionType.Redirect302:
                                     response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
@@ -586,11 +580,9 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         if (result.Action == ActionType.Redirect301)
                                         {
-                                            response.Status = "301 Moved Permanently";
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.AddHeader("Location", result.FinalUrl);
+                                            response.RedirectPermanent(result.FinalUrl, false);
                                             finished = true;
-                                            response.End();
                                         }
                                         else if (result.Action == ActionType.Redirect302)
                                         {
@@ -696,6 +688,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 //do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
                 //level try/catch block, so we handle it here.
+                Thread.ResetAbort();
             }
             catch (Exception ex)
             {
@@ -1428,11 +1421,9 @@ namespace DotNetNuke.Entities.Urls
                                 if (response != null)
                                 {
                                     //perform a 301 redirect to the external url of the tab
-                                    response.Status = "301 Moved Permanently";
                                     response.AppendHeader("X-Redirect-Reason",
                                                           result.Reason.ToString().Replace("_", " ") + " Requested");
-                                    response.AddHeader("Location", result.FinalUrl);
-                                    response.End();
+                                    response.RedirectPermanent(result.FinalUrl);
                                 }
                             }
                             else

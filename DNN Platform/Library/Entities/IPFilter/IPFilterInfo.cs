@@ -37,7 +37,8 @@ using DotNetNuke.Security.Roles.Internal;
 
 namespace DotNetNuke.Entities.Host
 {
-   
+
+    [Serializable]
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
 

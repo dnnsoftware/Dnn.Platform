@@ -23,11 +23,11 @@
 using System;
 using System.Collections;
 using System.Web;
-
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
+using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 #endregion
 
@@ -181,18 +181,22 @@ namespace DotNetNuke.Entities.Users
                 userID = Guid.NewGuid().ToString();
 
                 //Create a new cookie
-                cookie = new HttpCookie(cookieName);
-                cookie.Value = userID;
-                cookie.Expires = DateTime.Now.AddMinutes(20);
+                cookie = new HttpCookie(cookieName, userID)
+                {
+                    Expires = DateTime.Now.AddMinutes(20),
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                };
                 context.Response.Cookies.Add(cookie);
 
                 //Create a user
-                user = new AnonymousUserInfo();
-                user.UserID = userID;
-                user.PortalID = portalSettings.PortalId;
-                user.TabID = portalSettings.ActiveTab.TabID;
-                user.CreationDate = DateTime.Now;
-                user.LastActiveDate = DateTime.Now;
+                user = new AnonymousUserInfo
+                {
+                    UserID = userID,
+                    PortalID = portalSettings.PortalId,
+                    TabID = portalSettings.ActiveTab.TabID,
+                    CreationDate = DateTime.Now,
+                    LastActiveDate = DateTime.Now
+                };
 
                 //Add the user
                 if (!userList.Contains(userID))
@@ -228,9 +232,11 @@ namespace DotNetNuke.Entities.Users
                 user.LastActiveDate = DateTime.Now;
 
                 //Reset the expiration on the cookie
-                cookie = new HttpCookie(cookieName);
-                cookie.Value = userID;
-                cookie.Expires = DateTime.Now.AddMinutes(20);
+                cookie = new HttpCookie(cookieName, userID)
+                {
+                    Expires = DateTime.Now.AddMinutes(20),
+                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                };
                 context.Response.Cookies.Add(cookie);
             }
         }

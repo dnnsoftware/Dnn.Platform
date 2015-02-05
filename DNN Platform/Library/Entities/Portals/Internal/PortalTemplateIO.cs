@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Portals.Internal
@@ -71,17 +72,19 @@ namespace DotNetNuke.Entities.Portals.Internal
 
         public TextReader OpenTextReader(string filePath)
         {
-            return new StreamReader(File.Open(filePath, FileMode.Open));
+            StreamReader reader = null;
+            
+            var retryable = new RetryableAction(
+                () => reader = new StreamReader(File.Open(filePath, FileMode.Open)),
+                filePath, 10, TimeSpan.FromMilliseconds(50), 2);
+
+            retryable.TryIt();
+            return reader;
         }
 
         private static string CheckFilePath(string path)
         {
-            if (File.Exists(path))
-            {
-                return path;
-            }
-
-            return "";
+            return File.Exists(path) ? path : string.Empty;
         }
 
         #endregion
