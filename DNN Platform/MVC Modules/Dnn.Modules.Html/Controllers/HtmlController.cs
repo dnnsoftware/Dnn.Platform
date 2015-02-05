@@ -23,12 +23,12 @@ using System;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Dnn.Modules.Html.Models;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Html.Models;
 
-namespace DotNetNuke.Web.Mvc.Html.Controllers
+namespace Dnn.Modules.Html.Controllers
 {
     public class HtmlController : DnnController
     {

@@ -23,7 +23,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Web.Mvc.Html.Models
+namespace Dnn.Modules.Html.Models
 {
     [TableName("HtmlText")]
     [PrimaryKey("ItemID")]

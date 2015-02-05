@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Mvc
         {
             ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(new ModuleExecutionEngine());
 
-            RegisterModules();
+            //RegisterModules();
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new ModuleDelegatingViewEngine());

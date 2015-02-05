@@ -23,11 +23,11 @@ using System.Web.Routing;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Routing;
 
-namespace DotNetNuke.Web.Mvc.Html
+namespace Dnn.Modules.Html
 {
     public class HtmlModuleApplication : ModuleApplication
     {
-        public const string HtmlControllersNamespace = " DotNetNuke.Web.Mvc.Html.Controllers";
+        public const string HtmlControllersNamespace = "Dnn.Modules.Html.Controllers";
 
         public override string DefaultActionName
         {
@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Mvc.Html
 
         protected override string FolderPath
         {
-            get { return "Html"; }
+            get { return "Dnn/Html"; }
         }
 
         public override string ModuleName

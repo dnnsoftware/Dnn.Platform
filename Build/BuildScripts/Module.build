@@ -5,11 +5,12 @@
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
       <SourceFiles Include="*.css;*.htm;*.xsl;*.png;*.gif" />
-      <ConfigFiles Include="*.config" Exclude="web.config"/>
+      <ConfigFiles Include="*.config" Exclude="web.config;packages.config"/>
       <RootConfig Include="*eb.config" />
       <RootViews Include="*.ascx;*.asmx;*.ashx;" />
       <Services Include="*.svc" />
       <Views Include="Views/*.ascx;" />
+      <MVCViews Include="Views/*/*.cshtml"/>
       <Controls Include="Controls/*.ascx;" />
       <ResourceFiles Include="App_LocalResources/*.resx" />
       <Images Include="Images/*.*" />
@@ -21,7 +22,7 @@
       <Templates Include="Templates/*.htm" />
       <DataFiles Include="Resources/*.xml" />
       <Resources Include="@(ResourceFiles);@(Scripts);@(RootViews);@(Images);@(TextFiles);@(SourceFiles);@(ClientScripts);@(JsFiles);
-                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views)" />
+                 @(Keys);@(Services);@(RootConfig);@(ConfigFiles);@(Templates);@(DataFiles);@(SharedScripts);@(Controls);@(Views);@(MVCViews)" />
     </ItemGroup>
   </Target>
   <Target Name="CopyBin">
@@ -46,5 +47,6 @@
     <Copy SourceFiles="@(SharedScripts)" DestinationFolder="$(ModuleFolderName)\Scripts\Shared" />
     <Copy SourceFiles="@(Templates)" DestinationFolder="$(ModuleFolderName)\Templates" />
     <Copy SourceFiles="@(Views)" DestinationFolder="$(ModuleFolderName)\Views" />
+    <Copy SourceFiles="@(MVCViews)" DestinationFolder="$(ModuleFolderName)\Views\%(RecursiveDir)" />
   </Target> 
 </Project>
