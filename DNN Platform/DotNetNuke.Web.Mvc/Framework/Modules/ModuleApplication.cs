@@ -21,7 +21,6 @@
 
 using System;
 using System.Globalization;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
@@ -42,13 +41,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public ModuleApplication()
         {
-            ModuleName = String.Empty;
-            FolderPath = String.Empty;
-            DefaultControllerName = String.Empty;
-            DefaultActionName = String.Empty;
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             ControllerFactory = ControllerBuilder.Current.GetControllerFactory();
-            Routes = new RouteCollection();
             ViewEngines = new ViewEngineCollection();
         }
 
@@ -61,8 +55,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public virtual string FolderPath { get; set; }
 
         public virtual string ModuleName { get; set; }
-
-        public RouteCollection Routes { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
 
@@ -134,11 +126,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             {
                 ControllerFactory.ReleaseController(controller);
             }
-        }
-
-        protected internal virtual RouteData GetRouteData(HttpContextBase httpContext)
-        {
-            return Routes.GetRouteData(httpContext);
         }
 
         protected internal virtual void Init()

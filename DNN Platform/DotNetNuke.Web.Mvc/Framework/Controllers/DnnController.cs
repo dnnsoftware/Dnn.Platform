@@ -21,21 +21,16 @@
 
 using System;
 using System.Web.Mvc;
-using System.Web.Routing;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
 using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
     public abstract class DnnController : DnnControllerBase, IDnnController
     {
-        private readonly ResultCapturingActionInvoker _actionInvoker;
-
         protected DnnController()
         {
-            _actionInvoker = new ResultCapturingActionInvoker();
-            ActionInvoker = _actionInvoker;
+            ActionInvoker = new ResultCapturingActionInvoker();
         }
 
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
@@ -45,7 +40,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public ActionResult ResultOfLastExecute
         {
-            get { return _actionInvoker.ResultOfLastInvoke; }
+            get
+            {
+                var actionInvoker = ActionInvoker as ResultCapturingActionInvoker;
+                return (actionInvoker != null) ?  actionInvoker.ResultOfLastInvoke : null;
+            }
         }
 
     }

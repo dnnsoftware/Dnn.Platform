@@ -47,122 +47,122 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             DesktopModuleControllerAdapter.ClearInstance();
         }
 
-        [Test]
-        public void ExecuteModule_Requires_NonNull_HttpContextBase()
-        {
-            var engine = new ModuleExecutionEngine();
-            Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(null, new ModuleInfo(), "Foo"));
-        }
+        //[Test]
+        //public void ExecuteModule_Requires_NonNull_HttpContextBase()
+        //{
+        //    var engine = new ModuleExecutionEngine();
+        //    Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(null, new ModuleInfo(), "Foo"));
+        //}
 
-        [Test]
-        public void ExecuteModule_Requires_NonNull_Module()
-        {
-            var engine = new ModuleExecutionEngine();
-            Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(MockHelper.CreateMockHttpContext(), null, "Foo"));
-        }
+        //[Test]
+        //public void ExecuteModule_Requires_NonNull_Module()
+        //{
+        //    var engine = new ModuleExecutionEngine();
+        //    Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(MockHelper.CreateMockHttpContext(), null, "Foo"));
+        //}
 
-        [Test]
-        public void ExecuteModule_Requires_NonNull_ModuleRoute()
-        {
-            // Empty route is OK
-            var engine = new ModuleExecutionEngine();
-            Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(MockHelper.CreateMockHttpContext(), new ModuleInfo(), null));
-        }
+        //[Test]
+        //public void ExecuteModule_Requires_NonNull_ModuleRoute()
+        //{
+        //    // Empty route is OK
+        //    var engine = new ModuleExecutionEngine();
+        //    Assert.Throws<ArgumentNullException>(() => engine.ExecuteModule(MockHelper.CreateMockHttpContext(), new ModuleInfo(), null));
+        //}
 
-        [Test]
-        public void ExecuteModule_Returns_Null_If_Application_For_Provided_Module_Does_Not_Exist()
-        {
-            // Arrange
-            var engine = new ModuleExecutionEngine();
+        //[Test]
+        //public void ExecuteModule_Returns_Null_If_Application_For_Provided_Module_Does_Not_Exist()
+        //{
+        //    // Arrange
+        //    var engine = new ModuleExecutionEngine();
 
-            SetUpMockDesktopController(It.IsAny<int>(), It.IsAny<int>(), null);
+        //    SetUpMockDesktopController(It.IsAny<int>(), It.IsAny<int>(), null);
             
-            // Act
-            ModuleRequestResult result = engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
-                                                              new ModuleInfo { DesktopModuleID = 1, PortalID = 1},
-                                                              String.Empty);
-            // Assert
-            Assert.IsNull(result);
-        }
+        //    // Act
+        //    ModuleRequestResult result = engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
+        //                                                      new ModuleInfo { DesktopModuleID = 1, PortalID = 1},
+        //                                                      String.Empty);
+        //    // Assert
+        //    Assert.IsNull(result);
+        //}
 
-        [Test]
-        public void ExecuteModule_Executes_ModuleApplication_For_Module_If_Exists()
-        {
-            // Arrange
-            var engine = new ModuleExecutionEngine();
+        //[Test]
+        //public void ExecuteModule_Executes_ModuleApplication_For_Module_If_Exists()
+        //{
+        //    // Arrange
+        //    var engine = new ModuleExecutionEngine();
 
-            var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule"};
-            SetUpMockDesktopController(1, 1, desktopModule);
+        //    var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule"};
+        //    SetUpMockDesktopController(1, 1, desktopModule);
 
-            var moduleApp = new Mock<ModuleApplication>();
-            var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
-            ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
+        //    var moduleApp = new Mock<ModuleApplication>();
+        //    var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
+        //    ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
 
-            // Act
-            engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
-                                new ModuleInfo { DesktopModuleID = 1, PortalID = 1 },
-                                String.Empty);
+        //    // Act
+        //    engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
+        //                        new ModuleInfo { DesktopModuleID = 1, PortalID = 1 },
+        //                        String.Empty);
 
-            // Assert
-            moduleApp.Verify(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()));
-        }
+        //    // Assert
+        //    moduleApp.Verify(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()));
+        //}
 
-        [Test]
-        public void ExecuteModule_Returns_Result_Of_Executing_ModuleApplication()
-        {
-            // Arrange
-            var engine = new ModuleExecutionEngine();
-            var expected = new ModuleRequestResult();
+        //[Test]
+        //public void ExecuteModule_Returns_Result_Of_Executing_ModuleApplication()
+        //{
+        //    // Arrange
+        //    var engine = new ModuleExecutionEngine();
+        //    var expected = new ModuleRequestResult();
 
-            var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule" };
-            SetUpMockDesktopController(1, 1, desktopModule);
+        //    var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule" };
+        //    SetUpMockDesktopController(1, 1, desktopModule);
 
-            var moduleApp = new Mock<ModuleApplication>();
-            var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
-            ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
+        //    var moduleApp = new Mock<ModuleApplication>();
+        //    var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
+        //    ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
 
-            moduleApp.Setup(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()))
-                    .Returns(expected);
+        //    moduleApp.Setup(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()))
+        //            .Returns(expected);
 
-            // Act
-            ModuleRequestResult actual = engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
-                                                              new ModuleInfo { DesktopModuleID = 1, PortalID = 1 },
-                                                              String.Empty);
+        //    // Act
+        //    ModuleRequestResult actual = engine.ExecuteModule(MockHelper.CreateMockHttpContext(),
+        //                                                      new ModuleInfo { DesktopModuleID = 1, PortalID = 1 },
+        //                                                      String.Empty);
 
-            // Assert
-            Assert.AreSame(expected, actual);
-        }
+        //    // Assert
+        //    Assert.AreSame(expected, actual);
+        //}
 
-        [Test]
-        public void ExecuteModule_Provides_Context_Data_To_Executed_ModuleApplication()
-        {
-            // Arrange
-            var engine = new ModuleExecutionEngine();
+        //[Test]
+        //public void ExecuteModule_Provides_Context_Data_To_Executed_ModuleApplication()
+        //{
+        //    // Arrange
+        //    var engine = new ModuleExecutionEngine();
 
-            var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule" };
-            SetUpMockDesktopController(1, 1, desktopModule);
+        //    var desktopModule = new DesktopModuleInfo { DesktopModuleID = 1, ModuleName = "TestModule" };
+        //    SetUpMockDesktopController(1, 1, desktopModule);
 
-            var moduleApp = new Mock<ModuleApplication>();
-            var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
-            ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
+        //    var moduleApp = new Mock<ModuleApplication>();
+        //    var apps = new Dictionary<string, ModuleApplication> { { "TestModule", moduleApp.Object } };
+        //    ComponentFactory.RegisterComponentInstance<IDictionary<string, ModuleApplication>>(apps);
 
-            HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
-            var module = new ModuleInfo { DesktopModuleID = 1, PortalID = 1 };
-            const string route = "Foo/Bar/Baz";
+        //    HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
+        //    var module = new ModuleInfo { DesktopModuleID = 1, PortalID = 1 };
+        //    const string route = "Foo/Bar/Baz";
 
-            ModuleRequestContext providedContext = null;
-            moduleApp.Setup(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()))
-                    .Callback<ModuleRequestContext>(c => providedContext = c);
+        //    ModuleRequestContext providedContext = null;
+        //    moduleApp.Setup(app => app.ExecuteRequest(It.IsAny<ModuleRequestContext>()))
+        //            .Callback<ModuleRequestContext>(c => providedContext = c);
 
-            // Act
-            engine.ExecuteModule(httpContext, module, route);
+        //    // Act
+        //    engine.ExecuteModule(httpContext, module, route);
 
-            // Assert
-            Assert.AreSame(moduleApp.Object, providedContext.Application);
-            Assert.AreSame(module, providedContext.Module);
-            Assert.AreSame(httpContext, providedContext.HttpContext);
-            Assert.AreEqual(route, providedContext.ModuleRoutingUrl);
-        }
+        //    // Assert
+        //    Assert.AreSame(moduleApp.Object, providedContext.Application);
+        //    Assert.AreSame(module, providedContext.Module);
+        //    Assert.AreSame(httpContext, providedContext.HttpContext);
+        //    Assert.AreEqual(route, providedContext.ModuleRoutingUrl);
+        //}
 
         [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult()

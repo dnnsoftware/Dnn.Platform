@@ -92,7 +92,6 @@
     <Compile Include="Framework\Modules\IModuleExecutionEngine.cs" />
     <Compile Include="Framework\Modules\ModuleApplication.cs" />
     <Compile Include="Framework\Modules\ModuleExecutionEngine.cs" />
-    <Compile Include="Framework\Modules\ModuleInjectMode.cs" />
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />

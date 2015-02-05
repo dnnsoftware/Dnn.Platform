@@ -26,11 +26,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleRequestResult
     {
-        public ModuleRequestResult()
-        {
-            ModuleMode = ModuleInjectMode.None;
-        }
-
         public ModuleApplication Application { get; set; }
 
         public ActionResult ActionResult { get; set; }
@@ -38,7 +33,5 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public ControllerContext ControllerContext { get; set; }
 
         public ModuleInfo Module { get; set; }
-
-        public ModuleInjectMode ModuleMode { get; set; }
     }
 }

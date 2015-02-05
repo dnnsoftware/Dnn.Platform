@@ -41,7 +41,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-            SetupGetRouteDataCall(app);
 
             int initCounter = 0;
             app.Setup(a => a.Init())
@@ -60,40 +59,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             Assert.AreEqual(1, initCounter);
         }
 
-        [Test]
-        public void ExecuteRequest_Calls_GetRouteData_With_ModuleRoute_To_Route_Request()
-        {
-            //Arrange
-            var app = new Mock<ModuleApplication> { CallBase = true };
-
-            HttpContextBase actualContext = null;
-            app.Setup(a => a.GetRouteData(It.IsAny<HttpContextBase>()))
-                .Callback<HttpContextBase>(providedContext => actualContext = providedContext)
-                .Returns(CreateTestRouteData());
-
-            var controller = new Mock<IDnnController>();
-
-            var controllerFactory = SetupControllerFactory(controller.Object);
-            app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
-
-            ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
-
-            //Act
-            app.Object.ExecuteRequest(moduleRequestContext);
-
-            //Assert
-            app.Verify(a => a.GetRouteData(It.IsAny<HttpContextBase>()));
-
-            Assert.AreEqual("~/Foo/Bar/Baz", actualContext.Request.AppRelativeCurrentExecutionFilePath);
-        }
 
         [Test]
         public void ExecuteRequest_Calls_ControllerFactory_To_Construct_Controller()
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
 
             var controllerFactory = new Mock<IControllerFactory>();
             RequestContext actualRequestContext = null;
@@ -110,7 +81,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             // Assert
             controllerFactory.Verify(f => f.CreateController(It.IsAny<RequestContext>(), "Foo"));
-            Assert.AreSame(expectedRouteData, actualRequestContext.RouteData);
             Assert.AreSame(moduleRequestContext.HttpContext, actualRequestContext.HttpContext);
         }
 
@@ -119,8 +89,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
 
             var controller = new Mock<IController>();
             var controllerFactory = SetupControllerFactory(controller.Object);
@@ -137,8 +105,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
 
             var controller = new Mock<Controller>();
             var invoker = new Mock<IActionInvoker>();
@@ -159,8 +125,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
 
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
-
             var controller = new Mock<IController>();
             controller.As<IDnnController>();
 
@@ -178,8 +142,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
 
             var controller = new Mock<Controller>();
             var invoker = new ControllerActionInvoker();
@@ -200,8 +162,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
 
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
-
             ControllerContext controllerContext = MockHelper.CreateMockControllerContext();
             ActionResult actionResult = new Mock<ActionResult>().Object;
 
@@ -220,41 +180,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             Assert.AreSame(controllerContext, result.ControllerContext);
         }
 
-        //[TestMethod]
-        //public void ExecuteRequest_Wraps_Request_In_PageOverrideResult_If_ShouldOverrideOtherModules_Returns_True()
-        //{
-        //    // Arrange
-        //    ModuleApplication app = CreateTestApplication();
-
-        //    RouteData expectedRouteData = SetupGetRouteDataCall(app);
-
-        //    ControllerContext controllerContext = Mockery.CreateMockControllerContext();
-        //    ActionResult actionResult = new Mock<ActionResult>().Object;
-
-        //    IModuleController controller = SetupMockController(actionResult, controllerContext);
-        //    app.ControllerFactory = SetupControllerFactory(controller);
-
-        //    Mock.Get(app)
-        //        .Setup(a => a.ShouldOverrideOtherModules(actionResult, It.IsAny<ModuleRequestContext>(), It.IsAny<ControllerContext>()))
-        //        .Returns(true);
-
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app, "Foo/Bar/Baz");
-
-        //    // Act
-        //    ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
-
-        //    // Assert
-        //    Assert.IsInstanceOfType(result.ActionResult, typeof(PageOverrideResult));
-        //    Assert.AreSame(actionResult, ((PageOverrideResult)result.ActionResult).InnerResult);
-        //}
-
         [Test]
         public void ExecuteRequest_Executes_Constructed_Controller_And_Provides_RequestContext()
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-
-            RouteData expectedRouteData = SetupGetRouteDataCall(app);
 
             var controller = new Mock<IController>();
             controller.As<IDnnController>();
@@ -279,7 +209,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-            SetupGetRouteDataCall(app);
 
             var controller = new Mock<IDnnController>();
 
@@ -300,7 +229,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var app = new Mock<ModuleApplication> { CallBase = true };
-            SetupGetRouteDataCall(app);
 
             var controller = new Mock<IDnnController>();
             controller.Setup(c => c.Execute(It.IsAny<RequestContext>()))
@@ -336,15 +264,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             return controllerFactory;
         }
 
-        private static RouteData SetupGetRouteDataCall(Mock<ModuleApplication> app)
-        {
-            RouteData expectedRouteData = CreateTestRouteData();
-
-            app.Setup(a => a.GetRouteData(It.IsAny<HttpContextBase>()))
-                .Returns(expectedRouteData);
-            return expectedRouteData;
-        }
-
         private static RouteData CreateTestRouteData()
         {
             var expectedRouteData = new RouteData();
@@ -356,10 +275,8 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             return new ModuleRequestContext
                         {
-                            Application = app,
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
-                            Module = new ModuleInfo { ModuleID = 42 },
-                            ModuleRoutingUrl = moduleRoutingUrl
+                            Module = new ModuleInfo { ModuleID = 42 }
                         };
         }
 
