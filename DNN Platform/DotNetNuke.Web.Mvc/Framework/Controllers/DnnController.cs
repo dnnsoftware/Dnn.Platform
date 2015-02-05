@@ -38,41 +38,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             ActionInvoker = _actionInvoker;
         }
 
-        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
-        {
-
-            return RedirectToRoute(actionName, controllerName, routeValues, false);
-        }
-
-        protected override RedirectToRouteResult RedirectToActionPermanent(string actionName, string controllerName, RouteValueDictionary routeValues)
-        {
-            return RedirectToRoute(actionName, controllerName, routeValues, true);
-        }
-
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
         {
             return new DnnRedirecttoRouteResult(String.Empty, String.Empty, String.Empty, null, false);
-        }
-
-        protected override RedirectToRouteResult RedirectToRoute(string routeName, RouteValueDictionary routeValues)
-        {
-            return new DnnRedirecttoRouteResult(String.Empty, String.Empty, routeName, routeValues, false);
-        }
-
-        private DnnRedirecttoRouteResult RedirectToRoute(string actionName, string controllerName, RouteValueDictionary routeValues, bool permanent)
-        {
-            var values = RouteData != null
-                ? RouteValuesHelpers.MergeRouteValues(actionName, controllerName, RouteData.Values, routeValues, true)
-                : RouteValuesHelpers.MergeRouteValues(actionName, controllerName, null, routeValues, true);
-
-            var result = new DnnRedirecttoRouteResult(actionName, controllerName, String.Empty, values, false);
-
-            return result;
-        }
-
-        protected override RedirectToRouteResult RedirectToRoutePermanent(string routeName, RouteValueDictionary routeValues)
-        {
-            return new DnnRedirecttoRouteResult(String.Empty, String.Empty, routeName, routeValues, true);
         }
 
         public ActionResult ResultOfLastExecute

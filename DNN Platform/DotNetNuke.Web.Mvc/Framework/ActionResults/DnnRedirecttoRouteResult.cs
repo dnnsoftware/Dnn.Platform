@@ -27,8 +27,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
     internal class DnnRedirecttoRouteResult : RedirectToRouteResult
     {
-        private RouteCollection _routes;
-
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
@@ -39,12 +37,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         public string ActionName { get; private set; }
 
         public string ControllerName { get; private set; }
-
-        internal RouteCollection Routes
-        {
-            get { return _routes ?? (_routes = RouteTable.Routes); }
-            set { _routes = value; }
-        }
 
         public override void ExecuteResult(ControllerContext context)
         {

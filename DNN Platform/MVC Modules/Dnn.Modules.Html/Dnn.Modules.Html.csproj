@@ -86,7 +86,6 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Controllers\HtmlController.cs" />
-    <Compile Include="HtmlModuleApplication.cs" />
     <Compile Include="Models\HtmlText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

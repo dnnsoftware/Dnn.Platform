@@ -22,7 +22,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -32,6 +31,7 @@ using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using DotNetNuke.Web.Mvc.Helpers;
@@ -40,6 +40,34 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
+        private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext, ModuleInfo module)
+        {
+            //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
+            DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
+            var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
+            var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+            var moduleApplication = new ModuleApplication
+                                            {
+                                                DefaultActionName = defaultSegments[1],
+                                                DefaultControllerName = defaultSegments[0],
+                                                ModuleName = desktopModule.ModuleName,
+                                                FolderPath = desktopModule.FolderName
+                                            };
+
+            var segments = module.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+            var moduleRequestContext = new ModuleRequestContext
+                                            {
+                                                ActionName = segments[1],
+                                                ControllerName = segments[0],
+                                                HttpContext = httpContext,
+                                                Module = module, 
+                                                ModuleApplication = moduleApplication
+                                            };
+
+            return moduleRequestContext;
+        }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
@@ -67,23 +95,9 @@ namespace DotNetNuke.Web.Mvc
 
             var moduleExecutionEngine = GetModuleExecutionEngine();
 
-            string moduleRoute = "";
-
-            var moduleApplication = moduleExecutionEngine.GetModuleApplication(ModuleContext.Configuration);
-
             LoadActions(ModuleContext.Configuration);
-            if (String.IsNullOrEmpty(ModuleContext.Configuration.ModuleControl.ControlKey))
-            {
-                moduleRoute = "";
-            }
-            else
-            {
-                //var controlKey = ModuleContext.Configuration.ModuleControl.ControlKey;
-                //moduleRoute = String.Format("{0}/{1}", moduleApplication.DefaultControllerName, controlKey);
-                moduleRoute = ModuleContext.Configuration.ModuleControl.ControlSrc.Replace(".mvc", "");
-            }
 
-            ModuleRequestResult result = moduleExecutionEngine.ExecuteModule(httpContext, ModuleContext.Configuration, moduleRoute);
+            ModuleRequestResult result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
 
             if (result != null)
             {
@@ -103,7 +117,7 @@ namespace DotNetNuke.Web.Mvc
                 {
                     if (!String.IsNullOrEmpty(moduleControl.ControlKey))
                     {
-                        ModuleActions.Add(this.ModuleContext.GetNextActionID(),
+                        ModuleActions.Add(ModuleContext.GetNextActionID(),
                             moduleControl.ControlKey,
                             moduleControl.ControlKey + ".Action",
                             "",
@@ -118,7 +132,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        public MvcHtmlString RenderModule(ModuleRequestResult moduleResult, HttpContextBase httpContext)
+        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult, HttpContextBase httpContext)
         {
             MvcHtmlString moduleOutput;
 

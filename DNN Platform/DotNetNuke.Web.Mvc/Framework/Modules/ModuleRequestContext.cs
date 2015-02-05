@@ -20,21 +20,20 @@
 #endregion
 
 using System.Web;
-using System.Web.Routing;
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleRequestContext
     {
-        public ModuleApplication Application { get; set; }
+        public string ActionName { get; set; }
+
+        public string ControllerName { get; set; }
 
         public HttpContextBase HttpContext { get; set; }
 
         public ModuleInfo Module { get; set; }
 
-        public string ModuleRoutingUrl { get; set; }
-
-        public RouteData RouteData { get; set; }
+        public ModuleApplication ModuleApplication { get; set; }
     }
 }

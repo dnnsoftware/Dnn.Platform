@@ -24,13 +24,11 @@ using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DotNetNuke.Web.Mvc.Framework.ActionResults;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
-    public abstract class ModuleApplication
+    public class ModuleApplication
     {
         private const string ControllerMasterFormat = "~/Modules/{0}/Views/{{1}}/{{0}}.cshtml";
         private const string SharedMasterFormat = "~/Modules/{0}/Views/Shared/{{0}}.cshtml";
@@ -42,8 +40,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         private bool _initialized;
         private readonly object _lock = new object();
 
-        protected ModuleApplication()
+        public ModuleApplication()
         {
+            ModuleName = String.Empty;
+            FolderPath = String.Empty;
+            DefaultControllerName = String.Empty;
+            DefaultActionName = String.Empty;
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             ControllerFactory = ControllerBuilder.Current.GetControllerFactory();
             Routes = new RouteCollection();
@@ -52,13 +54,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public virtual IControllerFactory ControllerFactory { get; set; }
 
-        public abstract string DefaultActionName { get; }
+        public virtual string DefaultActionName { get; set; }
 
-        public abstract string DefaultControllerName { get; }
+        public virtual string DefaultControllerName { get; set; }
 
-        protected abstract string FolderPath { get; }
+        public virtual string FolderPath { get; set; }
 
-        public abstract string ModuleName { get; }
+        public virtual string ModuleName { get; set; }
 
         public RouteCollection Routes { get; set; }
 
@@ -94,19 +96,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
             EnsureInitialized();
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", context.ControllerName);
+            routeData.Values.Add("action", context.ActionName);
 
-            // Create a rewritten HttpRequest (wrapped in an HttpContext) to provide to the routing system
-            HttpContextBase rewrittenContext = new RewrittenHttpContext(context.HttpContext, context.ModuleRoutingUrl);
-
-            // Route the request
-            RouteData routeData = GetRouteData(rewrittenContext);
-
-            // Setup request context
-            string controllerName = routeData.GetRequiredString("controller");
             var requestContext = new RequestContext(context.HttpContext, routeData);
 
-            // Construct the controller using the ControllerFactory
-            IController controller = ControllerFactory.CreateController(requestContext, controllerName);
+            //Construct the controller using the ControllerFactory
+            IController controller = ControllerFactory.CreateController(requestContext, context.ControllerName);
             try
             {
                 // Check if the controller supports IDnnController and if not, try to adapt it
@@ -124,20 +121,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 moduleController.Execute(requestContext);
                 ActionResult result = moduleController.ResultOfLastExecute;
 
-                // Check if the result should override the rest of the page content, and if so, package it in a PageOverrideResult
-                if (!(result is PageOverrideResult) && ShouldOverrideOtherModules(result, context, moduleController.ControllerContext))
-                {
-                    result = new PageOverrideResult(result);
-                }
-
                 // Return the final result
                 return new ModuleRequestResult
-                {
-                    Application = this,
-                    ActionResult = result,
-                    ControllerContext = moduleController.ControllerContext,
-                    Module = context.Module
-                };
+                                {
+                                    Application = this,
+                                    ActionResult = result,
+                                    ControllerContext = moduleController.ControllerContext,
+                                    Module = context.Module
+                                };
             }
             finally
             {
@@ -172,8 +163,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                         ViewLocationFormats = viewFormats,
                                         PartialViewLocationFormats = viewFormats
                                     });
-
-            RegisterRoutes(Routes);
         }
 
         private static string NormalizeFolderPath(string path)
@@ -184,24 +173,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 return path.Trim('/');
             }
             return path;
-        }
-
-        protected internal virtual bool ShouldOverrideOtherModules(ActionResult result, ModuleRequestContext moduleRequestContext, ControllerContext controllerContext)
-        {
-            // All other results, such as "File", "Json", and "Partial View" (which is usually used for AJAX Partial Rendering)
-            // will override the page and be rendered as the sole result to the client
-            return result is FileResult ||
-                   result is HttpUnauthorizedResult ||
-                   result is JavaScriptResult ||
-                   result is JsonResult ||
-                   result is RedirectResult ||
-                   result is RedirectToRouteResult ||
-                   result is PartialViewResult;
-        }
-
-        protected virtual void RegisterRoutes(RouteCollection routes)
-        {
-
         }
     }
 }

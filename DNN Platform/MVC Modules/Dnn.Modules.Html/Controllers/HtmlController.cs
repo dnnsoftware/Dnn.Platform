@@ -30,20 +30,33 @@ using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.Html.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class HtmlController : DnnController
     {
         private readonly IDataContext _dataContext;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public HtmlController() : this(DataContext.Instance()) { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataContext"></param>
         public HtmlController(IDataContext dataContext)
-            : base()
         {
             Requires.NotNull("dataContext", dataContext);
 
             _dataContext = dataContext;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             HtmlText item;
@@ -65,6 +78,10 @@ namespace Dnn.Modules.Html.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Edit()
         {
@@ -91,6 +108,11 @@ namespace Dnn.Modules.Html.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Edit(string content)

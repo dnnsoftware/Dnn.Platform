@@ -27,10 +27,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public interface IModuleExecutionEngine
     {
-        ModuleRequestResult ExecuteModule(HttpContextBase httpContext, ModuleInfo module, string moduleRoute);
+        ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext);
 
         void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult, TextWriter writer);
-
-        ModuleApplication GetModuleApplication(ModuleInfo module);
     }
 }

@@ -47,25 +47,5 @@ namespace DotNetNuke.Web.Mvc.Framework
         public HttpContextBase HttpContext { get; private set; }
 
         public UserInfo User { get; private set; }
-
-        public void SetUser(UserInfo user)
-        {
-            User = user;
-            HttpContext.Items.Add("UserInfo", user);
-        }
-
-        //public string CurrentTheme
-        //{
-        //    get
-        //    {
-        //        if (_currentTheme == null && DnnMvcApplication.Container != null)
-        //        {
-        //            _currentTheme = DnnMvcApplication.Container
-        //                                               .GetExportedObjectOrDefault<string>(WebContractNames.AppDefaultTheme);
-        //        }
-        //        return _currentTheme;
-        //    }
-        //    set { _currentTheme = value; }
-        //}
     }
 }

@@ -20,54 +20,22 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Web;
-
 using DotNetNuke.Common;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleExecutionEngine : IModuleExecutionEngine
     {
-        public virtual ModuleRequestResult ExecuteModule(HttpContextBase httpContext, ModuleInfo module, string moduleRoute)
+        public ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext)
         {
-            Requires.NotNull("httpContext", httpContext);
-            Requires.NotNull("module", module);
-            Requires.NotNull("moduleRoute", moduleRoute); // Empty route is OK!
+            Requires.NotNull("moduleRequestContext", moduleRequestContext);
 
-            //Get the module application for this module
-            var app = GetModuleApplication(module);
-
-            return ExecuteModule(httpContext, module, app, moduleRoute);
-        }
-
-        private ModuleRequestResult ExecuteModule(HttpContextBase httpContext, ModuleInfo module, ModuleApplication moduleApplication, string moduleRoute)
-        {
-            Requires.NotNull("httpContext", httpContext);
-            Requires.NotNull("module", module);
-            Requires.NotNull("moduleRoute", moduleRoute);
-
-            if (moduleApplication != null)
+            if (moduleRequestContext.ModuleApplication != null)
             {
-                // Setup the module's context
-                var moduleRequestContext = new ModuleRequestContext
-                                                {
-                                                    Application = moduleApplication,
-                                                    Module = module,
-                                                    ModuleRoutingUrl = moduleRoute,
-                                                    HttpContext = httpContext,
-                                                };
-
-
-                // Run the module
-                ModuleRequestResult result = moduleApplication.ExecuteRequest(moduleRequestContext);
-                return result;
+                //Run the module
+                return moduleRequestContext.ModuleApplication.ExecuteRequest(moduleRequestContext);
             }
             return null;
         }
@@ -86,16 +54,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                             moduleResult.ActionResult.ExecuteResult(moduleResult.ControllerContext);
                         }
                     });
-        }
-
-        public virtual ModuleApplication GetModuleApplication(ModuleInfo module)
-        {
-            //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
-            DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-
-            Type moduleType = Reflection.CreateType(desktopModule.BusinessControllerClass);
-
-            return Reflection.CreateInstance(moduleType) as ModuleApplication;
         }
 
         protected internal void RunInModuleResultContext(SiteContext siteContext, ModuleRequestResult moduleResult, Action action)
