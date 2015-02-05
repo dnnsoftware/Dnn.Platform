@@ -82,6 +82,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
     <Compile Include="Controllers\HtmlController.cs" />
     <Compile Include="HtmlModuleApplication.cs" />
     <Compile Include="Models\HtmlText.cs" />
@@ -89,9 +92,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cleanup\07.05.00.txt" />
+    <Content Include="license.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="releaseNotes.txt" />
     <Content Include="Views\Html\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dnn_HTML.dnn" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
