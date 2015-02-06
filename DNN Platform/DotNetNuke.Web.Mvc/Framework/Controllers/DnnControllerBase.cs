@@ -20,13 +20,11 @@
 #endregion
 
 using System.Web.Mvc;
-using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
-using DotNetNuke.Web.Mvc.Helpers;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
@@ -36,27 +34,17 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public TabInfo ActivePage
         {
-            get { return (SiteContext == null) ? null : SiteContext.ActivePage; }
+            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
 
-        public PortalInfo ActiveSite
+        public PortalSettings PortalSettings
         {
-            get { return (SiteContext == null) ? null : SiteContext.ActiveSite; }
-        }
-
-        public PortalAliasInfo ActiveSiteAlias
-        {
-            get { return (SiteContext == null) ? null : SiteContext.ActiveSiteAlias; }
-        }
-
-        public SiteContext SiteContext
-        {
-            get { return HttpContext.GetSiteContext(); }
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
         public new UserInfo User
         {
-            get { return (SiteContext == null) ? null : SiteContext.User; }
+            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
         }
         
         protected override ViewResult View(IView view, object model)

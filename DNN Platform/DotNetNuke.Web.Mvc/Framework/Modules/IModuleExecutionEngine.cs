@@ -20,8 +20,6 @@
 #endregion
 
 using System.IO;
-using System.Web;
-using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
@@ -29,6 +27,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     {
         ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext);
 
-        void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult, TextWriter writer);
+        void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer);
     }
 }

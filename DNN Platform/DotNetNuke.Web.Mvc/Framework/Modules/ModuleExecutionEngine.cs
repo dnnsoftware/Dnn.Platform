@@ -40,33 +40,17 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return null;
         }
 
-        public virtual void ExecuteModuleResult(SiteContext siteContext, ModuleRequestResult moduleResult, TextWriter writer)
+        public virtual void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer)
         {
-            RunInModuleResultContext(siteContext, moduleResult, () => 
-                    { 
-                        var result = moduleResult.ActionResult as IDnnViewResult;
-                        if (result != null)
-                        {
-                            result.ExecuteResult(moduleResult.ControllerContext, writer);
-                        }
-                        else
-                        {
-                            moduleResult.ActionResult.ExecuteResult(moduleResult.ControllerContext);
-                        }
-                    });
-        }
-
-        protected internal void RunInModuleResultContext(SiteContext siteContext, ModuleRequestResult moduleResult, Action action)
-        {
-            // Set the active module
-            ModuleRequestResult oldRequest = siteContext.ActiveModuleRequest;
-            siteContext.ActiveModuleRequest = moduleResult;
-
-            // Run the action
-            action();
-
-            // Restore the previous active module
-            siteContext.ActiveModuleRequest = oldRequest;
+            var result = moduleResult.ActionResult as IDnnViewResult;
+            if (result != null)
+            {
+                result.ExecuteResult(moduleResult.ControllerContext, writer);
+            }
+            else
+            {
+                moduleResult.ActionResult.ExecuteResult(moduleResult.ControllerContext);
+            }
         }
     }
 }

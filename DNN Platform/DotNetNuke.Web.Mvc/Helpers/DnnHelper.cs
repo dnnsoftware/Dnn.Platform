@@ -22,11 +22,9 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Mvc.Framework;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
@@ -49,36 +47,26 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ViewData = new ViewDataDictionary(viewDataContainer.ViewData);
         }
 
-        public ModuleInfo ActiveModule
-        {
-            get { return SiteContext.ActiveModuleRequest.Module; }
-        }
+        //public ModuleInfo ActiveModule
+        //{
+        //    get { return SiteContext.ActiveModuleRequest.Module; }
+        //}
 
         public TabInfo ActivePage
         {
-            get { return SiteContext.ActivePage; }
-        }
-
-        public PortalInfo ActiveSite
-        {
-            get { return SiteContext.ActiveSite; }
-        }
-
-        public PortalAliasInfo ActiveSiteAlias
-        {
-            get { return SiteContext.ActiveSiteAlias; }
+            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
 
         public RouteCollection RouteCollection { get; private set; }
 
-        public SiteContext SiteContext
+        public PortalSettings PortalSettings
         {
-            get { return ViewContext.HttpContext.GetSiteContext(); }
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
 
         public UserInfo User
         {
-            get { return SiteContext.User; }
+            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
         }
 
         public ViewContext ViewContext { get; private set; }

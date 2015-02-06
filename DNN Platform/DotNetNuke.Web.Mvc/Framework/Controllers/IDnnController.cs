@@ -21,7 +21,6 @@
 
 using System.Web.Mvc;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Web.Mvc.Framework.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {

@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Helpers;
+using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc.Framework
 {
@@ -52,16 +52,16 @@ namespace DotNetNuke.Web.Mvc.Framework
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
             // Get the current module request
-            ModuleRequestResult moduleRequest = GetCurrentModuleRequest(controllerContext);
+            ModuleRequestResult moduleRequestResult = GetCurrentModuleRequestResult(controllerContext);
 
             // No current request => Skip this view engine
-            if (moduleRequest == null)
+            if (moduleRequestResult == null)
             {
                 return new ViewEngineResult(new string[0]);
             }
 
             // Delegate to the module's view engine collection
-            ViewEngineResult result = engineRequest(moduleRequest.Application.ViewEngines);
+            ViewEngineResult result = engineRequest(moduleRequestResult.Application.ViewEngines);
 
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)
@@ -72,10 +72,13 @@ namespace DotNetNuke.Web.Mvc.Framework
             return result;
         }
 
-        private static ModuleRequestResult GetCurrentModuleRequest(ControllerContext controllerContext)
+        private static ModuleRequestResult GetCurrentModuleRequestResult(ControllerContext controllerContext)
         {
-            SiteContext requestContext = controllerContext.HttpContext.GetSiteContext();
-            return requestContext.ActiveModuleRequest;
+            if (controllerContext.HttpContext.HasModuleRequestResult())
+            {
+                return controllerContext.HttpContext.GetModuleRequestResult();
+            }
+            return null;
         }
     }
 }

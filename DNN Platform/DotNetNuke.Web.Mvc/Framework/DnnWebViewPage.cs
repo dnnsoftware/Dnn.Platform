@@ -20,13 +20,12 @@
 #endregion
 
 using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
 
 namespace DotNetNuke.Web.Mvc.Framework
 {
     public abstract class DnnWebViewPage : WebViewPage
     {
-        public DnnHelper Dnn { get; set; }
+        //public DnnHelper Dnn { get; set; }
 
         //public new DnnUrlHelper Url { get; set; }
 
@@ -34,8 +33,8 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             Ajax = new AjaxHelper<object>(ViewContext, this);
             Html = new HtmlHelper<object>(ViewContext, this);
-            Url = new DnnUrlHelper(this.ViewContext.RequestContext); 
-            Dnn = new DnnHelper<object>(ViewContext, this);
+            //Url = new DnnUrlHelper(this.ViewContext.RequestContext); 
+            //Dnn = new DnnHelper<object>(ViewContext, this);
         }
     }
 }

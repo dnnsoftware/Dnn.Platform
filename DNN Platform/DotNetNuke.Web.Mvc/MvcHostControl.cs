@@ -28,13 +28,11 @@ using System.Web.UI;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework;
 using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Helpers;
+using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc
 {
@@ -100,6 +98,8 @@ namespace DotNetNuke.Web.Mvc
             LoadActions(ModuleContext.Configuration);
 
             _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
+
+            httpContext.SetModuleRequestResult(_result);
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -149,21 +149,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 
-                var site = PortalController.Instance.GetPortal(ModuleContext.PortalId);
-                var alias = ModuleContext.PortalAlias;
-                var page = ModuleContext.PortalSettings.ActiveTab;
-
-                var siteContext = new SiteContext(httpContext)
-                                    {
-                                        ActiveSite = site,
-                                        ActiveSiteAlias = alias,
-                                        ActivePage = page,
-                                        ActiveModuleRequest = moduleResult
-                                    };
-
-                httpContext.SetSiteContext(siteContext);
-
-                moduleExecutionEngine.ExecuteModuleResult(siteContext, moduleResult, writer);
+                moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
 
                 moduleOutput = MvcHtmlString.Create(writer.ToString());
             }
