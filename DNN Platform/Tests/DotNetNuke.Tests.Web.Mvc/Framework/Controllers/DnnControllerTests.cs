@@ -1,19 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Tests.Web.Mvc.Fakes;
 using DotNetNuke.Web.Mvc.Framework.ActionResults;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
+namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
 {
     [TestFixture]
     public class DnnControllerTests
     {
         private const string TestViewName = "Foo";
+
+        [Test]
+        public void ActivePage_Property_Is_Null_If_PortalSettings_Not_Set_In_Context()
+        {
+            //Arrange
+            HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
+
+            //Act
+            var controller = SetupController(httpContextBase);
+
+            //Assert
+            Assert.IsNull(controller.ActivePage);
+        }
 
         [Test]
         public void PortalSettings_Property_Is_Null_If_Not_Set_In_Context()
@@ -29,16 +39,18 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         }
 
         [Test]
-        public void ActivePage_Property_Is_Null_If_PortalSettings_Not_Set_In_Context()
+        public void ResultOfLastExecute_Returns_ViewResult()
         {
             //Arrange
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
             var controller = SetupController(httpContextBase);
+            controller.ActionInvoker.InvokeAction(controller.ControllerContext, "Action1");
 
             //Assert
-            Assert.IsNull(controller.ActivePage);
+            Assert.NotNull(controller.ResultOfLastExecute);
+            Assert.IsInstanceOf<DnnViewResult>(controller.ResultOfLastExecute);
         }
 
         [Test]
@@ -122,7 +134,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         public void View_Returns_DnnViewResult_With_Correct_Model()
         {
             //Arrange
-            var dog = new Dog() {Name = "Fluffy"};
+            var dog = new Dog() { Name = "Fluffy" };
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
@@ -133,6 +145,23 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             var dnnViewResult = viewResult as DnnViewResult;
             Assert.NotNull(dnnViewResult);
             Assert.AreEqual(dog, dnnViewResult.ViewData.Model);
+        }
+
+        [Test]
+        public void View_Returns_DnnViewResult_With_Correct_ViewEngines()
+        {
+            //Arrange
+            var dog = new Dog() {Name = "Fluffy"};
+            HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
+
+            //Act
+            var controller = SetupController(httpContextBase);
+            var viewResult = controller.Action3(dog);
+
+            //Assert
+            var dnnViewResult = viewResult as DnnViewResult;
+            Assert.NotNull(dnnViewResult);
+            Assert.AreEqual(controller.ViewEngineCollection, dnnViewResult.ViewEngineCollection);
         }
 
         private FakeDnnController SetupController(HttpContextBase context)
