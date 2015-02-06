@@ -164,112 +164,112 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         //    Assert.AreEqual(route, providedContext.ModuleRoutingUrl);
         //}
 
-        [Test]
-        public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult()
-        {
-            //Arrange
-            var engine = new ModuleExecutionEngine();
+        //[Test]
+        //public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult()
+        //{
+        //    //Arrange
+        //    var engine = new ModuleExecutionEngine();
 
-            var actionResultMock = new Mock<ActionResult>();
+        //    var actionResultMock = new Mock<ActionResult>();
 
-            var viewResultMock = actionResultMock.As<IDnnViewResult>();
+        //    var viewResultMock = actionResultMock.As<IDnnViewResult>();
 
-            var controllerContext = MockHelper.CreateMockControllerContext();
-            var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
-                                            };
+        //    var controllerContext = MockHelper.CreateMockControllerContext();
+        //    var moduleRequestResult = new ModuleRequestResult
+        //                                    {
+        //                                        ActionResult = actionResultMock.Object,
+        //                                        ControllerContext = controllerContext
+        //                                    };
 
-            //Act
-            engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult, new StringWriter());
-
-
-            //Arrange
-            viewResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>(), It.IsAny<TextWriter>()));
-        }
-
-        [Test]
-        public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
-        {
-            //Arrange
-            var engine = new ModuleExecutionEngine();
-
-            var actionResultMock = new Mock<ActionResult>();
-
-            var viewResultMock = actionResultMock.As<IDnnViewResult>();
-
-            var controllerContext = MockHelper.CreateMockControllerContext();
-            var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
-                                            };
-
-            //Act
-            engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult, new StringWriter());
+        //    //Act
+        //    engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult, new StringWriter());
 
 
-            //Arrange
-            viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));
-        }
+        //    //Arrange
+        //    viewResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>(), It.IsAny<TextWriter>()));
+        //}
 
-        [Test]
-        public void RunInModuleContext_Runs_Provided_Action()
-        {
-            // Arrange
-            HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
-            var moduleResult = new ModuleRequestResult();
-            var siteContext = new SiteContext(httpContext);
-            var engine = new ModuleExecutionEngine();
-            bool actionRun = false;
+        //[Test]
+        //public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
+        //{
+        //    //Arrange
+        //    var engine = new ModuleExecutionEngine();
 
-            // Act
-            engine.RunInModuleResultContext(siteContext,
-                                            moduleResult,
-                                            () =>
-                                            {
-                                                actionRun = true;
-                                            });
+        //    var actionResultMock = new Mock<ActionResult>();
 
-            // Assert
-            Assert.IsTrue(actionRun);
-        }
+        //    var viewResultMock = actionResultMock.As<IDnnViewResult>();
 
-        [Test]
-        public void RunInModuleContext_Sets_ActiveModuleRequest_Before_Calling_Delegate()
-        {
-            // Arrange
-            HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
-            var moduleResult = new ModuleRequestResult();
-            var siteContext = new SiteContext(httpContext);
-            var engine = new ModuleExecutionEngine();
+        //    var controllerContext = MockHelper.CreateMockControllerContext();
+        //    var moduleRequestResult = new ModuleRequestResult
+        //                                    {
+        //                                        ActionResult = actionResultMock.Object,
+        //                                        ControllerContext = controllerContext
+        //                                    };
 
-            // Act
-            engine.RunInModuleResultContext(siteContext,
-                                            moduleResult,
-                                            () => Assert.AreSame(moduleResult, siteContext.ActiveModuleRequest));
-        }
+        //    //Act
+        //    engine.ExecuteModuleResult(new SiteContext(MockHelper.CreateMockHttpContext()), moduleRequestResult, new StringWriter());
 
-        [Test]
-        public void RunInModuleContext_Restores_Original_ActiveModuleRequest_After_Returning_From_Delegate()
-        {
-            // Arrange
-            HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
-            var moduleResult = new ModuleRequestResult();
-            var originalModuleResult = new ModuleRequestResult();
-            var siteContext = new SiteContext(httpContext);
-            var engine = new ModuleExecutionEngine();
-            siteContext.ActiveModuleRequest = originalModuleResult;
 
-            // Act
-            engine.RunInModuleResultContext(siteContext,
-                                            moduleResult,
-                                            () => { });
+        //    //Arrange
+        //    viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));
+        //}
 
-            // Assert
-            Assert.AreSame(originalModuleResult, siteContext.ActiveModuleRequest);
-        }
+        //[Test]
+        //public void RunInModuleContext_Runs_Provided_Action()
+        //{
+        //    // Arrange
+        //    HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
+        //    var moduleResult = new ModuleRequestResult();
+        //    var siteContext = new SiteContext(httpContext);
+        //    var engine = new ModuleExecutionEngine();
+        //    bool actionRun = false;
+
+        //    // Act
+        //    engine.RunInModuleResultContext(siteContext,
+        //                                    moduleResult,
+        //                                    () =>
+        //                                    {
+        //                                        actionRun = true;
+        //                                    });
+
+        //    // Assert
+        //    Assert.IsTrue(actionRun);
+        //}
+
+        //[Test]
+        //public void RunInModuleContext_Sets_ActiveModuleRequest_Before_Calling_Delegate()
+        //{
+        //    // Arrange
+        //    HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
+        //    var moduleResult = new ModuleRequestResult();
+        //    var siteContext = new SiteContext(httpContext);
+        //    var engine = new ModuleExecutionEngine();
+
+        //    // Act
+        //    engine.RunInModuleResultContext(siteContext,
+        //                                    moduleResult,
+        //                                    () => Assert.AreSame(moduleResult, siteContext.ActiveModuleRequest));
+        //}
+
+        //[Test]
+        //public void RunInModuleContext_Restores_Original_ActiveModuleRequest_After_Returning_From_Delegate()
+        //{
+        //    // Arrange
+        //    HttpContextBase httpContext = MockHelper.CreateMockHttpContext();
+        //    var moduleResult = new ModuleRequestResult();
+        //    var originalModuleResult = new ModuleRequestResult();
+        //    var siteContext = new SiteContext(httpContext);
+        //    var engine = new ModuleExecutionEngine();
+        //    siteContext.ActiveModuleRequest = originalModuleResult;
+
+        //    // Act
+        //    engine.RunInModuleResultContext(siteContext,
+        //                                    moduleResult,
+        //                                    () => { });
+
+        //    // Assert
+        //    Assert.AreSame(originalModuleResult, siteContext.ActiveModuleRequest);
+        //}
 
         private void SetUpMockDesktopController(int desktopModuleId, int portalId, DesktopModuleInfo desktopModule)
         {
