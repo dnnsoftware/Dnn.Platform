@@ -22,15 +22,26 @@
 #endregion
 
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Tests.Web.Mvc.Fakes
 {
     public class FakeDnnController : DnnController
     {
-        public ActionResult Index()
+        public ActionResult Action1()
         {
-            return new ViewResult();
+            return View("Action1");
+        }
+
+        public ActionResult Action2()
+        {
+            return View("Action2", "Master2");
+        }
+
+        public ActionResult Action3(Dog dog)
+        {
+            return View("Action3", "Master3", dog);
         }
     }
 }

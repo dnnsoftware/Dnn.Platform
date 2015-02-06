@@ -35,9 +35,14 @@ namespace DotNetNuke.Tests.Web.Mvc
     {
         public static HttpContextBase CreateMockHttpContext()
         {
+            return CreateMockHttpContext(new Dictionary<string, object>());
+        }
+
+        public static HttpContextBase CreateMockHttpContext(Dictionary<string, object> items)
+        {
             var mockContext = new Mock<HttpContextBase>();
             mockContext.SetupGet(c => c.Items)
-                       .Returns(new Dictionary<string, object>());
+                       .Returns(items);
 
             var mockRequest = new Mock<HttpRequestBase>();
             mockRequest.Setup(r => r.QueryString)
