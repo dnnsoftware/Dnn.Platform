@@ -11,10 +11,24 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Instrumentation", "DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj", "{3CD5F6B8-8360-4862-80B6-F402892DB7DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client", "DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj", "{03E3AFA5-DDC9-48FB-A839-AD4282CE237E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B64E72E-63CC-4A90-ADFF-4B919EF17239} = {3B64E72E-63CC-4A90-ADFF-4B919EF17239}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Syndication", "DNN Platform\Syndication\DotNetNuke.Syndication.csproj", "{9F2F4076-D434-448F-9CBB-7BF7A9766AB1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3B64E72E-63CC-4A90-ADFF-4B919EF17239} = {3B64E72E-63CC-4A90-ADFF-4B919EF17239}
+		{CA056730-5759-41F8-A6C1-420F9C0C63E7} = {CA056730-5759-41F8-A6C1-420F9C0C63E7}
+		{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD} = {4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}
+		{9F2F4076-D434-448F-9CBB-7BF7A9766AB1} = {9F2F4076-D434-448F-9CBB-7BF7A9766AB1}
+		{03E3AFA5-DDC9-48FB-A839-AD4282CE237E} = {03E3AFA5-DDC9-48FB-A839-AD4282CE237E}
+		{3CD5F6B8-8360-4862-80B6-F402892DB7DD} = {3CD5F6B8-8360-4862-80B6-F402892DB7DD}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountryListBox", "DNN Platform\Controls\CountryListBox\CountryListBox.csproj", "{CA056730-5759-41F8-A6C1-420F9C0C63E7}"
 EndProject
@@ -29,6 +43,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DigitalAssets", "DNN Platform\Modules\DigitalAssets\DotNetNuke.Modules.DigitalAssets.csproj", "{1A0646A3-CB4A-4E8E-A497-2C677DE320FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.DDRMenu", "DNN Platform\Modules\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj", "{A86EBC44-2BC8-4C4A-997B-2708E4AAC345}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9806C125-8CA9-48CC-940A-CCD0442C5993} = {9806C125-8CA9-48CC-940A-CCD0442C5993}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.Groups", "DNN Platform\Modules\Groups\DotNetNuke.Modules.Groups.csproj", "{839E7C68-1867-4B99-8507-FB50CE45EB10}"
 EndProject
@@ -137,29 +154,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 		Release.AspNetCompiler.Debug = "False"
 		SlnRelativePath = "Website\"
 	EndProjectSection
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "Website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "Website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "Website\"
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Taxonomy", "DNN Platform\Tests\DotNetNuke.Tests.Taxonomy\DotNetNuke.Tests.Taxonomy.csproj", "{86019DD5-96F3-4748-B47C-E51D0E81F219}"
 EndProject
@@ -243,6 +237,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5EC5DB
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebUtility", "DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj", "{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03E3AFA5-DDC9-48FB-A839-AD4282CE237E} = {03E3AFA5-DDC9-48FB-A839-AD4282CE237E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.HtmlEditorManager", "DNN Platform\Modules\HtmlEditorManager\DotNetNuke.Modules.HtmlEditorManager.csproj", "{000181C6-C95F-4302-9130-A66B693FFFD2}"
 EndProject

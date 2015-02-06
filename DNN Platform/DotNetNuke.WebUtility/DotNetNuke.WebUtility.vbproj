@@ -53,8 +53,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>DotNetNuke.WebUtility.xml</DocumentationFile>
     <BaseAddress>2015428608</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -74,8 +73,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>DotNetNuke.WebUtility.xml</DocumentationFile>
     <BaseAddress>2015428608</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
@@ -94,6 +92,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -192,12 +194,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
-      <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
-      <Name>DotNetNuke.Web.Client</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

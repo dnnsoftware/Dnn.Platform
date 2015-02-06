@@ -40,6 +40,10 @@
     <DocumentationFile>bin\Dnn.Modules.RecycleBin.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -83,10 +87,6 @@
     <Content Include="recyclebin.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
-      <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
-      <Name>DotNetNuke.WebUtility</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>

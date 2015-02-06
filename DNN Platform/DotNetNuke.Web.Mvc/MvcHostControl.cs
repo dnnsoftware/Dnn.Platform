@@ -29,6 +29,7 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework.Modules;
@@ -86,31 +87,46 @@ namespace DotNetNuke.Web.Mvc
         {
             base.OnInit(e);
 
-            if (String.IsNullOrEmpty(ModuleContext.Configuration.ModuleControl.ControlKey))
+            try
             {
+                if (String.IsNullOrEmpty(ModuleContext.Configuration.ModuleControl.ControlKey))
+                {
+                    LoadActions(ModuleContext.Configuration);
+                }
+
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                var moduleExecutionEngine = GetModuleExecutionEngine();
+
                 LoadActions(ModuleContext.Configuration);
+
+                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
+
+                httpContext.SetModuleRequestResult(_result);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-            HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
-            var moduleExecutionEngine = GetModuleExecutionEngine();
-
-            LoadActions(ModuleContext.Configuration);
-
-            _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
-
-            httpContext.SetModuleRequestResult(_result);
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
-            if (_result != null)
+            try
             {
-                Controls.Add(new LiteralControl(RenderModule(_result, httpContext).ToString()));
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                if (_result != null)
+                {
+                    Controls.Add(new LiteralControl(RenderModule(_result, httpContext).ToString()));
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
