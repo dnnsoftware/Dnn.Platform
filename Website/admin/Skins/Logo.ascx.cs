@@ -64,14 +64,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         string imageUrl = FileManager.Instance.GetUrl(fileInfo);
                         if (!String.IsNullOrEmpty(imageUrl))
                         {
-                            // Add the file's last modification date and time to use as a cache buster.
-                            // If the browser never caches the url then this has no effect
-                            // The user should put the logo file into a folder where all the static content is cached (365 days is standard)
-                            // If the file changes, the modified date changes, which changes the url and the browser will d/l from the new url.
-                            string imageUrlWithCacheBuster = imageUrl + "?ver='"
-                                                        + fileInfo.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff") + "'";
-                            imgLogo.ImageUrl = imageUrlWithCacheBuster;
-
+                            imgLogo.ImageUrl = imageUrl;
                             logoVisible = true;
                         }
                     }

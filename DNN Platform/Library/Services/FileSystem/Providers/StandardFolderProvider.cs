@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
             }
-            return TestableGlobals.Instance.ResolveUrl(rootFolder + file.Folder + file.FileName);
+            return TestableGlobals.Instance.ResolveUrl(rootFolder + file.Folder + file.FileName + "?ver=" + file.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff"));
         }
 
         public override string GetFolderProviderIconPath()
