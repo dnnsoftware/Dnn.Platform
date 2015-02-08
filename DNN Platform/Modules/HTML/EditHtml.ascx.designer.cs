@@ -103,51 +103,6 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.PlaceHolder phCurrentVersion;
         
         /// <summary>
-        /// divCurrentVersion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCurrentVersion;
-        
-        /// <summary>
-        /// plCurrentWorkVersion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl plCurrentWorkVersion;
-        
-        /// <summary>
-        /// lblCurrentVersion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrentVersion;
-        
-        /// <summary>
-        /// plCurrentWorkflowInUse control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl plCurrentWorkflowInUse;
-        
-        /// <summary>
-        /// lblCurrentWorkflowInUse control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCurrentWorkflowInUse;
-        
-        /// <summary>
         /// divCurrentWorkflowState control.
         /// </summary>
         /// <remarks>
@@ -173,6 +128,33 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCurrentWorkflowState;
+        
+        /// <summary>
+        /// plCurrentWorkVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label plCurrentWorkVersion;
+        
+        /// <summary>
+        /// lblCurrentVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentVersion;
+        
+        /// <summary>
+        /// lblCurrentWorkflowInUse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCurrentWorkflowInUse;
         
         /// <summary>
         /// divPublish control.
@@ -400,15 +382,6 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.HyperLink hlCancel;
         
         /// <summary>
-        /// cmdPreview control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdPreview;
-        
-        /// <summary>
         /// cmdEdit control.
         /// </summary>
         /// <remarks>
@@ -416,6 +389,15 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdEdit;
+        
+        /// <summary>
+        /// cmdPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdPreview;
         
         /// <summary>
         /// cmdHistory control.
@@ -427,15 +409,6 @@ namespace DotNetNuke.Modules.Html {
         protected global::System.Web.UI.WebControls.LinkButton cmdHistory;
         
         /// <summary>
-        /// cmdMasterContent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdMasterContent;
-        
-        /// <summary>
         /// ddlRender control.
         /// </summary>
         /// <remarks>
@@ -443,6 +416,15 @@ namespace DotNetNuke.Modules.Html {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRender;
+        
+        /// <summary>
+        /// cmdMasterContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdMasterContent;
         
         /// <summary>
         /// hfEditor control.
