@@ -14,7 +14,7 @@
 		});
 		$('#dnnLogViewer').dnnPanels();
 		$('#<%= btnClear.ClientID %>').dnnConfirm({
-		    text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ClearLog.Text")) %>',
+		    text: '<%= LocalizeSafeJsString("ClearLog.Text") %>',
 			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
 			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
 			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'

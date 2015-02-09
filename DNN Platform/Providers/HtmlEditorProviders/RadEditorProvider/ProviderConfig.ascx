@@ -61,7 +61,7 @@
 	        $('#<%=pnlEditor.ClientID%>').dnnTabs().dnnPanels();
 	        $('#dnnEditorConfig .dnnFormExpandContent a').dnnExpandAll({ expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>', collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>', targetArea: '#dnnEditorConfig' });
 	        $('.dnnDeleteTab').dnnConfirm({
-	            text: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem"))%>',
+	            text: '<%=LocalizeSafeJsString("DeleteItem")%>',
 	            yesText: '<%=Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile)%>',
 	            noText: '<%=Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile)%>',
 	            title: '<%=Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile)%>'

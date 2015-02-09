@@ -115,7 +115,7 @@
         var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
         var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
         $('#<%= cmdDelete.ClientID %>').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: yesText,
             noText: noText,
             title: titleText

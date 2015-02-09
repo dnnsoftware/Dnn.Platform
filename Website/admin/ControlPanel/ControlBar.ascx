@@ -406,32 +406,32 @@
     	visibilityComboId: '<%= VisibilityLst.ClientID %>',
     	makeCopyCheckboxId: 'ControlBar_Module_chkCopyModule',
 		pagePickerId: '<%= PageList.ClientID %>',
-        yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>',
-        noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>',
-        titleText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>',
-        deleteText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString( GetButtonConfirmMessage("DeletePage") )%>',
-        publishConfirmHeader: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetPublishConfirmHeader())%>',
-        publishConfirmText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetPublishConfirmText())%>',
-        publishedPage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetTabPublishing())%>',
-        copyPermissionsToChildrenText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
+        yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+        noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+        titleText: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+        deleteText: '<%= Localization.GetSafeJSString(GetButtonConfirmMessage("DeletePage"))%>',
+        publishConfirmHeader: '<%= Localization.GetSafeJSString(GetPublishConfirmHeader())%>',
+        publishConfirmText: '<%= Localization.GetSafeJSString(GetPublishConfirmText())%>',
+        publishedPage: '<%= Localization.GetSafeJSString(GetTabPublishing())%>',
+        copyPermissionsToChildrenText: '<%= Localization.GetSafeJSString(GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm")) %>',
 
-        dragModuleToolTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
+        dragModuleToolTip: '<%= Localization.GetSafeJSString(GetString("DragModuleToolTip.Text")) %>',
 
         loginUrl: '<%= LoginUrl %>',
 
-        selectPageText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("SelectPage.Text")) %>',
-        moduleShareableTitle: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("ShareableWarningTitle")) %>',
+        selectPageText: '<%= Localization.GetSafeJSString(GetString("SelectPage.Text")) %>',
+        moduleShareableTitle: '<%= Localization.GetSafeJSString(GetString("ShareableWarningTitle")) %>',
 
-        removeBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
-        addToBookmarksTip: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("Tool.AddToBookmarks.ToolTip")) %>',
+        removeBookmarksTip: '<%= Localization.GetSafeJSString(GetString("Tool.RemoveFromBookmarks.ToolTip")) %>',
+        addToBookmarksTip: '<%= Localization.GetSafeJSString(GetString("Tool.AddToBookmarks.ToolTip")) %>',
 
         bookmarkModuleCategory: '<%= BookmarkModuleCategory%>',
         bookmarkedModuleKeys: '<%= BookmarkedModuleKeys%>',
         defaultCategoryValue: 'All',
 
         loadingModulesId: 'ControlBar_ModuleListWaiter_LoadingMessage',
-        loadingModulesMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("LoadingModule.Text"))%>',
-        loadingModulesOnNoDefaultCategoryMessage: "<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(GetString("LoadingModuleOnNoDefaultCategory.Text"))%>"
+        loadingModulesMessage: '<%= Localization.GetSafeJSString(GetString("LoadingModule.Text"))%>',
+        loadingModulesOnNoDefaultCategoryMessage: "<%= Localization.GetSafeJSString(GetString("LoadingModuleOnNoDefaultCategory.Text"))%>"
     };
 
     $(function() {
