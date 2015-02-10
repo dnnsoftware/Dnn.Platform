@@ -71,7 +71,7 @@ namespace DotNetNuke.HttpModules.Config
         {
             var config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
             FileStream fileReader = null;
-            string filePath;
+            string filePath = null;
             try
             {
                 config = (AnalyticsEngineConfiguration) DataCache.GetCache("AnalyticsEngineConfig");

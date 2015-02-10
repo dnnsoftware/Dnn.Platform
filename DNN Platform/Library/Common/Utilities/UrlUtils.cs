@@ -65,18 +65,21 @@ namespace DotNetNuke.Common.Utilities
         {
             var objSecurity = new PortalSecurity();
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
-            value = value.Replace("_", "/");
-            value = value.Replace("-", "+");
-            value = value.Replace("%3d", "=");
-            return objSecurity.Decrypt(encryptionKey, value);
+            var toDecrypt = new StringBuilder(value);
+            toDecrypt.Replace("_", "/");
+            toDecrypt.Replace("-", "+");
+            toDecrypt.Replace("%3d", "=");
+            return objSecurity.Decrypt(encryptionKey, toDecrypt.ToString());
         }
 
         public static string EncodeParameter(string value)
         {
             byte[] arrBytes = Encoding.UTF8.GetBytes(value);
-            value = Convert.ToBase64String(arrBytes);
-            value = value.Replace("+", "-").Replace("/", "_").Replace("=", "$");
-            return value;
+            var toEncode = new StringBuilder(Convert.ToBase64String(arrBytes));
+            toEncode.Replace("+", "-");
+            toEncode.Replace("/", "_");
+            toEncode.Replace("=", "$");
+            return toEncode.ToString();
         }
 
         public static string EncryptParameter(string value)
@@ -87,13 +90,13 @@ namespace DotNetNuke.Common.Utilities
         public static string EncryptParameter(string value, string encryptionKey)
         {
             var objSecurity = new PortalSecurity();
-            string strParameter = objSecurity.Encrypt(encryptionKey, value);
+            var parameterValue = new StringBuilder(objSecurity.Encrypt(encryptionKey, value));
 
             //[DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
-            strParameter = strParameter.Replace("/", "_");
-            strParameter = strParameter.Replace("+", "-");
-            strParameter = strParameter.Replace("=", "%3d");
-            return strParameter;
+            parameterValue.Replace("/", "_");
+            parameterValue.Replace("+", "-");
+            parameterValue.Replace("=", "%3d");
+            return parameterValue.ToString();
         }
 
         public static string GetParameterName(string pair)

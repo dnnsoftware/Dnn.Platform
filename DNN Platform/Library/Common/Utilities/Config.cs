@@ -86,11 +86,11 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
-            XmlElement xmlElement;
             //retrieve the appSettings node 
             XmlNode xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
             if (xmlAppSettings != null)
             {
+                XmlElement xmlElement;
                 //get the node based on key
                 XmlNode xmlNode = xmlAppSettings.SelectSingleNode(("//add[@key='" + key + "']"));
                 if (update && xmlNode != null)
@@ -166,7 +166,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void BackupConfig()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+            string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             //save the current config files
             try
             {
