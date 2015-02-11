@@ -24,6 +24,11 @@ namespace DotNetNuke.Common.Utilities
             return stringValue ?? string.Empty;
         }
 
+        /// <summary>
+        /// Takes a string and removes any diacritics
+        /// </summary>
+        /// <param name="input">String to normalize</param>
+        /// <returns>String without diacritics</returns>
 		public static string NormalizeString(this string input)
 		{
 			Encoding enc = Encoding.GetEncoding("iso-8859-8");
