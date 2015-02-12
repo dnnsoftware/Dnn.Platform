@@ -280,6 +280,9 @@ namespace DotNetNuke.Modules.DigitalAssets
             
             SetupNodeAttributes(rootNode, GetPermissionsForRootFolder(rootFolder.Permissions), rootFolder);
 
+			FolderTreeView.Nodes.Clear();
+			DestinationTreeView.Nodes.Clear();
+
             FolderTreeView.Nodes.Add(rootNode);
             DestinationTreeView.Nodes.Add(rootNode.Clone());
 
@@ -544,7 +547,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnLoad(e);
 
-                if (IsPostBack) return;
+                //if (IsPostBack) return;
 
                 switch (SettingsRepository.GetMode(ModuleId))
                 {
