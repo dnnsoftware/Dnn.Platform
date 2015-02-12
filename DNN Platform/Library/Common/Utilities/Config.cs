@@ -728,7 +728,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string UpdateMachineKey()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument();
             string strError = "";
 
@@ -775,7 +775,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string UpdateValidationKey()
         {
-            string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+			string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument();
             string strError = "";
 
@@ -879,7 +879,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // we need to add the InstallVersion
 
-                string backupFolder = Globals.glbConfigFolder + "Backup_" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + "\\";
+				string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument();
                 //save the current config files
                 BackupConfig();
