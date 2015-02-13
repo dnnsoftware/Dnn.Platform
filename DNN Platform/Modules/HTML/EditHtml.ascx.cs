@@ -255,6 +255,11 @@ namespace DotNetNuke.Modules.Html
             {
                 cmdMasterContent.Visible = true;
                 cmdMasterContent.Text = Localization.GetString("cmdShowMasterContent", LocalResourceFile);
+            
+                cmdMasterContent.Text = phMasterContent.Visible ?
+                    Localization.GetString("cmdHideMasterContent", LocalResourceFile) :
+                    Localization.GetString("cmdShowMasterContent", LocalResourceFile);
+            
             }
         }
 
@@ -313,6 +318,7 @@ namespace DotNetNuke.Modules.Html
             cmdHistory.Enabled = true;
             DisplayMasterContentButton();
             ddlRender.Visible = true;
+                
         }
 
         /// <summary>
