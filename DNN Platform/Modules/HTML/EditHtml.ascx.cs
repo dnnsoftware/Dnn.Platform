@@ -206,7 +206,8 @@ namespace DotNetNuke.Modules.Html
             cmdEdit.Enabled = true;
             cmdPreview.Enabled = true;
             cmdHistory.Enabled = false;
-            
+            cmdMasterContent.Visible = false;
+            ddlRender.Visible = false;
         }
 
         /// <summary>
@@ -243,6 +244,12 @@ namespace DotNetNuke.Modules.Html
             cmdPreview.Enabled = true;
             cmdHistory.Enabled = true;
             //DisplayMasterLanguageContent();
+            DisplayMasterContentButton();
+            ddlRender.Visible = true;
+        }
+
+        private void DisplayMasterContentButton()
+        {
             var objModule = ModuleController.Instance.GetModule(ModuleId, TabId, false);
             if (objModule.DefaultLanguageModule != null)
             {
@@ -267,7 +274,9 @@ namespace DotNetNuke.Modules.Html
             cmdEdit.Enabled = true;
             cmdPreview.Enabled = false;
             cmdHistory.Enabled = true;
-            DisplayHistory(htmlContent);            
+            DisplayHistory(htmlContent);
+            cmdMasterContent.Visible = false;
+            ddlRender.Visible = false;
         }
 
         /// <summary>
@@ -289,7 +298,8 @@ namespace DotNetNuke.Modules.Html
             cmdEdit.Enabled = true;
             cmdPreview.Enabled = false;
             cmdHistory.Enabled = true;
-            
+            cmdMasterContent.Visible = false;
+            ddlRender.Visible = false;
         }
 
         private void DisplayEdit(string htmlContent)
@@ -301,7 +311,8 @@ namespace DotNetNuke.Modules.Html
             cmdEdit.Enabled = false;
             cmdPreview.Enabled = true;
             cmdHistory.Enabled = true;
-
+            DisplayMasterContentButton();
+            ddlRender.Visible = true;
         }
 
         /// <summary>
