@@ -85,12 +85,14 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Components\HtmlServices.cs" />
     <Compile Include="Controllers\HtmlController.cs" />
     <Compile Include="Models\HtmlText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cleanup\07.05.00.txt" />
+    <Content Include="Images\html.png" />
     <Content Include="license.txt" />
     <Content Include="packages.config" />
   </ItemGroup>
@@ -118,7 +120,12 @@
     <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dnn_HTML.dnn" />
+    <Content Include="dnn_HTML.dnn">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataProvider\Upgrade.SqlDataProvider" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

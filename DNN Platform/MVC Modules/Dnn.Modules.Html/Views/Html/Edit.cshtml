@@ -2,22 +2,34 @@
 
 @using System.Web.Mvc.Html
 
-
+<script src="~/Resources/Shared/components/ckeditor/ckeditor.js"></script>
 <form method="POST" action="@Url.Action("Index", "Page", new { moduleId = Model.ModuleID, moduleRoute = "Html/Edit" })">
-    <div>
-        <div class="form-horizontal" role="form">
-            @*@Html.AntiForgeryToken()*@
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Content, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(m => m.Content, 5, 40, new { @class = "form-control", id = "HtmlContent" })
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default">Close</button>
-        <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
-    </div>
+	<div>
+		<div class="form-horizontal" role="form">
+			@*@Html.AntiForgeryToken()*@
+			@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			<div class="form-group">
+				@Html.LabelFor(m => m.Content, new { @class = "col-md-2 control-label" })
+				<div class="col-md-10">
+					@Html.TextAreaFor(m => m.Content, 5, 40, new { @class = "form-control html-editor", id = "HtmlContent" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-default">Close</button>
+		<button type="submit" id="saveButton" class="btn btn-primary">Save</button>
+	</div>
+	<script>
+		/* TODO: Create JavaScript facade for HTMLEditors to minimize direct dependency */
+		var editor = CKEDITOR.replace( 'HtmlContent' , {
+			height: '350px',
+			allowedContent: true,
+			on: {
+				change: function( evt ) {
+					$('#HtmlContent').val(evt.editor.getData());
+				}
+			}
+		});
+	</script>
 </form>

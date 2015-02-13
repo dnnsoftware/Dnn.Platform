@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>dnn_HTML</DNNFileName>
-    <PackageName>DNNCE_HTML</PackageName>
+    <PackageName>DNNCE_MVC_HTML</PackageName>
     <ModuleFolderName>$(WebsitePath)\Modules\Dnn\Html</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />

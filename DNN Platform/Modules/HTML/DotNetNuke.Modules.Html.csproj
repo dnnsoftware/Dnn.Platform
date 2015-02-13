@@ -169,8 +169,8 @@
     <Content Include="App_LocalResources\Settings.ascx.resx" />
     <Content Include="App_LocalResources\SharedResources.resx" />
     <Content Include="EditHtml.ascx" />
-    <Content Include="Images\html.gif" />
     <Content Include="HtmlModule.ascx" />
+    <Content Include="Images\html.png" />
     <Content Include="license.txt" />
     <Content Include="edit.css" />
     <Content Include="MyWork.ascx" />
