@@ -510,6 +510,10 @@
                             <dnn:label id="plAddCompatibleHttpHeader" runat="server" controlname="txtAddCompatibleHttpHeader" />
                             <asp:TextBox ID="txtAddCompatibleHttpHeader" runat="server" />                            
                         </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plAddCachebusterToResourceUris" runat="server" controlname="chkAddCachebusterToResourceUris" />
+                            <asp:CheckBox runat="server" ID="chkAddCachebusterToResourceUris" />
+                        </div>
                     </fieldset>
                 </div>
             </div>
