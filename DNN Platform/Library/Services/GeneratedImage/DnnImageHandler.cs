@@ -6,7 +6,6 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Security;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
@@ -70,14 +69,21 @@ namespace DotNetNuke.Services.GeneratedImage
 
 		public DnnImageHandler()
 		{
-            // Set settings here
+            // Set default settings here
 			EnableClientCache = true;
 			EnableServerCache = true;
-			EnableSecurity = false;
-			EnableSecurityExceptions = false;
+			AllowStandalone = false;
+			LogSecurity = false;
+		    EnableIPCount = true;
 			ImageCompression = 95;
             DiskImageStore.PurgeInterval = new TimeSpan(0,3,0);
-            ClientCacheExpiration = new TimeSpan(0,1,0);
+            IPCountPurgeInterval = new TimeSpan(0,5,0);
+		    IPCountMaxCount = 2;
+            ClientCacheExpiration = new TimeSpan(0,10,0);
+		    AllowedDomains = new string[]{""};
+
+            // read settings from web.config
+            ReadSettings();
 		}
 
         // Add image generation logic here and return an instance of ImageInfo
@@ -117,174 +123,171 @@ namespace DotNetNuke.Services.GeneratedImage
                 EnableClientCache = false;
                 EnableServerCache = false;
             }
-            
-			try
-			{
-			    ContentType = GetImageFormat(format);
 
-			    switch (mode)
-			    {
-			        case "profilepic":
-			            UserProfilePicTransform uppTrans = new UserProfilePicTransform();
-			            uppTrans.UserID = String.IsNullOrEmpty(parameters["userid"]) ? -1 : Convert.ToInt32(parameters["userid"]);
-			            ImageTransforms.Add(uppTrans);
-			            break;
+		    try
+		    {
+		        ContentType = GetImageFormat(format);
 
-			        case "modinfo":
-			            ModInfoTransform modInfoTrans = new ModInfoTransform();
-			            modInfoTrans.TabID = Convert.ToInt32(parameters["tabid"]);
-			            modInfoTrans.ModuleID = Convert.ToInt32(parameters["moduleid"]);
-			            ImageTransforms.Add(modInfoTrans);
-			            break;
+		        switch (mode)
+		        {
+		            case "profilepic":
+		                UserProfilePicTransform uppTrans = new UserProfilePicTransform();
+		                uppTrans.UserID = String.IsNullOrEmpty(parameters["userid"])
+		                    ? -1
+		                    : Convert.ToInt32(parameters["userid"]);
+		                ImageTransforms.Add(uppTrans);
+		                break;
 
-			        case "placeholder":
-			            PlaceholderTransform placeHolderTrans = new PlaceholderTransform();
-			            int width, height;
-			            if (Int32.TryParse(parameters["w"], out width))
-			                placeHolderTrans.Width = width;
-			            if (Int32.TryParse(parameters["h"], out height))
-			                placeHolderTrans.Height = height;
-			            if (!string.IsNullOrEmpty(parameters["Color"]))
-			                placeHolderTrans.Color = color;
-			            if (!string.IsNullOrEmpty(parameters["Text"]))
-			                placeHolderTrans.Text = text;
-			            if (!string.IsNullOrEmpty(parameters["BackColor"]))
-			                placeHolderTrans.BackColor = backColor;
+		            case "modinfo":
+		                ModInfoTransform modInfoTrans = new ModInfoTransform();
+		                modInfoTrans.TabID = Convert.ToInt32(parameters["tabid"]);
+		                modInfoTrans.ModuleID = Convert.ToInt32(parameters["moduleid"]);
+		                ImageTransforms.Add(modInfoTrans);
+		                break;
 
-			            ImageTransforms.Add(placeHolderTrans);
-			            break;
+		            case "placeholder":
+		                PlaceholderTransform placeHolderTrans = new PlaceholderTransform();
+		                int width, height;
+		                if (Int32.TryParse(parameters["w"], out width))
+		                    placeHolderTrans.Width = width;
+		                if (Int32.TryParse(parameters["h"], out height))
+		                    placeHolderTrans.Height = height;
+		                if (!string.IsNullOrEmpty(parameters["Color"]))
+		                    placeHolderTrans.Color = color;
+		                if (!string.IsNullOrEmpty(parameters["Text"]))
+		                    placeHolderTrans.Text = text;
+		                if (!string.IsNullOrEmpty(parameters["BackColor"]))
+		                    placeHolderTrans.BackColor = backColor;
 
-			        case "securefile":
-                        SecureFileTransform secureFileTrans = new SecureFileTransform();
-                        if (!string.IsNullOrEmpty(parameters["FileId"]))
-                        {
-                            int fileId = Convert.ToInt32(parameters["FileId"]);
-                            IFileInfo file = FileManager.Instance.GetFile(fileId);
+		                ImageTransforms.Add(placeHolderTrans);
+		                break;
 
-                            if (file != null)
-                            {
-                                ContentType = GetImageFormat(file.Extension);
-                                secureFileTrans.SecureFile = file;
-                                secureFileTrans.EmptyImage = EmptyImage;
-                                ImageTransforms.Add(secureFileTrans);
-                            }                            
-                        }
-			            break;
+		            case "securefile":
+		                SecureFileTransform secureFileTrans = new SecureFileTransform();
+		                if (!string.IsNullOrEmpty(parameters["FileId"]))
+		                {
+		                    int fileId = Convert.ToInt32(parameters["FileId"]);
+		                    IFileInfo file = FileManager.Instance.GetFile(fileId);
 
-			        case "file":
-			            string imgFile = "";
+		                    if (file != null)
+		                    {
+		                        ContentType = GetImageFormat(file.Extension);
+		                        secureFileTrans.SecureFile = file;
+		                        secureFileTrans.EmptyImage = EmptyImage;
+		                        ImageTransforms.Add(secureFileTrans);
+		                    }
+		                }
+		                break;
 
-			            // Lets determine the 3 types of Image Source: Single file, file_in_directory[index], file url  
-			            if (!String.IsNullOrEmpty(parameters["File"]))
-			            {
-			                imgFile = parameters["File"].Trim();
+		            case "file":
+		                string imgFile = "";
 
-			                if (!File.Exists(imgFile))
-			                {
-			                    imgFile = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgFile);
-			                    if (!File.Exists(imgFile))
-			                        return new ImageInfo(EmptyImage);
-			                }
-			            }
-			            else if (!String.IsNullOrEmpty(parameters["Path"]))
-			            {
-			                int imgIndex = Convert.ToInt32(parameters["Index"]);
-			                string imgPath = parameters["Path"];
+		                // Lets determine the 3 types of Image Source: Single file, file_in_directory[index], file url  
+		                if (!String.IsNullOrEmpty(parameters["File"]))
+		                {
+		                    imgFile = parameters["File"].Trim();
 
-			                if (!Directory.Exists(imgPath))
-			                {
-			                    imgPath = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgPath);
-			                    if (!Directory.Exists(imgPath))
-			                        return new ImageInfo(EmptyImage);
-			                }
+		                    if (!File.Exists(imgFile))
+		                    {
+		                        imgFile = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgFile);
+		                        if (!File.Exists(imgFile))
+		                            return new ImageInfo(EmptyImage);
+		                    }
+		                }
+		                else if (!String.IsNullOrEmpty(parameters["Path"]))
+		                {
+		                    int imgIndex = Convert.ToInt32(parameters["Index"]);
+		                    string imgPath = parameters["Path"];
 
-			                string[] files = Directory.GetFiles(imgPath, "*.*");
-			                if (files.Length > 0 && files.Length - 1 >= imgIndex)
-			                {
-			                    Array.Sort(files);
-			                    imgFile = files[imgIndex];
-			                    if (!File.Exists(imgFile))
-			                        return new ImageInfo(EmptyImage);
-			                }
-			            }
-			            else if (!String.IsNullOrEmpty(parameters["Url"]))
-			            {
-			                imgFile = parameters["Url"];
-			            }
+		                    if (!Directory.Exists(imgPath))
+		                    {
+		                        imgPath = Path.GetFullPath(HttpContext.Current.Request.PhysicalApplicationPath + imgPath);
+		                        if (!Directory.Exists(imgPath))
+		                            return new ImageInfo(EmptyImage);
+		                    }
 
-			            if (String.IsNullOrEmpty(parameters["format"]))
-			            {
-			                string extension;
-			                if (String.IsNullOrEmpty(parameters["Url"]))
-			                {
-			                    System.IO.FileInfo fi = new System.IO.FileInfo(imgFile);
-			                    extension = fi.Extension.ToLower();
-			                }
-			                else
-			                {
-			                    string[] parts = parameters["Url"].Split('.');
-			                    extension = parts[parts.Length - 1].ToLower();
-			                }
-			                ContentType = GetImageFormat(extension);
-			            }
-			            ImageFileTransform imageFileTrans = new ImageFileTransform {ImageFile = imgFile};
-			            ImageTransforms.Add(imageFileTrans);
+		                    string[] files = Directory.GetFiles(imgPath, "*.*");
+		                    if (files.Length > 0 && files.Length - 1 >= imgIndex)
+		                    {
+		                        Array.Sort(files);
+		                        imgFile = files[imgIndex];
+		                        if (!File.Exists(imgFile))
+		                            return new ImageInfo(EmptyImage);
+		                    }
+		                }
+		                else if (!String.IsNullOrEmpty(parameters["Url"]))
+		                {
+		                    imgFile = parameters["Url"];
+		                }
 
-			            break;
+		                if (String.IsNullOrEmpty(parameters["format"]))
+		                {
+		                    string extension;
+		                    if (String.IsNullOrEmpty(parameters["Url"]))
+		                    {
+		                        System.IO.FileInfo fi = new System.IO.FileInfo(imgFile);
+		                        extension = fi.Extension.ToLower();
+		                    }
+		                    else
+		                    {
+		                        string[] parts = parameters["Url"].Split('.');
+		                        extension = parts[parts.Length - 1].ToLower();
+		                    }
+		                    ContentType = GetImageFormat(extension);
+		                }
+		                ImageFileTransform imageFileTrans = new ImageFileTransform {ImageFile = imgFile};
+		                ImageTransforms.Add(imageFileTrans);
 
-			        default:
+		                break;
 
-			            string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
-			            string[] imageTransformClassParts = imageTransformClass.Split(',');
-			            Assembly asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
-			                                  imageTransformClassParts[1].Trim() + ".dll");
-			            Type t = asm.GetType(imageTransformClassParts[0].Trim());
-			            ImageTransform imageTransform = (ImageTransform) Activator.CreateInstance(t);
+		            default:
 
-			            foreach (var key in parameters.AllKeys)
-			            {
-			                PropertyInfo pi = t.GetProperty(key,
-			                    BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-			                if (pi != null && key != "mode")
-			                {
-			                    switch (key.ToLower())
-			                    {
-			                        case "color":
-			                            pi.SetValue(imageTransform, color, null);
-			                            break;
-			                        case "backcolor":
-			                            pi.SetValue(imageTransform, backColor, null);
-			                            break;
-			                        case "border":
-			                            pi.SetValue(imageTransform, border, null);
-			                            break;
-			                        default:
-			                            switch (pi.PropertyType.Name)
-			                            {
-			                                case "Int32":
-			                                    pi.SetValue(imageTransform, Convert.ToInt32(parameters[key]), null);
-			                                    break;
-			                                case "String":
-			                                    pi.SetValue(imageTransform, parameters[key], null);
-			                                    break;
-			                            }
-			                            break;
-			                    }
-			                }
-			            }
-			            ImageTransforms.Add(imageTransform);
-			            break;
-			    }
-			}
-			catch (SecurityException)
-			{
-				if (EnableSecurityExceptions)
-					throw;
-			}
-			catch (Exception)
-			{
-                return new ImageInfo(EmptyImage);
-			}
+		                string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
+		                string[] imageTransformClassParts = imageTransformClass.Split(',');
+		                Assembly asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
+		                                                 imageTransformClassParts[1].Trim() + ".dll");
+		                Type t = asm.GetType(imageTransformClassParts[0].Trim());
+		                ImageTransform imageTransform = (ImageTransform) Activator.CreateInstance(t);
+
+		                foreach (var key in parameters.AllKeys)
+		                {
+		                    PropertyInfo pi = t.GetProperty(key,
+		                        BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+		                    if (pi != null && key != "mode")
+		                    {
+		                        switch (key.ToLower())
+		                        {
+		                            case "color":
+		                                pi.SetValue(imageTransform, color, null);
+		                                break;
+		                            case "backcolor":
+		                                pi.SetValue(imageTransform, backColor, null);
+		                                break;
+		                            case "border":
+		                                pi.SetValue(imageTransform, border, null);
+		                                break;
+		                            default:
+		                                switch (pi.PropertyType.Name)
+		                                {
+		                                    case "Int32":
+		                                        pi.SetValue(imageTransform, Convert.ToInt32(parameters[key]), null);
+		                                        break;
+		                                    case "String":
+		                                        pi.SetValue(imageTransform, parameters[key], null);
+		                                        break;
+		                                }
+		                                break;
+		                        }
+		                    }
+		                }
+		                ImageTransforms.Add(imageTransform);
+		                break;
+		        }
+		    }
+		    catch (Exception)
+		    {
+		        return new ImageInfo(EmptyImage);
+		    }
 
 		    // Resize-Transformation
 		    if  (mode != "placeholder")
@@ -412,7 +415,59 @@ namespace DotNetNuke.Services.GeneratedImage
 
 		}
 
-        private void SetupCulture()
+	    private void ReadSettings()
+	    {
+	        string settings = ConfigurationManager.AppSettings["DnnImageHandler"];
+	        if (!String.IsNullOrEmpty(settings))
+	        {
+	            string[] values = settings.Split(';');
+	            foreach (string value in values)
+	            {
+	                string[] setting = value.Split('=');
+	                string name = setting[0].ToLower();
+	                switch (name)
+	                {
+	                    case "enableclientcache":
+	                        EnableClientCache = Convert.ToBoolean(setting[1]);
+	                        break;
+	                    case "clientcacheexpiration":
+	                        ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+	                        break;
+	                    case "enableservercache":
+	                        EnableServerCache = Convert.ToBoolean(setting[1]);
+	                        break;
+	                    case "servercacheexpiration":
+	                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+	                        break;
+	                    case "allowstandalone":
+	                        AllowStandalone = Convert.ToBoolean(setting[1]);
+	                        break;
+                        case "logsecurity":
+                            LogSecurity = Convert.ToBoolean(setting[1]);
+                            break;
+	                    case "imagecompression":
+	                        ImageCompression = Convert.ToInt32(setting[1]);
+	                        break;
+	                    case "alloweddomains":
+	                        AllowedDomains = setting[1].Split(',');
+	                        break;
+                        case "enableipcount":
+                            EnableIPCount = Convert.ToBoolean(setting[1]);
+	                        break;
+                        case "ipcountmax":
+	                        IPCountMaxCount = Convert.ToInt32(setting[1]);
+	                        break;
+                        case "ipcountpurgeinterval":
+                            IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+	                        break;
+                        default:
+	                        break;
+	                }
+	            }
+	        }
+	    }
+
+	    private void SetupCulture()
         {
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             if (settings == null) return;

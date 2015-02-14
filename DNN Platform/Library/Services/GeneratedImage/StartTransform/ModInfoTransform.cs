@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
 		public override string UniqueString
 		{
-			get { return base.UniqueString + this.TabID.ToString() + "-" + this.ModuleID.ToString(); }
+		    get { return base.UniqueString + this.TabID.ToString() + "-" + this.ModuleID.ToString(); }
 		}
 
         public ModInfoTransform()

@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         public override string UniqueString
 		{
-            get { return base.UniqueString + this.SecureFile.FileId.ToString(); }
+            get{ return base.UniqueString + this.SecureFile.FileId.ToString() ;}
 		}
 
         #endregion 

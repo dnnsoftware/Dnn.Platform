@@ -10,14 +10,16 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Services.GeneratedImage
 {
     internal class ImageHandlerInternal {
-        private static TimeSpan s_defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
+        private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
 
-        private TimeSpan _clientCacheExpiration = s_defaultClientCacheExpiration;
+        private TimeSpan _clientCacheExpiration = defaultClientCacheExpiration;
         private IImageStore _imageStore;
         private DateTime? _now;
 
@@ -50,13 +52,29 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        public int IPCountMax
+        {
+            set { IPCount.MaxCount = value; }
+            get { return IPCount.MaxCount; }
+        }
+
+        public TimeSpan IpCountPurgeInterval
+        {
+            set { IPCount.PurgeInterval = value; }
+            get { return IPCount.PurgeInterval; }
+        }
+
         public bool EnableClientCache { get; set; }
 
         public bool EnableServerCache { get; set; }
 
+        public bool EnableIPCount { get; set; }
+
+        public bool AllowStandalone { get; set; }
+
 	    public string[] AllowedDomains { get; set; }
 
-	    public bool EnableSecurityExceptions { get; set; }
+	    public bool LogSecurity { get; set; }
 
 	    public List<ImageTransform> ImageTransforms {
             get;
@@ -67,6 +85,7 @@ namespace DotNetNuke.Services.GeneratedImage
             ContentType = ImageFormat.Jpeg;
 			ImageCompression = 95;
             ImageTransforms = new List<ImageTransform>();
+            AllowStandalone = false;
         }
 
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
@@ -101,11 +120,76 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed) {
+            
             context.Response.Clear();
             context.Response.ContentType = GetImageMimeType(ContentType);
 
+            string ipAddress = IPCount.GetVisitorIPAddress(context);
+
+            // Check if allowed standalone
+            if (!AllowStandalone && context.Request.UrlReferrer == null && ipAddress != "127.0.0.1")
+            {
+                string message = "Not allowed to use standalone";
+                if (LogSecurity)
+                {
+                    EventLogController logController = new EventLogController();
+                    var logInfo = new LogInfo();
+                    logInfo.LogUserID = PortalSettings.Current.UserId;
+                    logInfo.LogPortalID = PortalSettings.Current.PortalId;
+                    logInfo.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
+                    logInfo.AddProperty("DnnImageHandler", message);
+                    logInfo.AddProperty("IP", ipAddress);
+                    logController.AddLog(logInfo);
+                }
+                context.Response.StatusCode = 403;
+                context.Response.StatusDescription = message;
+                context.Response.End();
+                return;
+            }
+
+            // Check if domain is allowed to embed image
+            if (!String.IsNullOrEmpty(AllowedDomains[0]) && 
+                context.Request.UrlReferrer != null && 
+                context.Request.UrlReferrer.Host.ToLower() != context.Request.Url.Host.ToLower())
+            {
+                bool allowed = false;
+                string allowedDomains = "";
+                foreach (string allowedDomain in AllowedDomains)
+                {
+                    if (!String.IsNullOrEmpty(allowedDomain))
+                    {
+                        allowedDomains += allowedDomain + ",";
+                        if (context.Request.UrlReferrer.Host.ToLower().Contains(allowedDomain.ToLower()))
+                            allowed = true;
+                    }
+                }
+
+                if (!allowed)
+                {
+                    string message = String.Format("Not allowed to use from referrer '{0}'", context.Request.UrlReferrer.Host);
+                    if (LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo();
+                        logInfo.LogUserID = PortalSettings.Current.UserId;
+                        logInfo.LogPortalID = PortalSettings.Current.PortalId;
+                        logInfo.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logInfo.AddProperty("AllowedDomains",allowedDomains);
+                        logController.AddLog(logInfo);
+                    }
+
+                    context.Response.StatusCode = 403;
+                    context.Response.StatusDescription = "Forbidden";
+                    context.Response.End();
+                    return;
+                }
+            }
+
             string cacheId = GetUniqueIDString(context, uniqueIdStringSeed);
 
+            // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
             if (EnableClientCache) {
@@ -128,6 +212,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 cachePolicy.SetETag(cacheId);
             }
 
+            // Handle Server cache
             if (EnableServerCache) {
                 if (ImageStore.TryTransmitIfContains(cacheId, context.Response)) {
                     context.Response.End();
@@ -135,10 +220,36 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
             }
 
+            // Check IP Cout boundaries
+            if (EnableIPCount)
+            {
+                if (!IPCount.CheckIp(ipAddress))
+                {
+                    string message = "Too many requests";
+
+                    if (LogSecurity)
+                    {
+                        EventLogController logController = new EventLogController();
+                        var logInfo = new LogInfo();
+                        logInfo.LogUserID = PortalSettings.Current.UserId;
+                        logInfo.LogPortalID = PortalSettings.Current.PortalId;
+                        logInfo.LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString();
+                        logInfo.AddProperty("DnnImageHandler", message);
+                        logInfo.AddProperty("IP", ipAddress);
+                        logController.AddLog(logInfo);
+                    }
+                    context.Response.StatusCode = 429;
+                    context.Response.StatusDescription = message;
+                    context.Response.End();
+                    return;
+                }
+            }
+
+            // Generate Image
             ImageInfo imageMethodData = imageGenCallback(context.Request.QueryString);
 
             if (imageMethodData == null) {
-                throw new InvalidOperationException("The image generation handler cannot return null.");
+                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
             }
 
             if (imageMethodData.HttpStatusCode != null) {
@@ -177,6 +288,10 @@ namespace DotNetNuke.Services.GeneratedImage
             foreach (var tran in ImageTransforms) {
                 builder.Append(tran.UniqueString);
             }
+            if (PortalSettings.Current.UserId > -1)
+                builder.Append("uid" + PortalSettings.Current.UserId.ToString());
+            else
+                builder.Append("uid0");
 
             return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
         }
