@@ -219,7 +219,9 @@ namespace DotNetNuke.Services.Localization
                 bool enabled = false;
                 Dictionary<string, Locale> dicLocales = GetLocales(portalId);
 
-                if ((!dicLocales.ContainsKey(localeCode)))
+                //if ((!dicLocales.ContainsKey(localeCode)))
+                string locale = localeCode;
+                if (dicLocales.FirstOrDefault(x => x.Key.ToLower() == locale.ToLower()).Key == null)
                 {
                     //if localecode is neutral (en, es,...) try to find a locale that has the same language
                     if (localeCode.IndexOf("-", StringComparison.Ordinal) == -1)
