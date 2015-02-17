@@ -838,11 +838,7 @@ namespace DotNetNuke.Framework
 		{
 			if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
 			{
-			    string editClass;
-			    if (!PortalSettings.EnableModuleEffect)
-			        editClass = "dnnEditState dnnOpacityDisabled";
-			    else
-			        editClass = "dnnEditState";
+			    var editClass = "dnnEditState";
 
 				var bodyClass = Body.Attributes["class"];
 				if (!string.IsNullOrEmpty(bodyClass))
