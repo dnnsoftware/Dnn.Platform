@@ -266,7 +266,6 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.EnableBrowserLanguage = settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
             portalSettings.EnableCompositeFiles = settings.GetValueOrDefault("EnableCompositeFiles", false);
             portalSettings.EnablePopUps = settings.GetValueOrDefault("EnablePopUps", true);
-            portalSettings.EnableModuleEffect = settings.GetValueOrDefault("EnableModuleEffect", true);
             portalSettings.HideLoginControl = settings.GetValueOrDefault("HideLoginControl", false);
             portalSettings.EnableSkinWidgets = settings.GetValueOrDefault("EnableSkinWidgets", true);
             portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
