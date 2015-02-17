@@ -715,6 +715,11 @@
                     rootNode.children.push(castedRootNode);
                 }
             }
+
+            if (this.options.rootNodeName) {
+                rootNode.children[0].data.name = this.options.rootNodeName;
+            }
+
             onGetTreeCallback.apply(this, [rootNode]);
         },
 
