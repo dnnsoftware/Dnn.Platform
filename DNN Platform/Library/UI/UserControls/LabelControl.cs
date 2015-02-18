@@ -54,8 +54,8 @@ namespace DotNetNuke.UI.UserControls
 		#region Private Memebers
 				
 		protected LinkButton cmdHelp;
-		protected HtmlGenericControl label;
-		protected Label lblHelp;
+        protected HtmlGenericControl label;
+        protected Label lblHelp;
 		protected Label lblLabel;
 		protected Panel pnlHelp;
 		protected Label lblNoHelpLabel;
@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.UserControls
 				var localText = Localization.GetString(ResourceKey, this);
 				if (!string.IsNullOrEmpty(localText))
 				{
-					Text = localText + Suffix;
+					Text = string.Concat(localText, Suffix);
 					//NoHelpLabelText = Text;
 				}
 				else
@@ -266,9 +266,9 @@ namespace DotNetNuke.UI.UserControls
 			}
 
 			//find the reference control in the parents Controls collection
-			if (!String.IsNullOrEmpty(ControlName))
+			if (!string.IsNullOrEmpty(ControlName))
 			{
-				var c = Parent.FindControl(ControlName);
+                var c = Parent.FindControl(ControlName);
 				if (c != null)
 				{
 					label.Attributes["for"] = c.ClientID;
@@ -278,7 +278,7 @@ namespace DotNetNuke.UI.UserControls
 
 		private void RegisterClientDependencies()
 		{
-            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 		}
