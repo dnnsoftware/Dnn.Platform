@@ -81,6 +81,13 @@ namespace DotNetNuke.Modules.Journal
                    && !Regex.IsMatch(fileName, @"\..+;");
         }
 
+        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
+
+        private static bool IsImageExtension(string extension)
+        {
+            return ImageExtensions.Contains(extension.ToUpper());
+        }
+
         // Upload entire file
         private void UploadWholeFile(HttpContextBase context, ICollection<FilesStatus> statuses)
         {
@@ -90,7 +97,12 @@ namespace DotNetNuke.Modules.Journal
                 if (file == null) continue;
 
                 var fileName = Path.GetFileName(file.FileName);
-
+                //fix any filename issues that would cause double escaping exceptions
+                if (IsImageExtension(Path.GetExtension(fileName)))
+                {
+                    fileName = fileName.Replace("+", ""); 
+                }
+                
                 if (IsAllowedExtension(fileName))
                 {
                     var fileInfo = JournalController.Instance.SaveJourmalFile(ActiveModule, UserInfo, fileName, file.InputStream);
