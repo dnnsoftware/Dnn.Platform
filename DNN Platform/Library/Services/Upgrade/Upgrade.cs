@@ -5437,10 +5437,8 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
-                if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
-                {
-                    url = url.Replace("http://", "https://");
-                }
+                //use network path reference so it works in ssl-offload scenarios
+                url = url.Replace("http://", "//");
                 url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
                 url += "&type=" + packageType;
