@@ -20,6 +20,7 @@
 #endregion
 
 using System.Web.Mvc;
+using DotNetNuke.Web.Mvc.Helpers;
 
 namespace DotNetNuke.Web.Mvc.Framework
 {
@@ -31,7 +32,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             Ajax = new AjaxHelper<TModel>(ViewContext, this);
             Html = new HtmlHelper<TModel>(ViewContext, this);
-            //Url = new DnnUrlHelper(ViewContext.RequestContext); 
+            Url = new DnnUrlHelper(ViewContext.RequestContext);
             //Dnn = new DnnHelper<TModel>(ViewContext, this);
         }
     }

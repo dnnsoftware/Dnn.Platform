@@ -94,6 +94,7 @@
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
+    <Compile Include="Helpers\DnnUrlHelper.cs" />
     <Compile Include="MvcHostControl.cs" />
     <Compile Include="MvcHttpModule.cs" />
     <Compile Include="MvcModuleControlFactory.cs" />
@@ -112,9 +113,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

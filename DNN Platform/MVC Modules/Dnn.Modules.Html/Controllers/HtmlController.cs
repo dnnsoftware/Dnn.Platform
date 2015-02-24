@@ -103,6 +103,10 @@ namespace Dnn.Modules.Html.Controllers
                 {
                     item.Content = HttpUtility.HtmlDecode(item.Content);
                 }
+                else
+                {
+                    item.Content = String.Empty;
+                }
             }
 
             return View(item);
