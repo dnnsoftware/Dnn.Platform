@@ -633,13 +633,15 @@ namespace DotNetNuke.Entities.Tabs
             return dic;
         }
 
-        private void HardDeleteTabInternal(int tabId)
+        private void HardDeleteTabInternal(int tabId, int portalId)
         {
             //Delete all tabModule Instances
             foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, false);
             }
+
+            var tab = GetTab(tabId, portalId, false);
 
             //Delete Tab
             Provider.DeleteTab(tabId);
@@ -660,7 +662,9 @@ namespace DotNetNuke.Entities.Tabs
             DataProvider.Instance().AddSearchDeletedItems(document);
 
             if (TabDeleted != null)
-                TabDeleted(null, new TabEventArgs { Tab = new TabInfo { TabID = tabId } });
+            {
+                TabDeleted(null, new TabEventArgs { Tab = tab });
+            }
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)
@@ -914,7 +918,7 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = GetTab(tabId, portalId, true);
                 foreach (var localizedTab in tab.LocalizedTabs.Values)
                 {
-                    HardDeleteTabInternal(localizedTab.TabID);
+                    HardDeleteTabInternal(localizedTab.TabID, portalId);
                 }
 
                 // reset culture of current tab back to neutral
@@ -1103,7 +1107,7 @@ namespace DotNetNuke.Entities.Tabs
             //parent tabs can not be deleted
             if (GetTabsByPortal(portalId).WithParentId(tabId).Count == 0)
             {
-                HardDeleteTabInternal(tabId);
+                HardDeleteTabInternal(tabId, portalId);
             }
             ClearCache(portalId);
         }
@@ -1122,7 +1126,7 @@ namespace DotNetNuke.Entities.Tabs
                 //Iterate through descendants from bottom - which will remove children first
                 for (int i = descendantList.Count - 1; i >= 0; i += -1)
                 {
-                    HardDeleteTabInternal(descendantList[i].TabID);
+                    HardDeleteTabInternal(descendantList[i].TabID, portalId);
                 }
             }
             DeleteTab(tabId, portalId);
