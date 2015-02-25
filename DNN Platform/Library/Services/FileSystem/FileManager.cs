@@ -526,19 +526,38 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
+				var isDefaultFolderProvider = DefaultFolderProviders.GetDefaultProviders().Contains(folderMapping.FolderProviderType);
+
                 try
                 {
-                    if (needToWriteFile)
-                    {
-                        folderProvider.AddFile(folder, contentFileName, fileContent);
-                    }
+					//add file into database first if folder provider is default providers
+					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+	                if (isDefaultFolderProvider)
+	                {
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
 
-					if (folderWorkflow == null || !fileExists)
-					{
-						AddFile(file, fileHash, createdByUserID);
-					}
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+	                }
+	                else
+	                {
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
 
-                    var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
+	                }
+
+	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
