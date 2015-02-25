@@ -815,7 +815,8 @@ namespace DotNetNuke.Entities.Modules
                 if (!uncopy)
                 {
                     UpdateTabModuleOrder(moduleInfo.TabID);
-                    if (ModuleRemoved != null)
+                    //ModuleRemove is only raised when doing a soft delete of the module
+                    if (softDelete && ModuleRemoved != null)
                     { 
                         ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
                     }
@@ -1193,7 +1194,8 @@ namespace DotNetNuke.Entities.Modules
             {
                 ClearCache(tabId);
 
-                if (ModuleRemoved != null)
+                //ModuleRemove is only raised when doing a soft delete of the module
+                if (softDelete && ModuleRemoved != null)
                     ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
             }
         }
