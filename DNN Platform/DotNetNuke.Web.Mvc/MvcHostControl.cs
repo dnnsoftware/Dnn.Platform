@@ -140,14 +140,14 @@ namespace DotNetNuke.Web.Mvc
 
                 foreach (var moduleControl in moduleControls.Values)
                 {
-                    if (!String.IsNullOrEmpty(moduleControl.ControlKey))
+                    if (!String.IsNullOrEmpty(moduleControl.ControlKey) && moduleControl.ControlKey != "Settings")
                     {
                         ModuleActions.Add(ModuleContext.GetNextActionID(),
                             moduleControl.ControlKey,
                             moduleControl.ControlKey + ".Action",
                             "",
-                            "edit.gif",
-                            ModuleContext.EditUrl("Edit"),
+                            (!String.IsNullOrEmpty(moduleControl.IconFile)) ? moduleControl.IconFile  :  "edit.gif",
+                            ModuleContext.EditUrl(moduleControl.ControlKey),
                             false,
                             SecurityAccessLevel.Edit,
                             true,
