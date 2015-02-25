@@ -20,6 +20,7 @@ namespace ClientDependency.Core.Config
         public static readonly string MinifyJsKey = "CrmMinifyJs";
         public static readonly string OverrideDefaultSettingsKey = "CrmUseApplicationSettings";
         public static readonly string VersionKey = "CrmVersion";
+        public static readonly string DebugModeKey = "DebugMode";
 
         private static readonly Type _portalControllerType;
         private static readonly Type _portalAliasControllerType;
@@ -73,6 +74,20 @@ namespace ClientDependency.Core.Config
         public bool? EnableJsMinification()
         {
             return IsBooleanSettingEnabled(MinifyJsKey);
+        }
+
+        public bool IsDebugMode()
+        {
+            if (Status != UpgradeStatus.None)
+            {
+                return true;
+            }
+
+            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, DebugModeKey);
+            if (hostEnabled.HasValue)
+                return hostEnabled.Value;
+
+            return false;
         }
 
         private bool? IsBooleanSettingEnabled(string settingKey)
