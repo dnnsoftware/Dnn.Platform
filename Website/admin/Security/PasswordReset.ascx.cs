@@ -162,11 +162,23 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else
             {
-                //Log user in to site
-                LogSuccess();
-                var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
-                RedirectAfterLogin();
+                //check user has a valid profile
+                var user = UserController.GetUserByName(PortalSettings.PortalId, username);
+                var validStatus = UserController.ValidateUser(user, PortalSettings.PortalId, false);
+                if (validStatus == UserValidStatus.UPDATEPROFILE)
+                {
+                    LogSuccess();
+                    ViewState.Add("PageNo", 3);
+                    Response.Redirect(Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Login"));
+                }
+                else
+                {
+                    //Log user in to site
+                    LogSuccess();
+                    var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+                    UserController.UserLogin(PortalSettings.PortalId, username, txtPassword.Text, "", "", "", ref loginStatus, false);
+                    RedirectAfterLogin();
+                }            
             }           
         }
 
