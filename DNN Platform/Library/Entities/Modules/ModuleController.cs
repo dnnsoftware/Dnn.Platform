@@ -814,7 +814,11 @@ namespace DotNetNuke.Entities.Modules
                 //reorder all modules on tab
                 if (!uncopy)
                 {
-                    UpdateTabModuleOrder(moduleInfo.TabID);                    
+                    UpdateTabModuleOrder(moduleInfo.TabID);
+                    if (ModuleRemoved != null)
+                    { 
+                        ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                    }
                 }
 
                 //check if all modules instances have been deleted
@@ -1169,6 +1173,8 @@ namespace DotNetNuke.Entities.Modules
         ///	<param name="deleteBaseModule">A flag to indicate whether to delete the Module itself</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
+            var moduleInfo = GetModule(moduleId, tabId, false); 
+
             //Iterate through collection deleting the module from each Tab (except the current)
             foreach (TabInfo objTab in fromTabs)
             {
@@ -1188,7 +1194,7 @@ namespace DotNetNuke.Entities.Modules
                 ClearCache(tabId);
 
                 if (ModuleRemoved != null)
-                    ModuleRemoved(null, new ModuleEventArgs { Module = new ModuleInfo { ModuleID = moduleId } });
+                    ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
             }
         }
 
