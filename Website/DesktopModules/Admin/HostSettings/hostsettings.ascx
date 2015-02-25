@@ -706,7 +706,7 @@
                 skinSelector: '<%= hostSkinCombo.ClientID %>',
                 containerSelector: '<%= hostContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -715,7 +715,7 @@
                 skinSelector: '<%= editSkinCombo.ClientID %>',
                 containerSelector: '<%= editContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -749,24 +749,24 @@
                 titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
             $('#<%= IncrementCrmVersionButton.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("IncrementCrmVersionConfirm")) %>',
+                text: '<%= LocalizeSafeJsString("IncrementCrmVersionConfirm") %>',
                 yesText: yesText,
                 noText: noText,
                 title: titleText
             });
 
             $('#<%= btnCompactSearchIndex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("CompactIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("CompactIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("CompactIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("CompactIndexConfirmationTitle") %>'
             });
 
             $('#<%= btnHostSearchReindex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("ReIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("ReIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("ReIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("ReIndexConfirmationTitle") %>'
             });
 
             // extensions

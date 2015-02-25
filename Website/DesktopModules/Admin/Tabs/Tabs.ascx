@@ -10,8 +10,8 @@
 	function setUpTabsModule() {
 		$('#dnnTabsModule').dnnPanels()
 			.find('.dnnFormExpandContent a').dnnExpandAll({
-			    expandText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("ExpandAll", Localization.SharedResourceFile))%>',
-			    collapseText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("CollapseAll", Localization.SharedResourceFile))%>',
+			    expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
+			    collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
 				targetArea: '#dnnTabsModule'
 			});
 
@@ -30,7 +30,7 @@
 		});
 	    
         $('input[id$=cmdDeleteModule]').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
         	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',

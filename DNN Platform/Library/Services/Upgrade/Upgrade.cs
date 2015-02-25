@@ -4832,49 +4832,26 @@ namespace DotNetNuke.Services.Upgrade
 
             var packages = new Dictionary<string, PackageInfo>();
 
-            foreach (string packageType in packageTypes)
-            {
-                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
-                if (Directory.Exists(installPackagePath))
-                {
-                    var files = Directory.GetFiles(installPackagePath);
-                    if (files.Length > 0)
-                    {
-                        foreach (string file in files)
-                        {
-                            if (Path.GetExtension(file.ToLower()) == ".zip")
-                            {
-                                PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                                //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Parsing - " + file.Replace(installPackagePath + @"\", "") + "<br/>");
-                            }
-                        }
-                    }
-                }
-            }
+            ParsePackagesFromApplicationPath(packageTypes, packages, invalidPackages);
 
             //Add packages with no dependency requirements
             var sortedPackages = packages.Where(p => p.Value.Dependencies.Count == 0).ToDictionary(p => p.Key, p => p.Value);
 
-            int prevDependentCount = -1;
+            var prevDependentCount = -1;
 
             var dependentPackages = packages.Where(p => p.Value.Dependencies.Count > 0).ToDictionary(p=> p.Key, p => p.Value);
-            int dependentCount = dependentPackages.Count;
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Start - Parsing Dependencies<br/>");
+            var dependentCount = dependentPackages.Count;
             while (dependentCount != prevDependentCount)
             {
                 prevDependentCount = dependentCount;
                 var addedPackages = new List<string>();
                 foreach (var package in dependentPackages)
                 {
-                    //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Parsing - " + package.Value.Name + "<br/>");
-                    foreach (var dependency in package.Value.Dependencies)
+                    if ( package.Value.Dependencies.All(
+                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
                     {
-                        if (sortedPackages.Count(p => p.Value.Name == dependency.PackageName && p.Value.Version >= dependency.Version) > 0)
-                        {
-                            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Dependency Resolved - " + package.Value.Name + "<br/>");
-                            sortedPackages.Add(package.Key, package.Value);
-                            addedPackages.Add(package.Key);
-                        }
+                        sortedPackages.Add(package.Key, package.Value);
+                        addedPackages.Add(package.Key);
                     }
                 }
                 foreach (var packageKey in addedPackages)
@@ -4890,13 +4867,27 @@ namespace DotNetNuke.Services.Upgrade
                 sortedPackages.Add(package.Key, package.Value);
             }
 
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
-
-            //foreach (var package in sortedPackages)
-            //{
-            //    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
-            //}
             return sortedPackages;
+        }
+
+        private static void ParsePackagesFromApplicationPath(IEnumerable<string> packageTypes, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
+        {
+            foreach (var packageType in packageTypes)
+            {
+                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
+                if (!Directory.Exists(installPackagePath)){ continue;}
+
+                var files = Directory.GetFiles(installPackagePath);
+                if (files.Length <= 0){ continue;}
+
+                foreach (var file in files)
+                {
+                    if (Path.GetExtension(file.ToLower()) == ".zip")
+                    {
+                        PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
+                    }
+                }
+            }
         }
 
         public static void InstallPackages(string packageType, bool writeFeedback)

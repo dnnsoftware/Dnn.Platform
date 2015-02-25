@@ -42,7 +42,6 @@ namespace DotNetNuke.Common.Utils
         /// <remarks><seealso cref="AddressType"></seealso></remarks>
         public static string GetAddress(string Host, AddressType AddressFormat)
         {
-            string IPAddress = string.Empty;
             AddressFamily addrFamily = AddressFamily.InterNetwork;
             switch (AddressFormat)
             {

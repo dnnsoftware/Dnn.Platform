@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
@@ -37,7 +38,7 @@ namespace DotNetNuke.Modules.UrlManagement
             Response.Redirect(Globals.NavigateURL(ModuleContext.TabId, "UrlProviderSettings", "ProviderId=" + args.CommandArgument));
         }
 
-        protected override void OnInit(System.EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
@@ -93,5 +94,19 @@ namespace DotNetNuke.Modules.UrlManagement
         {
             UrlSettingsExtensionControl.SaveAction(portalId, tabId, moduleId);
         }
+
+	    protected void OnChangeProviderStatus(object sender, EventArgs e)
+	    {
+		    var checkbox = (sender as CheckBox);
+		    var providerId = Convert.ToInt32((checkbox.Parent.FindControl("urlProviderId") as HiddenField).Value);
+		    if (checkbox.Checked)
+		    {
+			    ExtensionUrlProviderController.EnableProvider(providerId, ModuleContext.PortalId);
+		    }
+		    else
+		    {
+				ExtensionUrlProviderController.DisableProvider(providerId, ModuleContext.PortalId);
+		    }
+	    }
     }
 }

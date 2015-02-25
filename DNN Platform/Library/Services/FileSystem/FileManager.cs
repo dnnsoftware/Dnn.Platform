@@ -70,6 +70,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Properties
 
         private IDictionary<string, string> _contentTypes;
+		private static readonly object _threadLocker = new object();
 
         public virtual IDictionary<string, string> ContentTypes
         {
@@ -77,20 +78,29 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (_contentTypes == null)
                 {
-                    var listController = new ListController();
-                    var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-                    if (listEntries == null || !listEntries.Any())
-                    {
-                        _contentTypes = GetDefaultContentTypes();
-                    }
-                    _contentTypes = new Dictionary<string, string>();
-                    if (listEntries != null)
-                    {
-                        foreach (var contentTypeEntry in listEntries)
-                        {
-                            _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
-                        }
-                    }
+					lock (_threadLocker)
+	                {
+		                if (_contentTypes == null)
+		                {
+			                var listController = new ListController();
+			                var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+			                if (listEntries == null || !listEntries.Any())
+			                {
+				                _contentTypes = GetDefaultContentTypes();
+			                }
+			                else
+			                {
+				                _contentTypes = new Dictionary<string, string>();
+								if (listEntries != null)
+								{
+									foreach (var contentTypeEntry in listEntries)
+									{
+										_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+									}
+								}
+			                }
+		                }
+	                }
                 }
 
                 return _contentTypes;
@@ -516,19 +526,38 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
-                if (folderWorkflow == null || !fileExists)
-                {
-                    AddFile(file, fileHash, createdByUserID);
-                }
+				var isDefaultFolderProvider = DefaultFolderProviders.GetDefaultProviders().Contains(folderMapping.FolderProviderType);
 
                 try
                 {
-                    if (needToWriteFile)
-                    {
-                        folderProvider.AddFile(folder, contentFileName, fileContent);
-                    }
+					//add file into database first if folder provider is default providers
+					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+	                if (isDefaultFolderProvider)
+	                {
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
 
-                    var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+	                }
+	                else
+	                {
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
+	                }
+
+	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);

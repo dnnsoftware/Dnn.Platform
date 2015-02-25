@@ -54,19 +54,19 @@
 			var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
 			var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 			$('#<%= cmdEmpty.ClientID %>').dnnConfirm({
-				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteAll")) %>',
+				text: '<%= LocalizeSafeJsString("DeleteAll") %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
 			});
 			$('#<%= cmdDeleteTab.ClientID %>').dnnConfirm({
-				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteTab")) %>',
+				text: '<%= LocalizeSafeJsString("DeleteTab") %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
 			});
 			$('#<%= cmdDeleteModule.ClientID %>').dnnConfirm({
-				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteModule")) %>',
+				text: '<%= LocalizeSafeJsString("DeleteModule") %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText
@@ -77,13 +77,13 @@
 			restoreTab.click(function (e) {
 				if (tabListbox.value.length == 0) {
 					$.dnnAlert({
-						text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoTabSelected")) %>'
+						text: '<%= LocalizeSafeJsString("NoTabSelected") %>'
 					});
 					e.preventDefault();
 					e.stopImmediatePropagation();
 				}
 			}).dnnConfirm({
-				text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("RestoreTab")) %>',
+				text: '<%= LocalizeSafeJsString("RestoreTab") %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText,

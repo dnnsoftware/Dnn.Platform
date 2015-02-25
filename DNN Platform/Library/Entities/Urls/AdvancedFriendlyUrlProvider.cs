@@ -491,7 +491,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string GetCultureOfPath(string path)
         {
             string code = "";
-            const string codeRegexPattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2}-[A-Za-z]{2})";
+            const string codeRegexPattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
             MatchCollection matches = Regex.Matches(path, codeRegexPattern);
             if (matches.Count > 0)
             {

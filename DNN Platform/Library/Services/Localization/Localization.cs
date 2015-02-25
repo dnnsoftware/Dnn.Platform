@@ -1264,7 +1264,13 @@ namespace DotNetNuke.Services.Localization
         /// <returns>the string that is safe to use in a javascript function</returns>
         public static string GetSafeJSString(string unsafeString)
         {
-            return !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
+            var safeString = !string.IsNullOrEmpty(unsafeString) && unsafeString.Length > 0 ? Regex.Replace(unsafeString, "(['\"\\\\])", "\\$1") : unsafeString;
+			if (!string.IsNullOrEmpty(safeString))
+	        {
+				safeString = safeString.Replace("\r\n", string.Empty).Replace("\r", string.Empty).Replace("\n", string.Empty);
+	        }
+
+			return safeString;
         }
 
         /// <summary>
