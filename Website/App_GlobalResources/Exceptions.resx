@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddFileExtensionNotAllowed.Text" xml:space="preserve">
-    <value>The extension '{0}' is not allowed. The file has not been added.</value>
+    <value>The extension '{0}' is not allowed. The file has not been added. blah</value>
   </data>
   <data name="AddFileNoSpaceAvailable.Text" xml:space="preserve">
     <value>The website has no space available to store the specified file. The file has not been added.</value>
