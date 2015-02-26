@@ -343,32 +343,39 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                            select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
             List<string> finalScripts = orderedScripts.ToList();
-            foreach (string orderedScript in orderedScripts)
+            foreach (string libraryId in orderedScripts)
             {
-                //find dependencies
-
-                JavaScriptLibrary library =
-                    JavaScriptLibraryController.Instance.GetLibrary(
-                        l => l.JavaScriptLibraryID.ToString() == orderedScript);
-                if (library != null)
+                // find dependencies
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString() == libraryId);
+                if (library == null)
                 {
-                    PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
-                        p => p.PackageID == library.PackageID);
-                    if (package.Dependencies.Any())
+                    continue;
+                }
+
+                foreach (var dependencyLibrary in GetAllDependencies(library))
+                {
+                    if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependencyLibrary.JavaScriptLibraryID] == null)
                     {
-                        foreach (PackageDependencyInfo dependency in package.Dependencies)
-                        {
-                            JavaScriptLibrary dependantlibrary = GetHighestVersionLibrary(dependency.PackageName);
-                            if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependantlibrary.JavaScriptLibraryID] ==
-                                null)
-                            {
-                                finalScripts.Add(dependantlibrary.JavaScriptLibraryID.ToString());
-                            }
-                        }
+                        finalScripts.Add(dependencyLibrary.JavaScriptLibraryID.ToString());
                     }
                 }
             }
             return finalScripts;
+        }
+
+        private static IEnumerable<JavaScriptLibrary> GetAllDependencies(JavaScriptLibrary library)
+        {
+            var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == library.PackageID);
+            foreach (var dependency in package.Dependencies)
+            {
+                var dependencyLibrary = GetHighestVersionLibrary(dependency.PackageName);
+                yield return dependencyLibrary;
+
+                foreach (var childDependency in GetAllDependencies(dependencyLibrary))
+                {
+                    yield return childDependency;
+                }
+            }
         }
 
         private static void LogCollision(string collisionText)
