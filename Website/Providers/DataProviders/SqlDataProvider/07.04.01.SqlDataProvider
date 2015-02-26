@@ -222,6 +222,42 @@ AS
 	SELECT @JavaScriptLibraryID
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+	@PackageDependencyID INT,
+	@PackageID INT,
+	@PackageName NVARCHAR(128),
+	@Version NVARCHAR(50)
+AS
+	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageID = @PackageID AND PackageName = @PackageName AND Version = @Version)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+			   SET [PackageID] = @PackageID,
+					[PackageName] = @PackageName,
+					[Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID
+		END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] (
+				[PackageID],
+				[PackageName],
+				[Version]
+			)
+			VALUES (
+				@PackageID,
+				@PackageName,
+				@Version
+			)
+			SET @PackageDependencyID = (SELECT @@IDENTITY)
+		END
+
+	SELECT @PackageDependencyID
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
