@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 
             if (View == null)
             {
-                result = ViewEngineCollection.FindView(context, ViewName, String.Empty);
+                result = ViewEngineCollection.FindView(context, ViewName, MasterName);
                 View = result.View;
             }
 
