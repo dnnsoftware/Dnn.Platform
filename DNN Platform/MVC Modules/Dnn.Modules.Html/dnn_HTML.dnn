@@ -3,7 +3,7 @@
     <package name="DNN_HTML" type="Module" version="07.05.00">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version. HTML 7.5 was rewritten as an MVC based module.</description>
-      <iconFile>Modules\Dnn\Hml\Images\html.png</iconFile>
+      <iconFile>DesktopModules\Dnn\Hml\Images\html.png</iconFile>
       <owner>
         <name>DNN</name>
         <organization>DNN Corp.</organization>
@@ -16,7 +16,7 @@
       <components>
         <component type="Script">
           <scripts>
-            <basePath>Modules\Dnn\Html</basePath>
+            <basePath>DesktopModules\Dnn\Html</basePath>
             <script type="Install">
               <path>DataProvider</path>
               <name>Upgrade.SqlDataProvider</name>
@@ -40,7 +40,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>Html/Index.mvc</controlSrc>
+                    <controlSrc>HtmlText/Index.mvc</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
@@ -50,7 +50,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit</controlKey>
-                    <controlSrc>Html/Edit.mvc</controlSrc>
+                    <controlSrc>HtmlText/Edit.mvc</controlSrc>
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
@@ -83,7 +83,7 @@
         </component>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>Modules/Dnn/Html</basePath>
+            <basePath>DesktopModules/Dnn/Html</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>

@@ -29,12 +29,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleApplication
     {
-        private const string ControllerMasterFormat = "~/Modules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedMasterFormat = "~/Modules/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerViewFormat = "~/Modules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedViewFormat = "~/Modules/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerPartialFormat = "~/Modules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedPartialFormat = "~/Modules/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerMasterFormat = "~/DesktopModules/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedMasterFormat = "~/DesktopModules/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerViewFormat = "~/DesktopModules/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedViewFormat = "~/DesktopModules/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerPartialFormat = "~/DesktopModules/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedPartialFormat = "~/DesktopModules/{0}/Views/Shared/{{0}}.cshtml";
         
         private bool _initialized;
         private readonly object _lock = new object();
