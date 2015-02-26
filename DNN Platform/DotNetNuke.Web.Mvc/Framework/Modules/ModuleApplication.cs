@@ -29,12 +29,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleApplication
     {
-        private const string ControllerMasterFormat = "~/DesktopModules/MVCModules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedMasterFormat = "~/DesktopModules/MVCModules/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerViewFormat = "~/DesktopModules/MVCModules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedViewFormat = "~/DesktopModules/MVCModules/{0}/Views/Shared/{{0}}.cshtml";
-        private const string ControllerPartialFormat = "~/DesktopModules/MVCModules/{0}/Views/{{1}}/{{0}}.cshtml";
-        private const string SharedPartialFormat = "~/DesktopModules/MVCModules/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
+        private const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
+        private const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         
         private bool _initialized;
         private readonly object _lock = new object();
