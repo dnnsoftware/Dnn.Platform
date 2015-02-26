@@ -352,7 +352,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     continue;
                 }
 
-                foreach (var dependencyLibrary in GetAllDependencies(library))
+                foreach (var dependencyLibrary in GetAllDependencies(library).Distinct())
                 {
                     if (HttpContextSource.Current.Items[ScriptPrefix + "." + dependencyLibrary.JavaScriptLibraryID] == null)
                     {
