@@ -5,7 +5,7 @@
     <Extension>resources</Extension>
     <DNNFileName>dnn_HTML</DNNFileName>
     <PackageName>DNNCE_MVC_HTML</PackageName>
-    <ModuleFolderName>$(WebsitePath)\DesktopModules\Dnn\Html</ModuleFolderName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\MVCModules\Dnn\Html</ModuleFolderName>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>

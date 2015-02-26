@@ -1,7 +1,5 @@
-﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.Modules.Html.Models.HtmlText>
+﻿@model Dnn.Modules.Html.Models.HtmlText
 
 @using System.Web.Mvc.Html
-
-@Layout = "~/DesktopModules/Dnn/Html/Views/Shared/_Layout.cshtml";
 
 @Html.DisplayTextFor(m => Model.Content)
