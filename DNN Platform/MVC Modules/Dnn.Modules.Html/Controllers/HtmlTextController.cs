@@ -75,7 +75,6 @@ namespace Dnn.Modules.Html.Controllers
                 }
             }
 
-            //return View("Index", "_Layout", item);
             return View(item);
         }
 
