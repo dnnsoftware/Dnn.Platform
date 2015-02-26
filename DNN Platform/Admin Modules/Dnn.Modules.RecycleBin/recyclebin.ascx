@@ -1,4 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DesktopModules.Admin.RecycleBin.RecycleBin" Codebehind="RecycleBin.ascx.cs" %>
+<%@ Import Namespace="DotNetNuke.Services.Localization" %>
 <div class="dnnForm dnnRecycleBin dnnClear" id="dnnRecycleBin">
     <ul class="dnnAdminTabNav dnnClear">
 		<li><a href="#rbTabs"><%=LocalizeString("Tabs")%></a></li>
