@@ -163,7 +163,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             HandlePreInstallorLegacyItemRequests(page);
             IEnumerable<string> scripts = GetScriptVersions();
-            IEnumerable<JavaScriptLibrary> finalScripts = GetFinalScripts(scripts);
+            IEnumerable<JavaScriptLibrary> finalScripts = ResolveVersionConflicts(scripts);
             foreach (JavaScriptLibrary jsl in finalScripts)
             {
                 RegisterScript(page, jsl);
@@ -246,29 +246,32 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             HttpContextSource.Current.Items[LegacyPrefix + jsl] = true;
         }
 
-        private static IEnumerable<JavaScriptLibrary> GetFinalScripts(IEnumerable<string> scripts)
+        private static IEnumerable<JavaScriptLibrary> ResolveVersionConflicts(IEnumerable<string> scripts)
         {
             var finalScripts = new List<JavaScriptLibrary>();
-            foreach (string item in scripts)
+            foreach (string libraryId in scripts)
             {
-                JavaScriptLibrary processingLibrary =
-                    JavaScriptLibraryController.Instance.GetLibrary(
-                        l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == item);
+                var processingLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.JavaScriptLibraryID.ToString(CultureInfo.InvariantCulture) == libraryId);
 
-                JavaScriptLibrary existingLatestLibrary =
-                    finalScripts.FindAll(lib => lib.LibraryName.Equals(processingLibrary.LibraryName, StringComparison.OrdinalIgnoreCase))
-                        .OrderByDescending(l => l.Version)
-                        .SingleOrDefault();
+                var existingLatestLibrary = finalScripts.FindAll(lib => lib.LibraryName.Equals(processingLibrary.LibraryName, StringComparison.OrdinalIgnoreCase))
+                                                        .OrderByDescending(l => l.Version)
+                                                        .SingleOrDefault();
                 if (existingLatestLibrary != null)
                 {
-                    //determine previous registration for same JSL
+                    // determine previous registration for same JSL
                     if (existingLatestLibrary.Version > processingLibrary.Version)
                     {
-                        //skip new library & log
-                        LogCollision(existingLatestLibrary.LibraryName + "-" + existingLatestLibrary.Version + " -> " +
-                                     processingLibrary.LibraryName + "-" + processingLibrary.Version);
+                        // skip new library & log
+                        var collisionText = string.Format(
+                            CultureInfo.CurrentCulture,
+                            "{0}-{1} -> {2}-{3}",
+                            existingLatestLibrary.LibraryName,
+                            existingLatestLibrary.Version,
+                            processingLibrary.LibraryName,
+                            processingLibrary.Version);
+                        LogCollision(collisionText);
                     }
-                    else
+                    else if (existingLatestLibrary.Version != processingLibrary.Version)
                     {
                         finalScripts.Remove(existingLatestLibrary);
                         finalScripts.Add(processingLibrary);
