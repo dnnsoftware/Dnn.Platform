@@ -37,6 +37,7 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -462,27 +463,56 @@ namespace DotNetNuke.UI.Modules
             }
             if (success)
             {
-				//parse the registered CDF from content
-				var matches = Regex.Matches(cachedContent, "<\\!--CDF\\((JAVASCRIPT|CSS)\\|(.+?)\\)-->", RegexOptions.IgnoreCase);
-				if (matches.Count > 0)
-				{
-					foreach (Match match in matches)
-					{
-						cachedContent = cachedContent.Replace(match.Value, string.Empty);
-						if (match.Groups[1].Value.ToUpperInvariant() == "JAVASCRIPT")
-						{
-							ClientResourceManager.RegisterScript(Page, match.Groups[2].Value);
-						}
-						else
-						{
-							ClientResourceManager.RegisterStyleSheet(Page, match.Groups[2].Value);
-						}
-					}
-				}
+                this.RestoreCachedClientResourceRegistrations(cachedContent);
                 _control = ModuleControlFactory.CreateCachedControl(cachedContent, _moduleConfiguration);
                 Controls.Add(_control);
             }
             return success;
+        }
+
+        /// <summary>
+        /// Restores client resource registrations from the <paramref name="cachedContent"/>.
+        /// These are registrations that originated from <c>DnnJsInclude</c>, <c>DnnCssInclude</c>, and <c>JavaScriptLibraryInclude</c> controls.
+        /// </summary>
+        /// <param name="cachedContent">The HTML text of the cached module.</param>
+        private void RestoreCachedClientResourceRegistrations(string cachedContent)
+        {
+            // parse the registered CDF from content
+            var matches = Regex.Matches(cachedContent, @"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->", RegexOptions.IgnoreCase);
+            if (matches.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Match match in matches)
+            {
+                cachedContent = cachedContent.Replace(match.Value, string.Empty);
+                switch (match.Groups[1].Value.ToUpperInvariant())
+                {
+                    case "JAVASCRIPT":
+                        ClientResourceManager.RegisterScript(this.Page, match.Groups[2].Value);
+                        break;
+                    case "CSS":
+                        ClientResourceManager.RegisterStyleSheet(this.Page, match.Groups[2].Value);
+                        break;
+                    case "JS-LIBRARY":
+                        var args = match.Groups[2].Value.Split(new[] { ',', }, StringSplitOptions.None);
+                        if (string.IsNullOrEmpty(args[1]))
+                        {
+                            JavaScript.RequestRegistration(args[0]);
+                        }
+                        else if (string.IsNullOrEmpty(args[2]))
+                        {
+                            JavaScript.RequestRegistration(args[0], new Version(args[1]));
+                        }
+                        else
+                        {
+                            JavaScript.RequestRegistration(args[0], new Version(args[1]), (SpecificVersion)Enum.Parse(typeof(SpecificVersion), args[2]));
+                        }
+
+                        break;
+                }
+            }
         }
 
         #endregion
