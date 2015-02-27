@@ -614,6 +614,7 @@
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
+    <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
@@ -637,6 +638,7 @@
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
+    <Compile Include="Services\Assets\IAssetManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
