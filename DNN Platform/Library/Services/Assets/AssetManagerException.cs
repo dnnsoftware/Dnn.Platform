@@ -19,21 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-
-using DotNetNuke.Services.FileSystem;
+using System;
 
 namespace DotNetNuke.Services.Assets
 {
-    public interface IAssetManager
+    public class AssetManagerException : Exception
     {
-        IFileInfo RenameFile(int fileId, string newFileName);
-
-        void RenameFolder(int folderId, string folderName);
-
-        // TODO: combine TagsChanged/SaveTags into a single call?
-        bool TagsChanged(IFileInfo file, IEnumerable<string> tags);
-
-        void SaveTags(IFileInfo file, IEnumerable<string> tags);
+        public AssetManagerException(string message) : base(message)
+        {
+        }
     }
 }

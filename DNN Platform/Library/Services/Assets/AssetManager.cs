@@ -19,7 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,19 +45,19 @@ namespace DotNetNuke.Services.Assets
 
             if (string.IsNullOrEmpty(filteredName))
             {
-                throw new AssetsManagerException(string.Format(GetString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
+                throw new AssetManagerException(string.Format(GetString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
             }
 
             // Chech if the new name has invalid chars
             if (IsInvalidName(filteredName))
             {
-                throw new AssetsManagerException(GetInvalidCharsErrorText());
+                throw new AssetManagerException(GetInvalidCharsErrorText());
             }
 
             // Check if the new name is a reserved name
             if (IsReservedName(filteredName))
             {
-                throw new AssetsManagerException(GetString("FolderFileNameIsReserved.Error"));
+                throw new AssetManagerException(GetString("FolderFileNameIsReserved.Error"));
             }
 
             var file = FileManager.Instance.GetFile(fileId, true);
@@ -73,7 +72,7 @@ namespace DotNetNuke.Services.Assets
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!HasPermission(folder, "MANAGE"))
             {
-                throw new AssetsManagerException(GetString("UserHasNoPermissionToEditFile.Error"));
+                throw new AssetManagerException(GetString("UserHasNoPermissionToEditFile.Error"));
             }
 
             return FileManager.Instance.RenameFile(file, newFileName);
@@ -147,13 +146,6 @@ namespace DotNetNuke.Services.Assets
         public static string GetString(string key)
         {
             return Localization.Localization.GetString(key, ResourceFile);
-        }
-    }
-
-    public class AssetsManagerException : Exception
-    {
-        public AssetsManagerException(string message) : base(message)
-        {
         }
     }
 }
