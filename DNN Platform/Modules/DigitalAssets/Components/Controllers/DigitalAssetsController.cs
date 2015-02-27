@@ -177,22 +177,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return permissionKeys.Select(permissionKey => new PermissionViewModel { Key = permissionKey, Value = HasPermission(folder, permissionKey) }).ToList();
         }
 
-        private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
-        {
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
-            {
-                return folder.FolderPath;
-            }
-
-            var oldFolderPath = folder.FolderPath;
-            if (oldFolderPath.Length > 0)
-            {
-                oldFolderPath = oldFolderPath.Substring(0, oldFolderPath.LastIndexOf(folder.FolderName, StringComparison.Ordinal));
-            }
-
-            return PathUtils.Instance.FormatFolderPath(oldFolderPath + newFolderName);
-        }
-
         private FolderMappingViewModel GetFolderMappingViewModel(FolderMappingInfo folderMapping)
         {
             return new FolderMappingViewModel
@@ -318,23 +302,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : ""
                     }
                 };
-        }
-
-        private string ReplaceFolderName(string path, string folderName, string newFolderName)
-        {
-            string newPath = PathUtils.Instance.RemoveTrailingSlash(path);
-            if (string.IsNullOrEmpty(newPath))
-            {
-                return path;
-            }
-            var nameIndex = newPath.LastIndexOf(folderName, StringComparison.Ordinal);
-            if (nameIndex == -1)
-            {
-                return path;
-            }
-
-            var result = newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
-            return result;
         }
 
         private bool AreMappedPathsSupported(int folderMappingId)
@@ -756,55 +723,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public ItemViewModel RenameFile(int fileID, string newFileName)
         {
-            return GetItemViewModel(AssetsManager.Instance.RenameFile(fileID, newFileName));
+            return GetItemViewModel(AssetManager.Instance.RenameFile(fileID, newFileName));
         }
 
         public FolderViewModel RenameFolder(int folderID, string newFolderName)
         {
-            Requires.NotNullOrEmpty("newFolderName", newFolderName);
-
-            newFolderName = CleanDotsAtTheEndOfTheName(newFolderName);
-
-            // Check if the new name has invalid chars
-            if (IsInvalidName(newFolderName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the name is reserved
-            if (IsReservedName(newFolderName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var folder = GetFolderInfo(folderID);
-
-            // Check if user has appropiate permissions
-            if (!HasPermission(folder, "MANAGE"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToEditFolder.Error"));
-            }
-
-            // check if the name has not changed
-            if (folder.FolderName == newFolderName)
-            {
-                return GetFolderViewModel(folder);
-            }
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
-            {
-                folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
-                return GetFolderViewModel(FolderManager.Instance.UpdateFolder(folder));
-            }
-
-            var newFolderPath = GetNewFolderPath(newFolderName, folder);
-            // Check if the new folder already exists
-            if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderAlreadyExists.Error"));
-            }
-
-            FolderManager.Instance.RenameFolder(folder, newFolderName);
-            return GetFolderViewModel(folder);
+            return GetFolderViewModel(AssetManager.Instance.RenameFolder(folderID, newFolderName));
         }
 
         public Stream GetFileContent(int fileId, out string fileName, out string contentType)
