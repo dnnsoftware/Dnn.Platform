@@ -19,12 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
@@ -45,7 +47,7 @@ namespace DotNetNuke.Services.Assets
 
             if (string.IsNullOrEmpty(filteredName))
             {
-                throw new AssetManagerException(string.Format(GetString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
+                throw new AssetManagerException(string.Format(GetLocalizedString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
             }
 
             // Chech if the new name has invalid chars
@@ -57,7 +59,7 @@ namespace DotNetNuke.Services.Assets
             // Check if the new name is a reserved name
             if (IsReservedName(filteredName))
             {
-                throw new AssetManagerException(GetString("FolderFileNameIsReserved.Error"));
+                throw new AssetManagerException(GetLocalizedString("FolderFileNameIsReserved.Error"));
             }
 
             var file = FileManager.Instance.GetFile(fileId, true);
@@ -72,15 +74,58 @@ namespace DotNetNuke.Services.Assets
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!HasPermission(folder, "MANAGE"))
             {
-                throw new AssetManagerException(GetString("UserHasNoPermissionToEditFile.Error"));
+                throw new AssetManagerException(GetLocalizedString("UserHasNoPermissionToEditFile.Error"));
             }
 
             return FileManager.Instance.RenameFile(file, newFileName);
         }
 
-        public void RenameFolder(int folderId, string folderName)
+        public IFolderInfo RenameFolder(int folderId, string newFolderName)
         {
-            throw new System.NotImplementedException();
+            Requires.NotNullOrEmpty("newFolderName", newFolderName);
+
+            newFolderName = CleanDotsAtTheEndOfTheName(newFolderName);
+
+            // Check if the new name has invalid chars
+            if (IsInvalidName(newFolderName))
+            {
+                throw new AssetManagerException(GetInvalidCharsErrorText());
+            }
+
+            // Check if the name is reserved
+            if (IsReservedName(newFolderName))
+            {
+                throw new AssetManagerException(GetLocalizedString("FolderFileNameIsReserved.Error"));
+            }
+
+            var folder = GetFolderInfo(folderId);
+
+            // Check if user has appropiate permissions
+            if (!HasPermission(folder, "MANAGE"))
+            {
+                throw new AssetManagerException(GetLocalizedString("UserHasNoPermissionToEditFolder.Error"));
+            }
+
+            // check if the name has not changed
+            if (folder.FolderName == newFolderName)
+            {
+                return folder;
+            }
+            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
+            {
+                folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
+                return FolderManager.Instance.UpdateFolder(folder);
+            }
+
+            var newFolderPath = GetNewFolderPath(newFolderName, folder);
+            // Check if the new folder already exists
+            if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
+            {
+                throw new AssetManagerException(GetLocalizedString("FolderAlreadyExists.Error"));
+            }
+
+            FolderManager.Instance.RenameFolder(folder, newFolderName);
+            return folder;
         }
 
         public bool TagsChanged(IFileInfo file, IEnumerable<string> tags)
@@ -128,7 +173,7 @@ namespace DotNetNuke.Services.Assets
 
         public string GetInvalidCharsErrorText()
         {
-            return string.Format(GetString("FolderFileNameHasInvalidcharacters.Error"), "\\:/*?\"<>|");
+            return string.Format(GetLocalizedString("FolderFileNameHasInvalidcharacters.Error"), "\\:/*?\"<>|");
         }
 
         public bool HasPermission(IFolderInfo folder, string permissionKey)
@@ -143,7 +188,50 @@ namespace DotNetNuke.Services.Assets
             return hasPermision;
         }
 
-        public static string GetString(string key)
+        private IFolderInfo GetFolderInfo(int folderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            if (folder == null)
+            {
+                throw new AssetManagerException(GetLocalizedString("FolderDoesNotExists.Error"));
+            }
+            return folder;
+        }
+
+        private string ReplaceFolderName(string path, string folderName, string newFolderName)
+        {
+            string newPath = PathUtils.Instance.RemoveTrailingSlash(path);
+            if (string.IsNullOrEmpty(newPath))
+            {
+                return path;
+            }
+            var nameIndex = newPath.LastIndexOf(folderName, StringComparison.Ordinal);
+            if (nameIndex == -1)
+            {
+                return path;
+            }
+
+            var result = newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
+            return result;
+        }
+
+        private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
+        {
+            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
+            {
+                return folder.FolderPath;
+            }
+
+            var oldFolderPath = folder.FolderPath;
+            if (oldFolderPath.Length > 0)
+            {
+                oldFolderPath = oldFolderPath.Substring(0, oldFolderPath.LastIndexOf(folder.FolderName, StringComparison.Ordinal));
+            }
+
+            return PathUtils.Instance.FormatFolderPath(oldFolderPath + newFolderName);
+        }
+
+        private static string GetLocalizedString(string key)
         {
             return Localization.Localization.GetString(key, ResourceFile);
         }

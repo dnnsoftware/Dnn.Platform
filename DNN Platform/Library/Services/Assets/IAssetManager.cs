@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Assets
     {
         IFileInfo RenameFile(int fileId, string newFileName);
 
-        void RenameFolder(int folderId, string folderName);
+        IFolderInfo RenameFolder(int folderId, string folderName);
 
         // TODO: combine TagsChanged/SaveTags into a single call?
         bool TagsChanged(IFileInfo file, IEnumerable<string> tags);
