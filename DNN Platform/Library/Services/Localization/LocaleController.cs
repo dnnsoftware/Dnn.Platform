@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Localization
                     {
                         foreach (string strLocale in dicLocales.Keys)
                         {
-                            if (strLocale.Split('-')[0] == localeCode)
+                            if (strLocale.Split('-')[0].ToLower() == localeCode.ToLower())
                             {
                                 //set the requested _localecode to the full locale
                                 localeCode = strLocale;
