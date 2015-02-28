@@ -144,7 +144,7 @@
 								iframeBody.className += 'mobileView dnnFormPopup dnnFormPopupMobileView';	
 								var iframeHeight = Math.max(iframeBody.scrollHeight, iframeBody.offsetHeight, iframeHtml.clientHeight, iframeHtml.scrollHeight, iframeHtml.offsetHeight);
 								$modal.css('height', iframeHeight + 100)
-									  .dialog('option', 'position', 'top');
+									  .dialog('option', 'position', { my: "top", at: "top" });
 							}
 							
 							iframe.contentWindow.dnnModal.show = function (sUrl, sShowReturn, sHeight, sWidth, sRefresh, sClosingUrl) {
@@ -179,7 +179,7 @@
                     modal: true,
                     autoOpen: true,
                     dialogClass: "dnnFormPopup",
-                    position: "center",
+                    position: { my: "center", at: "center" },
                     minWidth: width,
                     minHeight: height,
                     maxWidth: 1920,
@@ -223,7 +223,7 @@
                         }
 
                         $modal.dialog({ height: newHeight, width: newWidth });
-                        $modal.dialog({ position: 'center' });
+                        $modal.dialog({ position: { my: "center", at: "center" } });
                     });
                 }
             } else {
@@ -238,7 +238,7 @@
                     refresh: refresh,
                     showReturn: showReturn,
                     closingUrl: closingUrl,
-                    position: "top",
+                    position: { my: "top", at: "top" },
                     draggable: false,
 					open: function() { 
 							$('#Form').hide();
