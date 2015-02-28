@@ -2265,7 +2265,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    list.Add(new PortalTemplateInfo(templateFilePath, ""));
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current 
+                    list.Add(new PortalTemplateInfo(templateFilePath, GetCurrentPortalSettingsInternal().CultureCode ?? Thread.CurrentThread.CurrentCulture.Name));
                 }
             }
 
@@ -3459,7 +3460,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    CultureCode = "";
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current
+                    CultureCode = GetCurrentPortalSettingsInternal().CultureCode ?? Thread.CurrentThread.CurrentCulture.Name;
                 }
             }
 
