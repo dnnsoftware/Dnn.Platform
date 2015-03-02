@@ -322,6 +322,7 @@ namespace DotNetNuke.Entities.Portals
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
 		/// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in Platform 7.4.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
         /// -----------------------------------------------------------------------------
