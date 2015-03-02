@@ -19,8 +19,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-
 using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.Assets
@@ -31,9 +29,6 @@ namespace DotNetNuke.Services.Assets
 
         IFolderInfo RenameFolder(int folderId, string folderName);
 
-        // TODO: combine TagsChanged/SaveTags into a single call?
-        bool TagsChanged(IFileInfo file, IEnumerable<string> tags);
-
-        void SaveTags(IFileInfo file, IEnumerable<string> tags);
+        IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath);
     }
 }

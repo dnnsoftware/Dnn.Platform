@@ -20,11 +20,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
@@ -47,7 +45,7 @@ namespace DotNetNuke.Services.Assets
 
             if (string.IsNullOrEmpty(filteredName))
             {
-                throw new AssetManagerException(string.Format(GetLocalizedString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
+                throw new AssetManagerException(GetLocalizedString("FolderFileNameHasInvalidcharacters.Error", newFileName));
             }
 
             // Chech if the new name has invalid chars
@@ -121,21 +119,57 @@ namespace DotNetNuke.Services.Assets
             // Check if the new folder already exists
             if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
             {
-                throw new AssetManagerException(GetLocalizedString("FolderAlreadyExists.Error"));
+                throw new AssetManagerException(GetLocalizedString("FolderAlreadyExists.Error", newFolderName));
             }
 
             FolderManager.Instance.RenameFolder(folder, newFolderName);
             return folder;
         }
 
-        public bool TagsChanged(IFileInfo file, IEnumerable<string> tags)
+        public IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath)
         {
-            throw new System.NotImplementedException();
-        }
+            Requires.NotNullOrEmpty("folderName", folderName);
 
-        public void SaveTags(IFileInfo file, IEnumerable<string> tags)
-        {
-            throw new System.NotImplementedException();
+            var filterFolderName = CleanDotsAtTheEndOfTheName(folderName);
+
+            if (IsInvalidName(filterFolderName))
+            {
+                throw new AssetManagerException(GetInvalidCharsErrorText());
+            }
+
+            // Check if the new name is a reserved name
+            if (IsReservedName(filterFolderName))
+            {
+                throw new AssetManagerException(GetLocalizedString("FolderFileNameIsReserved.Error"));
+            }
+
+            var parentFolder = GetFolderInfo(folderParentId);
+
+            if (!HasPermission(parentFolder, "ADD"))
+            {
+                throw new AssetManagerException(GetLocalizedString("UserHasNoPermissionToAdd.Error"));
+            }
+
+            var folderPath = PathUtils.Instance.FormatFolderPath(
+                PathUtils.Instance.FormatFolderPath(
+                PathUtils.Instance.StripFolderPath(parentFolder.FolderPath).Replace("\\", "/")) + filterFolderName);
+
+            mappedPath = PathUtils.Instance.FormatFolderPath(mappedPath);
+
+            if (!Regex.IsMatch(mappedPath, @"^(?!\s*[\\/]).*$"))
+            {
+                throw new AssetManagerException(GetLocalizedString("InvalidMappedPath.Error"));
+            }
+
+            try
+            {
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingId);
+                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));                
+            }
+            catch (FolderAlreadyExistsException)
+            {
+                throw new AssetManagerException(GetLocalizedString("FolderAlreadyExists.Error", filterFolderName));
+            }
         }
 
         private static string CleanDotsAtTheEndOfTheName(string name)
@@ -150,7 +184,7 @@ namespace DotNetNuke.Services.Assets
             return invalidFilenameChars.IsMatch(itemName);
         }
 
-        public string GetInvalidChars()
+        private string GetInvalidChars()
         {
             var invalidChars = new string(Path.GetInvalidFileNameChars());
 
@@ -171,12 +205,12 @@ namespace DotNetNuke.Services.Assets
             return reservedNames.Contains(Path.GetFileNameWithoutExtension(name.ToUpperInvariant()));
         }
 
-        public string GetInvalidCharsErrorText()
+        private string GetInvalidCharsErrorText()
         {
-            return string.Format(GetLocalizedString("FolderFileNameHasInvalidcharacters.Error"), "\\:/*?\"<>|");
+            return GetLocalizedString("FolderFileNameHasInvalidcharacters.Error", "\\:/*?\"<>|");
         }
 
-        public bool HasPermission(IFolderInfo folder, string permissionKey)
+        private bool HasPermission(IFolderInfo folder, string permissionKey)
         {
             var hasPermision = PortalSettings.Current.UserInfo.IsSuperUser;
 
@@ -200,7 +234,7 @@ namespace DotNetNuke.Services.Assets
 
         private string ReplaceFolderName(string path, string folderName, string newFolderName)
         {
-            string newPath = PathUtils.Instance.RemoveTrailingSlash(path);
+            var newPath = PathUtils.Instance.RemoveTrailingSlash(path);
             if (string.IsNullOrEmpty(newPath))
             {
                 return path;
@@ -211,8 +245,7 @@ namespace DotNetNuke.Services.Assets
                 return path;
             }
 
-            var result = newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
-            return result;
+            return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);            
         }
 
         private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
@@ -231,9 +264,9 @@ namespace DotNetNuke.Services.Assets
             return PathUtils.Instance.FormatFolderPath(oldFolderPath + newFolderName);
         }
 
-        private static string GetLocalizedString(string key)
+        private static string GetLocalizedString(string key, params object[] args)
         {
-            return Localization.Localization.GetString(key, ResourceFile);
+            return string.Format(Localization.Localization.GetString(key, ResourceFile), args);
         }
     }
 }

@@ -28,7 +28,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using System.Web;
 
 using DotNetNuke.Common;
@@ -103,11 +102,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             return IconController.IconURL("ExtFile", "32x32", "Standard");
-        }
-
-        private static string CleanDotsAtTheEndOfTheName(string name)
-        {
-            return name.Trim().TrimEnd(new[] { '.', ' ' });
         }
 
         #endregion
@@ -230,19 +224,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size);
 
             return field;
-        }
-
-        private bool IsInvalidName(string itemName)
-        {
-            var invalidFilenameChars = new Regex("[" + Regex.Escape(GetInvalidChars()) + "]");
-
-            return invalidFilenameChars.IsMatch(itemName);
-        }
-
-        private bool IsReservedName(string name)
-        {
-            var reservedNames = new[] { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "CLOCK$" };
-            return reservedNames.Contains(Path.GetFileNameWithoutExtension(name.ToUpperInvariant()));
         }
 
         private List<Field> GetFolderPreviewFields(IFolderInfo folder)
@@ -595,49 +576,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
-            Requires.NotNullOrEmpty("folderName", folderName);
-
-            var filterFolderName = CleanDotsAtTheEndOfTheName(folderName);
-
-            if (IsInvalidName(filterFolderName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the new name is a reserved name
-            if (IsReservedName(filterFolderName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var parentFolder = GetFolderInfo(folderParentID);
-
-            if (!HasPermission(parentFolder, "ADD"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToAdd.Error"));
-            }
-
-            var folderPath = PathUtils.Instance.FormatFolderPath(
-                PathUtils.Instance.FormatFolderPath(
-                PathUtils.Instance.StripFolderPath(parentFolder.FolderPath).Replace("\\", "/")) + filterFolderName);
-
-            mappedPath = PathUtils.Instance.FormatFolderPath(mappedPath);
-
-            if (!Regex.IsMatch(mappedPath, @"^(?!\s*[\\/]).*$"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("InvalidMappedPath.Error"));
-            }
-
-            try
-            {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
-                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
-                return GetFolderViewModel(folder);
-            }
-            catch (FolderAlreadyExistsException)
-            {
-                throw new DotNetNukeException(string.Format(LocalizationHelper.GetString("FolderAlreadyExists.Error"), filterFolderName));
-            }
+            return GetFolderViewModel(AssetManager.Instance.CreateFolder( folderName,folderParentID, folderMappingID, mappedPath));
         }
 
         public ItemViewModel GetFile(int fileID)
