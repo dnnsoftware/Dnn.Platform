@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -41,7 +42,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization.Internal;
-using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
@@ -360,18 +360,10 @@ namespace DotNetNuke.Services.Install
 
         private string InstallDatabase()
         {
-            string strErrorMessage;
-
             var strProviderPath = _dataProvider.GetProviderPath();
-            if (!strProviderPath.StartsWith("ERROR:"))
-            {
-                //Install Base Version
-                strErrorMessage = Upgrade.Upgrade.InstallDatabase(BaseVersion, strProviderPath, InstallTemplate, false);
-            }
-            else
-            {
-                strErrorMessage = strProviderPath;
-            }
+            var strErrorMessage = strProviderPath.StartsWith("ERROR:")
+                ? strProviderPath
+                : Upgrade.Upgrade.InstallDatabase(BaseVersion, strProviderPath, InstallTemplate, false);
             if (string.IsNullOrEmpty(strErrorMessage))
             {
                 //Get Next Version
@@ -408,7 +400,8 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
-                strErrorMessage = "ERROR: (see " + Path.GetFileName(strScriptFile).Replace("." + Upgrade.Upgrade.DefaultProvider, ".log") + " for more information)";
+                strErrorMessage = "ERROR: (see " + (Path.GetFileName(strScriptFile) ??"")
+                    .Replace("." + Upgrade.Upgrade.DefaultProvider, ".log") + " for more information)";
             }
             return strErrorMessage;
         }
@@ -431,9 +424,11 @@ namespace DotNetNuke.Services.Install
             try
             {
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
-                var sw = new StreamWriter(StatusFile, true);
-                sw.WriteLine(obj.ToJson());
-                sw.Close();
+                using (var sw = new StreamWriter(StatusFile, false))
+                {
+                    sw.WriteLine(obj.ToJson());
+                    sw.Close();
+                }
             }
             catch (Exception)
             {
@@ -573,7 +568,7 @@ namespace DotNetNuke.Services.Install
         {
             var installationDate = Config.GetSetting("InstallationDate");
 
-            if (installationDate == null || String.IsNullOrEmpty(installationDate))
+            if (string.IsNullOrEmpty(installationDate))
             {
                 string strError = Config.UpdateMachineKey();
                 if (String.IsNullOrEmpty(strError))
@@ -597,27 +592,32 @@ namespace DotNetNuke.Services.Install
         /// <param name="installInfo"></param>
         private static void UpdateInstallConfig(Dictionary<string, string> installInfo)
         {
-            _installConfig = new InstallConfig();
+            _installConfig = new InstallConfig
+            {
+                SuperUser = new SuperUserConfig
+                {
+                    UserName = installInfo["username"],
+                    Password = installInfo["password"],
+                    Locale = _culture,
+                    Email = installInfo["email"],
+                    FirstName = "SuperUser",
+                    LastName = "Account"
+                },
+                InstallCulture = installInfo["language"]
+            };
             // SuperUser Config
-            _installConfig.SuperUser = new SuperUserConfig();
-            _installConfig.SuperUser.UserName = installInfo["username"];
-            _installConfig.SuperUser.Password = installInfo["password"];
-            _installConfig.SuperUser.Locale = _culture;
             // Defaults
-            _installConfig.SuperUser.Email = installInfo["email"];
-            _installConfig.SuperUser.FirstName = "SuperUser";
-            _installConfig.SuperUser.LastName = "Account";
 
             // website culture
-            _installConfig.InstallCulture = installInfo["language"];
 
             // Website Portal Config
-            var portalConfig = new PortalConfig();
-            portalConfig.PortalName = installInfo["websiteName"];
-            portalConfig.TemplateFileName = installInfo["template"];
-            portalConfig.IsChild = false;
-            _installConfig.Portals = new List<PortalConfig>();
-            _installConfig.Portals.Add(portalConfig);
+            var portalConfig = new PortalConfig
+            {
+                PortalName = installInfo["websiteName"],
+                TemplateFileName = installInfo["template"],
+                IsChild = false
+            };
+            _installConfig.Portals = new List<PortalConfig> {portalConfig};
 
             InstallController.Instance.SetInstallConfig(_installConfig);
         }
@@ -627,13 +627,15 @@ namespace DotNetNuke.Services.Install
             // Database Config
             if (installInfo["databaseSetup"] == "advanced")
             {
-                _connectionConfig = new ConnectionConfig();
-                _connectionConfig.Server = installInfo["databaseServerName"];
-                _connectionConfig.Qualifier = installInfo["databaseObjectQualifier"];
-                _connectionConfig.Integrated = installInfo["databaseSecurity"] == "integrated";
-                _connectionConfig.User = installInfo["databaseUsername"];
-                _connectionConfig.Password = installInfo["databasePassword"];
-                _connectionConfig.RunAsDbowner = installInfo["databaseRunAsOwner"] == "on";
+                _connectionConfig = new ConnectionConfig
+                {
+                    Server = installInfo["databaseServerName"],
+                    Qualifier = installInfo["databaseObjectQualifier"],
+                    Integrated = installInfo["databaseSecurity"] == "integrated",
+                    User = installInfo["databaseUsername"],
+                    Password = installInfo["databasePassword"],
+                    RunAsDbowner = installInfo["databaseRunAsOwner"] == "on"
+                };
 
                 if (installInfo["databaseType"] == "express")
                 {
@@ -690,7 +692,7 @@ namespace DotNetNuke.Services.Install
 							var package = new PackageInfo { Name = "LanguagePack-" + myCIintl.Name, FriendlyName = myCIintl.NativeName };
 							package.Name = myCIintl.NativeName;
 							package.Description = cultureCode;
-							Version ver = null;
+							Version ver;
 							Version.TryParse(version, out ver);
 							package.Version = ver;
 
@@ -734,9 +736,9 @@ namespace DotNetNuke.Services.Install
                 if (languageList.Items.FindItemByValue("en-US") == null)
                 {
                     var myCIintl = new CultureInfo("en-US", true);
-                    var li = new ListItem {Value = "en-US", Text = myCIintl.NativeName};
+                    var li = new ListItem {Value = @"en-US", Text = myCIintl.NativeName};
                     languageList.AddItem(li.Text, li.Value);
-                    RadComboBoxItem lastItem = languageList.Items[languageList.Items.Count - 1];
+                    var lastItem = languageList.Items[languageList.Items.Count - 1];
                     lastItem.Attributes.Add("onclick", "javascript:ClearLegacyLangaugePack();");
                     languageList.Sort = RadComboBoxSort.Ascending;
                     languageList.Items.Sort();
@@ -1057,16 +1059,13 @@ namespace DotNetNuke.Services.Install
                     {
                         string strVersion = Path.GetFileNameWithoutExtension(Convert.ToString(arrVersions[i]));
                         var version = new Version(strVersion);
-                        if (version != null)
-                        {
-                            strErrorMessage += Upgrade.Upgrade.UpgradeApplication(strProviderPath, version, false);
+                        strErrorMessage += Upgrade.Upgrade.UpgradeApplication(strProviderPath, version, false);
 
-                            //delete files which are no longer used
-                            strErrorMessage += Upgrade.Upgrade.DeleteFiles(strProviderPath, version, false);
+                        //delete files which are no longer used
+                        strErrorMessage += Upgrade.Upgrade.DeleteFiles(strProviderPath, version, false);
 
-                            //execute config file updates
-                            strErrorMessage += Upgrade.Upgrade.UpdateConfig(strProviderPath, version, false);
-                        }
+                        //execute config file updates
+                        strErrorMessage += Upgrade.Upgrade.UpdateConfig(strProviderPath, version, false);
                     }
 
                     //Complete Installation
@@ -1122,15 +1121,15 @@ namespace DotNetNuke.Services.Install
         public static object GetInstallationLog(int startRow)
         {
             var data = string.Empty;
-            string logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";
+            var logFile = InstallController.Instance.InstallerLogName;
             try
             {
                 var lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Portals", "_default", "logs", logFile));
                 var errorLogged = false;
                 if (lines.Length > startRow)
                 {
-                    var count = lines.Length - startRow > 500  ? 500 : lines.Length - startRow;
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    var count = Math.Min(lines.Length - startRow, 500);
+                    var sb = new StringBuilder();
                     for (var i = startRow; i < startRow + count; i++)
                     {
                         if (lines[i].Contains("[ERROR]"))
@@ -1186,8 +1185,7 @@ namespace DotNetNuke.Services.Install
 		public static Tuple<bool, string> ValidatePermissions()
 		{
 			var permissionsValid = true;
-			IEnumerable<FileSystemPermissionVerifier> failedList;
-			var errorMessage = string.Empty;
+		    var errorMessage = string.Empty;
 
 			var verifiers = new List<FileSystemPermissionVerifier>
                                 {
@@ -1195,7 +1193,7 @@ namespace DotNetNuke.Services.Install
                                     new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data"), 3)
                                 };
 
-			failedList = verifiers.Where(v => !v.VerifyFolderCreate()).ToArray();
+			var failedList = verifiers.Where(v => !v.VerifyFolderCreate()).ToArray();
 			if (failedList.Any())
 			{
 				permissionsValid = false;
