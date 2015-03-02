@@ -51,6 +51,7 @@
 _ReSharper*
 
 # Others
+*.sln.GhostDoc.xml
 
 [Oo]bj
 TestResults
