@@ -20,14 +20,12 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
@@ -157,16 +155,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage CreateNewFolder(CreateNewFolderRequest request)
         {
-            try
-            {
-                var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
-                    request.FolderMappingId, request.MappedName);
-                return Request.CreateResponse(HttpStatusCode.OK, folder);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
+                request.FolderMappingId, request.MappedName);
+            return Request.CreateResponse(HttpStatusCode.OK, folder);
         }
 
         [HttpPost]
