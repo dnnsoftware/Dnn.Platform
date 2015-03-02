@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.Cache
         private void ClearPortalCacheInternal(int portalId, bool cascade, bool clearRuntime)
         {
             //DNN-6170 PortalSettingsCacheKey has culture param
-            //RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId);
+            //RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, );
 
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
@@ -242,7 +242,6 @@ namespace DotNetNuke.Services.Cache
                     RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
-                RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
             if (cascade)
             {
