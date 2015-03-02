@@ -873,7 +873,10 @@ namespace DotNetNuke.Security.Membership
                     {
                         isOAuthUser = true;
                         //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-                        user.Username = service + "-" + user.Email;
+	                    if (!string.IsNullOrEmpty(user.Email))
+	                    {
+		                    user.Username = service + "-" + user.Email;
+	                    }
                     }
                     else
                     {
