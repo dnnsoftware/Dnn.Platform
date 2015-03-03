@@ -321,6 +321,62 @@ namespace DotNetNuke.Services.Assets
             }
         }
 
+        public bool DeleteFolder(int folderId, bool onlyUnlink, ICollection<IFolderInfo> nonDeletedSubfolders)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            if (folder == null) return false;
+
+            if (!HasPermission(folder, "DELETE"))
+            {
+                nonDeletedSubfolders.Add(folder);
+            }
+            else
+            {
+                if (onlyUnlink)
+                {
+                    FolderManager.Instance.UnlinkFolder(folder);
+                }
+                else
+                {
+                    DeleteFolder(folder, nonDeletedSubfolders);
+                }
+            }
+
+            return true;
+        }
+
+        private bool DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> nonDeletedItems)
+        {
+            var nonDeletedSubfolders = new List<IFolderInfo>();
+            FolderManager.Instance.DeleteFolder(folder, nonDeletedSubfolders);
+            if (!nonDeletedSubfolders.Any())
+            {
+                return false;
+            }
+
+            foreach (var nonDeletedSubfolder in nonDeletedSubfolders)
+            {
+                nonDeletedItems.Add(nonDeletedSubfolder);
+            }
+            return true;
+        }
+
+        public bool DeleteFile(int fileId)
+        {
+            var fileInfo = FileManager.Instance.GetFile(fileId, true);
+            if (fileInfo == null) return false;
+
+            var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
+
+            if (!HasPermission(folder, "DELETE"))
+            {
+                return false;
+            }
+
+            FileManager.Instance.DeleteFile(fileInfo);
+            return true;
+        }
+
         private static string CleanDotsAtTheEndOfTheName(string name)
         {
             return name.Trim().TrimEnd('.', ' ');
