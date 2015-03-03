@@ -592,6 +592,10 @@
     <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
     <Compile Include="Services\Assets\AssetManagerException.cs" />
+    <Compile Include="Services\Assets\FolderPathComparer.cs" />
+    <Compile Include="Services\Assets\ContentPage.cs" />
+    <Compile Include="Services\Assets\SortProperties.cs" />
+    <Compile Include="Services\Assets\SubfolderFilter.cs" />
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthorisationResult.cs" />

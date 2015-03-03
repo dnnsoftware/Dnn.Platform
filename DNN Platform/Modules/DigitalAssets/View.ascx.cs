@@ -42,6 +42,7 @@ using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;

@@ -27,13 +27,11 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -68,32 +66,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
         }
 
-        protected static IOrderedQueryable<T> ApplyOrder<T>(IQueryable<T> source, string propertyName, bool asc)
-        {
-            var methodName = asc ? "OrderBy" : "OrderByDescending";
-            var arg = Expression.Parameter(typeof(T), "x");
-
-            // Use reflection to mirror LINQ
-            var property = typeof(T).GetProperty(propertyName);
-
-            // If property is undefined returns the original source
-            if (property == null) return (IOrderedQueryable<T>)source;
-
-            Expression expr = Expression.Property(arg, property);
-
-            var delegateType = typeof(Func<,>).MakeGenericType(typeof(T), property.PropertyType);
-            var lambda = Expression.Lambda(delegateType, expr, arg);
-
-            var result = typeof(Queryable).GetMethods().Single(
-                    method => method.Name == methodName
-                            && method.IsGenericMethodDefinition
-                            && method.GetGenericArguments().Length == 2
-                            && method.GetParameters().Length == 2)
-                    .MakeGenericMethod(typeof(T), property.PropertyType)
-                    .Invoke(null, new object[] { source, lambda });
-            return (IOrderedQueryable<T>)result;
-        }
-
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
@@ -115,30 +87,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 throw new DotNetNukeException(LocalizationHelper.GetString("FolderDoesNotExists.Error"));
             }
             return folder;
-        }
-
-        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc)
-        {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            var folders = FolderManager.Instance.GetFolders(parentFolder).Where(f => HasPermission(f, "BROWSE") || HasPermission(f, "READ"));
-
-            // Set default sorting values
-            var field = string.IsNullOrEmpty(orderingField) ? "FolderName" : orderingField;
-
-            return ApplyOrder(folders.AsQueryable(), field, asc);
-        } 
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (Host.EnableFileAutoSync && startIndex==0)
-            {
-                FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
-            }
-
-            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);            
         }
 
         /// <summary>
@@ -375,62 +323,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 //The user cannot access the content
                 return new List<FolderViewModel>();
             }
-            return GetFolders(folder, "FolderName", true).Select(GetFolderViewModel);
+            return AssetManager.Instance.GetFolders(folder, "FolderName", true).Select(GetFolderViewModel);
         }
 
         public PageViewModel GetFolderContent(int moduleId, int folderId, int startIndex, int numItems, string sortExpression)
         {
-            var folder = GetFolderInfo(folderId);
-
-            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
-            {
-                //The user cannot access the content               
-                return new PageViewModel
-                                {
-                                    Folder = GetFolderViewModel(folder),
-                                    Items = new List<ItemViewModel>(),
-                                    TotalCount = 0
-                                };
-            }
-
-            var sortProperties = SortProperties.Parse(sortExpression);
-
-            List<IFolderInfo> folders;      
-
             var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
-            if (subfolderFilter != SubfolderFilter.IncludeSubfoldersFolderStructure)
-            {
-                folders = new List<IFolderInfo>();
-            }
-            else
-            { 
-                folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
-            }
-
-            var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
-
-            IEnumerable<ItemViewModel> content;
-            if (startIndex + numItems <= folders.Count())
-            {
-                content = folders.Skip(startIndex).Take(numItems).Select(GetItemViewModel);
-            } 
-            else if (startIndex >= folders.Count())
-            {
-                content = files.Skip(startIndex - folders.Count).Take(numItems).Select(GetItemViewModel);
-            }
-            else
-            {
-                var numFiles = numItems - (folders.Count - startIndex);
-                content = folders.Skip(startIndex).Select(GetItemViewModel).Union(files.Take(numFiles).Select(GetItemViewModel));
-            }
-
+            var page = AssetManager.Instance.GetFolderContent(folderId, startIndex, numItems, sortExpression, subfolderFilter);
             return new PageViewModel
-                {
-                    Folder = GetFolderViewModel(folder),
-                    Items = content.ToList(),
-                    TotalCount = folders.Count() + files.Count()
-                };
+            {
+                Folder = GetFolderViewModel(page.Folder),
+                Items = page.Items.Select(GetItemViewModel).ToList(),
+                TotalCount = page.TotalCount
+            };
         }
 
         public void SyncFolderContent(int folderId, bool recursive)
@@ -448,46 +353,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public PageViewModel SearchFolderContent(int moduleId, int folderId, string pattern, int startIndex, int numItems, string sortExpression)
         {
-            var recursive = SettingsRepository.GetSubfolderFilter(moduleId) != SubfolderFilter.ExcludeSubfolders;
-            var folder = GetFolderInfo(folderId);
+            var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
+            var page = AssetManager.Instance.SearchFolderContent(folderId, pattern, startIndex, numItems, sortExpression, subfolderFilter);
 
-            var files = FolderManager.Instance.SearchFiles(folder, pattern, recursive);
-            var sortProperties = SortProperties.Parse(sortExpression);
-            var sortedFiles = SortFiles(files, sortProperties).ToList();
-            
             return new PageViewModel
-                {
-                    Folder = GetFolderViewModel(folder),
-                    Items = sortedFiles.Skip(startIndex).Take(numItems).Select(GetItemViewModel).ToList(),
-                    TotalCount = sortedFiles.Count()
-                };
-        }
-
-        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
-        {
-            switch (sortProperties.Column)
             {
-                case "ItemName":
-                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
-                case "LastModifiedOnDate":
-                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
-                case "Size":
-                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
-                case "ParentFolder":
-                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
-                default:
-                    return files;
-            }
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
+                Folder = GetFolderViewModel(page.Folder),
+                Items = page.Items.Select(GetItemViewModel).ToList(),
+                TotalCount = page.TotalCount
+            };
         }
 
         public FolderViewModel GetFolder(int folderID)
@@ -888,6 +762,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             };
             folderViewModel.Attributes.Add(new KeyValuePair<string, object>("UnlinkAllowedStatus", GetUnlinkAllowedStatus(folder)));
             return folderViewModel;
+        }
+
+        private ItemViewModel GetItemViewModel(object item)
+        {
+            var folder = item as IFolderInfo;
+            if (folder != null) return GetItemViewModel(folder);
+
+            var file = item as IFileInfo;
+            return GetItemViewModel(file);
         }
 
         protected virtual ItemViewModel GetItemViewModel(IFolderInfo folder)
