@@ -3040,6 +3040,13 @@ namespace DotNetNuke.Services.Upgrade
             ReIndexUserSearch();
         }
 
+        private static void UpgradeToVersion750()
+        {
+            //Remove Admin Pages
+            RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//RecycleBin");
+        }
+
         private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -5207,6 +5214,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.4.0":
                         UpgradeToVersion740();
+                        break;
+                    case "7.5.0":
+                        UpgradeToVersion750();
                         break;
                 }
             }

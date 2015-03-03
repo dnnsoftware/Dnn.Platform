@@ -67,6 +67,10 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke.Web.Razor, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Web.Razor\bin\DotNetNuke.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>_dependencies\07.02.00\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
@@ -194,10 +198,6 @@
     <Folder Include="Packages\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj">
-      <Project>{9806c125-8ca9-48cc-940a-ccd0442c5993}</Project>
-      <Name>DotNetNuke.Web.Razor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
