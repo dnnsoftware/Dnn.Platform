@@ -164,10 +164,6 @@
     <None Include="TestFiles\UrlRewrite\TestList.csv" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{6F0A5B23-E09F-431A-879A-993CB77E23D8}</Project>
       <Name>DotNetNuke.HttpModules</Name>

@@ -84,6 +84,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>

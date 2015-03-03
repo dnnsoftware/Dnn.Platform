@@ -45,6 +45,7 @@ using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
 using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Web.UI;
@@ -755,45 +756,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public ItemViewModel RenameFile(int fileID, string newFileName)
         {
-            Requires.NotNullOrEmpty("newFileName", newFileName);
-
-            var filteredName = CleanDotsAtTheEndOfTheName(newFileName);
-
-            if (string.IsNullOrEmpty(filteredName))
-            {
-                throw new DotNetNukeException(string.Format(LocalizationHelper.GetString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
-            }
-
-            // Chech if the new name has invalid chars
-            if (IsInvalidName(filteredName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the new name is a reserved name
-            if (IsReservedName(filteredName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var file = FileManager.Instance.GetFile(fileID, true);
-
-            // Check if the name has not changed
-            if (file.FileName == newFileName)
-            {
-                return GetItemViewModel(file);
-            }
-
-            // Check if user has appropiate permissions
-            var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            if (!HasPermission(folder, "MANAGE"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToEditFile.Error"));
-            }
-
-            var renamedFile = FileManager.Instance.RenameFile(file, newFileName);
-
-            return GetItemViewModel(renamedFile);
+            return GetItemViewModel(AssetsManager.Instance.RenameFile(fileID, newFileName));
         }
 
         public FolderViewModel RenameFolder(int folderID, string newFolderName)

@@ -55,7 +55,10 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -103,21 +106,21 @@
     </Compile>
     <Compile Include="AddScript.ascx.cs">
       <DependentUpon>AddScript.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+      <SubType>aspxcodebehind</SubType>
     </Compile>
     <Compile Include="CreateModule.ascx.designer.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
     </Compile>
     <Compile Include="CreateModule.ascx.cs">
       <DependentUpon>CreateModule.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+      <SubType>aspxcodebehind</SubType>
     </Compile>
     <Compile Include="EditScript.ascx.designer.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditScript.ascx.cs">
       <DependentUpon>EditScript.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+      <SubType>aspxcodebehind</SubType>
     </Compile>
     <Compile Include="RazorHost.ascx.designer.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
@@ -132,7 +135,7 @@
     </Compile>
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+      <SubType>aspxcodebehind</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -175,14 +178,13 @@
     <Content Include="Scripts\_3c_UsingSections.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
+    <ProjectReference Include="..\..\Components\ClientDependency\Source\ClientDependency.Core.csproj">
+      <Project>{3b64e72e-63cc-4a90-adff-4b919ef17239}</Project>
+      <Name>ClientDependency.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj">
-      <Project>{58FD62C7-3F26-4945-B810-428481E6300A}</Project>
+      <Project>{9806c125-8ca9-48cc-940a-ccd0442c5993}</Project>
       <Name>DotNetNuke.Web.Razor</Name>
-      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{B1699614-39D4-468A-AB1D-A2FBA97CADDF}</Project>
@@ -190,9 +192,8 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
