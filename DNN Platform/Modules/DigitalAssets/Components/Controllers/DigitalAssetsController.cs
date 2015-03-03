@@ -89,28 +89,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return folder;
         }
 
-        /// <summary>
-        /// This method deletes a folder and his content (sub folder and files) in a recursive way.
-        /// </summary>
-        /// <param name="folder">Folder to delete</param>
-        /// <param name="notDeletedItems">The not deleted items list. The subfiles / subfolders for which the user has no permissions to delete</param>
-        /// <retur>True if the Folder has been deleted, otherwise returns false</retur>
-        private bool DeleteFolder(IFolderInfo folder, ICollection<ItemPathViewModel> notDeletedItems)
-        {
-            var notDeletedSubfolders = new List<IFolderInfo>();
-            FolderManager.Instance.DeleteFolder(folder, notDeletedSubfolders);
-            if (!notDeletedSubfolders.Any())
-            {
-                return false;
-            }
-            
-            foreach (var notDeletedSubfolder in notDeletedSubfolders)
-            {
-                notDeletedItems.Add(GetItemPathViewModel(notDeletedSubfolder));
-            }
-            return true;
-        }
-
         private IEnumerable<PermissionViewModel> GetPermissionViewModelCollection(IFolderInfo folder)
         {
             // TODO Split permission between CE and PE packages
@@ -488,50 +466,22 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public IEnumerable<ItemPathViewModel> DeleteItems(IEnumerable<DeleteItem> items)
         {
-            var notDeletedItems = new List<ItemPathViewModel>();
+            var nonDeletedItems = new List<IFolderInfo>();
 
             foreach (var item in items)
             {
                 if (item.IsFolder)
                 {
-                    var folder = FolderManager.Instance.GetFolder(item.ItemId);
-                    if (folder == null) continue;
-
-                    if (!HasPermission(folder, "DELETE"))
-                    {
-                        notDeletedItems.Add(GetItemPathViewModel(folder));
-                    }
-                    else
-                    {
-                        if (item.UnlinkAllowedStatus == "onlyUnlink")
-                        {
-                            FolderManager.Instance.UnlinkFolder(folder);
-                        }
-                        else
-                        {
-                            DeleteFolder(folder, notDeletedItems);
-                        }
-                    }
+                    var onlyUnlink = item.UnlinkAllowedStatus == "onlyUnlink";
+                    AssetManager.Instance.DeleteFolder(item.ItemId, onlyUnlink, nonDeletedItems);
                 }
                 else
                 {
-                    var fileInfo = FileManager.Instance.GetFile(item.ItemId, true);
-                    if (fileInfo == null) continue;
-
-                    var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
-
-                    if (!HasPermission(folder, "DELETE"))
-                    {
-                        notDeletedItems.Add(GetItemPathViewModel(fileInfo));
-                    }
-                    else
-                    {
-                        FileManager.Instance.DeleteFile(fileInfo);
-                    }
+                    AssetManager.Instance.DeleteFile(item.ItemId);
                 }
             }
 
-            return notDeletedItems;
+            return nonDeletedItems.Select(GetItemPathViewModel);
         }
 
         public ItemViewModel RenameFile(int fileID, string newFileName)

@@ -38,5 +38,8 @@ namespace DotNetNuke.Services.Assets
 
         IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath);
 
+        bool DeleteFolder(int folderId, bool onlyUnlink, ICollection<IFolderInfo> nonDeletedSubfolders);
+
+        bool DeleteFile(int fileId);
     }
 }
