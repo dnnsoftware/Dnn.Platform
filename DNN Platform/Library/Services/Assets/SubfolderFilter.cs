@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -19,24 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Services.Assets
 {
-    public interface IAssetManager
+    public enum SubfolderFilter
     {
-        ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
-
-        ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
-
-        IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc);
-
-        IFileInfo RenameFile(int fileId, string newFileName);
-
-        IFolderInfo RenameFolder(int folderId, string folderName);
-
-        IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath);
-
+        ExcludeSubfolders,
+        IncludeSubfoldersFilesOnly,
+        IncludeSubfoldersFolderStructure
     }
 }

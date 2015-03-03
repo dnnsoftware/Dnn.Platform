@@ -50,16 +50,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [HttpPost]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
-            try
-            {
-                var moduleId = Request.FindModuleId();
-                var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
-                return Request.CreateResponse(HttpStatusCode.OK, p);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
+            return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 
         [HttpPost]
@@ -131,16 +124,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
-            try
-            {
-                var moduleId = Request.FindModuleId();
-                var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
-                return Request.CreateResponse(HttpStatusCode.OK, subFolders);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var moduleId = Request.FindModuleId();
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
+            return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 
         [HttpPost]

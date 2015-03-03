@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -24,19 +24,12 @@ using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Services.Assets
 {
-    public interface IAssetManager
+    public class ContentPage
     {
-        ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
+        public IFolderInfo Folder { get; set; }
 
-        ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure);
+        public ICollection<object> Items { get; set; }
 
-        IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc);
-
-        IFileInfo RenameFile(int fileId, string newFileName);
-
-        IFolderInfo RenameFolder(int folderId, string folderName);
-
-        IFolderInfo CreateFolder(string folderName, int folderParentId, int folderMappingId, string mappedPath);
-
+        public int TotalCount { get; set; }
     }
 }
