@@ -26,6 +26,7 @@ using System.Web.Mvc;
 using Dnn.Modules.Html.Models;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace Dnn.Modules.Html.Controllers
@@ -57,6 +58,7 @@ namespace Dnn.Modules.Html.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        [ModuleAction(TitleKey = "Edit", ControlKey = "Edit")]
         public ActionResult Index()
         {
             HtmlText item;

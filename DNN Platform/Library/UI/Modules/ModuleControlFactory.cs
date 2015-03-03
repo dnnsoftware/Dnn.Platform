@@ -26,6 +26,7 @@ using System.Web.UI;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules.Html5;
 
 #endregion
@@ -104,8 +105,26 @@ namespace DotNetNuke.UI.Modules
 
         public static Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
+            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLower());
             var moduleControl = new ModuleControlBase();
             moduleControl.ModuleContext.Configuration = moduleConfiguration;
+
+            switch (extension)
+            {
+                case ".mvc":
+                    var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+                    moduleControl.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                                        moduleConfiguration.DesktopModule.FolderName, 
+                                        Localization.LocalResourceDirectory, 
+                                        segments[0]);
+                    break;
+                default:
+                    moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), "") +
+                                        Localization.LocalResourceDirectory + "/" +
+                                        Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc);
+                    break;
+            }
             return moduleControl;
         }
     }

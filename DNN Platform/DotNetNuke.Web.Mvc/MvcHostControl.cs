@@ -28,7 +28,6 @@ using System.Web.UI;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
@@ -41,8 +40,23 @@ namespace DotNetNuke.Web.Mvc
     {
         private ModuleRequestResult _result;
 
-        private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext, ModuleInfo module)
+        private IModuleExecutionEngine GetModuleExecutionEngine()
         {
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            if (moduleExecutionEngine == null)
+            {
+                moduleExecutionEngine = new ModuleExecutionEngine();
+                ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
+            }
+
+            return moduleExecutionEngine;
+        }
+
+        private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
+        {
+            var module = ModuleContext.Configuration;
+
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
             var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
@@ -63,25 +77,30 @@ namespace DotNetNuke.Web.Mvc
                                                 ActionName = segments[1],
                                                 ControllerName = segments[0],
                                                 HttpContext = httpContext,
-                                                Module = module, 
+                                                ModuleContext = ModuleContext, 
                                                 ModuleApplication = moduleApplication
                                             };
 
             return moduleRequestContext;
         }
 
-        private IModuleExecutionEngine GetModuleExecutionEngine()
+        private ModuleActionCollection LoadActions(ModuleRequestResult result)
         {
-            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+            var actions = new ModuleActionCollection();
 
-            if (moduleExecutionEngine == null)
+            if (result.ModuleActions != null)
             {
-                moduleExecutionEngine = new ModuleExecutionEngine();
-                ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
+                foreach (ModuleAction action in result.ModuleActions)
+                {
+                    action.ID = ModuleContext.GetNextActionID();
+                    actions.Add(action);
+                }
             }
 
-            return moduleExecutionEngine;
+            return actions;
         }
+
+        public ModuleActionCollection ModuleActions { get; private set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -89,18 +108,13 @@ namespace DotNetNuke.Web.Mvc
 
             try
             {
-                if (String.IsNullOrEmpty(ModuleContext.Configuration.ModuleControl.ControlKey))
-                {
-                    LoadActions(ModuleContext.Configuration);
-                }
-
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
 
                 var moduleExecutionEngine = GetModuleExecutionEngine();
 
-                LoadActions(ModuleContext.Configuration);
+                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
 
-                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext, ModuleContext.Configuration));
+                ModuleActions = LoadActions(_result);
 
                 httpContext.SetModuleRequestResult(_result);
             }
@@ -117,11 +131,9 @@ namespace DotNetNuke.Web.Mvc
 
             try
             {
-                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
                 if (_result != null)
                 {
-                    Controls.Add(new LiteralControl(RenderModule(_result, httpContext).ToString()));
+                    Controls.Add(new LiteralControl(RenderModule(_result).ToString()));
                 }
             }
             catch (Exception exc)
@@ -130,34 +142,7 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        private void LoadActions(ModuleInfo module)
-        {
-            ModuleActions = new ModuleActionCollection();
-
-            if (String.IsNullOrEmpty(module.ModuleControl.ControlKey))
-            {
-                var moduleControls = ModuleControlController.GetModuleControlsByModuleDefinitionID(module.ModuleDefID);
-
-                foreach (var moduleControl in moduleControls.Values)
-                {
-                    if (!String.IsNullOrEmpty(moduleControl.ControlKey) && moduleControl.ControlKey != "Settings")
-                    {
-                        ModuleActions.Add(ModuleContext.GetNextActionID(),
-                            moduleControl.ControlKey,
-                            moduleControl.ControlKey + ".Action",
-                            "",
-                            (!String.IsNullOrEmpty(moduleControl.IconFile)) ? moduleControl.IconFile  :  "edit.gif",
-                            ModuleContext.EditUrl(moduleControl.ControlKey),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
-                    }
-                }
-            }
-        }
-
-        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult, HttpContextBase httpContext)
+        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
         {
             MvcHtmlString moduleOutput;
 
@@ -172,7 +157,5 @@ namespace DotNetNuke.Web.Mvc
 
             return moduleOutput;
         }
-
-        public ModuleActionCollection ModuleActions { get; private set; }
     }
 }

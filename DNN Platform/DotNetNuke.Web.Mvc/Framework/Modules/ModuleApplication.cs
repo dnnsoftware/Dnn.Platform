@@ -23,6 +23,7 @@ using System;
 using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
@@ -58,16 +59,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public ViewEngineCollection ViewEngines { get; set; }
 
-        protected internal virtual IDnnController AdaptController(IController controller)
-        {
-            var mvcController = controller as Controller;
-            if (mvcController != null && mvcController.ActionInvoker is ControllerActionInvoker)
-            {
-                return new DnnControllerAdapter(mvcController);
-            }
-            return null;
-        }
-
         private void EnsureInitialized()
         {
             // Double-check lock to wait for initialization
@@ -98,16 +89,21 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             IController controller = ControllerFactory.CreateController(requestContext, context.ControllerName);
             try
             {
-                // Check if the controller supports IDnnController and if not, try to adapt it
-                var moduleController = controller as IDnnController ?? AdaptController(controller);
+                // Check if the controller supports IDnnController
+                var moduleController = controller as IDnnController;
 
-                // If we couldn't adapt it, we fail.  We can't support IController implementations without some kind of adaptor :(
+                // If we couldn't adapt it, we fail.  We can't support IController implementations directly :(
                 // Because we need to retrieve the ActionResult without executing it, IController won't cut it
                 if (moduleController == null)
                 {
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
-                moduleController.ActiveModule = context.Module;
+                moduleController.ModuleContext = context.ModuleContext;
+
+                moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                                                    context.ModuleContext.Configuration.DesktopModule.FolderName,
+                                                    Localization.LocalResourceDirectory,
+                                                    context.ControllerName);
 
                 // Execute the controller and capture the result
                 moduleController.Execute(requestContext);
@@ -116,10 +112,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 // Return the final result
                 return new ModuleRequestResult
                                 {
-                                    Application = this,
                                     ActionResult = result,
                                     ControllerContext = moduleController.ControllerContext,
-                                    Module = context.Module
+                                    ModuleActions = moduleController.ModuleActions,
+                                    ModuleContext = context.ModuleContext,
+                                    ModuleApplication = this
                                 };
             }
             finally

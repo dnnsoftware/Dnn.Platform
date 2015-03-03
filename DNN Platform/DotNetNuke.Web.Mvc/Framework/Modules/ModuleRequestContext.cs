@@ -21,6 +21,7 @@
 
 using System.Web;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         public HttpContextBase HttpContext { get; set; }
 
-        public ModuleInfo Module { get; set; }
+        public ModuleInstanceContext ModuleContext { get; set; }
 
         public ModuleApplication ModuleApplication { get; set; }
     }

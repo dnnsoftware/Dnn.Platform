@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
 
             // Delegate to the module's view engine collection
-            ViewEngineResult result = engineRequest(moduleRequestResult.Application.ViewEngines);
+            ViewEngineResult result = engineRequest(moduleRequestResult.ModuleApplication.ViewEngines);
 
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)

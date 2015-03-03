@@ -291,8 +291,6 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
-                    control.LocalResourceFile = slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), "") + Localization.LocalResourceDirectory + "/" +
-                                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
                     var title = Localization.LocalizeControlTitle(control);
                     
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));

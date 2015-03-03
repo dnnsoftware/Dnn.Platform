@@ -20,15 +20,22 @@
 #endregion
 
 using System.Web.Mvc;
-using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
     public interface IDnnController : IController
     {
-        ModuleInfo ActiveModule { get; set; }
-
         ControllerContext ControllerContext { get; }
+
+        string LocalResourceFile { get; set; }
+
+        string LocalizeString(string key);
+
+        ModuleActionCollection ModuleActions { get; set; }
+
+        ModuleInstanceContext ModuleContext { get; set; }
 
         ActionResult ResultOfLastExecute { get; }
     }

@@ -20,18 +20,21 @@
 #endregion
 
 using System.Web.Mvc;
-using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleRequestResult
     {
-        public ModuleApplication Application { get; set; }
-
         public ActionResult ActionResult { get; set; }
 
         public ControllerContext ControllerContext { get; set; }
 
-        public ModuleInfo Module { get; set; }
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        public ModuleActionCollection ModuleActions { get; set; }
+
+        public ModuleApplication ModuleApplication { get; set; }
     }
 }
