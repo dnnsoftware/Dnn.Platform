@@ -506,7 +506,16 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                Response.Redirect(Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error")), true);
+				//If request localized page which haven't complete translate yet, redirect to default language version.
+	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
+				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.PortalId);
+	            if (PortalSettings.ContentLocalizationEnabled &&
+	                TabController.CurrentPage.CultureCode != defaultLocale.Code)
+	            {
+		            redirectUrl = new LanguageTokenReplace {Language = defaultLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+	            }
+
+				Response.Redirect(redirectUrl, true);
             }
             return success;
         }
