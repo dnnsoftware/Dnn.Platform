@@ -261,7 +261,7 @@ namespace DotNetNuke.Framework
                                          Environment.NewLine,
                                          "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2014, by DNN Corporation -->",
+                                         "<!-- Copyright (c) 2002-2015, by DNN Corporation -->",
                                          Environment.NewLine,
                                          "<!--*********************************************-->",
                                          Environment.NewLine);
