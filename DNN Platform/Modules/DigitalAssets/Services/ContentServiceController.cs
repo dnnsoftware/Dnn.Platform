@@ -28,6 +28,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
 using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Security;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.DigitalAssets.Services
@@ -92,8 +93,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage RenameFile(RenameFileRequest request)
         {
-            var itemViewModel = DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
-            return Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+	        try
+	        {
+		        var itemViewModel = DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
+		        return Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+	        }
+	        catch (FileAlreadyExistsException ex)
+	        {
+				return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+	        }
+            
         }
 
         [HttpPost]
