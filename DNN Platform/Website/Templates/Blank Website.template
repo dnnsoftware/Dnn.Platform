@@ -4789,7 +4789,16 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings />
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
       <panes>
         <pane>
           <name>ContentPane</name>
