@@ -19,23 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Net;
-using System.Net.Http;
-using System.Web.Http.Filters;
+using System.Collections.Generic;
+using DotNetNuke.Services.FileSystem;
 
-using DotNetNuke.Services.Exceptions;
-
-namespace DotNetNuke.Modules.DigitalAssets.Services
+namespace DotNetNuke.Services.Assets
 {
-    public class DamExceptionFilterAttribute : ExceptionFilterAttribute
+    public class ContentPage
     {
-        public override void OnException(HttpActionExecutedContext context)
-        {
-            if (context.Exception != null)
-            {
-                Exceptions.LogException(context.Exception);
-                context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.Message, context.Exception);
-            }
-        }
+        public IFolderInfo Folder { get; set; }
+
+        public ICollection<object> Items { get; set; }
+
+        public int TotalCount { get; set; }
     }
 }

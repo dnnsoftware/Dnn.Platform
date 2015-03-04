@@ -1,6 +1,6 @@
-﻿#region Copyright
+#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke� - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -19,23 +19,14 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Net;
-using System.Net.Http;
-using System.Web.Http.Filters;
+using System;
 
-using DotNetNuke.Services.Exceptions;
-
-namespace DotNetNuke.Modules.DigitalAssets.Services
+namespace DotNetNuke.Services.Assets
 {
-    public class DamExceptionFilterAttribute : ExceptionFilterAttribute
+    public class AssetManagerException : Exception
     {
-        public override void OnException(HttpActionExecutedContext context)
+        public AssetManagerException(string message) : base(message)
         {
-            if (context.Exception != null)
-            {
-                Exceptions.LogException(context.Exception);
-                context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.Message, context.Exception);
-            }
         }
     }
 }

@@ -20,11 +20,10 @@
 #endregion
 
 using System.Collections.Generic;
+using DotNetNuke.Services.FileSystem;
 
-namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
+namespace DotNetNuke.Services.Assets
 {
-    using DotNetNuke.Services.FileSystem;
-
     public class FolderPathComparer : IComparer<int>
     {        
         private readonly Dictionary<int, string> cache;
