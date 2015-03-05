@@ -47,11 +47,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
             ViewData = new ViewDataDictionary(viewDataContainer.ViewData);
         }
 
-        //public ModuleInfo ActiveModule
-        //{
-        //    get { return SiteContext.ActiveModuleRequest.Module; }
-        //}
-
         public TabInfo ActivePage
         {
             get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }

@@ -119,7 +119,6 @@
     <Content Include="Module.build" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NewFolder1\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>

@@ -20,20 +20,20 @@
 #endregion
 
 using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
+using System.Web.Routing;
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public abstract class DnnWebViewPage : WebViewPage
+    public class DnnAjaxHelper<T> : AjaxHelper<T>
     {
-        public DnnHelper Dnn { get; set; }
-
-        public override void InitHelpers()
+        public DnnAjaxHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+            : base(viewContext, viewDataContainer)
         {
-            Ajax = new DnnAjaxHelper<object>(ViewContext, this);
-            Html = new DnnHtmlHelper<object>(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext.RequestContext);
-            Dnn = new DnnHelper<object>(ViewContext, this);
+        }
+
+        public DnnAjaxHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection) 
+            : base(viewContext, viewDataContainer, routeCollection)
+        {
         }
     }
 }

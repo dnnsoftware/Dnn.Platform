@@ -26,14 +26,14 @@ namespace DotNetNuke.Web.Mvc.Framework
 {
     public abstract class DnnWebViewPage<TModel> : WebViewPage<TModel>
     {
-        //public DnnHelper<TModel> Dnn { get; set; }
+        public DnnHelper<TModel> Dnn { get; set; }
 
         public override void InitHelpers() 
         {
-            Ajax = new AjaxHelper<TModel>(ViewContext, this);
-            Html = new HtmlHelper<TModel>(ViewContext, this);
+            Ajax = new DnnAjaxHelper<TModel>(ViewContext, this);
+            Html = new DnnHtmlHelper<TModel>(ViewContext, this);
             Url = new DnnUrlHelper(ViewContext.RequestContext);
-            //Dnn = new DnnHelper<TModel>(ViewContext, this);
+            Dnn = new DnnHelper<TModel>(ViewContext, this);
         }
     }
 }
