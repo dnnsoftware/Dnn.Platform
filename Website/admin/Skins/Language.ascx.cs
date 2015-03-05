@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
@@ -386,6 +386,8 @@ namespace DotNetNuke.UI.Skins.Controls
         {
 			//Redirect to same page to update all controls for newly selected culture
             LocalTokenReplace.Language = selectCulture.SelectedItem.Value;
+            //DNN-6170 ensure skin value is culture specific in case of  static localization
+            DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, PortalSettings.PortalId, Null.NullString));
             Response.Redirect(LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
         }
 
