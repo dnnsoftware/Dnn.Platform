@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Mail
 
         public static void SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body)
         {
-            if ((string.IsNullOrEmpty(Host.SMTPServer)))
+			if (string.IsNullOrEmpty(Host.SMTPServer) || string.IsNullOrEmpty(fromAddress) || string.IsNullOrEmpty(senderAddress) || string.IsNullOrEmpty(toAddress))
             {
                 return;
             }
