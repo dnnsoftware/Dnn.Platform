@@ -448,6 +448,6 @@
     <value>Page Management</value>
   </data>
   <data name="ConfirmSave.Text" xml:space="preserve">
-    <value>You have pending changes on current edit page, do you want to save?</value>
+    <value>You have unsaved changes on this page, would you like to save these changes?</value>
   </data>
 </root>
