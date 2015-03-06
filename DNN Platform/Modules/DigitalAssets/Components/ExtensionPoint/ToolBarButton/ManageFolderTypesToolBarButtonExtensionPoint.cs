@@ -23,6 +23,7 @@ using System;
 using System.ComponentModel.Composition;
 
 using DotNetNuke.Entities.Icons;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Modules;
@@ -56,7 +57,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
                     return string.Empty;
                 }
 
-                return ModuleContext.EditUrl("FolderMappings");
+	            if (PortalSettings.Current.EnablePopUps)
+	            {
+		            return ModuleContext.EditUrl("FolderMappings");
+	            }
+	            else
+	            {
+		            return string.Format("location.href = '{0}';", ModuleContext.EditUrl("FolderMappings"));
+	            }
             }
         }
 
