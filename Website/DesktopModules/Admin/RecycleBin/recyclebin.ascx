@@ -89,10 +89,7 @@
 				title: titleText,
 				callbackTrue: function () {
 					selectChildPages(tabListbox);
-					window.location.href = restoreTab.attr("href");
-				},
-				callbackFalse: function() {
-					window.location.href = restoreTab.attr("href");
+				    window.location.href = restoreTab.attr("href");
 				}
 			});
 		};
