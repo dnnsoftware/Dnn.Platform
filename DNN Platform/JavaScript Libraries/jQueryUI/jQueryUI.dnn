@@ -21,7 +21,7 @@
           <javaScriptLibrary>
             <libraryName>jQuery-UI</libraryName>
             <fileName>jquery-ui.js</fileName>
-            <CDNPath>http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js</CDNPath>
+            <CDNPath>//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">
