@@ -27,6 +27,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -60,11 +61,37 @@ namespace DotNetNuke.Services.Search
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
+		private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
+
         #endregion
 
-        #region Public Methods
+		#region Constructors
 
-        /// -----------------------------------------------------------------------------
+	    public ModuleIndexer() : this(false)
+	    {
+	    }
+
+		public ModuleIndexer(bool needSearchModules)
+		{
+			_searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
+
+			if (needSearchModules)
+			{
+				var portals = PortalController.Instance.GetPortals();
+				foreach (var portal in portals.Cast<PortalInfo>())
+				{
+					_searchModules.Add(portal.PortalID, GetModulesForIndex(portal.PortalID));
+				}
+
+				_searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
+			}
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		/// -----------------------------------------------------------------------------
         /// <summary>
         /// Returns the collection of SearchDocuments for the portal.
         /// This replaces "GetSearchIndexItems" as a newer implementation of search.
@@ -79,7 +106,8 @@ namespace DotNetNuke.Services.Search
         public override IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = GetSearchModules(portalId);
+			var searchModuleCollection = _searchModules.ContainsKey(portalId) ?
+											_searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo) : GetSearchModules(portalId);
 
             foreach (var module in searchModuleCollection)
             {
@@ -143,7 +171,8 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = GetSearchModules(portalId, true);
+			var searchModuleCollection = _searchModules.ContainsKey(portalId) ? 
+											_searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo) : GetSearchModules(portalId);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -241,6 +270,14 @@ namespace DotNetNuke.Services.Search
         {
             return GetSearchModules(portalId, false);
         }
+
+		protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
+		{
+			return from mii in GetModulesForIndex(portalId)
+				where allModules || mii.SupportSearch
+				select mii.ModuleInfo;
+		}
+
 
         #endregion
 
@@ -376,11 +413,11 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
+        private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
-            var searchModules = new List<ModuleInfo>();
+			var searchModules = new List<ModuleIndexInfo>();
             //Only get modules that are set to be Indexed.
             var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 
@@ -405,8 +442,7 @@ namespace DotNetNuke.Services.Search
                             }
                         }
 
-                        //Check if module inherits from ModuleSearchBase or include all modules to index module metadata.
-                        if (controller is ModuleSearchBase || allModules) searchModules.Add(module);
+                        searchModules.Add(new ModuleIndexInfo{ModuleInfo = module, SupportSearch = controller is ModuleSearchBase});
                     }
                 }
                 catch (Exception ex)
