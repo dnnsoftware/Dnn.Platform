@@ -108,6 +108,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
+			_password.Attributes.Add("value", Convert.ToString(Value));
+
             var options = new DnnPaswordStrengthOptions();
             var optionsAsJsonString = Json.Serialize(options);
             var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
