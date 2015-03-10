@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Assets
 
         #endregion
 
-        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression =  null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
+        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
         {
             var folder = GetFolderInfo(folderId);
 
@@ -132,152 +132,7 @@ namespace DotNetNuke.Services.Assets
             var field = string.IsNullOrEmpty(orderingField) ? "FolderName" : orderingField;
 
             return ApplyOrder(folders.AsQueryable(), field, asc);
-        } 
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (Host.EnableFileAutoSync && startIndex == 0)
-            {
-                FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
-            }
-
-            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);
         }
-
-        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
-        {
-            switch (sortProperties.Column)
-            {
-                case "ItemName":
-                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
-                case "LastModifiedOnDate":
-                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
-                case "Size":
-                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
-                case "ParentFolder":
-                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
-                default:
-                    return files;
-            }
-        }
-
-        public static IOrderedQueryable<T> ApplyOrder<T>(IQueryable<T> source, string propertyName, bool asc)
-        {
-            var methodName = asc ? "OrderBy" : "OrderByDescending";
-            var arg = Expression.Parameter(typeof(T), "x");
-
-            // Use reflection to mirror LINQ
-            var property = typeof(T).GetProperty(propertyName);
-
-            // If property is undefined returns the original source
-            if (property == null) return (IOrderedQueryable<T>)source;
-
-            Expression expr = Expression.Property(arg, property);
-
-            var delegateType = typeof(Func<,>).MakeGenericType(typeof(T), property.PropertyType);
-            var lambda = Expression.Lambda(delegateType, expr, arg);
-
-            var result = typeof(Queryable).GetMethods().Single(
-                    method => method.Name == methodName
-                            && method.IsGenericMethodDefinition
-                            && method.GetGenericArguments().Length == 2
-                            && method.GetParameters().Length == 2)
-                    .MakeGenericMethod(typeof(T), property.PropertyType)
-                    .Invoke(null, new object[] { source, lambda });
-            return (IOrderedQueryable<T>)result;
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
-        }
-
-        public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression =  null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
-        {
-            var folder = GetFolderInfo(folderId);
-
-            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
-            {
-                throw new AssetManagerException("The user has no permission to browse the folder"); // TODO: to resx
-            }
-
-            var sortProperties = SortProperties.Parse(sortExpression);
-
-            List<IFolderInfo> folders;
-
-            if (subfolderFilter != SubfolderFilter.IncludeSubfoldersFolderStructure)
-            {
-                folders = new List<IFolderInfo>();
-            }
-            else
-            {
-                folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
-            }
-
-            var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
-
-            IEnumerable<object> content;
-            if (startIndex + numItems <= folders.Count())
-            {
-                content = folders.Skip(startIndex).Take(numItems);
-            }
-            else if (startIndex >= folders.Count())
-            {
-                content = files.Skip(startIndex - folders.Count).Take(numItems);
-            }
-            else
-            {
-                var numFiles = numItems - (folders.Count - startIndex);
-                content = folders.Skip(startIndex);
-                content = content.Union(files.Take(numFiles));
-            }
-
-            return new ContentPage
-            {
-                Folder = folder,
-                Items = content.ToList(),
-                TotalCount = folders.Count() + files.Count()
-            };
-        }
-
-        public ContentPage SearchFolderContent(int folderId, string pattern, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)
-        {
-            var recursive = subfolderFilter != SubfolderFilter.ExcludeSubfolders;
-            var folder = GetFolderInfo(folderId);
-
-            var files = FolderManager.Instance.SearchFiles(folder, pattern, recursive);
-            var sortProperties = SortProperties.Parse(sortExpression);
-            var sortedFiles = SortFiles(files, sortProperties).ToList();
-
-            IEnumerable<object> content = sortedFiles.Skip(startIndex).Take(numItems);
-
-            return new ContentPage
-            {
-                Folder = folder,
-                Items = content.ToList(),
-                TotalCount = sortedFiles.Count()
-            };
-        }
-
-        public IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc)
-        {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            var folders = FolderManager.Instance.GetFolders(parentFolder).Where(f => HasPermission(f, "BROWSE") || HasPermission(f, "READ"));
-
-            // Set default sorting values
-            var field = string.IsNullOrEmpty(orderingField) ? "FolderName" : orderingField;
-
-            return ApplyOrder(folders.AsQueryable(), field, asc);
-        } 
 
         private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
         {
@@ -399,7 +254,7 @@ namespace DotNetNuke.Services.Assets
 
             // Check if the name is reserved
             if (IsReservedName(newFolderName))
-            {                
+            {
                 throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
@@ -471,7 +326,7 @@ namespace DotNetNuke.Services.Assets
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingId);
-                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));                
+                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
             }
             catch (FolderAlreadyExistsException)
             {
@@ -608,7 +463,7 @@ namespace DotNetNuke.Services.Assets
                 return path;
             }
 
-            return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);            
+            return newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
         }
 
         private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
