@@ -511,21 +511,25 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void UpdateUserProfile(UserInfo user)
         {
-            int portalId = GetEffectivePortalId(user.PortalID);
+            if (!user.Profile.IsDirty)
+            {
+                return;
+            }
+
+            var oldUser = new UserInfo { UserID = user.UserID };
+            _profileProvider.GetUserProfile(ref oldUser);
+
+            var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
            
-            //Update the User Profile
-            if (user.Profile.IsDirty)
-            {
-                _profileProvider.UpdateUserProfile(user);
-            }
+            _profileProvider.UpdateUserProfile(user);
 
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
 
             if (ProfileUpdated != null)
             {
-                ProfileUpdated(null, new ProfileEventArgs { User = user });
+                ProfileUpdated(null, new ProfileEventArgs { User = user, OldProfile = oldUser.Profile});
             }
         }
         
