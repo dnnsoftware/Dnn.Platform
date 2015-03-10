@@ -19,23 +19,28 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+
 using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
+using System.Web.Routing;
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public abstract class DnnWebViewPage<TModel> : WebViewPage<TModel>
+    public class DnnHtmlHelper<TModel> : DnnHtmlHelper
     {
-        public DnnHelper<TModel> Dnn { get; set; }
-
-        public new DnnHtmlHelper<TModel> Html { get; set; } 
-
-        public override void InitHelpers() 
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+            : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
-            Ajax = new DnnAjaxHelper<TModel>(ViewContext, this);
-            Html = new DnnHtmlHelper<TModel>(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext.RequestContext);
-            Dnn = new DnnHelper<TModel>(ViewContext, this);
         }
+
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
+            : base(viewContext, viewDataContainer, routeCollection, new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
+ 
+        {
+        }
+
+        public new ViewDataDictionary<TModel> ViewData
+        {
+            get { return ((HtmlHelper<TModel>)HtmlHelper).ViewData; }
+        }        
     }
 }

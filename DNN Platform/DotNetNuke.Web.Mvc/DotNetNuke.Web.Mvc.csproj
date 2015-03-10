@@ -94,11 +94,15 @@
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
+    <Compile Include="Helpers\LabelExtensions.cs" />
+    <Compile Include="Helpers\DisplayTextExtensions.cs" />
     <Compile Include="Helpers\DnnAjaxHelper.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
     <Compile Include="Helpers\DnnHelperOfT.cs" />
+    <Compile Include="Helpers\DnnHtmlHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelper.cs" />
     <Compile Include="Helpers\DnnUrlHelper.cs" />
+    <Compile Include="Helpers\TextAreaExtensions.cs" />
     <Compile Include="MvcHostControl.cs" />
     <Compile Include="MvcHttpModule.cs" />
     <Compile Include="MvcModuleControlFactory.cs" />

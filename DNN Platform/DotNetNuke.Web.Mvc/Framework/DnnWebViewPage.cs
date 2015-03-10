@@ -28,10 +28,12 @@ namespace DotNetNuke.Web.Mvc.Framework
     {
         public DnnHelper Dnn { get; set; }
 
+        public new DnnHtmlHelper Html { get; set; } 
+
         public override void InitHelpers()
         {
             Ajax = new DnnAjaxHelper<object>(ViewContext, this);
-            Html = new DnnHtmlHelper<object>(ViewContext, this);
+            Html = new DnnHtmlHelper(ViewContext, this);
             Url = new DnnUrlHelper(ViewContext.RequestContext);
             Dnn = new DnnHelper<object>(ViewContext, this);
         }

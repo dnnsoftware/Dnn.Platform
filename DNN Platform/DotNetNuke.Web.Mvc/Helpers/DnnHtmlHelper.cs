@@ -22,21 +22,33 @@
 
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public class DnnHtmlHelper<T> : HtmlHelper<T>
+    public class DnnHtmlHelper
     {
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
-            : base(viewContext, viewDataContainer)
+            : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
 
-        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection) 
-            : base(viewContext, viewDataContainer, routeCollection)
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
+            : this(viewContext, viewDataContainer, routeCollection, new HtmlHelper(viewContext, viewDataContainer, routeCollection))
         {
         }
 
-        
+        protected DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection, HtmlHelper htmlHelper)
+        {
+            HtmlHelper = htmlHelper;
+        }
+
+        internal HtmlHelper HtmlHelper { get; set; }
+
+        public RouteCollection RouteCollection { get { return HtmlHelper.RouteCollection; } }
+        public dynamic ViewBag { get { return HtmlHelper.ViewBag; } }
+        public ViewContext ViewContext { get { return HtmlHelper.ViewContext; } }
+        public ViewDataDictionary ViewData { get { return HtmlHelper.ViewData; } }
+        public IViewDataContainer ViewDataContainer { get { return HtmlHelper.ViewDataContainer; } }
     }
 }

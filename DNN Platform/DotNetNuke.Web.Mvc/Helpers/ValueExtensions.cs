@@ -19,23 +19,25 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Linq.Expressions;
 using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
+using System.Web.Mvc.Html;
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public abstract class DnnWebViewPage<TModel> : WebViewPage<TModel>
+    public static class ValueExtensions
     {
-        public DnnHelper<TModel> Dnn { get; set; }
-
-        public new DnnHtmlHelper<TModel> Html { get; set; } 
-
-        public override void InitHelpers() 
+        public static MvcHtmlString ValueFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression)
         {
-            Ajax = new DnnAjaxHelper<TModel>(ViewContext, this);
-            Html = new DnnHtmlHelper<TModel>(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext.RequestContext);
-            Dnn = new DnnHelper<TModel>(ViewContext, this);
+            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
+            return htmlHelper.ValueFor(expression);
+        }
+
+        public static MvcHtmlString ValueFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string format)
+        {
+            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
+            return htmlHelper.ValueFor(expression, format);
         }
     }
 }
