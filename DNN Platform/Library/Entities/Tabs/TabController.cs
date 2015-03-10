@@ -1633,6 +1633,7 @@ namespace DotNetNuke.Entities.Tabs
             Provider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
             if (clearCache)
             {
+				DataCache.ClearTabsCache(originalTab.PortalID);
                 DataCache.ClearModuleCache(originalTab.TabID);
             }
         }
