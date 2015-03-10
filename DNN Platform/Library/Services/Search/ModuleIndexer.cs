@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Search
         {
             var searchDocuments = new List<SearchDocument>();
 			var searchModuleCollection = _searchModules.ContainsKey(portalId) ? 
-											_searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo) : GetSearchModules(portalId);
+											_searchModules[portalId].Select(m => m.ModuleInfo) : GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
