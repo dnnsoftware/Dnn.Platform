@@ -322,6 +322,13 @@ namespace DotNetNuke.Modules.Admin.Users
 					{
 						Response.Redirect(RedirectURL, true);
 					}
+					else
+					{
+						RegistrationForm.Visible = false;
+						registerButton.Visible = false;
+						cancelButton.Attributes["resourcekey"] = "Close";
+						RegistrationForm.Parent.Controls.Add(cancelButton);
+					}
 				}
 				else
 				{
