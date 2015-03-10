@@ -138,6 +138,9 @@
             .change(fieldsChangedHandler)
             .keyup(fieldsChangedHandler);
 
+		$('#<%=pnlDetails.ClientID%>').find('.dnnPermissionsGrid .dnnGridItem td img, .dnnPermissionsGrid .dnnGridAltItem td img')
+			.click(fieldsChangedHandler);
+
 		setTimeout(function() {
 			var tree = $find("<%=ctlPages.ClientID %>");
 			tree.add_nodeClicking(function (sender, args) {
