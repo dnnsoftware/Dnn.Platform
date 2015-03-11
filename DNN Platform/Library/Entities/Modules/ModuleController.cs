@@ -715,23 +715,31 @@ namespace DotNetNuke.Entities.Modules
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
+
+	            var settingExist = false;
+	            string existValue = null;
                 if (dr.Read())
                 {
-                    if (dr.GetString(0) != settingValue)
-                    {
-                        dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                        EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                                                        "ModuleId", moduleId, settingName, settingValue, 
-                                                        currentUser.UserID);
-                    }
+					settingExist = true;
+	                existValue = dr.GetString(0);
                 }
-                else
-                {
-                    dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
-                                                    "ModuleId", moduleId, settingName, settingValue, 
-                                                    currentUser.UserID);
-                }
+
+				dr.Close();
+
+				if (settingExist && existValue != settingValue)
+	            {
+					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+														"ModuleId", moduleId, settingName, settingValue,
+														currentUser.UserID);
+				}
+				else if (!settingExist)
+				{
+					dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
+													"ModuleId", moduleId, settingName, settingValue,
+													currentUser.UserID);
+				}
 
                 if (updateVersion)
                 {
@@ -745,7 +753,10 @@ namespace DotNetNuke.Entities.Modules
             finally
             {
                 // Ensure DataReader is closed
-                CBO.CloseDataReader(dr, true);
+	            if (dr != null && !dr.IsClosed)
+	            {
+		            CBO.CloseDataReader(dr, true);
+	            }
             }
 
             ClearModuleSettingsCache(moduleId);
