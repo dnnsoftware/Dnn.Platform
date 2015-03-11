@@ -693,6 +693,7 @@
     <Compile Include="Services\Search\Internals\InternalSearchController.cs" />
     <Compile Include="Services\Search\Internals\InternalSearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchResult.cs" />
+    <Compile Include="Services\Search\ModuleIndexInfo.cs" />
     <Compile Include="Services\Search\TabIndexer.cs" />
     <Compile Include="Services\Search\Entities\SearchType.cs" />
     <Compile Include="Services\Search\Internals\ILuceneController.cs" />

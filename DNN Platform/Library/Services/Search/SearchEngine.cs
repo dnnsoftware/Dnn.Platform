@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -76,7 +77,7 @@ namespace DotNetNuke.Services.Search
         internal void IndexContent(DateTime startDate)
         {
             var tabIndexer = new TabIndexer();
-            var moduleIndexer = new ModuleIndexer();
+            var moduleIndexer = new ModuleIndexer(true);
             var userIndexer = new UserIndexer();
             IndexedSearchDocumentCount = 0;
             Results = new Dictionary<string, int>();
@@ -89,7 +90,7 @@ namespace DotNetNuke.Services.Search
             Results.Add("Tabs", searchDocuments.Count());
 
             //Index MODULE META-DATA from modules that inherit from ModuleSearchBase
-            searchDocs = GetModuleMetaData(startDate);
+			searchDocs = GetModuleMetaData(moduleIndexer, startDate);
             searchDocuments = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
             StoreSearchDocuments(searchDocuments);
             IndexedSearchDocumentCount += searchDocuments.Count();
@@ -229,11 +230,10 @@ namespace DotNetNuke.Services.Search
         ///     [vnguyen]   04/17/2013  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        private IEnumerable<SearchDocument> GetModuleMetaData(DateTime startDate)
+		private IEnumerable<SearchDocument> GetModuleMetaData(ModuleIndexer indexer, DateTime startDate)
         {
             var searchDocs = new List<SearchDocument>();
             var portals = PortalController.Instance.GetPortals();
-            var indexer = new ModuleIndexer();
             DateTime indexSince;
 
             foreach (var portal in portals.Cast<PortalInfo>())
@@ -243,8 +243,8 @@ namespace DotNetNuke.Services.Search
             }
 
             // Include Host Level Items
-            indexSince = FixedIndexingStartDate(-1, startDate);
-            searchDocs.AddRange(indexer.GetModuleMetaData(-1, indexSince));
+			indexSince = FixedIndexingStartDate(Null.NullInteger, startDate);
+            searchDocs.AddRange(indexer.GetModuleMetaData(Null.NullInteger, indexSince));
 
             return searchDocs;
         }
