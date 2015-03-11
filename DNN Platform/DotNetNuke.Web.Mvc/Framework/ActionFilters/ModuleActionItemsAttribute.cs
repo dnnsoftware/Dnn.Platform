@@ -78,6 +78,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         {
             var method = type.GetMethod(methodName);
 
+            if (method == null)
+            {
+                throw new NotImplementedException(String.Format("The expected method to get the module actions cannot be found. Type: {0}, Method: {1}", type.FullName, methodName));
+            }
+
             var returnType = method.ReturnType.FullName;
 
             if (returnType != "DotNetNuke.Entities.Modules.Actions.ModuleActionCollection")
