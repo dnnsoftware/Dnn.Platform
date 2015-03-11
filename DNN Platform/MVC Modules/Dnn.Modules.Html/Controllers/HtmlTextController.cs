@@ -36,6 +36,7 @@ namespace Dnn.Modules.Html.Controllers
     /// <summary>
     /// 
     /// </summary>
+    [DnnHandleErrorAttribute]
     public class HtmlTextController : DnnController
     {
         private readonly IDataContext _dataContext;
@@ -62,8 +63,8 @@ namespace Dnn.Modules.Html.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        //[ModuleAction(TitleKey = EditTitleKey, ControlKey = EditControlKey)]
-        [ModuleActionItems]
+        [ModuleAction(TitleKey = EditTitleKey, ControlKey = EditControlKey)]
+        //[ModuleActionItems]
         public ActionResult Index()
         {
             HtmlText item;
@@ -156,26 +157,26 @@ namespace Dnn.Modules.Html.Controllers
             return RedirectToDefaultRoute();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public ModuleActionCollection GetIndexActions()
-        {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var actions = new ModuleActionCollection();
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <returns></returns>
+        //public ModuleActionCollection GetIndexActions()
+        //{
+        //    // ReSharper disable once UseObjectOrCollectionInitializer
+        //    var actions = new ModuleActionCollection();
 
-            actions.Add(-1,
-                    LocalizeString(EditTitleKey),
-                    ModuleActionType.AddContent,
-                    "",
-                    "",
-                    ModuleContext.EditUrl(EditControlKey),
-                    false,
-                    SecurityAccessLevel.Edit,
-                    true,
-                    false);
-            return actions;
-        }
+        //    actions.Add(-1,
+        //            LocalizeString(EditTitleKey),
+        //            ModuleActionType.AddContent,
+        //            "",
+        //            "",
+        //            ModuleContext.EditUrl(EditControlKey),
+        //            false,
+        //            SecurityAccessLevel.Edit,
+        //            true,
+        //            false);
+        //    return actions;
+        //}
     }
 }

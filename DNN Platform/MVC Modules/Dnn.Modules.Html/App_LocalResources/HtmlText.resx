@@ -123,4 +123,7 @@
   <data name="Edit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="HtmlText_Index.Error" xml:space="preserve">
+    <value>Unexpected error while processing Index View</value>
+  </data>
 </root>
