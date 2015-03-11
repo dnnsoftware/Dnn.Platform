@@ -28,7 +28,7 @@ using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
-    public class ModuleActionsAttribute : ActionFilterAttribute
+    public class ModuleActionItemsAttribute : ActionFilterAttribute
     {
         private const string MethodNameTemplate = "Get{0}Actions";
 

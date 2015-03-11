@@ -26,6 +26,8 @@ using System.Web.Mvc;
 using Dnn.Modules.Html.Models;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Security;
 using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
@@ -37,6 +39,8 @@ namespace Dnn.Modules.Html.Controllers
     public class HtmlTextController : DnnController
     {
         private readonly IDataContext _dataContext;
+        private const string EditTitleKey = "Edit";
+        private const string EditControlKey = "Edit";
 
         /// <summary>
         /// 
@@ -58,7 +62,8 @@ namespace Dnn.Modules.Html.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [ModuleAction(TitleKey = "Edit", ControlKey = "Edit")]
+        //[ModuleAction(TitleKey = EditTitleKey, ControlKey = EditControlKey)]
+        [ModuleActionItems]
         public ActionResult Index()
         {
             HtmlText item;
@@ -123,15 +128,13 @@ namespace Dnn.Modules.Html.Controllers
         [ValidateInput(false)]
         public ActionResult Edit(string content)
         {
-            HtmlText item;
-
             using (_dataContext)
             {
                 var rep = _dataContext.GetRepository<HtmlText>();
 
-                item = rep.Find("WHERE ModuleID = " + ActiveModule.ModuleID)
-                                .OrderByDescending(c => c.Version)
-                                .FirstOrDefault();
+                var item = rep.Find("WHERE ModuleID = " + ActiveModule.ModuleID)
+                    .OrderByDescending(c => c.Version)
+                    .FirstOrDefault();
 
                 if (item == null)
                 {
@@ -151,6 +154,28 @@ namespace Dnn.Modules.Html.Controllers
             }
 
             return RedirectToDefaultRoute();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ModuleActionCollection GetIndexActions()
+        {
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var actions = new ModuleActionCollection();
+
+            actions.Add(-1,
+                    LocalizeString(EditTitleKey),
+                    ModuleActionType.AddContent,
+                    "",
+                    "",
+                    ModuleContext.EditUrl(EditControlKey),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
+            return actions;
         }
     }
 }
