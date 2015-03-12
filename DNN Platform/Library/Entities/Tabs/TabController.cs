@@ -1046,6 +1046,12 @@ namespace DotNetNuke.Entities.Tabs
                 //Save Tab
                 AddTabInternal(localizedCopy, -1, -1, false, false); //not include modules show on all page, it will handled in copy modules action.
 
+				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
+				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
+				{
+					UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
+				}
+
                 /* Tab versioning and workflow is disabled 
                  * during the creation of the Localized copy
                  */ 
