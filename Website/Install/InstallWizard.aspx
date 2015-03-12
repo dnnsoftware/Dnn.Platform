@@ -468,6 +468,7 @@
             };
             this.progressBarIntervalId = {};
             this.timerIntervalId = {};
+            this.IsQueryingInstallProgress = false;
             this.startProgressBar = function () {
                 $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
                 var totalSeconds = 0;
@@ -717,14 +718,19 @@
     <!-- Progressbar -->
     <script type="text/javascript">
         $.getInstallProgress = function () {
+            if (installWizard.IsQueryingInstallProgress) return;
+            installWizard.IsQueryingInstallProgress = true;
             var xmlhttp;
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
-            } 
+            }
             xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var statuslines = xmlhttp.responseText.split('\n');
-                    $.updateProgressbar(statuslines[statuslines.length - 2]);
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        var statuslines = xmlhttp.responseText.split('\n');
+                        $.updateProgressbar(statuslines[statuslines.length - 2]);
+                    }
+                    installWizard.IsQueryingInstallProgress = false;
                 } else {
                     installWizard.Status = "";
                 }
