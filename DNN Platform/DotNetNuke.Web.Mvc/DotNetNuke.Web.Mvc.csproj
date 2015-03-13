@@ -78,9 +78,13 @@
     </Compile>
     <Compile Include="Common\DesktopModuleControllerAdapter.cs" />
     <Compile Include="Common\IDesktopModuleController.cs" />
+    <Compile Include="Framework\ActionFilters\AuthorizeAttributeBase.cs" />
+    <Compile Include="Framework\ActionFilters\DnnAuthorizeAttribute.cs" />
     <Compile Include="Framework\ActionFilters\DnnHandleErrorAttribute.cs" />
+    <Compile Include="Framework\ActionFilters\DnnModuleAuthotize.cs" />
     <Compile Include="Framework\ActionFilters\ModuleActionAttribute.cs" />
     <Compile Include="Framework\ActionFilters\ModuleActionItemsAttribute.cs" />
+    <Compile Include="Framework\ActionFilters\RequireHostAttribute.cs" />
     <Compile Include="Framework\ActionResults\DnnRedirecttoRouteResult.cs" />
     <Compile Include="Framework\ActionResults\DnnViewResult.cs" />
     <Compile Include="Framework\ActionResults\IDnnViewResult.cs" />
