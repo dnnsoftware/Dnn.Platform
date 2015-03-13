@@ -4933,6 +4933,13 @@ namespace DotNetNuke.Services.Upgrade
                         isCurrent = true;
                     }
                     break;
+                case "4.5":
+                    //Try and instantiate a 4.5 Class
+                    if (Reflection.CreateType("System.Reflection.ReflectionContext", true) != null)
+                    {
+                        isCurrent = true;
+                    }
+                    break;
             }
             return isCurrent;
         }
@@ -5005,6 +5012,21 @@ namespace DotNetNuke.Services.Upgrade
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
+                                                  PortalController.Instance.GetCurrentPortalSettings(),
+                                                  UserController.Instance.GetCurrentUserInfo().UserID,
+                                                  EventLogController.EventLogType.HOST_ALERT);
+                    }
+                    break;
+                case "4.5":
+                    if (!IsNETFrameworkCurrent("4.5"))
+                    {
+                        //Upgrade to .NET 4.0
+                        string upgradeFile = string.Format("{0}\\Config\\Net45.config", Globals.InstallMapPath);
+                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.5 Upgrade");
+                        EventLogController.Instance.AddLog("UpgradeNet",
+                                                  string.IsNullOrEmpty(strMessage)
+                                                      ? "Upgraded Site to .NET 4.5"
+                                                      : string.Format("Upgrade to .NET 4.5 failed. Error reported during attempt to update:{0}", strMessage),
                                                   PortalController.Instance.GetCurrentPortalSettings(),
                                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                                   EventLogController.EventLogType.HOST_ALERT);
