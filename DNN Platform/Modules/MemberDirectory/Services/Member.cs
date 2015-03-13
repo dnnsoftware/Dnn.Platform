@@ -31,6 +31,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
+using System.Web;
 
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {
@@ -128,7 +129,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                              Scope.DefaultSettings,
                                                              ref propertyNotFound);
 
-                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? "" : Common.Utilities.HtmlUtils.Clean(WebUtility.HtmlDecode(value), false);
+                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? "" : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
                 }
                 return properties;
             }
