@@ -22,9 +22,12 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.UI;
+using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -39,6 +42,7 @@ namespace DotNetNuke.Web.Mvc
     public class MvcHostControl : ModuleControlBase, IActionable
     {
         private ModuleRequestResult _result;
+        private const string _excludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
@@ -58,7 +62,8 @@ namespace DotNetNuke.Web.Mvc
             var module = ModuleContext.Configuration;
 
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
-            DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
+            var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
+
             var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
             var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
 
@@ -72,13 +77,29 @@ namespace DotNetNuke.Web.Mvc
 
             var segments = module.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
 
+            var actionName = httpContext.Request.QueryString.GetValueOrDefault("action", segments[1]);
+            var controllerName = httpContext.Request.QueryString.GetValueOrDefault("controller", segments[0]);
+
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", controllerName);
+            routeData.Values.Add("action", actionName);
+            foreach (var param in httpContext.Request.QueryString.AllKeys)
+            {
+                if (!_excludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
+                {
+                    routeData.Values.Add(param, httpContext.Request.QueryString[param]);
+                }
+            }
+
+
             var moduleRequestContext = new ModuleRequestContext
                                             {
-                                                ActionName = segments[1],
-                                                ControllerName = segments[0],
+                                                ActionName = actionName,
+                                                ControllerName = controllerName,
                                                 HttpContext = httpContext,
                                                 ModuleContext = ModuleContext, 
-                                                ModuleApplication = moduleApplication
+                                                ModuleApplication = moduleApplication,
+                                                RouteData = routeData
                                             };
 
             return moduleRequestContext;

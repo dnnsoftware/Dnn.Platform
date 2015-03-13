@@ -19,25 +19,26 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Common
 {
-    public abstract class DnnWebViewPage : WebViewPage
+    public class ModuleControlControllerAdapter: ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
     {
-        public DnnHelper Dnn { get; set; }
-
-        public new DnnHtmlHelper Html { get; set; }
-
-        public new DnnUrlHelper Url { get; set; } 
-
-        public override void InitHelpers()
+        protected override Func<IModuleControlController> GetFactory()
         {
-            Ajax = new AjaxHelper<object>(ViewContext, this);
-            Html = new DnnHtmlHelper(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext);
-            Dnn = new DnnHelper(ViewContext);
+            return () => new ModuleControlControllerAdapter();
+        }
+
+        public Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
+        {
+            return ModuleControlController.GetModuleControlsByModuleDefinitionID(moduleDefID);
         }
     }
 }

@@ -20,163 +20,108 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public class DnnUrlHelper : UrlHelper
+    public class DnnUrlHelper
     {
-        public DnnUrlHelper()
-        {
-        }
+        private readonly ViewContext _viewContext;
 
-        public DnnUrlHelper(RequestContext requestContext)
-            : base(requestContext, RouteTable.Routes)
+        public DnnUrlHelper(ViewContext viewContext)
         {
-        }
+            _viewContext = viewContext;
 
-        public DnnUrlHelper(RequestContext requestContext, RouteCollection routeCollection)
-            :base(requestContext, routeCollection)
-        {
-        }
+            var controller = viewContext.Controller as IDnnController;
 
-        private string CleanUrl(string url)
-        {
-            if (!String.IsNullOrEmpty(url))
+            if (controller == null)
             {
-                return url.Replace("//", "/");
+                throw new InvalidOperationException("The DnnHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
-            return url;
+
+            ModuleContext = controller.ModuleContext;
         }
 
-        /// <summary>
-        /// Generates a string to a fully qualified URL to an action method.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// A string to a fully qualified URL to an action method.
-        /// </returns>
-        public override string Action()
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        public virtual string Action()
         {
-            return CleanUrl(base.Action());
+            return _viewContext.RequestContext.HttpContext.Request.RawUrl;
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param>
-        public override string Action(string actionName)
+        public virtual string Action(string actionName)
         {
-            return CleanUrl(base.Action(actionName));
+            return GenerateUrl(actionName, null, null);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public override string Action(string actionName, object routeValues)
+        public virtual string Action(string actionName, RouteValueDictionary routeValues)
         {
-            return CleanUrl(base.Action(actionName, routeValues));
+            return GenerateUrl(actionName, null, routeValues);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method for the specified action name and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public override string Action(string actionName, RouteValueDictionary routeValues)
+        public virtual string Action(string actionName, object routeValues)
         {
-            return CleanUrl(base.Action(actionName, routeValues));
+            return GenerateUrl(actionName, null, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name and controller name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param>
-        public override string Action(string actionName, string controllerName)
+        public virtual string Action(string actionName, string controllerName)
         {
-            return CleanUrl(base.Action(actionName, controllerName));
+            return GenerateUrl(actionName, controllerName, null);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public override string Action(string actionName, string controllerName, object routeValues)
+        public virtual string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues));
+            return GenerateUrl(actionName, controllerName, routeValues);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
+        public virtual string Action(string actionName, string controllerName, object routeValues)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues));
+            return GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL for an action method by using the specified action name, controller name, route values, and protocol to use.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol)
+        private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol));
-        }
+            //Look for a module control
+            var controlKey = "Edit";
+            bool controlFound = false;
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, route values, and protocol to use.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public override string Action(string actionName, string controllerName, object routeValues, string protocol)
-        {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol));
-        }
+            //TODO ModuleControlControllerAdapter usage is temporary in order to make method testable
+            var moduleControls = ModuleControlControllerAdapter.Instance.GetModuleControlsByModuleDefinitionID(ModuleContext.Configuration.ModuleDefID);
 
-        /// <summary>
-        /// Generates a fully qualified URL for an action method by using the specified action name, controller name, route values, protocol to use and host name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param><param name="hostName">The host name for the URL.</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
-        {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol, hostName));
+            foreach (var moduleControl in moduleControls.Values)
+            {
+                if (moduleControl.ControlSrc == String.Format("{0}/{1}.mvc", controllerName, actionName))
+                {
+                    controlKey = moduleControl.ControlKey;
+                    controlFound = true;
+                    break;
+                }
+            }
+
+            List<string> additionalParams = routeValues.Select(value => value.Key + "=" + value.Value).ToList();
+
+            if (!controlFound)
+            {
+                if (!String.IsNullOrEmpty(controllerName))
+                {
+                    additionalParams.Insert(0, "controller=" + controllerName);
+                }
+                if (!String.IsNullOrEmpty(actionName))
+                {
+                    additionalParams.Insert(0, "action=" + actionName);
+                }
+            }
+
+            return ModuleContext.EditUrl("", "", controlKey, additionalParams.ToArray());
         }
     }
 }

@@ -79,11 +79,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
             EnsureInitialized();
-            var routeData = new RouteData();
-            routeData.Values.Add("controller", context.ControllerName);
-            routeData.Values.Add("action", context.ActionName);
 
-            var requestContext = new RequestContext(context.HttpContext, routeData);
+            var requestContext = new RequestContext(context.HttpContext, context.RouteData);
 
             //Construct the controller using the ControllerFactory
             IController controller = ControllerFactory.CreateController(requestContext, context.ControllerName);
