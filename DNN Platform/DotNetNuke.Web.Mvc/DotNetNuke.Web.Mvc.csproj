@@ -99,12 +99,10 @@
     <Compile Include="Framework\Modules\ModuleRequestContext.cs" />
     <Compile Include="Framework\Modules\ModuleRequestResult.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvoker.cs" />
-    <Compile Include="Helpers\DnnAjaxHelperOfT.cs" />
     <Compile Include="Helpers\EditorExtensions.cs" />
     <Compile Include="Helpers\InputExtensions.cs" />
     <Compile Include="Helpers\LabelExtensions.cs" />
     <Compile Include="Helpers\DisplayExtensions.cs" />
-    <Compile Include="Helpers\DnnAjaxHelper.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
     <Compile Include="Helpers\DnnHtmlHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelper.cs" />

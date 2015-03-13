@@ -30,29 +30,16 @@ namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHelper
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
-            : this(viewContext, viewDataContainer, RouteTable.Routes) 
-        {
-        }
-
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
+        public DnnHelper(ViewContext viewContext)
         {
             Requires.NotNull("viewContext", viewContext);
-            Requires.NotNull("viewDataContainer", viewDataContainer);
-            Requires.NotNull("routeCollection", routeCollection);
-
-            RouteCollection = routeCollection;
             ViewContext = viewContext;
-            ViewDataContainer = viewDataContainer;
-            ViewData = new ViewDataDictionary(viewDataContainer.ViewData);
         }
 
         public TabInfo ActivePage
         {
             get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
-
-        public RouteCollection RouteCollection { get; private set; }
 
         public PortalSettings PortalSettings
         {
@@ -65,9 +52,5 @@ namespace DotNetNuke.Web.Mvc.Helpers
         }
 
         public ViewContext ViewContext { get; private set; }
-
-        public ViewDataDictionary ViewData { get; private set; }
-
-        public IViewDataContainer ViewDataContainer { get; private set; }
     }
 }
