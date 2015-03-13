@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Providers.FiftyOneClientCapabilityProvider</RootNamespace>
     <AssemblyName>DotNetNuke.Providers.FiftyOneClientCapabilityProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

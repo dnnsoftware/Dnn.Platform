@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>DotNetNuke.Modules.Taxonomy</RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Taxonomy</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MyType>Custom</MyType>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>

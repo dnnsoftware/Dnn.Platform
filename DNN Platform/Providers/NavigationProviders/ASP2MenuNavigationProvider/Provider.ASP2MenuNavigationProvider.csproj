@@ -8,7 +8,7 @@
     <ProjectGuid>{6081E5F2-B805-4040-A469-187DC10CB26F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>DotNetNuke.ASP2MenuNavigationProvider</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <RootNamespace>DotNetNuke.ASP2MenuNavigationProvider</RootNamespace>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
