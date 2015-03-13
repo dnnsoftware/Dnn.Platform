@@ -1571,6 +1571,7 @@ namespace DotNetNuke.Entities.Users
                     {
                         //try to remove the parent folder if there is no other users use this folder.
                         var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                        FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
                         if(parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
                         {
                             FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
@@ -1579,6 +1580,7 @@ namespace DotNetNuke.Entities.Users
                             {
                                 //try to remove the root folder if there is no other users use this folder.
                                 var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                                FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
                                 if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
                                 {
                                     FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);
