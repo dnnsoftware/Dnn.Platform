@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             Ajax = new DnnAjaxHelper<object>(ViewContext, this);
             Html = new DnnHtmlHelper(ViewContext, this);
             Url = new DnnUrlHelper(ViewContext.RequestContext);
-            Dnn = new DnnHelper<object>(ViewContext, this);
+            Dnn = new DnnHelper(ViewContext);
         }
     }
 }

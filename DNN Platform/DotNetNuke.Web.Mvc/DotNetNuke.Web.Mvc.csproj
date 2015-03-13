@@ -101,7 +101,6 @@
     <Compile Include="Helpers\DisplayExtensions.cs" />
     <Compile Include="Helpers\DnnAjaxHelper.cs" />
     <Compile Include="Helpers\DnnHelper.cs" />
-    <Compile Include="Helpers\DnnHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelperOfT.cs" />
     <Compile Include="Helpers\DnnHtmlHelper.cs" />
     <Compile Include="Helpers\DnnUrlHelper.cs" />

@@ -34,11 +34,11 @@ namespace DotNetNuke.Web.Mvc.Helpers
         }
 
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
-            : this(viewContext, viewDataContainer, routeCollection, new HtmlHelper(viewContext, viewDataContainer, routeCollection))
+            : this(new HtmlHelper(viewContext, viewDataContainer, routeCollection))
         {
         }
 
-        protected DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection, HtmlHelper htmlHelper)
+        protected DnnHtmlHelper(HtmlHelper htmlHelper)
         {
             HtmlHelper = htmlHelper;
         }
