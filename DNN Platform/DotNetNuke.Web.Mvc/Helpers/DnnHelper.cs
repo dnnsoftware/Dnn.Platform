@@ -19,12 +19,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
@@ -32,8 +35,19 @@ namespace DotNetNuke.Web.Mvc.Helpers
     {
         public DnnHelper(ViewContext viewContext)
         {
-            Requires.NotNull("viewContext", viewContext);
-            ViewContext = viewContext;
+            var controller = viewContext.Controller as IDnnController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The DnnHelper class can only be used in Views that inherit from DnnWebViewPage");
+            }
+
+            ModuleContext = controller.ModuleContext;
+        }
+
+        public ModuleInfo ActiveModule
+        {
+            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
         }
 
         public TabInfo ActivePage
@@ -41,16 +55,23 @@ namespace DotNetNuke.Web.Mvc.Helpers
             get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
 
+        public string LocalResourceFile { get; set; }
+
+        public string LocalizeString(string key)
+        {
+            return Localization.GetString(key, LocalResourceFile);
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
+
         public PortalSettings PortalSettings
         {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
         }
 
         public UserInfo User
         {
             get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
         }
-
-        public ViewContext ViewContext { get; private set; }
     }
 }
