@@ -259,6 +259,10 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
+                var socialRoles = Social.Roles;
+                if (socialRoles.Count == 0)
+                    return new string[0];
+
                 return (from r in Social.Roles
                         where
                             r.Status == RoleStatus.Approved &&
@@ -291,8 +295,12 @@ namespace DotNetNuke.Entities.Users
                 {
                     using (_social.GetWriteLock())
                     {
-                        userSocial = new UserSocial(this);
-                        _social.Add(PortalID, userSocial);
+						exists = _social.TryGetValue(PortalID, out userSocial);
+	                    if (!exists)
+	                    {
+							userSocial = new UserSocial(this);
+							_social.Add(PortalID, userSocial);
+						}
                     }
                 }
 
@@ -521,9 +529,11 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
-            if (Roles != null)
+
+            var roles = Roles;
+            if (roles != null)
             {
-                return Roles.Any(s => s == role);
+                return roles.Any(s => s == role);
             }
             return false;
         }

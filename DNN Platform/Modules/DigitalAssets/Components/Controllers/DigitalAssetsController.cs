@@ -27,14 +27,11 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -45,6 +42,7 @@ using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
 using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Web.UI;
@@ -68,32 +66,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
         }
 
-        protected static IOrderedQueryable<T> ApplyOrder<T>(IQueryable<T> source, string propertyName, bool asc)
-        {
-            var methodName = asc ? "OrderBy" : "OrderByDescending";
-            var arg = Expression.Parameter(typeof(T), "x");
-
-            // Use reflection to mirror LINQ
-            var property = typeof(T).GetProperty(propertyName);
-
-            // If property is undefined returns the original source
-            if (property == null) return (IOrderedQueryable<T>)source;
-
-            Expression expr = Expression.Property(arg, property);
-
-            var delegateType = typeof(Func<,>).MakeGenericType(typeof(T), property.PropertyType);
-            var lambda = Expression.Lambda(delegateType, expr, arg);
-
-            var result = typeof(Queryable).GetMethods().Single(
-                    method => method.Name == methodName
-                            && method.IsGenericMethodDefinition
-                            && method.GetGenericArguments().Length == 2
-                            && method.GetParameters().Length == 2)
-                    .MakeGenericMethod(typeof(T), property.PropertyType)
-                    .Invoke(null, new object[] { source, lambda });
-            return (IOrderedQueryable<T>)result;
-        }
-
         private static string GetFileIconUrl(string extension)
         {
             if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
@@ -102,11 +74,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             return IconController.IconURL("ExtFile", "32x32", "Standard");
-        }
-
-        private static string CleanDotsAtTheEndOfTheName(string name)
-        {
-            return name.Trim().TrimEnd(new[] { '.', ' ' });
         }
 
         #endregion
@@ -122,74 +89,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return folder;
         }
 
-        private IEnumerable<IFolderInfo> GetFolders(IFolderInfo parentFolder, string orderingField, bool asc)
-        {
-            Requires.NotNull("parentFolder", parentFolder);
-
-            var folders = FolderManager.Instance.GetFolders(parentFolder).Where(f => HasPermission(f, "BROWSE") || HasPermission(f, "READ"));
-
-            // Set default sorting values
-            var field = string.IsNullOrEmpty(orderingField) ? "FolderName" : orderingField;
-
-            return ApplyOrder(folders.AsQueryable(), field, asc);
-        } 
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, SortProperties sortProperties, int startIndex, bool recursive)
-        {
-            Requires.NotNull("folder", folder);
-
-            if (Host.EnableFileAutoSync && startIndex==0)
-            {
-                FolderManager.Instance.Synchronize(folder.PortalID, folder.FolderPath, false, true);
-            }
-
-            return SortFiles(FolderManager.Instance.GetFiles(folder, recursive, true), sortProperties);            
-        }
-
-        /// <summary>
-        /// This method deletes a folder and his content (sub folder and files) in a recursive way.
-        /// </summary>
-        /// <param name="folder">Folder to delete</param>
-        /// <param name="notDeletedItems">The not deleted items list. The subfiles / subfolders for which the user has no permissions to delete</param>
-        /// <retur>True if the Folder has been deleted, otherwise returns false</retur>
-        private bool DeleteFolder(IFolderInfo folder, ICollection<ItemPathViewModel> notDeletedItems)
-        {
-            var notDeletedSubfolders = new List<IFolderInfo>();
-            FolderManager.Instance.DeleteFolder(folder, notDeletedSubfolders);
-            if (!notDeletedSubfolders.Any())
-            {
-                return false;
-            }
-            
-            foreach (var notDeletedSubfolder in notDeletedSubfolders)
-            {
-                notDeletedItems.Add(GetItemPathViewModel(notDeletedSubfolder));
-            }
-            return true;
-        }
-
         private IEnumerable<PermissionViewModel> GetPermissionViewModelCollection(IFolderInfo folder)
         {
             // TODO Split permission between CE and PE packages
             string[] permissionKeys = { "ADD", "BROWSE", "COPY", "READ", "WRITE", "DELETE", "MANAGE", "VIEW", "FULLCONTROL" };
 
             return permissionKeys.Select(permissionKey => new PermissionViewModel { Key = permissionKey, Value = HasPermission(folder, permissionKey) }).ToList();
-        }
-
-        private string GetNewFolderPath(string newFolderName, IFolderInfo folder)
-        {
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
-            {
-                return folder.FolderPath;
-            }
-
-            var oldFolderPath = folder.FolderPath;
-            if (oldFolderPath.Length > 0)
-            {
-                oldFolderPath = oldFolderPath.Substring(0, oldFolderPath.LastIndexOf(folder.FolderName, StringComparison.Ordinal));
-            }
-
-            return PathUtils.Instance.FormatFolderPath(oldFolderPath + newFolderName);
         }
 
         private FolderMappingViewModel GetFolderMappingViewModel(FolderMappingInfo folderMapping)
@@ -245,19 +150,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size);
 
             return field;
-        }
-
-        private bool IsInvalidName(string itemName)
-        {
-            var invalidFilenameChars = new Regex("[" + Regex.Escape(GetInvalidChars()) + "]");
-
-            return invalidFilenameChars.IsMatch(itemName);
-        }
-
-        private bool IsReservedName(string name)
-        {
-            var reservedNames = new[] { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "CLOCK$" };
-            return reservedNames.Contains(Path.GetFileNameWithoutExtension(name.ToUpperInvariant()));
         }
 
         private List<Field> GetFolderPreviewFields(IFolderInfo folder)
@@ -319,23 +211,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 };
         }
 
-        private string ReplaceFolderName(string path, string folderName, string newFolderName)
-        {
-            string newPath = PathUtils.Instance.RemoveTrailingSlash(path);
-            if (string.IsNullOrEmpty(newPath))
-            {
-                return path;
-            }
-            var nameIndex = newPath.LastIndexOf(folderName, StringComparison.Ordinal);
-            if (nameIndex == -1)
-            {
-                return path;
-            }
-
-            var result = newPath.Substring(0, nameIndex) + newPath.Substring(nameIndex).Replace(folderName, newFolderName);
-            return result;
-        }
-
         private bool AreMappedPathsSupported(int folderMappingId)
         {
             if (MappedPathsSupported.ContainsKey(folderMappingId))
@@ -383,8 +258,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return null;
             }
 
-            return SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            var folderTypeId = SettingsRepository.GetDefaultFolderTypeId(moduleId);
+            if (!folderTypeId.HasValue)
+            {
+                folderTypeId = FolderMappingController.Instance.GetDefaultFolderMapping(GetCurrentPortalId(moduleId)).FolderMappingID;
+            }
+            return folderTypeId;
         }
+
 
         public int GetCurrentPortalId(int moduleId)
         {
@@ -420,62 +301,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 //The user cannot access the content
                 return new List<FolderViewModel>();
             }
-            return GetFolders(folder, "FolderName", true).Select(GetFolderViewModel);
+            return AssetManager.Instance.GetFolders(folder, "FolderName", true).Select(GetFolderViewModel);
         }
 
         public PageViewModel GetFolderContent(int moduleId, int folderId, int startIndex, int numItems, string sortExpression)
         {
-            var folder = GetFolderInfo(folderId);
-
-            if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
-            {
-                //The user cannot access the content               
-                return new PageViewModel
-                                {
-                                    Folder = GetFolderViewModel(folder),
-                                    Items = new List<ItemViewModel>(),
-                                    TotalCount = 0
-                                };
-            }
-
-            var sortProperties = SortProperties.Parse(sortExpression);
-
-            List<IFolderInfo> folders;      
-
             var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
-            if (subfolderFilter != SubfolderFilter.IncludeSubfoldersFolderStructure)
-            {
-                folders = new List<IFolderInfo>();
-            }
-            else
-            { 
-                folders = GetFolders(folder, sortProperties.Column == "ItemName" ? "FolderName" : sortProperties.Column, sortProperties.Ascending).ToList();
-            }
-
-            var recursive = subfolderFilter == SubfolderFilter.IncludeSubfoldersFilesOnly;
-            var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
-
-            IEnumerable<ItemViewModel> content;
-            if (startIndex + numItems <= folders.Count())
-            {
-                content = folders.Skip(startIndex).Take(numItems).Select(GetItemViewModel);
-            } 
-            else if (startIndex >= folders.Count())
-            {
-                content = files.Skip(startIndex - folders.Count).Take(numItems).Select(GetItemViewModel);
-            }
-            else
-            {
-                var numFiles = numItems - (folders.Count - startIndex);
-                content = folders.Skip(startIndex).Select(GetItemViewModel).Union(files.Take(numFiles).Select(GetItemViewModel));
-            }
-
+            var page = AssetManager.Instance.GetFolderContent(folderId, startIndex, numItems, sortExpression, subfolderFilter);
             return new PageViewModel
-                {
-                    Folder = GetFolderViewModel(folder),
-                    Items = content.ToList(),
-                    TotalCount = folders.Count() + files.Count()
-                };
+            {
+                Folder = GetFolderViewModel(page.Folder),
+                Items = page.Items.Select(GetItemViewModel).ToList(),
+                TotalCount = page.TotalCount
+            };
         }
 
         public void SyncFolderContent(int folderId, bool recursive)
@@ -493,46 +331,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public PageViewModel SearchFolderContent(int moduleId, int folderId, string pattern, int startIndex, int numItems, string sortExpression)
         {
-            var recursive = SettingsRepository.GetSubfolderFilter(moduleId) != SubfolderFilter.ExcludeSubfolders;
-            var folder = GetFolderInfo(folderId);
+            var subfolderFilter = SettingsRepository.GetSubfolderFilter(moduleId);
+            var page = AssetManager.Instance.SearchFolderContent(folderId, pattern, startIndex, numItems, sortExpression, subfolderFilter);
 
-            var files = FolderManager.Instance.SearchFiles(folder, pattern, recursive);
-            var sortProperties = SortProperties.Parse(sortExpression);
-            var sortedFiles = SortFiles(files, sortProperties).ToList();
-            
             return new PageViewModel
-                {
-                    Folder = GetFolderViewModel(folder),
-                    Items = sortedFiles.Skip(startIndex).Take(numItems).Select(GetItemViewModel).ToList(),
-                    TotalCount = sortedFiles.Count()
-                };
-        }
-
-        private static IEnumerable<IFileInfo> SortFiles(IEnumerable<IFileInfo> files, SortProperties sortProperties)
-        {
-            switch (sortProperties.Column)
             {
-                case "ItemName":
-                    return OrderBy(files, f => f.FileName, sortProperties.Ascending);
-                case "LastModifiedOnDate":
-                    return OrderBy(files, f => f.LastModifiedOnDate, sortProperties.Ascending);
-                case "Size":
-                    return OrderBy(files, f => f.Size, sortProperties.Ascending);
-                case "ParentFolder":
-                    return OrderBy(files, f => f.FolderId, new FolderPathComparer(), sortProperties.Ascending);
-                default:
-                    return files;
-            }
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
-        }
-
-        private static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer, bool ascending)
-        {
-            return ascending ? source.OrderBy(keySelector, comparer) : source.OrderByDescending(keySelector, comparer);
+                Folder = GetFolderViewModel(page.Folder),
+                Items = page.Items.Select(GetItemViewModel).ToList(),
+                TotalCount = page.TotalCount
+            };
         }
 
         public FolderViewModel GetFolder(int folderID)
@@ -621,49 +428,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
-            Requires.NotNullOrEmpty("folderName", folderName);
-
-            var filterFolderName = CleanDotsAtTheEndOfTheName(folderName);
-
-            if (IsInvalidName(filterFolderName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the new name is a reserved name
-            if (IsReservedName(filterFolderName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var parentFolder = GetFolderInfo(folderParentID);
-
-            if (!HasPermission(parentFolder, "ADD"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToAdd.Error"));
-            }
-
-            var folderPath = PathUtils.Instance.FormatFolderPath(
-                PathUtils.Instance.FormatFolderPath(
-                PathUtils.Instance.StripFolderPath(parentFolder.FolderPath).Replace("\\", "/")) + filterFolderName);
-
-            mappedPath = PathUtils.Instance.FormatFolderPath(mappedPath);
-
-            if (!Regex.IsMatch(mappedPath, @"^(?!\s*[\\/]).*$"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("InvalidMappedPath.Error"));
-            }
-
-            try
-            {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingID);
-                var folder = FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
-                return GetFolderViewModel(folder);
-            }
-            catch (FolderAlreadyExistsException)
-            {
-                throw new DotNetNukeException(string.Format(LocalizationHelper.GetString("FolderAlreadyExists.Error"), filterFolderName));
-            }
+            return GetFolderViewModel(AssetManager.Instance.CreateFolder( folderName,folderParentID, folderMappingID, mappedPath));
         }
 
         public ItemViewModel GetFile(int fileID)
@@ -701,141 +466,32 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public IEnumerable<ItemPathViewModel> DeleteItems(IEnumerable<DeleteItem> items)
         {
-            var notDeletedItems = new List<ItemPathViewModel>();
+            var nonDeletedItems = new List<IFolderInfo>();
 
             foreach (var item in items)
             {
                 if (item.IsFolder)
                 {
-                    var folder = FolderManager.Instance.GetFolder(item.ItemId);
-                    if (folder == null) continue;
-
-                    if (!HasPermission(folder, "DELETE"))
-                    {
-                        notDeletedItems.Add(GetItemPathViewModel(folder));
-                    }
-                    else
-                    {
-                        if (item.UnlinkAllowedStatus == "onlyUnlink")
-                        {
-                            FolderManager.Instance.UnlinkFolder(folder);
-                        }
-                        else
-                        {
-                            DeleteFolder(folder, notDeletedItems);
-                        }
-                    }
+                    var onlyUnlink = item.UnlinkAllowedStatus == "onlyUnlink";
+                    AssetManager.Instance.DeleteFolder(item.ItemId, onlyUnlink, nonDeletedItems);
                 }
                 else
                 {
-                    var fileInfo = FileManager.Instance.GetFile(item.ItemId, true);
-                    if (fileInfo == null) continue;
-
-                    var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
-
-                    if (!HasPermission(folder, "DELETE"))
-                    {
-                        notDeletedItems.Add(GetItemPathViewModel(fileInfo));
-                    }
-                    else
-                    {
-                        FileManager.Instance.DeleteFile(fileInfo);
-                    }
+                    AssetManager.Instance.DeleteFile(item.ItemId);
                 }
             }
 
-            return notDeletedItems;
+            return nonDeletedItems.Select(GetItemPathViewModel);
         }
 
         public ItemViewModel RenameFile(int fileID, string newFileName)
         {
-            Requires.NotNullOrEmpty("newFileName", newFileName);
-
-            var filteredName = CleanDotsAtTheEndOfTheName(newFileName);
-
-            if (string.IsNullOrEmpty(filteredName))
-            {
-                throw new DotNetNukeException(string.Format(LocalizationHelper.GetString("FolderFileNameHasInvalidcharacters.Error"), newFileName));
-            }
-
-            // Chech if the new name has invalid chars
-            if (IsInvalidName(filteredName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the new name is a reserved name
-            if (IsReservedName(filteredName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var file = FileManager.Instance.GetFile(fileID, true);
-
-            // Check if the name has not changed
-            if (file.FileName == newFileName)
-            {
-                return GetItemViewModel(file);
-            }
-
-            // Check if user has appropiate permissions
-            var folder = FolderManager.Instance.GetFolder(file.FolderId);
-            if (!HasPermission(folder, "MANAGE"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToEditFile.Error"));
-            }
-
-            var renamedFile = FileManager.Instance.RenameFile(file, newFileName);
-
-            return GetItemViewModel(renamedFile);
+            return GetItemViewModel(AssetManager.Instance.RenameFile(fileID, newFileName));
         }
 
         public FolderViewModel RenameFolder(int folderID, string newFolderName)
         {
-            Requires.NotNullOrEmpty("newFolderName", newFolderName);
-
-            newFolderName = CleanDotsAtTheEndOfTheName(newFolderName);
-
-            // Check if the new name has invalid chars
-            if (IsInvalidName(newFolderName))
-            {
-                throw new DotNetNukeException(GetInvalidCharsErrorText());
-            }
-
-            // Check if the name is reserved
-            if (IsReservedName(newFolderName))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderFileNameIsReserved.Error"));
-            }
-
-            var folder = GetFolderInfo(folderID);
-
-            // Check if user has appropiate permissions
-            if (!HasPermission(folder, "MANAGE"))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToEditFolder.Error"));
-            }
-
-            // check if the name has not changed
-            if (folder.FolderName == newFolderName)
-            {
-                return GetFolderViewModel(folder);
-            }
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
-            {
-                folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
-                return GetFolderViewModel(FolderManager.Instance.UpdateFolder(folder));
-            }
-
-            var newFolderPath = GetNewFolderPath(newFolderName, folder);
-            // Check if the new folder already exists
-            if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderAlreadyExists.Error"));
-            }
-
-            FolderManager.Instance.RenameFolder(folder, newFolderName);
-            return GetFolderViewModel(folder);
+            return GetFolderViewModel(AssetManager.Instance.RenameFolder(folderID, newFolderName));
         }
 
         public Stream GetFileContent(int fileId, out string fileName, out string contentType)
@@ -1056,6 +712,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             };
             folderViewModel.Attributes.Add(new KeyValuePair<string, object>("UnlinkAllowedStatus", GetUnlinkAllowedStatus(folder)));
             return folderViewModel;
+        }
+
+        private ItemViewModel GetItemViewModel(object item)
+        {
+            var folder = item as IFolderInfo;
+            if (folder != null) return GetItemViewModel(folder);
+
+            var file = item as IFileInfo;
+            return GetItemViewModel(file);
         }
 
         protected virtual ItemViewModel GetItemViewModel(IFolderInfo folder)

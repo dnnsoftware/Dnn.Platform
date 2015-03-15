@@ -19,7 +19,7 @@
             <libraryName>Knockout</libraryName>
             <fileName>knockout.js</fileName>
             <objectName>ko</objectName>
-            <CDNPath>http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js</CDNPath>
+            <CDNPath>//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

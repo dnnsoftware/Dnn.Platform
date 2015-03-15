@@ -1074,8 +1074,14 @@ namespace DotNetNuke.Entities.Urls
             if (isUnique) //check whether have a tab which use the url.
             {
                 var friendlyUrlSettings = new FriendlyUrlSettings(settings.PortalId);
-                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId);
-                foreach (TabInfo tab in tabs.Values)
+                var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
+				//DNN-6492: if content localize enabled, only check tab names in current culture.
+	            if (settings.ContentLocalizationEnabled)
+	            {
+		            tabs = tabs.Where(t => t.CultureCode == settings.CultureCode).ToList();
+	            }
+
+                foreach (TabInfo tab in tabs)
                 {
                     if (tab.TabID == validateUrlForTabId)
                     {

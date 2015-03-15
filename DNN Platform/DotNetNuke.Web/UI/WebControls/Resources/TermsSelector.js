@@ -17,6 +17,7 @@
 			}
 			var tree = $find($("div[id^=" + clientId + "][id$=_TreeView]").attr("id"));
 			tree.trackChanges();
+			tree.get_nodes().clear();
 			for (var i = 1; i < itemsData.length; i++) {
 				var data = itemsData[i];
 				var node = new Telerik.Web.UI.RadTreeNode();

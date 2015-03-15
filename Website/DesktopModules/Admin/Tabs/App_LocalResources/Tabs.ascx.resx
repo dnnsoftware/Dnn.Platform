@@ -447,4 +447,7 @@
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Page Management</value>
   </data>
+  <data name="ConfirmSave.Text" xml:space="preserve">
+    <value>You have unsaved changes on this page, would you like to save these changes?</value>
+  </data>
 </root>

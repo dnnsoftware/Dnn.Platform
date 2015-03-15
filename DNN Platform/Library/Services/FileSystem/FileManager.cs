@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -70,34 +71,41 @@ namespace DotNetNuke.Services.FileSystem
         #region Properties
 
         private IDictionary<string, string> _contentTypes;
+		private static readonly object _threadLocker = new object();
 
         public virtual IDictionary<string, string> ContentTypes
         {
             get
             {
-            	lock (this)
+                if (_contentTypes == null)
                 {
-                	if (_contentTypes == null)
-                	{
-                    	var listController = new ListController();
-                    	var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-                    	if (listEntries == null || !listEntries.Any())
-                    	{
-                        	_contentTypes = GetDefaultContentTypes();
-                    	}
-                    	_contentTypes = new Dictionary<string, string>();
-                    	if (listEntries != null)
-                    	{
-                        	foreach (var contentTypeEntry in listEntries)
-                        	{
-                            	_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
-                        	}
-                    	}
-                	}
+					lock (_threadLocker)
+	                {
+		                if (_contentTypes == null)
+		                {
+			                var listController = new ListController();
+			                var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+			                if (listEntries == null || !listEntries.Any())
+			                {
+				                _contentTypes = GetDefaultContentTypes();
+			                }
+			                else
+			                {
+				                _contentTypes = new Dictionary<string, string>();
+								if (listEntries != null)
+								{
+									foreach (var contentTypeEntry in listEntries)
+									{
+										_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+									}
+								}
+			                }
+		                }
+	                }
+                }
 
-                	return _contentTypes;
-            	}
-        	}
+                return _contentTypes;
+            }
         }
 
         private bool IgnoreWhiteList
@@ -477,7 +485,14 @@ namespace DotNetNuke.Services.FileSystem
                         file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
-                            UpdateFile(file);
+                            if (file.FileId == Null.NullInteger)
+                            {
+                                AddFile(file, fileHash, createdByUserID);
+                            }  
+                            else
+                            {
+                                UpdateFile(file);
+                            }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
                         else
@@ -512,57 +527,44 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
-                if (folderWorkflow == null || !fileExists)
-                {
-                    file.FileId = DataProvider.Instance().AddFile(file.PortalId,
-                                                              file.UniqueId,
-                                                              file.VersionGuid,
-                                                              file.FileName,
-                                                              file.Extension,
-                                                              file.Size,
-                                                              file.Width,
-                                                              file.Height,
-                                                              file.ContentType,
-                                                              file.Folder,
-                                                              file.FolderId,
-                                                              createdByUserID,
-                                                              fileHash,
-                                                              file.LastModificationTime,
-                                                              file.Title,
-                                                              file.StartDate,
-                                                              file.EndDate,
-                                                              file.EnablePublishPeriod,
-                                                              file.ContentItemID);
-                }
+				var isDefaultFolderProvider = DefaultFolderProviders.GetDefaultProviders().Contains(folderMapping.FolderProviderType);
 
                 try
                 {
-                    var providerLastModificationTime = DateTime.UtcNow;  
-                    
-                    try
-                    {
-                        providerLastModificationTime = folderProvider.GetLastModificationTime(file);
-                    }
-                    catch (Exception fileNotFound) 
-                    {
-                        Logger.Error("Fault tolerant!!!!!!!! = GetLastModificationTime  " + fileName);
-                    }
-                    
+					//add file into database first if folder provider is default providers
+					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+	                if (isDefaultFolderProvider)
+	                {
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
+
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+	                }
+	                else
+	                {
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
+	                }
+
+	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
                     }
 
-                    var providerHash = String.Empty;
-                    
-                    try
-                    {
-                        providerHash = folderProvider.GetHashCode(file);
-                    }
-                    catch (Exception fileNotFound)
-                    {
-                        Logger.Error("Fault tolerant!!!!!!!! =GetHashCode  " + fileName);
-                    }
+                    var providerHash = folderProvider.GetHashCode(file);
                     if (fileHash != providerHash)
                     {
                         DataProvider.Instance()
@@ -612,6 +614,30 @@ namespace DotNetNuke.Services.FileSystem
                     fileContent.Dispose();
                 }
             }
+        }
+
+        private void AddFile(IFileInfo file, string fileHash, int createdByUserID)
+        {
+            file.FileId = DataProvider.Instance().AddFile(file.PortalId,
+                                                    file.UniqueId,
+                                                    file.VersionGuid,
+                                                    file.FileName,
+                                                    file.Extension,
+                                                    file.Size,
+                                                    file.Width,
+                                                    file.Height,
+                                                    file.ContentType,
+                                                    file.Folder,
+                                                    file.FolderId,
+                                                    createdByUserID,
+                                                    fileHash,
+                                                    file.LastModificationTime,
+                                                    file.Title,
+                                                    file.StartDate,
+                                                    file.EndDate,
+                                                    file.EnablePublishPeriod,
+                                                    file.ContentItemID);
+          
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -893,7 +919,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
         {
 
-            Requires.NotNullOrEmpty("relateivePath", relativePath);
+            Requires.NotNullOrEmpty("relativePath", relativePath);
 
             var folderPath = "";
             var seperatorIndex = relativePath.LastIndexOf('/');
@@ -1752,7 +1778,8 @@ namespace DotNetNuke.Services.FileSystem
                     throw new ArgumentOutOfRangeException("contentDisposition");
             }
 
-            objResponse.AppendHeader("Content-Length", file.Size.ToString());
+            // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
+            if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
             objResponse.ContentType = GetContentType(file.Extension.Replace(".", ""));
 
             try
@@ -1840,7 +1867,7 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.RemoveCache("GetFileById" + file.FileId);
             var updatedFile = GetFile(file.FileId);
 
-            OnFileMetadataChanged(updatedFile, GetCurrentUserID());
+            OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
             return updatedFile;
         }
 

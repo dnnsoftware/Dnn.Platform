@@ -42,6 +42,7 @@ using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Services;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -279,6 +280,9 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
             
             SetupNodeAttributes(rootNode, GetPermissionsForRootFolder(rootFolder.Permissions), rootFolder);
+
+			FolderTreeView.Nodes.Clear();
+			DestinationTreeView.Nodes.Clear();
 
             FolderTreeView.Nodes.Add(rootNode);
             DestinationTreeView.Nodes.Add(rootNode.Clone());
@@ -544,7 +548,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnLoad(e);
 
-                if (IsPostBack) return;
+                //if (IsPostBack) return;
 
                 switch (SettingsRepository.GetMode(ModuleId))
                 {

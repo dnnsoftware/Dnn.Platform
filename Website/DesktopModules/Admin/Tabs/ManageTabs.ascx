@@ -357,7 +357,7 @@
             skinSelector: '<%= pageSkinCombo.ClientID %>',
             containerSelector: '<%= pageContainerCombo.ClientID %>',
             baseUrl: '<%= DotNetNuke.Common.Globals.NavigateURL(this.TabId) %>',
-            noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+            noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
             alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
             alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true

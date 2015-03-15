@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="tabId">Tab Id whose version will be added</param>
         /// <param name="createdByUserId">User Id which creates the version</param>
         /// <returns>TabVersion filled with the new version data</returns>
-        TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserID);
+        TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserId);
 
 
         /// <summary>

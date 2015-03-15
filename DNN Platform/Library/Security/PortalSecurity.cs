@@ -722,7 +722,7 @@ namespace DotNetNuke.Security
             if (cookie != null)
             {
                 cookie.Value = null;
-                cookie.Path = Globals.ApplicationPath;
+				cookie.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
@@ -730,7 +730,7 @@ namespace DotNetNuke.Security
             if (cookie != null)
             {
                 cookie.Value = null;
-                cookie.Path = Globals.ApplicationPath;
+				cookie.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
@@ -744,7 +744,7 @@ namespace DotNetNuke.Security
                     if (auth != null)
                     {
                         auth.Value = null;
-                        auth.Path = Globals.ApplicationPath;
+						auth.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
                         auth.Expires = DateTime.Now.AddYears(-30);
                     }
                 }

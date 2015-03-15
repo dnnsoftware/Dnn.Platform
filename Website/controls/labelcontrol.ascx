@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.UserControls.LabelControl" %>
 <div class="dnnLabel">    
-    <label>
-        <asp:Label ID="lblLabel" runat="server" EnableViewState="False"/>   
+    <label ID="label" runat="server" EnableViewState="false">
+        <asp:Label ID="lblLabel" runat="server" EnableViewState="False" />   
     </label>
     <asp:LinkButton ID="cmdHelp" TabIndex="-1" runat="server" CausesValidation="False"
         EnableViewState="False" CssClass="dnnFormHelp">        

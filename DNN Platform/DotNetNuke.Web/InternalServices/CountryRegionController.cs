@@ -12,7 +12,7 @@ using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
 {
-	[DnnAuthorize]
+	[AllowAnonymous]
 	public class CountryRegionController : DnnApiController
 	{
 

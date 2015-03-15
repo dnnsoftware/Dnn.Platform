@@ -532,7 +532,7 @@ namespace DotNetNuke.Entities.Urls
                                                 ShowDebugData(context, fullUrl, result, null);
                                             }
                                             response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                            response.Redirect(result.FinalUrl, false);
+                                            response.RedirectPermanent(result.FinalUrl);
                                             finished = true;
                                         }
                                         else
@@ -564,7 +564,7 @@ namespace DotNetNuke.Entities.Urls
                                             else
                                             {
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
-                                                response.Redirect(result.FinalUrl, false);
+                                                response.RedirectPermanent(result.FinalUrl);
                                                 finished = true;
                                             }
                                         }

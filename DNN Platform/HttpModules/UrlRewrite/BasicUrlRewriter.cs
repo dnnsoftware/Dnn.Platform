@@ -271,18 +271,21 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
-                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect &&
-                    portalAliasInfo != null && !portalAliasInfo.IsPrimary)
+
+                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect 
+                    && portalAliasInfo != null && !portalAliasInfo.IsPrimary
+                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias) // don't redirect if no primary alias is defined
+                ) 
                 {
                     //Permanently Redirect
                     response.StatusCode = 301;
 
-                    string redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
-                    string checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
-                    string redirectUrl = redirectAlias + request.RawUrl;
+                    var redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
+                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
+                    var redirectUrl = string.Concat(redirectAlias, request.RawUrl);
                     if (redirectUrl.StartsWith(checkAlias, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        redirectUrl = redirectAlias + redirectUrl.Substring(checkAlias.Length);
+                        redirectUrl = string.Concat(redirectAlias, redirectUrl.Substring(checkAlias.Length));
                     }
 
                     response.AppendHeader("Location", redirectUrl);

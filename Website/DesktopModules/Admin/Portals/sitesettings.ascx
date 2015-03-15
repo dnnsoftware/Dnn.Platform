@@ -250,11 +250,7 @@
                         <dnn:label id="enablePopUpsLabel" runat="server" controlname="enablePopUpsCheckBox" />
                         <asp:CheckBox ID="enablePopUpsCheckBox" runat="server" />
                     </div>
-                    <div class="dnnFormItem">
-                        <dnn:label id="enableModuleEffectLabel" runat="server" controlname="enableModuleEffectCheckBox" />
-                        <asp:CheckBox ID="enableModuleEffectCheckBox" runat="server" />
-                    </div>
-                    <div class="dnnFormItem">
+                   <div class="dnnFormItem">
                         <dnn:label id="plInlineEditor" runat="server" controlname="chkInlineEditor" />
                         <asp:CheckBox ID="chkInlineEditor" runat="server" />
                     </div>
@@ -773,7 +769,7 @@
             skinSelector: '<%= portalSkinCombo.ClientID %>',
             containerSelector: '<%= portalContainerCombo.ClientID %>',
             baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-            noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+            noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
             alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
             alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
@@ -782,7 +778,7 @@
             skinSelector: '<%= editSkinCombo.ClientID %>',
             containerSelector: '<%= editContainerCombo.ClientID %>',
             baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-            noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+            noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
             alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
             alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
             useComboBox: true
@@ -797,21 +793,21 @@
         var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
         $('.dnnDeleteSite').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteMessage")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteMessage") %>',
             yesText: yesText,
             noText: noText,
             title: titleText
         });
 
         $('#<%= cmdRestore.ClientID %>').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("RestoreCCSMessage")) %>',
+            text: '<%= LocalizeSafeJsString("RestoreCCSMessage") %>',
             yesText: yesText,
             noText: noText,
             title: titleText
         });
 
         $('#<%= IncrementCrmVersionButton.ClientID %>').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("IncrementCrmVersionConfirm")) %>',
+            text: '<%= LocalizeSafeJsString("IncrementCrmVersionConfirm") %>',
             yesText: yesText,
             noText: noText,
             title: titleText

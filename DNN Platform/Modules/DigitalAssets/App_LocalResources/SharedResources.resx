@@ -156,12 +156,6 @@
   <data name="UploadFilesToolBarButtonExtensionPoint.Text" xml:space="preserve">
     <value>Upload Files</value>
   </data>
-  <data name="UserHasNoPermissionToAdd.Error" xml:space="preserve">
-    <value>The user has no permission to add folders on this location</value>
-  </data>
-  <data name="UserHasNoPermissionToEditFolder.Error" xml:space="preserve">
-    <value>The user has no permission to edit this folder</value>
-  </data>
   <data name="UserHasNoPermissionToDeleteFiles.Error" xml:space="preserve">
     <value>The user has no permission to delete files on this folder</value>
   </data>
@@ -252,9 +246,6 @@
   <data name="FolderNameRequired.ErrorMessage" xml:space="preserve">
     <value>Folder Name is required</value>
   </data>
-  <data name="UserHasNoPermissionToEditFile.Error" xml:space="preserve">
-    <value>The user has no permission to edit this file</value>
-  </data>
   <data name="ZoomImage.AltText" xml:space="preserve">
     <value>Open the file in a new tab</value>
   </data>
@@ -278,9 +269,6 @@
   </data>
   <data name="UserHasNoPermissionToBrowseFolder.Error" xml:space="preserve">
     <value>The user has no permission to browse this folder</value>
-  </data>
-  <data name="FolderFileNameIsReserved.Error" xml:space="preserve">
-    <value>The name is reserved. Try a different name</value>
   </data>
   <data name="RefreshMenuItemExtensionPoint.Text" xml:space="preserve">
     <value>Refresh</value>

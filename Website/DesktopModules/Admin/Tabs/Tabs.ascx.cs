@@ -216,7 +216,9 @@ namespace DesktopModules.Admin.Tabs
         {
             get
             {
-                return TabController.GetPortalTabs(rblMode.SelectedValue == "H" ? Null.NullInteger : PortalId, Null.NullInteger, false, true, false, true);
+                var portalId = rblMode.SelectedValue == "H" ? Null.NullInteger : PortalId;
+                return TabController.GetPortalTabs(portalId, Null.NullInteger, false, true, false, true)
+                    .Where(tab => !tab.IsSystem).ToList();
             }
         }
 

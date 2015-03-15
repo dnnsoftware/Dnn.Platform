@@ -12,10 +12,19 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         controller = bussinessController;
 
+        if (initEvents.length > 0) {
+            for (var i = 0; i < initEvents.length; i++) {
+                var event = initEvents[i];
+                if (typeof event == "function") {
+                    event.call(this);
+                }
+            }
+        }
+
         setupDnnTabs();
         setupDnnMainMenuButtons();
         setupDnnMainToolbarTitles();
-
+        initUI();
     }
 
     var fileUpload;
@@ -53,6 +62,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     var currentView = gridViewMode;
 
     var controller;
+    var initEvents = [];
 
     var servicesFramework;
     var contentServiceUrl = '';
@@ -82,6 +92,9 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     var isOnSyncMenuBtn;
     var isOnSyncMenu;
     var gridSelectUnselectAll;
+
+    var _gridNeedIntialize = false;
+    var _treeViewNeedIntialize = false;
 
     var currentTab = 0;
 
@@ -185,23 +198,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
     function gridOnGridCreated(sender, eventArgs) {
         $.dnnGridCreated(sender, eventArgs);
         grid = sender.get_masterTableView();
-        initGridSelectAllUnselectAll(sender);
-        
-        // remove PostBack on grid header sorting
-        $(".dnnModuleDigitalAssetsGrid > table > thead tr th.rgHeader a").attr("href", "#");
-        initializePager();
 
-        var selectedNode = getSelectedNode();
-        if (selectedNode == null) {
-            return;
+        if (typeof controls !== "undefined") {
+            initGridEvents();
+        } else {
+            _gridNeedIntialize = true;
         }
-        
-        currentFolderId = selectedNode.get_value();
-        //loadFolderFirstPage(currentFolderId);
-        setView(settings.view == listViewMode ? listViewMode : gridViewMode);
-        grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
-
-        controller.gridOnGridCreated(grid);
     }
     
     function initGridSelectAllUnselectAll(sender) {
@@ -274,27 +276,11 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         if (!rootNode) {
             return;
         }
-        
-        initDroppableNode(rootNode);
-        
-        var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);        
-        
-        var actions = controller.getLeftPaneActions(settings);
-        for (var i = 0, size = actions.length; i < size; i++) {
-            var $li = $("<li></li>")
-                .attr('id', actions[i].id)
-                .text(actions[i].text);
-            var actionMethod = actions[i].method;
-            $li.click(function () {
-                var node = treeView.get_selectedNode();
-                if (node) {
-                    node.unselect();
-                }
 
-                $(this).addClass('selected');
-                actionMethod();
-            });
-            $ul.append($li);
+        if (typeof controls !== "undefined") {
+            initTreeviewEvents();
+        } else {
+            _treeViewNeedIntialize = true;
         }
     }
 
@@ -1553,7 +1539,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         $("#" + controls.gridId + " tbody input[type='checkbox']").dnnCheckbox()
             .unbind('click', gridSelectionCheckboxClick)
             .bind('click', gridSelectionCheckboxClick);
-        gridSelectUnselectAll.attr("checked", false);
+        gridSelectUnselectAll.prop("checked", false);
 
         if (settings.isFilteredContent === false) {
             $(".dnnModuleDigitalAssetsGrid tr.rgRow, .dnnModuleDigitalAssetsGrid tr.rgAltRow").draggable({
@@ -2278,16 +2264,18 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
 
         resetClientValidations("CreateFolder");
 
-        var folderProviderValue = node.get_value() == rootFolderId && settings.defaultFolderTypeId != '' ? settings.defaultFolderTypeId : node.get_category();
+        var parentFolderProvider = node.get_category();
+        var defaultFolderProvider = node.get_value() == rootFolderId && settings.defaultFolderTypeId != '' ? settings.defaultFolderTypeId : parentFolderProvider;
 
-        var item = comboFolderType.findItemByValue(folderProviderValue);
+        var item = comboFolderType.findItemByValue(defaultFolderProvider);
         if (item != null) {
             item.select();
             spanFolderTypeNoEditable.text(item.get_text());
         }
 
         var defaultFolderProviders = resources.defaultFolderProviderValues == "" ? [] : resources.defaultFolderProviderValues.split(',');
-        if ($.inArray(folderProviderValue.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
+
+        if ($.inArray(parentFolderProvider.toString(), defaultFolderProviders) == -1) //The Folder Provider is not a Default Folder Provider
         {
             comboFolderType.set_visible(false);
             $("#" + controls.comboBoxFolderTypeId).addClass('dnnModuleDigitalAssetsHideFolderTypeDropDowList');
@@ -3502,7 +3490,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         return list;
     }
 
-    $(function () {
+    function initUI () {
 
         initDragAndDrop();
 
@@ -3517,10 +3505,68 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
                 e.preventDefault();
             }
         });
-    });
+
+        if (_treeViewNeedIntialize) {
+            initTreeviewEvents();
+        }
+
+        if (_gridNeedIntialize) {
+            initGridEvents();
+        }
+    }
+    
+    function initGridEvents() {
+        
+        initGridSelectAllUnselectAll(grid);
+
+        // remove PostBack on grid header sorting
+        $(".dnnModuleDigitalAssetsGrid > table > thead tr th.rgHeader a").attr("href", "#");
+        initializePager();
+
+        var selectedNode = getSelectedNode();
+        if (selectedNode == null) {
+            return;
+        }
+        
+        currentFolderId = selectedNode.get_value();
+        //loadFolderFirstPage(currentFolderId);
+        setView(settings.view == listViewMode ? listViewMode : gridViewMode);
+        grid.set_pageSize(settings.pageSize ? settings.pageSize : 10);
+
+        controller.gridOnGridCreated(grid);
+    }
+
+    function initTreeviewEvents() {
+        var rootNode = treeView.get_nodes().getNode(0);
+        if (!rootNode) {
+            return;
+        }
+
+        initDroppableNode(rootNode);
+        var $ul = $("#dnnModuleDigitalAssetsLeftPaneActions", '#' + controls.scopeWrapperId);
+	    $ul.empty();
+        var actions = controller.getLeftPaneActions(settings);
+        for (var i = 0, size = actions.length; i < size; i++) {
+            var $li = $("<li></li>")
+                .attr('id', actions[i].id)
+                .text(actions[i].text);
+            var actionMethod = actions[i].method;
+            $li.click(function () {
+                var node = treeView.get_selectedNode();
+                if (node) {
+                    node.unselect();
+                }
+
+                $(this).addClass('selected');
+                actionMethod();
+            });
+            $ul.append($li);
+        }
+    }
 
     return {
         init: init,
+        initEvents: initEvents,
         toggleLeftPane: toggleLeftPane,
         destinationTreeViewOnNodeExpanding: destinationTreeViewOnNodeExpanding,
         destinationTreeViewRefreshScrollbars: destinationTreeViewRefreshScrollbars,

@@ -417,10 +417,18 @@ namespace DotNetNuke.Services.Installer
 
         public void DeleteTempFolder()
         {
-            if (!string.IsNullOrEmpty(TempInstallFolder))
+            try
             {
-                Directory.Delete(TempInstallFolder, true);
+                if (!string.IsNullOrEmpty(TempInstallFolder))
+                {
+                    Directory.Delete(TempInstallFolder, true);
+                }
             }
+            catch (Exception ex)
+            {
+                Logger.Error("Exception deleting folder "+TempInstallFolder+" while installing "+InstallerInfo.ManifestFile.Name, ex);
+                Exceptions.Exceptions.LogException(ex);
+            }            
         }
 
         /// -----------------------------------------------------------------------------

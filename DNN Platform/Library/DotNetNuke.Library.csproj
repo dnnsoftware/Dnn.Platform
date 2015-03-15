@@ -70,9 +70,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
       <Private>False</Private>
@@ -591,6 +588,11 @@
     <Compile Include="Security\Roles\SecurityMode.cs" />
     <Compile Include="Obsolete\IRoleController.cs" />
     <Compile Include="Security\Roles\RoleStatus.cs" />
+    <Compile Include="Services\Assets\AssetManagerException.cs" />
+    <Compile Include="Services\Assets\FolderPathComparer.cs" />
+    <Compile Include="Services\Assets\ContentPage.cs" />
+    <Compile Include="Services\Assets\SortProperties.cs" />
+    <Compile Include="Services\Assets\SubfolderFilter.cs" />
     <Compile Include="Services\Authentication\AuthMode.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthExtensions.cs" />
     <Compile Include="Services\Authentication\OAuth\AuthorisationResult.cs" />
@@ -614,6 +616,7 @@
     <Compile Include="Services\Authentication\UserAuthenticationInfo.cs" />
     <Compile Include="Services\Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Services\Exceptions\SearchIndexEmptyException.cs" />
+    <Compile Include="Services\Assets\AssetManager.cs" />
     <Compile Include="Services\FileSystem\DefaultMetadataNames.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FileDeletedEventArgs.cs" />
     <Compile Include="Services\FileSystem\EventArgs\FolderDeletedEventArgs.cs" />
@@ -637,6 +640,7 @@
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
+    <Compile Include="Services\Assets\IAssetManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
@@ -689,6 +693,7 @@
     <Compile Include="Services\Search\Internals\InternalSearchController.cs" />
     <Compile Include="Services\Search\Internals\InternalSearchControllerImpl.cs" />
     <Compile Include="Services\Search\Entities\SearchResult.cs" />
+    <Compile Include="Services\Search\ModuleIndexInfo.cs" />
     <Compile Include="Services\Search\TabIndexer.cs" />
     <Compile Include="Services\Search\Entities\SearchType.cs" />
     <Compile Include="Services\Search\Internals\ILuceneController.cs" />
@@ -1772,6 +1777,10 @@
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
+      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
+      <Name>DotNetNuke.Log4Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{537b45eb-2ec3-4849-bc6b-d761f43674a5}</Project>

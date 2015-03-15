@@ -20,7 +20,6 @@
 
 #endregion
 
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -34,6 +33,7 @@ using DotNetNuke.Web.Api.Internal;
 namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
+    [DnnExceptionFilter]
     public class ModuleServiceController : DnnApiController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleServiceController));
@@ -43,6 +43,13 @@ namespace DotNetNuke.Web.InternalServices
             public int ModuleOrder { get; set; }
             public string Pane { get; set; }
             public int TabId { get; set; }
+        }
+
+        public class DeleteModuleDto
+        {
+            public int ModuleId { get; set; }
+            public int TabId { get; set; }
+            public bool SoftDelete { get; set; }
         }
 
         [HttpGet]
@@ -87,6 +94,22 @@ namespace DotNetNuke.Web.InternalServices
         {
             ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, postData.ModuleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Web method that deletes a tab module.
+        /// </summary>
+        /// <remarks>This has been introduced for integration testing purpuses.</remarks>
+        /// <param name="deleteModuleDto">delete module dto</param>
+        /// <returns>Http response message</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(StaticRoles = "Administrators")]
+        public HttpResponseMessage DeleteModule(DeleteModuleDto deleteModuleDto)
+        {
+            ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }

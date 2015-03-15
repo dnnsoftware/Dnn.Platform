@@ -208,6 +208,12 @@
             status.overwrite = false;
             status.path = this._selectedPath();
             var fileName = status.fileName;
+
+            if (fileName.indexOf('http://') == 0 || fileName.indexOf('https://') == 0) {
+                var segments = fileName.split('?')[0].split('/');
+                fileName = segments[segments.length - 1];                
+            }
+
             var path = status.path;
             var cancelUpload = status.data ? function () {
                 var xhr = status.data.jqXHR;

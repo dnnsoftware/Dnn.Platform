@@ -172,7 +172,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (Email.IndexOf("@") != -1)
                 {
-                    formatEmail = "<a href=\"mailto:" + Email + "\">" + Email + "</a>";
+                    formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", Email);
                 }
                 else
                 {
@@ -202,7 +202,7 @@ namespace DotNetNuke.Common.Utilities
         public static string FormatText(string HTML, bool RetainSpace)
         {
             //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
-            string brMatch = "\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*";
+            const string brMatch = "\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*";
             //Replace Tags by replacement String and return mofified string
             return Regex.Replace(HTML, brMatch, Environment.NewLine);
         }
@@ -221,16 +221,17 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
-            string strHtml = strText;
 
-            if (!string.IsNullOrEmpty(strHtml))
+            if (!string.IsNullOrEmpty(strText))
             {
-                strHtml = strHtml.Replace("\r\n", "<br />");
-                strHtml = strHtml.Replace("\n", "<br />");
-                strHtml = strHtml.Replace("\r", "<br />");
+                var htmlBuilder = new StringBuilder(strText);
+                htmlBuilder.Replace("\r\n", "<br />");
+                htmlBuilder.Replace("\n", "<br />");
+                htmlBuilder.Replace("\r", "<br />");
+                return htmlBuilder.ToString();
             }
 
-            return strHtml;
+            return strText;
         }
 
         /// -----------------------------------------------------------------------------
@@ -282,7 +283,8 @@ namespace DotNetNuke.Common.Utilities
                 {
                     if (Website.ToString().IndexOf(".") > -1)
                     {
-                        formatWebsite = "<a href=\"" + (Website.ToString().IndexOf("://") > -1 ? "" : "http://") + Website + "\">" + Website + "</a>";
+                        formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
+                            (Website.ToString().IndexOf("://") > -1 ? "" : "http://"));
                     }
                     else
                     {
@@ -453,7 +455,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //Create Regular Expression objects
-            string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+            const string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
             var afterRegEx = new Regex(punctuationMatch + "\\s");
             var beforeRegEx = new Regex("\\s" + punctuationMatch);
 
@@ -656,6 +658,23 @@ namespace DotNetNuke.Common.Utilities
                 strMessage += message;
                 response.Write(strMessage);
                 response.Flush();
+            }
+        }
+
+        /// <summary>
+        /// This method adds an empty char to the response stream to avoid closing http connection on long running tasks
+        /// </summary>
+        public static void WriteKeepAlive()
+        {
+            if (HttpContext.Current != null)
+            {
+                if (HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
+                {
+                    var response = HttpContext.Current.Response;
+                    response.Write(" ");
+                    response.Flush();
+                }
+
             }
         }
 

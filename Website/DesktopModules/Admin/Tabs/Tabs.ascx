@@ -7,11 +7,108 @@
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
 	var needReload = false;
+
+	var fieldsChanged = false;
+	var fieldsChangedHandler = function(e) {
+		fieldsChanged = true;
+	}
+
+	var originalPostBack = window['__doPostBack'];
+	var postBackElement = null;
+	var postBackArguments = null;
+
+	window['__doPostBack'] = function (sender, args) {
+		if (sender.indexOf('cmdUpdate') === -1) {
+			postBackElement = sender;
+			postBackArguments = args;
+		}
+		originalPostBack(sender, args);
+	}
+
+	var delayPostBack = function () {
+		if (postBackElement && postBackArguments) {
+			originalPostBack(postBackElement, postBackArguments);
+			postBackElement = postBackArguments = null;
+		}
+	}
+
+	var msgQueue = [];
+	var processMsgQueue = function () {
+		while (msgQueue.length > 0) {
+			setTimeout(msgQueue[0], 0);
+			msgQueue.splice(0, 1);
+		}
+	};
+
+	var parseSelectedPageFromHash = function() {
+		if (location.hash != "") {
+			$.each(location.hash.toUpperCase().replace("#", "").split("&"), function (index, value) {
+				if (value == "P" || value == "H") {
+					$("input[type=radio][name$=rblMode][value=" + value + "]").trigger("click");
+				}
+				else if (/^\d+$/.test(value)) {
+					/*try to find node in tree, 
+					if can't find then push it into message queue to wait tree re-load and check again.*/
+					setTimeout(function () {
+						var selectNode = function () {
+							var tree = $find("<%=ctlPages.ClientID %>");
+							var node = tree.findNodeByValue(value);
+							if (node == null) {
+								return false;
+							}
+							else {
+								node.get_parent().expand();
+								node.select();
+								return true;
+							}
+						};
+
+						if (!selectNode()) {
+							msgQueue.push(selectNode);
+						}
+					}, 0);
+				}
+			});
+		}
+	}
+
+	var showConfirmSave = function () {
+		var pmr = Sys.WebForms.PageRequestManager.getInstance();
+		var ajaxPanelId = $('#' + pmr._updatePanelClientIDs[0]).find('> div').attr('id');
+		var ajaxPanel = $find(ajaxPanelId);
+
+		setTimeout(function() {
+			$('#' + ajaxPanel.get_loadingPanelID() + ajaxPanelId).remove();
+		}, 0);
+
+		var options = {
+			callbackTrue: function () {
+				fieldsChanged = false;
+				location.href = $('#<%=cmdUpdate.ClientID%>').attr('href');
+			},
+			callbackFalse: function () {
+				fieldsChanged = false;
+				if (needReload) {
+					parseSelectedPageFromHash();
+				} else {
+					delayPostBack();
+				}
+			},
+			text: '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>',
+			yesText: '<%=Localization.GetSafeJSString("Yes", LocalResourceFile)%>',
+			noText: '<%=Localization.GetSafeJSString("No", LocalResourceFile)%>',
+			title: '<%=Localization.GetSafeJSString("Confirm", LocalResourceFile)%>'
+		};
+
+		//show prompt
+		$.dnnConfirm(options);
+	}
+
 	function setUpTabsModule() {
 		$('#dnnTabsModule').dnnPanels()
 			.find('.dnnFormExpandContent a').dnnExpandAll({
-			    expandText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("ExpandAll", Localization.SharedResourceFile))%>',
-			    collapseText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("CollapseAll", Localization.SharedResourceFile))%>',
+			    expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
+			    collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
 				targetArea: '#dnnTabsModule'
 			});
 
@@ -30,12 +127,34 @@
 		});
 	    
         $('input[id$=cmdDeleteModule]').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
         	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
         	isButton: true
         });
+
+		$('#<%=pnlDetails.ClientID%>').find('input:not([readonly]), textarea, select')
+            .change(fieldsChangedHandler)
+            .keyup(fieldsChangedHandler);
+
+		$('#<%=pnlDetails.ClientID%>').find('.dnnPermissionsGrid .dnnGridItem td img, .dnnPermissionsGrid .dnnGridAltItem td img')
+			.click(fieldsChangedHandler);
+
+		setTimeout(function() {
+			var tree = $find("<%=ctlPages.ClientID %>");
+			tree.add_nodeClicking(function (sender, args) {
+				var nodeValue = args.get_node().get_value();
+				location.hash = "#" + $("input[type=radio][name$=rblMode]:checked").val() + "&" + nodeValue;
+
+				if (fieldsChanged) {
+					args.set_cancel(true);
+					needReload = true;
+					showConfirmSave();
+				}
+			});
+		}, 0);
+		
 	}
 
 	var searchPages = function(keyword) {
@@ -66,50 +185,31 @@
 	$(document).ready(function () {
 		setUpTabsModule();
 
-		var msgQueue = [];
-		if (location.hash != "") {
-			$.each(location.hash.toUpperCase().replace("#", "").split("&"), function (index, value) {
-				if (value == "P" || value == "H") {
-					$("input[type=radio][name$=rblMode][value=" + value + "]").trigger("click");
-				}
-				else if (/^\d+$/.test(value)) {
-					/*try to find node in tree, 
-					if can't find then push it into message queue to wait tree re-load and check again.*/
-					setTimeout(function () {
-						var selectNode = function () {
-							var tree = $find("<%=ctlPages.ClientID %>");
-							var node = tree.findNodeByValue(value);
-							if (node == null) {
-								return false;
-							}
-							else {
-								node.get_parent().expand();
-								node.select();
-								return true;
-							}
-						};
-
-						if (!selectNode()) {
-							msgQueue.push(selectNode);
-						}
-					}, 0);
-				}
-			});
-		}
-
-		var processMsgQueue = function () {
-			while (msgQueue.length > 0) {
-				setTimeout(msgQueue[0], 0);
-				msgQueue.splice(0, 1);
+		parseSelectedPageFromHash();
+		$(window).on('beforeunload', function() {
+			if (fieldsChanged) {
+				return '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>';
 			}
-		};
+		});
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			if (needReload) {
-				location.reload();
+			if (!needReload && postBackElement && postBackArguments) {
+				$('div.dnnFormMessage').remove();
+				delayPostBack();
+			} else if (needReload) {
+				if ($('div.dnnFormMessage.dnnFormValidationSummary').length === 0) {
+					location.reload();
+				}
 			} else {
 				setUpTabsModule();
 				processMsgQueue();
+			}
+		});
+
+		Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(function (sender, args) {
+			if (fieldsChanged && args.get_postBackElement().id.indexOf('cmdUpdate') === -1) {
+				args.set_cancel(true);
+				showConfirmSave();
 			}
 		});
 	});
@@ -158,10 +258,6 @@
 				menu.findItemByValue('makehome').set_visible(a.getAttribute("CanMakeHome") == 'True');
 			}
 		}
-		function OnClientNodeClicked(sender, eventArgs) {
-			var nodeValue = eventArgs.get_node().get_value();
-			location.hash = "#" + $("input[type=radio][name$=rblMode]:checked").val() + "&" + nodeValue;
-		}
 	</script>
 </dnnweb:DnnScriptBlock>
 <div class="dnnForm dnnTabsModule dnnClear" id="dnnTabsModule">
@@ -185,7 +281,7 @@
 		</div>
 		<dnnweb:DnnTreeView ID="ctlPages" cssclass="dnnTreePages" runat="server" AllowNodeEditing="true"
 		 OnClientContextMenuShowing="onContextShowing" OnClientContextMenuItemClicking="onContextClicking"
-		  OnClientNodeClicked="OnClientNodeClicked" EnableDragAndDropBetweenNodes="true">
+		  EnableDragAndDropBetweenNodes="true">
 			<ContextMenus>                
 				<dnnweb:DnnTreeViewContextMenu ID="ctlContext" runat="server">
 					<Items>                                            

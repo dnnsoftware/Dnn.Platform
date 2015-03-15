@@ -111,7 +111,7 @@ namespace DotNetNuke.Framework
             {
                 if ((HtmlAttributes != null) && (HtmlAttributes.Count > 0))
                 {
-                    var attr = new StringBuilder("");
+                    var attr = new StringBuilder();
                     foreach (string attributeName in HtmlAttributes.Keys)
                     {
                         if ((!String.IsNullOrEmpty(attributeName)) && (HtmlAttributes[attributeName] != null))
@@ -124,18 +124,18 @@ namespace DotNetNuke.Framework
                                      attributeCounter <= attributeValues.Length - 1;
                                      attributeCounter++)
                                 {
-                                    attr.Append(" " + attributeName + "=\"" + attributeValues[attributeCounter] + "\"");
+                                    attr.Append(string.Concat(" ", attributeName, "=\"", attributeValues[attributeCounter], "\""));
                                 }
                             }
                             else
                             {
-                                attr.Append(" " + attributeName + "=\"" + attributeValue + "\"");
+                                attr.Append(string.Concat(" ", attributeName, "=\"", attributeValue, "\""));
                             }
                         }
                     }
                     return attr.ToString();
                 }
-                return "";
+                return string.Empty;
             }
         }
 
@@ -171,7 +171,7 @@ namespace DotNetNuke.Framework
                         throw new Exception("Unknown Callback Type");
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         #endregion
@@ -261,7 +261,7 @@ namespace DotNetNuke.Framework
                                          Environment.NewLine,
                                          "<!-- DNN Platform - http://www.dnnsoftware.com   -->",
                                          Environment.NewLine,
-                                         "<!-- Copyright (c) 2002-2014, by DNN Corporation -->",
+                                         "<!-- Copyright (c) 2002-2015, by DNN Corporation -->",
                                          Environment.NewLine,
                                          "<!--*********************************************-->",
                                          Environment.NewLine);
@@ -291,8 +291,9 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
-                    control.LocalResourceFile = slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), "") + Localization.LocalResourceDirectory + "/" +
-                                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
+                    control.LocalResourceFile = string.Concat(
+                        slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
+                        Localization.LocalResourceDirectory, "/", Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                     var title = Localization.LocalizeControlTitle(control);
                     
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
@@ -595,8 +596,8 @@ namespace DotNetNuke.Framework
         /// </history>
         private string RenderDefaultsWarning()
         {
-            string warningLevel = Request.QueryString["runningDefault"];
-            string warningMessage = string.Empty;
+            var warningLevel = Request.QueryString["runningDefault"];
+            var warningMessage = string.Empty;
             switch (warningLevel)
             {
                 case "1":
@@ -614,8 +615,8 @@ namespace DotNetNuke.Framework
 
         private IFileInfo GetBackgroundFileInfo()
         {
-            string cacheKey = String.Format(DotNetNuke.Common.Utilities.DataCache.PortalCacheKey, PortalSettings.PortalId, "BackgroundFile");
-            var file = CBO.GetCachedObject<DotNetNuke.Services.FileSystem.FileInfo>(new CacheItemArgs(cacheKey, DotNetNuke.Common.Utilities.DataCache.PortalCacheTimeOut, DotNetNuke.Common.Utilities.DataCache.PortalCachePriority),
+            string cacheKey = String.Format(Common.Utilities.DataCache.PortalCacheKey, PortalSettings.PortalId, "BackgroundFile");
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                                                     GetBackgroundFileInfoCallBack);
 
             return file;
@@ -741,24 +742,23 @@ namespace DotNetNuke.Framework
                 //only show message to default users
                 if ((userInfo.Username.ToLower() == "admin") || (userInfo.Username.ToLower() == "host"))
                 {
-                    var messageText = "";
-                    messageText = RenderDefaultsWarning();
+                    var messageText = RenderDefaultsWarning();
                     var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
                     UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
                 }
             }
 
             //add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, Globals.HostPath + "default.css");
-            ClientResourceManager.RegisterIEStylesheet(this, Globals.HostPath + "ie.css");
+            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.HostPath, "default.css"));
+            ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
 
-            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinPath + "skin.css", FileOrder.Css.SkinCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
             ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
 
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
 
             //add Favicon
             ManageFavicon();
@@ -842,10 +842,7 @@ namespace DotNetNuke.Framework
 			if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
 			{
 			    var editClass = "dnnEditState";
-			    if (!PortalSettings.EnableModuleEffect)
-			    {
-			        editClass += " dnnOpacityDisabled";
-			    }
+
 				var bodyClass = Body.Attributes["class"];
 				if (!string.IsNullOrEmpty(bodyClass))
 				{

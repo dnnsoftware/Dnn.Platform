@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
+namespace DotNetNuke.Services.Assets
 {
     public class SortProperties
     {

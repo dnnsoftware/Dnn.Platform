@@ -133,8 +133,8 @@ function getItems(sf) {
 
 function IsImage(value) {
     if (value != null) {
-        var imageTypesArray = journalOptions.imageTypes.split(",");
-        return $.inArray(value, imageTypesArray) >= 0;
+        var imageTypesArray = journalOptions.imageTypes.toLowerCase().split(",");
+        return $.inArray(value.toLowerCase(), imageTypesArray) >= 0;
     } else {
         return false;
     }

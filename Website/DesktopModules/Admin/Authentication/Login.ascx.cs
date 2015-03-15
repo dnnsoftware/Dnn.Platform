@@ -226,7 +226,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				//replace language parameter in querystring, to make sure that user will see page in correct language
 				if (UserId != -1 && User != null)
 				{
-					if (!String.IsNullOrEmpty(User.Profile.PreferredLocale) && User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name)
+					if (!String.IsNullOrEmpty(User.Profile.PreferredLocale) 
+							&& User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
+							&& LocaleEnabled(User.Profile.PreferredLocale))
 					{
                         redirectURL = ReplaceLanguage(redirectURL, CultureInfo.CurrentCulture.Name, User.Profile.PreferredLocale);
 					}
@@ -833,7 +835,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
 
 					//Set the Page Culture(Language) based on the Users Preferred Locale
-					if ((objUser.Profile != null) && (objUser.Profile.PreferredLocale != null))
+					if ((objUser.Profile != null) && (objUser.Profile.PreferredLocale != null) && LocaleEnabled(objUser.Profile.PreferredLocale))
 					{
 						Localization.SetLanguage(objUser.Profile.PreferredLocale);
 					}
@@ -902,6 +904,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration &&
                 !string.IsNullOrEmpty(Request.QueryString["verificationcode"]);
         }
+
+		private bool LocaleEnabled(string locale)
+		{
+			return LocaleController.Instance.GetLocales(PortalSettings.PortalId).ContainsKey(locale);
+		}
 
         #endregion
 

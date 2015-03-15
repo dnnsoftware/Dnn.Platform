@@ -154,7 +154,7 @@ namespace DesktopModules.Admin.Portals
 
             foreach (var objDicModule in dicModules.Values)
             {
-                DnnComboBoxItem comboBoxItem = new DnnComboBoxItem(objDicModule.ModuleName, objDicModule.DesktopModuleID.ToString());
+                DnnComboBoxItem comboBoxItem = new DnnComboBoxItem(objDicModule.FriendlyName, objDicModule.DesktopModuleID.ToString());
                 foreach (var objPortalDesktopModule in dicPortalDesktopModules.Values)
                 {
                     if (objPortalDesktopModule.DesktopModuleID == objDicModule.DesktopModuleID)
@@ -602,7 +602,6 @@ namespace DesktopModules.Admin.Portals
             var portalSettings = new PortalSettings(portal);
             chkInlineEditor.Checked = portalSettings.InlineEditorEnabled;
             enablePopUpsCheckBox.Checked = portalSettings.EnablePopUps;
-            enableModuleEffectCheckBox.Checked = portalSettings.EnableModuleEffect;
             chkHideSystemFolders.Checked = portalSettings.HideFoldersEnabled;
 
             var mode = (portalSettings.DefaultControlPanelMode == PortalSettings.Mode.Edit) ? "EDIT" : "VIEW";
@@ -1406,7 +1405,6 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "DefaultPortalContainer", portalContainerCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "DefaultIconLocation", "icons/" + iconSetCombo.SelectedValue, false, SelectedCultureCode);
                     PortalController.UpdatePortalSetting(_portalId, "EnablePopUps", enablePopUpsCheckBox.Checked.ToString(), false);
-                    PortalController.UpdatePortalSetting(_portalId, "EnableModuleEffect", enableModuleEffectCheckBox.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "InlineEditorEnabled", chkInlineEditor.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "HideFoldersEnabled", chkHideSystemFolders.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "ControlPanelMode", optControlPanelMode.SelectedItem.Value, false);

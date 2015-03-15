@@ -282,6 +282,22 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
+                    <xs:element name="tabUrls" maxOccurs="1" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="tabUrl" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="SeqNum" type="xs:string"/>
+                              <xs:attribute name="Url" type="xs:string"/>
+                              <xs:attribute name="QueryString" type="xs:string"/>
+                              <xs:attribute name="HttpStatus" type="xs:string"/>
+                              <xs:attribute name="CultureCode" type="xs:string"/>
+                              <xs:attribute name="IsSystem" type="xs:string"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
                     <xs:element name="refreshinterval" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="permanentredirect" type="xs:boolean" minOccurs="0" maxOccurs="1" />

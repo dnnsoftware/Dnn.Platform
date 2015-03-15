@@ -142,7 +142,7 @@
                     <asp:CheckBox ID="chkUseCustomModuleCssClass" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plUpgradeForceSSL" controlname="chkUseCustomModuleCssClass"
+                    <dnn:label id="plUpgradeForceSSL" controlname="chkUpgradeForceSSL"
                         runat="server" />
                     <asp:CheckBox ID="chkUpgradeForceSSL" runat="server" />
                 </div>
@@ -271,13 +271,13 @@
                     <asp:TextBox ID="txtSMTPServer" runat="server" MaxLength="256" Width="225" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plConnectionLimit" controlname="ConnectionLimit" runat="server" />
+                    <dnn:label id="plConnectionLimit" controlname="txtConnectionLimit" runat="server" />
                     <asp:TextBox ID="txtConnectionLimit" runat="server" MaxLength="256" Width="225" />
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" validationexpression="^\d*" ControlToValidate="txtConnectionLimit"/>
                     <asp:RangeValidator runat="server" id="rexNumber1" Type="Integer" controltovalidate="txtConnectionLimit" validationexpression="^\d*" MinimumValue="1" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="ConnectionLimitValidation"  />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plMaxIdleTime" controlname="MaxIdleTime" runat="server" />
+                    <dnn:label id="plMaxIdleTime" controlname="txtMaxIdleTime" runat="server" />
                     <asp:TextBox ID="txtMaxIdleTime" runat="server" MaxLength="256" Width="225" />
                     <asp:RegularExpressionValidator runat="server" validationexpression="^\d*" ControlToValidate="txtMaxIdleTime"/>
                     <asp:RangeValidator runat="server" id="rexNumber2" Type="Integer" controltovalidate="txtMaxIdleTime" MinimumValue="0" MaximumValue="2147483647" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="MaxIdleTimeValidation" />
@@ -706,7 +706,7 @@
                 skinSelector: '<%= hostSkinCombo.ClientID %>',
                 containerSelector: '<%= hostContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -715,7 +715,7 @@
                 skinSelector: '<%= editSkinCombo.ClientID %>',
                 containerSelector: '<%= editContainerCombo.ClientID %>',
                 baseUrl: '//<%= this.PortalAlias.HTTPAlias %>',
-                noSelectionMessage: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PreviewNoSelectionMessage.Text")) %>',
+                noSelectionMessage: '<%= LocalizeSafeJsString("PreviewNoSelectionMessage.Text") %>',
                 alertCloseText: '<%= Localization.GetSafeJSString("Close.Text", Localization.SharedResourceFile)%>',
                 alertOkText: '<%= Localization.GetSafeJSString("Ok.Text", Localization.SharedResourceFile)%>',
                 useComboBox: true
@@ -749,24 +749,24 @@
                 titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
             $('#<%= IncrementCrmVersionButton.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("IncrementCrmVersionConfirm")) %>',
+                text: '<%= LocalizeSafeJsString("IncrementCrmVersionConfirm") %>',
                 yesText: yesText,
                 noText: noText,
                 title: titleText
             });
 
             $('#<%= btnCompactSearchIndex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("CompactIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("CompactIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("CompactIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("CompactIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("CompactIndexConfirmationTitle") %>'
             });
 
             $('#<%= btnHostSearchReindex.ClientID %>').dnnConfirm({
-                text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationMessage")) %>',
-                yesText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationYes")) %>',
-                noText: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationCancel")) %>',
-                title: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ReIndexConfirmationTitle")) %>'
+                text: '<%= LocalizeSafeJsString("ReIndexConfirmationMessage") %>',
+                yesText: '<%= LocalizeSafeJsString("ReIndexConfirmationYes") %>',
+                noText: '<%= LocalizeSafeJsString("ReIndexConfirmationCancel") %>',
+                title: '<%= LocalizeSafeJsString("ReIndexConfirmationTitle") %>'
             });
 
             // extensions

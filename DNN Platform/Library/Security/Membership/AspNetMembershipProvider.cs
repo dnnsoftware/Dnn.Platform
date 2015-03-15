@@ -513,8 +513,6 @@ namespace DotNetNuke.Security.Membership
                             PortalID = Null.SetNullInteger(dr["PortalID"]),
                             IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                             UserID = Null.SetNullInteger(dr["UserID"]),
-                            FirstName = Null.SetNullString(dr["FirstName"]),
-                            LastName = Null.SetNullString(dr["LastName"]),
                             DisplayName = Null.SetNullString(dr["DisplayName"]),
                             LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                         };
@@ -873,7 +871,10 @@ namespace DotNetNuke.Security.Membership
                     {
                         isOAuthUser = true;
                         //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-                        user.Username = service + "-" + user.Email;
+	                    if (!string.IsNullOrEmpty(user.Email))
+	                    {
+		                    user.Username = service + "-" + user.Email;
+	                    }
                     }
                     else
                     {
@@ -1745,12 +1746,21 @@ namespace DotNetNuke.Security.Membership
                 //Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
+                    
                     //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
-                    if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
+                        if (_socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
                     {
-                        user.Membership.Approved = true;
-                        UserController.UpdateUser(portalId, user);
-                        UserController.ApproveUser(user);
+                        if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
+                            (int) Globals.PortalRegistrationType.PublicRegistration)
+                        {
+                            user.Membership.Approved = true;
+                            UserController.UpdateUser(portalId, user);
+                            UserController.ApproveUser(user);    
+                        }
+                        else
+                        {
+                            loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
+                        }
                     }
                     else
                     {

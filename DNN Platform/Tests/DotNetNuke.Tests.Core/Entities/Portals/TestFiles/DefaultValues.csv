@@ -10,7 +10,6 @@ DefaultTabId,					DefaultTabId,					defaulttabid,					false,				-1
 EnableBrowserLanguage,			EnableBrowserLanguage,			EnableBrowserLanguage,			true,
 EnableCompositeFiles,			EnableCompositeFiles,			EnableCompositeFiles,			false,				false
 EnablePopUps,					EnablePopUps,					EnablePopUps,					false,				true
-EnableModuleEffect,				EnableModuleEffect,				EnableModuleEffect,				false,				true
 HideLoginControl,				HideLoginControl,				HideLoginControl,				false,				false
 EnableSkinWidgets,				EnableSkinWidgets,				EnableSkinWidgets,				false,				true
 EnableUrlLanguage,				EnableUrlLanguage,				EnableUrlLanguage,				true,

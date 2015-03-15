@@ -1869,7 +1869,8 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsEditMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit);
+            return PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Edit &&
+                TabPermissionController.CanAddContentToPage();
         }
 
         /// -----------------------------------------------------------------------------
@@ -2569,14 +2570,11 @@ namespace DotNetNuke.Common
         public static string ApplicationURL()
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (_portalSettings != null)
+            if (_portalSettings != null && _portalSettings.ActiveTab.HasAVisibleVersion)
             {
                 return (ApplicationURL(_portalSettings.ActiveTab.TabID));
             }
-            else
-            {
-                return (ApplicationURL(-1));
-            }
+            return (ApplicationURL(-1));            
         }
 
         /// -----------------------------------------------------------------------------

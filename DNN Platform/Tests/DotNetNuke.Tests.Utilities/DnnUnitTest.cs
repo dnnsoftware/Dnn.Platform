@@ -22,6 +22,7 @@
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using System.Web;
 
 namespace DotNetNuke.Tests.Utilities
 {
@@ -30,10 +31,10 @@ namespace DotNetNuke.Tests.Utilities
         public DnnUnitTest()
         {
             var uri = new System.Uri(Assembly.GetExecutingAssembly().CodeBase);
-            string path = Path.GetFullPath(uri.AbsolutePath);
+            string path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
 
             WebsiteAppPath = "http://localhost/DNN_Platform";
-            var websiteRootPath = path.Substring(0, path.IndexOf("DNN%20Platform", System.StringComparison.Ordinal));
+            var websiteRootPath = path.Substring(0, path.IndexOf("DNN Platform", System.StringComparison.Ordinal));
             WebsitePhysicalAppPath = Path.Combine(websiteRootPath, "Website");
             HighlightDataPath = Path.Combine(websiteRootPath, "DNN Platform//Modules//PreviewProfileManagement//Resources//highlightDevices.xml");
         }

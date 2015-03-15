@@ -25,6 +25,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Client;
@@ -75,16 +76,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             try
             {
-                DefaultFolderTypeComboBox.DataSource = new List<FolderMappingInfo>
-                    {
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Standard"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Secure"),
-                        FolderMappingController.Instance.GetFolderMapping(PortalId, "Database")
-                    };
-
+                DefaultFolderTypeComboBox.DataSource = FolderMappingController.Instance.GetFolderMappings(PortalId);
                 DefaultFolderTypeComboBox.DataBind();
 
-                var defaultFolderTypeId = SettingsRepository.GetDefaultFolderTypeId(ModuleId);
+                var defaultFolderTypeId = new DigitalAssetsController().GetDefaultFolderTypeId(ModuleId);
                 if (defaultFolderTypeId.HasValue)
                 {
                     DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();

@@ -31,6 +31,7 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using System.Collections.Generic;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -265,6 +266,7 @@ namespace DotNetNuke.UI.WebControls
 		#region Page Events
 		private void DnnRegionControl_Init(object sender, System.EventArgs e)
 		{
+			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
 			ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
 			JavaScript.RequestRegistration(CommonJs.jQuery);

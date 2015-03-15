@@ -93,6 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
         }
 
 		/// <summary>

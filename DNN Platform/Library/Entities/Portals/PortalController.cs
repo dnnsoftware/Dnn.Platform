@@ -455,7 +455,7 @@ namespace DotNetNuke.Entities.Portals
             return strMessage;
         }
 
-        private static int CreatePortal(string portalName, string homeDirectory)
+        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
         {
             //add portal
             int PortalId = -1;
@@ -477,6 +477,7 @@ namespace DotNetNuke.Entities.Portals
                                                                 Host.Host.UserQuota,
                                                                 Host.Host.SiteLogHistory,
                                                                 homeDirectory,
+                                                                cultureCode,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID);
 
                 //clear portal cache
@@ -987,6 +988,7 @@ namespace DotNetNuke.Entities.Portals
             var providers = ExtensionUrlProviderController.GetProviders(portalId);
             foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var providerName = XmlUtils.GetNodeValue(providerNavigator, "name");
                 var provider = providers.SingleOrDefault(p => p.ProviderName.Equals(providerName, StringComparison.OrdinalIgnoreCase));
                 if (provider == null)
@@ -1160,6 +1162,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
                 {
+                    HtmlUtils.WriteKeepAlive();
                     folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
 
                     //First check if the folder exists
@@ -1313,6 +1316,7 @@ namespace DotNetNuke.Entities.Portals
             DesktopModuleInfo desktopModule = null;
             foreach (XPathNavigator desktopModuleNav in nav.Select("portalDesktopModule"))
             {
+                HtmlUtils.WriteKeepAlive();
                 friendlyName = XmlUtils.GetNodeValue(desktopModuleNav, "friendlyname");
                 if (!string.IsNullOrEmpty(friendlyName))
                 {
@@ -1500,6 +1504,7 @@ namespace DotNetNuke.Entities.Portals
 
             foreach (XPathNavigator roleGroupNav in nav.Select("rolegroup"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var roleGroup = CBO.DeserializeObject<RoleGroupInfo>(new StringReader(roleGroupNav.OuterXml));
                 if (roleGroup.RoleGroupName != "GlobalRoles")
                 {
@@ -1560,6 +1565,7 @@ namespace DotNetNuke.Entities.Portals
 
             foreach (XPathNavigator roleNav in nav.Select("role"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var role = CBO.DeserializeObject<RoleInfo>(new StringReader(roleNav.OuterXml));
                 role.PortalID = portalID;
                 role.RoleGroupID = Null.NullInteger;
@@ -1733,12 +1739,14 @@ namespace DotNetNuke.Entities.Portals
             }
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
+                HtmlUtils.WriteKeepAlive();
                 ParseTab(nodeTab, PortalId, IsAdminTemplate, mergeTabs, ref hModules, ref hTabs, IsNewPortal);
             }
 
             //Process tabs that are linked to tabs
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'Tab']"))
             {
+                HtmlUtils.WriteKeepAlive();
                 int tabId = XmlUtils.GetNodeValueInt(nodeTab, "tabid", Null.NullInteger);
                 string tabPath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
@@ -1753,6 +1761,7 @@ namespace DotNetNuke.Entities.Portals
             //Process tabs that are linked to files
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'File']"))
             {
+                HtmlUtils.WriteKeepAlive();
                 var tabId = XmlUtils.GetNodeValueInt(nodeTab, "tabid", Null.NullInteger);
                 var filePath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
@@ -1794,11 +1803,13 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/settings");
             if (node != null && isNewPortal)
             {
+                HtmlUtils.WriteKeepAlive();
                 ParsePortalSettings(node, portalId);
             }
             node = xmlPortal.SelectSingleNode("//locales");
             if (node != null && isNewPortal)
             {
+                HtmlUtils.WriteKeepAlive();
                 localeCollection = ParseEnabledLocales(node, portalId);
             }
             else
@@ -2017,7 +2028,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            string currentSetting = GetPortalSetting(settingName, portalID, cultureCode);
+            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
 
             if (currentSetting != settingValue)
             {
@@ -2117,7 +2128,7 @@ namespace DotNetNuke.Entities.Portals
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             //Attempt to create a new portal
-            int portalId = CreatePortal(portalName, homeDirectory);
+            int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
             string message = Null.NullString;
 
@@ -2180,7 +2191,7 @@ namespace DotNetNuke.Entities.Portals
                                 string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
             //Attempt to create a new portal
-            int portalId = CreatePortal(portalName, homeDirectory);
+            int portalId = CreatePortal(portalName, homeDirectory, template.CultureCode);
 
             string message = Null.NullString;
 
@@ -2254,7 +2265,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    list.Add(new PortalTemplateInfo(templateFilePath, ""));
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current 
+                    list.Add(new PortalTemplateInfo(templateFilePath, (GetCurrentPortalSettingsInternal() != null) ? GetCurrentPortalSettingsInternal().CultureCode : Thread.CurrentThread.CurrentCulture.Name));
                 }
             }
 
@@ -2345,17 +2357,17 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-            return GetPortalList(Localization.SystemLocale).SingleOrDefault(p => p.GUID == uniqueId);
-        }
+			return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
+		}
 
-        /// <summary>
-        /// Gets information from all portals
-        /// </summary>
-        /// <returns>ArrayList of PortalInfo objects</returns>
-        public ArrayList GetPortals()
+		/// <summary>
+		/// Gets information from all portals
+		/// </summary>
+		/// <returns>ArrayList of PortalInfo objects</returns>
+		public ArrayList GetPortals()
         {
-            return new ArrayList(GetPortalList(Localization.SystemLocale));
-        }
+			return new ArrayList(GetPortalList(Null.NullString));
+		}
 
         //public ArrayList GetPortals()
         //{
@@ -3448,7 +3460,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    CultureCode = "";
+                    //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use current
+                    CultureCode = (GetCurrentPortalSettingsInternal() != null) ? GetCurrentPortalSettingsInternal().CultureCode : Thread.CurrentThread.CurrentCulture.Name;
                 }
             }
 

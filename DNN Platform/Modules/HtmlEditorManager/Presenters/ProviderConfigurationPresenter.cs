@@ -33,6 +33,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Modules.HtmlEditorManager.Views;
     using DotNetNuke.Web.Mvp;
+    using DotNetNuke.Web.UI;
+    using DotNetNuke.Web.UI.WebControls;
+
+
 
     /// <summary>
     /// Presenter for Provider Configuration
@@ -82,6 +86,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
             this.View.Model.Editors = this.GetAvailableEditors();
             this.View.Model.SelectedEditor = this.GetSelectedEditor();
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
+
+            // hack: force DNN to load the Telerik Combobox skin. Needed for the RadEditor provider
+            var ctl = new DnnComboBox();
+            Utilities.ApplySkin(ctl);
         }
 
         /// <summary>Loads the current editor.</summary>

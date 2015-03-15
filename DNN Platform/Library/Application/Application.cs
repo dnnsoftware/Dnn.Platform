@@ -100,7 +100,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return "DotNetNuke® is copyright 2002-" + DateTime.Today.ToString("yyyy") + " by DotNetNuke Corporation";
+                return string.Concat("DotNetNuke® is copyright 2002-", DateTime.Today.ToString("yyyy")," by DotNetNuke Corporation");
             }
         }
 

@@ -29,6 +29,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Xml;
 
@@ -548,6 +549,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 //no need to download english, always there
                 if (cultureCode != "en-us" && String.IsNullOrEmpty(downloadUrl) != true)
                 {
+                    var newCulture = new CultureInfo(cultureCode);
+                    Thread.CurrentThread.CurrentCulture = newCulture;
                     GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
@@ -597,7 +600,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
             if (!string.IsNullOrEmpty(config.File))
             {
                 builder["attachDbFilename"] = "|DataDirectory|" + config.File;
-                builder["user instance"] = true;
+                // LocalDB does not support User Instance attribute
+                // perhaps a better solution is to not force this from code and let it to the decision fo the person writing the connection string
+                if (string.IsNullOrEmpty(config.Server) || config.Server.IndexOf("(localdb)", StringComparison.OrdinalIgnoreCase) == -1)
+                    builder["user instance"] = true;
+
             }
             else
             {

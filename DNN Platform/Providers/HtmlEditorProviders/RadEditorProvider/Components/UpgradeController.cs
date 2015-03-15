@@ -31,7 +31,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 
 using System;
-
+using System.Linq;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Log.EventLog;
@@ -43,6 +43,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	public class UpgradeController : IUpgradeable
 	{
 		private const string ModuleFolder = "~/DesktopModules/Admin/RadEditorProvider";
+		private const string ResourceFile = ModuleFolder + "/App_LocalResources/ProviderConfig.ascx.resx";
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -53,12 +55,12 @@ namespace DotNetNuke.Providers.RadEditorProvider
 		{
 			try
 			{
-				switch (Version)
+				var pageName = Localization.GetString("HTMLEditorPageName", ResourceFile);
+				var pageDescription = Localization.GetString("HTMLEditorPageDescription", ResourceFile);
+
+                switch (Version)
 				{
 					case "06.00.00":
-						string resourceFile = ModuleFolder + "/App_LocalResources/ProviderConfig.ascx.resx";
-						string pageName = Localization.GetString("HTMLEditorPageName", resourceFile);
-						string pageDescription = Localization.GetString("HTMLEditorPageDescription", resourceFile);
 
 						//Create Rad Editor Config Page (or get existing one)
 						TabInfo newPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/radeditor_config_small.png",ModuleFolder + "/images/radeditor_config_large.png", true);
@@ -85,7 +87,18 @@ namespace DotNetNuke.Providers.RadEditorProvider
 				        UpdateConfigFilesName();
                         UpdateToolsFilesName();
                         break;
-				}
+                    case "07.04.00":
+                        // Find the RadEditor page.  It should already exist and this will return it's reference.
+                        var editorPage = Upgrade.AddHostPage(pageName, pageDescription, ModuleFolder + "/images/HtmlEditorManager_Standard_16x16.png", ModuleFolder + "/images/HtmlEditorManager_Standard_32x32.png", true);
+
+                        // If the Html Editor Manager is installed, then remove the old RadEditor Manager
+                        var htmlEditorManager = DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.HtmlEditorManager", Null.NullInteger);
+                        if (htmlEditorManager != null)
+                        {
+                            Upgrade.RemoveModule("RadEditor Manager", editorPage.TabName, editorPage.ParentId, false);
+                        }
+                        break;
+                }
 			}
 			catch (Exception ex)
 			{
