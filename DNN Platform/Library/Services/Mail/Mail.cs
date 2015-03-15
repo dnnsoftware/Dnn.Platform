@@ -157,11 +157,8 @@ namespace DotNetNuke.Services.Mail
 
         public static string ConvertToText(string sHTML)
         {
-            string sContent = sHTML;
-            sContent = sContent.Replace("<br />", Environment.NewLine);
-            sContent = sContent.Replace("<br>", Environment.NewLine);
-            sContent = HtmlUtils.FormatText(sContent, true);
-            return HtmlUtils.StripTags(sContent, true);
+            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
+            return HtmlUtils.StripTags(formattedHtml, true);
         }
 
         public static bool IsValidEmailAddress(string Email, int portalid)
