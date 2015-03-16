@@ -19,32 +19,35 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHelper
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
-            : this(viewContext, viewDataContainer, RouteTable.Routes) 
+        public DnnHelper(ViewContext viewContext)
         {
+            var controller = viewContext.Controller as IDnnController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The DnnHelper class can only be used in Views that inherit from DnnWebViewPage");
+            }
+
+            ModuleContext = controller.ModuleContext;
         }
 
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
+        public ModuleInfo ActiveModule
         {
-            Requires.NotNull("viewContext", viewContext);
-            Requires.NotNull("viewDataContainer", viewDataContainer);
-            Requires.NotNull("routeCollection", routeCollection);
-
-            RouteCollection = routeCollection;
-            ViewContext = viewContext;
-            ViewDataContainer = viewDataContainer;
-            ViewData = new ViewDataDictionary(viewDataContainer.ViewData);
+            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
         }
 
         public TabInfo ActivePage
@@ -52,22 +55,23 @@ namespace DotNetNuke.Web.Mvc.Helpers
             get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
         }
 
-        public RouteCollection RouteCollection { get; private set; }
+        public string LocalResourceFile { get; set; }
+
+        public string LocalizeString(string key)
+        {
+            return Localization.GetString(key, LocalResourceFile);
+        }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
 
         public PortalSettings PortalSettings
         {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
         }
 
         public UserInfo User
         {
             get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
         }
-
-        public ViewContext ViewContext { get; private set; }
-
-        public ViewDataDictionary ViewData { get; private set; }
-
-        public IViewDataContainer ViewDataContainer { get; private set; }
     }
 }

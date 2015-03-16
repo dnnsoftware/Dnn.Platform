@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         }
 
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
-            : base(viewContext, viewDataContainer, routeCollection, new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
+            : base(new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
  
         {
         }

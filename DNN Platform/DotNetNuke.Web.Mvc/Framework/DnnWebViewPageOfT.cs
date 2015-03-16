@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Mvc.Framework
 {
     public abstract class DnnWebViewPage<TModel> : WebViewPage<TModel>
     {
-        public DnnHelper<TModel> Dnn { get; set; }
+        public DnnHelper Dnn { get; set; }
 
         public new DnnHtmlHelper<TModel> Html { get; set; } 
 
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             Ajax = new DnnAjaxHelper<TModel>(ViewContext, this);
             Html = new DnnHtmlHelper<TModel>(ViewContext, this);
             Url = new DnnUrlHelper(ViewContext.RequestContext);
-            Dnn = new DnnHelper<TModel>(ViewContext, this);
+            Dnn = new DnnHelper(ViewContext);
         }
     }
 }
