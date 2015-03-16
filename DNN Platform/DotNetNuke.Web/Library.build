@@ -1,6 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
-  </Target>  <Target Name="DebugProject">
+  </Target>  
+  <Target Name="DebugProject">
     <Copy SourceFiles="..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="..\..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll" DestinationFolder="..\..\Website\bin\" />
