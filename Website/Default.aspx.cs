@@ -339,9 +339,11 @@ namespace DotNetNuke.Framework
             }
 
             //META Refresh
-            if (PortalSettings.ActiveTab.RefreshInterval > 0 && Request.QueryString["ctl"] == null)
+            // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
+            if (PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && Request.QueryString["ctl"] == null)
             {
                 MetaRefresh.Content = PortalSettings.ActiveTab.RefreshInterval.ToString();
+                MetaRefresh.Visible = true;
             }
             else
             {
