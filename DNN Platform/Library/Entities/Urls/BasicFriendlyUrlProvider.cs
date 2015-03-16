@@ -409,6 +409,16 @@ namespace DotNetNuke.Entities.Urls
 
             friendlyPath = CheckPathLength(Globals.ResolveUrl(friendlyPath), path);
 
+            // Replace http:// by https:// if SSL is enabled an site is marked as secure
+            // (i.e. requests to http://... will be redirected to https://...)
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
+                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
+                friendlyPath = regex.Replace(friendlyPath, "https://");
+            }
+
             return friendlyPath;
         }
 
