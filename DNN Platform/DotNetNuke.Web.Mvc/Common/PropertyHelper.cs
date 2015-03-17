@@ -48,6 +48,17 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public virtual string Name { get; protected set; }
 
+        private static object CallPropertyGetter<TDeclaringType, TValue>(Func<TDeclaringType, TValue> getter, object @this)
+        {
+            return getter((TDeclaringType)@this);
+        }
+
+        private static object CallPropertyGetterByReference<TDeclaringType, TValue>(ByRefFunc<TDeclaringType, TValue> getter, object @this)
+        {
+            TDeclaringType unboxed = (TDeclaringType)@this;
+            return getter(ref unboxed);
+        }
+
         private static PropertyHelper CreateInstance(PropertyInfo property)
         {
             return new PropertyHelper(property);
@@ -114,9 +125,9 @@ namespace DotNetNuke.Web.Mvc.Common
             Requires.NotNull("property", propertyInfo);
 
             MethodInfo getMethod = propertyInfo.GetGetMethod();
-            //Contract.Assert(getMethod != null);
-            //Contract.Assert(!getMethod.IsStatic);
-            //Contract.Assert(getMethod.GetParameters().Length == 0);
+            Guard.Against(getMethod == null, "Property must have a Get Method");
+            Guard.Against(getMethod.IsStatic, "Property's Get method must not be static");
+            Guard.Against(getMethod.GetParameters().Length != 0, "Property's Get method must not have parameters");
 
             // Instance methods in the CLR can be turned into static methods where the first parameter
             // is open over "this". This parameter is always passed by reference, so we have a code

@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
             if (controller == null)
             {
-                throw new InvalidOperationException("The DnnHelper class can only be used in Views that inherit from DnnWebViewPage");
+                throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
 
             ModuleContext = controller.ModuleContext;
@@ -88,24 +88,24 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
+        public static string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
             //Look for a module control
             var controlKey = "Edit";
             bool controlFound = false;
 
-            //TODO ModuleControlControllerAdapter usage is temporary in order to make method testable
-            var moduleControls = ModuleControlControllerAdapter.Instance.GetModuleControlsByModuleDefinitionID(ModuleContext.Configuration.ModuleDefID);
+            ////TODO ModuleControlControllerAdapter usage is temporary in order to make method testable
+            //var moduleControls = ModuleControlControllerAdapter.Instance.GetModuleControlsByModuleDefinitionID(ModuleContext.Configuration.ModuleDefID);
 
-            foreach (var moduleControl in moduleControls.Values)
-            {
-                if (moduleControl.ControlSrc == String.Format("{0}/{1}.mvc", controllerName, actionName))
-                {
-                    controlKey = moduleControl.ControlKey;
-                    controlFound = true;
-                    break;
-                }
-            }
+            //foreach (var moduleControl in moduleControls.Values)
+            //{
+            //    if (moduleControl.ControlSrc == String.Format("{0}/{1}.mvc", controllerName, actionName))
+            //    {
+            //        controlKey = moduleControl.ControlKey;
+            //        controlFound = true;
+            //        break;
+            //    }
+            //}
 
             List<string> additionalParams = routeValues.Select(value => value.Key + "=" + value.Value).ToList();
 
@@ -121,7 +121,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
                 }
             }
 
-            return ModuleContext.EditUrl("", "", controlKey, additionalParams.ToArray());
+            return Globals.NavigateURL("", additionalParams.ToArray());
+            //return ModuleContext.EditUrl("", "", controlKey, additionalParams.ToArray());
         }
     }
 }
