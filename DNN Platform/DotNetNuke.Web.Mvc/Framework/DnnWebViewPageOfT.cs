@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         public new DnnHtmlHelper<TModel> Html { get; set; }
 
-        public new DnnUrlHelper Url { get; set; } 
+        public new DnnUrlHelper Url { get; set; }
 
         public override void InitHelpers() 
         {
