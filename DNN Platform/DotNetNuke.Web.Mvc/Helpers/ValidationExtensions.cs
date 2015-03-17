@@ -64,35 +64,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return htmlHelper.ValidationMessageFor(expression, validationMessage, htmlAttributes);
         }
 
-        public static MvcHtmlString ValidationMessageFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html,
-                                                                            Expression<Func<TModel, TProperty>> expression,
-                                                                            string validationMessage,
-                                                                            string tag)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.ValidationMessageFor(expression, validationMessage, tag);
-        }
-
-        public static MvcHtmlString ValidationMessageFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html,
-                                                                            Expression<Func<TModel, TProperty>> expression,
-                                                                            string validationMessage,
-                                                                            object htmlAttributes,
-                                                                            string tag)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.ValidationMessageFor(expression, validationMessage, htmlAttributes, tag);
-        }
-
-        public static MvcHtmlString ValidationMessageFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html,
-                                                                            Expression<Func<TModel, TProperty>> expression,
-                                                                            string validationMessage,
-                                                                            IDictionary<string, object> htmlAttributes,
-                                                                            string tag)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.ValidationMessageFor(expression, validationMessage, htmlAttributes, tag);
-        }
-
         // ValidationSummary
 
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html)
@@ -110,19 +81,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message);
         }
 
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, string message, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(message, headingTag);
-        }
-
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message)
         {
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message);
-        }
-
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, headingTag);
         }
 
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, string message, object htmlAttributes)
@@ -130,19 +91,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message, htmlAttributes);
         }
 
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, string message, object htmlAttributes, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(message, htmlAttributes, headingTag);
-        }
-
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message, object htmlAttributes)
         {
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, htmlAttributes);
-        }
-
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message, object htmlAttributes, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, htmlAttributes, headingTag);
         }
 
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, string message, IDictionary<string, object> htmlAttributes)
@@ -150,19 +101,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return html.HtmlHelper.ValidationSummary(message, htmlAttributes);
         }
 
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, string message, IDictionary<string, object> htmlAttributes, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(message, htmlAttributes, headingTag);
-        }
-
         public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message, IDictionary<string, object> htmlAttributes)
         {
             return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, htmlAttributes);
-        }
-
-        public static MvcHtmlString ValidationSummary(this DnnHtmlHelper html, bool excludePropertyErrors, string message, IDictionary<string, object> htmlAttributes, string headingTag)
-        {
-            return html.HtmlHelper.ValidationSummary(excludePropertyErrors, message, htmlAttributes, headingTag);
         }
     }
 }

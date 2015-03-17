@@ -67,42 +67,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return htmlHelper.DropDownListFor(expression, selectList, optionLabel, htmlAttributes);
         }
 
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression);
-        }
-
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression, object htmlAttributes)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression, htmlAttributes);
-        }
-
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression, IDictionary<string, object> htmlAttributes)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression, htmlAttributes);
-        }
-
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression, string optionLabel)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression, optionLabel);
-        }
-
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression, string optionLabel, object htmlAttributes)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression, optionLabel, htmlAttributes);
-        }
-
-        public static MvcHtmlString EnumDropDownListFor<TModel, TEnum>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TEnum>> expression, string optionLabel, IDictionary<string, object> htmlAttributes)
-        {
-            var htmlHelper = html.HtmlHelper as HtmlHelper<TModel>;
-            return htmlHelper.EnumDropDownListFor(expression, optionLabel, htmlAttributes);
-        }
-
         // ListBox
 
         public static MvcHtmlString ListBoxFor<TModel, TProperty>(this DnnHtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, IEnumerable<SelectListItem> selectList)

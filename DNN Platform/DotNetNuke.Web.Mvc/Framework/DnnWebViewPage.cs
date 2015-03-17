@@ -28,7 +28,9 @@ namespace DotNetNuke.Web.Mvc.Framework
     {
         public DnnHelper Dnn { get; set; }
 
-        public new DnnHtmlHelper Html { get; set; } 
+        public new DnnHtmlHelper Html { get; set; }
+
+        public DnnUrlHelper Url { get; set; }
 
         public override void InitHelpers()
         {

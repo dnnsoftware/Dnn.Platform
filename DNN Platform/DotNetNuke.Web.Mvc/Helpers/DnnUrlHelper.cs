@@ -25,30 +25,27 @@ using System.Web.Routing;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
-    public class DnnUrlHelper : UrlHelper
+    public class DnnUrlHelper
     {
         public DnnUrlHelper()
         {
         }
 
         public DnnUrlHelper(RequestContext requestContext)
-            : base(requestContext, RouteTable.Routes)
+            : this(requestContext, RouteTable.Routes)
         {
         }
 
         public DnnUrlHelper(RequestContext requestContext, RouteCollection routeCollection)
-            :base(requestContext, routeCollection)
         {
         }
 
-        private string CleanUrl(string url)
+        protected DnnUrlHelper(UrlHelper urlHelper)
         {
-            if (!String.IsNullOrEmpty(url))
-            {
-                return url.Replace("//", "/");
-            }
-            return url;
+            UrlHelper = urlHelper;
         }
+
+        internal UrlHelper UrlHelper { get; set; }
 
         /// <summary>
         /// Generates a string to a fully qualified URL to an action method.
@@ -57,9 +54,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <returns>
         /// A string to a fully qualified URL to an action method.
         /// </returns>
-        public override string Action()
+        public string Action()
         {
-            return CleanUrl(base.Action());
+            return UrlHelper.Action();
         }
 
         /// <summary>
@@ -70,9 +67,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param>
-        public override string Action(string actionName)
+        public string Action(string actionName)
         {
-            return CleanUrl(base.Action(actionName));
+            return UrlHelper.Action();
         }
 
         /// <summary>
@@ -83,9 +80,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public override string Action(string actionName, object routeValues)
+        public string Action(string actionName, object routeValues)
         {
-            return CleanUrl(base.Action(actionName, routeValues));
+            return UrlHelper.Action(actionName, routeValues);
         }
 
         /// <summary>
@@ -96,9 +93,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public override string Action(string actionName, RouteValueDictionary routeValues)
+        public string Action(string actionName, RouteValueDictionary routeValues)
         {
-            return CleanUrl(base.Action(actionName, routeValues));
+            return UrlHelper.Action(actionName, routeValues);
         }
 
         /// <summary>
@@ -109,9 +106,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param>
-        public override string Action(string actionName, string controllerName)
+        public string Action(string actionName, string controllerName)
         {
-            return CleanUrl(base.Action(actionName, controllerName));
+            return UrlHelper.Action(actionName, controllerName);
         }
 
         /// <summary>
@@ -122,9 +119,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public override string Action(string actionName, string controllerName, object routeValues)
+        public string Action(string actionName, string controllerName, object routeValues)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues));
+            return UrlHelper.Action(actionName, controllerName, routeValues);
         }
 
         /// <summary>
@@ -135,9 +132,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
+        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues));
+            return UrlHelper.Action(actionName, controllerName, routeValues);
         }
 
         /// <summary>
@@ -148,9 +145,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol)
+        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol));
+            return UrlHelper.Action(actionName, controllerName, routeValues, protocol);
         }
 
         /// <summary>
@@ -161,9 +158,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public override string Action(string actionName, string controllerName, object routeValues, string protocol)
+        public string Action(string actionName, string controllerName, object routeValues, string protocol)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol));
+            return UrlHelper.Action(actionName, controllerName, routeValues, protocol);
         }
 
         /// <summary>
@@ -174,9 +171,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// The fully qualified URL to an action method.
         /// </returns>
         /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param><param name="hostName">The host name for the URL.</param>
-        public override string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
+        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
         {
-            return CleanUrl(base.Action(actionName, controllerName, routeValues, protocol, hostName));
+            return UrlHelper.Action(actionName, controllerName, routeValues, protocol, hostName);
         }
     }
 }
