@@ -36,6 +36,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
@@ -141,7 +142,13 @@ namespace DotNetNuke.UI.Modules
         #endregion
 
         #region Private Methods
-        
+
+        private bool IsVersionRequest()
+        {
+            int version;
+            return TabVersionUtils.TryGetUrlVersion(out version);
+        }
+
         private void InjectVersionToTheModuleIfSupported()
         {
             if (!(_control is IVersionableControl)) return;
@@ -286,7 +293,7 @@ namespace DotNetNuke.UI.Modules
                 if (DisplayContent())
                 {
                     //if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings))
+                    if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !IsVersionRequest())
                     {
 						//attempt to load the cached content
                         _isCached = TryLoadCached();
@@ -557,7 +564,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !Globals.IsAdminControl())
+                if (SupportsCaching() && IsViewMode(_moduleConfiguration, PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
                 {
 					//Render to cache
                     var tempWriter = new StringWriter();
