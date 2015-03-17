@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Xml;
 using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
@@ -97,7 +98,10 @@ namespace DotNetNuke.Web.DDRMenu
 
 		internal void Render(HtmlTextWriter htmlWriter)
 		{
-			htmlWriter.Write("<!-- DDRmenu v02.00.01 - {0} template -->", menuSettings.MenuStyle);
+		    if (Host.DebugMode)
+		    {
+                htmlWriter.Write("<!-- DDRmenu v07.04.01 - {0} template -->", menuSettings.MenuStyle);
+		    }
 
 			UserInfo user = null;
 			if (menuSettings.IncludeContext)
