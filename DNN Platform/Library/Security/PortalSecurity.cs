@@ -367,7 +367,8 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         private string FormatRemoveSQL(string strSQL)
         {
-            const string BadStatementExpression = ";|--|create|drop|select|insert|delete|update|union|sp_|xp_|exec|/\\*.*\\*/|declare|waitfor|%|&";
+            // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
+            const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
             return Regex.Replace(strSQL, BadStatementExpression, " ", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace("'", "''");
         }
 
