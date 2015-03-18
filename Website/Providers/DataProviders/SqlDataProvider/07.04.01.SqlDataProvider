@@ -232,6 +232,101 @@ INSERT INTO {databaseOwner}[{objectQualifier}Lists]
  VALUES (N'DataType', N'AutoComplete', N'DotNetNuke.UI.WebControls.AutoCompleteControl, DotNetNuke', 0, 0, 0, -1, NULL, -1, 1, NULL, NULL, NULL, NULL)
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}JavaScriptLibraries]') AND name = 'Version' AND max_length = 100)
+	BEGIN
+		ALTER TABLE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+			ALTER COLUMN [Version] [nvarchar](50) NOT NULL;
+	END
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+	@JavaScriptLibraryID INT,
+	@PackageID INT,
+	@LibraryName NVARCHAR(200),
+	@Version NVARCHAR(50),
+	@FileName NVARCHAR(100),
+	@ObjectName NVARCHAR(100),
+	@PreferredScriptLocation int,
+	@CDNPath NVARCHAR(250)
+AS
+
+	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+			   SET [PackageID] = @PackageID,
+					[LibraryName] = @LibraryName,
+					[Version] = @Version,
+					[FileName] = @FileName,
+					[ObjectName] = @ObjectName,
+					[PreferredScriptLocation] = @PreferredScriptLocation,
+					[CDNPath] = @CDNPath
+			 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+	 	END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}JavaScriptLibraries] (
+				[PackageID],
+				[LibraryName],
+				[Version],
+				[FileName],
+				[ObjectName],
+				[PreferredScriptLocation],
+				[CDNPath]
+			)
+			VALUES (
+				@PackageID,
+				@LibraryName,
+				@Version,
+				@FileName,
+				@ObjectName,
+				@PreferredScriptLocation,
+				@CDNPath
+			)
+			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
+		END
+		
+	SELECT @JavaScriptLibraryID
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+	@PackageDependencyID INT,
+	@PackageID INT,
+	@PackageName NVARCHAR(128),
+	@Version NVARCHAR(50)
+AS
+	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageID = @PackageID AND PackageName = @PackageName AND Version = @Version)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+			   SET [PackageID] = @PackageID,
+					[PackageName] = @PackageName,
+					[Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID
+		END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] (
+				[PackageID],
+				[PackageName],
+				[Version]
+			)
+			VALUES (
+				@PackageID,
+				@PackageName,
+				@Version
+			)
+			SET @PackageDependencyID = (SELECT @@IDENTITY)
+		END
+
+	SELECT @PackageDependencyID
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
