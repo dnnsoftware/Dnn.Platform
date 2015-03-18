@@ -3,12 +3,10 @@
   </Target>  
   <Target Name="DebugProject">
     <Copy SourceFiles="..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="..\Components\MVC4\System.Web.WebPages.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="..\Components\MVC4\System.Web.WebPages.Deployment.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.dll" DestinationFolder="..\..\Website\bin\" />
