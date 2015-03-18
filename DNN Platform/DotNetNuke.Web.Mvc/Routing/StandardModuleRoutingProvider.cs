@@ -19,9 +19,61 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Routing;
+using DotNetNuke.Collections;
+using DotNetNuke.Common;
+using DotNetNuke.UI.Modules;
+
 namespace DotNetNuke.Web.Mvc.Routing
 {
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
+        private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
+
+        public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
+        {
+            //Look for a module control
+            string controlKey = (routeValues.ContainsKey("ctl")) ? (string)routeValues["ctl"] : String.Empty;
+
+            List<string> additionalParams = routeValues.Select(value => value.Key + "=" + value.Value).ToList();
+
+            string url;
+            if (String.IsNullOrEmpty(controlKey))
+            {
+                additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
+                url = Globals.NavigateURL("", additionalParams.ToArray());
+            }
+            else
+            {
+                url = moduleContext.EditUrl("mid", moduleContext.Configuration.ModuleID.ToString(), controlKey, additionalParams.ToArray());
+            }
+
+            return url;
+        }
+
+        public override RouteData GetRouteData(HttpContextBase httpContext, ModuleInstanceContext moduleContext)
+        {
+            var segments = moduleContext.Configuration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+
+            var actionName = httpContext.Request.QueryString.GetValueOrDefault("action", segments[1]);
+            var controllerName = httpContext.Request.QueryString.GetValueOrDefault("controller", segments[0]);
+
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", controllerName);
+            routeData.Values.Add("action", actionName);
+            foreach (var param in httpContext.Request.QueryString.AllKeys)
+            {
+                if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
+                {
+                    routeData.Values.Add(param, httpContext.Request.QueryString[param]);
+                }
+            }
+
+            return routeData;
+        }
     }
 }

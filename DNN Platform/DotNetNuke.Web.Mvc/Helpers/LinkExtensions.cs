@@ -26,6 +26,9 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Routing;
+
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     public static class LinkExtensions
@@ -69,7 +72,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             Requires.NotNullOrEmpty("linkText", linkText);
 
-            return MvcHtmlString.Create(GenerateLink(linkText, actionName, controllerName, routeValues, htmlAttributes));
+            return MvcHtmlString.Create(GenerateLink(linkText, actionName, controllerName, routeValues, htmlAttributes, htmlHelper.ModuleContext));
         }
 
         public static MvcHtmlString ActionLink(this DnnHtmlHelper htmlHelper, string linkText, string actionName, string controllerName, string protocol, string hostName, string fragment, object routeValues, object htmlAttributes)
@@ -81,12 +84,15 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             Requires.NotNullOrEmpty("linkText", linkText);
 
-            return MvcHtmlString.Create(GenerateLink(linkText, actionName, controllerName, routeValues, htmlAttributes));
+            return MvcHtmlString.Create(GenerateLink(linkText, actionName, controllerName, routeValues, htmlAttributes, htmlHelper.ModuleContext));
         }
 
-        private static string GenerateLink(string linkText, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
+        private static string GenerateLink(string linkText, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, ModuleInstanceContext moduleContext)
         {
-            string url = DnnUrlHelper.GenerateUrl(actionName, controllerName, routeValues);
+            routeValues["controller"] = controllerName;
+            routeValues["action"] = actionName;
+            string url = ModuleRoutingProvider.Instance().GenerateUrl(routeValues, moduleContext);
+
             TagBuilder tagBuilder = new TagBuilder("a")
             {
                 InnerHtml = (!String.IsNullOrEmpty(linkText)) ? HttpUtility.HtmlEncode(linkText) : String.Empty

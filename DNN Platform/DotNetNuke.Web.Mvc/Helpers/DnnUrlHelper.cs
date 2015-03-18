@@ -30,6 +30,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
+using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
@@ -88,41 +89,11 @@ namespace DotNetNuke.Web.Mvc.Helpers
             return GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        public static string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
+        private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            //Look for a module control
-            var controlKey = "Edit";
-            bool controlFound = false;
-
-            ////TODO ModuleControlControllerAdapter usage is temporary in order to make method testable
-            //var moduleControls = ModuleControlControllerAdapter.Instance.GetModuleControlsByModuleDefinitionID(ModuleContext.Configuration.ModuleDefID);
-
-            //foreach (var moduleControl in moduleControls.Values)
-            //{
-            //    if (moduleControl.ControlSrc == String.Format("{0}/{1}.mvc", controllerName, actionName))
-            //    {
-            //        controlKey = moduleControl.ControlKey;
-            //        controlFound = true;
-            //        break;
-            //    }
-            //}
-
-            List<string> additionalParams = routeValues.Select(value => value.Key + "=" + value.Value).ToList();
-
-            if (!controlFound)
-            {
-                if (!String.IsNullOrEmpty(controllerName))
-                {
-                    additionalParams.Insert(0, "controller=" + controllerName);
-                }
-                if (!String.IsNullOrEmpty(actionName))
-                {
-                    additionalParams.Insert(0, "action=" + actionName);
-                }
-            }
-
-            return Globals.NavigateURL("", additionalParams.ToArray());
-            //return ModuleContext.EditUrl("", "", controlKey, additionalParams.ToArray());
+            routeValues["controller"] = controllerName;
+            routeValues["action"] = actionName;
+            return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, ModuleContext);
         }
     }
 }

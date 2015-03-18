@@ -42,7 +42,6 @@ namespace DotNetNuke.Web.Mvc
     public class MvcHostControl : ModuleControlBase, IActionable
     {
         private ModuleRequestResult _result;
-        private const string _excludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
@@ -63,7 +62,6 @@ namespace DotNetNuke.Web.Mvc
 
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-
             var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
             var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
 
@@ -75,27 +73,23 @@ namespace DotNetNuke.Web.Mvc
                                                 FolderPath = desktopModule.FolderName
                                             };
 
-            var segments = module.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
-
-            var actionName = httpContext.Request.QueryString.GetValueOrDefault("action", segments[1]);
-            var controllerName = httpContext.Request.QueryString.GetValueOrDefault("controller", segments[0]);
-
-            var routeData = new RouteData();
-            routeData.Values.Add("controller", controllerName);
-            routeData.Values.Add("action", actionName);
-            foreach (var param in httpContext.Request.QueryString.AllKeys)
+            RouteData routeData;
+            var mid = httpContext.Request.QueryString.GetValueOrDefault("mid", -1);
+            if (mid != ModuleContext.ModuleId)
             {
-                if (!_excludedQueryStringParams.Split(',').ToList().Contains(param.ToLower()))
-                {
-                    routeData.Values.Add(param, httpContext.Request.QueryString[param]);
-                }
+                //Set default routeData for module that is not the "selected" module
+                routeData = new RouteData();
+                routeData.Values.Add("controller", defaultSegments[0]);
+                routeData.Values.Add("action", defaultSegments[1]);
+            }
+            else
+            {
+                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, ModuleContext);
             }
 
 
             var moduleRequestContext = new ModuleRequestContext
                                             {
-                                                ActionName = actionName,
-                                                ControllerName = controllerName,
                                                 HttpContext = httpContext,
                                                 ModuleContext = ModuleContext, 
                                                 ModuleApplication = moduleApplication,

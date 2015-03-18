@@ -82,8 +82,10 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
             var requestContext = new RequestContext(context.HttpContext, context.RouteData);
 
+            var controllerName = (string)context.RouteData.Values["controller"];
+
             //Construct the controller using the ControllerFactory
-            IController controller = ControllerFactory.CreateController(requestContext, context.ControllerName);
+            IController controller = ControllerFactory.CreateController(requestContext, controllerName);
             try
             {
                 // Check if the controller supports IDnnController
@@ -100,7 +102,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                                                     context.ModuleContext.Configuration.DesktopModule.FolderName,
                                                     Localization.LocalResourceDirectory,
-                                                    context.ControllerName);
+                                                    controllerName);
 
                 // Execute the controller and capture the result
                 moduleController.Execute(requestContext);

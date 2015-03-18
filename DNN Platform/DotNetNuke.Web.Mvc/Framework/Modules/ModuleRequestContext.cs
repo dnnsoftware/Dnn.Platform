@@ -28,10 +28,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     public class ModuleRequestContext
     {
-        public string ActionName { get; set; }
-
-        public string ControllerName { get; set; }
-
         public HttpContextBase HttpContext { get; set; }
 
         public ModuleInstanceContext ModuleContext { get; set; }
