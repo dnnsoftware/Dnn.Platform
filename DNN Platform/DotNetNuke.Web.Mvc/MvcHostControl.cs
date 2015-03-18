@@ -74,8 +74,9 @@ namespace DotNetNuke.Web.Mvc
                                             };
 
             RouteData routeData;
-            var mid = httpContext.Request.QueryString.GetValueOrDefault("mid", -1);
-            if (mid != ModuleContext.ModuleId)
+            var controlKey = httpContext.Request.QueryString.GetValueOrDefault("ctl", String.Empty);
+            var moduleId = httpContext.Request.QueryString.GetValueOrDefault("moduleId", -1);
+            if (moduleId != ModuleContext.ModuleId  && String.IsNullOrEmpty(controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
                 routeData = new RouteData();

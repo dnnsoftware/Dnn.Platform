@@ -33,13 +33,17 @@ namespace DotNetNuke.Web.Mvc.Routing
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
+        private const string ExcludedRouteValues = "mid,ctl,popup";
 
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
             //Look for a module control
             string controlKey = (routeValues.ContainsKey("ctl")) ? (string)routeValues["ctl"] : String.Empty;
 
-            List<string> additionalParams = routeValues.Select(value => value.Key + "=" + value.Value).ToList();
+            List<string> additionalParams = (from routeValue in routeValues 
+                                             where !ExcludedRouteValues.Split(',').ToList().Contains(routeValue.Key.ToLower()) 
+                                             select routeValue.Key + "=" + routeValue.Value)
+                                             .ToList();
 
             string url;
             if (String.IsNullOrEmpty(controlKey))
@@ -49,7 +53,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             }
             else
             {
-                url = moduleContext.EditUrl("mid", moduleContext.Configuration.ModuleID.ToString(), controlKey, additionalParams.ToArray());
+                url = moduleContext.EditUrl(String.Empty, String.Empty, controlKey, additionalParams.ToArray());
             }
 
             return url;
