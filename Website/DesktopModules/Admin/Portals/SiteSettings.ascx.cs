@@ -775,6 +775,7 @@ namespace DesktopModules.Admin.Portals
                 txtPageHeadText.Text = portalSettings.PageHeadText;
                 chkInjectModuleHyperLink.Checked = portalSettings.InjectModuleHyperLink;
                 txtAddCompatibleHttpHeader.Text = portalSettings.AddCompatibleHttpHeader;
+                chkAddCachebusterToResourceUris.Checked = portalSettings.AddCachebusterToResourceUris;
             }
         }
 
@@ -1569,6 +1570,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "PageHeadText", string.IsNullOrEmpty(txtPageHeadText.Text) ? "false" : txtPageHeadText.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
                     PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
+                    PortalController.UpdatePortalSetting(_portalId, "AddCachebusterToResourceUris", chkAddCachebusterToResourceUris.Checked.ToString());
 
                     profileDefinitions.Update();
 

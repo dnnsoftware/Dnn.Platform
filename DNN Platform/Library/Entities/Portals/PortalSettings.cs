@@ -627,6 +627,19 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /*
+         * add a cachebuster parameter to generated file URI's
+         * 
+         * of the form ver=[file timestame] ie ver=2015-02-17-162255-735
+         * 
+         */
+        public bool AddCachebusterToResourceUris
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", PortalId, true);
+            }
+        }
 
 		#endregion
 
