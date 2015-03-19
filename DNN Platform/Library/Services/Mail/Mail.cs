@@ -185,7 +185,7 @@ namespace DotNetNuke.Services.Mail
                 return;
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
+            var emailMessage = new MailMessage(fromAddress, toAddress) { From = new MailAddress(fromAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, fromAddress).DisplayName), Sender = new MailAddress(senderAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, senderAddress).DisplayName) };
 
             SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
                                     HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Mail
                 return "SMTP Server not configured";
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
+            var emailMessage = new MailMessage(fromAddress, toAddress) { From = new MailAddress(fromAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, fromAddress).DisplayName), Sender = new MailAddress(senderAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, senderAddress).DisplayName) };
 
             return SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
                                     HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
@@ -485,7 +485,7 @@ namespace DotNetNuke.Services.Mail
             }
 			
             MailMessage mailMessage = null;
-            mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
+            mailMessage = new MailMessage { From = new MailAddress(mailFrom, UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName), Sender = new MailAddress(mailFrom, UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName) };
             if (!String.IsNullOrEmpty(mailTo))
             {
                 //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
