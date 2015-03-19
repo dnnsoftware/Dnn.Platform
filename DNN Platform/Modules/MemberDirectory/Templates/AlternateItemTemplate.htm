@@ -18,6 +18,6 @@
         <li class="mdFriendRemove" data-bind="visible: IsFriend()"><a href="" class="firstItem" data-bind="click: removeFriend"><span data-bind="text: RemoveFriendText"></span></a></li>
         <li class="mdFollow" data-bind="visible: !IsFollowing()"><a href="" title="" class="firstItem" data-bind="click: follow"><span data-bind="text: FollowText"></span></a></li>
         <li class="mdUnfollow" data-bind="visible: IsFollowing()"><a href="" title="" class="firstItem" data-bind="click: unFollow"><span data-bind="text: UnFollowText"></span></a></li>
-        <li class="mdComposeMessage"><a href="" class="ComposeMessage"><span data-bind="text: SendMessageText"></span></a></li>
+        <li class="mdComposeMessage"><a href="" class="ComposeMessage" data-bind="visible: !$parent.disablePrivateMessage()"><span data-bind="text: SendMessageText"></span></a></li>
     </ul>
 </div>

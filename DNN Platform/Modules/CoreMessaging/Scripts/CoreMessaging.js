@@ -175,6 +175,7 @@
     function coreMessagingViewModel() {
         var self = this;
 
+	    self.disablePrivateMessage = ko.observable(settings.disablePrivateMessage);
         self.messages = ko.observableArray([]);
         self.notifications = ko.observableArray([]);
 

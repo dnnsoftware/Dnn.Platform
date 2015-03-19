@@ -247,7 +247,9 @@ namespace DesktopModules.Admin.Portals
 
             optMsgAllowAttachments.Select(PortalController.GetPortalSetting("MessagingAllowAttachments", portal.PortalID, "NO"), false);
             optMsgProfanityFilters.Select(PortalController.GetPortalSetting("MessagingProfanityFilters", portal.PortalID, "NO"), false);
-            optMsgSendEmail.Select(PortalController.GetPortalSetting("MessagingSendEmail", portal.PortalID, "YES"), false);        
+            optMsgSendEmail.Select(PortalController.GetPortalSetting("MessagingSendEmail", portal.PortalID, "YES"), false);
+
+	        chkDisablePrivateMessage.Checked = PortalSettings.DisablePrivateMessage;
         }
 
         private void BindPages(PortalInfo portal, string activeLanguage)
@@ -1416,7 +1418,8 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "MessagingRecipientLimit", cboMsgRecipientLimit.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingAllowAttachments", optMsgAllowAttachments.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingProfanityFilters", optMsgProfanityFilters.SelectedItem.Value, false);
-                    PortalController.UpdatePortalSetting(_portalId, "MessagingSendEmail", optMsgSendEmail.SelectedItem.Value, false);
+					PortalController.UpdatePortalSetting(_portalId, "MessagingSendEmail", optMsgSendEmail.SelectedItem.Value, false);
+					PortalController.UpdatePortalSetting(_portalId, "DisablePrivateMessage", chkDisablePrivateMessage.Checked ? "Y" : "N", false);
 
                     PortalController.UpdatePortalSetting(_portalId, "paypalsandbox", chkPayPalSandboxEnabled.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "paypalsubscriptionreturn", txtPayPalReturnURL.Text, false);

@@ -92,7 +92,8 @@
             searchErrorText: '<%=LocalizeSafeJsString("SearchError")%>',
             serverErrorText: '<%=LocalizeSafeJsString("ServerError")%>',
             serverErrorWithDescriptionText: '<%=LocalizeSafeJsString("ServerErrorWithDescription")%>',
-            servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>)
+        	servicesFramework: $.ServicesFramework(<%=ModuleContext.ModuleId %>),
+			disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>
         }, {
 	        title: '<%= LocalizeSafeJsString("Title") %>',
             toText: '<%= LocalizeSafeJsString("To") %>',

@@ -24,7 +24,7 @@
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
-            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage"><%=LocalizeString("ComposeNewMessage")%></a></div>
+            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage"><%=LocalizeString("ComposeNewMessage")%></a></div>
             <!-- ko ifnot: showReplies -->
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
@@ -145,7 +145,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="dnnCoreMessagingFooter"><a href="#" class="dnnPrimaryAction ComposeMessage dnnRight"><%=LocalizeString("ComposeNewMessage")%></a> <a href="#" class="dnnTertiaryAction" data-bind="click: loadMore, visible: loadMoreVisible"><%=LocalizeString("LoadMore")%></a><div class="dnnClear"></div></div>
+            <div class="dnnCoreMessagingFooter"><a href="#" class="dnnPrimaryAction ComposeMessage dnnRight" data-bind="visible: !disablePrivateMessage"><%=LocalizeString("ComposeNewMessage")%></a> <a href="#" class="dnnTertiaryAction" data-bind="click: loadMore, visible: loadMoreVisible"><%=LocalizeString("LoadMore")%></a><div class="dnnClear"></div></div>
             <!-- /ko -->
             <!-- ko if: showReplies -->
             <div class="dnnForm DnnModule-Messaging-Details dnnClear">
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dnnCoreMessagingFooter" data-bind="visible:replyHasRecipients">
+                <div class="dnnCoreMessagingFooter" data-bind="visible:replyHasRecipients() && !disablePrivateMessage()">
                     <textarea name="replyMessage" id="replyMessage" data-bind="hasfocus: isReplySelected"></textarea>
                     <a href="#" class="dnnPrimaryAction" data-bind="click: $root.reply"><%=LocalizeString("Reply")%></a>
                     <div class="dnnClear"></div>
@@ -257,30 +257,31 @@
     </div>
 </div>
 <script type="text/javascript">
-	jQuery(document).ready(function ($) {		
-        var sm = new CoreMessaging($, ko, {
-            profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
-            conversationSetAsReadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
-            conversationSetAsUnreadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
-            loadingText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',
-            loadMoreText: '<%= ClientAPI.GetSafeJSString(LocalizeString("LoadMore"))%>',
-            conversationArchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationArchived"))%>',
-            conversationUnarchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationUnarchived"))%>',
-            notificationConfirmTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmTitle"))%>',
-            notificationConfirmYesText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmYes"))%>',
-            notificationConfirmNoText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
-            actionPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
-            actionNotPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
-            replyHasNoRecipientsText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
-            messageSentText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
-            serverErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
-            serverErrorWithDescriptionText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
-            dismissAllConfirmText: '<%= ClientAPI.GetSafeJSString(LocalizeString("DismissAllConfirm")) %>',
-            text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-            title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>'
-        }, {
+	jQuery(document).ready(function ($) {
+		var sm = new CoreMessaging($, ko, {
+			profilePicHandler: '<% = DotNetNuke.Common.Globals.UserProfilePicRelativeUrl() %>',
+			conversationSetAsReadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsRead"))%>',
+			conversationSetAsUnreadText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationSetAsUnread"))%>',
+			loadingText: '<%= ClientAPI.GetSafeJSString(LocalizeString("Loading"))%>',
+			loadMoreText: '<%= ClientAPI.GetSafeJSString(LocalizeString("LoadMore"))%>',
+			conversationArchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationArchived"))%>',
+			conversationUnarchivedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ConversationUnarchived"))%>',
+			notificationConfirmTitleText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmTitle"))%>',
+			notificationConfirmYesText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmYes"))%>',
+			notificationConfirmNoText: '<%= ClientAPI.GetSafeJSString(LocalizeString("NotificationConfirmNo"))%>',
+			actionPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionPerformed"))%>',
+			actionNotPerformedText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ActionNotPerformed"))%>',
+			replyHasNoRecipientsText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ReplyHasNoRecipients"))%>',
+			messageSentText: '<%= ClientAPI.GetSafeJSString(LocalizeString("MessageSent")) %>',
+			serverErrorText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerError"))%>',
+			serverErrorWithDescriptionText: '<%= ClientAPI.GetSafeJSString(LocalizeString("ServerErrorWithDescription"))%>',
+			dismissAllConfirmText: '<%= ClientAPI.GetSafeJSString(LocalizeString("DismissAllConfirm")) %>',
+			text: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
+			yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+			noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+			title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+			disablePrivateMessage: <%= DisablePrivateMessage.ToString().ToLowerInvariant() %>
+	}, {
             openTriggerScope: '#<%= coreMessaging.ClientID %>',
             openTriggerSelector: '.ComposeMessage',
             title: '<%= ClientAPI.GetSafeJSString(LocalizeString("Title")) %>',
