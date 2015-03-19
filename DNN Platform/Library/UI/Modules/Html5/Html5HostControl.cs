@@ -23,6 +23,8 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using Lucene.Net.Index;
 
 namespace DotNetNuke.UI.Modules.Html5
@@ -39,6 +41,28 @@ namespace DotNetNuke.UI.Modules.Html5
         protected virtual string Html5File
         {
             get { return _html5File; }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (!(string.IsNullOrEmpty(Html5File)))
+            {
+                //Check if css file exists
+                var cssFile = Path.ChangeExtension(Html5File, ".css");
+                if (File.Exists(Page.Server.MapPath(cssFile)))
+                {
+                    ClientResourceManager.RegisterStyleSheet(Page, cssFile, FileOrder.Css.DefaultPriority);
+                }
+
+                //Check if js file exists
+                var jsFile = Path.ChangeExtension(Html5File, ".js");
+                if (File.Exists(Page.Server.MapPath(cssFile)))
+                {
+                    ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
+                }
+            }
         }
 
         protected override void OnPreRender(EventArgs e)
