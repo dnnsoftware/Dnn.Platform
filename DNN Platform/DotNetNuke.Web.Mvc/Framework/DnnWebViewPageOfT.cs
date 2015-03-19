@@ -34,9 +34,9 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         public override void InitHelpers() 
         {
-            Ajax = new DnnAjaxHelper<TModel>(ViewContext, this);
+            Ajax = new AjaxHelper<TModel>(ViewContext, this);
             Html = new DnnHtmlHelper<TModel>(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext.RequestContext);
+            Url = new DnnUrlHelper(ViewContext);
             Dnn = new DnnHelper(ViewContext);
         }
     }

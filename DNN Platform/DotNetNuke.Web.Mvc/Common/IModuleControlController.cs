@@ -19,21 +19,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.Mvc;
-using System.Web.Routing;
+using System.Collections.Generic;
+using DotNetNuke.Entities.Modules;
 
-namespace DotNetNuke.Web.Mvc.Helpers
+namespace DotNetNuke.Web.Mvc.Common
 {
-    public class DnnAjaxHelper<T> : AjaxHelper<T>
+    public interface IModuleControlController
     {
-        public DnnAjaxHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
-            : base(viewContext, viewDataContainer)
-        {
-        }
-
-        public DnnAjaxHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection) 
-            : base(viewContext, viewDataContainer, routeCollection)
-        {
-        }
+        Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID);
     }
 }

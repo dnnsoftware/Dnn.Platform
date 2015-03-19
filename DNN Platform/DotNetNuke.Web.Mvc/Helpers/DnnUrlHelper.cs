@@ -20,160 +20,80 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
+using DotNetNuke.Web.Mvc.Routing;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnUrlHelper
     {
-        public DnnUrlHelper()
+        private readonly ViewContext _viewContext;
+
+        public DnnUrlHelper(ViewContext viewContext)
         {
+            _viewContext = viewContext;
+
+            var controller = viewContext.Controller as IDnnController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
+            }
+
+            ModuleContext = controller.ModuleContext;
         }
 
-        public DnnUrlHelper(RequestContext requestContext)
-            : this(requestContext, RouteTable.Routes)
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        public virtual string Action()
         {
+            return _viewContext.RequestContext.HttpContext.Request.RawUrl;
         }
 
-        public DnnUrlHelper(RequestContext requestContext, RouteCollection routeCollection)
+        public virtual string Action(string actionName)
         {
+            return GenerateUrl(actionName, null, null);
         }
 
-        protected DnnUrlHelper(UrlHelper urlHelper)
+        public virtual string Action(string actionName, RouteValueDictionary routeValues)
         {
-            UrlHelper = urlHelper;
+            return GenerateUrl(actionName, null, routeValues);
         }
 
-        internal UrlHelper UrlHelper { get; set; }
-
-        /// <summary>
-        /// Generates a string to a fully qualified URL to an action method.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// A string to a fully qualified URL to an action method.
-        /// </returns>
-        public string Action()
+        public virtual string Action(string actionName, object routeValues)
         {
-            return UrlHelper.Action();
+            return GenerateUrl(actionName, null, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param>
-        public string Action(string actionName)
+        public virtual string Action(string actionName, string controllerName)
         {
-            return UrlHelper.Action();
+            return GenerateUrl(actionName, controllerName, null);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public string Action(string actionName, object routeValues)
+        public virtual string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return UrlHelper.Action(actionName, routeValues);
+            return GenerateUrl(actionName, controllerName, routeValues);
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method for the specified action name and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public string Action(string actionName, RouteValueDictionary routeValues)
+        public virtual string Action(string actionName, string controllerName, object routeValues)
         {
-            return UrlHelper.Action(actionName, routeValues);
+            return GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
         }
 
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name and controller name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param>
-        public string Action(string actionName, string controllerName)
+        private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return UrlHelper.Action(actionName, controllerName);
-        }
-
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param>
-        public string Action(string actionName, string controllerName, object routeValues)
-        {
-            return UrlHelper.Action(actionName, controllerName, routeValues);
-        }
-
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, and route values.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param>
-        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
-        {
-            return UrlHelper.Action(actionName, controllerName, routeValues);
-        }
-
-        /// <summary>
-        /// Generates a fully qualified URL for an action method by using the specified action name, controller name, route values, and protocol to use.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol)
-        {
-            return UrlHelper.Action(actionName, controllerName, routeValues, protocol);
-        }
-
-        /// <summary>
-        /// Generates a fully qualified URL to an action method by using the specified action name, controller name, route values, and protocol to use.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route. The parameters are retrieved through reflection by examining the properties of the object. The object is typically created by using object initializer syntax.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param>
-        public string Action(string actionName, string controllerName, object routeValues, string protocol)
-        {
-            return UrlHelper.Action(actionName, controllerName, routeValues, protocol);
-        }
-
-        /// <summary>
-        /// Generates a fully qualified URL for an action method by using the specified action name, controller name, route values, protocol to use and host name.
-        /// </summary>
-        /// 
-        /// <returns>
-        /// The fully qualified URL to an action method.
-        /// </returns>
-        /// <param name="actionName">The name of the action method.</param><param name="controllerName">The name of the controller.</param><param name="routeValues">An object that contains the parameters for a route.</param><param name="protocol">The protocol for the URL, such as "http" or "https".</param><param name="hostName">The host name for the URL.</param>
-        public string Action(string actionName, string controllerName, RouteValueDictionary routeValues, string protocol, string hostName)
-        {
-            return UrlHelper.Action(actionName, controllerName, routeValues, protocol, hostName);
+            routeValues["controller"] = controllerName;
+            routeValues["action"] = actionName;
+            return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, ModuleContext);
         }
     }
 }

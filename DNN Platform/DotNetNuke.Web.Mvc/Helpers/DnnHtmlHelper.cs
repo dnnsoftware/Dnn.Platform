@@ -19,10 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Web.Mvc.Helpers
 {
@@ -41,9 +43,20 @@ namespace DotNetNuke.Web.Mvc.Helpers
         protected DnnHtmlHelper(HtmlHelper htmlHelper)
         {
             HtmlHelper = htmlHelper;
+
+            var controller = htmlHelper.ViewContext.Controller as IDnnController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The DnnHtmlHelper class can only be used in Views that inherit from DnnWebViewPage");
+            }
+
+            ModuleContext = controller.ModuleContext;
         }
 
         internal HtmlHelper HtmlHelper { get; set; }
+
+        public ModuleInstanceContext ModuleContext { get; set; }
 
         public RouteCollection RouteCollection { get { return HtmlHelper.RouteCollection; } }
         public dynamic ViewBag { get { return HtmlHelper.ViewBag; } }

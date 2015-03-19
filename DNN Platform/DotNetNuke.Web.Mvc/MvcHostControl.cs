@@ -22,9 +22,12 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.UI;
+using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -58,7 +61,7 @@ namespace DotNetNuke.Web.Mvc
             var module = ModuleContext.Configuration;
 
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
-            DesktopModuleInfo desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
+            var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
             var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
             var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
 
@@ -70,15 +73,28 @@ namespace DotNetNuke.Web.Mvc
                                                 FolderPath = desktopModule.FolderName
                                             };
 
-            var segments = module.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+            RouteData routeData;
+            var controlKey = httpContext.Request.QueryString.GetValueOrDefault("ctl", String.Empty);
+            var moduleId = httpContext.Request.QueryString.GetValueOrDefault("moduleId", -1);
+            if (moduleId != ModuleContext.ModuleId  && String.IsNullOrEmpty(controlKey))
+            {
+                //Set default routeData for module that is not the "selected" module
+                routeData = new RouteData();
+                routeData.Values.Add("controller", defaultSegments[0]);
+                routeData.Values.Add("action", defaultSegments[1]);
+            }
+            else
+            {
+                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, ModuleContext);
+            }
+
 
             var moduleRequestContext = new ModuleRequestContext
                                             {
-                                                ActionName = segments[1],
-                                                ControllerName = segments[0],
                                                 HttpContext = httpContext,
                                                 ModuleContext = ModuleContext, 
-                                                ModuleApplication = moduleApplication
+                                                ModuleApplication = moduleApplication,
+                                                RouteData = routeData
                                             };
 
             return moduleRequestContext;

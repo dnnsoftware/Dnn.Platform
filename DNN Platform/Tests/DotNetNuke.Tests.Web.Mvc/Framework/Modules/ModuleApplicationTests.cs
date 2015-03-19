@@ -277,8 +277,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             return new ModuleRequestContext
                         {
-                            ControllerName = controlerName,
-                            ActionName = actionName,
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
                             //Module = new ModuleInfo { ModuleID = 42 }
                         };

@@ -19,25 +19,31 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Helpers;
+using System.Web;
+using System.Web.Routing;
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Routing
 {
-    public abstract class DnnWebViewPage : WebViewPage
+    public abstract class ModuleRoutingProvider
     {
-        public DnnHelper Dnn { get; set; }
-
-        public new DnnHtmlHelper Html { get; set; }
-
-        public new DnnUrlHelper Url { get; set; } 
-
-        public override void InitHelpers()
+        public static ModuleRoutingProvider Instance()
         {
-            Ajax = new AjaxHelper<object>(ViewContext, this);
-            Html = new DnnHtmlHelper(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext);
-            Dnn = new DnnHelper(ViewContext);
+            var component = ComponentFactory.GetComponent<ModuleRoutingProvider>();
+
+            if (component == null)
+            {
+                component = new StandardModuleRoutingProvider();
+                ComponentFactory.RegisterComponentInstance<ModuleRoutingProvider>(component);
+            }
+
+            return component;
         }
+
+        public abstract string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext);
+
+        public abstract RouteData GetRouteData(HttpContextBase httpContext, ModuleInstanceContext moduleContext);
     }
 }
