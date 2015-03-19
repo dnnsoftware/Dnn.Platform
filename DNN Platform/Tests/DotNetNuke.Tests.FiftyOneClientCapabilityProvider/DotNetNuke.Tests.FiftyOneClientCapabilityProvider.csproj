@@ -40,7 +40,7 @@
       <HintPath>..\..\Components\SharpZipLib\bin\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
