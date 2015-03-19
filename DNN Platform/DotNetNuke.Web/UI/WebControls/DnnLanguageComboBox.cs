@@ -193,15 +193,21 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            _nativeCombo = new DnnComboBox();
-            _nativeCombo.DataValueField = "Name";
-            _nativeCombo.DataTextField = "NativeName";
+            _nativeCombo = new DnnComboBox
+            {
+                CssClass = "dnnFormItem", // Set width to 100% in FF
+                DataValueField = "Name",
+                DataTextField = "NativeName"
+            };
             _nativeCombo.SelectedIndexChanged += ItemChangedInternal;
             Controls.Add(_nativeCombo);
 
-            _englishCombo = new DnnComboBox();
-            _englishCombo.DataValueField = "Name";
-            _englishCombo.DataTextField = "EnglishName";
+            _englishCombo = new DnnComboBox
+            {
+                CssClass = "dnnFormItem", // Set width to 100% in FF
+                DataValueField = "Name",
+                DataTextField = "EnglishName"
+            };
             _englishCombo.SelectedIndexChanged += ItemChangedInternal;
             Controls.Add(_englishCombo);
 
