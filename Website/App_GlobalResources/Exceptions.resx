@@ -237,6 +237,9 @@
   <data name="MsgSenderRequiredError.Text" xml:space="preserve">
     <value>Either Sender is null or Sender.UserID is negative.</value>
   </data>
+  <data name="PrivateMessageDisabledError.Text" xml:space="preserve">
+    <value>Users doesn't allow send message to other user/group in current message settings.</value>
+  </data>
   <data name="MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError.Text" xml:space="preserve">
     <value>Only SuperUsers, Site Administrators or Users in the Group can send message to Role.</value>
   </data>

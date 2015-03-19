@@ -641,6 +641,17 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+		/// <summary>
+		/// If this is true, then regular users can't send message to specific user/group.
+		/// </summary>
+		public bool DisablePrivateMessage
+		{
+			get
+			{
+				return PortalController.GetPortalSetting("DisablePrivateMessage", PortalId, "N") == "Y";
+			}
+		}
+
 		#endregion
 
 		#region IPropertyAccess Members
