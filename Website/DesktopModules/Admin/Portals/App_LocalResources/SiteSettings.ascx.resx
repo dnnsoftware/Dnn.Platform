@@ -1269,4 +1269,16 @@ The host-level settings are currently set as follows:
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
     <value>X-UA-Compatible Http Header</value>
   </data>
+  <data name="plAddCachebusterToResourceUris.Help" xml:space="preserve">
+    <value>Add a cache buster parameter (ver=[file timestamp]) to file resource URIs.</value>
+  </data>
+  <data name="plAddCachebusterToResourceUris.Text" xml:space="preserve">
+    <value>Cachebust resource URIs</value>
+  </data>
+  <data name="plDisablePrivateMessage.Help" xml:space="preserve">
+    <value>When this option is set, regular users can't send message to specific user or group anymore.</value>
+  </data>
+  <data name="plDisablePrivateMessage.Text" xml:space="preserve">
+    <value>Disable Private Message</value>
+  </data>
 </root>

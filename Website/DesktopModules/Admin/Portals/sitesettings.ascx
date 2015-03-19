@@ -383,6 +383,10 @@
                         <a href=""><%=LocalizeString("MessagingSettings")%></a>
                     </h2>
                     <fieldset>
+	                    <div class="dnnFormItem">
+                            <dnn:label id="plDisablePrivateMessage" runat="server" controlname="chkDisablePrivateMessage" />
+                            <asp:CheckBox ID="chkDisablePrivateMessage" runat="server" />
+                        </div>
                         <div class="dnnFormItem">
                             <dnn:label id="plMsgThrottlingInterval" runat="server" controlname="cboMsgThrottlingInterval" />
                             <dnn:DnnComboBox ID="cboMsgThrottlingInterval" runat="server" DataTextField="Key" DataValueField="Value" />
@@ -505,6 +509,10 @@
                         <div class="dnnFormItem">
                             <dnn:label id="plAddCompatibleHttpHeader" runat="server" controlname="txtAddCompatibleHttpHeader" />
                             <asp:TextBox ID="txtAddCompatibleHttpHeader" runat="server" />                            
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="plAddCachebusterToResourceUris" runat="server" controlname="chkAddCachebusterToResourceUris" />
+                            <asp:CheckBox runat="server" ID="chkAddCachebusterToResourceUris" />
                         </div>
                     </fieldset>
                 </div>

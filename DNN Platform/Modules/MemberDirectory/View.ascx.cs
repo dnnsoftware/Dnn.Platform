@@ -31,6 +31,8 @@ using System.Web.UI;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
@@ -164,6 +166,26 @@ namespace DotNetNuke.Modules.MemberDirectory
                 return Globals.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
             }
         }
+
+		protected bool DisablePrivateMessage
+		{
+			get
+			{
+				return PortalSettings.DisablePrivateMessage && !UserInfo.IsSuperUser
+					&& !UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+
+			}
+		}
+
+	    protected PortalSettings PortalSettings
+	    {
+		    get { return PortalController.Instance.GetCurrentPortalSettings(); }
+	    }
+
+		protected UserInfo UserInfo
+		{
+			get { return UserController.Instance.GetCurrentUserInfo(); }
+		}
 
         #region Private Helper Functions
 

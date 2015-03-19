@@ -1048,7 +1048,7 @@
     <value>CAPTCHA image</value>
   </data>
   <data name="PrivateConfirmationMessage.Text" xml:space="preserve">
-    <value>&lt;strong&gt;An e-mail with your details has been sent to the website administrator for verification. Once your registration has been approved an e-mail will be sent to your e-mail address: {0}. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
+    <value>&lt;strong&gt;An e-mail with your details has been sent to the website administrator for verification. Once your registration has been approved an e-mail will be sent to your e-mail address. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
   </data>
   <data name="DNN_ReadingComponent.Text" xml:space="preserve">
     <value>Reading Component Manifest</value>

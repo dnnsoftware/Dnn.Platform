@@ -8,7 +8,7 @@
 
 <div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml">
     <div class="ehCurrentContent dnnClear" id="ehCurrentContent">
-        <div class="ehccContent dnnClear">
+        <div class="ehccContent dnnClear <%=CurrentView%>">
             <asp:PlaceHolder ID="phEdit" runat="server">
                 <fieldset>
                     <div class="dnnFormItem">
@@ -27,24 +27,17 @@
                         </div>
                     </div>
                     <asp:PlaceHolder ID="phCurrentVersion" runat="server">
-                        <div class="divCurrentVersion">
-                            <div class="dnnFormItem" id="divCurrentVersion" runat="server">
-                                <dnn:label id="plCurrentWorkVersion" runat="server" controlname="lblCurrentVersion" text="Version" suffix=":" />
-                                <asp:Label ID="lblCurrentVersion" runat="server" />
-                            </div>
 
-                            <div class="dnnFormItem">
-                                <dnn:label id="plCurrentWorkflowInUse" runat="server" controlname="lblCurrentWorkflowInUse" text="Workflow in Use" suffix=":" />
-                                <asp:Label ID="lblCurrentWorkflowInUse" runat="server" />
-                            </div>
+                        <div class="divCurrentVersion">
                             <div class="dnnFormItem" id="divCurrentWorkflowState" runat="server">
                                 <dnn:label id="plCurrentWorkflowState" runat="server" controlname="lblCurrentWorkflowState" text="Workflow State" suffix=":" />
-                                <asp:Label ID="lblCurrentWorkflowState" runat="server" />
+                                <asp:Label ID="lblCurrentWorkflowState" runat="server" /> ( <asp:label id="plCurrentWorkVersion" runat="server" text="Version" ResourceKey="plCurrentWorkVersion"  /> <asp:Label ID="lblCurrentVersion" runat="server" /> ) (  <asp:Label ID="lblCurrentWorkflowInUse" runat="server" /> )
                             </div>
                             <div class="dnnFormItem" id="divPublish" runat="server">
                                 <dnn:label id="plActionOnSave" runat="server" text="On Save" suffix="?" />
                                 <asp:CheckBox ID="chkPublish" runat="server" resourcekey="chkPublish" AutoPostBack="true" />
                             </div>
+                               
                         </div>
                     </asp:PlaceHolder>
 
@@ -137,22 +130,39 @@
     <div class="ehActions">
         <ul class="dnnActions dnnClear">
             <li>
-                <asp:LinkButton ID="cmdSave" runat="server" class="dnnPrimaryAction" resourcekey="cmdSave" /></li>
+                <asp:LinkButton ID="cmdSave" runat="server" class="dnnPrimaryAction" resourcekey="cmdSave" />
+            </li>
             <li>
-                <asp:HyperLink ID="hlCancel" runat="server" class="dnnSecondaryAction" resourcekey="cmdCancel" /></li>
+                <asp:HyperLink ID="hlCancel" runat="server" class="dnnSecondaryAction" resourcekey="cmdCancel" />
+            </li>
             <li>
-                <asp:LinkButton ID="cmdPreview" runat="server" class="dnnSecondaryAction" resourcekey="cmdPreview" /></li>
+                <span class="separator"></span>
+            </li>
+             <li>
+                <asp:LinkButton ID="cmdEdit" runat="server" class="dnnSecondaryAction" resourcekey="cmdEdit" Visible="true" Enabled="false" />
+            </li>
             <li>
-                <asp:LinkButton ID="cmdEdit" runat="server" class="dnnSecondaryAction" resourcekey="cmdEdit" Visible="false" /></li>
+                <asp:LinkButton ID="cmdPreview" runat="server" class="dnnSecondaryAction" resourcekey="cmdPreview" />
+            </li>
             <li>
-                <asp:LinkButton ID="cmdHistory" runat="server" class="dnnSecondaryAction" resourcekey="cmdHistory" /></li>
+                <asp:LinkButton ID="cmdHistory" runat="server" class="dnnSecondaryAction" resourcekey="cmdHistory" />
+            </li>
             <li>
-                <asp:LinkButton ID="cmdMasterContent" runat="server" class="dnnSecondaryAction" Visible="false" /></li>
+                <span class="separator"></span>
+            </li>
             <li>
-                <asp:DropDownList ID="ddlRender" runat="server" AutoPostBack="true">
-                    <asp:ListItem resourcekey="liRichText" Value="RICH"></asp:ListItem>
-                    <asp:ListItem resourcekey="liBasicText" Value="BASIC"></asp:ListItem>
-                </asp:DropDownList>
+                <div class="dnnFormItem">
+                    <asp:DropDownList ID="ddlRender" runat="server" AutoPostBack="true">
+                        <asp:ListItem resourcekey="liRichText" Value="RICH"></asp:ListItem>
+                        <asp:ListItem resourcekey="liBasicText" Value="BASIC"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+            </li>
+            <li>
+                <span class="separator"></span>
+            </li>
+             <li>
+                <asp:LinkButton ID="cmdMasterContent" runat="server" class="dnnSecondaryAction" Visible="false" />
             </li>
         </ul>
     </div>
@@ -163,7 +173,7 @@
     (function ($, Sys) {
         function setupDnnEditHtml() {
             $('#dnnEditHtml').dnnPanels();
-            if ($(window).attr('name') == 'iPopUp') {
+            if (window.frameElement && window.frameElement.id == "iPopUp") {
                 var ckeditorid = $(".ehCurrentContent textarea.editor").attr('id');
                 if (ckeditorid) {
                     CKEDITOR.on("instanceReady", function (event) {
@@ -184,30 +194,33 @@
             }
         }
         function resizeDnnEditHtml() {
-            $('.ehCurrentContent').height($(window).height() - $('.ehActions').height() - $('.dnnEditHtml ').outerHeight(true) + $('.dnnEditHtml ').innerHeight() - $('.dnnEditHtml ').offset().top);
-            // RadEditor
-            var editor = $find($(".RadEditor").attr('id'));
-            if (editor) {
-                editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - 30 - $('.divCurrentVersion').height() - $('.ehmContent').height());
-                $('.ehCurrentContent').css('overflow', 'hidden');
-            }
-            // CK Editor
-            var editorid = $(".ehCurrentContent textarea.editor").attr('id');
-            if (editorid) {
-
-                var ckeditor = CKEDITOR.instances[editorid];
-                if (ckeditor && ckeditor.status == 'ready') {
-                    ckeditor.resize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.dnnTextPanelView').height() - $('.divCurrentVersion').height() - $('.ehCurrentContent .dnnTextPanel p').height() - $('.ehmContent').height());
+            $('.ehCurrentContent').height($(window).height() - $('.ehActions').height() - $('.dnnEditHtml ').outerHeight(true) + $('.dnnEditHtml ').innerHeight());
+            $('window.frameElement, body, html').css('overflow', 'hidden');
+            if ($('.ehccContent.EditView').length)
+            {
+                // RadEditor
+                var editor = $find($(".RadEditor").attr('id'));
+                if (editor) {
+                    editor.setSize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.divCurrentVersion').height() - $('.ehmContent').height());
                     $('.ehCurrentContent').css('overflow', 'hidden');
-                    $('.ehCurrentContent .dnnTextPanel p').css('margin-bottom', '0');
                 }
-            }
-            // Basic editor
-            var basiceditor = $('.dnnTextPanel .dnnFormItem textarea');
-            if (basiceditor) {
-                $('.ehCurrentContent').css('overflow', 'hidden');
-                $(basiceditor).css('max-width', $('.ehCurrentContent').width() - 18);
-                $(basiceditor).css('height', $('.ehCurrentContent').height() - 36 - 37 - 30);
+                // CK Editor
+                var editorid = $(".ehCurrentContent textarea.editor").attr('id');
+                if (editorid) {
+                    var ckeditor = CKEDITOR.instances[editorid];
+                    if (ckeditor && ckeditor.status == 'ready') {
+                        ckeditor.resize($('.ehCurrentContent').width(), $('.ehCurrentContent').height() - $('.dnnTextPanelView').height() - $('.divCurrentVersion').height() - $('.ehCurrentContent .dnnTextPanel p').height() - $('.ehmContent').height());
+                        $('.ehCurrentContent').css('overflow', 'hidden');
+                        $('.ehCurrentContent .dnnTextPanel p').css('margin-bottom', '0');
+                    }
+                }
+                // Basic editor
+                var basiceditor = $('.dnnTextPanel .dnnFormItem textarea');
+                if (basiceditor) {
+                    $('.ehCurrentContent').css('overflow', 'hidden');
+                    $(basiceditor).css('max-width', $('.ehCurrentContent').width() - 18);
+                    $(basiceditor).css('height', $('.ehCurrentContent').height() - 36 - 37 - 30);
+                }
             }
         }
         $(document).ready(function () {
