@@ -288,7 +288,7 @@ AS
 			)
 			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
 		END
-		
+
 	SELECT @JavaScriptLibraryID
 GO
 
@@ -327,6 +327,46 @@ AS
 
 	SELECT @PackageDependencyID
 GO
+
+/***** DNN-6099: always remove user roles in current portal. *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}RemoveUser]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}RemoveUser
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}RemoveUser]
+	@UserID		int,
+	@PortalID   int
+AS
+	IF @PortalID IS NULL
+		BEGIN
+			-- Delete SuperUser
+			DELETE FROM {databaseOwner}{objectQualifier}Users
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			-- Remove User from Portal
+			DELETE FROM {databaseOwner}{objectQualifier}UserPortals
+				WHERE  UserId = @UserID
+                 AND PortalId = @PortalID
+			IF NOT EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}UserPortals WHERE  UserId = @UserID)
+				-- Delete User (but not if SuperUser)
+				BEGIN
+					DELETE FROM {databaseOwner}{objectQualifier}Users
+						WHERE  UserId = @UserID
+							AND IsSuperUser = 0
+					DELETE FROM {databaseOwner}{objectQualifier}UserRoles
+						WHERE  UserID = @UserID
+				END
+			ELSE
+				BEGIN
+					DELETE ur FROM {databaseOwner}{objectQualifier}UserRoles ur
+						INNER JOIN {databaseOwner}{objectQualifier}Roles r ON r.RoleID = ur.RoleID
+						WHERE  UserID = @UserID AND r.PortalID = @PortalID
+				END
+		END
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
