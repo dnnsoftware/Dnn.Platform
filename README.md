@@ -36,7 +36,5 @@ Quick Links
 
 How to Contribute
 -----------------
-Some resources that might be helpful when you want to contribute
-* [Contributing to the DNN Platform using Git and Github](http://dnn-connect.org/community/blogs/contributing-to-the-dnn-platform-using-git-and-github)
-* [DNNCon Session - Contributing to Open Source on GitHub](http://www.dnnsoftware.com/community-blog/cid/155105/dnncon-session--contributing-to-open-source-on-github)
-* [The DNN Platform Issue Tracker](https://dnntracker.atlassian.net/)
+We encourage everyone to contribute.
+All the details on contributing with Git and on our working methods can be found on [our Git wiki page] (http://www.dnnsoftware.com/wiki/page/github)
