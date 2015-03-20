@@ -110,14 +110,14 @@ namespace DotNetNuke.Entities.Portals
                                                          && a.IsPrimary
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias == result.HttpAlias);
-                if (foundAlias == null) //let us try again using Startswith() to find matching Hosts
+                if (foundAlias == null) //let us try again using Startswith()
                 {
                     foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
                                                          (String.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.IsPrimary
                                                          && a.PortalID == portalId
-                                                         && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
+                                                         && a.HTTPAlias.StartsWith(result.HttpAlias + "/"));
                 }
             }
             //27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
