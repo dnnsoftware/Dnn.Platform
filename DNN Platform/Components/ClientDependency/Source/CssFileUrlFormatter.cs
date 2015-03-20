@@ -19,7 +19,8 @@ namespace ClientDependency.Core
 		{
 			string str = Regex.Replace(
 				fileContent,
-				@"url\(((?!data:).+?)\)",
+        // DNN-6660 Fix for CDF breaking dateUris
+        @"url\(((?![""']?data:).+?)\)",
 				new MatchEvaluator(
 					delegate(Match m)
 					{
