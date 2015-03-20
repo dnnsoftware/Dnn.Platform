@@ -43,7 +43,7 @@
             this._$meterValue = $("<div/>").appendTo(this._$meter);
             this._$meterText = $("<label/>").appendTo(this._$meter);
 
-            this._$meter.tooltip({
+            this._$meter.dnntooltip({
                 getTooltipMarkup: $.proxy(this._getTooltipMarkup, this),
                 cssClass: "password-strength-tooltip",
                 left: -14,
