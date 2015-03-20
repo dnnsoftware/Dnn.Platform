@@ -33,3 +33,10 @@ Quick Links
 * [Community Blogs](http://www.dnnsoftware.com/community-blog)
 * [Extensions Forge](http://www.dnnsoftware.com/Community/Download/DNN-Forge)
 * [DNN Store](http://store.dnnsoftware.com/)
+
+How to Contribute
+-----------------
+Some resources that might be helpful when you want to contribute
+* [Contributing to the DNN Platform using Git and Github](http://dnn-connect.org/community/blogs/contributing-to-the-dnn-platform-using-git-and-github)
+* [DNNCon Session - Contributing to Open Source on GitHub](http://www.dnnsoftware.com/community-blog/cid/155105/dnncon-session--contributing-to-open-source-on-github)
+* [The DNN Platform Issue Tracker](https://dnntracker.atlassian.net/)
