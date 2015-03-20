@@ -791,7 +791,6 @@ namespace DotNetNuke.Entities.Portals
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
-
             var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
             try
             {
@@ -1106,7 +1105,11 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
-            string cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetActivePortalLanguage(portalId);
+            }
+            var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
             return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
                                                                    GetPortalSettingsDictionaryCallback,
                                                                    true);
