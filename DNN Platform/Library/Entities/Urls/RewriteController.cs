@@ -411,7 +411,30 @@ namespace DotNetNuke.Entities.Urls
                     //determine what the rewritten URl will be 
                     newUrl = tabDict[tabLookUpKey];
                 }
-                if (!String.IsNullOrEmpty(userParam))
+
+				//DNN-6747: if found match doesn't match current culture, then try to find correct match.
+	            if (result.PortalId != Null.NullInteger)
+	            {
+		            var currentLocale = Localization.GetPageLocale(new PortalSettings(result.PortalId)).Name;
+		            if (newUrl.Contains("language=") && !newUrl.Contains(currentLocale))
+		            {
+			            var tabPath = tabLookUpKey.Split(new[] {"::"}, StringSplitOptions.None)[1];
+			            using (tabDict.GetReadLock())
+			            {
+				            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))
+				            {
+					            if (tabDict[key].Contains("language=" + currentLocale))
+					            {
+						            newUrl = tabDict[key];
+						            tabKeyVal = key;
+						            break;
+					            }
+				            }
+			            }
+		            }
+	            }
+
+	            if (!String.IsNullOrEmpty(userParam))
                 {
                     newUrl = newUrl + "&" + userParam;
                 }
