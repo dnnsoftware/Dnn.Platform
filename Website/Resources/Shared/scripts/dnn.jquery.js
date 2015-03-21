@@ -521,9 +521,8 @@
                 function () {
                     if (object.disabled != disabled)
                         $object.trigger((disabled = !!object.disabled) ? 'disable' : 'enable');
-                    if (object.checked != checked) {
-		                $object.trigger((checked = !!object.checked) ? 'check' : 'uncheck');
-	                }
+                    if (object.checked != checked)
+                        $object.trigger((checked = !!object.checked) ? 'check' : 'uncheck');
                 },
                 10 /* in miliseconds.*/
             );
@@ -568,13 +567,9 @@
             if (label) {
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
-                	label.click(function (e) {
+                    label.click(function (e) {
                         $ch.triggerHandler('focus');
-                        var checked = $ch.prop('checked');
-	                    ch.click();
-						if (checked === $ch.prop('checked')) {
-							$ch.prop('checked', !checked);
-						}
+                        ch.click();
                         $ch.trigger('change', [e]);
                         cb(e);
                         return false;
@@ -586,12 +581,8 @@
                         if ($this.is('input')) return;
 
                         $this.click(function (e) {
-                        	$ch.triggerHandler('focus');
-	                        var checked = $ch.prop('checked');
-	                        ch.click();
-							if (checked === $ch.prop('checked')) {
-								$ch.prop('checked', !checked);
-							}
+                            $ch.triggerHandler('focus');
+                            ch.click();
                             $ch.trigger('change', [e]);
                             cb(e);
                             return false;
@@ -600,13 +591,9 @@
                 }
             }
             if (!parentLabel) {
-            	ch.wrapper.click(function (e) {
+                ch.wrapper.click(function (e) {
                     $ch.triggerHandler('focus');
-                    var checked = $ch.prop('checked');
-	                ch.click();
-					if (checked === $ch.prop('checked')) {
-						$ch.prop('checked', !checked);
-					}
+                    ch.click();
                     $ch.trigger('change', [e]);
                     cb(e);
                     return false;
