@@ -565,52 +565,34 @@
                 if (!label.length) label = false;
             }
 
+	        var cbClickHandler = function(e) {
+		        $ch.triggerHandler('focus');
+		        var checked = $ch.prop('checked');
+		        ch.click();
+		        if (checked === $ch.prop('checked') && $ch.prop('type') === 'checkbox') {
+			        $ch.prop('checked', !checked);
+		        }
+		        $ch.trigger('change', [e]);
+		        cb(e);
+		        return false;
+	        };
+
             if (label) {
                 label.addClass(settings.labelClass);
                 if (!parentLabel) {
-                	label.click(function (e) {
-                        $ch.triggerHandler('focus');
-                        var checked = $ch.prop('checked');
-	                    ch.click();
-						if (checked === $ch.prop('checked')) {
-							$ch.prop('checked', !checked);
-						}
-                        $ch.trigger('change', [e]);
-                        cb(e);
-                        return false;
-                    });
+                	label.click(cbClickHandler);
                 }
                 else {
                     label.children().each(function () {
                         var $this = $(this);
                         if ($this.is('input')) return;
 
-                        $this.click(function (e) {
-                        	$ch.triggerHandler('focus');
-	                        var checked = $ch.prop('checked');
-	                        ch.click();
-							if (checked === $ch.prop('checked')) {
-								$ch.prop('checked', !checked);
-							}
-                            $ch.trigger('change', [e]);
-                            cb(e);
-                            return false;
-                        });
+                        $this.click(cbClickHandler);
                     });
                 }
             }
             if (!parentLabel) {
-            	ch.wrapper.click(function (e) {
-                    $ch.triggerHandler('focus');
-                    var checked = $ch.prop('checked');
-	                ch.click();
-					if (checked === $ch.prop('checked')) {
-						$ch.prop('checked', !checked);
-					}
-                    $ch.trigger('change', [e]);
-                    cb(e);
-                    return false;
-                });
+            	ch.wrapper.click(cbClickHandler);
             }
 
             $ch.bind('disable', function () { ch.wrapperInner.addClass(settings.cls + '-disabled'); }).bind('enable', function () { ch.wrapperInner.removeClass(settings.cls + '-disabled'); });
