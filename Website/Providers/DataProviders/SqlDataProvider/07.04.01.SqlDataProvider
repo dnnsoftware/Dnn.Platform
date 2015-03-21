@@ -414,6 +414,17 @@ END
 GO
 
 
+
+-- Fix for DNN-6636 Sitemap : Shows 404 Page in the Sitemap
+
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
+SET SiteMapPriority = 0
+WHERE TabId IN (SELECT Custom404TabId FROM {databaseOwner}[{objectQualifier}PortalLocalization]) OR
+      TabId IN (SELECT Custom500TabId FROM {databaseOwner}[{objectQualifier}PortalLocalization])
+GO
+
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
