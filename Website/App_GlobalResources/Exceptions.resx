@@ -441,4 +441,7 @@
   <data name="UserHasNoPermissionToBrowseFolder.Text" xml:space="preserve">
     <value>The user has no permission to browse this folder</value>
   </data>
+  <data name="SitemapUrlGenerationError.Text" xml:space="preserve">
+    <value>URL sitemap generation for page {0}-{1} caused an exception: {2}</value>
+  </data>
 </root>
