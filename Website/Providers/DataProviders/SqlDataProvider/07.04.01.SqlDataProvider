@@ -139,11 +139,6 @@ IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePerm
 	DROP INDEX [IX_{objectQualifier}ModulePermission_Roles] ON {databaseOwner}[{objectQualifier}ModulePermission]
 GO
 
-CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Portals ON {databaseOwner}[{objectQualifier}ModulePermission]
-	(PortalID, ModuleID, PermissionID, RoleID, UserID) 
-	INCLUDE (AllowAccess)
-GO
-
 CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Modules ON {databaseOwner}[{objectQualifier}ModulePermission]
 	(ModuleID, PermissionID, PortalID, RoleID, UserID) 
 	INCLUDE (AllowAccess)
