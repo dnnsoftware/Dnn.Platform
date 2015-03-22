@@ -423,7 +423,10 @@ WHERE TabId IN (SELECT Custom404TabId FROM {databaseOwner}[{objectQualifier}Port
       TabId IN (SELECT Custom500TabId FROM {databaseOwner}[{objectQualifier}PortalLocalization])
 GO
 
-
+-- DNN 6758. Increase column size for Tabs table:
+ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
+ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
