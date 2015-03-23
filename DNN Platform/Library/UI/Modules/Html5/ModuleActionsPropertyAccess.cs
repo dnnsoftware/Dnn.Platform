@@ -22,14 +22,32 @@
 using System;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
+using Newtonsoft.Json;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
     public class ModuleActionDto
     {
+        [JsonProperty("controlkey")]
         public string ControlKey { get; set; }
+
+        [JsonProperty("icon")]
+        public string Icon { get; set; }
+
+        [JsonProperty("localresourcefile")]
+        public string LocalResourceFile { get; set; }
+
+        [JsonProperty("securitysccesslevel")]
+        public string SecurityAccessLevel { get; set; }
+
+        [JsonProperty("title")]
         public string Title { get; set; }
+
+        [JsonProperty("titlekey")]
+        public string TitleKey { get; set; }
     }
 
     public class ModuleActionsPropertyAccess : JsonPropertyAccess<ModuleActionDto>
@@ -45,11 +63,29 @@ namespace DotNetNuke.UI.Modules.Html5
 
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            var moduleAction = new ModuleAction(_moduleContext.GetNextActionID())
+            var title = (!String.IsNullOrEmpty(model.TitleKey) && !String.IsNullOrEmpty(model.LocalResourceFile)) 
+                                ? Localization.GetString(model.TitleKey, model.LocalResourceFile) 
+                                : model.Title;
+
+            SecurityAccessLevel securityAccessLevel = SecurityAccessLevel.View;
+
+            if (!String.IsNullOrEmpty(model.SecurityAccessLevel))
             {
-                Title = model.Title,
-                Url = _moduleContext.EditUrl(model.ControlKey)
-            };
+                switch (model.SecurityAccessLevel)
+                {
+                    case "Edit":
+                        securityAccessLevel = SecurityAccessLevel.Edit;
+                        break;
+                }
+            }
+
+            var moduleAction = new ModuleAction(_moduleContext.GetNextActionID())
+                                        {
+                                            Title = title,
+                                            Url = _moduleContext.EditUrl(model.ControlKey),
+                                            Icon = model.Icon,
+                                            Secure = securityAccessLevel
+                                        };
             _moduleActions.Add(moduleAction);
 
             return String.Empty;
