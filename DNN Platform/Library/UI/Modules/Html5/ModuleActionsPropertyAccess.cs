@@ -76,6 +76,15 @@ namespace DotNetNuke.UI.Modules.Html5
                     case "Edit":
                         securityAccessLevel = SecurityAccessLevel.Edit;
                         break;
+                    case "Admin":
+                        securityAccessLevel = SecurityAccessLevel.Admin;
+                        break;
+                    case "Host":
+                        securityAccessLevel = SecurityAccessLevel.Host;
+                        break;
+                    default:
+                        securityAccessLevel = SecurityAccessLevel.View;
+                        break;
                 }
             }
 
