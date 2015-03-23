@@ -845,7 +845,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-            var arrUsers = GetUsers(portalId);
+	        var arrUsers = GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
                 var user = arrUsers[i] as UserInfo;
@@ -1532,7 +1532,7 @@ namespace DotNetNuke.Entities.Users
 
         public static void RemoveDeletedUsers(int portalId)
         {
-            var arrUsers = GetUsers(true, false, portalId);
+	        var arrUsers = GetDeletedUsers(portalId);
 
             foreach (UserInfo objUser in arrUsers)
             {
