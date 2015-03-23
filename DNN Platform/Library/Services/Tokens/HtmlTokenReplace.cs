@@ -20,22 +20,17 @@
 #endregion
 
 using System.Web.UI;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.UI.Modules.Html5
+namespace DotNetNuke.Services.Tokens
 {
-    public class ModuleActionsTokenReplace : HtmlTokenReplace
+    public class HtmlTokenReplace : TokenReplace
     {
-        public ModuleActionsTokenReplace(Page page, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
-            : base(page)
+        public HtmlTokenReplace(Page page)
+            : base(Scope.NoSettings)
         {
-            AccessingUser = moduleContext.PortalSettings.UserInfo;
-            DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
-            ModuleId = moduleContext.ModuleId;
-            PortalSettings = moduleContext.PortalSettings;
-
-            PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
+            PropertySource["css"] = new CssPropertyAccess(page);
+            PropertySource["js"] = new JavaScriptPropertyAccess(page);
+            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
         }
     }
 }

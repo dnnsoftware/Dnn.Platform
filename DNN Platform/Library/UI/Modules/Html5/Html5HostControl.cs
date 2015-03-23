@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.Modules.Html5
 {
     public class Html5HostControl : ModuleControlBase, IActionable
     {
-        private string _html5File;
+        private readonly string _html5File;
         private string _fileContent;
 
         public Html5HostControl(string html5File)

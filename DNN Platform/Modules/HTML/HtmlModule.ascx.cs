@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.Html
                 lblContent.EditEnabled = EditorEnabled;
 
                 // add content to module
-                lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(ModuleId, contentString, Settings)));
+                lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(ModuleId, contentString, Settings, PortalSettings, Page)));
 
 				//set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
 				if (Settings.ContainsKey("HtmlText_UseDecorate") && Settings["HtmlText_UseDecorate"].ToString() == "0")
