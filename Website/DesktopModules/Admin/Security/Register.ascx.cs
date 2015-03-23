@@ -236,6 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				Required = required,
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
+				ClearContentInPasswordMode = true
 			};
 			userForm.Items.Add(formItem);
 
