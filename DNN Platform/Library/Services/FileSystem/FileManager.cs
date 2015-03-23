@@ -527,13 +527,13 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
-				var isDefaultFolderProvider = DefaultFolderProviders.GetDefaultProviders().Contains(folderMapping.FolderProviderType);
+				var isDatabaseProvider = folderMapping.FolderProviderType == "DatabaseFolderProvider";
 
                 try
                 {
 					//add file into database first if folder provider is default providers
 					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
-	                if (isDefaultFolderProvider)
+					if (isDatabaseProvider)
 	                {
 		                if(folderWorkflow == null || !fileExists)
 						{
