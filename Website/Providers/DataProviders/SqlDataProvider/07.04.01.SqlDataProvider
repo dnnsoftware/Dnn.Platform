@@ -414,15 +414,55 @@ END
 GO
 
 
-
+-- ---------------------------------------------------------
 -- Fix for DNN-6636 Sitemap : Shows 404 Page in the Sitemap
-
+-- ---------------------------------------------------------
 UPDATE {databaseOwner}[{objectQualifier}Tabs]
 SET SiteMapPriority = 0
 WHERE TabId IN (SELECT Custom404TabId FROM {databaseOwner}[{objectQualifier}PortalLocalization]) OR
       TabId IN (SELECT Custom500TabId FROM {databaseOwner}[{objectQualifier}PortalLocalization])
 GO
 
+
+-- ---------------------------------------------------------
+-- DNN-6702: fix an issue with shared modules in Site Groups
+-- ---------------------------------------------------------
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	ALTER TABLE	{databaseOwner}[{objectQualifier}ModulePermission] DROP CONSTRAINT [IX_{objectQualifier}ModulePermission] 
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Portals' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Portals] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Modules' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Modules] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Users' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Users] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+IF EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}ModulePermission_Roles' AND object_id = OBJECT_ID('{objectQualifier}ModulePermission'))
+	DROP INDEX [IX_{objectQualifier}ModulePermission_Roles] ON {databaseOwner}[{objectQualifier}ModulePermission]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Modules ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(ModuleID, PermissionID, PortalID, RoleID, UserID) 
+	INCLUDE (AllowAccess)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Users ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(UserID, ModuleID, PermissionID, PortalID) 
+	INCLUDE (AllowAccess)
+	WHERE UserID IS NOT Null
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {databaseOwner}[{objectQualifier}ModulePermission]
+	(RoleID, ModuleID, PermissionID, PortalID) 
+	INCLUDE (AllowAccess)
+	WHERE RoleID IS NOT Null
+GO
 
 
 /************************************************************/
