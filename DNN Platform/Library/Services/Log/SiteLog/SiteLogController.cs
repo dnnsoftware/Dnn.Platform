@@ -47,10 +47,14 @@ namespace DotNetNuke.Services.Log.SiteLog
             var objSecurity = new PortalSecurity();
             try
             {
-                if (Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
+
+                // Disable site log buffering if site log buffering is enabled (i.e. SiteLogBuffer > 1), but caching should be disabled
+                // Please note: Buffering is considered as some kind of caching, so disable caching should also disable buffering
+                if (SiteLogBuffer > 1 && Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
                 {
                     SiteLogBuffer = 1;
                 }
+
                 switch (SiteLogBuffer)
                 {
                     case 0: //logging disabled
