@@ -19,50 +19,26 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.IO;
-using System.Web;
 using System.Web.UI;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class Html5HostControl : ModuleControlBase, IActionable
+    public class ModuleActionsTokenReplace : TokenReplace
     {
-        private string _html5File;
-        private string _fileContent;
-
-        public Html5HostControl(string html5File)
+        public ModuleActionsTokenReplace(Page page, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
+            : base(Scope.NoSettings)
         {
-            _html5File = html5File;
-        }
+            AccessingUser = moduleContext.PortalSettings.UserInfo;
+            DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
+            ModuleId = moduleContext.ModuleId;
+            PortalSettings = moduleContext.PortalSettings;
 
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (!(string.IsNullOrEmpty(_html5File)))
-            {
-                var reader = new StreamReader(Page.Server.MapPath(_html5File));
-                _fileContent = reader.ReadToEnd();
-
-                ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
-                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (!(string.IsNullOrEmpty(_html5File)))
-            {
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(_fileContent)));
-            }
+            PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
+            PropertySource["css"] = new CssPropertyAccess(page);
+            PropertySource["js"] = new JavaScriptPropertyAccess(page);
+            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
         }
     }
 }

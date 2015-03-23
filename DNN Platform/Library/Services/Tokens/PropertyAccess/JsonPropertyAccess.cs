@@ -20,49 +20,33 @@
 #endregion
 
 using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
+using System.Globalization;
+using DotNetNuke.Entities.Users;
+using Newtonsoft.Json;
 
-namespace DotNetNuke.UI.Modules.Html5
+// ReSharper disable once CheckNamespace
+namespace DotNetNuke.Services.Tokens
 {
-    public class Html5HostControl : ModuleControlBase, IActionable
+    public abstract class JsonPropertyAccess<TModel> : IPropertyAccess
     {
-        private string _html5File;
-        private string _fileContent;
-
-        public Html5HostControl(string html5File)
+        public virtual CacheLevel Cacheability
         {
-            _html5File = html5File;
+            get { return CacheLevel.notCacheable; }
         }
 
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected override void OnInit(EventArgs e)
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
-            base.OnInit(e);
-
-            if (!(string.IsNullOrEmpty(_html5File)))
+            var json = propertyName.Trim();
+            if (!(json.StartsWith("{") && json.EndsWith("}")))
             {
-                var reader = new StreamReader(Page.Server.MapPath(_html5File));
-                _fileContent = reader.ReadToEnd();
-
-                ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
-                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
+                throw new ArgumentException("The token argument is not property formatted JSON");
             }
+
+            var deserializedObject = JsonConvert.DeserializeObject<TModel>(json);
+
+            return ProcessToken(deserializedObject, accessingUser, accessLevel);
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (!(string.IsNullOrEmpty(_html5File)))
-            {
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(_fileContent)));
-            }
-        }
+        protected abstract string ProcessToken(TModel model, UserInfo accessingUser, Scope accessLevel);
     }
 }
