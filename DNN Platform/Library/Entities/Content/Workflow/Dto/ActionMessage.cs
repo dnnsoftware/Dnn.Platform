@@ -36,5 +36,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
         /// Body of the message
         /// </summary>
         public string Body { get; set; }
+
+        /// <summary>
+        /// Indicates if the message is going to be toasted or not. By default, it is False
+        /// </summary>
+        public bool SendToast { get; set; }
     }
 }
