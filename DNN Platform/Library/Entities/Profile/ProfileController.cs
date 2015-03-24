@@ -516,12 +516,12 @@ namespace DotNetNuke.Entities.Profile
                 return;
             }
 
-            var oldUser = new UserInfo { UserID = user.UserID };
-            _profileProvider.GetUserProfile(ref oldUser);
-
             var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
-           
+
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID};
+            _profileProvider.GetUserProfile(ref oldUser);
+            
             _profileProvider.UpdateUserProfile(user);
 
             //Remove the UserInfo from the Cache, as it has been modified
