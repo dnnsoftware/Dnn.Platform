@@ -26,6 +26,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 using DotNetNuke.Web.Mvc.Framework.Modules;
 using Moq;
@@ -66,7 +67,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         public void ExecuteRequest_Calls_ControllerFactory_To_Construct_Controller()
         {
             // Arrange
-            var app = new Mock<ModuleApplication> { CallBase = true };
+            var app = new ModuleApplication();
 
             var controllerFactory = new Mock<IControllerFactory>();
             RequestContext actualRequestContext = null;
@@ -74,12 +75,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
                                  .Callback<RequestContext, string>((c, n) => actualRequestContext = c)
                                  .Returns(new Mock<IDnnController>().Object);
 
-            app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
             ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
             // Act
-            app.Object.ExecuteRequest(moduleRequestContext);
+            app.ExecuteRequest(moduleRequestContext);
 
             // Assert
             controllerFactory.Verify(f => f.CreateController(It.IsAny<RequestContext>(), ControllerName));
@@ -90,163 +91,144 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         public void ExecuteRequest_Throws_InvalidOperationException_If_Controller_Only_Implements_IController()
         {
             // Arrange
-            var app = new Mock<ModuleApplication> { CallBase = true };
+            var app = new ModuleApplication();
 
             var controller = new Mock<IController>();
             var controllerFactory = SetupControllerFactory(controller.Object);
-            app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
             ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
             // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => app.Object.ExecuteRequest(moduleRequestContext));
+            Assert.Throws<InvalidOperationException>(() => app.ExecuteRequest(moduleRequestContext));
         }
 
         [Test]
         public void ExecuteRequest_Throws_InvalidOperationException_If_Controller_Has_NonStandard_Action_Invoker()
         {
             // Arrange
-            var app = new Mock<ModuleApplication> { CallBase = true };
+            var app = new ModuleApplication();
 
             var controller = new Mock<Controller>();
             var invoker = new Mock<IActionInvoker>();
             controller.Object.ActionInvoker = invoker.Object;
 
             var controllerFactory = SetupControllerFactory(controller.Object);
-            app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
             ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
             // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => app.Object.ExecuteRequest(moduleRequestContext));
+            Assert.Throws<InvalidOperationException>(() => app.ExecuteRequest(moduleRequestContext));
         }
 
         [Test]
         public void ExecuteRequest_Does_Not_Throw_If_Controller_Implements_IDnnController()
         {
             // Arrange
-            var app = new Mock<ModuleApplication> { CallBase = true };
+            var app = new ModuleApplication();
 
             var controller = new Mock<IController>();
             controller.As<IDnnController>();
 
             var controllerFactory = SetupControllerFactory(controller.Object);
-            app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
             ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
             // Act and Assert
-            app.Object.ExecuteRequest(moduleRequestContext);
+            app.ExecuteRequest(moduleRequestContext);
         }
 
-        //[Test]
-        //public void ExecuteRequest_Does_Not_Throw_If_Controller_Inherits_From_Controller()
-        //{
-        //    // Arrange
-        //    var app = new Mock<ModuleApplication> { CallBase = true };
+        [Test]
+        public void ExecuteRequest_Returns_Result_And_ControllerContext_From_Controller()
+        {
+            // Arrange
+            var app = new ModuleApplication();
 
-        //    var controller = new Mock<Controller>();
-        //    var invoker = new ControllerActionInvoker();
-        //    controller.Object.ActionInvoker = invoker;
+            ControllerContext controllerContext = MockHelper.CreateMockControllerContext();
+            ActionResult actionResult = new Mock<ActionResult>().Object;
 
-        //    var controllerFactory = SetupControllerFactory(controller.Object);
-        //    app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            var controller = SetupMockController(actionResult, controllerContext);
 
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
+            var controllerFactory = SetupControllerFactory(controller.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
-        //    // Act and Assert
-        //    app.Object.ExecuteRequest(moduleRequestContext);
-        //}
+            ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
-        //[Test]
-        //public void ExecuteRequest_Returns_Result_And_ControllerContext_From_Controller()
-        //{
-        //    // Arrange
-        //    var app = new Mock<ModuleApplication> { CallBase = true };
+            // Act
+            ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
 
-        //    ControllerContext controllerContext = MockHelper.CreateMockControllerContext();
-        //    ActionResult actionResult = new Mock<ActionResult>().Object;
+            // Assert
+            Assert.AreSame(actionResult, result.ActionResult);
+            Assert.AreSame(controllerContext, result.ControllerContext);
+        }
 
-        //    var controller = SetupMockController(actionResult, controllerContext);
+        [Test]
+        public void ExecuteRequest_Executes_Constructed_Controller_And_Provides_RequestContext()
+        {
+            // Arrange
+            var app = new ModuleApplication();
 
-        //    var controllerFactory = SetupControllerFactory(controller.Object);
-        //    app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            var controller = new Mock<IController>();
+            controller.As<IDnnController>();
 
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
+            var controllerFactory = SetupControllerFactory(controller.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
-        //    // Act
-        //    ModuleRequestResult result = app.Object.ExecuteRequest(moduleRequestContext);
+            ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
-        //    // Assert
-        //    Assert.AreSame(actionResult, result.ActionResult);
-        //    Assert.AreSame(controllerContext, result.ControllerContext);
-        //}
+            // Act
+            ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
 
-        //[Test]
-        //public void ExecuteRequest_Executes_Constructed_Controller_And_Provides_RequestContext()
-        //{
-        //    // Arrange
-        //    var app = new Mock<ModuleApplication> { CallBase = true };
+            // Assert
+            controller.Verify(c => c.Execute(It.Is<RequestContext>(rc =>
+                    rc.HttpContext == moduleRequestContext.HttpContext &&
+                    rc.RouteData.GetRequiredString("controller") == ControllerName))
+                );
+        }
 
-        //    var controller = new Mock<IController>();
-        //    controller.As<IDnnController>();
+        [Test]
+        public void ExecuteRequest_ReleasesController_After_Executing()
+        {
+            // Arrange
+            var app = new ModuleApplication();
 
-        //    var controllerFactory = SetupControllerFactory(controller.Object);
-        //    app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            var controller = new Mock<IDnnController>();
 
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
+            var controllerFactory = SetupControllerFactory(controller.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
-        //    // Act
-        //    ModuleRequestResult result = app.Object.ExecuteRequest(moduleRequestContext);
+            ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
-        //    // Assert
-        //    controller.Verify(c => c.Execute(It.Is<RequestContext>(rc =>
-        //            rc.HttpContext == moduleRequestContext.HttpContext &&
-        //            rc.RouteData.GetRequiredString("controller") == "Foo"))
-        //        );
-        //}
+            // Act
+            ModuleRequestResult result = app.ExecuteRequest(moduleRequestContext);
 
-        //[Test]
-        //public void ExecuteRequest_ReleasesController_After_Executing()
-        //{
-        //    // Arrange
-        //    var app = new Mock<ModuleApplication> { CallBase = true };
+            // Assert
+            controllerFactory.Verify(cf => cf.ReleaseController(controller.Object));
+        }
 
-        //    var controller = new Mock<IDnnController>();
+        [Test]
+        public void ExecuteRequest_ReleasesController_Even_If_It_Throws_An_Exception()
+        {
+            // Arrange
+            var app = new ModuleApplication();
 
-        //    var controllerFactory = SetupControllerFactory(controller.Object);
-        //    app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
+            var controller = new Mock<IDnnController>();
+            controller.Setup(c => c.Execute(It.IsAny<RequestContext>()))
+                .Throws(new Exception("Uh Oh!"));
 
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
+            var controllerFactory = SetupControllerFactory(controller.Object);
+            app.ControllerFactory = controllerFactory.Object;
 
-        //    // Act
-        //    ModuleRequestResult result = app.Object.ExecuteRequest(moduleRequestContext);
+            ModuleRequestContext moduleRequestContext = CreateModuleContext(ControllerName, ActionName);
 
-        //    // Assert
-        //    controllerFactory.Verify(cf => cf.ReleaseController(controller.Object));
-        //}
+            // Act (and verify the exception is thrown; also supresses the exception so it doesn't fail the test)
+            Assert.Throws<Exception>(() => app.ExecuteRequest(moduleRequestContext));
 
-        //[Test]
-        //public void ExecuteRequest_ReleasesController_Even_If_It_Throws_An_Exception()
-        //{
-        //    // Arrange
-        //    var app = new Mock<ModuleApplication> { CallBase = true };
-
-        //    var controller = new Mock<IDnnController>();
-        //    controller.Setup(c => c.Execute(It.IsAny<RequestContext>()))
-        //        .Throws(new Exception("Uh Oh!"));
-
-        //    var controllerFactory = SetupControllerFactory(controller.Object);
-        //    app.SetupGet(a => a.ControllerFactory).Returns(controllerFactory.Object);
-
-        //    ModuleRequestContext moduleRequestContext = CreateModuleContext(app.Object, "Foo/Bar/Baz");
-
-        //    // Act (and verify the exception is thrown; also supresses the exception so it doesn't fail the test)
-        //    Assert.Throws<Exception>(() => app.Object.ExecuteRequest(moduleRequestContext));
-
-        //    // Assert
-        //    controllerFactory.Verify(f => f.ReleaseController(controller.Object));
-        //}
+            // Assert
+            controllerFactory.Verify(f => f.ReleaseController(controller.Object));
+        }
 
         private static Mock<IDnnController> SetupMockController(ActionResult actionResult, ControllerContext controllerContext)
         {
@@ -266,19 +248,18 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             return controllerFactory;
         }
 
-        private static RouteData CreateTestRouteData()
+        private static ModuleRequestContext CreateModuleContext(string controllerName, string actionName)
         {
-            var expectedRouteData = new RouteData();
-            expectedRouteData.Values["controller"] = "Foo";
-            return expectedRouteData;
-        }
+            var routeData = new RouteData();
+            routeData.Values.Add("controller", controllerName);
+            routeData.Values.Add("action", actionName);
 
-        private static ModuleRequestContext CreateModuleContext(string controlerName, string actionName)
-        {
+            var moduleContext = new ModuleInstanceContext {Configuration = new ModuleInfo {ModuleID = 42}};
             return new ModuleRequestContext
                         {
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
-                            //Module = new ModuleInfo { ModuleID = 42 }
+                            RouteData = routeData,
+                            ModuleContext = moduleContext
                         };
         }
 
