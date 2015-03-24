@@ -84,7 +84,7 @@
     <Compile Include="Framework\DnnWebViewPageTests.cs" />
     <Compile Include="Framework\Controllers\DnnControllerTests.cs" />
     <Compile Include="Framework\Modules\ModuleApplicationTests.cs" />
-    <Compile Include="Framework\Modules\ModuleDelegatingViewEngineTests.cs" />
+    <Compile Include="Framework\ModuleDelegatingViewEngineTests.cs" />
     <Compile Include="Framework\Modules\ModuleExecutionEngineTests.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvokerTests.cs" />
     <Compile Include="Helpers\DnnHelperTests.cs" />
