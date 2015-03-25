@@ -1467,7 +1467,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     ctlIconLarge.Width = ctlIcon.Width;
 
                     // tab administrators can only manage their own tab
-                    if (!UserInfo.IsSuperUser && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                    if (!UserInfo.IsSuperUser && !UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && PortalSettings.ControlPanelSecurity!=PortalSettings.ControlPanelPermission.TabEditor)
                     {
                         cboParentTab.Enabled = false;
                     }
