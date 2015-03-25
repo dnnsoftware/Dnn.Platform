@@ -724,16 +724,10 @@ namespace DotNetNuke.Framework
                     if (string.Compare(PortalSettings.PortalAlias.HTTPAlias, PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture ) != 0) 
                         primaryHttpAlias = PortalSettings.DefaultPortalAlias;
                 }
-                if (primaryHttpAlias != null)//a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(CanonicalLinkUrl))//a primary http alias was identified
                 {
                     var originalurl = Context.Items["UrlRewrite:OriginalUrl"].ToString();
-                    //Add Canonical <link> using the primary alias
-                    var canonicalLink = new HtmlLink();
-                    canonicalLink.Href = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
-                    canonicalLink.Attributes.Add("rel", "canonical");
-
-                    // Add the HtmlLink to the Head section of the page.
-                    Page.Header.Controls.Add(canonicalLink);
+                    CanonicalLinkUrl = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
                 }
             }
 
@@ -837,6 +831,17 @@ namespace DotNetNuke.Framework
             {
                 Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
             }
+
+	        if (!string.IsNullOrEmpty(CanonicalLinkUrl))
+	        {
+				//Add Canonical <link> using the primary alias
+				var canonicalLink = new HtmlLink();
+				canonicalLink.Href = CanonicalLinkUrl;
+				canonicalLink.Attributes.Add("rel", "canonical");
+
+				// Add the HtmlLink to the Head section of the page.
+				Page.Header.Controls.Add(canonicalLink);
+	        }
         }
 
 		protected override void Render(HtmlTextWriter writer)
