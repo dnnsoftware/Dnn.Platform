@@ -20,13 +20,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
@@ -40,6 +36,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public DnnUrlHelper(ViewContext viewContext)
         {
+            Requires.NotNull("viewContext", viewContext); 
+            
             _viewContext = viewContext;
 
             var controller = viewContext.Controller as IDnnController;
@@ -61,7 +59,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public virtual string Action(string actionName)
         {
-            return GenerateUrl(actionName, null, null);
+            return GenerateUrl(actionName, null, new RouteValueDictionary());
         }
 
         public virtual string Action(string actionName, RouteValueDictionary routeValues)
@@ -76,7 +74,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public virtual string Action(string actionName, string controllerName)
         {
-            return GenerateUrl(actionName, controllerName, null);
+            return GenerateUrl(actionName, controllerName, new RouteValueDictionary());
         }
 
         public virtual string Action(string actionName, string controllerName, RouteValueDictionary routeValues)

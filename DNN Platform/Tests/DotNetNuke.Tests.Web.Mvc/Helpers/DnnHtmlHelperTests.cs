@@ -107,12 +107,13 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Strongly_Typed_Constructor_Throws_On_Invalid_Controller_Property()
         {
             //Arrange
-            var viewDataContainer = new Mock<IViewDataContainer>();
+            var mockViewDataContainer = new Mock<IViewDataContainer>();
+            mockViewDataContainer.Setup(d => d.ViewData).Returns(new ViewDataDictionary());
             var mockController = new Mock<ControllerBase>();
             var viewContext = new ViewContext {Controller = mockController.Object};
 
             //Act,Assert
-            Assert.Throws<InvalidOperationException>(() => new DnnHtmlHelper<Dog>(viewContext, viewDataContainer.Object));
+            Assert.Throws<InvalidOperationException>(() => new DnnHtmlHelper<Dog>(viewContext, mockViewDataContainer.Object));
         }
 
         [Test]
@@ -137,15 +138,17 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void Strongly_Typed_Constructor_Sets_ModuleContext_Property()
         {
             //Arrange
-            var viewDataContainer = new Mock<IViewDataContainer>();
+            var mockViewDataContainer = new Mock<IViewDataContainer>();
+            mockViewDataContainer.Setup(d => d.ViewData).Returns(new ViewDataDictionary());
             var mockController = new Mock<ControllerBase>();
+
             var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
             var viewContext = new ViewContext {Controller = mockController.Object};
 
             //Act
-            var helper = new DnnHtmlHelper<Dog>(viewContext, viewDataContainer.Object);
+            var helper = new DnnHtmlHelper<Dog>(viewContext, mockViewDataContainer.Object);
 
             //Assert
             Assert.AreEqual(expectedContext, helper.ModuleContext);
@@ -155,14 +158,15 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         public void ViewContext_Property_Returns_Passed_in_ViewContext()
         {
             //Arrange
-            var viewDataContainer = new Mock<IViewDataContainer>();
+            var mockViewDataContainer = new Mock<IViewDataContainer>();
+            mockViewDataContainer.Setup(d => d.ViewData).Returns(new ViewDataDictionary());
             var mockController = new Mock<ControllerBase>();
             var mockDnnController = mockController.As<IDnnController>();
             mockDnnController.Setup(c => c.ModuleContext).Returns(new ModuleInstanceContext());
             var viewContext = new ViewContext {Controller = mockController.Object};
 
             //Act
-            var helper = new DnnHtmlHelper(viewContext, viewDataContainer.Object);
+            var helper = new DnnHtmlHelper(viewContext, mockViewDataContainer.Object);
 
             //Assert
             Assert.AreEqual(viewContext, helper.ViewContext);

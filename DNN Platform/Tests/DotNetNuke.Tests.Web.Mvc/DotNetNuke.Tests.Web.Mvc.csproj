@@ -87,6 +87,7 @@
     <Compile Include="Framework\ModuleDelegatingViewEngineTests.cs" />
     <Compile Include="Framework\Modules\ModuleExecutionEngineTests.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvokerTests.cs" />
+    <Compile Include="Helpers\DnnUrlHelperTests.cs" />
     <Compile Include="Helpers\DnnHtmlHelperTests.cs" />
     <Compile Include="Helpers\DnnHelperTests.cs" />
     <Compile Include="Helpers\ViewResultExtensionsTests.cs" />
@@ -106,6 +107,10 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6B29ADED-7B56-4484-BEA5-C0E09079535B}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
+      <Project>{68368906-57DD-40D1-AC10-35211A17D617}</Project>
+      <Name>DotNetNuke.Tests.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
