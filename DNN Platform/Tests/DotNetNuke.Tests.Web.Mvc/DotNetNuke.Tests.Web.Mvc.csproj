@@ -87,12 +87,13 @@
     <Compile Include="Framework\ModuleDelegatingViewEngineTests.cs" />
     <Compile Include="Framework\Modules\ModuleExecutionEngineTests.cs" />
     <Compile Include="Framework\Modules\ResultCapturingActionInvokerTests.cs" />
+    <Compile Include="Helpers\DnnHtmlHelperTests.cs" />
     <Compile Include="Helpers\DnnHelperTests.cs" />
-    <Compile Include="Helpers\HttpContextBaseExtensionsTests.cs" />
     <Compile Include="Helpers\ViewResultExtensionsTests.cs" />
     <Compile Include="MockHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultAssert.cs" />
+    <Compile Include="Routing\HttpContextExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

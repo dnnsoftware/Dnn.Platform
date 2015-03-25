@@ -21,6 +21,7 @@
 
 using System;
 using System.Web.Mvc;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -35,6 +36,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
     {
         public DnnHelper(ViewContext viewContext)
         {
+            Requires.NotNull("viewContext", viewContext);
+
             var controller = viewContext.Controller as IDnnController;
 
             if (controller == null)
