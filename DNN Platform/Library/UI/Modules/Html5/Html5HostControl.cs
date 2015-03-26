@@ -48,34 +48,26 @@ namespace DotNetNuke.UI.Modules.Html5
 
             if (!(string.IsNullOrEmpty(_html5File)))
             {
-                var reader = new StreamReader(Page.Server.MapPath(_html5File));
-                _fileContent = reader.ReadToEnd();
-
-                ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
-                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
-            }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (!(string.IsNullOrEmpty(Html5File)))
-            {
                 //Check if css file exists
-                var cssFile = Path.ChangeExtension(Html5File, ".css");
+                var cssFile = Path.ChangeExtension(_html5File, ".css");
                 if (File.Exists(Page.Server.MapPath(cssFile)))
                 {
                     ClientResourceManager.RegisterStyleSheet(Page, cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 //Check if js file exists
-                var jsFile = Path.ChangeExtension(Html5File, ".js");
+                var jsFile = Path.ChangeExtension(_html5File, ".js");
                 if (File.Exists(Page.Server.MapPath(cssFile)))
                 {
                     ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
                 }
+
+                var reader = new StreamReader(Page.Server.MapPath(_html5File));
+                _fileContent = reader.ReadToEnd();
+
+                ModuleActions = new ModuleActionCollection();
+                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
+                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
             }
         }
 
