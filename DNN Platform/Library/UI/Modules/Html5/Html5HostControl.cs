@@ -25,22 +25,36 @@ using System.Web;
 using System.Web.UI;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using Lucene.Net.Index;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class Html5HostControl : ModuleControlBase
+    public class Html5HostControl : ModuleControlBase, IActionable
     {
         private readonly string _html5File;
+        private string _fileContent;
 
         public Html5HostControl(string html5File)
         {
             _html5File = html5File;
         }
 
-        protected virtual string Html5File
+        public ModuleActionCollection ModuleActions { get; private set; }
+
+        protected override void OnInit(EventArgs e)
         {
-            get { return _html5File; }
+            base.OnInit(e);
+
+            if (!(string.IsNullOrEmpty(_html5File)))
+            {
+                var reader = new StreamReader(Page.Server.MapPath(_html5File));
+                _fileContent = reader.ReadToEnd();
+
+                ModuleActions = new ModuleActionCollection();
+                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
+                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
+            }
         }
 
         protected override void OnInit(EventArgs e)
@@ -69,11 +83,9 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(Html5File)))
+            if (!(string.IsNullOrEmpty(_html5File)))
             {
-                var reader = new StreamReader(Page.Server.MapPath(Html5File));
-                var fileContent = reader.ReadToEnd();
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(fileContent)));
+                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(_fileContent)));
             }
         }
     }
