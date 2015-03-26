@@ -1035,8 +1035,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 var setting = Null.NullString;
-                //DNN-6509 - using empty string will ensure active portal language is used
-                GetPortalSettingsDictionary(portalId, Null.NullString).TryGetValue("EnableBrowserLanguage", out setting);
+                GetPortalSettingsDictionary(portalId, Localization.SystemLocale).TryGetValue("EnableBrowserLanguage", out setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = Host.Host.EnableBrowserLanguage;
