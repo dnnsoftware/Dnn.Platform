@@ -2329,7 +2329,7 @@ namespace DotNetNuke.Entities.Portals
                     //Get Fallback language
                     string fallbackLanguage = string.Empty;
 
-                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId) ?? Localization.SystemLocale;
+                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId);
 
                     Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
                     if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
