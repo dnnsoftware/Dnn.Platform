@@ -25,6 +25,11 @@
 		originalPostBack(sender, args);
 	}
 
+	var isPendingAction = function (element) {
+		var $el = $(element);
+		return $el.parents('#<%=pnlDetails.ClientID %>').length === 0;
+	}
+
 	var delayPostBack = function () {
 		if (postBackElement && postBackArguments) {
 			originalPostBack(postBackElement, postBackArguments);
@@ -124,6 +129,7 @@
 		
 		$("#<%=cmdUpdate.ClientID%>").click(function() {
 			needReload = true;
+			fieldsChanged = false;
 		});
 	    
         $('input[id$=cmdDeleteModule]').dnnConfirm({
@@ -207,7 +213,7 @@
 		});
 
 		Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(function (sender, args) {
-			if (fieldsChanged && args.get_postBackElement().id.indexOf('cmdUpdate') === -1) {
+			if (fieldsChanged && isPendingAction(args.get_postBackElement())) {
 				args.set_cancel(true);
 				showConfirmSave();
 			}
