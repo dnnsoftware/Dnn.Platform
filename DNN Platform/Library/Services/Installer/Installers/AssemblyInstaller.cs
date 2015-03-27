@@ -157,6 +157,9 @@ namespace DotNetNuke.Services.Installer.Installers
             if (DataProvider.Instance().UnRegisterAssembly(Package.PackageID, file.Name))
             {
                 Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
+                
+                RemoveBindingRedirect(file);
+                
                 //Call base class version to deleteFile file from \bin
                 base.DeleteFile(file);
             }
@@ -236,23 +239,45 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="file">The assembly file.</param>
         private void AddOrUpdateBindingRedirect(InstallFile file)
         {
+            if (ApplyXmlMerge(file, "BindingRedirect.config"))
+            {
+                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void RemoveBindingRedirect(InstallFile file)
+        {
+            if (ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
+            {
+                Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
+            }
+        }
+
+        /// <summary>If tyhe <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
+        /// <param name="file">The assembly file.</param>
+        /// <param name="xmlMergeFile">The XML merge file name.</param>
+        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly.</returns>
+        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
+        {
             var assemblyName = AssemblyName.GetAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
             if (!assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
             {
-                return;
+                return false;
             }
 
             var name = assemblyName.Name;
             var publicKeyToken = Regex.Match(assemblyName.FullName, @"PublicKeyToken=(\w+)").Groups[1].Value;
             var oldVersion = "0.0.0.0-" + new Version(assemblyName.Version.Major, short.MaxValue, short.MaxValue, short.MaxValue);
             var newVersion = assemblyName.Version.ToString();
-            
-            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", "BindingRedirect.config");
-            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, oldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), Package.Name);
-            xmlMerge.UpdateConfigs();
 
-            Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
+            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, oldVersion, newVersion);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
+            xmlMerge.UpdateConfigs();
+            
+            return true;
         }
 
         /// <summary>Gets the XML merge document to create the binding redirect.</summary>
@@ -271,10 +296,18 @@ namespace DotNetNuke.Services.Installer.Installers
             namespaceManager.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
 
             var node = xmlMergeDoc.SelectSingleNode("/configuration/nodes/node", namespaceManager);
+            ReplaceInAttributeValue(node, namespaceManager, "@path", "$$name$$", name);
+            ReplaceInAttributeValue(node, namespaceManager, "@path", "$$publicKeyToken$$", publicKeyToken);
+
+            var dependentAssembly = node.SelectSingleNode("ab:dependentAssembly", namespaceManager);
+            if (dependentAssembly == null)
+            {
+                return xmlMergeDoc;
+            }
+
             ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$name$$", name);
             ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$publicKeyToken$$", publicKeyToken);
 
-            var dependentAssembly = node.SelectSingleNode("ab:dependentAssembly", namespaceManager);
             var assemblyIdentity = dependentAssembly.SelectSingleNode("ab:assemblyIdentity", namespaceManager);
             ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@name", "$$name$$", name);
             ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@publicKeyToken", "$$publicKeyToken$$", publicKeyToken);

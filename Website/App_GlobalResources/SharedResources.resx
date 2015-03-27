@@ -1125,6 +1125,9 @@
   <data name="ASSEMBLY_AddedBindingRedirect.Text" xml:space="preserve">
     <value>Binding redirect added for assembly</value>
   </data>
+  <data name="ASSEMBLY_RemovedBindingRedirect.Text" xml:space="preserve">
+    <value>Binding redirect removed for assembly</value>
+  </data>
   <data name="ASSEMBLY_Updated.Text" xml:space="preserve">
     <value>Assembly updated</value>
   </data>
