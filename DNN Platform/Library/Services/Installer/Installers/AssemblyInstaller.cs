@@ -249,7 +249,7 @@ namespace DotNetNuke.Services.Installer.Installers
             
             var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", "BindingRedirect.config");
             var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, oldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), file.Name);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), Package.Name);
             xmlMerge.UpdateConfigs();
 
             Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
