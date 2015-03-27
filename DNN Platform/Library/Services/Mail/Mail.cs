@@ -487,7 +487,7 @@ namespace DotNetNuke.Services.Mail
             }
 			
             MailMessage mailMessage = null;
-            if (PortalSettings.Current != null)
+            mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
             {
                 mailMessage = (UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
                     ? new MailMessage
