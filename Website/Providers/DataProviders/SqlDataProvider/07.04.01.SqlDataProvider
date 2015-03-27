@@ -8,18 +8,6 @@
 /*****                                                  *****/
 /************************************************************/
 
-/***** DNN-6798: Allow CSV and XSLT file extensions to be uploaded. *****/
-IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%csv%')
-	UPDATE {databaseOwner}{objectQualifier}HostSettings
-		SET SettingValue = SettingValue + ',csv'
-		WHERE SettingName='FileExtensions'
-
-IF NOT EXISTS (SELECT * FROM {databaseOwner}{objectQualifier}HostSettings WHERE SettingName='FileExtensions' AND SettingValue LIKE '%xslt%')
-	UPDATE {databaseOwner}{objectQualifier}HostSettings
-		SET SettingValue = SettingValue + ',xslt'
-		WHERE SettingName='FileExtensions'
-
-GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
