@@ -39,7 +39,7 @@
     <EnableRequestFilters>N</EnableRequestFilters>
     <EncryptionKey Secure="True"></EncryptionKey>
     <EventLogBuffer>N</EventLogBuffer>
-    <FileExtensions>swf,jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,xml,xsl,xsd,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav</FileExtensions>
+    <FileExtensions>swf,jpg,jpeg,jpe,gif,bmp,png,svg,ttf,eot,woff,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,xml,xsl,xsd,css,zip,rar,template,htmtemplate,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,csv,xslt</FileExtensions>
     <HelpURL>http://help.dotnetnuke.com/070300/default.htm?showToc=true</HelpURL>
     <HostCurrency>USD</HostCurrency>
     <HostEmail></HostEmail>
