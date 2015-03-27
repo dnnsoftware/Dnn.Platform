@@ -179,6 +179,8 @@ namespace DotNetNuke.Framework
             }
         }
 
+		public string CanonicalLinkUrl { get; set; }
+
         #endregion
 
         #region Private Methods
