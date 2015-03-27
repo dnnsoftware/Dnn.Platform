@@ -1122,6 +1122,9 @@
   <data name="ASSEMBLY_Added.Text" xml:space="preserve">
     <value>Assembly registered</value>
   </data>
+  <data name="ASSEMBLY_AddedBindingRedirect.Text" xml:space="preserve">
+    <value>Binding redirect added for assembly</value>
+  </data>
   <data name="ASSEMBLY_Updated.Text" xml:space="preserve">
     <value>Assembly updated</value>
   </data>

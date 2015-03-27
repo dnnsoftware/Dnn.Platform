@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Installer
         // ReSharper disable InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         public static string ASSEMBLY_Added = GetLocalizedString("ASSEMBLY_Added");
+        public static string ASSEMBLY_AddedBindingRedirect = GetLocalizedString("ASSEMBLY_AddedBindingRedirect");
         public static string ASSEMBLY_InUse = GetLocalizedString("ASSEMBLY_InUse");
         public static string ASSEMBLY_Registered = GetLocalizedString("ASSEMBLY_Registered");
         public static string ASSEMBLY_UnRegistered = GetLocalizedString("ASSEMBLY_UnRegistered");

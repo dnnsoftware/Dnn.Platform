@@ -20,6 +20,13 @@
 #endregion
 #region Usings
 
+using System;
+using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Xml;
+
+using DotNetNuke.Common;
 using DotNetNuke.Data;
 
 #endregion
@@ -214,12 +221,83 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
                 {
                     //Call base class version to copy file to \bin
-					bSuccess = base.InstallFile(file);
+                    bSuccess = base.InstallFile(file);
+                    AddOrUpdateBindingRedirect(file);
                 }
             }
             return bSuccess;
         }
 		
 		#endregion
+
+        #region "Private Methods"
+
+        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
+        /// <param name="file">The assembly file.</param>
+        private void AddOrUpdateBindingRedirect(InstallFile file)
+        {
+            var assemblyName = AssemblyName.GetAssemblyName(Path.Combine(this.PhysicalBasePath, file.FullName));
+            if (!assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+            {
+                return;
+            }
+
+            var name = assemblyName.Name;
+            var publicKeyToken = Regex.Match(assemblyName.FullName, @"PublicKeyToken=(\w+)").Groups[1].Value;
+            var oldVersion = "0.0.0.0-" + new Version(assemblyName.Version.Major, short.MaxValue, short.MaxValue, short.MaxValue);
+            var newVersion = assemblyName.Version.ToString();
+            
+            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", "BindingRedirect.config");
+            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, oldVersion, newVersion);
+            var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), file.Name);
+            xmlMerge.UpdateConfigs();
+
+            Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+        }
+
+        /// <summary>Gets the XML merge document to create the binding redirect.</summary>
+        /// <param name="xmlMergePath">The path to the template binding redirect XML Merge document.</param>
+        /// <param name="name">The assembly name.</param>
+        /// <param name="publicKeyToken">The assembly's public key token.</param>
+        /// <param name="oldVersion">The old version range.</param>
+        /// <param name="newVersion">The new version.</param>
+        /// <returns>An <see cref="XmlDocument"/> instance.</returns>
+        private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
+        {
+            var xmlMergeDoc = new XmlDocument();
+            xmlMergeDoc.Load(xmlMergePath);
+
+            var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);
+            namespaceManager.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+
+            var node = xmlMergeDoc.SelectSingleNode("/configuration/nodes/node", namespaceManager);
+            ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$name$$", name);
+            ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$publicKeyToken$$", publicKeyToken);
+
+            var dependentAssembly = node.SelectSingleNode("ab:dependentAssembly", namespaceManager);
+            var assemblyIdentity = dependentAssembly.SelectSingleNode("ab:assemblyIdentity", namespaceManager);
+            ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@name", "$$name$$", name);
+            ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@publicKeyToken", "$$publicKeyToken$$", publicKeyToken);
+
+            var bindingRedirect = dependentAssembly.SelectSingleNode("ab:bindingRedirect", namespaceManager);
+            ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@oldVersion", "$$oldVersion$$", oldVersion);
+            ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@newVersion", "$$newVersion$$", newVersion);
+
+            return xmlMergeDoc;
+        }
+
+        /// <summary>Replaces the given text in the value of the attribute matched by <paramref name="xpath"/>.</summary>
+        /// <param name="parentNode">The parent node in which to search via the <paramref name="xpath"/> expression.</param>
+        /// <param name="namespaceManager">The namespace manager.</param>
+        /// <param name="xpath">The xpath expression to get the attribute.</param>
+        /// <param name="oldValue">The placeholder value to replace.</param>
+        /// <param name="newValue">The real value with which to replace <paramref name="oldValue"/>.</param>
+        private static void ReplaceInAttributeValue(XmlNode parentNode, XmlNamespaceManager namespaceManager, string xpath, string oldValue, string newValue)
+        {
+            var attribute = parentNode.SelectSingleNode(xpath, namespaceManager);
+            attribute.Value = attribute.Value.Replace(oldValue, newValue);
+        }
+
+        #endregion
     }
 }
