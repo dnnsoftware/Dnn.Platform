@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (Request.QueryString["returnurl"] != null)
                 {
                     //return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+                    redirectURL = Request.QueryString["returnurl"];
                     //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                     if (redirectURL.Contains("://"))
                     {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (Request.Cookies["returnurl"] != null)
                 {
                     //return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(Request.Cookies["returnurl"].Value);
+                    redirectURL = Request.Cookies["returnurl"].Value;
                     //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                     if (redirectURL.Contains("://"))
                     {
