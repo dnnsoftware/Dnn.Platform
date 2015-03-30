@@ -23,6 +23,7 @@ using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
+using DotNetNuke.Framework;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
@@ -63,5 +64,11 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public ViewContext ViewContext { get { return HtmlHelper.ViewContext; } }
         public ViewDataDictionary ViewData { get { return HtmlHelper.ViewData; } }
         public IViewDataContainer ViewDataContainer { get { return HtmlHelper.ViewDataContainer; } }
+
+        public MvcHtmlString AntiForgeryToken()
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            return new MvcHtmlString(String.Empty);
+        }
     }
 }

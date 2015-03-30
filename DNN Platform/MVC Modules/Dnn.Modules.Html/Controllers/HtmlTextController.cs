@@ -127,6 +127,7 @@ namespace Dnn.Modules.Html.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(string content)
         {
             using (_dataContext)
