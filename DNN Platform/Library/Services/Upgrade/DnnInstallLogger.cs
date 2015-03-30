@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Upgrade
 			var logfilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Portals\_default\Logs\" + logFile);
 			using (var writer = new StreamWriter(logfilePath, true))
 			{
-				writer.WriteLine(DateTime.Now.ToString(CultureInfo.InvariantCulture) + " " + logType + " " + CallingType + " " + message);
+				writer.WriteLine(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture) + " " + logType + " " + CallingType + " " + message);
 			}
 
 		}
