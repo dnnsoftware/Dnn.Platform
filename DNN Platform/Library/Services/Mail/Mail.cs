@@ -185,7 +185,7 @@ namespace DotNetNuke.Services.Mail
                 return;
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { From = new MailAddress(fromAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, fromAddress).DisplayName), Sender = new MailAddress(senderAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, senderAddress).DisplayName) };
+            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
 
             SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
                                     HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Mail
                 return "SMTP Server not configured";
             }
 
-            var emailMessage = new MailMessage(fromAddress, toAddress) { From = new MailAddress(fromAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, fromAddress).DisplayName), Sender = new MailAddress(senderAddress, UserController.GetUserByEmail(PortalSettings.Current.PortalId, senderAddress).DisplayName) };
+            var emailMessage = new MailMessage(fromAddress, toAddress) { Sender = new MailAddress(senderAddress) };
 
             return SendMailInternal(emailMessage, subject, body, MailPriority.Normal,
                                     HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text,
@@ -283,8 +283,10 @@ namespace DotNetNuke.Services.Mail
           
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
-        
-            SendEmail(settings.Email, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
+
+            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email)!=null)?
+                String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
+            SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
 
             return Null.NullString;
         }
@@ -485,7 +487,21 @@ namespace DotNetNuke.Services.Mail
             }
 			
             MailMessage mailMessage = null;
-            mailMessage = new MailMessage { From = new MailAddress(mailFrom, UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName), Sender = new MailAddress(mailFrom, UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName) };
+            if (PortalSettings.Current != null)
+            {
+                mailMessage = (UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
+                    ? new MailMessage
+                    {
+                        From =
+                            new MailAddress(mailFrom,
+                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
+                    }
+                    : new MailMessage {From = new MailAddress(mailFrom)};
+            }
+            else
+            {
+                mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
+            }          
             if (!String.IsNullOrEmpty(mailTo))
             {
                 //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
