@@ -19,19 +19,27 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI;
+// ReSharper disable CheckNamespace
+
+using System;
+using System.Globalization;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Services.Tokens
 {
-    public class HtmlTokenReplace : TokenReplace
+    public class AntiForgeryTokenPropertyAccess : IPropertyAccess
     {
-        public HtmlTokenReplace(Page page)
-            : base(Scope.NoSettings)
+        public CacheLevel Cacheability
         {
-            PropertySource["css"] = new CssPropertyAccess(page);
-            PropertySource["js"] = new JavaScriptPropertyAccess(page);
-            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
-            PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
+            get { return CacheLevel.notCacheable; }
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+            return String.Empty;
         }
     }
 }
