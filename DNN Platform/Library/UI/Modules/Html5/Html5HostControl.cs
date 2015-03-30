@@ -62,8 +62,10 @@ namespace DotNetNuke.UI.Modules.Html5
                     ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
                 }
 
-                var reader = new StreamReader(Page.Server.MapPath(_html5File));
-                _fileContent = reader.ReadToEnd();
+                using (var reader = new StreamReader(Page.Server.MapPath(_html5File)))
+                {
+                    _fileContent = reader.ReadToEnd();
+                }
 
                 ModuleActions = new ModuleActionCollection();
                 var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
