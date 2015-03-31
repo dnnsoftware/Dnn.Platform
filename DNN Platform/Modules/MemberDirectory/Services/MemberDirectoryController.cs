@@ -105,6 +105,16 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
 
             var sortField = GetSetting(ActiveModule.TabModuleSettings, "SortField", "DisplayName");
+
+            // QuickFix DNN-6096. See: https://dnntracker.atlassian.net/browse/DNN-6096
+            // Instead of changing the available SortFields, we'll use "UserId" as SortField if the TabModuleSetting SortField was CreatedOnDate.
+            // This is because the GetUsersBasicSearch and GetUsersAdvancedSearch do not allow sorting on CreatedOnDate. Sorting on UserId however
+            // has the same effect as sorting on CreatedOnDate.
+            if (sortField.Equals("CreatedOnDate", StringComparison.InvariantCultureIgnoreCase))
+            {
+                sortField = "UserId";
+            }
+
             var sortOrder = GetSetting(ActiveModule.TabModuleSettings, "SortOrder", "ASC");
 
             var excludeHostUsers = Boolean.Parse(GetSetting(ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));

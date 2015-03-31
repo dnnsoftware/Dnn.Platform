@@ -125,6 +125,11 @@ namespace DotNetNuke.Web.UI.WebControls
                         FilesComboBox.SelectedFile = file;
                     }
                 }
+                else
+                {
+                    FoldersComboBox.SelectedFolder = null;
+                    FilesComboBox.SelectedFile = null;
+                }
             }
         }
         

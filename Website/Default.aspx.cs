@@ -111,7 +111,7 @@ namespace DotNetNuke.Framework
             {
                 if ((HtmlAttributes != null) && (HtmlAttributes.Count > 0))
                 {
-                    var attr = new StringBuilder("");
+                    var attr = new StringBuilder();
                     foreach (string attributeName in HtmlAttributes.Keys)
                     {
                         if ((!String.IsNullOrEmpty(attributeName)) && (HtmlAttributes[attributeName] != null))
@@ -124,18 +124,18 @@ namespace DotNetNuke.Framework
                                      attributeCounter <= attributeValues.Length - 1;
                                      attributeCounter++)
                                 {
-                                    attr.Append(" " + attributeName + "=\"" + attributeValues[attributeCounter] + "\"");
+                                    attr.Append(string.Concat(" ", attributeName, "=\"", attributeValues[attributeCounter], "\""));
                                 }
                             }
                             else
                             {
-                                attr.Append(" " + attributeName + "=\"" + attributeValue + "\"");
+                                attr.Append(string.Concat(" ", attributeName, "=\"", attributeValue, "\""));
                             }
                         }
                     }
                     return attr.ToString();
                 }
-                return "";
+                return string.Empty;
             }
         }
 
@@ -171,7 +171,7 @@ namespace DotNetNuke.Framework
                         throw new Exception("Unknown Callback Type");
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         #endregion
@@ -291,6 +291,9 @@ namespace DotNetNuke.Framework
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
                     var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
+                    control.LocalResourceFile = string.Concat(
+                        slaveModule.ModuleControl.ControlSrc.Replace(Path.GetFileName(slaveModule.ModuleControl.ControlSrc), string.Empty),
+                        Localization.LocalResourceDirectory, "/", Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                     var title = Localization.LocalizeControlTitle(control);
                     
                     strTitle.Append(string.Concat(" > ", PortalSettings.ActiveTab.LocalizedTabName));
@@ -336,9 +339,11 @@ namespace DotNetNuke.Framework
             }
 
             //META Refresh
-            if (PortalSettings.ActiveTab.RefreshInterval > 0 && Request.QueryString["ctl"] == null)
+            // Only autorefresh the page if we are in VIEW-mode and if we aren't displaying some module's subcontrol.
+            if (PortalSettings.ActiveTab.RefreshInterval > 0 && this.PortalSettings.UserMode == PortalSettings.Mode.View && Request.QueryString["ctl"] == null)
             {
                 MetaRefresh.Content = PortalSettings.ActiveTab.RefreshInterval.ToString();
+                MetaRefresh.Visible = true;
             }
             else
             {
@@ -593,8 +598,8 @@ namespace DotNetNuke.Framework
         /// </history>
         private string RenderDefaultsWarning()
         {
-            string warningLevel = Request.QueryString["runningDefault"];
-            string warningMessage = string.Empty;
+            var warningLevel = Request.QueryString["runningDefault"];
+            var warningMessage = string.Empty;
             switch (warningLevel)
             {
                 case "1":
@@ -612,8 +617,8 @@ namespace DotNetNuke.Framework
 
         private IFileInfo GetBackgroundFileInfo()
         {
-            string cacheKey = String.Format(DotNetNuke.Common.Utilities.DataCache.PortalCacheKey, PortalSettings.PortalId, "BackgroundFile");
-            var file = CBO.GetCachedObject<DotNetNuke.Services.FileSystem.FileInfo>(new CacheItemArgs(cacheKey, DotNetNuke.Common.Utilities.DataCache.PortalCacheTimeOut, DotNetNuke.Common.Utilities.DataCache.PortalCachePriority),
+            string cacheKey = String.Format(Common.Utilities.DataCache.PortalCacheKey, PortalSettings.PortalId, "BackgroundFile");
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                                                     GetBackgroundFileInfoCallBack);
 
             return file;
@@ -719,16 +724,10 @@ namespace DotNetNuke.Framework
                     if (string.Compare(PortalSettings.PortalAlias.HTTPAlias, PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture ) != 0) 
                         primaryHttpAlias = PortalSettings.DefaultPortalAlias;
                 }
-                if (primaryHttpAlias != null)//a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(CanonicalLinkUrl))//a primary http alias was identified
                 {
                     var originalurl = Context.Items["UrlRewrite:OriginalUrl"].ToString();
-                    //Add Canonical <link> using the primary alias
-                    var canonicalLink = new HtmlLink();
-                    canonicalLink.Href = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
-                    canonicalLink.Attributes.Add("rel", "canonical");
-
-                    // Add the HtmlLink to the Head section of the page.
-                    Page.Header.Controls.Add(canonicalLink);
+                    CanonicalLinkUrl = originalurl.Replace(PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
                 }
             }
 
@@ -746,16 +745,16 @@ namespace DotNetNuke.Framework
             }
 
             //add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, Globals.HostPath + "default.css");
-            ClientResourceManager.RegisterIEStylesheet(this, Globals.HostPath + "ie.css");
+            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.HostPath, "default.css"));
+            ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
 
-            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinPath + "skin.css", FileOrder.Css.SkinCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
             ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
 
             //add skin to page
             SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, PortalSettings.HomeDirectory + "portal.css", FileOrder.Css.PortalCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
 
             //add Favicon
             ManageFavicon();
@@ -832,6 +831,17 @@ namespace DotNetNuke.Framework
             {
                 Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
             }
+
+	        if (!string.IsNullOrEmpty(CanonicalLinkUrl))
+	        {
+				//Add Canonical <link> using the primary alias
+				var canonicalLink = new HtmlLink();
+				canonicalLink.Href = CanonicalLinkUrl;
+				canonicalLink.Attributes.Add("rel", "canonical");
+
+				// Add the HtmlLink to the Head section of the page.
+				Page.Header.Controls.Add(canonicalLink);
+	        }
         }
 
 		protected override void Render(HtmlTextWriter writer)

@@ -236,6 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				Required = required,
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
+				ClearContentInPasswordMode = true
 			};
 			userForm.Items.Add(formItem);
 
@@ -321,6 +322,13 @@ namespace DotNetNuke.Modules.Admin.Users
 					if ((string.IsNullOrEmpty(strMessage)))
 					{
 						Response.Redirect(RedirectURL, true);
+					}
+					else
+					{
+						RegistrationForm.Visible = false;
+						registerButton.Visible = false;
+						cancelButton.Attributes["resourcekey"] = "Close";
+						RegistrationForm.Parent.Controls.Add(cancelButton);
 					}
 				}
 				else

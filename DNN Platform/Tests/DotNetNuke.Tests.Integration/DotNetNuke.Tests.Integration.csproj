@@ -109,6 +109,14 @@
     <Compile Include="TestSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
+      <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
+      <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
+      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
+      <Name>DotNetNuke.Log4Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{6f0a5b23-e09f-431a-879a-993cb77e23d8}</Project>
       <Name>DotNetNuke.HttpModules</Name>

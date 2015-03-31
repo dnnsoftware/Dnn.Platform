@@ -510,23 +510,32 @@ namespace DotNetNuke.Modules.Admin.Users
                     return;
                 }
                 //5. Check New Password is not same as username or banned
+				var membershipPasswordController = new MembershipPasswordController();
                 var settings = new MembershipPasswordSettings(User.PortalID);
 
                 if (settings.EnableBannedList)
                 {
-                    var m = new MembershipPasswordController();
-                    if (m.FoundBannedPassword(txtNewPassword.Text) || User.Username == txtNewPassword.Text)
+					if (membershipPasswordController.FoundBannedPassword(txtNewPassword.Text) || User.Username == txtNewPassword.Text)
                     {
                         OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.BannedPasswordUsed));
                         return;
                     }
 
                 }
+
+				//check new password is not in history
+				if (membershipPasswordController.IsPasswordInHistory(User.UserID, User.PortalID, txtNewPassword.Text, false))
+				{
+					OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+					return;
+				}
+
                 if (!IsAdmin && txtNewPassword.Text == txtOldPassword.Text)
                 {
                     OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
                     return;
                 }
+
                 if (!IsAdmin)
                 {
                     try

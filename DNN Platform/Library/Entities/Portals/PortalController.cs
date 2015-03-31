@@ -791,7 +791,6 @@ namespace DotNetNuke.Entities.Portals
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
-
             var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
             try
             {
@@ -1106,7 +1105,11 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
-            string cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetActivePortalLanguage(portalId);
+            }
+            var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
             return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
                                                                    GetPortalSettingsDictionaryCallback,
                                                                    true);
@@ -2326,7 +2329,7 @@ namespace DotNetNuke.Entities.Portals
                     //Get Fallback language
                     string fallbackLanguage = string.Empty;
 
-                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = Localization.SystemLocale;
+                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId);
 
                     Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
                     if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
@@ -2335,7 +2338,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                     if (String.IsNullOrEmpty(fallbackLanguage))
                     {
-                        fallbackLanguage = Localization.SystemLocale;
+                        fallbackLanguage = Localization.SystemLocale; 
                     }
                     portal = GetPortalInternal(portalId, fallbackLanguage);
                     //if we cannot find any fallback, it mean's it's a non portal default langauge

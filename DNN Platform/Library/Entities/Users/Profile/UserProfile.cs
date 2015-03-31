@@ -794,6 +794,11 @@ namespace DotNetNuke.Entities.Users
                     var dateValue = (DateTime)value;
                     stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
                 }
+				else if (value is TimeZoneInfo)
+				{
+					var timezoneValue = (TimeZoneInfo)value;
+					stringValue = timezoneValue.Id;
+				}
                 else
                 {
                     stringValue = Convert.ToString(value);
