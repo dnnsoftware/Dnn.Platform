@@ -70,20 +70,19 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ClientDependency.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ClientDependency.Core">
       <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotNetNuke.HttpModules">
+      <HintPath>..\HttpModules\bin\DotNetNuke.HttpModules.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation">
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotNetNuke.Web.Client">
       <HintPath>..\DotNetNuke.Web.Client\bin\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotNetNuke.WebUtility">
       <HintPath>..\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -455,14 +454,6 @@
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
     <Import Include="System.Management" />
-    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
-      <Project>{3d9c3f5f-1d2d-4d89-995b-438055a5e3a6}</Project>
-      <Name>DotNetNuke.HttpModules</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mvp\ModulePresenter.cs" />
@@ -535,7 +526,12 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\WebControls\Resources\TermsSelector.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="Library.build" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

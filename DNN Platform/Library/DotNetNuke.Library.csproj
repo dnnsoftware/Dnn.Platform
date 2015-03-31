@@ -72,6 +72,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ClientDependency.Core">
+      <HintPath>..\Components\ClientDependency\Source\bin\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="CountryListBox, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
@@ -80,11 +83,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Services.Syndication, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Services.Syndication">
       <HintPath>..\Syndication\bin\DotNetNuke.Services.Syndication.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -1850,10 +1853,6 @@
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>
       <Name>DotNetNuke.WebUtility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj">
-      <Project>{86af9531-d270-4c18-a8b9-c67a8782af69}</Project>
-      <Name>DotNetNuke.Syndication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="Module.build" />

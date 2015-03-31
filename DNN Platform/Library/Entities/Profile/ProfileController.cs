@@ -516,9 +516,6 @@ namespace DotNetNuke.Entities.Profile
                 return;
             }
 
-            var oldUser = new UserInfo { UserID = user.UserID };
-            _profileProvider.GetUserProfile(ref oldUser);
-
             var portalId = GetEffectivePortalId(user.PortalID);
             user.PortalID = portalId;
 

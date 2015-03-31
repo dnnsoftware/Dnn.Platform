@@ -51,8 +51,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Instrumentation, Version=7.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DotNetNuke.Instrumentation">
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
