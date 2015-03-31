@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,31 +18,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 
-#endregion
-
-namespace DotNetNuke.Web.Razor
+namespace DotNetNuke.Web.Mvc
 {
-    public class RazorModuleControlFactory : IModuleControlFactory
+    public class MvcSettingsControl : MvcHostControl, ISettingsControl
     {
-        #region IModuleControlFactory Members
-
-        public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        public MvcSettingsControl() : base("Settings")
         {
-            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            
         }
 
-        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        public void LoadSettings()
         {
-            throw new System.NotImplementedException();
         }
 
-        #endregion
+        public void UpdateSettings()
+        {
+        }
     }
 }

@@ -35,11 +35,9 @@ namespace DotNetNuke.UI.Modules
 {
     public class ModuleControlFactory
     {
-        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        private static IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
-            Control control = null;
-
-            string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLower());
+            string extension = Path.GetExtension(controlSrc.ToLower());
 
             IModuleControlFactory controlFactory = null;
             Type factoryType;
@@ -68,11 +66,17 @@ namespace DotNetNuke.UI.Modules
                     }
                     break;
                 default:
-                    // load from a typename in an assembly ( ie. server control)
-                    Type objType = Reflection.CreateType(moduleConfiguration.ModuleControl.ControlSrc);
-                    control = (containerControl.LoadControl(objType, null));
+                    controlFactory = new ReflectedModuleControlFactory();
                     break;
             }
+
+            return controlFactory;
+        }
+
+        public static Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        {
+            Control control = null;
+            IModuleControlFactory controlFactory = GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
 
             if (controlFactory != null)
             {
@@ -90,6 +94,37 @@ namespace DotNetNuke.UI.Modules
                 if (moduleControl != null)
                 {
                     moduleControl.ModuleContext.Configuration = moduleConfiguration;
+                }
+            }
+
+            return control;
+        }
+
+        public static Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            Control control = null;
+            IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
+
+            if (controlFactory != null)
+            {
+                control = controlFactory.CreateSettingsControl(containerControl, moduleConfiguration, controlSrc);
+            }
+
+            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // this is necessary for the Localization in PageBase
+            if (control != null)
+            {
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(controlSrc);
+                if (fileNameWithoutExtension != null)
+                {
+                    control.ID = fileNameWithoutExtension.Replace('.', '-');
+                }
+
+                var settingsControl = control as ISettingsControl;
+
+                if (settingsControl != null)
+                {
+                    settingsControl.ModuleContext.Configuration = moduleConfiguration;
                 }
             }
 

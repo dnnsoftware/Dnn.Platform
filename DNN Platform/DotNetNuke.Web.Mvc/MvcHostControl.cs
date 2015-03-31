@@ -22,7 +22,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -42,6 +41,17 @@ namespace DotNetNuke.Web.Mvc
     public class MvcHostControl : ModuleControlBase, IActionable
     {
         private ModuleRequestResult _result;
+        private string _controlKey;
+
+        public MvcHostControl()
+        {
+            _controlKey = String.Empty;
+        }
+
+        protected MvcHostControl(string controlKey)
+        {
+            _controlKey = controlKey;
+        }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
@@ -62,7 +72,7 @@ namespace DotNetNuke.Web.Mvc
 
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-            var defaultControl = ModuleControlController.GetModuleControlByControlKey("", module.ModuleDefID);
+            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
             var defaultSegments = defaultControl.ControlSrc.Replace(".mvc", "").Split('/');
 
             var moduleApplication = new ModuleApplication
@@ -74,9 +84,14 @@ namespace DotNetNuke.Web.Mvc
                                             };
 
             RouteData routeData;
-            var controlKey = httpContext.Request.QueryString.GetValueOrDefault("ctl", String.Empty);
+
+            if (String.IsNullOrEmpty(_controlKey))
+            {
+                _controlKey = httpContext.Request.QueryString.GetValueOrDefault("ctl", String.Empty);
+            }
+
             var moduleId = httpContext.Request.QueryString.GetValueOrDefault("moduleId", -1);
-            if (moduleId != ModuleContext.ModuleId  && String.IsNullOrEmpty(controlKey))
+            if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
                 routeData = new RouteData();
@@ -85,9 +100,9 @@ namespace DotNetNuke.Web.Mvc
             }
             else
             {
-                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, ModuleContext);
+                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(_controlKey, module.ModuleDefID);
+                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
             }
-
 
             var moduleRequestContext = new ModuleRequestContext
                                             {

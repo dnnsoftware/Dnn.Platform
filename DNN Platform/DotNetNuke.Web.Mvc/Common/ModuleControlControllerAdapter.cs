@@ -36,9 +36,9 @@ namespace DotNetNuke.Web.Mvc.Common
             return () => new ModuleControlControllerAdapter();
         }
 
-        public Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
+        public ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
-            return ModuleControlController.GetModuleControlsByModuleDefinitionID(moduleDefID);
+            return ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefID);
         }
     }
 }

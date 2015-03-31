@@ -31,5 +31,10 @@ namespace DotNetNuke.Web.Mvc
         {
             return new MvcHostControl();
         }
+
+        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            return new MvcSettingsControl();
+        }
     }
 }

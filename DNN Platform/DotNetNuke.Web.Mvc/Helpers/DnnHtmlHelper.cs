@@ -63,5 +63,10 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public ViewContext ViewContext { get { return HtmlHelper.ViewContext; } }
         public ViewDataDictionary ViewData { get { return HtmlHelper.ViewData; } }
         public IViewDataContainer ViewDataContainer { get { return HtmlHelper.ViewDataContainer; } }
+
+        public MvcHtmlString AntiForgeryToken()
+        {
+            return HtmlHelper.AntiForgeryToken();
+        }
     }
 }
