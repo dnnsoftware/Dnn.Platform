@@ -6,10 +6,13 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Common.Lists
 {
+	[Serializable]
 	public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
 	{
 
 		#region " Structures "
+
+		[Serializable]
 		public struct Country
 		{
 			public int Id;
@@ -18,6 +21,7 @@ namespace DotNetNuke.Common.Lists
 			public string FullName;
 			public string NormalizedFullName;
 		}
+
 		#endregion
 
 		#region " Constructors "
