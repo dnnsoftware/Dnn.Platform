@@ -21,13 +21,11 @@
 
 using System;
 using System.Web.UI;
-using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
@@ -110,7 +108,6 @@ namespace DotNetNuke.Services.Tokens
                         }
                     }
                 }
-
                 JavaScript.RequestRegistration(model.JsName, version, specific);
             }
 

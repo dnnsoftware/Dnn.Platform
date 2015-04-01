@@ -769,6 +769,7 @@
     <Compile Include="Services\Social\Messaging\UserPreferencesController.cs" />
     <Compile Include="Services\Tokens\CacheLevel.cs" />
     <Compile Include="Services\Tokens\HtmlTokenReplace.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
