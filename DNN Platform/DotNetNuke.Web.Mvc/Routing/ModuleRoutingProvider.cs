@@ -44,6 +44,6 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public abstract string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext);
 
-        public abstract RouteData GetRouteData(HttpContextBase httpContext, ModuleInstanceContext moduleContext);
+        public abstract RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl);
     }
 }

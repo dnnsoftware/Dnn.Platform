@@ -1530,6 +1530,7 @@
     <Compile Include="UI\Modules\ModuleUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Modules\ReflectedModuleControlFactory.cs" />
     <Compile Include="UI\Modules\StandardModuleInjectionFilter.cs" />
     <Compile Include="UI\Modules\WebFormsModuleControlFactory.cs" />
     <Compile Include="UI\Navigation.cs">

@@ -18,31 +18,31 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
+using System;
 using System.Web.UI;
-
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
+using DotNetNuke.Framework;
 
-#endregion
-
-namespace DotNetNuke.Web.Razor
+namespace DotNetNuke.UI.Modules
 {
-    public class RazorModuleControlFactory : IModuleControlFactory
+    public class ReflectedModuleControlFactory : IModuleControlFactory
     {
-        #region IModuleControlFactory Members
+        private Control CreateControl(TemplateControl containerControl, string controlSrc)
+        {
+            // load from a typename in an assembly ( ie. server control)
+            Type objType = Reflection.CreateType(controlSrc);
+            return (containerControl.LoadControl(objType, null));
+        }
 
         public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            return CreateControl(containerControl, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            throw new System.NotImplementedException();
+            return CreateControl(containerControl, controlSrc);
         }
-
-        #endregion
     }
 }

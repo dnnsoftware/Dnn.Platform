@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.Newsletters", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.RecycleBin", "DNN Platform\Admin Modules\Dnn.Modules.RecycleBin\Dnn.Modules.RecycleBin.csproj", "{0A65E1A2-BB41-4C76-8012-17CB90B9333F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Razor", "DNN Platform\DotNetNuke.Web.Razor\DotNetNuke.Web.Razor.csproj", "{9806C125-8CA9-48CC-940A-CCD0442C5993}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -200,6 +202,12 @@ Global
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F}.Release|x86.ActiveCfg = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9806C125-8CA9-48CC-940A-CCD0442C5993}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

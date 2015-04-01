@@ -26,6 +26,7 @@ using System.Web;
 using System.Web.Routing;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Web.Mvc.Routing
@@ -59,9 +60,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             return url;
         }
 
-        public override RouteData GetRouteData(HttpContextBase httpContext, ModuleInstanceContext moduleContext)
+        public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
-            var segments = moduleContext.Configuration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+            var segments = moduleControl.ControlSrc.Replace(".mvc", "").Split('/');
 
             var actionName = httpContext.Request.QueryString.GetValueOrDefault("action", segments[1]);
             var controllerName = httpContext.Request.QueryString.GetValueOrDefault("controller", segments[0]);

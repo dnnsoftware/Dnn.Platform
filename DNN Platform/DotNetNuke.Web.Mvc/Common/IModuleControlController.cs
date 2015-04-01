@@ -26,6 +26,6 @@ namespace DotNetNuke.Web.Mvc.Common
 {
     public interface IModuleControlController
     {
-        Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID);
+        ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID);
     }
 }

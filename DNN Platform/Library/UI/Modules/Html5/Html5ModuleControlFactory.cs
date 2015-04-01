@@ -30,5 +30,10 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             return new Html5HostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
         }
+
+        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            return new Html5HostControl("~/" + controlSrc);
+        }
     }
 }

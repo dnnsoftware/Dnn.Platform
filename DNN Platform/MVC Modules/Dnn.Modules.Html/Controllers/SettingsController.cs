@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dnnsoftware.com
 // Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// by DNN Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,31 +18,46 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System.Web.UI;
-
+using System;
+using System.Web.Mvc;
+using Dnn.Modules.Html.Models;
+using DotNetNuke.Collections;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
-#endregion
-
-namespace DotNetNuke.Web.Razor
+namespace Dnn.Modules.Html.Controllers
 {
-    public class RazorModuleControlFactory : IModuleControlFactory
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SettingsController : DnnController
     {
-        #region IModuleControlFactory Members
-
-        public Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Settings()
         {
-            return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
+            var settings = new Settings();
+            settings.SupportsTokens = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("Html_ReplaceTokens", false);
+            return View(settings);
         }
 
-        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="supportsTokens"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Settings(bool supportsTokens)
         {
-            throw new System.NotImplementedException();
-        }
 
-        #endregion
+            ModuleContext.Configuration.ModuleSettings["Html_ReplaceTokens"] = supportsTokens.ToString();
+            return RedirectToDefaultRoute();
+        }
     }
 }
