@@ -23,6 +23,7 @@ using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using DotNetNuke.Common;
+using DotNetNuke.Framework;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
@@ -66,7 +67,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public MvcHtmlString AntiForgeryToken()
         {
-            return HtmlHelper.AntiForgeryToken();
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            return new MvcHtmlString(String.Empty);
         }
     }
 }

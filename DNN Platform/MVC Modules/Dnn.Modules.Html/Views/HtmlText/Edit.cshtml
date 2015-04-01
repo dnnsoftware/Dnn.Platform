@@ -5,7 +5,7 @@
 <script type="text/javascript" src="~/Resources/Shared/components/ckeditor/ckeditor.js"></script>
 <div>
 	<div class="form-horizontal" role="form">
-		@*@Html.AntiForgeryToken()*@
+		@Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		<div class="form-group">
 			@Html.LabelFor(m => Model.Content, new { @class = "col-md-2 control-label" })
