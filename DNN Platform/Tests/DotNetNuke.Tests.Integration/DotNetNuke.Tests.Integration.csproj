@@ -117,10 +117,6 @@
       <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
       <Name>DotNetNuke.Log4Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HttpModules\DotNetNuke.HttpModules.csproj">
-      <Project>{6f0a5b23-e09f-431a-879a-993cb77e23d8}</Project>
-      <Name>DotNetNuke.HttpModules</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{D391550C-7107-49B2-A6AC-8627C8B06ADC}</Project>
       <Name>DotNetNuke.Library</Name>
