@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.RecycleBin" type="Module" version="07.05.00">
+    <package name="DotNetNuke.RecycleBin" type="Module" version="08.00.00">
       <friendlyName>Recycle Bin</friendlyName>
       <description>The Recycle Bin provides an interface for restoring or permanently deleting Tabs and Modules.</description>
       <iconFile>~/Icons/Sigma/Trash_32X32_Standard.png</iconFile>
@@ -45,7 +45,7 @@
             <attributes>
               <businessControllerClass>Dnn.Modules.RecycleBin.Components.RecycleBinController</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.05.00</upgradeVersionsList>
+              <upgradeVersionsList>08.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -65,7 +65,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
-        <component type="Cleanup" version="07.05.00" fileName ="07.05.00.txt" />
+        <component type="Cleanup" version="08.00.00" fileName ="08.00.00.txt" />
       </components>
     </package>
   </packages>

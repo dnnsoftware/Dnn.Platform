@@ -77,7 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="07.05.00.txt" />
+    <Content Include="08.00.00.txt" />
     <Content Include="App_LocalResources\RecycleBin.ascx.resx" />
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
