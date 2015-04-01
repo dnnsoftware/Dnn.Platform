@@ -52,9 +52,7 @@ namespace DotNetNuke.Entities.Content
 	/// </example>
     public class ContentTypeController : IContentTypeController
     {
-        private readonly IDataService _DataService;
-
-        #region Constructors
+        private readonly IDataService _dataService;
 
         public ContentTypeController() : this(Util.GetDataService())
         {
@@ -62,12 +60,8 @@ namespace DotNetNuke.Entities.Content
 
         public ContentTypeController(IDataService dataService)
         {
-            _DataService = dataService;
+            _dataService = dataService;
         }
-
-        #endregion
-
-        #region Public Methods
 
 		/// <summary>
 		/// Adds the type of the content.
@@ -82,7 +76,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = _DataService.AddContentType(contentType);
+            contentType.ContentTypeId = _dataService.AddContentType(contentType);
 
             //Refresh cached collection of types
             ClearContentTypeCache();
@@ -110,7 +104,7 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            _DataService.DeleteContentType(contentType);
+            _dataService.DeleteContentType(contentType);
 
             //Refresh cached collection of types
             ClearContentTypeCache();
@@ -125,7 +119,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey, 
                                                                             DataCache.ContentTypesCacheTimeOut, 
                                                                             DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
+                                                                c => CBO.FillQueryable<ContentType>(_dataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
 		/// <summary>
@@ -142,12 +136,10 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            _DataService.UpdateContentType(contentType);
+            _dataService.UpdateContentType(contentType);
 
             //Refresh cached collection of types
             ClearContentTypeCache();
         }
-
-        #endregion
     }
 }
