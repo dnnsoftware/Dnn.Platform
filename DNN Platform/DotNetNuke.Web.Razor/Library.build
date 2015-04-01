@@ -3,11 +3,11 @@
   </Target>  
   <Target Name="DebugProject">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Web.Razor.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.Data.3.0.0\lib\net45\WebMatrix.Data.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.WebData.3.0.0\lib\net45\WebMatrix.WebData.dll" DestinationFolder="..\..\Website\bin\" />
-    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebHelpers.3.0.0\lib\net45\Microsoft.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.Razor.3.1.0\lib\net45\System.Web.Razor.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.WebPages.Razor.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.Data.3.1.0\lib\net45\WebMatrix.Data.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebPages.WebData.3.1.0\lib\net45\WebMatrix.WebData.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="..\..\Packages\Microsoft.AspNet.WebHelpers.3.1.0\lib\net45\Microsoft.Web.Helpers.dll" DestinationFolder="..\..\Website\bin\" />
   </Target>
 </Project>
