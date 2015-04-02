@@ -8,6 +8,23 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* DNN-6782 Allow developer to manage ContentTypes */
+/***************************************************/
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'PortalID')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+		ADD [PortalID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_PortalID] DEFAULT (-1)
+    END 
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsStructured')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+		ADD [IsStructured] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsStructured] DEFAULT (0)
+    END 
+GO
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}AddContentType]
 GO
@@ -23,6 +40,8 @@ GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateContentType]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentType]
 GO
+
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

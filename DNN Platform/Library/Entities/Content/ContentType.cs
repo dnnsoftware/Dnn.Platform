@@ -73,6 +73,8 @@ namespace DotNetNuke.Entities.Content
         {
             ContentTypeId = Null.NullInteger;
             ContentType = contentType;
+            PortalID = Null.NullInteger;
+            IsStructured = Null.NullBoolean;
         }
 
         [IgnoreColumn]
@@ -109,6 +111,22 @@ namespace DotNetNuke.Entities.Content
 		/// The content type id.
 		/// </value>
         public int ContentTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the Content Type is structured
+        /// </summary>
+        /// <value>
+        /// A flag that indicates whether the Content Type is structured.
+        /// </value>
+        public bool IsStructured { get; set; }
+
+        /// <summary>
+        /// Gets or sets the portal id for the Content Type
+        /// </summary>
+        /// <value>
+        /// The portal id.
+        /// </value>
+        public int PortalID { get; set; }
 
         public override string ToString()
         {
