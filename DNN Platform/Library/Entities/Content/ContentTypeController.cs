@@ -20,13 +20,16 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
+using DotNetNuke.Entities.Users;
 
 #endregion
 
@@ -52,15 +55,16 @@ namespace DotNetNuke.Entities.Content
 	/// </example>
     public class ContentTypeController : IContentTypeController
     {
-        private readonly IDataService _dataService;
+        private readonly IDataContext _dataContext; 
+        
+        public ContentTypeController() : this(DataContext.Instance()) { }
 
-        public ContentTypeController() : this(Util.GetDataService())
+        public ContentTypeController(IDataContext dataContext)
         {
-        }
+            //Argument Contract
+            Requires.NotNull("dataContext", dataContext);
 
-        public ContentTypeController(IDataService dataService)
-        {
-            _dataService = dataService;
+            _dataContext = dataContext;
         }
 
 		/// <summary>
@@ -76,10 +80,12 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = _dataService.AddContentType(contentType);
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Insert(contentType);
+            }
 
             return contentType.ContentTypeId;
         }
@@ -104,10 +110,12 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            _dataService.DeleteContentType(contentType);
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Delete(contentType);
+            }
         }
 
 		/// <summary>
@@ -115,11 +123,16 @@ namespace DotNetNuke.Entities.Content
 		/// </summary>
 		/// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
-        {
-            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey, 
-                                                                            DataCache.ContentTypesCacheTimeOut, 
-                                                                            DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(_dataService.GetContentTypes()).ToList()).AsQueryable();
+		{
+		    IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+		    {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+		        contentTypes = rep.Get().AsQueryable();
+		    }
+
+		    return contentTypes;
         }
 
 		/// <summary>
@@ -136,10 +149,15 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            _dataService.UpdateContentType(contentType);
+		    using (_dataContext)
+		    {
+		        var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Update(contentType);
+		    }
         }
+
+        [Obsolete("Deprecated in DNN 8.0.0")]
+        public ContentTypeController(IDataService dataService) { }
     }
 }

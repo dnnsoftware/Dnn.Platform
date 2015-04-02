@@ -302,17 +302,17 @@ namespace DotNetNuke.Tests.Content.Mocks
             return table.CreateDataReader();
         }
 
-        internal static IDataReader CreateValidContentTypesReader(int count)
+        internal static List<ContentType> CreateValidContentTypes(int count)
         {
-            DataTable table = CreateContentTypeTable();
+            var contentTypes = new List<ContentType>();
             for (int i = Constants.CONTENTTYPE_ValidContentTypeId; i < Constants.CONTENTTYPE_ValidContentTypeId + count; i++)
             {
                 string contentType = (count == 1) ? Constants.CONTENTTYPE_ValidContentType : ContentTestHelper.GetContentType(i);
 
-                AddContentTypeToTable(table, i, contentType);
+                contentTypes.Add( new ContentType {ContentTypeId = i, ContentType = contentType});
             }
 
-            return table.CreateDataReader();
+            return contentTypes;
         }
 
         internal static IDataReader CreateValidScopeTypesReader(int count)

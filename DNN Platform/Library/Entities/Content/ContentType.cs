@@ -25,6 +25,7 @@ using System.Data;
 using System.Linq;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
 
 #endregion
@@ -51,21 +52,18 @@ namespace DotNetNuke.Entities.Content
 	///  will likely need to create its own content type. 
 	/// </remarks>
     [Serializable]
+    [TableName("ContentTypes")]
+    [PrimaryKey("ContentTypeID")]
+    [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        #region Private Members
-
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
 
-        private const string desktopModuleContentTypeName = "DesktopModule";
-        private const string moduleContentTypeName = "Module";
-        private const string tabContentTypeName = "Tab";
-
-        #endregion
-
-        #region Constructors
+        private const string DesktopModuleContentTypeName = "DesktopModule";
+        private const string ModuleContentTypeName = "Module";
+        private const string TabContentTypeName = "Tab";
 
         public ContentType() : this(Null.NullString)
         {
@@ -77,35 +75,32 @@ namespace DotNetNuke.Entities.Content
             ContentType = contentType;
         }
 
-        #endregion
-
-        #region Public Static Properties
-
+        [IgnoreColumn]
         public static ContentType DesktopModule
 	    {
 	        get
 	        {
-	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  desktopModuleContentTypeName));
+	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
 	        }
 	    }
 
-	    public static ContentType Module
+        [IgnoreColumn]
+        public static ContentType Module
 	    {
 	        get
 	        {
-	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  moduleContentTypeName));
+	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
 	        }
 	    }
 
+        [IgnoreColumn]
         public static ContentType Tab 
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
-
-        #endregion
 
         /// <summary>
 		/// Gets or sets the content type id.
@@ -115,48 +110,24 @@ namespace DotNetNuke.Entities.Content
 		/// </value>
         public int ContentTypeId { get; set; }
 
-        #region IHydratable Implementation
+        public override string ToString()
+        {
+            return ContentType;
+        }
 
-		/// <summary>
-		/// Fill this content object will the information from data reader.
-		/// </summary>
-		/// <param name="dr">The data reader.</param>
-		/// <seealso cref="IHydratable.Fill"/>
+        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
+        [IgnoreColumn]
+        public int KeyID
+        {
+            get { return ContentTypeId; }
+            set { ContentTypeId = value; }
+        }
+
+        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
         public void Fill(IDataReader dr)
         {
             ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
             ContentType = Null.SetNullString(dr["ContentType"]);
-        }
-
-		/// <summary>
-		/// Gets or sets the key ID.
-		/// </summary>
-		/// <value>
-		/// ContentTypeID
-		/// </value>
-        public int KeyID
-        {
-            get
-            {
-                return ContentTypeId;
-            }
-            set
-            {
-                ContentTypeId = value;
-            }
-        }
-
-        #endregion
-
-		/// <summary>
-		/// override ToString to return content type
-		/// </summary>
-		/// <returns>
-		/// property ContentType's value.
-		/// </returns>
-        public override string ToString()
-        {
-            return ContentType;
         }
     }
 }

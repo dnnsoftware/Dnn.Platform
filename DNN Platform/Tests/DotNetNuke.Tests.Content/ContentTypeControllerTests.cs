@@ -18,20 +18,20 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-using System;
-using System.Linq;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-
 using Moq;
-
 using NUnit.Framework;
+// ReSharper disable UnusedVariable
 
 namespace DotNetNuke.Tests.Content
 {
@@ -41,6 +41,8 @@ namespace DotNetNuke.Tests.Content
     [TestFixture]
     public class ContentTypeControllerTests
     {
+        private Mock<IDataContext> _mockDataContext;
+        private Mock<IRepository<ContentType>> _mockRepository;
         private Mock<CachingProvider> _mockCache;
         private string _contentTypeCacheKey;
 
@@ -52,6 +54,11 @@ namespace DotNetNuke.Tests.Content
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
 
             _contentTypeCacheKey = CachingProvider.GetCacheKey(DataCache.ContentTypesCacheKey);
+
+            _mockDataContext = new Mock<IDataContext>();
+            _mockRepository = new Mock<IRepository<ContentType>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(_mockRepository.Object);
+
         }
 
         [TearDown]
@@ -61,11 +68,21 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+        public void ContentTypeController_Constructor_Throws_On_Null_DataContext()
+        {
+            IDataContext dataContent = null;
+
+            //Arrange, Act, Arrange
+            // ReSharper disable once ObjectCreationAsStatement
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Assert.Throws<ArgumentNullException>(() => new ContentTypeController(dataContent));
+        }
+
+        [Test]
         public void ContentTypeController_AddContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.AddContentType(null));
@@ -75,19 +92,17 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_AddContentType_Throws_On_Empty_ContentType_Proeprty()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => contentTypeController.AddContentType(new ContentType()));
         }
 
         [Test]
-        public void ContentTypeController_AddContentType_Calls_DataService_On_Valid_Arguments()
+        public void ContentTypeController_AddContentType_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             ContentType contentType = ContentTestHelper.CreateValidContentType();
 
@@ -95,32 +110,17 @@ namespace DotNetNuke.Tests.Content
             int contentTypeId = contentTypeController.AddContentType(contentType);
 
             //Assert
-            mockDataService.Verify(ds => ds.AddContentType(contentType));
-        }
-
-        [Test]
-        public void ContentTypeController_AddContentType_Clears_Cache_On_Valid_Arguments()
-        {
-            //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
-
-            ContentType contentType = ContentTestHelper.CreateValidContentType();
-
-            //Act
-            int contentTypeId = contentTypeController.AddContentType(contentType);
-
-            //Assert
-            _mockCache.Verify(ds => ds.Remove(_contentTypeCacheKey));
+            _mockRepository.Verify(rep => rep.Insert(contentType));
         }
 
         [Test]
         public void ContentTypeController_AddContentType_Returns_ValidId_On_Valid_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.AddContentType(It.IsAny<ContentType>())).Returns(Constants.CONTENTTYPE_AddContentTypeId);
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            _mockRepository.Setup(r => r.Insert(It.IsAny<ContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             var contentType = ContentTestHelper.CreateValidContentType();
 
@@ -135,9 +135,10 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_AddContentType_Sets_ValidId_On_Valid_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.AddContentType(It.IsAny<ContentType>())).Returns(Constants.CONTENTTYPE_AddContentTypeId);
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            _mockRepository.Setup(r => r.Insert(It.IsAny<ContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             var contentType = ContentTestHelper.CreateValidContentType();
 
@@ -152,8 +153,7 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_ClearContentTypeCache_Clears_Cache()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             ContentType contentType = ContentTestHelper.CreateValidContentType();
 
@@ -161,15 +161,14 @@ namespace DotNetNuke.Tests.Content
             contentTypeController.ClearContentTypeCache();
 
             //Assert
-            _mockCache.Verify(ds => ds.Remove(_contentTypeCacheKey));
+            _mockCache.Verify(r => r.Remove(_contentTypeCacheKey));
         }
 
         [Test]
         public void ContentTypeController_DeleteContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.DeleteContentType(null));
@@ -179,8 +178,7 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_DeleteContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             ContentType contentType = ContentTestHelper.CreateValidContentType();
             contentType.ContentTypeId = Null.NullInteger;
@@ -190,11 +188,10 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentTypeController_DeleteContentType_Calls_DataService_On_Valid_ContentTypeId()
+        public void ContentTypeController_DeleteContentType_Calls_Repository_Delete_On_Valid_ContentTypeId()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             var contentType = ContentTestHelper.CreateValidContentType();
             contentType.ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
@@ -203,48 +200,28 @@ namespace DotNetNuke.Tests.Content
             contentTypeController.DeleteContentType(contentType);
 
             //Assert
-            mockDataService.Verify(ds => ds.DeleteContentType(contentType));
+            _mockRepository.Verify(r => r.Delete(contentType));
         }
 
         [Test]
-        public void ContentTypeController_DeleteContentType_Clears_Cache_On_Valid_ContentTypeId()
+        public void ContentTypeController_GetContentTypes_Calls_Repository_Get()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
-
-            var contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
-
-            //Act
-            contentTypeController.DeleteContentType(contentType);
-
-            //Assert
-            _mockCache.Verify(ds => ds.Remove(_contentTypeCacheKey));
-        }
-
-        [Test]
-        public void ContentTypeController_GetContentTypes_Calls_DataService()
-        {
-            //Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetContentTypes()).Returns(MockHelper.CreateValidContentTypesReader(Constants.CONTENTTYPE_ValidContentTypeCount));
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes();
 
             //Assert
-            mockDataService.Verify(ds => ds.GetContentTypes());
+            _mockRepository.Verify(r => r.Get());
         }
 
         [Test]
         public void ContentTypeController_GetContentTypes_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetContentTypes()).Returns(MockHelper.CreateEmptyContentTypeReader());
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            _mockRepository.Setup(r => r.Get()).Returns(new List<ContentType>());
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes();
@@ -258,9 +235,8 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_GetContentTypes_Returns_List_Of_ContentTypes()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetContentTypes()).Returns(MockHelper.CreateValidContentTypesReader(Constants.CONTENTTYPE_ValidContentTypeCount));
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            _mockRepository.Setup(r => r.Get()).Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes();
@@ -273,8 +249,7 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_UpdateContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.UpdateContentType(null));
@@ -284,8 +259,7 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_UpdateContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
             var contentType = new ContentType {ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId};
 
             //Act, Arrange
@@ -296,8 +270,7 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_UpdateContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             var contentType = ContentTestHelper.CreateValidContentType();
             contentType.ContentType = Constants.CONTENTTYPE_InValidContentType;
@@ -306,11 +279,10 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentTypeController_UpdateContentType_Calls_DataService_On_Valid_ContentType()
+        public void ContentTypeController_UpdateContentType_Calls_Repository_Update_On_Valid_ContentType()
         {
             //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             var contentType = ContentTestHelper.CreateValidContentType();
             contentType.ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
@@ -320,25 +292,7 @@ namespace DotNetNuke.Tests.Content
             contentTypeController.UpdateContentType(contentType);
 
             //Assert
-            mockDataService.Verify(ds => ds.UpdateContentType(contentType));
-        }
-
-        [Test]
-        public void ContentTypeController_UpdateContentType_Clears_Cache_On_Valid_ContentType()
-        {
-            //Arrange
-            var mockDataService = new Mock<IDataService>();
-            var contentTypeController = new ContentTypeController(mockDataService.Object);
-
-            var contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
-            contentType.ContentType = Constants.CONTENTTYPE_UpdateContentType;
-
-            //Act
-            contentTypeController.UpdateContentType(contentType);
-
-            //Assert
-            _mockCache.Verify(ds => ds.Remove(_contentTypeCacheKey));
+            _mockRepository.Verify(r => r.Update(contentType));
         }
     }
 }

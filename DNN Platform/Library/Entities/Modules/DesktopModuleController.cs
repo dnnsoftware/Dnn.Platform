@@ -105,9 +105,7 @@ namespace DotNetNuke.Entities.Modules
         private static void CreateContentItem(DesktopModuleInfo desktopModule)
         {
             IContentTypeController typeController = new ContentTypeController();
-            ContentType contentType = (from t in typeController.GetContentTypes()
-                                       where t.ContentType == "DesktopModule"
-                                       select t).SingleOrDefault();
+            ContentType contentType  = ContentType.DesktopModule;
 
             if (contentType == null)
             {
