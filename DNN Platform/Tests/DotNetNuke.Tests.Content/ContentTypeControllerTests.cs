@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentTypeController_AddContentType_Throws_On_Empty_ContentType_Proeprty()
+        public void ContentTypeController_AddContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
             var contentTypeController = new ContentTypeController(_mockDataContext.Object);
@@ -220,7 +220,8 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_GetContentTypes_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
         {
             //Arrange
-            _mockRepository.Setup(r => r.Get()).Returns(new List<ContentType>());
+            _mockRepository.Setup(r => r.Get())
+                .Returns(new List<ContentType>());
             var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act
@@ -235,11 +236,56 @@ namespace DotNetNuke.Tests.Content
         public void ContentTypeController_GetContentTypes_Returns_List_Of_ContentTypes()
         {
             //Arrange
-            _mockRepository.Setup(r => r.Get()).Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+            _mockRepository.Setup(r => r.Get())
+                .Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
             var contentTypeController = new ContentTypeController(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes();
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
+        }
+
+        [Test]
+        public void ContentTypeController_GetContentTypes_Overload_Calls_Repository_Get()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
+
+            //Assert
+            _mockRepository.Verify(r => r.Get(Constants.PORTAL_ValidPortalId));
+        }
+        
+        [Test]
+        public void ContentTypeController_GetContentTypes_Overload_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
+        {
+            //Arrange
+            _mockRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(new List<ContentType>());
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
+
+            //Assert
+            Assert.IsNotNull(contentTypes);
+            Assert.AreEqual(0, contentTypes.Count());
+        }
+
+        [Test]
+        public void ContentTypeController_GetContentTypes_Overload_Returns_List_Of_ContentTypes()
+        {
+            //Arrange
+            _mockRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());

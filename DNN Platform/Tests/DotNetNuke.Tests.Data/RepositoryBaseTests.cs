@@ -342,7 +342,7 @@ namespace DotNetNuke.Tests.Data
             var list = mockRepository.Object.Get();
 
             //Assert
-            mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
+            mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_CatsKey)), Times.Never());
         }
 
         [Test]

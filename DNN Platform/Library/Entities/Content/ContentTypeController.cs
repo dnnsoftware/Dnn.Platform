@@ -135,7 +135,25 @@ namespace DotNetNuke.Entities.Content
 		    return contentTypes;
         }
 
-		/// <summary>
+        /// <summary>
+        /// Gets the content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <returns>content type collection.</returns>
+        public IQueryable<ContentType> GetContentTypes(int portalId)
+	    {
+            IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Get(portalId).AsQueryable();
+            }
+
+            return contentTypes;
+        }
+
+	    /// <summary>
 		/// Updates the type of the content.
 		/// </summary>
 		/// <param name="contentType">Type of the content.</param>

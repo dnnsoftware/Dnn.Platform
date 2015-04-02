@@ -1413,7 +1413,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual ContentItem CreateFileContentItem()
         {
             var typeController = new ContentTypeController();
-            var contentTypeFile = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+            var contentTypeFile = (from t in typeController.GetContentTypes(-1) where t.ContentType == "File" select t).SingleOrDefault();
 
             if (contentTypeFile == null)
             {

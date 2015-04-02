@@ -33,17 +33,6 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Entities.Content
 {
     /// <summary>
-    /// This class exists solely to maintain compatibility between the original VB version
-    /// which supported ContentType.ContentType and the c# version which doesn't allow members with
-    /// the same naem as their parent type
-    /// </summary>
-    [Serializable]
-    public abstract class ContentTypeMemberNameFixer
-    {
-        public string ContentType { get; set; }
-    }
-
-	/// <summary>
 	/// Content type of a content item.
 	/// </summary>
 	/// <remarks>
@@ -55,15 +44,16 @@ namespace DotNetNuke.Entities.Content
     [TableName("ContentTypes")]
     [PrimaryKey("ContentTypeID")]
     [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
+    [Scope("PortalID")]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
 
-        private const string DesktopModuleContentTypeName = "DesktopModule";
-        private const string ModuleContentTypeName = "Module";
-        private const string TabContentTypeName = "Tab";
+        internal const string DesktopModuleContentTypeName = "DesktopModule";
+        internal const string ModuleContentTypeName = "Module";
+        internal const string TabContentTypeName = "Tab";
 
         public ContentType() : this(Null.NullString)
         {
@@ -82,7 +72,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
+	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
 	        }
 	    }
 
@@ -91,7 +81,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
+	            return _module ?? (_module = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
 	        }
 	    }
 
@@ -100,7 +90,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
 

@@ -40,6 +40,8 @@ namespace DotNetNuke.Entities.Content
 
         IQueryable<ContentType> GetContentTypes();
 
+        IQueryable<ContentType> GetContentTypes(int portalId);
+
         void UpdateContentType(ContentType contentType);
     }
 }

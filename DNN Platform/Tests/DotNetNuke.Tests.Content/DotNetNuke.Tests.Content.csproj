@@ -92,6 +92,7 @@
     <Compile Include="ContentControllerTests.cs" />
     <Compile Include="ContentTypeControllerTests.cs" />
     <Compile Include="AttachmentControllerTests.cs" />
+    <Compile Include="ContentTypeTests.cs" />
     <Compile Include="Mocks\MockHelper.cs">
       <SubType>Code</SubType>
     </Compile>
