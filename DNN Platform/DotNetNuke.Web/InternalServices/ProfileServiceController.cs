@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -144,5 +145,16 @@ namespace DotNetNuke.Web.InternalServices
         {
             public string Url { get; set; }
         }
+
+        [DnnAuthorize]
+        [HttpGet]
+        public HttpResponseMessage ProfilePropertyValues()
+        {
+            string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
+            string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
+            int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
+            return Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
+        }
+
     }
 }

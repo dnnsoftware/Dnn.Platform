@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -167,6 +164,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{ddf18e36-41a0-4ca7-a098-78ca6e6f41c1}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
+      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
+      <Name>DotNetNuke.Log4Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{6F0A5B23-E09F-431A-879A-993CB77E23D8}</Project>

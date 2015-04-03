@@ -32,12 +32,9 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.UI.WebControls;
 using ClientDependency.Core;
@@ -716,31 +713,20 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     throw new Exception("No server response");
                 }
-                var inMemoryStream = new MemoryStream();
-                {
-                    var count = 0;
-                    do
-                    {
-                        var buffer = new byte[4096];
-                        count = responseStream.Read(buffer, 0, 4096);
-                        inMemoryStream.Write(buffer, 0, count);
-                    } while (responseStream.CanRead && count > 0);
 
-                    var segments = dto.Url.Split('/');
-                    var fileName = segments[segments.Length - 1];
-                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
-                        fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
+                var fileName = new Uri(dto.Url).Segments.Last();                    
+                result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
-                    /* Response Content Type cannot be application/json 
-                     * because IE9 with iframe-transport manages the response 
-                     * as a file download 
-                     */
-                    return Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        result,
-                        mediaTypeFormatter,
-                        "text/plain");
-                }
+                /* Response Content Type cannot be application/json 
+                    * because IE9 with iframe-transport manages the response 
+                    * as a file download 
+                    */
+                return Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    result,
+                    mediaTypeFormatter,
+                    "text/plain");
             }
             catch (Exception ex)
             {

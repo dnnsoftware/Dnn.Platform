@@ -212,14 +212,8 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, state);
 
-                var notification = new Notification
-                {
-                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationNoActionType).NotificationTypeId,
-                    Subject = message.Subject,
-                    Body = message.Body,
-                    IncludeDismissAction = true,
-                    SenderUserID = stateTransaction.UserId
-                };
+                var notification = GetNotification(GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
+
 
                 _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
@@ -243,16 +237,8 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
-                var notification = new Notification
-                {
-                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificatioStartWorkflowType).NotificationTypeId,
-                    Subject = message.Subject,
-                    Body = message.Body,
-                    IncludeDismissAction = true,
-                    SenderUserID = stateTransaction.UserId,
+                var notification = GetNotification( GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
 
-                    Context = GetWorkflowNotificationContext(contentItem, workflow.FirstState)
-                };
 
                 _notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
@@ -287,15 +273,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, state);
 
-                var notification = new Notification
-                {
-                    NotificationTypeID = _notificationsController.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId,
-                    Subject = message.Subject,
-                    Body = message.Body,
-                    IncludeDismissAction = true,
-                    SenderUserID = stateTransaction.UserId,
-                    Context = GetWorkflowNotificationContext(contentItem, state)
-                };
+                var notification = GetNotification(GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationType);
 
                 _notificationsController.SendNotification(notification, portalSettings.PortalId, reviewers.Roles.ToList(), reviewers.Users.ToList());
             }
@@ -304,6 +282,24 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Services.Exceptions.Exceptions.LogException(ex);
             }            
         }
+
+        private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
+            ActionMessage message, string notificationType)
+        {
+            var notification = new Notification
+            {
+                NotificationTypeID =
+                    _notificationsController.GetNotificationType(notificationType).NotificationTypeId,
+                Subject = message.Subject,
+                Body = message.Body,
+                IncludeDismissAction = true,
+                SenderUserID = stateTransaction.UserId,
+                Context = workflowContext,
+                SendToast = message.SendToast
+            };
+            return notification;
+        }
+
 
         private class ReviewersDto
         {

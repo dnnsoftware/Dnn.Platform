@@ -316,7 +316,7 @@
     <value>This will delete all translations of the page. Only the default language version of the page will remain. Are you sure you want to do this?</value>
   </data>
   <data name="plUrl.Help" xml:space="preserve">
-    <value>Check this box to enable the Language Parameter in the URL.</value>
+    <value>Check this box to enable the Language Parameter in the URL.&lt;br /&gt;This setting is disabled when using Advanced URL Management.</value>
   </data>
   <data name="plUrl.Text" xml:space="preserve">
     <value>Enable Language Parameter in URLs?</value>
@@ -337,7 +337,7 @@
     <value>Show Pages that are not yet translated</value>
   </data>
   <data name="MarkAllPagesTranslated.Text" xml:space="preserve">
-    <value>Mark All Pages For {0} As Translated</value>
+    <value>Mark All Pages As Translated</value>
   </data>
   <data name="NonLocalizedPagesTitle.Text" xml:space="preserve">
     <value>Pages Not Translated: </value>

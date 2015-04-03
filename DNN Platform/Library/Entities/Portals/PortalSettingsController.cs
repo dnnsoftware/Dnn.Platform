@@ -315,11 +315,17 @@ namespace DotNetNuke.Entities.Portals
         {
             if (Globals.IsAdminSkin())
             {
-                activeTab.SkinSrc = portalSettings.DefaultAdminSkin;
+                //DNN-6170 ensure skin value is culture specific
+                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
+                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultAdminSkin : PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
+                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
             }
             else if (String.IsNullOrEmpty(activeTab.SkinSrc))
             {
-                activeTab.SkinSrc = portalSettings.DefaultPortalSkin;
+                //DNN-6170 ensure skin value is culture specific
+                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
+                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
+                    Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
             }
             activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
             activeTab.SkinPath = SkinController.FormatSkinPath(activeTab.SkinSrc);

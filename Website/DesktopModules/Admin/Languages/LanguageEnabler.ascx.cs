@@ -324,6 +324,12 @@ namespace DotNetNuke.Modules.Admin.Languages
             DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxScriptSupport();
             DotNetNuke.Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
+            var urlFormat = Config.GetProvider("friendlyUrl", "DNNFriendlyUrl").Attributes["urlFormat"];
+            if (urlFormat == "advanced")
+            {
+                chkUrl.Enabled = false;
+            }
+
             try
             {
                 _PortalDefault = PortalSettings.DefaultLanguage;

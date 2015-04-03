@@ -81,6 +81,16 @@ namespace DotNetNuke.Modules.CoreMessaging
 		    }
 	    }
 
+	    public bool DisablePrivateMessage
+	    {
+		    get
+		    {
+			    return PortalSettings.DisablePrivateMessage && !UserInfo.IsSuperUser 
+					&& !UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+
+		    }
+	    }
+
         #endregion
 
         #region Event Handlers

@@ -19,7 +19,7 @@
             <libraryName>jQuery</libraryName>
             <fileName>jquery.js</fileName>
             <objectName>jQuery</objectName>
-            <CDNPath>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</CDNPath>
+            <CDNPath>//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</CDNPath>
           </javaScriptLibrary>
         </component>
         <component type="JavaScriptFile">

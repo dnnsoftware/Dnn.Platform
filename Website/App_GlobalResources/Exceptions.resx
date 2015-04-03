@@ -237,6 +237,9 @@
   <data name="MsgSenderRequiredError.Text" xml:space="preserve">
     <value>Either Sender is null or Sender.UserID is negative.</value>
   </data>
+  <data name="PrivateMessageDisabledError.Text" xml:space="preserve">
+    <value>Users doesn't allow send message to other user/group in current message settings.</value>
+  </data>
   <data name="MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError.Text" xml:space="preserve">
     <value>Only SuperUsers, Site Administrators or Users in the Group can send message to Role.</value>
   </data>
@@ -361,7 +364,7 @@
     <value>You cannot delete a workflow in use</value>
   </data>
   <data name="WorkflowNameAlreadyExistsException.Text" xml:space="preserve">
-    <value>Already exists a workflow with this name</value>
+    <value>A workflow with this name already exists</value>
   </data>
   <data name="SystemWorkflowDeletionException.Text" xml:space="preserve">
     <value>System workflow cannot be deleted</value>
@@ -370,7 +373,7 @@
     <value>Workflow does not exist</value>
   </data>
   <data name="WorkflowStateNameAlreadyExistsException.Text" xml:space="preserve">
-    <value>Already exists a workflow state with this name</value>
+    <value>A workflow state with this name already exists</value>
   </data>
   <data name="WorkflowConcurrencyException.Text" xml:space="preserve">
     <value>The current state of the workflow is not the same of the current state specified in the input parameter</value>
@@ -407,5 +410,35 @@
   </data>
   <data name="TabVersionCannotBeRolledBack_LastVersion.Text" xml:space="preserve">
     <value>For Tab {0}, the version {1} cannot be rolled back as is the last version</value>
+  </data>
+  <data name="FolderFileNameHasInvalidcharacters.Text" xml:space="preserve">
+    <value>The name contains invalid character(s). Please specify a name without {0}</value>
+  </data>
+  <data name="FolderFileNameIsReserved.Text" xml:space="preserve">
+    <value>The name is reserved. Try a different name</value>
+  </data>
+  <data name="UserHasNoPermissionToEditFile.Text" xml:space="preserve">
+    <value>The user has no permission to edit this file</value>
+  </data>
+  <data name="FolderAlreadyExists.Text" xml:space="preserve">
+    <value>Cannot create folder ({0}), folder already exists in this location</value>
+  </data>
+  <data name="UserHasNoPermissionToEditFolder.Text" xml:space="preserve">
+    <value>The user has no permission to edit this folder</value>
+  </data>
+  <data name="UserHasNoPermissionToAdd.Text" xml:space="preserve">
+    <value>The user has no permission to add folders on this location</value>
+  </data>
+  <data name="InvalidMappedPath.Text" xml:space="preserve">
+    <value>The Mapped Path is invalid</value>
+  </data>
+  <data name="FileNameInvalid.Text" xml:space="preserve">
+    <value>The specified name ({0}) is not valid</value>
+  </data>
+  <data name="FolderDoesNotExists.Text" xml:space="preserve">
+    <value>The folder does not exist</value>
+  </data>
+  <data name="UserHasNoPermissionToBrowseFolder.Text" xml:space="preserve">
+    <value>The user has no permission to browse this folder</value>
   </data>
 </root>

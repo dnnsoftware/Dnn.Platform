@@ -36,7 +36,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
@@ -70,8 +69,6 @@ namespace DesktopModules.Admin.Tabs
     /// </remarks>
     public partial class View : PortalModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (View));
-
         #region Private Members
 
         private const string DefaultPageTemplate = "Default.page.template";
@@ -216,7 +213,9 @@ namespace DesktopModules.Admin.Tabs
         {
             get
             {
-                return TabController.GetPortalTabs(rblMode.SelectedValue == "H" ? Null.NullInteger : PortalId, Null.NullInteger, false, true, false, true);
+                var portalId = rblMode.SelectedValue == "H" ? Null.NullInteger : PortalId;
+                return TabController.GetPortalTabs(portalId, Null.NullInteger, false, true, false, true)
+                    .Where(tab => !tab.IsSystem).ToList();
             }
         }
 
@@ -875,13 +874,13 @@ namespace DesktopModules.Admin.Tabs
                 txtName.Text = tab.TabName;
                 chkVisible.Checked = tab.IsVisible;
 
-                txtSitemapPriority.Text = tab.SiteMapPriority.ToString();
+                txtSitemapPriority.Text = tab.SiteMapPriority.ToString(CultureInfo.InvariantCulture);
                 txtDescription.Text = tab.Description;
                 txtKeywords.Text = tab.KeyWords;
                 txtMeta.Text = tab.PageHeadText;                
                 if (tab.RefreshInterval != Null.NullInteger)
                 {
-                    txtRefresh.Text = tab.RefreshInterval.ToString(); 
+                    txtRefresh.Text = tab.RefreshInterval.ToString(CultureInfo.InvariantCulture); 
                 }
 
                 drpSkin.SelectedValue = tab.SkinSrc;
@@ -892,7 +891,7 @@ namespace DesktopModules.Admin.Tabs
                 {
                     ctlURL.UrlType = "N";
                 }
-                bool newWindow = false;
+                bool newWindow;
                 if (tab.TabSettings["LinkNewWindow"] != null && Boolean.TryParse((string)tab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
                 {
                     ctlURL.NewWindow = newWindow;
@@ -930,7 +929,7 @@ namespace DesktopModules.Admin.Tabs
                 ctlIcon.Url = tab.IconFileRaw;
                 ctlIconLarge.Url = tab.IconFileLargeRaw;
 
-                ShowPermissions(!tab.IsSuperTab && TabPermissionController.CanAdminPage());
+                ShowPermissions(!tab.IsSuperTab && TabPermissionController.CanAdminPage(tab));
 
                 termsSelector.PortalId = tab.PortalID;
                 termsSelector.Terms = tab.Terms;
@@ -1058,10 +1057,11 @@ namespace DesktopModules.Admin.Tabs
 
         private void CheckSecurity()
         {
-            if ((!(TabPermissionController.HasTabPermission("CONTENT"))) && !(ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT, EDIT")))
-            {
-                Response.Redirect(Globals.NavigateURL("Access Denied"), true);
-            }
+            if (TabPermissionController.HasTabPermission("CONTENT") ||
+                ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "CONTENT, EDIT")
+            ) return;
+
+            Response.Redirect(Globals.NavigateURL("Access Denied"), true);
         }
 
         private string GetNodeIcon(TabInfo tab)
@@ -1091,7 +1091,7 @@ namespace DesktopModules.Admin.Tabs
 
         private string GetNodeStatusIcon(TabInfo tab)
         {
-            string s = "";
+            var s = string.Empty;
             if (tab.DisableLink)
             {
                 s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageDisabled, LocalizeString("lblDisabled"));
@@ -1100,7 +1100,7 @@ namespace DesktopModules.Admin.Tabs
             {
                 s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconPageHidden, LocalizeString("lblHidden"));
             }
-            if (tab.Url != "")
+            if (tab.Url != string.Empty)
             {
                 s = s + string.Format("<img src=\"{0}\" alt=\"\" title=\"{1}\" class=\"statusicon\" />", IconRedirect, LocalizeString("lblRedirect"));
             }
@@ -1205,7 +1205,7 @@ namespace DesktopModules.Admin.Tabs
         private bool MoveTab(TabInfo tab, TabInfo targetTab, Position position)
         {
             //Validate Tab Path
-            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath((targetTab == null) ? Null.NullInteger : targetTab.TabID, tab.TabName)))
+            if (targetTab == null || !IsValidTabPath(tab, Globals.GenerateTabPath(targetTab.TabID, tab.TabName)))
             {
                 return false;
             }
@@ -1472,10 +1472,10 @@ namespace DesktopModules.Admin.Tabs
             }
 
             //Validate Tab Path
-            var tabID = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
-            if (tabID != Null.NullInteger && tabID != tab.TabID)
+            var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
+            if (tabId != Null.NullInteger && tabId != tab.TabID)
             {
-                var existingTab = TabController.Instance.GetTab(tabID, tab.PortalID, false);
+                var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
                 if (existingTab != null && existingTab.IsDeleted)
                     ShowErrorMessage(Localization.GetString("TabRecycled", LocalResourceFile));
                 else
@@ -1502,11 +1502,6 @@ namespace DesktopModules.Admin.Tabs
         private void ShowSuccessMessage(string message)
         {
             Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.GreenSuccess);
-        }
-
-        private void ShowWarningMessage(string message)
-        {
-            Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
         #endregion

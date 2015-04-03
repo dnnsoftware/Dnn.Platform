@@ -20,16 +20,15 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
 using DotNetNuke.Modules.DigitalAssets.Services.Models;
 using DotNetNuke.Security;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.DigitalAssets.Services
@@ -52,16 +51,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [HttpPost]
         public HttpResponseMessage GetFolderContent(GetFolderContentRequest r)
         {
-            try
-            {
-                var moduleId = Request.FindModuleId();
-                var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
-                return Request.CreateResponse(HttpStatusCode.OK, p);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var moduleId = Request.FindModuleId();
+            var p = DigitalAssetsController.GetFolderContent(moduleId, r.FolderId, r.StartIndex, r.NumItems, r.SortExpression);
+            return Request.CreateResponse(HttpStatusCode.OK, p);
         }
 
         [HttpPost]
@@ -101,8 +93,16 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage RenameFile(RenameFileRequest request)
         {
-            var itemViewModel = DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
-            return Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+	        try
+	        {
+		        var itemViewModel = DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
+		        return Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+	        }
+	        catch (FileAlreadyExistsException ex)
+	        {
+				return Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+	        }
+            
         }
 
         [HttpPost]
@@ -133,16 +133,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage GetSubFolders(GetSubFolderRequest request)
         {
-            try
-            {
-                var moduleId = Request.FindModuleId();
-                var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
-                return Request.CreateResponse(HttpStatusCode.OK, subFolders);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var moduleId = Request.FindModuleId();
+            var subFolders = DigitalAssetsController.GetFolders(moduleId, request.FolderId);
+            return Request.CreateResponse(HttpStatusCode.OK, subFolders);
         }
 
         [HttpPost]
@@ -157,16 +150,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage CreateNewFolder(CreateNewFolderRequest request)
         {
-            try
-            {
-                var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
-                    request.FolderMappingId, request.MappedName);
-                return Request.CreateResponse(HttpStatusCode.OK, folder);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            var folder = DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
+                request.FolderMappingId, request.MappedName);
+            return Request.CreateResponse(HttpStatusCode.OK, folder);
         }
 
         [HttpPost]

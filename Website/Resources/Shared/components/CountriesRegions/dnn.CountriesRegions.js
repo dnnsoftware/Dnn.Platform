@@ -52,10 +52,12 @@ function setupRegionLists() {
 }
 
 function loadRegionList(category, country) {
-	$('div[data-list="Region"][data-category="' + category + '"]').each(function (index, value) {
+	var selector = category ? 'div[data-list="Region"][data-category="' + category + '"]' : 'div[data-list="Region"]';
+	$(selector).each(function (index, value) {
 		var dd = $(value).children('select');
 		$(dd).children().not(':first').remove();
 		if (country != '') {
+			console.log(country);
 			if (dnnCountryRegionService == undefined) { dnnCountryRegionService = new CountryRegionService($) };
 			dnnCountryRegionService.listRegions(country, function (data) {
 				$.each(data, function (index, value) {
@@ -68,7 +70,7 @@ function loadRegionList(category, country) {
 }
 
 function clearCountryValue(countryControl) {
-	$('#' + $(countryControl).attr('id') + '_id').val('');
+	$('#' + $(countryControl).attr('id').replace('_name', '') + '_id').val('');
 	$(countryControl).attr('data-value', '');
 	$(countryControl).attr('value', '');
 	loadRegionList($(countryControl).attr('data-category'), '');
@@ -95,7 +97,7 @@ function setupCountryAutoComplete() {
 			})
 		},
 		select: function (event, ui) {
-			$('#' + $(this).attr('id') + '_id').val(ui.item.id);
+			$('#' + $(this).attr('id').replace('_name', '') + '_id').val(ui.item.id);
 			$(this).attr('data-value', ui.item.id);
 			$(this).attr('data-text', ui.item.name);
 		},

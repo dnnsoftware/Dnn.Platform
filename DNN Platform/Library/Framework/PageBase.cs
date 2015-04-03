@@ -62,9 +62,9 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
 
-	    private PageStatePersister _persister;
+        private PageStatePersister _persister;
         #region Private Members
 
         private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
@@ -107,25 +107,25 @@ namespace DotNetNuke.Framework
             get
             {
                 //Set ViewState Persister to default (as defined in Base Class)
-	            if (_persister == null)
-	            {
-		            _persister = base.PageStatePersister;
+                if (_persister == null)
+                {
+                    _persister = base.PageStatePersister;
 
-		            if (Globals.Status == Globals.UpgradeStatus.None)
-		            {
-			            switch (Host.PageStatePersister)
-			            {
-				            case "M":
-								_persister = new CachePageStatePersister(this);
-					            break;
-				            case "D":
-								_persister = new DiskPageStatePersister(this);
-					            break;
-			            }
-		            }
-	            }
+                    if (Globals.Status == Globals.UpgradeStatus.None)
+                    {
+                        switch (Host.PageStatePersister)
+                        {
+                            case "M":
+                                _persister = new CachePageStatePersister(this);
+                                break;
+                            case "D":
+                                _persister = new DiskPageStatePersister(this);
+                                break;
+                        }
+                    }
+                }
 
-				return _persister;
+                return _persister;
             }
         }
 
@@ -162,10 +162,10 @@ namespace DotNetNuke.Framework
             get
             {
                 string fileRoot;
-                string[] page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
+                var page = Request.ServerVariables["SCRIPT_NAME"].Split('/');
                 if (String.IsNullOrEmpty(_localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + page[page.GetUpperBound(0)] + ".resx";
+                    fileRoot = string.Concat(TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
                 else
                 {
@@ -179,6 +179,8 @@ namespace DotNetNuke.Framework
             }
         }
 
+		public string CanonicalLinkUrl { get; set; }
+
         #endregion
 
         #region Private Methods
@@ -187,11 +189,15 @@ namespace DotNetNuke.Framework
         {
             if (Request.QueryString["error"] != null)
             {
-                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=terminate";
+                url += string.Concat((url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"), "error=terminate");
             }
             else
             {
-                url += (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&") + "error=" + (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message));
+                url += string.Concat(
+                    (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"),
+                    "error=",
+                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : Server.UrlEncode(exc.Message))
+                );
                 if (!Globals.IsAdminControl() && hideContent)
                 {
                     url += "&content=0";
@@ -229,7 +235,7 @@ namespace DotNetNuke.Framework
                 Response.Write("404 Not Found");
                 Response.End();
             }
-            
+
         }
 
         #endregion
@@ -262,7 +268,7 @@ namespace DotNetNuke.Framework
 
                 if (PortalSettings.ErrorPage500 != -1)
                 {
-                    string url = GetErrorUrl("~/Default.aspx?tabid=" + PortalSettings.ErrorPage500, exc, false);
+                    var url = GetErrorUrl(string.Concat("~/Default.aspx?tabid=", PortalSettings.ErrorPage500), exc, false);
                     HttpContext.Current.Response.Redirect(url);
                 }
                 else
@@ -278,8 +284,8 @@ namespace DotNetNuke.Framework
 
         protected override void OnInit(EventArgs e)
         {
-	        var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLower().Contains("installwizard.aspx");
-			if (!isInstallPage)
+            var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLower().Contains("installwizard.aspx");
+            if (!isInstallPage)
             {
                 Localization.SetThreadCultures(PageCulture, PortalSettings);
             }
@@ -359,32 +365,32 @@ namespace DotNetNuke.Framework
             string key = null;
             if (!(control is LiteralControl))
             {
-                if (control is WebControl)
+                var webControl = control as WebControl;
+                if (webControl != null)
                 {
-                    var webControl = (WebControl)control;
                     attributeCollection = webControl.Attributes;
                     key = attributeCollection[attributeName];
                 }
                 else
                 {
-                    if (control is HtmlControl)
+                    var htmlControl = control as HtmlControl;
+                    if (htmlControl != null)
                     {
-                        var htmlControl = (HtmlControl)control;
                         attributeCollection = htmlControl.Attributes;
                         key = attributeCollection[attributeName];
                     }
                     else
                     {
-                        if (control is UserControl)
+                        var userControl = control as UserControl;
+                        if (userControl != null)
                         {
-                            var userControl = (UserControl)control;
                             attributeCollection = userControl.Attributes;
                             key = attributeCollection[attributeName];
                         }
                         else
                         {
-                            Type controlType = control.GetType();
-                            PropertyInfo attributeProperty = controlType.GetProperty("Attributes", typeof(AttributeCollection));
+                            var controlType = control.GetType();
+                            var attributeProperty = controlType.GetProperty("Attributes", typeof(AttributeCollection));
                             if (attributeProperty != null)
                             {
                                 attributeCollection = (AttributeCollection)attributeProperty.GetValue(control, null);
@@ -401,6 +407,96 @@ namespace DotNetNuke.Framework
             return key;
         }
 
+        private void LocalizeControl(Control control, string value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+
+            var validator = control as BaseValidator;
+            if (validator != null)
+            {
+                validator.ErrorMessage = value;
+                validator.Text = value;
+                return;
+            }
+
+            var label = control as Label;
+            if (label != null)
+            {
+                label.Text = value;
+                return;
+            }
+
+            var linkButton = control as LinkButton;
+            if (linkButton != null)
+            {
+                var imgMatches = Regex.Matches(value,
+                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
+                    RegexOptions.IgnoreCase);
+                foreach (Match match in imgMatches)
+                {
+                    if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))
+                        continue;
+                    var resolvedUrl = Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
+                    value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
+                }
+                linkButton.Text = value;
+                if (string.IsNullOrEmpty(linkButton.ToolTip))
+                {
+                    linkButton.ToolTip = value;
+                }
+                return;
+            }
+
+            var hyperLink = control as HyperLink;
+            if (hyperLink != null)
+            {
+                hyperLink.Text = value;
+                return;
+            }
+
+            var button = control as Button;
+            if (button != null)
+            {
+                button.Text = value;
+                return;
+            }
+
+            var htmlButton = control as HtmlButton;
+            if (htmlButton != null)
+            {
+                htmlButton.Attributes["Title"] = value;
+                return;
+            }
+
+            var htmlImage = control as HtmlImage;
+            if (htmlImage != null)
+            {
+                htmlImage.Alt = value;
+                return;
+            }
+
+            var checkBox = control as CheckBox;
+            if (checkBox != null)
+            {
+                checkBox.Text = value;
+                return;
+            }
+
+            var image = control as Image;
+            if (image != null)
+            {
+                image.AlternateText = value;
+                image.ToolTip = value;
+                return;
+            }
+
+            var textBox = control as TextBox;
+            if (textBox != null)
+            {
+                textBox.ToolTip = value;
+            }
+        }
+
         /// <summary>
         /// <para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para>
         /// </summary>
@@ -413,127 +509,25 @@ namespace DotNetNuke.Framework
             if (!control.Visible) return;
 
             //Perform the substitution if a key was found
-            string key = GetControlAttribute(control, affectedControls, Localization.KeyName);
+            var key = GetControlAttribute(control, affectedControls, Localization.KeyName);
             if (!string.IsNullOrEmpty(key))
             {
                 //Translation starts here ....
-                string value = Localization.GetString(key, resourceFileRoot);
-                if (control is Label)
-                {
-                    var label = (Label)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        label.Text = value;
-                    }
-                }
-                if (control is LinkButton)
-                {
-                    var linkButton = (LinkButton)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        MatchCollection imgMatches = Regex.Matches(value, "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>", RegexOptions.IgnoreCase);
-                        foreach (Match match in imgMatches)
-                        {
-                            if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) != -1))
-                            {
-                                string resolvedUrl = Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
-                                value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
-                            }
-                        }
-                        linkButton.Text = value;
-                        if (string.IsNullOrEmpty(linkButton.ToolTip))
-                        {
-                            linkButton.ToolTip = value;
-                        }
-                    }
-                }
-                if (control is HyperLink)
-                {
-                    var hyperLink = (HyperLink)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        hyperLink.Text = value;
-                    }
-                }
-                if (control is ImageButton)
-                {
-                    var imageButton = (ImageButton)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        imageButton.AlternateText = value;
-                    }
-                }
-                if (control is Button)
-                {
-                    var button = (Button)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        button.Text = value;
-                    }
-                }
-                if (control is HtmlButton)
-                {
-                    var button = (HtmlButton)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        button.Attributes["Title"] = value;
-                    }
-                }
-                if (control is HtmlImage)
-                {
-                    var htmlImage = (HtmlImage)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        htmlImage.Alt = value;
-                    }
-                }
-                if (control is CheckBox)
-                {
-                    var checkBox = (CheckBox)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        checkBox.Text = value;
-                    }
-                }
-                if (control is BaseValidator)
-                {
-                    var baseValidator = (BaseValidator)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        baseValidator.ErrorMessage = value;
-                    }
-                }
-                if (control is Image)
-                {
-                    var image = (Image)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        image.AlternateText = value;
-                        image.ToolTip = value;
-                    }
-                }
-                if (control is TextBox)
-                {
-                    var textBox = (TextBox)control;
-                    if (!String.IsNullOrEmpty(value))
-                    {
-                        textBox.ToolTip = value;
-                    }
-                } 
-
+                var value = Localization.GetString(key, resourceFileRoot);
+                LocalizeControl(control, value);
             }
 
             //Translate listcontrol items here 
-            if (control is ListControl)
+            var listControl = control as ListControl;
+            if (listControl != null)
             {
-                var listControl = (ListControl)control;
-                for (int i = 0; i <= listControl.Items.Count - 1; i++)
+                for (var i = 0; i <= listControl.Items.Count - 1; i++)
                 {
-                    AttributeCollection attributeCollection = listControl.Items[i].Attributes;
+                    var attributeCollection = listControl.Items[i].Attributes;
                     key = attributeCollection[Localization.KeyName];
                     if (key != null)
                     {
-                        string value = Localization.GetString(key, resourceFileRoot);
+                        var value = Localization.GetString(key, resourceFileRoot);
                         if (!String.IsNullOrEmpty(value))
                         {
                             listControl.Items[i].Text = value;
@@ -549,9 +543,9 @@ namespace DotNetNuke.Framework
 
             //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             //Manual Override to ResolveUrl
-            if (control is Image)
+            var image = control as Image;
+            if (image != null)
             {
-                var image = (Image)control;
                 if (image.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
                     image.ImageUrl = Page.ResolveUrl(image.ImageUrl);
@@ -560,18 +554,18 @@ namespace DotNetNuke.Framework
                 //Check for IconKey
                 if (string.IsNullOrEmpty(image.ImageUrl))
                 {
-                    string iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
-                    string iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
-                    string iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
+                    var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
+                    var iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
+                    var iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
                     image.ImageUrl = IconController.IconURL(iconKey, iconSize, iconStyle);
                 }
             }
 
             //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             //Manual Override to ResolveUrl
-            if (control is HtmlImage)
+            var htmlImage = control as HtmlImage;
+            if (htmlImage != null)
             {
-                var htmlImage = (HtmlImage)control;
                 if (htmlImage.Src.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
                     htmlImage.Src = Page.ResolveUrl(htmlImage.Src);
@@ -580,19 +574,18 @@ namespace DotNetNuke.Framework
                 //Check for IconKey
                 if (string.IsNullOrEmpty(htmlImage.Src))
                 {
-                    string iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
-                    string iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
-                    string iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
+                    var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
+                    var iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
+                    var iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
                     htmlImage.Src = IconController.IconURL(iconKey, iconSize, iconStyle);
                 }
             }
 
             //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             //Manual Override to ResolveUrl
-            if (control is HyperLink)
+            var ctrl = control as HyperLink;
+            if (ctrl != null)
             {
-                HyperLink ctrl;
-                ctrl = (HyperLink)control;
                 if ((ctrl.NavigateUrl.IndexOf("~", StringComparison.Ordinal) != -1))
                 {
                     ctrl.NavigateUrl = Page.ResolveUrl(ctrl.NavigateUrl);
@@ -605,36 +598,34 @@ namespace DotNetNuke.Framework
                 //Check for IconKey
                 if (string.IsNullOrEmpty(ctrl.ImageUrl))
                 {
-                    string iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
-                    string iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
-                    string iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
+                    var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
+                    var iconSize = GetControlAttribute(control, affectedControls, IconController.IconSizeName);
+                    var iconStyle = GetControlAttribute(control, affectedControls, IconController.IconStyleName);
                     ctrl.ImageUrl = IconController.IconURL(iconKey, iconSize, iconStyle);
                 }
             }
 
             //Process child controls
-            if (includeChildren && control.HasControls())
+            if (!includeChildren || !control.HasControls()) return;
+            var objModuleControl = control as IModuleControl;
+            if (objModuleControl == null)
             {
-                var objModuleControl = control as IModuleControl;
-                if (objModuleControl == null)
+                var pi = control.GetType().GetProperty("LocalResourceFile");
+                if (pi != null && pi.GetValue(control, null) != null)
                 {
-                    PropertyInfo pi = control.GetType().GetProperty("LocalResourceFile");
-                    if (pi != null && pi.GetValue(control, null) != null)
-                    {
-                        //If controls has a LocalResourceFile property use this
-                        IterateControls(control.Controls, affectedControls, pi.GetValue(control, null).ToString());
-                    }
-                    else
-                    {
-                        //Pass Resource File Root through
-                        IterateControls(control.Controls, affectedControls, resourceFileRoot);
-                    }
+                    //If controls has a LocalResourceFile property use this
+                    IterateControls(control.Controls, affectedControls, pi.GetValue(control, null).ToString());
                 }
                 else
                 {
-                    //Get Resource File Root from Controls LocalResourceFile Property
-                    IterateControls(control.Controls, affectedControls, objModuleControl.LocalResourceFile);
+                    //Pass Resource File Root through
+                    IterateControls(control.Controls, affectedControls, resourceFileRoot);
                 }
+            }
+            else
+            {
+                //Get Resource File Root from Controls LocalResourceFile Property
+                IterateControls(control.Controls, affectedControls, objModuleControl.LocalResourceFile);
             }
         }
 

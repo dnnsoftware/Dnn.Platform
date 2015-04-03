@@ -247,7 +247,9 @@ namespace DesktopModules.Admin.Portals
 
             optMsgAllowAttachments.Select(PortalController.GetPortalSetting("MessagingAllowAttachments", portal.PortalID, "NO"), false);
             optMsgProfanityFilters.Select(PortalController.GetPortalSetting("MessagingProfanityFilters", portal.PortalID, "NO"), false);
-            optMsgSendEmail.Select(PortalController.GetPortalSetting("MessagingSendEmail", portal.PortalID, "YES"), false);        
+            optMsgSendEmail.Select(PortalController.GetPortalSetting("MessagingSendEmail", portal.PortalID, "YES"), false);
+
+	        chkDisablePrivateMessage.Checked = PortalSettings.DisablePrivateMessage;
         }
 
         private void BindPages(PortalInfo portal, string activeLanguage)
@@ -540,22 +542,22 @@ namespace DesktopModules.Admin.Portals
 
         private void BindSkins(PortalInfo portal)
         {
-            portalSkinCombo.PortalId = PortalId;
+            portalSkinCombo.PortalId = portal.PortalID;
             portalSkinCombo.RootPath = SkinController.RootSkin;
             portalSkinCombo.Scope = SkinScope.All;
             portalSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalSkin", portal.PortalID, Host.DefaultPortalSkin, SelectedCultureCode);
 
-            portalContainerCombo.PortalId = PortalId;
+            portalContainerCombo.PortalId = portal.PortalID;
             portalContainerCombo.RootPath = SkinController.RootContainer;
             portalContainerCombo.Scope = SkinScope.All;
             portalContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultPortalContainer", portal.PortalID, Host.DefaultPortalContainer, SelectedCultureCode);
 
-            editSkinCombo.PortalId = PortalId;
+            editSkinCombo.PortalId = portal.PortalID;
             editSkinCombo.RootPath = SkinController.RootSkin;
             editSkinCombo.Scope = SkinScope.All;
             editSkinCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminSkin", portal.PortalID, Host.DefaultAdminSkin, SelectedCultureCode);
 
-            editContainerCombo.PortalId = PortalId;
+            editContainerCombo.PortalId = portal.PortalID;
             editContainerCombo.RootPath = SkinController.RootContainer;
             editContainerCombo.Scope = SkinScope.All;
             editContainerCombo.SelectedValue = PortalController.GetPortalSetting("DefaultAdminContainer", portal.PortalID, Host.DefaultAdminContainer, SelectedCultureCode);
@@ -775,6 +777,7 @@ namespace DesktopModules.Admin.Portals
                 txtPageHeadText.Text = portalSettings.PageHeadText;
                 chkInjectModuleHyperLink.Checked = portalSettings.InjectModuleHyperLink;
                 txtAddCompatibleHttpHeader.Text = portalSettings.AddCompatibleHttpHeader;
+                chkAddCachebusterToResourceUris.Checked = portalSettings.AddCachebusterToResourceUris;
             }
         }
 
@@ -1415,7 +1418,8 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "MessagingRecipientLimit", cboMsgRecipientLimit.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingAllowAttachments", optMsgAllowAttachments.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingProfanityFilters", optMsgProfanityFilters.SelectedItem.Value, false);
-                    PortalController.UpdatePortalSetting(_portalId, "MessagingSendEmail", optMsgSendEmail.SelectedItem.Value, false);
+					PortalController.UpdatePortalSetting(_portalId, "MessagingSendEmail", optMsgSendEmail.SelectedItem.Value, false);
+					PortalController.UpdatePortalSetting(_portalId, "DisablePrivateMessage", chkDisablePrivateMessage.Checked ? "Y" : "N", false);
 
                     PortalController.UpdatePortalSetting(_portalId, "paypalsandbox", chkPayPalSandboxEnabled.Checked.ToString(), false);
                     PortalController.UpdatePortalSetting(_portalId, "paypalsubscriptionreturn", txtPayPalReturnURL.Text, false);
@@ -1569,6 +1573,7 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "PageHeadText", string.IsNullOrEmpty(txtPageHeadText.Text) ? "false" : txtPageHeadText.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
                     PortalController.UpdatePortalSetting(_portalId, "AddCompatibleHttpHeader", string.IsNullOrEmpty(txtAddCompatibleHttpHeader.Text) ? "false" : txtAddCompatibleHttpHeader.Text); // Hack to store empty string portalsetting with non empty default value
+                    PortalController.UpdatePortalSetting(_portalId, "AddCachebusterToResourceUris", chkAddCachebusterToResourceUris.Checked.ToString());
 
                     profileDefinitions.Update();
 

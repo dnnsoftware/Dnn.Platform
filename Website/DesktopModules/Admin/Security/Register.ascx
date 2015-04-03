@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 
-<div class="dnnForm dnnRegistrationForm">
+<div class="dnnForm dnnRegistrationForm" id="RegistrationForm" runat="server">
     <div class="dnnFormItem">
         <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" ViewStateMode="Disabled"/></div>
     </div>

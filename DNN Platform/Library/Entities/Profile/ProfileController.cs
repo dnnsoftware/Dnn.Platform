@@ -511,21 +511,25 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void UpdateUserProfile(UserInfo user)
         {
-            int portalId = GetEffectivePortalId(user.PortalID);
-            user.PortalID = portalId;
-           
-            //Update the User Profile
-            if (user.Profile.IsDirty)
+            if (!user.Profile.IsDirty)
             {
-                _profileProvider.UpdateUserProfile(user);
+                return;
             }
+
+            var portalId = GetEffectivePortalId(user.PortalID);
+            user.PortalID = portalId;
+
+            var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID};
+            _profileProvider.GetUserProfile(ref oldUser);
+            
+            _profileProvider.UpdateUserProfile(user);
 
             //Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
 
             if (ProfileUpdated != null)
             {
-                ProfileUpdated(null, new ProfileEventArgs { User = user });
+                ProfileUpdated(null, new ProfileEventArgs { User = user, OldProfile = oldUser.Profile});
             }
         }
         
@@ -641,7 +645,35 @@ namespace DotNetNuke.Entities.Profile
             return isValid;
         }
 
-        #endregion
+        /// <summary>
+        /// Searches the profile property values for a string (doesn't need to be the beginning).
+        /// </summary>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="searchString">The search string.</param>
+        /// <returns>List of matching values</returns>
+        public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+        {
+            var res = new List<string> {};
+            var autoCompleteType = new ListController().GetListEntryInfo("DataType", "AutoComplete");
+            var def = GetPropertyDefinitionByName(portalId, propertyName);
+            if (def.DataType != autoCompleteType.EntryID)
+            {
+                return res;
+            }
+            using (
+                IDataReader ir = Data.DataProvider.Instance()
+                    .SearchProfilePropertyValues(portalId, propertyName, searchString))
+            {
+                while (ir.Read())
+                {
+                    res.Add(Convert.ToString(ir[0]));
+                }
+            }
+            return res;
+        }
+
+            #endregion
 
         #region Obsolete Methods
 

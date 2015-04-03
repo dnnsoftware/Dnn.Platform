@@ -74,25 +74,25 @@
 
 			var restoreTab = $('#<%= cmdRestoreTab.ClientID %>');
 			var tabListbox = $('#<%=tabsListBox.ClientID%>')[0];
-			restoreTab.click(function (e) {
-				if (tabListbox.value.length == 0) {
-					$.dnnAlert({
-						text: '<%= LocalizeSafeJsString("NoTabSelected") %>'
-					});
-					e.preventDefault();
-					e.stopImmediatePropagation();
-				}
-			}).dnnConfirm({
+		    restoreTab.click(function(e) {
+		        if (tabListbox.value.length == 0) {
+		            $.dnnAlert({
+		                text: '<%= LocalizeSafeJsString("NoTabSelected") %>'
+		            });
+		            e.preventDefault();
+		            e.stopImmediatePropagation();
+		        } else {
+		            e.preventDefault();
+		            e.stopImmediatePropagation();
+		        }
+		    }).dnnConfirm({
 				text: '<%= LocalizeSafeJsString("RestoreTab") %>',
 				yesText: yesText,
 				noText: noText,
 				title: titleText,
 				callbackTrue: function () {
 					selectChildPages(tabListbox);
-					window.location.href = restoreTab.attr("href");
-				},
-				callbackFalse: function() {
-					window.location.href = restoreTab.attr("href");
+				    window.location.href = restoreTab.attr("href");
 				}
 			});
 		};

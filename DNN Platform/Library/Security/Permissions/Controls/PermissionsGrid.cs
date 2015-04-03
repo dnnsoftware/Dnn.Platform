@@ -489,7 +489,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }            
             if (checkedRoles.Contains(AllUsersRoleId))
             {
-                Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });                    
+                Roles.Add(new RoleInfo { RoleID = AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName=Globals.glbRoleAllUsersName });                    
             }
 
             //Administrators Role always has implicit permissions, then it should be always in
@@ -497,7 +497,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             
             //Show also default roles
             EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
-            EnsureRole(new RoleInfo { RoleID = AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });
+            EnsureRole(new RoleInfo { RoleID = AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
             
             Roles.Reverse();
             Roles.Sort(new RoleComparer());

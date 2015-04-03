@@ -1006,7 +1006,10 @@ namespace DotNetNuke.UI.Skins
             //load assigned skin
             if (skin == null)
             {
-                skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                //DNN-6170 ensure skin value is culture specific
+                //skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
+                    Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!String.IsNullOrEmpty(skinSource))
                 {
                     skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);
