@@ -98,7 +98,8 @@ namespace DotNetNuke.UI.WebControls
 			
             //Render the Select Tag
             ControlStyle.AddAttributesToRender(writer);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
             for (int I = 0; I <= cboTimeZones.Items.Count - 1; I++)

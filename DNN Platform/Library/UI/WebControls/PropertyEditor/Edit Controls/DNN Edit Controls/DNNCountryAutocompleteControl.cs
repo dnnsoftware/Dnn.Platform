@@ -65,6 +65,16 @@ namespace DotNetNuke.UI.WebControls
 				return _CountryId;
 			}
 		}
+
+		public override string EditControlClientId
+		{
+			get
+			{
+				EnsureChildControls();
+				return CountryName.ClientID;
+			}
+		}
+
 		#endregion
 
 		#region " Properties "

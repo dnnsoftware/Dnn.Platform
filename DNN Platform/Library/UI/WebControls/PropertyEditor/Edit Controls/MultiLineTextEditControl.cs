@@ -45,7 +45,8 @@ namespace DotNetNuke.UI.WebControls
         {
             string propValue = Convert.ToString(Value);
             ControlStyle.AddAttributesToRender(writer);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Textarea);
             writer.Write(propValue);
             writer.RenderEndTag();
