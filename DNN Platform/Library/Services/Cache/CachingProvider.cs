@@ -489,6 +489,22 @@ namespace DotNetNuke.Services.Cache
         {
             RemoveInternal(CacheKey);
         }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void DisableCacheExpiration()
+		{
+			
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public virtual void EnableCacheExpiration()
+		{
+
+		}
 		
 		#endregion
 
