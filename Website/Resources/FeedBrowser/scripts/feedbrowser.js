@@ -185,7 +185,7 @@ DotNetNuke.UI.WebControls.FeedBrowser.Browser.prototype =
                 this._templates["default"] = 
                 '<table>' +
                     '<tr>' +
-                     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"_new\" class=\"Head\">[[title]]</a></td>' +
+                     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"new\" class=\"Head\">[[title]]</a></td>' +
                     '</tr>' + 
                     '<tr>' + 
                       '<td align=\"left\" valign=\"top\" class=\"Normal\">' + 
