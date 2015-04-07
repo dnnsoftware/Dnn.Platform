@@ -659,7 +659,10 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
-                                stream = item.ReadAsStreamAsync().Result;
+                                if (Regex.Match(fileName, "[\\\\/]\\.\\.[\\\\/]").Success==false )
+                                    {
+                                        stream = item.ReadAsStreamAsync().Result;
+                                    }
                                 break;
                         }
                     }
