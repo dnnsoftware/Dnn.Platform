@@ -43,7 +43,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plAvailable" controlname="hypUpgrade" runat="server" />
-                    <asp:HyperLink ID="hypUpgrade" Target="_new" runat="server" />
+                    <asp:HyperLink ID="hypUpgrade" Target="new" runat="server" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plDataProvider" controlname="lblDataProvider" runat="server" />
