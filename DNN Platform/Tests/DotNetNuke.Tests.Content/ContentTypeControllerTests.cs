@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
@@ -289,6 +290,106 @@ namespace DotNetNuke.Tests.Content
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
+        }
+
+        [Test]
+        public void ContentTypeController_GetContentTypes_Overload_Calls_Repository_GetPage()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            _mockRepository.Verify(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount));
+        }
+
+        [Test]
+        public void ContentTypeController_GetContentTypes_Overload_Returns_PagedList()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            _mockRepository.Setup(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount))
+                .Returns(new PagedList<ContentType>(new List<ContentType>(), Constants.PAGE_First, Constants.PAGE_RecordCount));
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            Assert.IsInstanceOf<IPagedList<ContentType>>(contentTypes);
+        }
+
+        [Test]
+        public void ContentTypeController_GetStructuredContentTypes_Calls_Repository_Find()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetStructuredContentTypes(Constants.PORTAL_ValidPortalId);
+
+            //Assert
+            _mockRepository.Verify(r => r.Find(ContentTypeController.StructuredWhereClause, Constants.PORTAL_ValidPortalId));
+        }
+
+        [Test]
+        public void ContentTypeController_GetStructuredContentTypes_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
+        {
+            //Arrange
+            _mockRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(new List<ContentType>());
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetStructuredContentTypes(Constants.PORTAL_ValidPortalId);
+
+            //Assert
+            Assert.IsNotNull(contentTypes);
+            Assert.AreEqual(0, contentTypes.Count());
+        }
+
+        [Test]
+        public void ContentTypeController_GetStructuredContentTypes_Returns_List_Of_ContentTypes()
+        {
+            //Arrange
+            _mockRepository.Setup(r => r.Find(ContentTypeController.StructuredWhereClause, Constants.PORTAL_ValidPortalId))
+                .Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetStructuredContentTypes(Constants.PORTAL_ValidPortalId);
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
+        }
+
+        [Test]
+        public void ContentTypeController_GetStructuredContentTypes_Overload_Calls_Repository_Find()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = contentTypeController.GetStructuredContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            _mockRepository.Verify(r => r.Find(Constants.PAGE_First, Constants.PAGE_RecordCount, ContentTypeController.StructuredWhereClause, Constants.PORTAL_ValidPortalId));
+        }
+
+        [Test]
+        public void ContentTypeController_GetStructuredContentTypess_Overload_Returns_PagedList()
+        {
+            //Arrange
+            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            _mockRepository.Setup(r => r.Find(Constants.PAGE_First, Constants.PAGE_RecordCount, ContentTypeController.StructuredWhereClause, Constants.PORTAL_ValidPortalId))
+                .Returns(new PagedList<ContentType>(new List<ContentType>(), Constants.PAGE_First, Constants.PAGE_RecordCount));
+
+            //Act
+            var contentTypes = contentTypeController.GetStructuredContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            Assert.IsInstanceOf<IPagedList<ContentType>>(contentTypes);
         }
 
         [Test]

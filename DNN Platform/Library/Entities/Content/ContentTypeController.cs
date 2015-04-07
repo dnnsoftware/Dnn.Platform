@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -55,7 +55,8 @@ namespace DotNetNuke.Entities.Content
 	/// </example>
     public class ContentTypeController : IContentTypeController
     {
-        private readonly IDataContext _dataContext; 
+        private readonly IDataContext _dataContext;
+	    internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
         
         public ContentTypeController() : this(DataContext.Instance()) { }
 
@@ -153,13 +154,75 @@ namespace DotNetNuke.Entities.Content
             return contentTypes;
         }
 
-	    /// <summary>
-		/// Updates the type of the content.
-		/// </summary>
-		/// <param name="contentType">Type of the content.</param>
-		/// <exception cref="System.ArgumentNullException">content type is null.</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
-		/// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <summary>
+        /// Gets a page of content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        public IPagedList<ContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
+        {
+            IPagedList<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets the structured content types for a specific portal.
+        /// </summary>
+        /// <remarks>For the most part this will return the same daa set as GetContentTypes, but in this 
+        /// case we ensure that IsStructured flag is true.</remarks>
+        /// <param name="portalId">The portalId</param>
+        /// <returns>content type collection.</returns>
+        public IQueryable<ContentType> GetStructuredContentTypes(int portalId)
+        {
+            IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Find(StructuredWhereClause, portalId).AsQueryable();
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets a page of structured content types for a specific portal.
+        /// </summary>
+        /// <remarks>For the most part this will return the same daa set as GetContentTypes, but in this 
+        /// case we ensure that IsStructured flag is true.</remarks>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        public IPagedList<ContentType> GetStructuredContentTypes(int portalId, int pageIndex, int pageSize)
+        {
+            IPagedList<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Find(pageIndex, pageSize, StructuredWhereClause, portalId);
+            }
+
+            return contentTypes;
+        }
+        
+        /// <summary>
+        /// Updates the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        /// <exception cref="System.ArgumentNullException">content type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public void UpdateContentType(ContentType contentType)
         {
             //Argument Contract
@@ -175,7 +238,7 @@ namespace DotNetNuke.Entities.Content
 		    }
         }
 
-        [Obsolete("Deprecated in DNN 8.0.0")]
+        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 so IDataService is no longer needed")]
         public ContentTypeController(IDataService dataService) { }
     }
 }
