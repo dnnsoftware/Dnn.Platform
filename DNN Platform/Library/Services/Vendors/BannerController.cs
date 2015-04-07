@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Vendors
                                    string HomeDirectory, string BannerClickthroughUrl)
         {
             string strBanner = "";
-            string strWindow = "_new";
+            string strWindow = "new";
             if (Globals.GetURLType(URL) == TabType.Tab)
             {
                 strWindow = "_self";

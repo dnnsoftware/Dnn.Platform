@@ -88,9 +88,9 @@
                                 </a>
                             {{/if}}
                             {{if DetailURL}}
-                                <a class="galleryLink inline" href="${DetailURL}" target="_new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
+                                <a class="galleryLink inline" href="${DetailURL}" target="new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
                             {{else Catalog.CatalogUrl}}                                            
-                                <a class="galleryLink inline" href="${Catalog.CatalogUrl}" target="_new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
+                                <a class="galleryLink inline" href="${Catalog.CatalogUrl}" target="new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
                             {{/if}}                
                         </div>
                     </div>
