@@ -187,6 +187,7 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
+    <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
     <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />
