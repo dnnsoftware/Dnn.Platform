@@ -1792,6 +1792,8 @@ namespace DotNetNuke.Entities.Portals
 
         private void ParseTemplateInternal(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
+			CachingProvider.DisableCacheExpiration();
+
             var xmlPortal = new XmlDocument();
             IFolderInfo objFolder;
             XmlNode node;
@@ -1935,6 +1937,8 @@ namespace DotNetNuke.Entities.Portals
                 }
                 ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
+
+			CachingProvider.EnableCacheExpiration();
         }
 
         private void PrepareLocalizedPortalTemplate(PortalTemplateInfo template, out string templatePath, out string templateFile)
