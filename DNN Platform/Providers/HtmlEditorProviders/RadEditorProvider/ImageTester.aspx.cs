@@ -56,27 +56,35 @@ namespace DotNetNuke.Providers.RadEditorProvider
 	public partial class ImageTester : System.Web.UI.Page
 	{
 
-		protected void Page_Load(object sender, System.EventArgs e)
-		{
+        protected void Page_Load(object sender, System.EventArgs e)
+        {
 
-			string strResult = "NOTFOUND";
+            string strResult = "NOTFOUND";
 
-			string strFile = Request.QueryString["file"];
-			if (strFile != null)
-			{
-				string path = strFile.Replace("http://", "");
-				path = path.Substring(path.IndexOf("/"));
-				strFile = Server.MapPath(path);
-				if (System.IO.File.Exists(strFile))
-				{
-					strResult = "OK";
-				}
-			}
+            string strFile = Request.QueryString["file"];
+            if (strFile != null && !IsImageFile(strFile))
+            {
+                string path = strFile.Replace("http://", "");
+                path = path.Substring(path.IndexOf("/"));
+                strFile = Server.MapPath(path);
+                if (System.IO.File.Exists(strFile))
+                {
+                    strResult = "OK";
+                }
+            }
 
-			Response.Write(strResult);
-			Response.Flush();
+            Response.Write(strResult);
+            Response.Flush();
 
-		}
+        }
+
+        private static bool IsImageFile(string relativePath)
+        {
+            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".",
+            StringComparison.Ordinal) + 1).ToLower();
+            return acceptedExtensions.Contains(extension);
+        }
 
 
 	override protected void OnInit(EventArgs e)
