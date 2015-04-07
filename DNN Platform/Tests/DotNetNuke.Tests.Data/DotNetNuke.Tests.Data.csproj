@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DataAssert.cs" />
     <Compile Include="RepositoryBaseTests.cs" />
     <Compile Include="DataContextTests.cs" />
     <Compile Include="DataProviderTests.cs" />

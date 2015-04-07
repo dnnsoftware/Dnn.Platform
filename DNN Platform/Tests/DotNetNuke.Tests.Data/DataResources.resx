@@ -123,8 +123,14 @@
   <data name="ConnectionString" xml:space="preserve">
     <value>Data Source={0};Integrated Security=True;Initial Catalog={1}</value>
   </data>
+  <data name="GetFieldValue" xml:space="preserve">
+    <value>SELECT {0} FROM {1} WHERE {2} = {3}</value>
+  </data>
   <data name="GetLastAddedRecordID" xml:space="preserve">
     <value>SELECT MAX({1}) FROM {0}</value>
+  </data>
+  <data name="GetRecordCountByField" xml:space="preserve">
+    <value>SELECT COUNT(*) FROM {0} WHERE {1} = {2}</value>
   </data>
   <data name="GetRecordsByField" xml:space="preserve">
     <value>SELECT * FROM {0} WHERE {1} = {2}</value>
