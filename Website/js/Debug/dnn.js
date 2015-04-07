@@ -1097,7 +1097,7 @@ dnn.extend(dnn.dom, {
 
     navigate: function (sURL, sTarget) {
         if (sTarget != null && sTarget.length > 0) {
-            if (sTarget == '_blank' || sTarget == '_new')	//todo: handle more
+            if (sTarget == '_blank' || sTarget == 'new')	//todo: handle more
                 window.open(sURL);
             else
                 document.frames[sTarget].location.href = sURL;
