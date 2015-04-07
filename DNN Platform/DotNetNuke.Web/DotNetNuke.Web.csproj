@@ -148,7 +148,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="WebFormsMvp">
-      <HintPath>..\..\packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
+      <HintPath>..\..\Packages\WebFormsMVP.1.4.1.0\lib\WebFormsMvp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

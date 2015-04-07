@@ -278,14 +278,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.DynamicContent", "DNN P
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentManager", "DNN Platform\Modules\Dnn.Modules.DynamicContentManager\Dnn.Modules.DynamicContentManager.csproj", "{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentViewer", "DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Dnn.Modules.DynamicContentViewer.csproj", "{3B984D43-33BE-4918-A7B3-84729F4CEC92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F} = {7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamicContent", "DynamicContent", "{53587796-3981-4E25-A8BA-29E62901C003}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.UnitTests", "DNN Platform\Tests\Dnn.Tests.DynamicContent.UnitTests\Dnn.Tests.DynamicContent.UnitTests.csproj", "{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.IntegrationTests", "DNN Platform\Tests\Dnn.Tests.DynamicContent.IntegrationTests\Dnn.Tests.DynamicContent.IntegrationTests.csproj", "{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
