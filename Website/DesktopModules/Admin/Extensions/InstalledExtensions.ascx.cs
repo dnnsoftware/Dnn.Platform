@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -376,13 +376,13 @@ namespace DotNetNuke.Modules.Admin.Extensions
         {
             var strUpgradeService = "";
             strUpgradeService += "<a title=\"" + Localization.GetString("UpgradeMessage", LocalResourceFile) + "\" href=\"" + UpgradeRedirect(version, packageType, packageName, "") +
-                                 "\" target=\"_new\"><img title=\"" + Localization.GetString("UpgradeMessage", LocalResourceFile) + "\" src=\"" +
+                                 "\" target=\"new\"><img title=\"" + Localization.GetString("UpgradeMessage", LocalResourceFile) + "\" src=\"" +
                                  UpgradeIndicator(version, packageType, packageName, "") + "\" border=\"0\" /></a>";
             if (!string.IsNullOrEmpty(cboLocales.SelectedValue))
             {
                 strUpgradeService += "<br />";
                 strUpgradeService += "<a title=\"" + Localization.GetString("LanguageMessage", LocalResourceFile) + "\" href=\"" +
-                                     UpgradeRedirect(version, packageType, packageName, cboLocales.SelectedItem.Value) + "\" target=\"_new\"><img title=\"" +
+                                     UpgradeRedirect(version, packageType, packageName, cboLocales.SelectedItem.Value) + "\" target=\"new\"><img title=\"" +
                                      Localization.GetString("LanguageMessage", LocalResourceFile) + "\" src=\"" + UpgradeIndicator(version, packageType, packageName, cboLocales.SelectedItem.Value) +
                                      "\" border=\"0\" /></a>";
             }
