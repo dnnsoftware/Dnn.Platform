@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.Admin.Skins
 					}
 
 				    previewLink.CssClass = "dnnSecondaryAction";
-					previewLink.Target = "_new";
+					previewLink.Target = "_blank";
 					previewLink.Text = Localization.GetString("cmdPreview", LocalResourceFile);
 					cell.Controls.Add(previewLink);
 
@@ -458,7 +458,7 @@ namespace DotNetNuke.Modules.Admin.Skins
 											{
 												NavigateUrl = ResolveUrl("~" + strURL),
 												CssClass = "dnnSecondaryAction",
-												Target = "_new",
+												Target = "_blank",
 												Text = string.Format(Localization.GetString("About", LocalResourceFile), strFolder)
 											};
 					cell.Controls.Add(copyrightLink);
@@ -479,7 +479,7 @@ namespace DotNetNuke.Modules.Admin.Skins
 	        var imgLink = new HyperLink();
 	        var strURL = file.Substring(file.LastIndexOf("\\portals\\", StringComparison.OrdinalIgnoreCase));
 	        imgLink.NavigateUrl = this.ResolveUrl("~" + strURL.Replace(".ascx", extension));
-	        imgLink.Target = "_new";
+	        imgLink.Target = "_blank";
 
 	        var img = new System.Web.UI.WebControls.Image { ImageUrl = CreateThumbnail(file.Replace(".ascx", extension)), BorderWidth = new Unit(1) };
 
