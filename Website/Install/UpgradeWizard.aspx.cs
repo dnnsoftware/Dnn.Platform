@@ -111,8 +111,17 @@ namespace DotNetNuke.Services.Install
         {
             SetBrowserLanguage();
             Page.Title = LocalizeString("Title");
-            versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
-            currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));
+            if (Globals.FormatVersion(ApplicationVersion) == Globals.FormatVersion(CurrentVersion))
+            {
+                versionLabel.Visible = false;
+                currentVersionLabel.Visible = false;
+                versionsMatch.Text = LocalizeString("VersionsMatch");
+            }
+            else
+            {
+                versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
+                currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));  
+            }
         }
 
         private static void GetInstallerLocales()
