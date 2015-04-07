@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -214,7 +214,7 @@ namespace DotNetNuke.UI
                 bool newWindow = false;
                 if (objTab.TabSettings["LinkNewWindow"] != null && Boolean.TryParse((string)objTab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
                 {
-                    objNode.Target = "_new";
+                    objNode.Target = "new";
                 }
 
                 objNodes.Add(objNode);
