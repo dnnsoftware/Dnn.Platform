@@ -76,7 +76,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             var linkClickPortalSettings = GetPortalSettingsForLinkClick(GetPortalIdFromLinkClick(queryParams));
             var strFileId = UrlUtils.DecryptParameter(queryParams["fileticket"], linkClickPortalSettings.PortalGUID);
-            return Convert.ToInt32(strFileId);
+            int fileId;
+            return int.TryParse(strFileId, out fileId) ? fileId : -1;
         }
 
         protected override Func<IFileLinkClickController> GetFactory()

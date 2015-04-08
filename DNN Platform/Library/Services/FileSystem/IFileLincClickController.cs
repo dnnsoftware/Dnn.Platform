@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Get the File Id value contained in a Link Click Url
         /// </summary>
         /// <param name="queryParams">Query string parameters collection from a Link Click url</param>
-        /// <returns>A File Id</returns>
+        /// <returns>A File Id (or -1 if no File Id could be extracted from the query string parameters)</returns>
         int GetFileIdFromLinkClick(NameValueCollection queryParams);
     }
 }
