@@ -143,6 +143,7 @@
     <Compile Include="Api\DnnExceptionAttribute.cs" />
     <Compile Include="Api\DnnHttpControllerSelector.cs" />
     <Compile Include="Api\DnnModuleAuthorizeAttribute.cs" />
+    <Compile Include="Api\HMACAuthenticationAttribute.cs" />
     <Compile Include="Api\HttpConfigurationExtensions.cs" />
     <Compile Include="Api\Internal\AntiForgery.cs" />
     <Compile Include="Api\Internal\AntiForgeryImpl.cs" />
