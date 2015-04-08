@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,30 +18,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System.Linq;
+using NUnit.Framework;
 
-#endregion
-
-namespace DotNetNuke.Entities.Content
+namespace DotNetNuke.Tests.Data
 {
-	/// <summary>
-	/// Interface of ContentTypeController.
-	/// </summary>
-	/// <seealso cref="ContentTypeController"/>
-    public interface IContentTypeController
+    public class DataAssert
     {
-        int AddContentType(ContentType contentType);
+        public static void IsFieldValueEqual<T>(T expectedValue, string databaseName, string tableName, string field, string primaryKeyField, int id)
+        {
+            var value = DataUtil.GetFieldValue<T>(databaseName, tableName, field, primaryKeyField, id.ToString());
 
-        void ClearContentTypeCache();
+            Assert.AreEqual(expectedValue, value);
+        }
 
-        void DeleteContentType(ContentType contentType);
+        public static void RecordWithIdPresent(string databaseName, string tableName, string primaryKeyField, int id)
+        {
+            var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
+            Assert.IsTrue(count == 1);
+        }
 
-        IQueryable<ContentType> GetContentTypes();
-
-        IQueryable<ContentType> GetContentTypes(int portalId);
-
-        void UpdateContentType(ContentType contentType);
+        public static void RecordWithIdNotPresent(string databaseName, string tableName, string primaryKeyField, int id)
+        {
+            var count = DataUtil.GetRecordCount(databaseName, tableName, primaryKeyField, id.ToString());
+            Assert.IsTrue(count == 0);
+        }
     }
 }

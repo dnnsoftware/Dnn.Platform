@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22728.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Library", "DNN Platform\Library\DotNetNuke.Library.csproj", "{6B29ADED-7B56-4484-BEA5-C0E09079535B}"
 EndProject
@@ -31,6 +31,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN Platform\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj", "{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web.Mvc", "DNN Platform\Tests\DotNetNuke.Tests.Web.Mvc\DotNetNuke.Tests.Web.Mvc.csproj", "{AF3A5042-B67B-4F84-9E40-BE06B1105337}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC Modules", "MVC Modules", "{5BF868BA-A091-41E7-96E6-AAAAA043B440}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin Modules", "Admin Modules", "{FBC1332F-4B78-4656-BD00-EC0D65D624C5}"
+EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{6CD360CB-28EF-4727-90D3-06E2741EC568}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = ""
@@ -56,15 +66,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 		SlnRelativePath = "Website\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Mvc", "DNN Platform\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj", "{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Web.Mvc", "DNN Platform\Tests\DotNetNuke.Tests.Web.Mvc\DotNetNuke.Tests.Web.Mvc.csproj", "{AF3A5042-B67B-4F84-9E40-BE06B1105337}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC Modules", "MVC Modules", "{5BF868BA-A091-41E7-96E6-AAAAA043B440}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{8FDA59A1-2095-4B3A-8EE2-25347FA94A35}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin Modules", "Admin Modules", "{FBC1332F-4B78-4656-BD00-EC0D65D624C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,10 +128,6 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|x86.ActiveCfg = Release|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
 		{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64DC5798-9D37-4F8D-97DD-8403E6E70DD3}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -142,6 +140,19 @@ Global
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337}.Release|x86.ActiveCfg = Release|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Debug|x86.Build.0 = Debug|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|x86.ActiveCfg = Release|Any CPU
+		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,5 +167,6 @@ Global
 		{7E98CA08-903E-45F7-BD83-853763D5E15B} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337} = {88E649D7-1379-430F-B794-1F3B9B442C80}
+		{6629A64D-58B9-48B9-B932-15AF193C2212} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 	EndGlobalSection
 EndGlobal

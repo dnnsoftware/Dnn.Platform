@@ -20,13 +20,16 @@
 #endregion
 #region Usings
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
+using DotNetNuke.Entities.Users;
 
 #endregion
 
@@ -52,22 +55,18 @@ namespace DotNetNuke.Entities.Content
 	/// </example>
     public class ContentTypeController : IContentTypeController
     {
-        private readonly IDataService _DataService;
+        private readonly IDataContext _dataContext;
+	    internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
+        
+        public ContentTypeController() : this(DataContext.Instance()) { }
 
-        #region Constructors
-
-        public ContentTypeController() : this(Util.GetDataService())
+        public ContentTypeController(IDataContext dataContext)
         {
+            //Argument Contract
+            Requires.NotNull("dataContext", dataContext);
+
+            _dataContext = dataContext;
         }
-
-        public ContentTypeController(IDataService dataService)
-        {
-            _DataService = dataService;
-        }
-
-        #endregion
-
-        #region Public Methods
 
 		/// <summary>
 		/// Adds the type of the content.
@@ -82,10 +81,12 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = _DataService.AddContentType(contentType);
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Insert(contentType);
+            }
 
             return contentType.ContentTypeId;
         }
@@ -110,10 +111,12 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            _DataService.DeleteContentType(contentType);
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Delete(contentType);
+            }
         }
 
 		/// <summary>
@@ -121,20 +124,105 @@ namespace DotNetNuke.Entities.Content
 		/// </summary>
 		/// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
-        {
-            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey, 
-                                                                            DataCache.ContentTypesCacheTimeOut, 
-                                                                            DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
+		{
+		    IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+		    {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+		        contentTypes = rep.Get().AsQueryable();
+		    }
+
+		    return contentTypes;
         }
 
-		/// <summary>
-		/// Updates the type of the content.
-		/// </summary>
-		/// <param name="contentType">Type of the content.</param>
-		/// <exception cref="System.ArgumentNullException">content type is null.</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
-		/// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <summary>
+        /// Gets the content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <returns>content type collection.</returns>
+        public IQueryable<ContentType> GetContentTypes(int portalId)
+	    {
+            IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Get(portalId).AsQueryable();
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets a page of content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        public IPagedList<ContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
+        {
+            IPagedList<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets the structured content types for a specific portal.
+        /// </summary>
+        /// <remarks>For the most part this will return the same daa set as GetContentTypes, but in this 
+        /// case we ensure that IsStructured flag is true.</remarks>
+        /// <param name="portalId">The portalId</param>
+        /// <returns>content type collection.</returns>
+        public IQueryable<ContentType> GetStructuredContentTypes(int portalId)
+        {
+            IQueryable<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Find(StructuredWhereClause, portalId).AsQueryable();
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets a page of structured content types for a specific portal.
+        /// </summary>
+        /// <remarks>For the most part this will return the same daa set as GetContentTypes, but in this 
+        /// case we ensure that IsStructured flag is true.</remarks>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        public IPagedList<ContentType> GetStructuredContentTypes(int portalId, int pageIndex, int pageSize)
+        {
+            IPagedList<ContentType> contentTypes;
+            using (_dataContext)
+            {
+                var rep = _dataContext.GetRepository<ContentType>();
+
+                contentTypes = rep.Find(pageIndex, pageSize, StructuredWhereClause, portalId);
+            }
+
+            return contentTypes;
+        }
+        
+        /// <summary>
+        /// Updates the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        /// <exception cref="System.ArgumentNullException">content type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public void UpdateContentType(ContentType contentType)
         {
             //Argument Contract
@@ -142,12 +230,15 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            _DataService.UpdateContentType(contentType);
+		    using (_dataContext)
+		    {
+		        var rep = _dataContext.GetRepository<ContentType>();
 
-            //Refresh cached collection of types
-            ClearContentTypeCache();
+                rep.Update(contentType);
+		    }
         }
 
-        #endregion
+        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 so IDataService is no longer needed")]
+        public ContentTypeController(IDataService dataService) { }
     }
 }

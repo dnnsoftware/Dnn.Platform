@@ -68,6 +68,11 @@ namespace DotNetNuke.Tests.Data
             return String.Format("Data Source = {0};", databaseName);
         }
 
+        public static T GetFieldValue<T>(string databaseName, string tableName, string field, string primaryKeyField, string primaryKeyValue)
+        {
+            return ExecuteQuery(databaseName, String.Format(DataResources.GetFieldValue, field, tableName, primaryKeyField, primaryKeyValue), (cmd) => (T)cmd.ExecuteScalar());
+        }
+
         public static int GetLastAddedRecordID(string databaseName, string tableName, string primaryKeyField)
         {
             return ExecuteScalar(databaseName, String.Format(DataResources.GetLastAddedRecordID, tableName, primaryKeyField));
@@ -76,6 +81,11 @@ namespace DotNetNuke.Tests.Data
         public static int GetRecordCount(string databaseName, string tableName)
         {
             return ExecuteScalar(databaseName, String.Format(DataResources.RecordCountScript, tableName));
+        }
+
+        public static int GetRecordCount(string databaseName, string tableName, string field, string value)
+        {
+            return ExecuteScalar(databaseName, String.Format(DataResources.GetRecordCountByField, tableName, field, value));
         }
 
         public static DataTable GetTable(string databaseName, string tableName)

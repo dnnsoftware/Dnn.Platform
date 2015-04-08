@@ -25,6 +25,7 @@ using System.Data;
 using System.Linq;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
 
 #endregion
@@ -32,17 +33,6 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Entities.Content
 {
     /// <summary>
-    /// This class exists solely to maintain compatibility between the original VB version
-    /// which supported ContentType.ContentType and the c# version which doesn't allow members with
-    /// the same naem as their parent type
-    /// </summary>
-    [Serializable]
-    public abstract class ContentTypeMemberNameFixer
-    {
-        public string ContentType { get; set; }
-    }
-
-	/// <summary>
 	/// Content type of a content item.
 	/// </summary>
 	/// <remarks>
@@ -51,21 +41,19 @@ namespace DotNetNuke.Entities.Content
 	///  will likely need to create its own content type. 
 	/// </remarks>
     [Serializable]
+    [TableName("ContentTypes")]
+    [PrimaryKey("ContentTypeID")]
+    [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
+    [Scope("PortalID")]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        #region Private Members
-
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
 
-        private const string desktopModuleContentTypeName = "DesktopModule";
-        private const string moduleContentTypeName = "Module";
-        private const string tabContentTypeName = "Tab";
-
-        #endregion
-
-        #region Constructors
+        internal const string DesktopModuleContentTypeName = "DesktopModule";
+        internal const string ModuleContentTypeName = "Module";
+        internal const string TabContentTypeName = "Tab";
 
         public ContentType() : this(Null.NullString)
         {
@@ -75,37 +63,36 @@ namespace DotNetNuke.Entities.Content
         {
             ContentTypeId = Null.NullInteger;
             ContentType = contentType;
+            PortalID = Null.NullInteger;
+            IsStructured = Null.NullBoolean;
         }
 
-        #endregion
-
-        #region Public Static Properties
-
+        [IgnoreColumn]
         public static ContentType DesktopModule
 	    {
 	        get
 	        {
-	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  desktopModuleContentTypeName));
+	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
 	        }
 	    }
 
-	    public static ContentType Module
+        [IgnoreColumn]
+        public static ContentType Module
 	    {
 	        get
 	        {
-	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  moduleContentTypeName));
+	            return _module ?? (_module = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
 	        }
 	    }
 
+        [IgnoreColumn]
         public static ContentType Tab 
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
-
-        #endregion
 
         /// <summary>
 		/// Gets or sets the content type id.
@@ -115,48 +102,40 @@ namespace DotNetNuke.Entities.Content
 		/// </value>
         public int ContentTypeId { get; set; }
 
-        #region IHydratable Implementation
+        /// <summary>
+        /// Gets or sets whether the Content Type is structured
+        /// </summary>
+        /// <value>
+        /// A flag that indicates whether the Content Type is structured.
+        /// </value>
+        public bool IsStructured { get; set; }
 
-		/// <summary>
-		/// Fill this content object will the information from data reader.
-		/// </summary>
-		/// <param name="dr">The data reader.</param>
-		/// <seealso cref="IHydratable.Fill"/>
+        /// <summary>
+        /// Gets or sets the portal id for the Content Type
+        /// </summary>
+        /// <value>
+        /// The portal id.
+        /// </value>
+        public int PortalID { get; set; }
+
+        public override string ToString()
+        {
+            return ContentType;
+        }
+
+        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
+        [IgnoreColumn]
+        public int KeyID
+        {
+            get { return ContentTypeId; }
+            set { ContentTypeId = value; }
+        }
+
+        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
         public void Fill(IDataReader dr)
         {
             ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
             ContentType = Null.SetNullString(dr["ContentType"]);
-        }
-
-		/// <summary>
-		/// Gets or sets the key ID.
-		/// </summary>
-		/// <value>
-		/// ContentTypeID
-		/// </value>
-        public int KeyID
-        {
-            get
-            {
-                return ContentTypeId;
-            }
-            set
-            {
-                ContentTypeId = value;
-            }
-        }
-
-        #endregion
-
-		/// <summary>
-		/// override ToString to return content type
-		/// </summary>
-		/// <returns>
-		/// property ContentType's value.
-		/// </returns>
-        public override string ToString()
-        {
-            return ContentType;
         }
     }
 }

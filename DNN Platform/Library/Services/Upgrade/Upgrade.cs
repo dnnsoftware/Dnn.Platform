@@ -2614,14 +2614,14 @@ namespace DotNetNuke.Services.Upgrade
 
             // Add File Content Type
             var typeController = new ContentTypeController();
-            var contentTypeFile = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+            var contentTypeFile = (from t in typeController.GetContentTypes(-1) where t.ContentType == "File" select t).SingleOrDefault();
 
             if (contentTypeFile == null)
             {
                 typeController.AddContentType(new ContentType { ContentType = "File" });
             }
 
-            var fileContentType = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+            var fileContentType = (from t in typeController.GetContentTypes(-1) where t.ContentType == "File" select t).SingleOrDefault();
 
 
             //only perform following for an existing installation upgrading
@@ -2787,7 +2787,7 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             var typeController = new ContentTypeController();
-            var fileContentType = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+            var fileContentType = (from t in typeController.GetContentTypes(-1) where t.ContentType == "File" select t).SingleOrDefault();
 
             //only perform following for an existing installation upgrading
             if (Globals.Status == Globals.UpgradeStatus.Upgrade)
@@ -3139,7 +3139,7 @@ namespace DotNetNuke.Services.Upgrade
         private static ContentItem CreateFileContentItem()
         {
             var typeController = new ContentTypeController();
-            var contentTypeFile = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
+            var contentTypeFile = (from t in typeController.GetContentTypes(-1) where t.ContentType == "File" select t).SingleOrDefault();
 
             if (contentTypeFile == null)
             {

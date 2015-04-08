@@ -70,15 +70,6 @@ namespace DotNetNuke.Entities.Content.Data
 	                             IEnumerable<KeyValuePair<string, string>> added,
 	                             IEnumerable<KeyValuePair<string, string>> deleted);
 
-        //ContentType Methods
-        int AddContentType(ContentType contentType);
-
-        void DeleteContentType(ContentType contentType);
-
-        IDataReader GetContentTypes();
-
-        void UpdateContentType(ContentType contentType);
-
         //ScopeType Methods
         int AddScopeType(ScopeType scopeType);
 
