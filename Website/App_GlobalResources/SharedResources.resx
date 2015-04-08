@@ -999,6 +999,15 @@
   <data name="PasswordResetFailed.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and which is long and complex enough to meet the sites password complexity requirements.</value>
   </data>
+  <data name="PasswordResetFailed_UserUndefined.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Provided user account can't be verified.</value>
+  </data>
+  <data name="PasswordResetFailed_ResetLinkExpired.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Password reset link has expired and no longer valid.</value>
+  </data>
+  <data name="PasswordResetFailed_PasswordInHistory.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password.</value>
+  </data>
   <data name="InsecureAdmin.Text" xml:space="preserve">
     <value>Your admin account is still using a known default password. Please go to the Admin-&gt;User accounts menu and update the password. In addition, please ensure that you have updated the email address to a valid value.</value>
   </data>
