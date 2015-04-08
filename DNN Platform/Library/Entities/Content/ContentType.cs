@@ -18,7 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
 using System;
 using System.Data;
@@ -27,8 +26,6 @@ using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -42,7 +39,7 @@ namespace DotNetNuke.Entities.Content
 	/// </remarks>
     [Serializable]
     [TableName("ContentTypes")]
-    [PrimaryKey("ContentTypeID")]
+    [PrimaryKey("ContentTypeID", "ContentTypeId")]
     [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
     [Scope("PortalID")]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable

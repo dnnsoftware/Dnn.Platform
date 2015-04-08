@@ -41,7 +41,42 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
   DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentType]
 GO
 
+/* DNN-6783 Allow developers to manage DCC DataTypes */
+/*****************************************************/
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_DataTypes]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes](
+			[DataTypeID] [int] NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)	
+	END
+GO
+
+/* DNN-6784 Allow developers to manage ContentFields */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions](
+			[FieldDefinitionID] [int] NOT NULL,
+			[ContentTypeID] [int] NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			[Label] [nvarchar](100) NOT NULL,
+			[Description] [nvarchar](2000) NULL,
+			[DataTypeID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_FieldDefinitions] PRIMARY KEY CLUSTERED ([FieldDefinitionID] ASC)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes_DataTypes] FOREIGN KEY([DataTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([DataTypeID])
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

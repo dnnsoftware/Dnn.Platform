@@ -18,20 +18,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Users;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -53,87 +47,118 @@ namespace DotNetNuke.Entities.Content
     /// }
 	/// </code>
 	/// </example>
-    public class ContentTypeController : IContentTypeController
+    public class ContentTypeController : ControllerBase,  IContentTypeController
     {
-        private readonly IDataContext _dataContext;
 	    internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
         
-        public ContentTypeController() : this(DataContext.Instance()) { }
+        public ContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public ContentTypeController(IDataContext dataContext)
-        {
-            //Argument Contract
-            Requires.NotNull("dataContext", dataContext);
+        public ContentTypeController(IDataContext dataContext) : base(dataContext) { }
 
-            _dataContext = dataContext;
-        }
-
-		/// <summary>
-		/// Adds the type of the content.
-		/// </summary>
-		/// <param name="contentType">Type of the content.</param>
-		/// <returns>content type id.</returns>
-		/// <exception cref="System.ArgumentNullException">content type is null.</exception>
-		/// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
+        /// <summary>
+        /// Adds the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns>content type id.</returns>
+        /// <exception cref="System.ArgumentNullException">content type is null.</exception>
+        /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public int AddContentType(ContentType contentType)
         {
             //Argument Contract
-            Requires.NotNull("contentType", contentType);
-            Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
+            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
 
-            using (_dataContext)
-            {
-                var rep = _dataContext.GetRepository<ContentType>();
-
-                rep.Insert(contentType);
-            }
+            Add(contentType);
 
             return contentType.ContentTypeId;
         }
 
-		/// <summary>
-		/// Clears the content type cache.
-		/// </summary>
-        public void ClearContentTypeCache()
-        {
-            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
-        }
-
-		/// <summary>
-		/// Deletes the type of the content.
-		/// </summary>
-		/// <param name="contentType">Type of the content.</param>
-		/// <exception cref="System.ArgumentNullException">content type is null.</exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
-        public void DeleteContentType(ContentType contentType)
+        /// <summary>
+        /// Adds a new data type for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="dataType">The data type to add.</param>
+        /// <returns>data type id.</returns>
+        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
+        /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
+        public int AddDataType(ContentTypeDataType dataType)
         {
             //Argument Contract
-            Requires.NotNull("contentType", contentType);
-            Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
+            Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
-            using (_dataContext)
-            {
-                var rep = _dataContext.GetRepository<ContentType>();
+            Add(dataType);
 
-                rep.Delete(contentType);
-            }
+            return dataType.DataTypeId;
         }
 
-		/// <summary>
-		/// Gets the content types.
-		/// </summary>
-		/// <returns>content type collection.</returns>
+        /// <summary>
+        /// Adds a new field definition for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="field">The field definition to add.</param>
+        /// <returns>field definition id.</returns>
+        /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
+        /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
+        public int AddFieldDefinition(ContentTypeFieldDefinition field)
+        {
+            //Argument Contract
+            Requires.PropertyNotNegative(field, "DataTypeId");
+            Requires.PropertyNotNegative(field, "ContentTypeId");
+            Requires.PropertyNotNullOrEmpty(field, "Name");
+            Requires.PropertyNotNullOrEmpty(field, "Label");
+
+            Add(field);
+
+            return field.FieldDefinitionId;
+        }
+
+
+        /// <summary>
+        /// Deletes the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        /// <exception cref="System.ArgumentNullException">content type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
+        public void DeleteContentType(ContentType contentType)
+        {
+            Delete(contentType);
+        }
+
+        /// <summary>
+        /// Deletes the data type for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="dataType">The data type to delete.</param>
+        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        public void DeleteDataType(ContentTypeDataType dataType)
+        {
+            Delete(dataType);
+        }
+
+        /// <summary>
+        /// Deletes the field definition for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="field">The field definitione to delete.</param>
+        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        public void DeleteFieldDefinition(ContentTypeFieldDefinition field)
+        {
+            Delete(field);
+        }
+
+        /// <summary>
+        /// Gets the content types.
+        /// </summary>
+        /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
 		{
-		    IQueryable<ContentType> contentTypes;
-            using (_dataContext)
-		    {
-                var rep = _dataContext.GetRepository<ContentType>();
+		    return Get<ContentType>().AsQueryable();
+        }
 
-		        contentTypes = rep.Get().AsQueryable();
-		    }
-
-		    return contentTypes;
+        /// <summary>
+        /// Gets the data types.
+        /// </summary>
+        /// <returns>data type collection.</returns>
+        public IQueryable<ContentTypeDataType> GetDataTypes()
+        {
+            return Get<ContentTypeDataType>().AsQueryable();
         }
 
         /// <summary>
@@ -144,9 +169,9 @@ namespace DotNetNuke.Entities.Content
         public IQueryable<ContentType> GetContentTypes(int portalId)
 	    {
             IQueryable<ContentType> contentTypes;
-            using (_dataContext)
+            using (DataContext)
             {
-                var rep = _dataContext.GetRepository<ContentType>();
+                var rep = DataContext.GetRepository<ContentType>();
 
                 contentTypes = rep.Get(portalId).AsQueryable();
             }
@@ -164,9 +189,9 @@ namespace DotNetNuke.Entities.Content
         public IPagedList<ContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
         {
             IPagedList<ContentType> contentTypes;
-            using (_dataContext)
+            using (DataContext)
             {
-                var rep = _dataContext.GetRepository<ContentType>();
+                var rep = DataContext.GetRepository<ContentType>();
 
                 contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
             }
@@ -184,9 +209,9 @@ namespace DotNetNuke.Entities.Content
         public IQueryable<ContentType> GetStructuredContentTypes(int portalId)
         {
             IQueryable<ContentType> contentTypes;
-            using (_dataContext)
+            using (DataContext)
             {
-                var rep = _dataContext.GetRepository<ContentType>();
+                var rep = DataContext.GetRepository<ContentType>();
 
                 contentTypes = rep.Find(StructuredWhereClause, portalId).AsQueryable();
             }
@@ -206,9 +231,9 @@ namespace DotNetNuke.Entities.Content
         public IPagedList<ContentType> GetStructuredContentTypes(int portalId, int pageIndex, int pageSize)
         {
             IPagedList<ContentType> contentTypes;
-            using (_dataContext)
+            using (DataContext)
             {
-                var rep = _dataContext.GetRepository<ContentType>();
+                var rep = DataContext.GetRepository<ContentType>();
 
                 contentTypes = rep.Find(pageIndex, pageSize, StructuredWhereClause, portalId);
             }
@@ -226,19 +251,34 @@ namespace DotNetNuke.Entities.Content
         public void UpdateContentType(ContentType contentType)
         {
             //Argument Contract
-            Requires.NotNull("contentType", contentType);
-            Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
-            Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
+            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
 
-		    using (_dataContext)
-		    {
-		        var rep = _dataContext.GetRepository<ContentType>();
+            Update(contentType);
+        }
 
-                rep.Update(contentType);
-		    }
+        /// <summary>
+        /// Updates the data type.
+        /// </summary>
+        /// <param name="datatType">The data type.</param>
+        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
+        /// <exception cref="System.ArgumentException">datatType.Name is empty.</exception>
+        public void UpdateDataType(ContentTypeDataType datatType)
+        {
+            //Argument Contract
+            Requires.PropertyNotNullOrEmpty(datatType, "Name");
+
+            Update(datatType);
+        }
+
+        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically")]
+        public void ClearContentTypeCache()
+        {
+            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
         }
 
         [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 so IDataService is no longer needed")]
+        // ReSharper disable once UnusedParameter.Local
         public ContentTypeController(IDataService dataService) { }
     }
 }

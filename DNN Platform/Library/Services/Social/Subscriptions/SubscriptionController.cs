@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             Requires.NotNull("subscription", subscription);
             Requires.NotNegative("subscription.UserId", subscription.UserId);
             Requires.NotNegative("subscription.SubscriptionTypeId", subscription.SubscriptionTypeId);
-            Requires.NotNull("subscription.ObjectKey", subscription.ObjectKey);
+            Requires.PropertyNotNull("subscription.ObjectKey", subscription.ObjectKey);
 
             subscription.SubscriptionId = dataService.AddSubscription(subscription.UserId,
                                                subscription.PortalId,
@@ -120,9 +120,9 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
         {
-            Requires.NotNull("objectKey", objectKey);
+            Requires.PropertyNotNull("objectKey", objectKey);
             Requires.NotNull("portalId", portalId);
-            Requires.NotNull("newDescription", newDescription);
+            Requires.PropertyNotNull("newDescription", newDescription);
             return dataService.UpdateSubscriptionDescription(objectKey, portalId, newDescription);
         }
 

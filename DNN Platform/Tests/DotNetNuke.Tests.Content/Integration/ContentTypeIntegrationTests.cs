@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -31,7 +30,6 @@ using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Tests.Data;
-using DotNetNuke.Tests.Data.Models;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
@@ -53,7 +51,23 @@ namespace DotNetNuke.Tests.Content.Integration
 	            ContentType nvarchar(100) NOT NULL,
 	            PortalID int NOT NULL,
 	            IsStructured bit NOT NULL)";
+        private const string CreateDataTypeTableSql = @"
+            CREATE TABLE ContentTypes_DataTypes(
+	            DataTypeID int IDENTITY(1,1) NOT NULL,
+	            Name nvarchar(100) NOT NULL)";
+        private const string CreateFieldDefinitionTableSql = @"
+            CREATE TABLE ContentTypes_FieldDefinitions(
+	            FieldDefinitionID int IDENTITY(1,1) NOT NULL,
+                ContentTypeID int NOT NULL,
+                DataTypeID int NOT NULL,
+	            Name nvarchar(100) NOT NULL,
+	            Label nvarchar(100) NOT NULL,
+	            Description nvarchar(2000) NULL)";
         private const string InsertContentTypeSql = "INSERT INTO ContentTypes (ContentType, PortalID, IsStructured) VALUES ('{0}',{1}, {2})";
+        private const string InsertDataTypeSql = "INSERT INTO ContentTypes_DataTypes (Name) VALUES ('{0}')";
+        private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
+                                                            (ContentTypeID, DataTypeID, Name, Label, Description) 
+                                                            VALUES ({0}, {1}, '{2}', '{3}', '{4}')";
         private const int PortalId = 0;
         private const int RecordCount = 10;
 
@@ -92,7 +106,7 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_AddContentType_Inserts_New_Record_In_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
             var contentType = new ContentType() {ContentType = "New_Type"};
@@ -107,13 +121,56 @@ namespace DotNetNuke.Tests.Content.Integration
         }
 
         [Test]
+        public void ContentTypeController_AddDataType_Inserts_New_Record_In_Database()
+        {
+            //Arrange
+            SetUpDataTypes(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var dataType = new ContentTypeDataType() { Name = "New_Type" };
+
+            //Act
+            contentTypeController.AddDataType(dataType);
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_DataTypes");
+
+            Assert.AreEqual(RecordCount + 1, actualCount);
+        }
+
+        [Test]
+        public void ContentTypeController_AddFieldDefinition_Inserts_New_Record_In_Database()
+        {
+            //Arrange
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var definition = new ContentTypeFieldDefinition
+                                {
+                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    Name = "New_Type",
+                                    Label = "Label"
+                                };
+
+            //Act
+            contentTypeController.AddFieldDefinition(definition);
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_FieldDefinitions");
+
+            Assert.AreEqual(RecordCount + 1, actualCount);
+        }
+
+        [Test]
         public void ContentTypeController_DeleteContentType_Deletes_Record_From_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            var typeId = 2;
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = 2, ContentType = "Type_2" };
+            var contentType = new ContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -128,23 +185,102 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_DeleteContentType_Deletes_Correct_Record_From_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            var typeId = 2;
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = 2, ContentType = "Type_2" };
+            var contentType = new ContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
 
             //Assert
-            DataAssert.RecordWithIdNotPresent(DatabaseName, "ContentTYpes", "ContentTypeId", 2);
+            DataAssert.RecordWithIdNotPresent(DatabaseName, "ContentTYpes", "ContentTypeId", typeId);
+        }
+
+        [Test]
+        public void ContentTypeController_DeleteDataType_Deletes_Record_From_Database()
+        {
+            //Arrange
+            var dataTypeId = 6;
+            SetUpDataTypes(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var dataType = new ContentTypeDataType() { DataTypeId = dataTypeId, Name = "New_Type" };
+
+            //Act
+            contentTypeController.DeleteDataType(dataType);
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_DataTypes");
+
+            Assert.AreEqual(RecordCount - 1, actualCount);
+        }
+
+        [Test]
+        public void ContentTypeController_DeleteDataType_Deletes_Correct_Record_From_Database()
+        {
+            //Arrange
+            var dataTypeId = 6;
+            SetUpDataTypes(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var dataType = new ContentTypeDataType() { DataTypeId = dataTypeId, Name = "New_Type" };
+
+            //Act
+            contentTypeController.DeleteDataType(dataType);
+
+            //Assert
+            DataAssert.RecordWithIdNotPresent(DatabaseName, "ContentTypes_DataTypes", "DataTypeId", dataTypeId);
+        }
+
+        [Test]
+        public void ContentTypeController_DeleteFieldDefinition_Deletes_Record_From_Database()
+        {
+            //Arrange
+            var definitionId = 4;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var definition = new ContentTypeFieldDefinition
+                                    {
+                                        FieldDefinitionId = definitionId
+                                    };
+
+            //Act
+            contentTypeController.DeleteFieldDefinition(definition);
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_FieldDefinitions");
+
+            Assert.AreEqual(RecordCount - 1, actualCount);
+        }
+
+        [Test]
+        public void ContentTypeController_DeleteFieldDefinition_Deletes_Correct_Record_From_Database()
+        {
+            //Arrange
+            var definitionId = 4;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var definition = new ContentTypeFieldDefinition
+                                    {
+                                        FieldDefinitionId = definitionId
+                                    };
+
+            //Act
+            contentTypeController.DeleteFieldDefinition(definition);
+
+            //Assert
+            DataAssert.RecordWithIdNotPresent(DatabaseName, "ContentTypes_FieldDefinitions", "FieldDefinitionId", definitionId);
         }
 
         [Test]
         public void ContentTypeController_GetContentTypes_Returns_All_Records_From_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
 
@@ -159,7 +295,7 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_GetContentTypes_Overload_Returns_Records_For_Portal_From_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
 
@@ -180,7 +316,7 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_GetContentTypes_Overload_Returns_PagedList_For_Portal_From_Database(int recordCount, int pageIndex, int pageSize, int pageCount)
         {
             //Arrange
-            SetUpDatabase(recordCount);
+            SetUpContentTypes(recordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
 
@@ -206,7 +342,7 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_GetStructuredContentTypes_Returns_Records_For_Portal_From_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
 
@@ -227,7 +363,7 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_GetStructuredContentTypess_Overload_Returns_PagedList_For_Portal_From_Database(int recordCount, int pageIndex, int pageSize, int pageCount)
         {
             //Arrange
-            SetUpDatabase(recordCount);
+            SetUpContentTypes(recordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
 
@@ -253,10 +389,11 @@ namespace DotNetNuke.Tests.Content.Integration
         public void ContentTypeController_UpdateContentType_Updates_Correct_Record_In_Database()
         {
             //Arrange
-            SetUpDatabase(RecordCount);
+            var contentTypeId = 2;
+            SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = 2, ContentType = "NewType" };
+            var contentType = new ContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
@@ -265,10 +402,30 @@ namespace DotNetNuke.Tests.Content.Integration
             int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes");
             Assert.AreEqual(RecordCount, actualCount);
 
-            DataAssert.IsFieldValueEqual<string>("NewType", DatabaseName, "ContentTypes", "ContentType", "ContentTypeId", 2);
+            DataAssert.IsFieldValueEqual<string>("NewType", DatabaseName, "ContentTypes", "ContentType", "ContentTypeId", contentTypeId);
         }
 
-        private void SetUpDatabase(int count)
+        [Test]
+        public void ContentTypeController_UpdateDataType_Updates_Correct_Record_In_Database()
+        {
+            //Arrange
+            var dataTypeId = 2;
+            SetUpDataTypes(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var contentTypeController = new ContentTypeController(dataContext);
+            var dataType = new ContentTypeDataType() { DataTypeId = dataTypeId, Name = "NewType" };
+
+            //Act
+            contentTypeController.UpdateDataType(dataType);
+
+            //Assert
+            int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_DataTypes");
+            Assert.AreEqual(RecordCount, actualCount);
+
+            DataAssert.IsFieldValueEqual<string>("NewType", DatabaseName, "ContentTypes_DataTypes", "Name", "DataTypeId", dataTypeId);
+        }
+
+        private void SetUpContentTypes(int count)
         {
             DataUtil.CreateDatabase(DatabaseName);
             DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTypeTableSql);
@@ -283,6 +440,28 @@ namespace DotNetNuke.Tests.Content.Integration
                     portalId = PortalId;
                 }
                 DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isStructured));
+            }
+        }
+
+        private void SetUpDataTypes(int count)
+        {
+            DataUtil.CreateDatabase(DatabaseName);
+            DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
+
+            for (int i = 0; i < count; i++)
+            {
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, String.Format("Type_{0}", i)));
+            }
+        }
+
+        private void SetUpFieldDefinitions(int count)
+        {
+            DataUtil.CreateDatabase(DatabaseName);
+            DataUtil.ExecuteNonQuery(DatabaseName, CreateFieldDefinitionTableSql);
+
+            for (int i = 0; i < count; i++)
+            {
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertFieldDefinitionSql, i, i,  String.Format("Name_{0}", i), String.Format("Label_{0}", i), String.Format("Description_{0}", i)));
             }
         }
 

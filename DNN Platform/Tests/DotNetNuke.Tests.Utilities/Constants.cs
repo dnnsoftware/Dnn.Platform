@@ -19,11 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Web.Caching;
-
 using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users.Social;
+
+// ReSharper disable InconsistentNaming
 
 namespace DotNetNuke.Tests.Utilities
 {
@@ -176,7 +175,7 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENTTYPE_ValidContentTypeCount = 5;
         public const string CONTENTTYPE_ValidContentTypeFormat = "ContentType Name {0}";
 
-        public const int CONTENTTYPE_InValidContentTypeId = 999;
+        public const int CONTENTTYPE_InValidContentTypeId = -1;
         public const string CONTENTTYPE_InValidContentType = "Invalid ContentType";
 
         public const int CONTENTTYPE_AddContentTypeId = 2;
@@ -187,6 +186,18 @@ namespace DotNetNuke.Tests.Utilities
         public const string CONTENTTYPE_OriginalUpdateContentType = "TestUpdate";
 
         public const string CONTENTTYPE_UpdateContentType = "Update Name";
+
+        public const int CONTENTTYPE_AddDataTypeId = 4;
+        public const int CONTENTTYPE_ValidDataTypeId = 3;
+        public const int CONTENTTYPE_InValidDataTypeId = -1;
+        public const int CONTENTTYPE_UpdateDataTypeId = 2;
+        public const int CONTENTTYPE_ValidDataTypeCount = 10;
+
+        public const int CONTENTTYPE_AddFieldDefinitionId = 7;
+        public const int CONTENTTYPE_ValidFieldDefinitionId = 3;
+        public const int CONTENTTYPE_InValidFieldDefinitionId = -1;
+        public const int CONTENTTYPE_UpdateFieldDefinitionId = 2;
+        public const int CONTENTTYPE_ValidFieldDefinitionCount = 10;
 
         #endregion
 
