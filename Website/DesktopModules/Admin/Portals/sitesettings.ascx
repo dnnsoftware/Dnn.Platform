@@ -200,7 +200,7 @@
                         <dnn:DnnComboBox ID="cboAdministratorId" runat="server" DataTextField="FullName" DataValueField="UserId" />
                     </div>
 				    <div class="dnnFormItem">
-                        <dnn:label id="plHideLoginControl" runat="server" controlname="enablePopUpsCheckBox" />
+                        <dnn:label id="plHideLoginControl" runat="server" controlname="chkHideLoginControl" />
                         <asp:CheckBox ID="chkHideLoginControl" runat="server" />
                     </div>
                 </fieldset>
