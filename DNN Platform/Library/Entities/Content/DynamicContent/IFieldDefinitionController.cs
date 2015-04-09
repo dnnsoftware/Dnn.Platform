@@ -19,20 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-namespace DotNetNuke.Entities.Content
+namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable("ContentTypes_DataTypes", CacheItemPriority.Normal, 20)]
-    public class ContentTypeDataType
+    public interface IFieldDefinitionController
     {
-        public int DataTypeId { get; set; }
+        int AddFieldDefinition(FieldDefinition field);
 
-        public string Name { get; set; }
+        void DeleteFieldDefinition(FieldDefinition field);
     }
 }

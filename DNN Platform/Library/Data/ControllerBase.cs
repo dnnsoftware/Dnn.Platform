@@ -20,17 +20,13 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DotNetNuke.Common;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Data
 {
-    /// <summary>
-    /// ControllerBase provides some simple CRUD helper methods for implementing the DAL 2 methods
-    /// </summary>
-    public abstract class ControllerBase
+    public abstract class ControllerBase<TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new()
     {
         protected readonly IDataContext DataContext;
 
@@ -62,7 +58,7 @@ namespace DotNetNuke.Data
             //Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof (TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 

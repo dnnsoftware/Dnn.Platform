@@ -34,6 +34,7 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
@@ -42,11 +43,14 @@ using DotNetNuke.Services.Search.Internals;
 
 namespace DotNetNuke.Entities.Content
 {
-    public class ContentController : IContentController
+    public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService _dataService;
 
-        #region Constructors
+        protected override Func<IContentController> GetFactory()
+        {
+            return () => new ContentController();
+        }
 
         public ContentController() : this(Util.GetDataService())
         {
@@ -56,10 +60,6 @@ namespace DotNetNuke.Entities.Content
         {
             _dataService = dataService;
         }
-
-        #endregion
-
-        #region Public Methods
 
 	    public int AddContentItem(ContentItem contentItem)
         {
@@ -262,7 +262,5 @@ namespace DotNetNuke.Entities.Content
         {
             return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
         }
-
-        #endregion
     }
 }

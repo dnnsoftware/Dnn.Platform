@@ -188,9 +188,13 @@
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Entities\Content\DynamicContent\DataTypeController.cs" />
+    <Compile Include="Entities\Content\DynamicContent\FieldDefinitionController.cs" />
+    <Compile Include="Entities\Content\DynamicContent\IDataTypeController.cs" />
+    <Compile Include="Entities\Content\DynamicContent\IFieldDefinitionController.cs" />
     <Compile Include="Obsolete\Arg.cs" />
-    <Compile Include="Entities\Content\ContentTypeDataType.cs" />
-    <Compile Include="Entities\Content\ContentTypeFieldDefinition.cs" />
+    <Compile Include="Entities\Content\DynamicContent\DataType.cs" />
+    <Compile Include="Entities\Content\DynamicContent\FieldDefinition.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />

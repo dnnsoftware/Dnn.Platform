@@ -23,30 +23,15 @@ using System;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content
+namespace DotNetNuke.Entities.Content.DynamicContent
 {
     [Serializable]
-    [TableName("ContentTypes_FieldDefinitions")]
-    [PrimaryKey("FieldDefinitionID", "FieldDefinitionId")]
-    [Cacheable("ContentTypes_FieldDefinitions", CacheItemPriority.Normal, 20)]
-    [Scope("ContentTypeId")]
-    public class ContentTypeFieldDefinition
+    [TableName("ContentTypes_DataTypes")]
+    [PrimaryKey("DataTypeID", "DataTypeId")]
+    [Cacheable("ContentTypes_DataTypes", CacheItemPriority.Normal, 20)]
+    public class DataType
     {
-        public ContentTypeFieldDefinition()
-        {
-            ContentTypeId = -1;
-            DataTypeId = -1;
-        }
-
-        public int ContentTypeId { get; set; }
-
         public int DataTypeId { get; set; }
-
-        public string Description { get; set; }
-
-        public int FieldDefinitionId { get; set; }
-
-        public string Label { get; set; }
 
         public string Name { get; set; }
     }

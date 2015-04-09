@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Constructor_Sets_Default_Properties()
+        public void Constructor_Sets_Default_Properties()
         {
             //Arrange
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Constructor_Overload_Sets_Default_Properties()
+        public void Constructor_Overload_Sets_Default_Properties()
         {
             //Arrange
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_ToString_Method_Returns_ContentType()
+        public void ToString_Method_Returns_ContentType()
         {
             //Arrange
             var contentType = new ContentType(Constants.CONTENTTYPE_ValidContentType);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_DesktopModule_Property_Calls_Repository_Get()
+        public void DesktopModule_Property_Calls_Repository_Get()
         {
             //Arrange
             const string expectedValue = ContentType.DesktopModuleContentTypeName;
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_DesktopModule_Property_Returns_DesktopModule_ContentType()
+        public void DesktopModule_Property_Returns_DesktopModule_ContentType()
         {
             //Arrange
             const string expectedValue = ContentType.DesktopModuleContentTypeName;
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Module_Property_Calls_Repository_Get()
+        public void Module_Property_Calls_Repository_Get()
         {
             //Arrange
             const string expectedValue = ContentType.ModuleContentTypeName;
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Module_Property_Returns_Module_ContentType()
+        public void Module_Property_Returns_Module_ContentType()
         {
             //Arrange
             const string expectedValue = ContentType.ModuleContentTypeName;
@@ -158,7 +158,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Tab_Property_Calls_Repository_Get()
+        public void Tab_Property_Calls_Repository_Get()
         {
             //Arrange
             const string expectedValue = ContentType.TabContentTypeName;
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-        public void ContentType_Tab_Property_Returns_Tab_ContentType()
+        public void Tab_Property_Returns_Tab_ContentType()
         {
             //Arrange
             const string expectedValue = ContentType.TabContentTypeName;

@@ -47,10 +47,15 @@ namespace DotNetNuke.Entities.Content
     /// }
 	/// </code>
 	/// </example>
-    public class ContentTypeController : ControllerBase,  IContentTypeController
+    public class ContentTypeController : ControllerBase<IContentTypeController, ContentTypeController>,  IContentTypeController
     {
 	    internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
-        
+
+        protected override Func<IContentTypeController> GetFactory()
+        {
+            return () => new ContentTypeController();
+        }
+
         public ContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
         public ContentTypeController(IDataContext dataContext) : base(dataContext) { }
@@ -73,44 +78,6 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// Adds a new data type for use with Structured(Dynamic) Content Types.
-        /// </summary>
-        /// <param name="dataType">The data type to add.</param>
-        /// <returns>data type id.</returns>
-        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
-        public int AddDataType(ContentTypeDataType dataType)
-        {
-            //Argument Contract
-            Requires.PropertyNotNullOrEmpty(dataType, "Name");
-
-            Add(dataType);
-
-            return dataType.DataTypeId;
-        }
-
-        /// <summary>
-        /// Adds a new field definition for use with Structured(Dynamic) Content Types.
-        /// </summary>
-        /// <param name="field">The field definition to add.</param>
-        /// <returns>field definition id.</returns>
-        /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
-        /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
-        public int AddFieldDefinition(ContentTypeFieldDefinition field)
-        {
-            //Argument Contract
-            Requires.PropertyNotNegative(field, "DataTypeId");
-            Requires.PropertyNotNegative(field, "ContentTypeId");
-            Requires.PropertyNotNullOrEmpty(field, "Name");
-            Requires.PropertyNotNullOrEmpty(field, "Label");
-
-            Add(field);
-
-            return field.FieldDefinitionId;
-        }
-
-
-        /// <summary>
         /// Deletes the type of the content.
         /// </summary>
         /// <param name="contentType">Type of the content.</param>
@@ -122,43 +89,12 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// Deletes the data type for use with Structured(Dynamic) Content Types.
-        /// </summary>
-        /// <param name="dataType">The data type to delete.</param>
-        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
-        public void DeleteDataType(ContentTypeDataType dataType)
-        {
-            Delete(dataType);
-        }
-
-        /// <summary>
-        /// Deletes the field definition for use with Structured(Dynamic) Content Types.
-        /// </summary>
-        /// <param name="field">The field definitione to delete.</param>
-        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
-        public void DeleteFieldDefinition(ContentTypeFieldDefinition field)
-        {
-            Delete(field);
-        }
-
-        /// <summary>
         /// Gets the content types.
         /// </summary>
         /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
 		{
 		    return Get<ContentType>().AsQueryable();
-        }
-
-        /// <summary>
-        /// Gets the data types.
-        /// </summary>
-        /// <returns>data type collection.</returns>
-        public IQueryable<ContentTypeDataType> GetDataTypes()
-        {
-            return Get<ContentTypeDataType>().AsQueryable();
         }
 
         /// <summary>
@@ -254,21 +190,6 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
 
             Update(contentType);
-        }
-
-        /// <summary>
-        /// Updates the data type.
-        /// </summary>
-        /// <param name="datatType">The data type.</param>
-        /// <exception cref="System.ArgumentNullException">data type is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
-        /// <exception cref="System.ArgumentException">datatType.Name is empty.</exception>
-        public void UpdateDataType(ContentTypeDataType datatType)
-        {
-            //Argument Contract
-            Requires.PropertyNotNullOrEmpty(datatType, "Name");
-
-            Update(datatType);
         }
 
         [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically")]

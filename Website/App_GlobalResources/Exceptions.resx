@@ -441,4 +441,7 @@
   <data name="UserHasNoPermissionToBrowseFolder.Text" xml:space="preserve">
     <value>The user has no permission to browse this folder</value>
   </data>
+  <data name="DataTypeInUse.Text" xml:space="preserve">
+    <value>The Data Type with Id {0} is in use, so it cannot be deleted.</value>
+  </data>
 </root>
