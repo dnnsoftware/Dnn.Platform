@@ -945,15 +945,15 @@ namespace DotNetNuke.Providers.RadEditorProvider
             ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/ClientScripts.js");
             ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/RegisterDialogs.js");
 
-            _editor.ContentAreaCssFile = "~/DesktopModules/Admin/RadEditorProvider/Css/EditorContentAreaOverride.css";
+			_editor.ContentAreaCssFile = "~/DesktopModules/Admin/RadEditorProvider/Css/EditorContentAreaOverride.css?cdv=" + Host.CrmVersion;
 
             if (_editor.ToolbarMode == EditorToolbarMode.Default && string.Equals(_editor.Skin, "Default", StringComparison.OrdinalIgnoreCase))
             {
-                var editorOverrideCSSPath = _panel.Page.ResolveUrl("~/DesktopModules/Admin/RadEditorProvider/Css/EditorOverride.css");
+				var editorOverrideCSSPath = _panel.Page.ResolveUrl("~/DesktopModules/Admin/RadEditorProvider/Css/EditorOverride.css?cdv=" + Host.CrmVersion);
                 var setEditorOverrideCSSPath = "<script type=\"text/javascript\">var __editorOverrideCSSPath = \"" + editorOverrideCSSPath + "\";</script>";
                 _panel.Page.ClientScript.RegisterClientScriptBlock(GetType(), "EditorOverrideCSSPath", setEditorOverrideCSSPath);
 
-                ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js");
+				ClientResourceManager.RegisterScript(_panel.Page, moduleFolderPath + "js/overrideCSS.js?cdv=" + Host.CrmVersion);
                 //_editor.Skin = "Black";
 	            _editor.PreventDefaultStylesheet = true;
             }
