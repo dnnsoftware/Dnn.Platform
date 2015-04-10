@@ -28,7 +28,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    public class DataTypeController : ControllerBase<IDataTypeController, DataTypeController>, IDataTypeController
+    public class DataTypeController : ControllerBase<DataType, IDataTypeController, DataTypeController>, IDataTypeController
     {
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
 
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         /// <returns>data type collection.</returns>
         public IQueryable<DataType> GetDataTypes()
         {
-            return Get<DataType>().AsQueryable();
+            return Get().AsQueryable();
         }
 
         /// <summary>

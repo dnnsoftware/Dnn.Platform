@@ -20,14 +20,17 @@
 #endregion
 
 using System;
+using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
 using NUnit.Framework;
+
 // ReSharper disable UseStringInterpolation
 
-namespace DotNetNuke.Tests.Content.Integration
+namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 {
     [TestFixture]
     public class FieldDefinitionIntegrationTests : IntegrationTestBase
@@ -124,6 +127,26 @@ namespace DotNetNuke.Tests.Content.Integration
         }
 
         [Test]
+        public void GetFieldDefinitions_Overload_Returns_Records_For_ContentType_From_Database()
+        {
+            //Arrange
+            var contentTypeId = 5;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var fieldDefinitionController = new FieldDefinitionController(dataContext);
+
+            //Act
+            var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
+
+            //Assert
+            Assert.AreEqual(1, fields.Count());
+            foreach (var field in fields)
+            {
+                Assert.AreEqual(contentTypeId, field.ContentTypeId);
+            }
+        }
+
+        [Test]
         public void UpdateFieldDefinition_Updates_Correct_Record_In_Database()
         {
             //Arrange
@@ -149,8 +172,6 @@ namespace DotNetNuke.Tests.Content.Integration
 
             DataAssert.IsFieldValueEqual("New_Definition", DatabaseName, "ContentTypes_FieldDefinitions", "Name", "FieldDefinitionId", definitionId);
         }
-
-
 
         private void SetUpFieldDefinitions(int count)
         {

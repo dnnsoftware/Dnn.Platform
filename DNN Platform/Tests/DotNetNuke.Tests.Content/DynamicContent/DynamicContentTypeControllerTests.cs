@@ -22,29 +22,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 
-// ReSharper disable UnusedVariable
-// ReSharper disable UseStringInterpolation
-
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
-    /// <summary>
-    ///   Summary description for ContentTypeTests
-    /// </summary>
     [TestFixture]
-    public class ContentTypeControllerTests
+    public class DynamicContentTypeControllerTests
     {
         private Mock<IDataContext> _mockDataContext;
-        private Mock<IRepository<ContentType>> _mockContentTypeRepository;
+        private Mock<IRepository<DynamicContentType>> _mockContentTypeRepository;
         private Mock<CachingProvider> _mockCache;
         private string _contentTypeCacheKey;
 
@@ -59,8 +54,8 @@ namespace DotNetNuke.Tests.Content
 
             _mockDataContext = new Mock<IDataContext>();
 
-            _mockContentTypeRepository = new Mock<IRepository<ContentType>>();
-            _mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(_mockContentTypeRepository.Object);
+            _mockContentTypeRepository = new Mock<IRepository<DynamicContentType>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<DynamicContentType>()).Returns(_mockContentTypeRepository.Object);
         }
 
         [TearDown]
@@ -77,14 +72,14 @@ namespace DotNetNuke.Tests.Content
             //Arrange, Act, Arrange
             // ReSharper disable once ObjectCreationAsStatement
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(() => new ContentTypeController(dataContent));
+            Assert.Throws<ArgumentNullException>(() => new DynamicContentTypeController(dataContent));
         }
 
         [Test]
         public void AddContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.AddContentType(null));
@@ -94,21 +89,22 @@ namespace DotNetNuke.Tests.Content
         public void AddContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
-            Assert.Throws<ArgumentException>(() => contentTypeController.AddContentType(new ContentType()));
+            Assert.Throws<ArgumentException>(() => contentTypeController.AddContentType(new DynamicContentType()));
         }
 
         [Test]
         public void AddContentType_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            ContentType contentType = ContentTestHelper.CreateValidContentType();
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
+            // ReSharper disable once UnusedVariable
             int contentTypeId = contentTypeController.AddContentType(contentType);
 
             //Assert
@@ -119,12 +115,12 @@ namespace DotNetNuke.Tests.Content
         public void AddContentType_Returns_ValidId_On_Valid_ContentType()
         {
             //Arrange
-            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<ContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            var contentType = ContentTestHelper.CreateValidContentType();
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
             int contentTypeId = contentTypeController.AddContentType(contentType);
@@ -137,35 +133,18 @@ namespace DotNetNuke.Tests.Content
         public void AddContentType_Sets_ValidId_On_Valid_ContentType()
         {
             //Arrange
-            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<ContentType>()))
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            var contentType = ContentTestHelper.CreateValidContentType();
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
             contentTypeController.AddContentType(contentType);
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_AddContentTypeId, contentType.ContentTypeId);
-        }
-
-        [Test]
-        public void ClearContentTypeCache_Clears_Cache()
-        {
-            //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
-
-            ContentType contentType = ContentTestHelper.CreateValidContentType();
-
-            //Act
-#pragma warning disable 618
-            contentTypeController.ClearContentTypeCache();
-#pragma warning restore 618
-
-            //Assert
-            _mockCache.Verify(r => r.Remove(_contentTypeCacheKey));
         }
 
         [Test]
@@ -182,10 +161,13 @@ namespace DotNetNuke.Tests.Content
         public void DeleteContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            ContentType contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentTypeId = Null.NullInteger;
+            var contentType = new DynamicContentType
+            {
+                ContentType = Constants.CONTENTTYPE_ValidContentType,
+                ContentTypeId = Null.NullInteger
+            };
 
             //Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => contentTypeController.DeleteContentType(contentType));
@@ -195,10 +177,13 @@ namespace DotNetNuke.Tests.Content
         public void DeleteContentType_Calls_Repository_Delete_On_Valid_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            var contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            var contentType = new DynamicContentType
+            {
+                ContentType = Constants.CONTENTTYPE_ValidContentType,
+                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+            };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -211,25 +196,26 @@ namespace DotNetNuke.Tests.Content
         public void GetContentTypes_Calls_Repository_Get()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes();
+            // ReSharper disable once UnusedVariable
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
 
             //Assert
-            _mockContentTypeRepository.Verify(r => r.Find(ContentTypeController.GetWhereSql));
+            _mockContentTypeRepository.Verify(r => r.Get(Constants.PORTAL_ValidPortalId));
         }
 
         [Test]
         public void GetContentTypes_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
         {
             //Arrange
-            _mockContentTypeRepository.Setup(r => r.Get())
-                .Returns(new List<ContentType>());
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(new List<DynamicContentType>());
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes();
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
 
             //Assert
             Assert.IsNotNull(contentTypes);
@@ -240,22 +226,51 @@ namespace DotNetNuke.Tests.Content
         public void GetContentTypes_Returns_List_Of_ContentTypes()
         {
             //Arrange
-            _mockContentTypeRepository.Setup(r => r.Find(ContentTypeController.GetWhereSql))
-                .Returns(MockHelper.CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
+                .Returns(CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes();
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
         }
 
         [Test]
+        public void GetContentTypes_Overload_Calls_Repository_GetPage()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            _mockContentTypeRepository.Verify(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount));
+        }
+
+        [Test]
+        public void GetContentTypes_Overload_Returns_PagedList()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            _mockContentTypeRepository.Setup(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount))
+                .Returns(new PagedList<DynamicContentType>(new List<DynamicContentType>(), Constants.PAGE_First, Constants.PAGE_RecordCount));
+
+            //Act
+            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+
+            //Assert
+            Assert.IsInstanceOf<IPagedList<DynamicContentType>>(contentTypes);
+        }
+
+        [Test]
         public void UpdateContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.UpdateContentType(null));
@@ -265,8 +280,8 @@ namespace DotNetNuke.Tests.Content
         public void UpdateContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
-            var contentType = new ContentType {ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId};
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentType = new DynamicContentType { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => contentTypeController.UpdateContentType(contentType));
@@ -276,10 +291,13 @@ namespace DotNetNuke.Tests.Content
         public void UpdateContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            var contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentType = Constants.CONTENTTYPE_InValidContentType;
+            var contentType = new DynamicContentType
+            {
+                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
+                ContentType = Constants.CONTENTTYPE_ValidContentType
+            };
 
             Assert.Throws<ArgumentOutOfRangeException>(() => contentTypeController.UpdateContentType(contentType));
         }
@@ -288,17 +306,32 @@ namespace DotNetNuke.Tests.Content
         public void UpdateContentType_Calls_Repository_Update_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
 
-            var contentType = ContentTestHelper.CreateValidContentType();
-            contentType.ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
-            contentType.ContentType = Constants.CONTENTTYPE_UpdateContentType;
+            var contentType = new DynamicContentType
+            {
+                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                ContentType = Constants.CONTENTTYPE_UpdateContentType
+            };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
 
             //Assert
             _mockContentTypeRepository.Verify(r => r.Update(contentType));
+        }
+
+        private List<DynamicContentType> CreateValidContentTypes(int count)
+        {
+            var contentTypes = new List<DynamicContentType>();
+            for (int i = Constants.CONTENTTYPE_ValidContentTypeId; i < Constants.CONTENTTYPE_ValidContentTypeId + count; i++)
+            {
+                string contentType = Constants.CONTENTTYPE_ValidContentType;
+
+                contentTypes.Add(new DynamicContentType { ContentTypeId = i, ContentType = contentType });
+            }
+
+            return contentTypes;
         }
     }
 }

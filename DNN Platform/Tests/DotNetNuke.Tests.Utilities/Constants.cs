@@ -199,6 +199,13 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENTTYPE_UpdateFieldDefinitionId = 2;
         public const int CONTENTTYPE_ValidFieldDefinitionCount = 10;
 
+        public const int CONTENTTYPE_InValidValidatorTypeId = -1;
+        public const int CONTENTTYPE_ValidValidationRuleId = 3;
+        public const int CONTENTTYPE_AddValidationRuleId = 2;
+        public const int CONTENTTYPE_ValidValidationRuleCount = 25;
+
+        public const int CONTENTTYPE_ValidValidatorTypeId = 3;
+
         #endregion
 
         #region ScopeType Constants

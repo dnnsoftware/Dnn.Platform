@@ -20,12 +20,13 @@
 #endregion
 
 using System;
+using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    public class FieldDefinitionController : ControllerBase<IFieldDefinitionController, FieldDefinitionController>, IFieldDefinitionController
+    public class FieldDefinitionController : ControllerBase<FieldDefinition, IFieldDefinitionController, FieldDefinitionController>, IFieldDefinitionController
     {
         protected override Func<IFieldDefinitionController> GetFactory()
         {
@@ -68,11 +69,21 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         }
 
         /// <summary>
-        /// Updates the field definitione.
+        /// Gets the field definitions.
         /// </summary>
-        /// <param name="field">The field definitione.</param>
-        /// <exception cref="System.ArgumentNullException">field definitione is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">field definitione id is less than 0.</exception>
+        /// <param name="contentTypeId">The Id of the parent Content Type</param>
+        /// <returns>field definition collection.</returns>
+        public IQueryable<FieldDefinition> GetFieldDefinitions(int contentTypeId)
+        {
+            return Get(contentTypeId).AsQueryable();
+        }
+
+        /// <summary>
+        /// Updates the field definition.
+        /// </summary>
+        /// <param name="field">The field definition.</param>
+        /// <exception cref="System.ArgumentNullException">field definition is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">field definition id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">field.Name is empty.</exception>
         public void UpdateFieldDefinition(FieldDefinition field)
         {

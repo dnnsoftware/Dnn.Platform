@@ -1,6 +1,6 @@
-#region Copyright
+﻿#region Copyright
 // 
-// DotNetNuke� - http://www.dotnetnuke.com
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -18,20 +18,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
-using System;
 using System.Linq;
+using DotNetNuke.Collections;
 
-#endregion
-
-namespace DotNetNuke.Entities.Content
+namespace DotNetNuke.Entities.Content.DynamicContent
 {
-	/// <summary>
-	/// Interface of ContentTypeController.
-	/// </summary>
-	/// <seealso cref="ContentTypeController"/>
-    public interface IContentTypeController
+    public interface IDynamicContentTypeController
     {
         /// <summary>
         /// Adds the type of the content.
@@ -40,7 +33,7 @@ namespace DotNetNuke.Entities.Content
         /// <returns>content type id.</returns>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
-        int AddContentType(ContentType contentType);
+        int AddContentType(DynamicContentType contentType);
 
         /// <summary>
         /// Deletes the type of the content.
@@ -48,13 +41,22 @@ namespace DotNetNuke.Entities.Content
         /// <param name="contentType">Type of the content.</param>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
-        void DeleteContentType(ContentType contentType);
+        void DeleteContentType(DynamicContentType contentType);
 
         /// <summary>
         /// Gets the content types.
         /// </summary>
         /// <returns>content type collection.</returns>
-        IQueryable<ContentType> GetContentTypes();
+        IQueryable<DynamicContentType> GetContentTypes(int portalId);
+
+        /// <summary>
+        /// Gets a page of content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        IPagedList<DynamicContentType> GetContentTypes(int portalId, int pageIndex, int pageSize);
 
         /// <summary>
         /// Updates the type of the content.
@@ -63,9 +65,6 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
-        void UpdateContentType(ContentType contentType);
-
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically")]
-        void ClearContentTypeCache();
+        void UpdateContentType(DynamicContentType contentType);
     }
 }

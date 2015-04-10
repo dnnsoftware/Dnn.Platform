@@ -26,7 +26,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Data
 {
-    public abstract class ControllerBase<TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new()
+    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new() where TEntity : class
     {
         protected readonly IDataContext DataContext;
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.Data
             DataContext = dataContext;
         }
 
-        public void Add<TEntity>(TEntity entity) where TEntity : class
+        public void Add(TEntity entity)
         {
             //Argument Contract
             Requires.NotNull(entity);
@@ -53,7 +53,7 @@ namespace DotNetNuke.Data
             }
         }
 
-        public void Delete<TEntity>(TEntity entity) where TEntity : class
+        public void Delete(TEntity entity)
         {
             //Argument Contract
             Requires.NotNull(entity);
@@ -70,20 +70,47 @@ namespace DotNetNuke.Data
             }
         }
 
-        public IEnumerable<TEntity> Get<TEntity>() where TEntity : class
+        public IEnumerable<TEntity> Find(string sqlCondition, params object[] args)
+        {
+            IEnumerable<TEntity> entities;
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<TEntity>();
+
+                entities = rep.Find(sqlCondition, args);
+            }
+
+            return entities;
+
+        }
+
+        public IEnumerable<TEntity> Get()
+        {
+            IEnumerable<TEntity> entities;
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<TEntity>();
+
+                entities = rep.Get();
+            }
+
+            return entities;
+        }
+
+        public IEnumerable<TEntity> Get<TScope>(TScope scope)
         {
             IEnumerable<TEntity> contentTypes;
             using (DataContext)
             {
                 var rep = DataContext.GetRepository<TEntity>();
 
-                contentTypes = rep.Get();
+                contentTypes = rep.Get(scope);
             }
 
             return contentTypes;
         }
 
-        public void Update<TEntity>(TEntity entity) where TEntity : class
+        public void Update(TEntity entity)
         {
             //Argument Contract
             Requires.NotNull(entity);

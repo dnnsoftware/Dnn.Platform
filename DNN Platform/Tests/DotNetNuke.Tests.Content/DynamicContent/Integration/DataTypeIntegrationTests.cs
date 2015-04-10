@@ -25,14 +25,16 @@ using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
+
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle
 
-namespace DotNetNuke.Tests.Content.Integration
+namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 {
     [TestFixture]
     public class DataTypeIntegrationTests : IntegrationTestBase

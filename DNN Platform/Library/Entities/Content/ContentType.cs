@@ -20,12 +20,16 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Entities.Modules;
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.Entities.Content
 {
@@ -41,7 +45,6 @@ namespace DotNetNuke.Entities.Content
     [TableName("ContentTypes")]
     [PrimaryKey("ContentTypeID", "ContentTypeId")]
     [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
-    [Scope("PortalID")]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
         private static ContentType _desktopModule;
@@ -60,8 +63,6 @@ namespace DotNetNuke.Entities.Content
         {
             ContentTypeId = Null.NullInteger;
             ContentType = contentType;
-            PortalID = Null.NullInteger;
-            IsStructured = Null.NullBoolean;
         }
 
         [IgnoreColumn]
@@ -69,7 +70,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
+	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
 	        }
 	    }
 
@@ -78,7 +79,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _module ?? (_module = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
+	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
 	        }
 	    }
 
@@ -87,7 +88,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes(-1).FirstOrDefault(type => type.ContentType == TabContentTypeName));
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
 
@@ -98,22 +99,6 @@ namespace DotNetNuke.Entities.Content
 		/// The content type id.
 		/// </value>
         public int ContentTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the Content Type is structured
-        /// </summary>
-        /// <value>
-        /// A flag that indicates whether the Content Type is structured.
-        /// </value>
-        public bool IsStructured { get; set; }
-
-        /// <summary>
-        /// Gets or sets the portal id for the Content Type
-        /// </summary>
-        /// <value>
-        /// The portal id.
-        /// </value>
-        public int PortalID { get; set; }
 
         public override string ToString()
         {

@@ -20,50 +20,21 @@
 #endregion
 
 using System;
-using System.Linq;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
     [Serializable]
-    [TableName("ContentTypes_FieldDefinitions")]
-    [PrimaryKey("FieldDefinitionID", "FieldDefinitionId")]
-    [Cacheable("ContentTypes_FieldDefinitions", CacheItemPriority.Normal, 20)]
-    [Scope("ContentTypeId")]
-    public class FieldDefinition
+    [TableName("ContentTypes_ValidationTypes")]
+    [PrimaryKey("ValidatorTypeID", "ValidatorTypeId")]
+    [Cacheable("ContentTypes_ValidationTypes", CacheItemPriority.Normal, 20)]
+    public class ValidatorType
     {
-        private DataType _dataType;
-
-        public FieldDefinition()
-        {
-            ContentTypeId = -1;
-            DataTypeId = -1;
-            Name = String.Empty;
-            Label = String.Empty;
-            Description = String.Empty;
-        }
-
-        public int ContentTypeId { get; set; }
-
-        public int DataTypeId { get; set; }
-
-        [IgnoreColumn]
-        public DataType DataType
-        {
-            get
-            {
-                return _dataType ?? (_dataType = DataTypeController.Instance.GetDataTypes().SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
-            }
-        }
-
-        public string Description { get; set; }
-
-        public int FieldDefinitionId { get; set; }
-
-        public string Label { get; set; }
+        public int ValidatorTypeId { get; set; }
 
         public string Name { get; set; }
 
+        public string ValidatorClassName { get; set; }
     }
 }

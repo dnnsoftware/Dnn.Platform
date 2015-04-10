@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Content.Integration
 {
     public abstract class IntegrationTestBase
     {
-        private Mock<CachingProvider> _mockCache;
+        protected Mock<CachingProvider> MockCache;
 
         protected const string DatabaseName = "Test.sdf";
         protected const string ConnectionStringName = "PetaPoco";
@@ -54,7 +54,7 @@ namespace DotNetNuke.Tests.Content.Integration
                                     {"databaseOwner", "dbo."}
                                 });
 
-            _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            MockCache = MockComponentProvider.CreateNew<CachingProvider>();
 
             var mockHostController = new Mock<IHostController>();
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("3");

@@ -20,50 +20,36 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web.Caching;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
     [Serializable]
-    [TableName("ContentTypes_FieldDefinitions")]
-    [PrimaryKey("FieldDefinitionID", "FieldDefinitionId")]
-    [Cacheable("ContentTypes_FieldDefinitions", CacheItemPriority.Normal, 20)]
-    [Scope("ContentTypeId")]
-    public class FieldDefinition
+    [TableName("ContentTypes")]
+    [PrimaryKey("ContentTypeID", "ContentTypeId")]
+    [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
+    [Scope("PortalId")]
+    public class DynamicContentType : ContentType
     {
-        private DataType _dataType;
+        private IList<FieldDefinition> _fieldDefitions;
 
-        public FieldDefinition()
-        {
-            ContentTypeId = -1;
-            DataTypeId = -1;
-            Name = String.Empty;
-            Label = String.Empty;
-            Description = String.Empty;
-        }
-
-        public int ContentTypeId { get; set; }
-
-        public int DataTypeId { get; set; }
-
+        /// <summary>
+        /// Gets a list of Field Definitions associated with this Content Type
+        /// </summary>
         [IgnoreColumn]
-        public DataType DataType
+        public IList<FieldDefinition> FieldDefinitions
         {
             get
             {
-                return _dataType ?? (_dataType = DataTypeController.Instance.GetDataTypes().SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
+                return _fieldDefitions ?? (_fieldDefitions = FieldDefinitionController.Instance.GetFieldDefinitions(ContentTypeId).ToList());
             }
         }
 
-        public string Description { get; set; }
+        public bool IsDynamic { get; set; }
 
-        public int FieldDefinitionId { get; set; }
-
-        public string Label { get; set; }
-
-        public string Name { get; set; }
-
+        public int PortalId { get; set; }
     }
 }

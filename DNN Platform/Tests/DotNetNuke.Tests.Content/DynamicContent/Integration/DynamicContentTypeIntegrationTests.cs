@@ -20,20 +20,21 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using NUnit.Framework;
 // ReSharper disable UseStringInterpolation
 
-namespace DotNetNuke.Tests.Content.Integration
+namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 {
     [TestFixture]
-    public class ContentTypeIntegrationTests : IntegrationTestBase
+    public class DynamicContentTypeIntegrationTests : IntegrationTestBase
     {
         private const string CreateContentTypeTableSql = @"
             CREATE TABLE ContentTypes(
@@ -44,7 +45,7 @@ namespace DotNetNuke.Tests.Content.Integration
 
         private const string InsertContentTypeSql = "INSERT INTO ContentTypes (ContentType, PortalID, IsDynamic) VALUES ('{0}',{1}, {2})";
 
-        private string _cacheKey = CachingProvider.GetCacheKey(DataCache.ContentTypesCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataCache.ContentTypesCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -64,8 +65,8 @@ namespace DotNetNuke.Tests.Content.Integration
             //Arrange
             SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() {ContentType = "New_Type"};
+            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentType = new DynamicContentType() {ContentType = "New_Type"};
 
             //Act
             contentTypeController.AddContentType(contentType);
@@ -99,8 +100,8 @@ namespace DotNetNuke.Tests.Content.Integration
             var typeId = 2;
             SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
+            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -118,8 +119,8 @@ namespace DotNetNuke.Tests.Content.Integration
             var typeId = 2;
             SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
+            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -129,55 +130,50 @@ namespace DotNetNuke.Tests.Content.Integration
         }
 
         [Test]
-        public void DeleteContentType_Clears_Cache()
+        public void GetContentTypes_Returns_Records_For_Portal_From_Database()
         {
             //Arrange
-            var typeId = 2;
             SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
+            var contentTypeController = new DynamicContentTypeController(dataContext);
 
             //Act
-            contentTypeController.DeleteContentType(contentType);
-
-            //Assert
-            MockCache.Verify(r => r.Remove(_cacheKey));
-        }
-
-        [Test]
-        public void GetContentTypes_Returns_All_Records_From_Database_If_Not_Cached()
-        {
-            //Arrange
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
-
-            SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-
-            //Act
-            var contentTypes = contentTypeController.GetContentTypes();
+            var contentTypes = contentTypeController.GetContentTypes(PortalId);
 
             //Assert
             Assert.AreEqual(RecordCount/2, contentTypes.Count());
+            foreach (var contentType in contentTypes)
+            {
+                Assert.AreEqual(PortalId, contentType.PortalId);
+            }
         }
 
-        [Test]
-        public void GetContentTypes_Returns_From_Cache_If_Cached()
+        [TestCase(20, 0, 5, 2)]
+        [TestCase(20, 1, 5, 2)]
+        [TestCase(30, 2, 5, 3)]
+        public void GetContentTypes_Overload_Returns_PagedList_For_Portal_From_Database(int recordCount, int pageIndex, int pageSize, int pageCount)
         {
             //Arrange
-            var cacheCount = 15;
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(SetUpCache(cacheCount));
-
-            SetUpContentTypes(RecordCount);
+            SetUpContentTypes(recordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController(dataContext);
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes();
+            var contentTypes = contentTypeController.GetContentTypes(PortalId, pageIndex, pageSize);
 
             //Assert
-            Assert.AreEqual(cacheCount, contentTypes.Count());
+            Assert.AreEqual(recordCount / 2, contentTypes.TotalCount);
+            Assert.AreEqual(pageCount, contentTypes.PageCount);
+            Assert.AreEqual(pageSize, contentTypes.PageSize);
+            Assert.AreEqual(pageIndex == 0, contentTypes.IsFirstPage);
+            Assert.AreEqual(pageIndex < pageCount - 1, contentTypes.HasNextPage);
+            Assert.AreEqual(pageIndex > 0, contentTypes.HasPreviousPage);
+            Assert.AreEqual(pageIndex == pageCount - 1, contentTypes.IsLastPage);
+
+            foreach (var contentType in contentTypes)
+            {
+                Assert.AreEqual(PortalId, contentType.PortalId);
+            }
         }
 
         [Test]
@@ -187,8 +183,8 @@ namespace DotNetNuke.Tests.Content.Integration
             var contentTypeId = 2;
             SetUpContentTypes(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
+            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
@@ -198,23 +194,6 @@ namespace DotNetNuke.Tests.Content.Integration
             Assert.AreEqual(RecordCount, actualCount);
 
             DataAssert.IsFieldValueEqual("NewType", DatabaseName, "ContentTypes", "ContentType", "ContentTypeId", contentTypeId);
-        }
-
-        [Test]
-        public void UpdateContentType_Clears_Cache()
-        {
-            //Arrange
-            var contentTypeId = 2;
-            SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
-
-            //Act
-            contentTypeController.UpdateContentType(contentType);
-
-            //Assert
-            MockCache.Verify(r => r.Remove(_cacheKey));
         }
 
         private void SetUpContentTypes(int count)
@@ -234,16 +213,5 @@ namespace DotNetNuke.Tests.Content.Integration
                 DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isStructured));
             }
         }
-
-        private IQueryable<ContentType> SetUpCache(int count)
-        {
-            var list = new List<ContentType>();
-
-            for (int i = 1; i <= count; i++)
-            {
-                list.Add(new ContentType {ContentTypeId = i, ContentType = String.Format("Type_{0}", i)});
-            }
-            return list.AsQueryable();
-        } 
     }
 }

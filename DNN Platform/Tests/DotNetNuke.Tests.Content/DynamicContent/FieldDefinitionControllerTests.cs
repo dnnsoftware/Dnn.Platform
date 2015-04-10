@@ -20,10 +20,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
@@ -74,12 +77,12 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             var definition = new FieldDefinition
-            {
-                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                Name = "New_Type",
-                Label = "Label"
-            };
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        Name = "New_Type",
+                                        Label = "Label"
+                                    };
 
             //Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -92,12 +95,12 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             var definition = new FieldDefinition
-            {
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
-                Name = "New_Type",
-                Label = "Label"
-            };
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
+                                        Name = "New_Type",
+                                        Label = "Label"
+                                    };
 
             //Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -110,12 +113,12 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             var definition = new FieldDefinition
-            {
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                Name = string.Empty,
-                Label = "Label"
-            };
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        Name = string.Empty,
+                                        Label = "Label"
+                                    };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -128,12 +131,12 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             var definition = new FieldDefinition
-            {
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                Name = "New_Type",
-                Label = string.Empty
-            };
+                            {
+                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                Name = "New_Type",
+                                Label = string.Empty
+                            };
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => fieldDefinitionController.AddFieldDefinition(definition));
@@ -146,12 +149,12 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             var definition = new FieldDefinition
-            {
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                Name = "New_Type",
-                Label = "Label"
-            };
+                                {
+                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    Name = "New_Type",
+                                    Label = "Label"
+                                };
 
             //Act
             int fieldDefinitionId = fieldDefinitionController.AddFieldDefinition(definition);
@@ -249,6 +252,50 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
+        public void GetFieldDefinitions_Overload_Calls_Repository_Get()
+        {
+            //Arrange
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            //Act
+            var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
+
+            //Assert
+            _mockFieldDefinitionRepository.Verify(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId));
+        }
+
+        [Test]
+        public void GetFieldDefinitions_Overload_Returns_Empty_List_Of_FieldDefinitions_If_No_FieldDefinitions()
+        {
+            //Arrange
+            _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
+                .Returns(new List<FieldDefinition>());
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            //Act
+            var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
+
+            //Assert
+            Assert.IsNotNull(fieldDefinitions);
+            Assert.AreEqual(0, fieldDefinitions.Count());
+        }
+
+        [Test]
+        public void GetFieldDefinitions_Overload_Returns_List_Of_FieldDefinitions()
+        {
+            //Arrange
+            _mockFieldDefinitionRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidContentTypeId))
+                .Returns(GetValidFieldDefinitions(Constants.CONTENTTYPE_ValidFieldDefinitionCount));
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            //Act
+            var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENTTYPE_ValidFieldDefinitionCount, fieldDefinitions.Count());
+        }
+
+        [Test]
         public void UpdateFieldDefinition_Throws_On_Null_FieldDefinition()
         {
             //Arrange
@@ -285,8 +332,8 @@ namespace DotNetNuke.Tests.Content
 
             var definition = new FieldDefinition
                                     {
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                         DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId,
                                         Name = "New_Type",
                                         Label = "Label"
@@ -303,8 +350,8 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
             var field = new FieldDefinition
                             {
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                 DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = string.Empty,
                                 Label = "Label"
@@ -322,8 +369,8 @@ namespace DotNetNuke.Tests.Content
 
             var field = new FieldDefinition
                                     {
-                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                         DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                         Name = "New_Type",
                                         Label = string.Empty
@@ -341,8 +388,8 @@ namespace DotNetNuke.Tests.Content
 
             var field = new FieldDefinition
                             {
-                                FieldDefinitionId = Constants.CONTENTTYPE_InValidFieldDefinitionId,
-                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
+                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                 DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = "Label"
@@ -359,8 +406,8 @@ namespace DotNetNuke.Tests.Content
 
             var field = new FieldDefinition
                             {
-                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
                                 DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
                                 Name = "New_Type",
                                 Label = "Label"
@@ -372,5 +419,18 @@ namespace DotNetNuke.Tests.Content
             //Assert
             _mockFieldDefinitionRepository.Verify(r => r.Update(field));
         }
+
+        private List<FieldDefinition> GetValidFieldDefinitions(int count)
+        {
+            var list = new List<FieldDefinition>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new FieldDefinition() { DataTypeId = i, Name = String.Format("Name_{0}", i) });
+            }
+
+            return list;
+        }
+
     }
 }

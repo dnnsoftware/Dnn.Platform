@@ -51,8 +51,6 @@ namespace DotNetNuke.Tests.Content
             //Assert
             Assert.AreEqual(-1, contentType.ContentTypeId);
             Assert.AreEqual(String.Empty, contentType.ContentType);
-            Assert.AreEqual(-1, contentType.PortalID);
-            Assert.AreEqual(false, contentType.IsStructured);
         }
 
         [Test]
@@ -66,8 +64,6 @@ namespace DotNetNuke.Tests.Content
             //Assert
             Assert.AreEqual(-1, contentType.ContentTypeId);
             Assert.AreEqual(Constants.CONTENTTYPE_ValidContentType, contentType.ContentType);
-            Assert.AreEqual(-1, contentType.PortalID);
-            Assert.AreEqual(false, contentType.IsStructured);
         }
 
         [Test]
@@ -87,7 +83,6 @@ namespace DotNetNuke.Tests.Content
         public void DesktopModule_Property_Calls_Repository_Get()
         {
             //Arrange
-            const string expectedValue = ContentType.DesktopModuleContentTypeName;
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
@@ -95,10 +90,11 @@ namespace DotNetNuke.Tests.Content
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
             //Act
+            // ReSharper disable once UnusedVariable
             ContentType actualValue = ContentType.DesktopModule;
 
             //Assert
-            mockRepository.Verify(r => r.Get(-1));
+            mockRepository.Verify(r => r.Find(ContentTypeController.GetWhereSql));
         }
 
         [Test]
@@ -109,7 +105,7 @@ namespace DotNetNuke.Tests.Content
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
-            mockRepository.Setup(r => r.Get(-1)).Returns(GetContentTypes());
+            mockRepository.Setup(r => r.Find(ContentTypeController.GetWhereSql)).Returns(GetContentTypes());
 
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
@@ -124,7 +120,6 @@ namespace DotNetNuke.Tests.Content
         public void Module_Property_Calls_Repository_Get()
         {
             //Arrange
-            const string expectedValue = ContentType.ModuleContentTypeName;
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
@@ -132,10 +127,11 @@ namespace DotNetNuke.Tests.Content
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
             //Act
+            // ReSharper disable once UnusedVariable
             ContentType actualValue = ContentType.Module;
 
             //Assert
-            mockRepository.Verify(r => r.Get(-1));
+            mockRepository.Verify(r => r.Find(ContentTypeController.GetWhereSql));
         }
 
         [Test]
@@ -146,7 +142,7 @@ namespace DotNetNuke.Tests.Content
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
-            mockRepository.Setup(r => r.Get(-1)).Returns(GetContentTypes());
+            mockRepository.Setup(r => r.Find(ContentTypeController.GetWhereSql)).Returns(GetContentTypes());
 
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
@@ -161,7 +157,6 @@ namespace DotNetNuke.Tests.Content
         public void Tab_Property_Calls_Repository_Get()
         {
             //Arrange
-            const string expectedValue = ContentType.TabContentTypeName;
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
@@ -169,10 +164,11 @@ namespace DotNetNuke.Tests.Content
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
             //Act
+            // ReSharper disable once UnusedVariable
             ContentType actualValue = ContentType.Tab;
 
             //Assert
-            mockRepository.Verify(r => r.Get(-1));
+            mockRepository.Verify(r => r.Find(ContentTypeController.GetWhereSql));
         }
 
         [Test]
@@ -183,7 +179,7 @@ namespace DotNetNuke.Tests.Content
             var mockDataContext = new Mock<IDataContext>();
             var mockRepository = new Mock<IRepository<ContentType>>();
             mockDataContext.Setup(dc => dc.GetRepository<ContentType>()).Returns(mockRepository.Object);
-            mockRepository.Setup(r => r.Get(-1)).Returns(GetContentTypes());
+            mockRepository.Setup(r => r.Find(ContentTypeController.GetWhereSql)).Returns(GetContentTypes());
 
             ComponentFactory.RegisterComponentInstance<IDataContext>(mockDataContext.Object);
 
