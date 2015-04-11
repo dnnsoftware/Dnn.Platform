@@ -28,8 +28,8 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     [Serializable]
     [TableName("ContentTypes_ValidationRules")]
     [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable("ContentTypes_ValidationRules", CacheItemPriority.Normal, 20)]
-    [Scope("FieldDefinitionId")]
+    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
+    [Scope(ValidationRuleController.ValidationRuleScope)]
     public class ValidationRule
     {
         private ValidatorType _validatorType;

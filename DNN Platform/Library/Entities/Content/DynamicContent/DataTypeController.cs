@@ -31,6 +31,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     public class DataTypeController : ControllerBase<DataType, IDataTypeController, DataTypeController>, IDataTypeController
     {
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
+        internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
 
         protected override Func<IDataTypeController> GetFactory()
         {

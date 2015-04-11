@@ -31,10 +31,11 @@ using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
+
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
     class DataTypeControllerTests
     {

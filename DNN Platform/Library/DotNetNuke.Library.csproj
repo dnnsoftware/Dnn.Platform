@@ -1738,6 +1738,7 @@
     </Compile>
     <Compile Include="WebControls\FeedBrowser.cs" />
     <Compile Include="WebControls\WebControlBase.cs" />
+    <None Include="Entities\Content\DynamicContent\DynamicContent.cd" />
     <None Include="Module.build">
       <SubType>Designer</SubType>
     </None>

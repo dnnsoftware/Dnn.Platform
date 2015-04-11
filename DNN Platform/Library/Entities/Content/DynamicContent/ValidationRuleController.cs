@@ -28,6 +28,9 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 {
     public class ValidationRuleController : ControllerBase<ValidationRule, IValidationRuleController, ValidationRuleController>, IValidationRuleController
     {
+        internal const string ValidationRuleCacheKey = "ContentTypes_ValidationRules";
+        internal const string ValidationRuleScope = "FieldDefinitionId";
+
         protected override Func<IValidationRuleController> GetFactory()
         {
             return () => new ValidationRuleController();

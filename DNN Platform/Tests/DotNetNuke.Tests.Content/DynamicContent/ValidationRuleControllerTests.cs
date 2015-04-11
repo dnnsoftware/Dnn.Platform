@@ -31,7 +31,7 @@ using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
     [TestFixture]
     public class ValidationRuleControllerTests

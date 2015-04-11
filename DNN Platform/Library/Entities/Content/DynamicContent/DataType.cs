@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     [Serializable]
     [TableName("ContentTypes_DataTypes")]
     [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable("ContentTypes_DataTypes", CacheItemPriority.Normal, 20)]
+    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
     public class DataType
     {
         public int DataTypeId { get; set; }

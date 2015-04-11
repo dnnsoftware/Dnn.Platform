@@ -25,6 +25,7 @@ using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
@@ -58,6 +59,9 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
                                                             (ContentTypeID, DataTypeID, Name, Label, Description) 
                                                             VALUES ({0}, {1}, '{2}', '{3}', '{4}')";
+
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeController.DataTypeCacheKey);
+
         [SetUp]
         public void SetUp()
         {
@@ -89,6 +93,22 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_DataTypes");
 
             Assert.AreEqual(RecordCount + 1, actualCount);
+        }
+
+        [Test]
+        public void AddDataType_Clears_Cache()
+        {
+            //Arrange
+            SetUpDataTypes(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var dataTypeController = new DataTypeController(dataContext);
+            var dataType = new DataType() { Name = "New_Type" };
+
+            //Act
+            dataTypeController.AddDataType(dataType);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(_cacheKey));
         }
 
         [Test]
@@ -146,6 +166,61 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         }
 
         [Test]
+        public void DeleteDataType_Clears_Cache()
+        {
+            //Arrange
+            var dataTypeId = 6;
+            SetUpDataTypes(RecordCount);
+            SetUpFieldDefinitions(5);
+
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var dataTypeController = new DataTypeController(dataContext);
+            var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
+
+            //Act
+            dataTypeController.DeleteDataType(dataType);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(_cacheKey));
+        }
+
+        [Test]
+        public void GetDataTypes_Fetches_Records_From_Database_If_Cache_Is_Null()
+        {
+            //Arrange
+            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
+            SetUpDataTypes(RecordCount);
+
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var dataTypeController = new DataTypeController(dataContext);
+
+            //Act
+            var dataTypes = dataTypeController.GetDataTypes();
+
+            //Assert
+            Assert.AreEqual(RecordCount, dataTypes.Count());
+        }
+
+        [Test]
+        public void GetDataTypes_Fetches_Records_From_Cache_If_Not_Null()
+        {
+            //Arrange
+            var cacheCount = 15;
+            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(SetUpCache(cacheCount));
+
+            SetUpDataTypes(RecordCount);
+
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var dataTypeController = new DataTypeController(dataContext);
+
+            //Act
+            var dataTypes = dataTypeController.GetDataTypes();
+
+            //Assert
+            Assert.AreEqual(cacheCount, dataTypes.Count());
+        }
+
+        [Test]
         public void UpdateDataType_Updates_Correct_Record_In_Database()
         {
             //Arrange
@@ -192,7 +267,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         }
 
         [Test]
-        public void UpdateDataType__Updates_Correct_Record_In_Database_If_DataType_Used_And_OverrideFlag_Set()
+        public void UpdateDataType_Updates_Correct_Record_In_Database_If_DataType_Used_And_OverrideFlag_Set()
         {
             //Arrange
             var dataTypeId = 2;
@@ -217,6 +292,29 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             DataAssert.IsFieldValueEqual("NewType", DatabaseName, "ContentTypes_DataTypes", "Name", "DataTypeId", dataTypeId);
         }
 
+        [Test]
+        public void UpdateDataType_Clears_Cache()
+        {
+            //Arrange
+            var dataTypeId = 2;
+            SetUpDataTypes(RecordCount);
+            SetUpFieldDefinitions(5);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var dataTypeController = new DataTypeController(dataContext);
+            var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
+
+            var mockContentController = new Mock<IContentController>();
+            ContentController.SetTestableInstance(mockContentController.Object);
+            mockContentController.Setup(c => c.GetContentItemsByContentType(Constants.CONTENTTYPE_ValidContentTypeId))
+                    .Returns(new List<ContentItem>().AsQueryable());
+
+            //Act
+            dataTypeController.UpdateDataType(dataType);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(_cacheKey));
+        }
+
         private void SetUpDataTypes(int count)
         {
             DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
@@ -237,5 +335,15 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             }
         }
 
+        private IQueryable<DataType> SetUpCache(int count)
+        {
+            var list = new List<DataType>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new DataType { DataTypeId = i, Name = String.Format("Type_{0}", i) });
+            }
+            return list.AsQueryable();
+        }
     }
 }

@@ -20,9 +20,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
@@ -47,6 +49,8 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
                                                             (ContentTypeID, DataTypeID, Name, Label, Description) 
                                                             VALUES ({0}, {1}, '{2}', '{3}', '{4}')";
+
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionController.FieldDefinitionCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -82,6 +86,29 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_FieldDefinitions");
 
             Assert.AreEqual(RecordCount + 1, actualCount);
+        }
+
+        [Test]
+        public void AddFieldDefinition_Clears_Cache()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var fieldDefinitionController = new FieldDefinitionController(dataContext);
+            var definition = new FieldDefinition
+            {
+                ContentTypeId = contentTypeId,
+                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Type",
+                Label = "Label"
+            };
+
+            //Act
+            fieldDefinitionController.AddFieldDefinition(definition);
+
+            //Assert
+            MockCache.Verify(c =>c.Remove(GetCacheKey(contentTypeId)));
         }
 
         [Test]
@@ -127,10 +154,33 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         }
 
         [Test]
-        public void GetFieldDefinitions_Overload_Returns_Records_For_ContentType_From_Database()
+        public void DeleteFieldDefinition_Clears_Cache()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            var definitionId = 4;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var fieldDefinitionController = new FieldDefinitionController(dataContext);
+            var definition = new FieldDefinition
+            {
+                FieldDefinitionId = definitionId,
+                ContentTypeId = contentTypeId,
+            };
+
+            //Act
+            fieldDefinitionController.DeleteFieldDefinition(definition);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(GetCacheKey(contentTypeId)));
+        }
+
+        [Test]
+        public void GetFieldDefinitions_Returns_Records_For_ContentType_From_Database_If_Cache_Is_Null()
         {
             //Arrange
             var contentTypeId = 5;
+            MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpFieldDefinitions(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var fieldDefinitionController = new FieldDefinitionController(dataContext);
@@ -140,6 +190,28 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 
             //Assert
             Assert.AreEqual(1, fields.Count());
+            foreach (var field in fields)
+            {
+                Assert.AreEqual(contentTypeId, field.ContentTypeId);
+            }
+        }
+
+        [Test]
+        public void GetFieldDefinitions_Returns_Records_From_Cache_If_Not_Null()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            var cacheCount = 15;
+            MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(SetUpCache(cacheCount));
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var fieldDefinitionController = new FieldDefinitionController(dataContext);
+
+            //Act
+            var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
+
+            //Assert
+            Assert.AreEqual(cacheCount, fields.Count());
             foreach (var field in fields)
             {
                 Assert.AreEqual(contentTypeId, field.ContentTypeId);
@@ -173,6 +245,36 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             DataAssert.IsFieldValueEqual("New_Definition", DatabaseName, "ContentTypes_FieldDefinitions", "Name", "FieldDefinitionId", definitionId);
         }
 
+        [Test]
+        public void UpdateFieldDefinition_Clears_Cache()
+        {
+            //Arrange
+            var definitionId = 4;
+            var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
+            SetUpFieldDefinitions(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var fieldDefinitionController = new FieldDefinitionController(dataContext);
+            var field = new FieldDefinition
+            {
+                FieldDefinitionId = definitionId,
+                ContentTypeId = contentTypeId,
+                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                Name = "New_Definition",
+                Label = "Label"
+            };
+
+            //Act
+            fieldDefinitionController.UpdateFieldDefinition(field);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(GetCacheKey(contentTypeId)));
+        }
+
+        private string GetCacheKey(int contentTypeId)
+        {
+            return String.Format("{0}_{1}_{2}", _cacheKey, FieldDefinitionController.FieldDefinitionScope, contentTypeId);
+        }
+
         private void SetUpFieldDefinitions(int count)
         {
             DataUtil.CreateDatabase(DatabaseName);
@@ -182,6 +284,17 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             {
                 DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i)));
             }
+        }
+
+        private IQueryable<FieldDefinition> SetUpCache(int count)
+        {
+            var list = new List<FieldDefinition>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new FieldDefinition { FieldDefinitionId = i, ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId, DataTypeId = i, Name = String.Format("Type_{0}", i) });
+            }
+            return list.AsQueryable();
         }
     }
 }

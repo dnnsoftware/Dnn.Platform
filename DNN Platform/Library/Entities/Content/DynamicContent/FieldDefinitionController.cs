@@ -28,6 +28,9 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 {
     public class FieldDefinitionController : ControllerBase<FieldDefinition, IFieldDefinitionController, FieldDefinitionController>, IFieldDefinitionController
     {
+        internal const string FieldDefinitionCacheKey = "ContentTypes_FieldDefinitions";
+        internal const string FieldDefinitionScope = "ContentTypeId";
+
         protected override Func<IFieldDefinitionController> GetFactory()
         {
             return () => new FieldDefinitionController();

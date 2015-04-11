@@ -19,9 +19,12 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
@@ -43,6 +46,8 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         private const string InsertValidationRuleSql = @"INSERT INTO ContentTypes_ValidationRules 
                                                             (FieldDefinitionID, ValidatorTypeID) 
                                                             VALUES ({0}, {1})";
+
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(ValidationRuleController.ValidationRuleCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -76,6 +81,27 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_ValidationRules");
 
             Assert.AreEqual(RecordCount + 1, actualCount);
+        }
+
+        [Test]
+        public void AddValidationRule_Clears_Cache()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            SetUpValidationRules(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var validationRuleController = new ValidationRuleController(dataContext);
+            var validationRule = new ValidationRule
+            {
+                FieldDefinitionId = fieldDefinitionId,
+                ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+            };
+
+            //Act
+            validationRuleController.AddValidationRule(validationRule);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(GetCacheKey(fieldDefinitionId)));
         }
 
         [Test]
@@ -125,10 +151,34 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         }
 
         [Test]
-        public void GetValidationRules_Overload_Returns_Records_For_FieldDefinition_From_Database()
+        public void DeleteValidationRule_Clears_Cache()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var validationRuleId = 4;
+            SetUpValidationRules(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var validationRuleController = new ValidationRuleController(dataContext);
+            var validationRule = new ValidationRule
+            {
+                ValidationRuleId = validationRuleId,
+                FieldDefinitionId = fieldDefinitionId,
+                ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+            };
+
+            //Act
+            validationRuleController.DeleteValidationRule(validationRule);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(GetCacheKey(fieldDefinitionId)));
+        }
+
+        [Test]
+        public void GetValidationRules_Returns_Records_For_FieldDefinition_From_Database_If_Cache_Is_Null()
         {
             //Arrange
             var fieldDefinitionId = 5;
+            MockCache.Setup(c => c.GetItem(GetCacheKey(fieldDefinitionId))).Returns(null);
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var validationRuleController = new ValidationRuleController(dataContext);
@@ -138,6 +188,28 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 
             //Assert
             Assert.AreEqual(1, validationRules.Count());
+            foreach (var validationRule in validationRules)
+            {
+                Assert.AreEqual(fieldDefinitionId, validationRule.FieldDefinitionId);
+            }
+        }
+
+        [Test]
+        public void GetValidationRules_Returns_Records_From_Cache_If_Not_Null()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var cacheCount = 15;
+            MockCache.Setup(c => c.GetItem(GetCacheKey(fieldDefinitionId))).Returns(SetUpCache(cacheCount));
+            SetUpValidationRules(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var validationRuleController = new ValidationRuleController(dataContext);
+
+            //Act
+            var validationRules = validationRuleController.GetValidationRules(fieldDefinitionId);
+
+            //Assert
+            Assert.AreEqual(cacheCount, validationRules.Count());
             foreach (var validationRule in validationRules)
             {
                 Assert.AreEqual(fieldDefinitionId, validationRule.FieldDefinitionId);
@@ -169,6 +241,34 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             DataAssert.IsFieldValueEqual(Constants.CONTENTTYPE_ValidFieldDefinitionId, DatabaseName, "ContentTypes_ValidationRules", "FieldDefinitionID", "ValidationRuleId", validationRuleId);
         }
 
+        [Test]
+        public void UpdateValidationRule_Clears_Cache()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var validationRuleId = 4;
+            SetUpValidationRules(RecordCount);
+            var dataContext = new PetaPocoDataContext(ConnectionStringName);
+            var validationRuleController = new ValidationRuleController(dataContext);
+            var validationRule = new ValidationRule
+            {
+                ValidationRuleId = validationRuleId,
+                FieldDefinitionId = fieldDefinitionId,
+                ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+            };
+
+            //Act
+            validationRuleController.UpdateValidationRule(validationRule);
+
+            //Assert
+            MockCache.Verify(c => c.Remove(GetCacheKey(fieldDefinitionId)));
+        }
+
+        private string GetCacheKey(int fieldDefinitionId)
+        {
+            return String.Format("{0}_{1}_{2}", _cacheKey, ValidationRuleController.ValidationRuleScope, fieldDefinitionId);
+        }
+
         private void SetUpValidationRules(int count)
         {
             DataUtil.CreateDatabase(DatabaseName);
@@ -178,6 +278,17 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             {
                 DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertValidationRuleSql, i, i));
             }
+        }
+
+        private IQueryable<ValidationRule> SetUpCache(int count)
+        {
+            var list = new List<ValidationRule>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new ValidationRule { FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId, ValidatorTypeId = i, ValidationRuleId = i});
+            }
+            return list.AsQueryable();
         }
     }
 }

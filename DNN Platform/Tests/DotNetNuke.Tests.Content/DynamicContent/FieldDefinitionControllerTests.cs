@@ -26,19 +26,20 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
+// ReSharper disable UseStringInterpolation
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
     [TestFixture]
     public class FieldDefinitionControllerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<FieldDefinition>> _mockFieldDefinitionRepository;
+        // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
 
         [SetUp]
@@ -157,6 +158,7 @@ namespace DotNetNuke.Tests.Content
                                 };
 
             //Act
+            // ReSharper disable once UnusedVariable
             int fieldDefinitionId = fieldDefinitionController.AddFieldDefinition(definition);
 
             //Assert
@@ -258,6 +260,7 @@ namespace DotNetNuke.Tests.Content
             var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
 
             //Act
+            // ReSharper disable once UnusedVariable
             var fieldDefinitions = fieldDefinitionController.GetFieldDefinitions(Constants.CONTENTTYPE_ValidContentTypeId);
 
             //Assert

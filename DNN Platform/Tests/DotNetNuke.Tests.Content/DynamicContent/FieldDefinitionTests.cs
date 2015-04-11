@@ -26,7 +26,7 @@ using DotNetNuke.Entities.Content.DynamicContent;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
     [TestFixture]
     public class FieldDefinitionTests
@@ -62,6 +62,7 @@ namespace DotNetNuke.Tests.Content
             DataTypeController.SetTestableInstance(mockDataTypeController.Object);
 
             //Act
+            // ReSharper disable once UnusedVariable
             var dataType = field.DataType;
 
             //Assert
@@ -80,9 +81,11 @@ namespace DotNetNuke.Tests.Content
             DataTypeController.SetTestableInstance(mockDataTypeController.Object);
 
             //Act
+            // ReSharper disable UnusedVariable
             var dataType = field.DataType;
             var dataType1 = field.DataType;
             var dataType2 = field.DataType;
+            // ReSharper restore UnusedVariable
 
             //Assert
             mockDataTypeController.Verify(c => c.GetDataTypes(), Times.AtMostOnce);

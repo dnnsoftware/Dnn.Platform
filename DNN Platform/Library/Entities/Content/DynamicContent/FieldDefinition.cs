@@ -29,8 +29,8 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     [Serializable]
     [TableName("ContentTypes_FieldDefinitions")]
     [PrimaryKey("FieldDefinitionID", "FieldDefinitionId")]
-    [Cacheable("ContentTypes_FieldDefinitions", CacheItemPriority.Normal, 20)]
-    [Scope("ContentTypeId")]
+    [Cacheable(FieldDefinitionController.FieldDefinitionCacheKey, CacheItemPriority.Normal, 20)]
+    [Scope(FieldDefinitionController.FieldDefinitionScope)]
     public class FieldDefinition
     {
         private DataType _dataType;
