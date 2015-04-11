@@ -26,7 +26,8 @@ using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
@@ -88,6 +89,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnFormMode FormMode { get; set; }
 
+        public bool EncryptIds { get; set; }
+
         public bool IsValid
         {
             get
@@ -143,10 +146,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #region Private Methods
 
+        [Obsolete("Obsolted in Platform 7.4.1, please add encryptIds")]
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
+        {
+            SetUpItems(items, parentControl, localResourceFile, false);
+        }
+
+        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
         {
             foreach (DnnFormItemBase item in items)
             {
+                if (encryptIds) {
+                    item.ID = UrlUtils.EncryptParameter(item.ID, Host.GUID);
+                }
+
                 parentControl.Controls.Add(item);
             }
         }
@@ -168,7 +181,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     panel.Text = Localization.GetString(resourceKey, LocalResourceFile);
                     panel.Expanded = section.Expanded;
 
-                    SetUpItems(section.Items, panel, LocalResourceFile);
+                    SetUpItems(section.Items, panel, LocalResourceFile, EncryptIds);
                 }
             }
         }
@@ -216,7 +229,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         tab.CssClass += " dnnFormNoSections";
                     }
 
-                    SetUpItems(formTab.Items, tab, LocalResourceFile);
+                    SetUpItems(formTab.Items, tab, LocalResourceFile, EncryptIds);
                 }
             }
         }
@@ -272,7 +285,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             SetUpSections(Sections, this);
 
-            SetUpItems(Items, this, LocalResourceFile);
+            SetUpItems(Items, this, LocalResourceFile, EncryptIds);
 
             DataBindItems(useDataSource);
         }
