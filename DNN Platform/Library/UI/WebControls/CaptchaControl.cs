@@ -544,7 +544,42 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		private static string Decrypt(string encryptedContent)
 		{
-            return UrlUtils.DecryptParameter(encryptedContent, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
+		    var decryptedText = string.Empty;
+
+		    try
+		    {
+                decryptedText = UrlUtils.DecryptParameter(encryptedContent, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
+		    }
+		    catch (Exception err)
+		    {
+		        Exceptions.LogException(err);
+		    }
+
+		    if (!string.IsNullOrEmpty(decryptedText))
+		    {
+		        var expirationSeparator = decryptedText.IndexOf(_Separator, StringComparison.Ordinal);
+                var expiration = decryptedText.Substring(0, expirationSeparator);
+		        try
+		        {
+		            DateTime expirationDate;
+		            if (DateTime.TryParse(expiration, out expirationDate))
+		            {
+                        if (expirationDate >= DateTime.Now)
+		                {
+                            return decryptedText.Substring(expirationSeparator + _Separator.Length);
+		                }
+		            }
+
+		            return string.Empty;
+
+		        }
+		        catch (Exception err)
+		        {
+                    Exceptions.LogException(err);
+		        }
+		    }
+
+		    return decryptedText;
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -594,7 +629,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		private static string Encrypt(string content, DateTime expiration)
 		{
-            return UrlUtils.EncryptParameter(content, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
+            return UrlUtils.EncryptParameter(expiration + _Separator + content, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
 		}
 
 		/// -----------------------------------------------------------------------------
