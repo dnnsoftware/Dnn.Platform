@@ -32,7 +32,9 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
@@ -542,21 +544,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		private static string Decrypt(string encryptedContent)
 		{
-			string decryptedText = string.Empty;
-			try
-			{
-				FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(encryptedContent);
-				if ((!ticket.Expired))
-				{
-					decryptedText = ticket.UserData;
-				}
-			}
-			catch (ArgumentException exc)
-			{
-				Logger.Debug(exc);
-
-			}
-			return decryptedText;
+            return UrlUtils.DecryptParameter(encryptedContent, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -606,8 +594,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		private static string Encrypt(string content, DateTime expiration)
 		{
-			var ticket = new FormsAuthenticationTicket(1, HttpContext.Current.Request.UserHostAddress, DateTime.Now, expiration, false, content);
-			return FormsAuthentication.Encrypt(ticket);
+            return UrlUtils.EncryptParameter(content, Host.GUID + _Separator + HttpContext.Current.Request.UserHostAddress + _Separator + DotNetNukeContext.Current.Application.Version + _Separator + DateTime.UtcNow.Hour);
 		}
 
 		/// -----------------------------------------------------------------------------
