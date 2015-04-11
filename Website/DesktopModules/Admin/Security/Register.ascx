@@ -9,7 +9,7 @@
     </div>
     <br/>
     <div class="dnnFormItem dnnClear">
-        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" />
+        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
         <div class="dnnSocialRegistration">
             <div id="mainContainer">
                 <ul class="buttonList">
