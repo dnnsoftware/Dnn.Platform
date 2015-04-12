@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using ClientDependency.Core;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Framework;
@@ -156,8 +157,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             foreach (DnnFormItemBase item in items)
             {
-                if (encryptIds) {
-                    item.ID = UrlUtils.EncryptParameter(item.ID, Host.GUID);
+                if (encryptIds)
+                {
+                    item.ID = (Host.GUID.Substring(0, 7) + item.ID + DateTime.Now.Day).GenerateHash();
                 }
 
                 parentControl.Controls.Add(item);
