@@ -22,11 +22,13 @@ using DotNetNuke.Common.Utilities;
 
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Web;
 
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.FileSystem;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 namespace DotNetNuke.Providers.RadEditorProvider
 {
@@ -69,11 +71,15 @@ namespace DotNetNuke.Providers.RadEditorProvider
 					}
 					else
 					{
+						if (renderUrl.Contains("?"))
+						{
+							renderUrl = renderUrl.Substring(0, renderUrl.IndexOf("?"));
+						}
 						//File URL
 						string dbPath = (string)(string)FileSystemValidation.ToDBPath(renderUrl);
 						string fileName = System.IO.Path.GetFileName(renderUrl);
 
-						if (! (string.IsNullOrEmpty(fileName)))
+						if (!string.IsNullOrEmpty(fileName))
 						{
 							FolderInfo dnnFolder = GetDNNFolder(dbPath);
 							if (dnnFolder != null)
@@ -85,10 +91,12 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
 					if (fileInfo != null)
 					{
-						if (CanViewFile(fileInfo.Folder) && fileInfo.Extension.ToLower() == "htmtemplate")
+						if (CanViewFile(fileInfo.Folder))
 						{
-							byte[] fileBytes = FileSystemUtils.GetFileContent(fileInfo);
-							fileContents = System.Text.Encoding.ASCII.GetString(fileBytes);
+							using (var streamReader = new StreamReader(FileManager.Instance.GetFileContent(fileInfo)))
+							{
+								fileContents = streamReader.ReadToEnd();
+							}
 						}
 					}
 
