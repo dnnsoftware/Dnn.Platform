@@ -464,6 +464,105 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {
 	WHERE RoleID IS NOT Null
 GO
 
+/********************************************************
+ * DNN-6856:  prevent duplicate entries
+ ********************************************************/
+ 
+-- drop unique index:
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]') 
+                                       AND name = N'IX_{objectQualifier}CoreMessaging_SubscriptionTypes_DesktopModuleID')
+    DROP Index [IX_{objectQualifier}CoreMessaging_SubscriptionTypes_DesktopModuleID] 
+	  ON {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+GO
+
+-- Adjust existing core values (just in case, never trust a developer):
+UPDATE {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+ SET DesktopModuleId = Null WHERE DesktopModuleId = -1;
+GO
+
+-- Make sure, all DesktopModules references are valid:
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+ WHERE DesktopModuleId IS NOT Null 
+   AND DesktopModuleId NOT IN (SELECT DesktopModuleId FROM {databaseOwner}[{objectQualifier}DesktopModules]);
+GO
+
+-- ADD FK Constraint:
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys 
+            WHERE Parent_Object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]')
+              AND name = N'FK_{objectQualifier}CoreMessaging_SubscriptionTypes_{objectQualifier}DesktopModules')
+	ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+	DROP CONSTRAINT FK_{objectQualifier}CoreMessaging_SubscriptionTypes_{objectQualifier}DesktopModules;
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+  ADD CONSTRAINT FK_{objectQualifier}CoreMessaging_SubscriptionTypes_{objectQualifier}DesktopModules FOREIGN KEY([DesktopModuleId])
+  REFERENCES {databaseOwner}[{objectQualifier}DesktopModules] ([DesktopModuleId])
+  ON DELETE No Action; -- Cascase prevented by FKs Subscriptions > Modules > DesktopModules
+GO
+
+-- Remove duplicates:
+DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+ WHERE SubscriptionTypeId NOT IN (SELECT Max(SubscriptionTypeId) 
+                                   FROM  {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+								   GROUP BY DesktopModuleId, SubscriptionName)
+GO
+
+-- Add unique index:
+CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}CoreMessaging_SubscriptionTypes_DesktopModuleID 
+ ON {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] 
+	(DesktopModuleId, SubscriptionName) 
+	INCLUDE (FriendlyName)
+GO
+
+-- Update Procedure:
+IF Exists (SELECT * FROM Sys.Procedures WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType];
+GO
+
+-- used for update FriendlyName as well, as there is no other option (for updating SubscriptionName, you need to drop and re-add):
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+	@SubscriptionName nVarChar(50), -- not null or empty
+	@FriendlyName     nVarChar(50), -- not null or empty
+	@DesktopModuleId  Int			-- might be Null|-1 (core subscription type)
+AS 
+BEGIN
+	MERGE INTO {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes] T 
+	USING (SELECT @SubscriptionName AS SubscriptionName, 
+	              @FriendlyName AS FriendlyName, 
+				  CASE WHEN @DesktopModuleId = -1 THEN Null ELSE @DesktopModuleId END AS DesktopModuleId) S
+	ON IsNull(S.DesktopModuleId, -1) = IsNull(T.DesktopModuleId, -1) AND S.SubscriptionName = T.SubscriptionName
+	WHEN MATCHED AND T.FriendlyName != S.FriendlyName THEN UPDATE SET FriendlyName = S.FriendlyName
+	WHEN NOT MATCHED THEN INSERT (  SubscriptionName,   FriendlyName,   DesktopModuleId) 
+						 VALUES  (S.SubscriptionName, S.FriendlyName, S.DesktopModuleId);
+						 
+	SELECT SubscriptionTypeId 
+	 FROM  {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	 WHERE IsNull(DesktopModuleId, -1) = IsNull(@DesktopModuleId, -1) 
+	   AND SubscriptionName = @SubscriptionName;
+END;
+GO
+
+IF Exists (SELECT * FROM Sys.Procedures WHERE OBJECT_ID = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteDesktopModule]'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModule];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteDesktopModule]
+	@DesktopModuleId int -- Not Null|-1
+AS
+BEGIN
+	-- delete custom permissions
+	DELETE FROM {databaseOwner}[{objectQualifier}Permission]
+	 WHERE moduleDefId IN (SELECT ModuleDefId 
+							FROM  {databaseOwner}{objectQualifier}ModuleDefinitions
+							WHERE DesktopModuleId = @DesktopModuleId);
+
+	DELETE FROM {databaseOwner}[{objectQualifier}CoreMessaging_SubscriptionTypes]
+	 WHERE DesktopModuleId = @DesktopModuleId;
+		
+	DELETE FROM {databaseOwner}[{objectQualifier}DesktopModules]
+	 WHERE DesktopModuleId = @DesktopModuleId;
+END;
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
