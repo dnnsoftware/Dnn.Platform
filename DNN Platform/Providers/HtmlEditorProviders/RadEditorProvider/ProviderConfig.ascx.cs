@@ -1467,11 +1467,12 @@ namespace DotNetNuke.Providers.RadEditorProvider
                             if (roleMatch.Success)
                             {
                                 var roleId = roleMatch.Groups[1].Value;
-                                rblMode.SelectedValue = roleId;
                                 strTargetTab = strTargetGroup.Replace(roleMatch.Value + ".", string.Empty);
                                 var role = RoleController.Instance.GetRoleById(PortalId, Convert.ToInt32(roleId));
                                 if (role != null)
                                 {
+                                    //DNN-6840 - assign selected value only if role exists on the current portal
+                                    rblMode.SelectedValue = roleId;
                                     nodeTitle = role.RoleName;
                                 }
                                 else
