@@ -21,43 +21,24 @@
 
 using System;
 using System.Linq;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Data;
 
-namespace DotNetNuke.Entities.Content
+namespace DotNetNuke.Entities.Content.DynamicContent
 {
-	/// <summary>
-	/// ContentTypeController provides the business layer of ContentType.
-	/// </summary>
-	/// <remarks>
-	/// </remarks>
-	/// <example>
-	/// <code lang="C#">
-	/// IContentTypeController typeController = new ContentTypeController();
-    /// ContentType contentType = (from t in typeController.GetContentTypes()
-    ///                            where t.ContentType == "DesktopModule"
-    ///                            select t).SingleOrDefault();
-    /// if(contentType == null)
-    /// {
-    ///     contentType = new ContentType {ContentType = "DesktopModule"};
-    ///     contentType.ContentTypeId = typeController.AddContentType(contentType);
-    /// }
-	/// </code>
-	/// </example>
-    public class ContentTypeController : ControllerBase<ContentType, IContentTypeController, ContentTypeController>,  IContentTypeController
-	{
-	    internal const string GetWhereSql = "WHERE IsDynamic = 0";
+    public class DynamicContentTypeController : ControllerBase<DynamicContentType, IDynamicContentTypeController, DynamicContentTypeController>, IDynamicContentTypeController
+    {
+        internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
 
-        protected override Func<IContentTypeController> GetFactory()
+        protected override Func<IDynamicContentTypeController> GetFactory()
         {
-            return () => new ContentTypeController();
+            return () => new DynamicContentTypeController();
         }
 
-        public ContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public DynamicContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public ContentTypeController(IDataContext dataContext) : base(dataContext) { }
+        public DynamicContentTypeController(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds the type of the content.
@@ -66,7 +47,7 @@ namespace DotNetNuke.Entities.Content
         /// <returns>content type id.</returns>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
-        public int AddContentType(ContentType contentType)
+        public int AddContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
@@ -82,19 +63,47 @@ namespace DotNetNuke.Entities.Content
         /// <param name="contentType">Type of the content.</param>
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
-        public void DeleteContentType(ContentType contentType)
+        public void DeleteContentType(DynamicContentType contentType)
         {
             Delete(contentType);
         }
 
         /// <summary>
-        /// Gets the content types.
+        /// Gets the content types for a specific portal.
         /// </summary>
+        /// <param name="portalId">The portalId</param>
         /// <returns>content type collection.</returns>
-        public IQueryable<ContentType> GetContentTypes()
-		{
-            var cacheArgs = new CacheItemArgs(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCacheTimeOut, DataCache.ContentTypesCachePriority);
-            return DataCache.GetCachedData<IQueryable<ContentType>>(cacheArgs, c => Find(GetWhereSql).AsQueryable()); 
+        public IQueryable<DynamicContentType> GetContentTypes(int portalId)
+        {
+            IQueryable<DynamicContentType> contentTypes;
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<DynamicContentType>();
+
+                contentTypes = rep.Get(portalId).AsQueryable();
+            }
+
+            return contentTypes;
+        }
+
+        /// <summary>
+        /// Gets a page of content types for a specific portal.
+        /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="pageIndex">The page index to return</param>
+        /// <param name="pageSize">The page size</param>
+        /// <returns>content type collection.</returns>
+        public IPagedList<DynamicContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
+        {
+            IPagedList<DynamicContentType> contentTypes;
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<DynamicContentType>();
+
+                contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
+            }
+
+            return contentTypes;
         }
 
         /// <summary>
@@ -104,22 +113,12 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentNullException">content type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
-        public void UpdateContentType(ContentType contentType)
+        public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
 
             Update(contentType);
         }
-
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically")]
-        public void ClearContentTypeCache()
-        {
-            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 so IDataService is no longer needed")]
-        // ReSharper disable once UnusedParameter.Local
-        public ContentTypeController(IDataService dataService) { }
     }
 }

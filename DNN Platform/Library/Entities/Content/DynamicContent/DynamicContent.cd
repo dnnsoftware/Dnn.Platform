@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.DynamicContentType">
+    <Position X="4.75" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAgAAAAAAEAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\DynamicContentType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FieldDefinitions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.ContentType" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAIACAAgAAAEAACAAAAAAAAACAABAAAAiAgQAAg=</HashCode>
+      <FileName>Entities\Content\ContentType.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.ValidationRule">
+    <Position X="11.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAEAAAAEAAAAQAABAAAAAAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\ValidationRule.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ValidatorType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.ValidatorType">
+    <Position X="14.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAQA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\ValidatorType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.DataType">
+    <Position X="11.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\DataType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.FieldDefinition">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAIAAEAIgAAAACAAAAEUAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\FieldDefinition.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DataType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ValidationRules" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,4 +1,4 @@
-#region Copyright
+﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
@@ -3157,7 +3157,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
-            Requires.NotNull("value", settingValue);
+            Requires.PropertyNotNull("value", settingValue);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
 
             var cipherText = Security.FIPSCompliant.EncryptAES(settingValue, passPhrase, Entities.Host.Host.GUID);

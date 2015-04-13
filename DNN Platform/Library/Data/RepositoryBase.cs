@@ -208,25 +208,17 @@ namespace DotNetNuke.Data
 
         protected TProperty GetPropertyValue<TProperty>(T item, string propertyName)
         {
-            var modelType = typeof(T);
-            var property = modelType.GetProperty(propertyName);
-
-            return (TProperty)property.GetValue(item, null);
+            return DataUtil.GetPropertyValue<T, TProperty>(item, propertyName);
         }
 
         protected TProperty GetPrimaryKey<TProperty>(T item)
         {
-            Type modelType = typeof(T);
-
-            //Get the primary key
-            var primaryKeyName = DataUtil.GetPrimaryKeyProperty(modelType, String.Empty);
-
-            return GetPropertyValue<TProperty>(item, primaryKeyName);
+            return DataUtil.GetPrimaryKey<T, TProperty>(item);
         }
 
         protected TProperty GetScopeValue<TProperty>(T item)
         {
-            return GetPropertyValue<TProperty>(item, Scope);
+            return DataUtil.GetPropertyValue<T, TProperty>(item, Scope);
         }
 
         #region Abstract Methods

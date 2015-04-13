@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Journal {
             if (objJournalItem.SocialGroupId > 0) {
                 contentTypeName = "DNNCorp_JournalGroup";
             }
-            var colContentTypes = (from t in typeController.GetContentTypes(-1) where t.ContentType == contentTypeName select t);
+            var colContentTypes = (from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t);
             int contentTypeID;
 
             if (colContentTypes.Count() > 0) {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Journal {
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
         internal static int GetContentTypeID(string ContentTypeName) {
             var typeController = new ContentTypeController();
-            var colContentTypes = (from t in typeController.GetContentTypes(-1) where t.ContentType == ContentTypeName select t);
+            var colContentTypes = (from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t);
             int contentTypeId;
 
             if (colContentTypes.Count() > 0) {

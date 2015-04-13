@@ -21,7 +21,7 @@ GO
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsStructured')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-		ADD [IsStructured] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsStructured] DEFAULT (0)
+		ADD [IsDynamic] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic] DEFAULT (0)
     END 
 GO
 
@@ -41,7 +41,97 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
   DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateContentType]
 GO
 
+/* DNN-6783 Allow developers to manage DCC DataTypes */
+/*****************************************************/
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_DataTypes]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes](
+			[DataTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)	
+	END
+GO
+
+/* DNN-6784 Allow developers to manage ContentFields */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions](
+			[FieldDefinitionID] [int] IDENTITY(1,1) NOT NULL,
+			[ContentTypeID] [int] NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			[Label] [nvarchar](100) NOT NULL,
+			[Description] [nvarchar](2000) NULL,
+			[DataTypeID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_FieldDefinitions] PRIMARY KEY CLUSTERED ([FieldDefinitionID] ASC)
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_FieldDefinitions_{objectQualifier}ContentTypes_DataTypes] FOREIGN KEY([DataTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([DataTypeID])
+	END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes](
+			[ValidatorTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			[ValidatorClassName] [nvarchar](1000) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidatorTypes] PRIMARY KEY CLUSTERED ( [ValidatorTypeID] ASC)
+		)
+ 	END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules](
+			[ValidationRuleID] [int] IDENTITY(1,1) NOT NULL,
+			[FieldDefinitionID] [int] NOT NULL,
+			[ValidatorTypeID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRules] PRIMARY KEY CLUSTERED ([ValidationRuleID] ASC)
+		
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
+			ADD CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRules_{objectQualifier}ContentTypes_FieldDefinitions] FOREIGN KEY([FieldDefinitionID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions] ([FieldDefinitionID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRules_{objectQualifier}ContentTypes_ValidatorTypes] FOREIGN KEY([ValidatorTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes] ([ValidatorTypeID])
+		
+	END
+GO
+
+/* DNN-6789 Allow developers to Manage Content Templates */
+/*********************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Template]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Template](
+			[TemplateID] [int] IDENTITY(1,1) NOT NULL,
+			[ContentTypeID] [int] NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			[TemplateFileID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_Templates] PRIMARY KEY CLUSTERED ( [TemplateID] ASC )		
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}Files] FOREIGN KEY([TemplateFileID])
+				REFERENCES {databaseOwner}[{objectQualifier}Files] ([FileId])
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

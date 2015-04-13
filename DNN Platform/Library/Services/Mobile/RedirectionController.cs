@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>        
         public string GetRedirectUrl(string userAgent, int portalId, int currentTabId)
         {
-            Requires.NotNull("userAgent", userAgent);
+            Requires.PropertyNotNull("userAgent", userAgent);
 
 			string redirectUrl = string.Empty;
 
