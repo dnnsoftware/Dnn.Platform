@@ -188,6 +188,8 @@
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Data\ControllerBase.cs" />
+    <Compile Include="Entities\Content\DynamicContent\ContentTemplate.cs" />
+    <Compile Include="Entities\Content\DynamicContent\ContentTemplateController.cs" />
     <Compile Include="Entities\Content\DynamicContent\DataTypeController.cs" />
     <Compile Include="Entities\Content\DynamicContent\DynamicContentType.cs" />
     <Compile Include="Entities\Content\DynamicContent\DynamicContentTypeController.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="Entities\Content\DynamicContent\IFieldDefinitionController.cs" />
     <Compile Include="Entities\Content\DynamicContent\ValidationRule.cs" />
     <Compile Include="Entities\Content\DynamicContent\ValidatorType.cs" />
+    <Compile Include="Entities\Content\DynamicContent\IContentTemplateController.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\DynamicContent\DataType.cs" />
     <Compile Include="Entities\Content\DynamicContent\FieldDefinition.cs" />

@@ -109,6 +109,30 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 		
 	END
 GO
+
+/* DNN-6789 Allow developers to Manage Content Templates */
+/*********************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Template]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Template](
+			[TemplateID] [int] IDENTITY(1,1) NOT NULL,
+			[ContentTypeID] [int] NOT NULL,
+			[Name] [nvarchar](100) NOT NULL,
+			[TemplateFileID] [int] NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_Templates] PRIMARY KEY CLUSTERED ( [TemplateID] ASC )		
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}Files] FOREIGN KEY([TemplateFileID])
+				REFERENCES {databaseOwner}[{objectQualifier}Files] ([FileId])
+	END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

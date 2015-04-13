@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -89,6 +90,44 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             mockDataTypeController.Verify(c => c.GetDataTypes(), Times.AtMostOnce);
+        }
+
+        [Test]
+        public void ValidationRules_Property_Calls_ValidationRuleController_Get()
+        {
+            //Arrange
+            var field = new FieldDefinition();
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataType = field.ValidationRules;
+
+            //Assert
+            mockValidationRuleController.Verify(c => c.GetValidationRules(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        public void ValidationRules_Property_Calls_ValidationRuleController_Get_Once_Only()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var field = new FieldDefinition() { FieldDefinitionId = fieldDefinitionId };
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(dt => dt.GetValidationRules(fieldDefinitionId))
+                .Returns(new List<ValidationRule>() { new ValidationRule() { FieldDefinitionId = fieldDefinitionId } }.AsQueryable());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+            //Act
+            // ReSharper disable UnusedVariable
+            var mockDataTypeController = field.ValidationRules;
+            var validationRules1 = field.ValidationRules;
+            var validationRules2 = field.ValidationRules;
+            // ReSharper restore UnusedVariable
+
+            //Assert
+            mockValidationRuleController.Verify(c => c.GetValidationRules(fieldDefinitionId), Times.AtMostOnce);
         }
     }
 }

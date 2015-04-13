@@ -67,5 +67,43 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             //Assert
             mockFieldDefinitionController.Verify(c => c.GetFieldDefinitions(contentTypeId), Times.AtMostOnce);
         }
+
+        [Test]
+        public void Templates_Property_Calls_ContentTemplateController_Get()
+        {
+            //Arrange
+            var contentType = new DynamicContentType();
+            var mockFieldDefinitionController = new Mock<IContentTemplateController>();
+            ContentTemplateController.SetTestableInstance(mockFieldDefinitionController.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var fields = contentType.Templates;
+
+            //Assert
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(It.IsAny<int>()), Times.Once);
+        }
+
+        [Test]
+        public void Templates_Property_Calls_ContentTemplateController_Get_Once_Only()
+        {
+            //Arrange
+            var contentTypeId = 3;
+            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
+            var mockFieldDefinitionController = new Mock<IContentTemplateController>();
+            mockFieldDefinitionController.Setup(fd => fd.GetContentTemplates(contentTypeId))
+                .Returns(new List<ContentTemplate> { new ContentTemplate() { ContentTypeId = contentTypeId } }.AsQueryable());
+            ContentTemplateController.SetTestableInstance(mockFieldDefinitionController.Object);
+
+            //Act
+            // ReSharper disable UnusedVariable
+            var fields = contentType.FieldDefinitions;
+            var fields1 = contentType.FieldDefinitions;
+            var fields2 = contentType.FieldDefinitions;
+            // ReSharper restore UnusedVariable
+
+            //Assert
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(contentTypeId), Times.AtMostOnce);
+        }
     }
 }

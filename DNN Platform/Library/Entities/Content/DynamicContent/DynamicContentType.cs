@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
@@ -35,6 +36,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     public class DynamicContentType : ContentType
     {
         private IList<FieldDefinition> _fieldDefitions;
+        private IList<ContentTemplate> _templates;
 
         /// <summary>
         /// Gets a list of Field Definitions associated with this Content Type
@@ -51,5 +53,18 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public bool IsDynamic { get; set; }
 
         public int PortalId { get; set; }
+
+        /// <summary>
+        /// Gets a list of Content Templates associated with this Content Type
+        /// </summary>
+        [IgnoreColumn]
+        public IList<ContentTemplate> Templates
+        {
+            get
+            {
+                return _templates ?? (_templates = ContentTemplateController.Instance.GetContentTemplates(ContentTypeId).ToList());
+            }
+        }
+
     }
 }

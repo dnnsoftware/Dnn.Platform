@@ -206,6 +206,12 @@ namespace DotNetNuke.Tests.Utilities
 
         public const int CONTENTTYPE_ValidValidatorTypeId = 3;
 
+        public const int CONTENTTYPE_AddContentTemplateId = 5;
+        public const int CONTENTTYPE_ValidContentTemplateId = 2;
+        public const int CONTENTTYPE_ValidContentTemplateCount = 7;
+        public const int CONTENTTYPE_InValidContentTemplateId = -1;
+        public const int CONTENTTYPE_UpdateContentTemplateId = 4;
+
         #endregion
 
         #region ScopeType Constants
