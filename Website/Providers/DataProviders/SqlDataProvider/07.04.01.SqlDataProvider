@@ -304,24 +304,33 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
 AS
 	IF IsNull(@PackageDependencyID, -1) != -1 AND EXISTS (SELECT * FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID != @PackageDependencyID)
 		UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
-		   SET [PackageID]   = @PackageID,
+		 SET   [PackageID]   = @PackageID,
 		       [PackageName] = @PackageName,
 		       [Version]     = @Version
 		 WHERE PackageDependencyID = @PackageDependencyID
-	ELSE
-		BEGIN
-			INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] 
-				[PackageID],
+	ELSE BEGIN
+		-- prevent duplicates:
+		SELECT @PackageDependencyID = PackageDependencyID
+		 FROM {databaseOwner}[{objectQualifier}PackageDependencies]
+		 WHERE [PackageID]   = @PackageID 
+		   AND [PackageName] = @PackageName;
+		IF ISNull(@PackageDependencyID, -1) > -1 
+			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+			 SET   [Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID;
+	 	ELSE BEGIN
+		 	INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] 
+			(	[PackageID],
 				[PackageName],
 				[Version]
 			) VALUES 
 			(	@PackageID,
 				@PackageName,
 				@Version
-			)
-			SET @PackageDependencyID = (SELECT @@IDENTITY)
-		END
-
+			);
+			SET @PackageDependencyID = (SELECT @@IDENTITY);
+		END;
+	END;
 	SELECT @PackageDependencyID
 GO
 
