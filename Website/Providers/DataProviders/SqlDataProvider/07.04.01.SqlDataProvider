@@ -203,10 +203,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
  @PortalId INT,
  @PropertyName NVARCHAR(50),
@@ -253,7 +249,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
 	@PreferredScriptLocation int,
 	@CDNPath NVARCHAR(250)
 AS
-
+BEGIN
 	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
 		BEGIN
 			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
@@ -289,7 +285,8 @@ AS
 			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
 		END
 
-	SELECT @JavaScriptLibraryID
+	SELECT @JavaScriptLibraryID;
+END;
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
@@ -302,6 +299,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
 	@PackageName         NVARCHAR(128), -- Not Null Or empty
 	@Version             NVARCHAR(50)   -- Not Null Or empty
 AS
+BEGIN
 	IF IsNull(@PackageDependencyID, -1) != -1 AND EXISTS (SELECT * FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID != @PackageDependencyID)
 		UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
 		 SET   [PackageID]   = @PackageID,
@@ -331,7 +329,8 @@ AS
 			SET @PackageDependencyID = (SELECT @@IDENTITY);
 		END;
 	END;
-	SELECT @PackageDependencyID
+	SELECT @PackageDependencyID;
+END;
 GO
 
 /***** DNN-6099: always remove user roles in current portal. *****/
