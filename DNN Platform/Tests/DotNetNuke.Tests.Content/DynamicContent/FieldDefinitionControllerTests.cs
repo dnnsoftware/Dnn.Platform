@@ -39,6 +39,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<FieldDefinition>> _mockFieldDefinitionRepository;
+        private Mock<IValidationRuleController>  _mockValidationRuleController;
         // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
 
@@ -53,12 +54,19 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             _mockFieldDefinitionRepository = new Mock<IRepository<FieldDefinition>>();
             _mockDataContext.Setup(dc => dc.GetRepository<FieldDefinition>()).Returns(_mockFieldDefinitionRepository.Object);
+
+            _mockValidationRuleController = new Mock<IValidationRuleController>();
+            _mockValidationRuleController.Setup(vr => vr.GetValidationRules(It.IsAny<int>()))
+                .Returns(new List<ValidationRule>().AsQueryable());
+            ValidationRuleController.SetTestableInstance(_mockValidationRuleController.Object);
+
         }
 
         [TearDown]
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
+            ValidationRuleController.ClearInstance();
         }
 
         [Test]
@@ -214,6 +222,70 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
+        public void AddFieldDefinition_Adds_New_ValidationRules_On_Valid_FieldDefinition()
+        {
+            //Arrange
+            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+                            .Callback((FieldDefinition dt) => dt.FieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId);
+
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var definition = new FieldDefinition
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        Name = "New_Type",
+                                        Label = "Label"
+                                    };
+
+            var validationRuleCount = 5;
+            for(int i = 0; i < validationRuleCount; i++)
+            {
+                definition.ValidationRules.Add(new ValidationRule());
+            }
+
+            //Act
+            fieldDefinitionController.AddFieldDefinition(definition);
+
+            //Assert
+            _mockValidationRuleController.Verify(v => v.AddValidationRule(It.IsAny<ValidationRule>()), Times.Exactly(validationRuleCount));
+        }
+
+        [Test]
+        public void AddFieldDefinition_Sets_FieldDefinitionId_Property_Of_New_ValidationRules_On_Valid_FieldDefinition()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_AddFieldDefinitionId;
+            _mockFieldDefinitionRepository.Setup(r => r.Insert(It.IsAny<FieldDefinition>()))
+                            .Callback((FieldDefinition dt) => dt.FieldDefinitionId = fieldDefinitionId);
+
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var definition = new FieldDefinition
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        Name = "New_Type",
+                                        Label = "Label"
+                                    };
+
+            var validationRuleCount = 5;
+            for (int i = 0; i < validationRuleCount; i++)
+            {
+                definition.ValidationRules.Add(new ValidationRule());
+            }
+
+            //Act
+            fieldDefinitionController.AddFieldDefinition(definition);
+
+            //Assert
+            foreach (var rule in definition.ValidationRules)
+            {
+                Assert.AreEqual(fieldDefinitionId, rule.FieldDefinitionId);
+            }
+        }
+
+        [Test]
         public void DeleteFieldDefinition_Throws_On_Null_FieldDefinition()
         {
             //Arrange
@@ -251,6 +323,29 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             _mockFieldDefinitionRepository.Verify(r => r.Delete(definition));
+        }
+
+        [Test]
+        public void DeleteFieldDefinition_Deletes_ValidatioRules_On_Valid_FieldDefinitionId()
+        {
+            //Arrange
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var definition = new FieldDefinition
+                                    {
+                                        FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId
+                                    };
+            var validationRuleCount = Constants.CONTENTTYPE_ValidValidationRuleCount;
+            for (int i = 0; i < validationRuleCount; i++)
+            {
+                definition.ValidationRules.Add(new ValidationRule());
+            }
+
+            //Act
+            fieldDefinitionController.DeleteFieldDefinition(definition);
+
+            //Assert
+            _mockValidationRuleController.Verify(v => v.DeleteValidationRule(It.IsAny<ValidationRule>()), Times.Exactly(validationRuleCount));
         }
 
         [Test]
@@ -421,6 +516,94 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             _mockFieldDefinitionRepository.Verify(r => r.Update(field));
+        }
+
+        [Test]
+        public void UpdateFieldDefinition_Adds_New_ValidationRules_On_Valid_FieldDefinition()
+        {
+            //Arrange
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var field = new FieldDefinition
+                                {
+                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                    FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    Name = "New_Type",
+                                    Label = "Label"
+                                };
+
+            var validationRuleCount = 5;
+            for (int i = 0; i < validationRuleCount; i++)
+            {
+                field.ValidationRules.Add(new ValidationRule());
+            }
+
+            //Act
+            fieldDefinitionController.UpdateFieldDefinition(field);
+
+            //Assert
+            _mockValidationRuleController.Verify(vr => vr.AddValidationRule(It.IsAny<ValidationRule>()), Times.Exactly(validationRuleCount));
+        }
+
+        [Test]
+        public void UpdateFieldDefinition_Sets_FieldDefinitionId_Property_Of_New_ValidationRules_On_Valid_FieldDefinition()
+        {
+            //Arrange
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var field = new FieldDefinition
+                                {
+                                    ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                    FieldDefinitionId = fieldDefinitionId,
+                                    DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                    Name = "New_Type",
+                                    Label = "Label"
+                                };
+
+            var validationRuleCount = 5;
+            for (int i = 0; i < validationRuleCount; i++)
+            {
+                field.ValidationRules.Add(new ValidationRule());
+            }
+
+            //Act
+            fieldDefinitionController.UpdateFieldDefinition(field);
+
+            //Assert
+            foreach (var rule in field.ValidationRules)
+            {
+                Assert.AreEqual(fieldDefinitionId, rule.FieldDefinitionId);
+            }
+        }
+
+        [Test]
+        public void UpdateFieldDefinition_Updates_Existing_ValidationRules_On_Valid_FieldDefinition()
+        {
+            //Arrange
+            var fieldDefinitionController = new FieldDefinitionController(_mockDataContext.Object);
+
+            var field = new FieldDefinition
+                            {
+                                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
+                                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                Name = "New_Type",
+                                Label = "Label"
+                            };
+
+            var validationRuleCount = 5;
+            for (int i = 0; i < validationRuleCount; i++)
+            {
+                field.ValidationRules.Add(new ValidationRule() {ValidationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId});
+            }
+
+            //Act
+            fieldDefinitionController.UpdateFieldDefinition(field);
+
+            //Assert
+            _mockValidationRuleController.Verify(vr => vr.UpdateValidationRule(It.IsAny<ValidationRule>()), Times.Exactly(validationRuleCount));
         }
 
         private List<FieldDefinition> GetValidFieldDefinitions(int count)

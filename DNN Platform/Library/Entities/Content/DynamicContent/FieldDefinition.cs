@@ -40,6 +40,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
         public FieldDefinition()
         {
+            FieldDefinitionId = -1;
             ContentTypeId = -1;
             DataTypeId = -1;
             Name = String.Empty;

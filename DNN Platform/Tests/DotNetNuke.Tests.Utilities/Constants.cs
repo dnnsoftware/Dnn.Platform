@@ -204,7 +204,14 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENTTYPE_AddValidationRuleId = 2;
         public const int CONTENTTYPE_ValidValidationRuleCount = 25;
 
+        public const int CONTENTTYPE_AddValidatorTypeId = 2;
+        public const int CONTENTTYPE_ValidValidatorTypeCount = 23;
         public const int CONTENTTYPE_ValidValidatorTypeId = 3;
+        public const int CONTENTTYPE_UpdateValidatorTypeId = 4;
+        public const string CONTENTTYPE_ValidValidatorTypeName = "Name";
+        public const string CONTENTTYPE_ValidValidatorClassName = "Class";
+        public const string CONTENTTYPE_ValidValidatorErrorKey = "Key";
+        public const string CONTENTTYPE_ValidValidatorErrorMessage = "Message";
 
         public const int CONTENTTYPE_AddContentTemplateId = 5;
         public const int CONTENTTYPE_ValidContentTemplateId = 2;

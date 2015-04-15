@@ -19,40 +19,17 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_ValidationRules")]
-    [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
-    public class ValidationRule
+    public class DynamicContentField
     {
-        private ValidatorType _validatorType;
-
-        public ValidationRule()
+        public DynamicContentField(FieldDefinition definition)
         {
-            ValidatorTypeId = -1;
-            ValidationRuleId = -1;
-            FieldDefinitionId = -1;
+            Definition = definition;
         }
 
-        public int ValidationRuleId { get; set; }
+        public FieldDefinition Definition { get; set; }
 
-        public int FieldDefinitionId { get; set; }
-
-        public int ValidatorTypeId { get; set; }
-
-        [IgnoreColumn]
-        public ValidatorType ValidatorType
-        {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
-                                                    .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
-        }
+        public object Value { get; set; }
     }
 }

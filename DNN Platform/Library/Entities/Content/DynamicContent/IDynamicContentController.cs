@@ -17,42 +17,17 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
-using System;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+#endregion
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_ValidationRules")]
-    [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
-    public class ValidationRule
+    public interface IDynamicContentController
     {
-        private ValidatorType _validatorType;
+        int AddContent(DynamicContentItem content);
 
-        public ValidationRule()
-        {
-            ValidatorTypeId = -1;
-            ValidationRuleId = -1;
-            FieldDefinitionId = -1;
-        }
+        void DeleteContent(DynamicContentItem content);
 
-        public int ValidationRuleId { get; set; }
-
-        public int FieldDefinitionId { get; set; }
-
-        public int ValidatorTypeId { get; set; }
-
-        [IgnoreColumn]
-        public ValidatorType ValidatorType
-        {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
-                                                    .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
-        }
+        void UpdateContent(DynamicContentItem content);
     }
 }

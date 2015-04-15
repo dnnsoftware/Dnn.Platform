@@ -47,6 +47,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             var field = new FieldDefinition();
 
             //Assert
+            Assert.AreEqual(-1, field.FieldDefinitionId);
             Assert.AreEqual(-1, field.ContentTypeId);
             Assert.AreEqual(-1, field.DataTypeId);
             Assert.AreEqual(String.Empty, field.Name);

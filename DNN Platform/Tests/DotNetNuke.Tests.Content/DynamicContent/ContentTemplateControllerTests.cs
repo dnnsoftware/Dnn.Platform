@@ -79,9 +79,32 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         {
             //Arrange
             var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = String.Empty,
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
+
 
             //Act, Arrange
-            Assert.Throws<ArgumentException>(() => contentTemplateController.AddContentTemplate(new ContentTemplate()));
+            Assert.Throws<ArgumentException>(() => contentTemplateController.AddContentTemplate(contentTemplate));
+        }
+
+        [Test]
+        public void AddContentTemplate_Throws_On_Negative_ContentTypeId_Property()
+        {
+            //Arrange
+            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId
+                                        };
+
+            //Act, Arrange
+            Assert.Throws<ArgumentOutOfRangeException>(() => contentTemplateController.AddContentTemplate(contentTemplate));
         }
 
         [Test]
@@ -90,7 +113,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             //Arrange
             var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate() { Name = "ContentTemplate1" };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -109,7 +137,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate() { Name = "ContentTemplate1" };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             int contentTemplateId = contentTemplateController.AddContentTemplate(contentTemplate);
@@ -127,7 +160,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate() { Name = "ContentTemplate1" };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             contentTemplateController.AddContentTemplate(contentTemplate);
@@ -243,6 +281,22 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
+        public void UpdateContentTemplate_Throws_On_Negative_ContentTypeId()
+        {
+            //Arrange
+            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+
+            var contentTemplate = new ContentTemplate()
+                                            {
+                                                Name = "Name",
+                                                TemplateId = Constants.CONTENTTYPE_UpdateContentTemplateId,
+                                                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId
+                                            };
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => contentTemplateController.UpdateContentTemplate(contentTemplate));
+        }
+
+        [Test]
         public void UpdateContentTemplate_Throws_On_Negative_ContentTemplateId()
         {
             //Arrange
@@ -259,11 +313,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             //Arrange
             var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
 
-            var contentTemplate = new ContentTemplate
-            {
-                TemplateId = Constants.CONTENTTYPE_UpdateContentTemplateId,
-                Name = "New_Name"
-            };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_UpdateContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             contentTemplateController.UpdateContentTemplate(contentTemplate);

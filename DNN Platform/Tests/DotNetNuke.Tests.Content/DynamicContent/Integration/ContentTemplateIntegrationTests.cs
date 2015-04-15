@@ -75,7 +75,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             SetUpContentTemplates(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTemplateController = new ContentTemplateController(dataContext);
-            var contentTemplate = new ContentTemplate() { Name = "New_Type" };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             contentTemplateController.AddContentTemplate(contentTemplate);
@@ -188,7 +193,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             SetUpContentTemplates(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var contentTemplateController = new ContentTemplateController(dataContext);
-            var contentTemplate = new ContentTemplate() { TemplateId = templateId, Name = "NewType" };
+            var contentTemplate = new ContentTemplate()
+                                        {
+                                            Name = "Name",
+                                            TemplateId = templateId,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             var mockContentController = new Mock<IContentController>();
             ContentController.SetTestableInstance(mockContentController.Object);
@@ -202,7 +212,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             int actualCount = DataUtil.GetRecordCount(DatabaseName, "ContentTypes_Templates");
             Assert.AreEqual(RecordCount, actualCount);
 
-            DataAssert.IsFieldValueEqual("NewType", DatabaseName, "ContentTypes_Templates", "Name", "TemplateId", templateId);
+            DataAssert.IsFieldValueEqual("Name", DatabaseName, "ContentTypes_Templates", "Name", "TemplateId", templateId);
         }
 
         [Test]

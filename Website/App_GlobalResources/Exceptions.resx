@@ -444,4 +444,10 @@
   <data name="DataTypeInUse.Text" xml:space="preserve">
     <value>The Data Type with Id {0} is in use, so it cannot be deleted.</value>
   </data>
+  <data name="PropertyCannotBeEmpty.Text" xml:space="preserve">
+    <value>The property '{1}' in object '{0}' cannot be empty (count = 0).</value>
+  </data>
+  <data name="ErrorMessageCannotBeNullOrEmpty.Text" xml:space="preserve">
+    <value>Both the ErorrKey and the ErrorMessage cannot be null or empty.</value>
+  </data>
 </root>

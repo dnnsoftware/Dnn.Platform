@@ -19,40 +19,23 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using Telerik.Web.UI;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
-    [Serializable]
-    [TableName("ContentTypes_ValidationRules")]
-    [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
-    public class ValidationRule
+    public class DynamicContentValidator
     {
-        private ValidatorType _validatorType;
-
-        public ValidationRule()
+        public ValidationResult Validate(DynamicContentItem content)
         {
-            ValidatorTypeId = -1;
-            ValidationRuleId = -1;
-            FieldDefinitionId = -1;
-        }
+            var failures = new List<ValidationFailure>();
 
-        public int ValidationRuleId { get; set; }
+            foreach (var field in content.Fields.Values)
+            {
+                
+            }
 
-        public int FieldDefinitionId { get; set; }
-
-        public int ValidatorTypeId { get; set; }
-
-        [IgnoreColumn]
-        public ValidatorType ValidatorType
-        {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
-                                                    .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
+            return new ValidationResult(failures);
         }
     }
 }

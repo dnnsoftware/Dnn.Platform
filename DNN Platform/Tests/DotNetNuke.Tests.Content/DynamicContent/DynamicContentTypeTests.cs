@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Entities.Content.DynamicContent;
@@ -30,6 +31,21 @@ namespace DotNetNuke.Tests.Content.DynamicContent
     [TestFixture]
     class DynamicContentTypeTests
     {
+        [Test]
+        public void Constructor_Sets_Default_Properties()
+        {
+            //Arrange
+
+            //Act
+            var type = new DynamicContentType();
+
+            //Assert
+            Assert.AreEqual(-1, type.PortalId);
+            Assert.AreEqual(true, type.IsDynamic);
+            Assert.AreEqual(-1, type.ContentTypeId);
+            Assert.AreEqual(String.Empty, type.ContentType);
+        }
+
         [Test]
         public void FieldDefinitions_Property_Calls_FieldDefinitionController_Get()
         {

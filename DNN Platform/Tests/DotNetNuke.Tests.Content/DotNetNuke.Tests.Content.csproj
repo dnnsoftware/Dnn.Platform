@@ -64,6 +64,10 @@
     <Reference Include="Moq">
       <HintPath>..\..\..\Packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -90,7 +94,13 @@
     <Compile Include="ContentTypeControllerTests.cs" />
     <Compile Include="AttachmentControllerTests.cs" />
     <Compile Include="ContentTypeTests.cs" />
+    <Compile Include="DynamicContent\ContentTemplateTests.cs" />
+    <Compile Include="DynamicContent\Integration\ValidatorTypeIntegrationTests.cs" />
+    <Compile Include="DynamicContent\ValidationRuleTests.cs" />
+    <Compile Include="DynamicContent\ValidatorTypeControllerTests.cs" />
     <Compile Include="DynamicContent\DataTypeControllerTests.cs" />
+    <Compile Include="DynamicContent\DynamicContentControllerTests.cs" />
+    <Compile Include="DynamicContent\DynamicContentItemTests.cs" />
     <Compile Include="DynamicContent\DynamicContentTypeControllerTests.cs" />
     <Compile Include="DynamicContent\DynamicContentTypeTests.cs" />
     <Compile Include="DynamicContent\Integration\ContentTemplateIntegrationTests.cs" />

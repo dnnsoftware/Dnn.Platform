@@ -54,6 +54,20 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
             Add(contentType);
 
+            //Save Field Definitions
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                definition.ContentTypeId = contentType.ContentTypeId;
+                FieldDefinitionController.Instance.AddFieldDefinition(definition);
+            }
+
+            //Save Content Templates
+            foreach (var template in contentType.Templates)
+            {
+                template.ContentTypeId = contentType.ContentTypeId;
+                ContentTemplateController.Instance.AddContentTemplate(template);
+            }
+
             return contentType.ContentTypeId;
         }
 
@@ -66,6 +80,18 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public void DeleteContentType(DynamicContentType contentType)
         {
             Delete(contentType);
+
+            //Delete Field Definitions
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                FieldDefinitionController.Instance.DeleteFieldDefinition(definition);
+            }
+
+            //Delete Content Templates
+            foreach (var template in contentType.Templates)
+            {
+                ContentTemplateController.Instance.DeleteContentTemplate(template);
+            }
         }
 
         /// <summary>
@@ -119,6 +145,35 @@ namespace DotNetNuke.Entities.Content.DynamicContent
             Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
 
             Update(contentType);
+
+            //Save Field Definitions
+            foreach (var definition in contentType.FieldDefinitions)
+            {
+                if (definition.FieldDefinitionId == -1)
+                {
+                    definition.ContentTypeId = contentType.ContentTypeId;
+                    FieldDefinitionController.Instance.AddFieldDefinition(definition);
+                }
+                else
+                {
+                    FieldDefinitionController.Instance.UpdateFieldDefinition(definition);
+                }
+            }
+
+            //Save Content Templates
+            foreach (var template in contentType.Templates)
+            {
+                if (template.TemplateId == -1)
+                {
+                    template.ContentTypeId = contentType.ContentTypeId;
+                    ContentTemplateController.Instance.AddContentTemplate(template);
+                }
+                else
+                {
+                    ContentTemplateController.Instance.UpdateContentTemplate(template);
+                }
+            }
+
         }
     }
 }

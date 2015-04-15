@@ -84,6 +84,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[ValidatorTypeID] [int] IDENTITY(1,1) NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[ValidatorClassName] [nvarchar](1000) NOT NULL,
+			[ErrorKey] [nvarchar](100) NULL,
+			[ErrorMessage] [nvarchar](1000) NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidatorTypes] PRIMARY KEY CLUSTERED ( [ValidatorTypeID] ASC)
 		)
  	END

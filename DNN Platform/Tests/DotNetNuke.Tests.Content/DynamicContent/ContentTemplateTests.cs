@@ -20,39 +20,27 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Content.DynamicContent;
+using NUnit.Framework;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace DotNetNuke.Tests.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_ValidationRules")]
-    [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
-    public class ValidationRule
+    [TestFixture]
+    public class ContentTemplateTests
     {
-        private ValidatorType _validatorType;
-
-        public ValidationRule()
+        [Test]
+        public void Constructor_Sets_Default_Properties()
         {
-            ValidatorTypeId = -1;
-            ValidationRuleId = -1;
-            FieldDefinitionId = -1;
-        }
+            //Arrange
 
-        public int ValidationRuleId { get; set; }
+            //Act
+            var template = new ContentTemplate();
 
-        public int FieldDefinitionId { get; set; }
-
-        public int ValidatorTypeId { get; set; }
-
-        [IgnoreColumn]
-        public ValidatorType ValidatorType
-        {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
-                                                    .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
+            //Assert
+            Assert.AreEqual(-1, template.TemplateId);
+            Assert.AreEqual(-1, template.ContentTypeId);
+            Assert.AreEqual(-1, template.TemplateFileId);
+            Assert.AreEqual(String.Empty, template.Name);
         }
     }
 }

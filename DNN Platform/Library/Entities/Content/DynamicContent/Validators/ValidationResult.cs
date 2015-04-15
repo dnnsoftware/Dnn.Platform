@@ -19,40 +19,23 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+// ReSharper disable ConvertPropertyToExpressionBody
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
-    [Serializable]
-    [TableName("ContentTypes_ValidationRules")]
-    [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
-    public class ValidationRule
+    public class ValidationResult
     {
-        private ValidatorType _validatorType;
+        private readonly List<ValidationFailure> _errors;
 
-        public ValidationRule()
+        public ValidationResult(IEnumerable<ValidationFailure> failures)
         {
-            ValidatorTypeId = -1;
-            ValidationRuleId = -1;
-            FieldDefinitionId = -1;
+            _errors = new List<ValidationFailure>();
+            _errors.AddRange(failures);
         }
 
-        public int ValidationRuleId { get; set; }
+        public bool IsValid { get { return Errors.Count == 0; } }
 
-        public int FieldDefinitionId { get; set; }
-
-        public int ValidatorTypeId { get; set; }
-
-        [IgnoreColumn]
-        public ValidatorType ValidatorType
-        {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
-                                                    .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
-        }
+        public IList<ValidationFailure> Errors { get { return _errors;  } }
     }
 }

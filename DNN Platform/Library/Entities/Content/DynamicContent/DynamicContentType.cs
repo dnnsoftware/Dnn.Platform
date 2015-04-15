@@ -38,6 +38,12 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         private IList<FieldDefinition> _fieldDefitions;
         private IList<ContentTemplate> _templates;
 
+        public DynamicContentType()
+        {
+            PortalId = -1;
+            IsDynamic = true;
+        }
+
         /// <summary>
         /// Gets a list of Field Definitions associated with this Content Type
         /// </summary>
