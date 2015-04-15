@@ -464,6 +464,43 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {
 	WHERE RoleID IS NOT Null
 GO
 
+/********************************************************
+ * SPROC: CoreMessaging_AddSubscriptionType
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType] AS SELECT 1');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+	@SubscriptionName NVARCHAR(50) ,
+	@FriendlyName NVARCHAR(50) ,
+	@DesktopModuleId INT
+AS
+	DECLARE @currentId int
+
+	SELECT TOP(1) @currentId = SubscriptionTypeId
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+	WHERE DesktopModuleId = @DesktopModuleId
+	  AND SubscriptionName = @SubscriptionName
+
+	IF @currentId IS NOT NULL
+	BEGIN
+		SELECT @currentId
+	END
+	ELSE
+	BEGIN
+		INSERT  {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+				( SubscriptionName ,
+				  FriendlyName ,
+				  DesktopModuleId
+				)
+		VALUES  ( @SubscriptionName ,
+				  @FriendlyName ,
+				  @DesktopModuleId
+				)
+		SELECT SCOPE_IDENTITY()
+	END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
