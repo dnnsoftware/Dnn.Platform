@@ -25,6 +25,7 @@ using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -124,7 +125,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             };
 
             //Act, Arrange
-            Assert.Throws<InvalidOperationException>(() => validatorTypeController.AddValidatorType(validatorType));
+            Assert.Throws<InvalidValidationTypeException>(() => validatorTypeController.AddValidatorType(validatorType));
         }
 
         [Test]
@@ -339,7 +340,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
                                         };
 
             //Act, Arrange
-            Assert.Throws<InvalidOperationException>(() => validatorTypeController.UpdateValidatorType(validatorType));
+            Assert.Throws<InvalidValidationTypeException>(() => validatorTypeController.UpdateValidatorType(validatorType));
         }
 
         [Test]

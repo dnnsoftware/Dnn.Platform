@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using Newtonsoft.Json.Linq;
 // ReSharper disable UseStringInterpolation
 
@@ -34,6 +35,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         {
             Requires.NotNegative("portalId", portalId);
             PortalId = portalId;
+            ModuleId = -1;
         }
 
         public DynamicContentItem(DynamicContentType contentType)
@@ -42,6 +44,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
             Requires.PropertyNotNegative(contentType, "PortalId");
 
             PortalId = contentType.PortalId;
+            ModuleId = -1;
 
             Initialize(contentType);
         }
@@ -64,6 +67,8 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
         public IDictionary<string, DynamicContentField> Fields { get; private set; }
 
+        public int ModuleId { get; set; }
+
         public int PortalId { get; set; }
 
         public void FromJson(string json)
@@ -78,13 +83,13 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
             if (ContentType == null)
             {
-                throw new InvalidOperationException("The speicified Content Type does not exist in the json document.");
+                throw new JsonContentTypeInvalidException(contentTypeId);
             }
 
             var jContent = jObject["content"] as JObject;
             if (jContent == null)
             {
-                throw new InvalidOperationException("There is no content node in the json document.");
+                throw new JsonMissingContentException();
             }
 
             var jFields = jContent["field"] as JArray;
@@ -99,7 +104,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
                     if (definition == null)
                     {
-                        throw new InvalidOperationException(String.Format("The content type does not specify the field - {0}", fieldName));
+                        throw new JsonInvalidFieldException(fieldName);
                     }
 
                     var value = jField["value"];
@@ -142,7 +147,23 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
         public string ToJson()
         {
-            var jObject = new JObject();
+            var jObject = new JObject(
+                                new JProperty("contentTypeId", ContentType.ContentTypeId),
+                                new JProperty("content",
+                                    new JObject(
+                                        new JProperty("field",
+                                              new JArray(
+                                                  from f in Fields.Values
+                                                  select new JObject(
+                                                    new JProperty("name", f.Definition.Name),
+                                                    new JProperty("value", f.Value)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                            );
+
 
             return jObject.ToString();
         }

@@ -23,6 +23,7 @@ using System;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
@@ -100,7 +101,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
             Requires.PropertyNotNullOrEmpty(validatorType, "ValidatorClassName");
             if (String.IsNullOrEmpty(validatorType.ErrorKey) && String.IsNullOrEmpty(validatorType.ErrorMessage))
             {
-                throw new InvalidOperationException(Localization.GetExceptionMessage("ErrorMessageCannotBeNullOrEmpty", "Both the ErorrKey and the ErrorMessage cannot be null or empty."));
+                throw new InvalidValidationTypeException(validatorType);
             }
         }
     }

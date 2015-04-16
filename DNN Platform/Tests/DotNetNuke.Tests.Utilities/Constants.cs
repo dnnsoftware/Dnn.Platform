@@ -83,7 +83,9 @@ namespace DotNetNuke.Tests.Utilities
         public const int PORTAL_Zero = 0;
         public const int PORTAL_One = 1;
         public const int PORTAL_Null = -1;
+        public const int PORTAL_InValidPortalId = -1;
         public const int PORTAL_ValidPortalId = 1;
+
 
         #endregion
 

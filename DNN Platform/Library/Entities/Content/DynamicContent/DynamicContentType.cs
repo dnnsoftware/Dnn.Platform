@@ -52,7 +52,14 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         {
             get
             {
-                return _fieldDefitions ?? (_fieldDefitions = FieldDefinitionController.Instance.GetFieldDefinitions(ContentTypeId).ToList());
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (_fieldDefitions == null)
+                {
+                    _fieldDefitions = (ContentTypeId == -1)
+                                        ? new List<FieldDefinition>()
+                                        : FieldDefinitionController.Instance.GetFieldDefinitions(ContentTypeId).ToList();
+                }
+                return _fieldDefitions;
             }
         }
 
@@ -68,7 +75,14 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         {
             get
             {
-                return _templates ?? (_templates = ContentTemplateController.Instance.GetContentTemplates(ContentTypeId).ToList());
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (_templates == null)
+                {
+                    _templates = (ContentTypeId == -1)
+                                        ? new List<ContentTemplate>()
+                                        : ContentTemplateController.Instance.GetContentTemplates(ContentTypeId).ToList();
+                }
+                return _templates;
             }
         }
 

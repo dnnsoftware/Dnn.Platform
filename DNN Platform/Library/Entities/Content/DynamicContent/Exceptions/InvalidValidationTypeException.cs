@@ -17,17 +17,18 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+using System;
+using DotNetNuke.Services.Localization;
+
+namespace DotNetNuke.Entities.Content.DynamicContent.Exceptions
 {
-    public interface IDynamicContentController
+    public class InvalidValidationTypeException : InvalidOperationException
     {
-        int AddContent(DynamicContentItem content);
-
-        void DeleteContent(DynamicContentItem content);
-
-        void UpdateContent(DynamicContentItem content);
+        public InvalidValidationTypeException(ValidatorType validatorType)
+            : base(Localization.GetExceptionMessage("ErrorMessageCannotBeNullOrEmpty", "Both the ErorrKey and the ErrorMessage cannot be null or empty."))
+        {
+        }
     }
 }

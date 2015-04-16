@@ -20,26 +20,16 @@
 #endregion
 
 using System;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace DotNetNuke.Entities.Content.DynamicContent.Exceptions
 {
-    [Serializable]
-    [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
-    public class DataType
+    public class JsonInvalidFieldException : InvalidOperationException
     {
-        public DataType()
+        public JsonInvalidFieldException(string fieldName)
+            : base(Localization.GetExceptionMessage("JsonInvalidField", String.Format("The content type does not specify the field - {0}.", fieldName)))
         {
-            UnderlyingDataType = UnderlyingDataType.String;
+
         }
-
-        public int DataTypeId { get; set; }
-
-        public string Name { get; set; }
-
-        public UnderlyingDataType UnderlyingDataType { get; set; }
     }
 }

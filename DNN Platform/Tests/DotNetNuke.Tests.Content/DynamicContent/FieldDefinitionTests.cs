@@ -94,10 +94,28 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
-        public void ValidationRules_Property_Calls_ValidationRuleController_Get()
+        public void ValidationRules_Property_Creates_New_List_If_FieldDefinition_Negative()
         {
             //Arrange
             var field = new FieldDefinition();
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataType = field.ValidationRules;
+
+            //Assert
+            mockValidationRuleController.Verify(c => c.GetValidationRules(It.IsAny<int>()), Times.Never);
+        }
+
+        [Test]
+        public void ValidationRules_Property_Calls_ValidationRuleController_Get_If_FieldDefinition_Not_Negative()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var field = new FieldDefinition() { FieldDefinitionId = fieldDefinitionId };
+
             var mockValidationRuleController = new Mock<IValidationRuleController>();
             ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
 

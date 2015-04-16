@@ -49,6 +49,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes](
 			[DataTypeID] [int] IDENTITY(1,1) NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
+			[UnderlyingDataType] [int] NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)	
 	END
 GO

@@ -25,6 +25,7 @@ using System.Linq;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
@@ -43,7 +44,8 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         private const string CreateDataTypeTableSql = @"
             CREATE TABLE ContentTypes_DataTypes(
 	            DataTypeID int IDENTITY(1,1) NOT NULL,
-	            Name nvarchar(100) NOT NULL)";
+	            Name nvarchar(100) NOT NULL,
+                UnderlyingDataType int NOT NULL)";
 
         private const string CreateFieldDefinitionTableSql = @"
             CREATE TABLE ContentTypes_FieldDefinitions(
@@ -54,7 +56,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 	            Label nvarchar(100) NOT NULL,
 	            Description nvarchar(2000) NULL)";
 
-        private const string InsertDataTypeSql = "INSERT INTO ContentTypes_DataTypes (Name) VALUES ('{0}')";
+        private const string InsertDataTypeSql = "INSERT INTO ContentTypes_DataTypes (Name, UnderlyingDataType) VALUES ('{0}', {1})";
 
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
                                                             (ContentTypeID, DataTypeID, Name, Label, Description) 
@@ -162,7 +164,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act, Assert
-            Assert.Throws<InvalidOperationException>(() => dataTypeController.DeleteDataType(dataType));
+            Assert.Throws<DataTypeInUseException>(() => dataTypeController.DeleteDataType(dataType));
         }
 
         [Test]
@@ -263,7 +265,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
                 .Returns(new List<ContentItem>() { new ContentItem() }.AsQueryable());
 
             //Act, Assert
-            Assert.Throws<InvalidOperationException>(() => dataTypeController.UpdateDataType(dataType));
+            Assert.Throws<DataTypeInUseException>(() => dataTypeController.UpdateDataType(dataType));
         }
 
         [Test]
@@ -321,7 +323,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
 
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, String.Format("Type_{0}", i)));
+                var dataType = i;
+                if (dataType > 8)
+                {
+                    dataType = 0;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, String.Format("Type_{0}", i), dataType));
             }
         }
 

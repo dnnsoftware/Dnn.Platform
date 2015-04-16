@@ -74,7 +74,14 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         {
             get
             {
-                return _validationRules ?? (_validationRules = ValidationRuleController.Instance.GetValidationRules(FieldDefinitionId).ToList());
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (_validationRules == null)
+                {
+                    _validationRules = (FieldDefinitionId == -1)
+                                        ? new List<ValidationRule>() 
+                                        : ValidationRuleController.Instance.GetValidationRules(FieldDefinitionId).ToList();
+                }
+                return _validationRules;
             }
         }
     }

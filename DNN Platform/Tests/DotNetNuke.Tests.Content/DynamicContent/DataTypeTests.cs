@@ -17,50 +17,26 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DotNetNuke.Entities.Content.DynamicContent;
-using Moq;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Content.DynamicContent
 {
     [TestFixture]
-    public class DynamicContentControllerTests
+    class DataTypeTests
     {
-        [TearDown]
-        public void TearDown()
+        [Test]
+        public void Constructor_Sets_Default_Properties()
         {
-            FieldDefinitionController.ClearInstance();
+            //Arrange
+
+            //Act
+            var dataType = new DataType();
+
+            //Assert
+            Assert.AreEqual(UnderlyingDataType.String, dataType.UnderlyingDataType);
         }
-
-        //[Test]
-        //public void CreateContent_Throws_On_Null_ContentType()
-        //{
-        //    //Arrange
-        //    var controller = new DynamicContentController();
-
-        //    //Act, Assert
-        //    Assert.Throws<ArgumentNullException>(() => controller.CreateContent(null));
-        //}
-
-        //[Test]
-        //public void CreateContent_Throws_If_ContentType_Has_No_Fields_Defined()
-        //{
-        //    //Arrange
-        //    var controller = new DynamicContentController();
-        //    var contentType = new DynamicContentType();
-        //    var mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
-        //    mockFieldDefinitionController.Setup(c => c.GetFieldDefinitions(It.IsAny<int>()))
-        //        .Returns(new List<FieldDefinition>().AsQueryable());
-        //    FieldDefinitionController.SetTestableInstance(mockFieldDefinitionController.Object);
-
-        //    //Act, Assert
-        //    Assert.Throws<ArgumentException>(() => controller.CreateContent(contentType));
-        //}
     }
 }

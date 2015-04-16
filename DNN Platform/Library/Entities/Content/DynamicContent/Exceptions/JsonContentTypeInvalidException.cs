@@ -20,26 +20,16 @@
 #endregion
 
 using System;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace DotNetNuke.Entities.Content.DynamicContent.Exceptions
 {
-    [Serializable]
-    [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
-    public class DataType
+    public class JsonContentTypeInvalidException : InvalidOperationException
     {
-        public DataType()
+        public JsonContentTypeInvalidException(int contentTypeId)
+            : base(Localization.GetExceptionMessage("JsonContentTypeInvalid", String.Format("The contentTypeId specified in the json document - {0} - does not exist.", contentTypeId)))
         {
-            UnderlyingDataType = UnderlyingDataType.String;
+            
         }
-
-        public int DataTypeId { get; set; }
-
-        public string Name { get; set; }
-
-        public UnderlyingDataType UnderlyingDataType { get; set; }
     }
 }

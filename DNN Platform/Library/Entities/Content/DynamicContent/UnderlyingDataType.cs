@@ -19,27 +19,18 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
-    public class DataType
+    public enum UnderlyingDataType
     {
-        public DataType()
-        {
-            UnderlyingDataType = UnderlyingDataType.String;
-        }
-
-        public int DataTypeId { get; set; }
-
-        public string Name { get; set; }
-
-        public UnderlyingDataType UnderlyingDataType { get; set; }
+        String = 0,
+        Boolean = 1,
+        Integer = 2,
+        Float = 3,
+        Bytes = 4,
+        Guid = 5,
+        Uri = 6,
+        DateTime = 7,
+        TimeSpan = 8
     }
 }

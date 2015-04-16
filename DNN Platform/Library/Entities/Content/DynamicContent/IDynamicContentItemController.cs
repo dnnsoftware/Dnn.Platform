@@ -17,29 +17,28 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
-using System.Web.Caching;
-using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Linq;
+using DotNetNuke.Collections;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    [Serializable]
-    [TableName("ContentTypes_DataTypes")]
-    [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
-    public class DataType
+    public interface IDynamicContentItemController
     {
-        public DataType()
-        {
-            UnderlyingDataType = UnderlyingDataType.String;
-        }
+        int AddContentItem(DynamicContentItem dynamicContent);
 
-        public int DataTypeId { get; set; }
+        DynamicContentItem CreateContentItem(int moduleId, DynamicContentType contentType);
 
-        public string Name { get; set; }
+        DynamicContentItem CreateContentItem(int portalId, ContentItem contentItem);
 
-        public UnderlyingDataType UnderlyingDataType { get; set; }
+        void DeleteContentItem(DynamicContentItem dynamicContent);
+
+        IQueryable<DynamicContentItem> GetContentItems(int contentTypeId, int moduleId);
+
+        IPagedList<DynamicContentItem> GetContentItems(int contentTypeId, int moduleId, int pageIndex, int pageSize);
+
+        void UpdateContentItem(DynamicContentItem dynamicContent);
     }
 }
