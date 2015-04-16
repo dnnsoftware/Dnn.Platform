@@ -476,7 +476,7 @@
 
                 installWizard.progressBarIntervalId = setInterval(function () {
                     $.getInstallProgress();
-                }, 100);
+                }, 500);
 
                 installWizard.timerIntervalId = setInterval(function () {
                     totalSeconds = totalSeconds + 1;
@@ -852,7 +852,7 @@
                             $('#installation-log').append(result);
                         
                         installationLogStartLine += 500;
-                        setTimeout(getInstallationLog, 100);
+                        setTimeout(getInstallationLog, 1000);
                     } else {
                         if (installationLogStartLine === 0)
                             $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');

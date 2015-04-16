@@ -621,9 +621,15 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public CultureInfo GetCultureFromCookie()
         {
-            string language = HttpContext.Current.Request.Cookies["language"].Value;
+            var langCookie = HttpContext.Current.Request.Cookies["language"];
+            var language = langCookie != null ? langCookie.Value : @"en-US";
             var culture = new CultureInfo(language);
             return culture;
+        }
+
+        public string InstallerLogName
+        {
+            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
 
         #endregion
