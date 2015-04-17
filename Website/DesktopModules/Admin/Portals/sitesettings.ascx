@@ -200,7 +200,7 @@
                         <dnn:DnnComboBox ID="cboAdministratorId" runat="server" DataTextField="FullName" DataValueField="UserId" />
                     </div>
 				    <div class="dnnFormItem">
-                        <dnn:label id="plHideLoginControl" runat="server" controlname="enablePopUpsCheckBox" />
+                        <dnn:label id="plHideLoginControl" runat="server" controlname="chkHideLoginControl" />
                         <asp:CheckBox ID="chkHideLoginControl" runat="server" />
                     </div>
                 </fieldset>
@@ -542,13 +542,19 @@
                 </div>
                 <div class="dnnFormItem">
                     <fieldset>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Registration_UseAuthProviders" runat="server" controlname="chkRegistrationUseAuthProviders" />
+                            <asp:CheckBox ID="chkRegistrationUseAuthProviders" runat="server" />
+                        </div>
                         <dnn:dnnformeditor id="basicRegistrationSettings" runat="Server" formmode="Short">
                             <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem1" runat="server" DataField="Registration_UseAuthProviders" />
                                 <dnn:DnnFormTextBoxItem ID="DnnFormTextBoxItem1" runat="server" DataField="Registration_ExcludeTerms" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem2" runat="server" DataField="Registration_UseProfanityFilter" />
                             </Items>
                         </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Registration_UseProfanityFilter" runat="server" controlname="chkRegistrationUseProfanityFilter" />
+                            <asp:CheckBox ID="chkRegistrationUseProfanityFilter" runat="server" />
+                        </div>
                     </fieldset>
                 </div>
                 <div class="dnnFormItem">
@@ -563,11 +569,10 @@
                         </div>
                     </fieldset>
                     <div id="standardRegistration">
-                        <dnn:dnnformeditor id="standardRegistrationSettings" runat="Server" formmode="Short">
-                            <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem3" runat="server" DataField="Registration_UseEmailAsUserName" />
-                            </Items>
-                        </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Registration_UseEmailAsUserName" runat="server" controlname="chkRegistrationUseEmailAsUserName" />
+                            <asp:CheckBox ID="chkRegistrationUseEmailAsUserName" runat="server" />
+                        </div>
                     </div>
                     <fieldset id="customRegistrationFieldSet">
                         <div class="dnnFormItem">
@@ -575,29 +580,36 @@
                             <asp:TextBox ID="registrationFields" runat="server" />
                         </div>
                     </fieldset>
+                    <div class="dnnFormItem">
+                         <dnn:label id="Registration_RequireUniqueDisplayName" runat="server" controlname="chkRegistrationRequireUniqueDisplayName" />
+                         <asp:CheckBox ID="chkRegistrationRequireUniqueDisplayName" runat="server" />
+                    </div>
                     <dnn:dnnformeditor id="validationRegistrationSettings" runat="Server" formmode="Short">
                         <Items>
-                            <dnn:DnnFormToggleButtonItem ID="requireUniqueDisplayName" runat="server" DataField="Registration_RequireUniqueDisplayName" />
                             <dnn:DnnFormTextBoxItem ID="DnnFormTextBoxItem2" runat="server" DataField="Security_DisplayNameFormat" />
                             <dnn:DnnFormTextBoxItem ID="DnnFormTextBoxItem3" runat="server" DataField="Security_UserNameValidation" />
                             <dnn:DnnFormTextBoxItem ID="DnnFormTextBoxItem4" runat="server" DataField="Security_EmailValidation" />
                         </Items>
                     </dnn:dnnformeditor>
                     <fieldset id="passwordRegistrationFieldSet">
-                        <dnn:dnnformeditor id="passwordRegistrationSettings" runat="Server" formmode="Short">
-                            <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem4" runat="server" DataField="Registration_RandomPassword" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem5" runat="server" DataField="Registration_RequireConfirmPassword" />
-                            </Items>
-                        </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                             <dnn:label id="Registration_RandomPassword" runat="server" controlname="chkRegistrationRandomPassword" />
+                             <asp:CheckBox ID="chkRegistrationRandomPassword" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
+                             <dnn:label id="Registration_RequireConfirmPassword" runat="server" controlname="chkRegistrationRequireConfirmPassword" />
+                             <asp:CheckBox ID="chkRegistrationRequireConfirmPassword" runat="server" />
+                        </div>
                     </fieldset>
                     <fieldset>
-                        <dnn:dnnformeditor id="otherRegistrationSettings" runat="Server" formmode="Short">
-                            <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem6" runat="server" DataField="Security_RequireValidProfile" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem7" runat="server" DataField="Security_CaptchaRegister" />
-                            </Items>
-                        </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                             <dnn:label id="Security_RequireValidProfile" runat="server" controlname="chkSecurityRequireValidProfile" />
+                             <asp:CheckBox ID="chkSecurityRequireValidProfile" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
+                             <dnn:label id="Security_CaptchaRegister" runat="server" controlname="chkSecurityCaptchaRegister" />
+                             <asp:CheckBox ID="chkSecurityCaptchaRegister" runat="server" />
+                        </div>
                     </fieldset>
                     <div class="dnnFormItem">
                         <dnn:label id="RedirectAfterRegistrationLabel" runat="server" controlname="cboHomeTabId" ResourceKey="Redirect_AfterRegistration"/>
@@ -651,14 +663,22 @@
             <fieldset>
                 <div class="dnnFormItem">
                     <fieldset>
-                        <dnn:dnnformeditor id="loginSettings" runat="Server" formmode="Short">
-                            <Items>
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem8" runat="server" DataField="Security_CaptchaLogin" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem9" runat="server" DataField="Security_RequireValidProfileAtLogin" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem10" runat="server" DataField="Security_CaptchaRetrivePassword" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem12" runat="server" DataField="Security_CaptchaChangePassword" />
-                            </Items>
-                        </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Security_CaptchaLogin" runat="server" controlname="chkSecurityCaptchaLogin" />
+                            <asp:CheckBox ID="chkSecurityCaptchaLogin" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Security_RequireValidProfileAtLogin" runat="server" controlname="chkSecurityRequireValidProfileAtLogin" />
+                            <asp:CheckBox ID="chkSecurityRequireValidProfileAtLogin" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Security_CaptchaRetrivePassword" runat="server" controlname="chkSecurityCaptchaRetrivePassword" />
+                            <asp:CheckBox ID="chkSecurityCaptchaRetrivePassword" runat="server" />
+                        </div>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Security_CaptchaChangePassword" runat="server" controlname="chkSecurityCaptchaChangePassword" />
+                            <asp:CheckBox ID="chkSecurityCaptchaChangePassword" runat="server" />
+                        </div>
                     </fieldset>
                     <div class="dnnFormItem">
                         <dnn:label id="DefaultAuthProviderLabel" runat="server" controlname="authProviderCombo" ResourceKey="DefaultAuthProvider"/>
@@ -694,13 +714,16 @@
                     </div>
                 </div>
                 <div class="dnnFormItem">
-                    <fieldset>
+                    <fieldset>                      
                         <dnn:dnnformeditor id="profileSettings" runat="Server" formmode="Short">
                             <Items>
                                 <dnn:DnnFormEnumItem id="userVisiblity" runat="server" DataField="Profile_DefaultVisibility" />
-                                <dnn:DnnFormToggleButtonItem ID="DnnFormToggleButtonItem11" runat="server" DataField="Profile_DisplayVisibility" />
                             </Items>
                         </dnn:dnnformeditor>
+                        <div class="dnnFormItem">
+                            <dnn:label id="Profile_DisplayVisibility" runat="server" controlname="chkProfileDisplayVisibility" />
+                            <asp:CheckBox ID="chkProfileDisplayVisibility" runat="server" />
+                        </div>
                     </fieldset>
                     <dnn:profiledefinitions id="profileDefinitions" runat="server" />
                 </div>
