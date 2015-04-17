@@ -487,21 +487,7 @@ namespace DotNetNuke.Services.Mail
             }
 			
             MailMessage mailMessage = null;
-            mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
-            {
-                mailMessage = (UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
-                    ? new MailMessage
-                    {
-                        From =
-                            new MailAddress(mailFrom,
-                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
-                    }
-                    : new MailMessage {From = new MailAddress(mailFrom)};
-            }
-            else
-            {
-                mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
-            }          
+            mailMessage = new MailMessage { From = new MailAddress(mailFrom) };         
             if (!String.IsNullOrEmpty(mailTo))
             {
                 //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
