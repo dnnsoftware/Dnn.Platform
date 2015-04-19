@@ -801,6 +801,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		/// -----------------------------------------------------------------------------
 		private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
 		{
+            // Check if user should actually be logged in as another user DNN-6878
+		    if (objUser.ShadowsUserId != Null.NullInteger)
+		    {
+		        UserInfo shadowUser = UserController.GetUserById(PortalId, objUser.ShadowsUserId);
+		        if (shadowUser != null)
+		        {
+                    new PortalSecurity().SignOut();
+                    objUser = shadowUser;
+                }
+		    }
+
 			UserValidStatus validStatus = UserValidStatus.VALID;
 			string strMessage = Null.NullString;
 			DateTime expiryDate = Null.NullDate;
