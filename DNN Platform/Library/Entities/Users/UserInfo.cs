@@ -321,6 +321,14 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets and sets the User Id which is the preferred account to use for this user
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public int ShadowsUserId { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets and sets the User Name
         /// </summary>
         /// <history>

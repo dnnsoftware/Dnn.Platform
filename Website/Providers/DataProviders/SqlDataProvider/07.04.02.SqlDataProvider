@@ -11,3 +11,105 @@
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = 'ShadowsUserId')
+ALTER TABLE {databaseOwner}{objectQualifier}Users
+ADD ShadowsUserId INT NULL
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Users'))
+DROP VIEW {databaseOwner}{objectQualifier}vw_Users
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW {databaseOwner}{objectQualifier}vw_Users
+AS
+SELECT
+	U.UserId,
+	UP.PortalId,
+	U.Username,
+	U.FirstName,
+	U.LastName,
+	U.DisplayName,
+	U.IsSuperUser,
+	U.Email,
+	UP.VanityUrl,
+	U.AffiliateId,
+	IsNull(UP.IsDeleted, U.IsDeleted) AS IsDeleted,
+	UP.RefreshRoles,
+	U.LastIPAddress,
+	U.UpdatePassword,
+	U.PasswordResetToken,
+	U.PasswordResetExpiration,
+	UP.Authorised,
+	U.ShadowsUserId,
+	U.CreatedByUserId,
+	U.CreatedOnDate,
+	U.LastModifiedByUserId,
+	U.LastModifiedOnDate
+FROM {databaseOwner}{objectQualifier}Users AS U
+LEFT JOIN {databaseOwner}{objectQualifier}UserPortals AS UP 
+ ON CASE WHEN U.IsSuperuser = 1 THEN 0 ELSE U.UserId END = UP.UserId
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE {databaseOwner}{objectQualifier}UpdateUser
+	@UserID         int,
+	@PortalID		int,
+	@FirstName		nvarchar(50),
+	@LastName		nvarchar(50),
+	@IsSuperUser    bit,
+	@Email          nvarchar(256),
+	@DisplayName    nvarchar(100),
+	@VanityUrl		nvarchar(100),
+	@UpdatePassword	bit,
+	@Authorised		bit,
+	@RefreshRoles	bit,
+	@LastIPAddress	nvarchar(50),
+	@passwordResetToken uniqueidentifier,
+	@passwordResetExpiration datetime,
+	@ShadowsUserId int,
+	@IsDeleted		bit,
+	@LastModifiedByUserID int
+AS
+	UPDATE {databaseOwner}{objectQualifier}Users
+		SET
+			FirstName = @FirstName,
+			LastName = @LastName,
+			IsSuperUser = @IsSuperUser,
+			Email = @Email,
+			DisplayName = @DisplayName,
+			UpdatePassword = @UpdatePassword,
+			PasswordResetToken=@passwordResetToken,
+			PasswordResetExpiration=@passwordResetExpiration,
+			LastIPAddress = @LastIPAddress,
+			LastModifiedByUserID = @LastModifiedByUserID,
+			LastModifiedOnDate = getdate(),
+			ShadowsUserId = @ShadowsUserId
+		WHERE  UserId = @UserID
+	
+	IF @PortalID IS NULL
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}Users
+				SET
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+		END
+	ELSE
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}UserPortals
+				SET
+					Authorised = @Authorised,
+					RefreshRoles = @RefreshRoles,
+					VanityUrl = @VanityUrl,
+					IsDeleted = @IsDeleted
+				WHERE  UserId = @UserID
+					AND PortalId = @PortalID
+		END
+GO

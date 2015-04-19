@@ -1653,6 +1653,7 @@ namespace DotNetNuke.Security.Membership
                                      user.LastIPAddress,
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
+                                     user.ShadowsUserId,
                                      user.IsDeleted,
                                      UserController.Instance.GetCurrentUserInfo().UserID);
 
