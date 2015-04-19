@@ -431,7 +431,8 @@ namespace DotNetNuke.Security.Membership
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
                         Username = Null.SetNullString(dr["Username"]),
                         Email = Null.SetNullString(dr["Email"]),
-                        AffiliateID = Null.SetNullInteger(dr["AffiliateID"])
+                        AffiliateID = Null.SetNullInteger(dr["AffiliateID"]),
+                        ShadowsUserId = Null.SetNullInteger(dr["ShadowsUserId"])
                     };
                 user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
 
@@ -473,6 +474,7 @@ namespace DotNetNuke.Security.Membership
                         case "IsApproved":
                         case "PasswordResetToken":
                         case "PasswordResetExpiration":
+                        case "ShadowsUserId":
                             break;
                         default:
                             //Probably a profile property
@@ -535,6 +537,7 @@ namespace DotNetNuke.Security.Membership
                     UserController.GetUserMembership(user);
                     user.Email = Null.SetNullString(dr["Email"]);
                     user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
+                    user.ShadowsUserId = Null.SetNullInteger(Null.SetNull(dr["ShadowsUserId"], user.ShadowsUserId));
 
                     if (schema != null)
                     {

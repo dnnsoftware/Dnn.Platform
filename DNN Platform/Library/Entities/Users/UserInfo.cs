@@ -78,6 +78,7 @@ namespace DotNetNuke.Entities.Users
             PortalID = Null.NullInteger;
             IsSuperUser = Null.NullBoolean;
             AffiliateID = Null.NullInteger;
+            ShadowsUserId = Null.NullInteger;
         }
 
         #endregion
