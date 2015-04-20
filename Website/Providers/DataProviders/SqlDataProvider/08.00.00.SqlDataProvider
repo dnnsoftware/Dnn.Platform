@@ -42,6 +42,21 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{
 GO
 
 
+/* Add GetUsernameByAppId Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetUsernameByAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsernameByAppId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetUsernameByAppId]
+
+	@AppId nvarchar(100)
+
+AS
+	SELECT Username FROM {databaseOwner}{objectQualifier}Users
+	WHERE  AppId=@@AppId 
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

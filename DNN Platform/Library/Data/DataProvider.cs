@@ -2310,6 +2310,11 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetDuplicateEmailCount", portalId);
         }
 
+        public virtual string GetUsernameByAppId(string appId)
+        {
+            return ExecuteScalar<string>("GetUsernameByAppID", appId);
+        }
+
         public virtual int GetSingleUserByEmail(int portalId, string emailToMatch)
         {
             return ExecuteScalar<int>("GetSingleUserByEmail", portalId, emailToMatch);

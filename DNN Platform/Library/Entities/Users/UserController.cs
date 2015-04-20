@@ -596,6 +596,16 @@ namespace DotNetNuke.Entities.Users
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the number count for all duplicate e-mail adresses in the database
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static string GetUsernameByAppId(string appId)
+        {
+            return DataProvider.Instance().GetUsernameByAppId(appId);
+        }
         #endregion
 
         #region Public Helper Methods

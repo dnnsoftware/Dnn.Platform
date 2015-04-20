@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.Api
 {
@@ -44,7 +45,8 @@ namespace DotNetNuke.Web.Api
 
                     if (isValid.Result)
                     {
-                        var currentPrincipal = new GenericPrincipal(new GenericIdentity(APPId), null);
+                        var validatedUser = UserController.GetUsernameByAppId(APPId);
+                        var currentPrincipal = new GenericPrincipal(new GenericIdentity(validatedUser), null);
                         context.Principal = currentPrincipal;
                     }
                     else
