@@ -650,11 +650,14 @@ namespace DotNetNuke.Entities.Users
             {
                 propValue = profileProp.PropertyValue;
 
-                var controller = new ListController();
-                var dataType = controller.GetListEntryInfo(profileProp.DataType);
-                if (dataType.Value == "Country" || dataType.Value == "Region")
+                if (profileProp.DataType > -1)
                 {
-                    propValue = GetListValue(propValue);
+                    var controller = new ListController();
+                    var dataType = controller.GetListEntryInfo(profileProp.DataType);
+                    if (dataType.Value == "Country" || dataType.Value == "Region")
+                    {
+                        propValue = GetListValue(propValue);
+                    }
                 }
             }
             return propValue;
