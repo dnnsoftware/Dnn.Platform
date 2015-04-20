@@ -12,9 +12,13 @@
 /*****              SqlDataProvider                     *****/
 /************************************************************/
 
-IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = 'ShadowsUserId')
-ALTER TABLE {databaseOwner}{objectQualifier}Users
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = 'ShadowsUserId')
+ALTER TABLE {databaseOwner}{objectQualifier}UserPortals
 ADD ShadowsUserId INT NULL
+GO
+
+UPDATE {databaseOwner}{objectQualifier}UserPortals
+SET ShadowsUserId = -1
 GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Users'))
@@ -45,7 +49,7 @@ SELECT
 	U.PasswordResetToken,
 	U.PasswordResetExpiration,
 	UP.Authorised,
-	U.ShadowsUserId,
+	UP.ShadowsUserId,
 	U.CreatedByUserId,
 	U.CreatedOnDate,
 	U.LastModifiedByUserId,
@@ -90,8 +94,7 @@ AS
 			PasswordResetExpiration=@passwordResetExpiration,
 			LastIPAddress = @LastIPAddress,
 			LastModifiedByUserID = @LastModifiedByUserID,
-			LastModifiedOnDate = getdate(),
-			ShadowsUserId = @ShadowsUserId
+			LastModifiedOnDate = getdate()
 		WHERE  UserId = @UserID
 	
 	IF @PortalID IS NULL
@@ -108,7 +111,8 @@ AS
 					Authorised = @Authorised,
 					RefreshRoles = @RefreshRoles,
 					VanityUrl = @VanityUrl,
-					IsDeleted = @IsDeleted
+					IsDeleted = @IsDeleted,
+					ShadowsUserId = @ShadowsUserId
 				WHERE  UserId = @UserID
 					AND PortalId = @PortalID
 		END
