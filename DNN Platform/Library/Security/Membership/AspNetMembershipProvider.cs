@@ -432,7 +432,7 @@ namespace DotNetNuke.Security.Membership
                         Username = Null.SetNullString(dr["Username"]),
                         Email = Null.SetNullString(dr["Email"]),
                         AffiliateID = Null.SetNullInteger(dr["AffiliateID"]),
-                        ShadowsUserId = Null.SetNullInteger(dr["ShadowsUserId"])
+                        RedirectToUserId = Null.SetNullInteger(dr["RedirectToUserId"])
                     };
                 user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
 
@@ -474,7 +474,7 @@ namespace DotNetNuke.Security.Membership
                         case "IsApproved":
                         case "PasswordResetToken":
                         case "PasswordResetExpiration":
-                        case "ShadowsUserId":
+                        case "RedirectToUserId":
                             break;
                         default:
                             //Probably a profile property
@@ -537,7 +537,7 @@ namespace DotNetNuke.Security.Membership
                     UserController.GetUserMembership(user);
                     user.Email = Null.SetNullString(dr["Email"]);
                     user.Membership.UpdatePassword = Null.SetNullBoolean(dr["UpdatePassword"]);
-                    user.ShadowsUserId = Null.SetNullInteger(Null.SetNull(dr["ShadowsUserId"], user.ShadowsUserId));
+                    user.RedirectToUserId = Null.SetNullInteger(Null.SetNull(dr["RedirectToUserId"], user.RedirectToUserId));
 
                     if (schema != null)
                     {
@@ -1656,7 +1656,7 @@ namespace DotNetNuke.Security.Membership
                                      user.LastIPAddress,
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
-                                     user.ShadowsUserId,
+                                     user.RedirectToUserId,
                                      user.IsDeleted,
                                      UserController.Instance.GetCurrentUserInfo().UserID);
 

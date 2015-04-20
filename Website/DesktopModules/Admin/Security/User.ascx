@@ -17,10 +17,10 @@
    </Items>
 </dnn:DnnFormEditor>
 
-<asp:Panel runat="server" ID="pnlShadowUser" Visible="False">
- <dnn:label id="plShadowUser" runat="server" controlname="txtShadowUser" />
- <asp:TextBox runat="server" ID="txtShadowUser"/>
- <asp:HiddenField runat="server" ID="hidShadowUserId"/>
+<asp:Panel runat="server" ID="pnlRedirectToUser" Visible="False">
+ <dnn:label id="plRedirectToUser" runat="server" controlname="txtRedirectToUser" />
+ <asp:TextBox runat="server" ID="txtRedirectToUser"/>
+ <asp:HiddenField runat="server" ID="hidRedirectToUserId"/>
 </asp:Panel>
 
 <div class="dnnFormGroup dnnFormItem dnnFormShort" id="renameUserPortals" runat="server" Visible="False">
@@ -87,21 +87,21 @@
 <script type="text/javascript">
  (function ($, Sys) {
   $(document).ready(function () {
-   $('#<%=txtShadowUser.ClientID%>').attr('data-text', $('#<%=txtShadowUser.ClientID%>').val());
-   $('#<%=txtShadowUser.ClientID%>').blur(function()
+   $('#<%=txtRedirectToUser.ClientID%>').attr('data-text', $('#<%=txtRedirectToUser.ClientID%>').val());
+   $('#<%=txtRedirectToUser.ClientID%>').blur(function()
    {
     if ($(this).val() === '') {
      $(this).attr('data-text', '');
-     $('#<%=hidShadowUserId.ClientID%>').attr('data-val', '-1');
+     $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', '-1');
     }
     $(this).val($(this).attr('data-text'));
-    $('#<%=hidShadowUserId.ClientID%>').val($('#<%=hidShadowUserId.ClientID%>').attr('data-val'));
+    $('#<%=hidRedirectToUserId.ClientID%>').val($('#<%=hidRedirectToUserId.ClientID%>').attr('data-val'));
    });
-   $('#<%=hidShadowUserId.ClientID%>').attr('data-val', $('#<%=hidShadowUserId.ClientID%>').val());
-   $('#<%=txtShadowUser.ClientID%>').autocomplete({
+   $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', $('#<%=hidRedirectToUserId.ClientID%>').val());
+   $('#<%=txtRedirectToUser.ClientID%>').autocomplete({
     minLength: 2,
     source: function (request, response) {
-     $('#<%=hidShadowUserId.ClientID%>').val(-1);
+     $('#<%=hidRedirectToUserId.ClientID%>').val(-1);
      $.ajax({
       type: "GET",
       url: $.dnnSF(<%=ModuleId%>).getServiceRoot('InternalServices') + 'Users/Search',
@@ -122,7 +122,7 @@
      });
     },
     select: function (event, ui) {
-     $('#<%=hidShadowUserId.ClientID%>').attr('data-val', ui.item.id);
+     $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', ui.item.id);
      $(this).attr('data-text', ui.item.label);
      $(this).val($(this).attr('data-text'));
      event.preventDefault();

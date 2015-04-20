@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Users
             PortalID = Null.NullInteger;
             IsSuperUser = Null.NullBoolean;
             AffiliateID = Null.NullInteger;
-            ShadowsUserId = Null.NullInteger;
+            RedirectToUserId = Null.NullInteger;
         }
 
         #endregion
@@ -334,7 +334,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [DataMember]
-        public int ShadowsUserId { get; set; }
+        public int RedirectToUserId { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

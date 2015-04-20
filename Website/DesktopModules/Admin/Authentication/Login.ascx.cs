@@ -802,13 +802,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
 		{
             // Check if user should actually be logged in as another user DNN-6878
-		    if (objUser.ShadowsUserId != Null.NullInteger)
+		    if (objUser.RedirectToUserId != Null.NullInteger)
 		    {
-		        UserInfo shadowUser = UserController.GetUserById(PortalId, objUser.ShadowsUserId);
-		        if (shadowUser != null)
+		        UserInfo redirectToUser = UserController.GetUserById(PortalId, objUser.RedirectToUserId);
+		        if (redirectToUser != null)
 		        {
                     new PortalSecurity().SignOut();
-                    objUser = shadowUser;
+                    objUser = redirectToUser;
                 }
 		    }
 

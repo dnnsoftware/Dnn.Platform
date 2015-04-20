@@ -12,13 +12,13 @@
 /*****              SqlDataProvider                     *****/
 /************************************************************/
 
-IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = 'ShadowsUserId')
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserPortals]') AND name = 'RedirectToUserId')
 ALTER TABLE {databaseOwner}{objectQualifier}UserPortals
-ADD ShadowsUserId INT NULL
+ADD RedirectToUserId INT NULL
 GO
 
 UPDATE {databaseOwner}{objectQualifier}UserPortals
-SET ShadowsUserId = -1
+SET RedirectToUserId = -1
 GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}vw_Users'))
@@ -49,7 +49,7 @@ SELECT
 	U.PasswordResetToken,
 	U.PasswordResetExpiration,
 	UP.Authorised,
-	UP.ShadowsUserId,
+	UP.RedirectToUserId,
 	U.CreatedByUserId,
 	U.CreatedOnDate,
 	U.LastModifiedByUserId,
@@ -78,7 +78,7 @@ ALTER PROCEDURE {databaseOwner}{objectQualifier}UpdateUser
 	@LastIPAddress	nvarchar(50),
 	@passwordResetToken uniqueidentifier,
 	@passwordResetExpiration datetime,
-	@ShadowsUserId int,
+	@RedirectToUserId int,
 	@IsDeleted		bit,
 	@LastModifiedByUserID int
 AS
@@ -112,7 +112,7 @@ AS
 					RefreshRoles = @RefreshRoles,
 					VanityUrl = @VanityUrl,
 					IsDeleted = @IsDeleted,
-					ShadowsUserId = @ShadowsUserId
+					RedirectToUserId = @RedirectToUserId
 				WHERE  UserId = @UserID
 					AND PortalId = @PortalID
 		END

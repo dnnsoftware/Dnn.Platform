@@ -347,14 +347,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Ability to shadow a user by another DNN-6878
                 if (IsAdmin)
                 {
-                    pnlShadowUser.Visible = true;
-                    if (User.ShadowsUserId != Null.NullInteger && !IsPostBack)
+                    pnlRedirectToUser.Visible = true;
+                    if (User.RedirectToUserId != Null.NullInteger && !IsPostBack)
                     {
-                        UserInfo shadowUser = UserController.GetUserById(PortalId, User.ShadowsUserId);
-                        if (shadowUser != null)
+                        UserInfo redirectToUser = UserController.GetUserById(PortalId, User.RedirectToUserId);
+                        if (redirectToUser != null)
                         {
-                            hidShadowUserId.Value = User.ShadowsUserId.ToString();
-                            txtShadowUser.Text = shadowUser.DisplayName;
+                            hidRedirectToUserId.Value = User.RedirectToUserId.ToString();
+                            txtRedirectToUser.Text = redirectToUser.DisplayName;
                         }
                     }
                 }
@@ -662,9 +662,9 @@ namespace DotNetNuke.Modules.Admin.Users
                             }
                         }
 
-                        if (IsAdmin && hidShadowUserId.Value != "")
+                        if (IsAdmin && hidRedirectToUserId.Value != "")
                         {
-                            User.ShadowsUserId = int.Parse(hidShadowUserId.Value);
+                            User.RedirectToUserId = int.Parse(hidRedirectToUserId.Value);
                         }
 
                         UserController.UpdateUser(UserPortalID, User);
