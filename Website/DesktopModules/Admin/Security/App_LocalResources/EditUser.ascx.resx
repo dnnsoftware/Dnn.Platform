@@ -171,6 +171,16 @@
   <data name="cmdCommunications.Text" xml:space="preserve">
     <value>Communications</value>
   </data>
+    <data name="cmdHMACGenerate.Text" xml:space="preserve">
+    <value>Generate HMAC id's</value>
+  </data>
+     <data name="HMACAppIdLabel.Text" xml:space="preserve">
+    <value>HMAC App Id</value>
+  </data>
+       <data name="HMACAppSecretLabel.Text" xml:space="preserve">
+    <value>HMAC App Secret</value>
+  </data>
+ 
   <data name="ControlTitle_profile.Text" xml:space="preserve">
     <value>Profile</value>
   </data>

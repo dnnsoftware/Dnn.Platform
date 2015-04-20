@@ -408,6 +408,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             cmdDelete.Click += cmdDelete_Click;
             cmdUpdate.Click += cmdUpdate_Click;
+            cmdHMACGenerate.Click += cmdHMACGenerate_Click;
             //updateProfileUrl.Click += updateProfileUrl_Click;
 
             ctlServices.SubscriptionUpdated += SubscriptionUpdated;
@@ -445,6 +446,25 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 displayName.Enabled = false;
             }
+
+            //hmac values
+           HMACAppId.Text= PortalController.GetPortalSetting("HMACAppId", UserPortalID, String.Empty);
+           if (!String.IsNullOrEmpty(HMACAppId.Text))
+           {
+               cmdHMACGenerate.Visible = false;
+           }
+           HMACAppSecret.Text = String.Empty;
+        }
+
+        private void cmdHMACGenerate_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(HMACAppId.Text))
+            {
+                PortalController.UpdatePortalSetting(UserPortalID, "HMACAppId", Guid.NewGuid().ToString());
+                
+            }
+            Response.Redirect(Request.RawUrl, true);
+            
         }
 
         /// -----------------------------------------------------------------------------

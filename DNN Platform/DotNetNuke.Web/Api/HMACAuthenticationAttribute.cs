@@ -17,7 +17,7 @@ using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.Api
 {
-    public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
+    public class HmacAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
 
         private static Dictionary<string, string> allowedApps = new Dictionary<string, string>();
