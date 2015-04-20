@@ -121,22 +121,13 @@ namespace DotNetNuke.Modules.Admin.Users
 						if (Request.QueryString["returnurl"] != null)
 						{
 							//return to the url passed to register
-							redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+							redirectUrl = Request.QueryString["returnurl"];
 							//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
 							if (redirectUrl.Contains("://") &&
 								!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
 									StringComparison.InvariantCultureIgnoreCase))
 							{
 								redirectUrl = "";
-							}
-							if (redirectUrl.Contains("?returnurl"))
-							{
-								string baseURL = redirectUrl.Substring(0,
-									redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
-								string returnURL =
-									redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
-
-								redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
 							}
 						}
 						if (String.IsNullOrEmpty(redirectUrl))

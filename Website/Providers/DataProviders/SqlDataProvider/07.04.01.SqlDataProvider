@@ -464,7 +464,6 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {
 	WHERE RoleID IS NOT Null
 GO
 
-
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
