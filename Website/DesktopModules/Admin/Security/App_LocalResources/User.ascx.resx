@@ -210,4 +210,10 @@
   <data name="DisplayNameNotUnique.Text" xml:space="preserve">
     <value>The Display Name you have entered is already in use, please choose a different one.</value>
   </data>
+  <data name="plShadowUser.Help" xml:space="preserve">
+    <value>If a user has created a second account and you wish the user to be logged in as another account, you can select the primary account here. After you've selected a primary account, this account will no longer be accessible but will automatically log in as the primary account.</value>
+  </data>
+  <data name="plShadowUser.Text" xml:space="preserve">
+    <value>Shadows User</value>
+  </data>
 </root>
