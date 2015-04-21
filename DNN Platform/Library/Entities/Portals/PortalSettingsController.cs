@@ -254,7 +254,8 @@ namespace DotNetNuke.Entities.Portals
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
             portalSettings.Registration = new RegistrationSettings(settings);
 
-            portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
+			portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
+			portalSettings.CdfVersion = settings.GetValueOrDefault("CdfVersion", Null.NullInteger);
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
             portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
             portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
