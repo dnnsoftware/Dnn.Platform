@@ -755,8 +755,16 @@ namespace DotNetNuke.Collections
         {
             Requires.NotNull("dictionary", dictionary);
             Requires.NotNull("converter", converter);
-
-            return dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
+            var value = defaultValue;
+            try
+            {
+                value = dictionary.Contains(key) ? converter(dictionary[key]) : defaultValue;
+            }
+            catch (Exception ex)
+            {
+                // ignored
+            }
+            return value;
         }
 
         #endregion
