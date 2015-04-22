@@ -21,7 +21,7 @@
 
 #endregion
 
-
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Providers.RadEditorProvider
 {
@@ -107,6 +107,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+
+			ClientResourceManager.EnableAsyncPostBackHandler();
 
             this.treeTools.NodeClick += this.treeTools_NodeClick;
             this.cmdUpdate.Click += this.OnUpdateClick;
