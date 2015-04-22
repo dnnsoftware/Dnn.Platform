@@ -498,6 +498,10 @@
                 //Call PageMethod which triggers long running operation
                 PageMethods.RunInstall(function () {
                 }, function (err) {
+	                if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
+		                return;
+	                }
+
                     $.stopProgressbarOnError();
                 });
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
