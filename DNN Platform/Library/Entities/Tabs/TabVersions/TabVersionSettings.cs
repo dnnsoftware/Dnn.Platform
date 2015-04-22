@@ -86,8 +86,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var settings = TabController.Instance.GetTabSettings(tabId);
-            var isVersioningEnableForTab = settings[TabVersioningSettingKey] == null 
-                || Convert.ToBoolean(settings[TabVersioningSettingKey]);
+            var isVersioningEnableForTab = settings[TabVersioningSettingKey] != null 
+                && Convert.ToBoolean(settings[TabVersioningSettingKey]);
 
             return isVersioningEnableForTab;
         }
