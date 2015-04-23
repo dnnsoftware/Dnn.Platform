@@ -1105,7 +1105,7 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
-            if (string.IsNullOrEmpty(cultureCode))
+            if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
