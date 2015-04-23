@@ -650,6 +650,8 @@ BEGIN
 	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions WHERE NotificationTypeId = @NotificationTypeId AND NameResourceKey = 'Review'
 
 	/* Add Approve notification action */
+  IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+                        WHERE NotificationTypeId = @NotificationTypeId AND ([Order] = 1 OR [NameResourceKey] = 'Approve'))
     INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
         [NotificationTypeID],
         [NameResourceKey],
@@ -675,6 +677,8 @@ BEGIN
         )
 		
 	/* Add Reject notification action */
+  IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+                        WHERE NotificationTypeId = @NotificationTypeId AND ([Order] = 2 OR [NameResourceKey] = 'Reject'))
 	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
         [NotificationTypeID],
         [NameResourceKey],
@@ -691,7 +695,7 @@ BEGIN
         'Reject',
         'Reject',
         NULL,
-        1,
+        2,
         'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
         -1,
         GETDATE(),
@@ -710,6 +714,8 @@ IF @NotificationStartWorkflowTypeId IS NOT NULL
 BEGIN
 	/* Add Submit notification action */
 	/* also uses the existing Approve method */
+  IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+                        WHERE NotificationTypeId = @NotificationStartWorkflowTypeId AND ([Order] = 2 OR [NameResourceKey] = 'Submit'))
     INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
         [NotificationTypeID],
         [NameResourceKey],
@@ -736,6 +742,8 @@ BEGIN
 		
 	/* Add Discard notification action */
 	/* also uses the existing Reject method */
+  IF NOT EXISTS(SELECT * FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+                        WHERE NotificationTypeId = @NotificationStartWorkflowTypeId AND ([Order] = 2 OR [NameResourceKey] = 'Discard'))
 	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
         [NotificationTypeID],
         [NameResourceKey],
@@ -752,7 +760,7 @@ BEGIN
         'Discard',
         'Discard',
         NULL,
-        1,
+        2,
         'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
         -1,
         GETDATE(),
@@ -894,42 +902,26 @@ AS
 GO
 
 
--- make sure we don't have any duplicate amail addresses on portals where Registration_UseEmailAsUserName is turned on
+-- make sure we don't have any duplicate email addresses on portals where Registration_UseEmailAsUserName is turned on
 -- if so we need to turn off the feature here
 
-DECLARE @PortalId int
-DECLARE @DupCount int
-
-DECLARE Portals_Cursor CURSOR FOR 
-	Select PortalId from {databaseOwner}[{objectQualifier}PortalSettings] Where SettingName = 'Registration_UseEmailAsUserName' and SettingValue = 'true'
-
-OPEN Portals_Cursor
-
-FETCH NEXT FROM Portals_Cursor 
-INTO @PortalId
-
-WHILE @@FETCH_STATUS = 0
-BEGIN
-
-	set @DupCount = ISNULL((SELECT COUNT(*) TotalCount FROM {databaseOwner}[{objectQualifier}Users] U Inner Join {databaseOwner}[{objectQualifier}UserPortals] UP on UP.[UserId] = U.[UserId] WHERE UP.PortalId = @PortalId  GROUP BY U.[Email] HAVING COUNT(*) > 1), 0)
-	if(@DupCount > 0)
-	BEGIN
-		Update {databaseOwner}[{objectQualifier}PortalSettings] set SettingValue = 'false' where SettingName = 'Registration_UseEmailAsUserName' and PortalID = @PortalId
-	END
-	
-    FETCH NEXT FROM Portals_Cursor 
-    INTO @PortalId
-
-END 
-CLOSE Portals_Cursor;
-DEALLOCATE Portals_Cursor;
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings] 
+  SET  SettingValue = 'false'
+  FROM {databaseOwner}[{objectQualifier}PortalSettings] S
+  JOIN (SELECT DISTINCT PortalID FROM (SELECT PortalID, COUNT(*) UserCount 
+                                       FROM {databaseOwner}[{objectQualifier}vw_Users] 
+									   GROUP BY PortalID, [Email] HAVING COUNT(*) > 1) X) F 
+    ON S.PortalID = F.PortalID AND S.SettingName = 'Registration_UseEmailAsUserName' AND S.SettingValue != 'false';
+GO
 
 /********************************************************
  * Table: PortalSettings (allow CultureCode Null, DNN-5743)
  ********************************************************/
 
 --Drop Foreign Key
-ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
+IF EXISTS (SELECT * FROM Sys.Foreign_Keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]') 
+                                            AND name = N'FK_{objectQualifier}PortalSettings_{objectQualifier}Portals')
+   ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
     DROP CONSTRAINT FK_{objectQualifier}PortalSettings_{objectQualifier}Portals
 GO
 
