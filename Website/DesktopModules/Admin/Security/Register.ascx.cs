@@ -365,11 +365,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private bool Validate()
 		{
-		    if (!string.IsNullOrEmpty(gotcha.Value))
-		    {
-		        return false;
-		    }
-
 			CreateStatus = UserCreateStatus.AddUser;
 			var portalSecurity = new PortalSecurity();
 
