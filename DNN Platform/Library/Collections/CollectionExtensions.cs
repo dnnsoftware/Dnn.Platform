@@ -29,11 +29,14 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Collections
 {
     public static class CollectionExtensions
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CollectionExtensions));
         /// <summary>
         /// This method is extracted from the FriendlyUrlSettings class
         /// </summary>
@@ -762,7 +765,7 @@ namespace DotNetNuke.Collections
             }
             catch (Exception ex)
             {
-                // ignored
+                Logger.ErrorFormat("Error loading portal setting: {0} Default value {1} was used instead", key + ":" + dictionary[key], defaultValue.ToString());
             }
             return value;
         }
