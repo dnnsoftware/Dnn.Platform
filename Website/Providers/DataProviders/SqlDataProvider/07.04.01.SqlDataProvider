@@ -464,6 +464,201 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {
 	WHERE RoleID IS NOT Null
 GO
 
+/********************************************************
+ * SPROC: CoreMessaging_AddSubscriptionType
+ ********************************************************/
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]', N'P') IS NULL
+	EXEC('CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType] AS SELECT 1');
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_AddSubscriptionType]
+	@SubscriptionName NVARCHAR(50) ,
+	@FriendlyName NVARCHAR(50) ,
+	@DesktopModuleId INT
+AS
+	DECLARE @currentId int
+
+	SELECT TOP(1) @currentId = SubscriptionTypeId
+	FROM {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+	WHERE DesktopModuleId = @DesktopModuleId
+	  AND SubscriptionName = @SubscriptionName
+
+	IF @currentId IS NOT NULL
+	BEGIN
+		SELECT @currentId
+	END
+	ELSE
+	BEGIN
+		INSERT  {databaseOwner}{objectQualifier}CoreMessaging_SubscriptionTypes
+				( SubscriptionName ,
+				  FriendlyName ,
+				  DesktopModuleId
+				)
+		VALUES  ( @SubscriptionName ,
+				  @FriendlyName ,
+				  @DesktopModuleId
+				)
+		SELECT SCOPE_IDENTITY()
+	END
+GO
+
+/**********************************************************************************************************************************************/
+/***** DNN-6547: update sp EnsureLocalizationExists to set master language value in "neither default nor system language available" case. *****/
+/**********************************************************************************************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}EnsureLocalizationExists]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}EnsureLocalizationExists]
+    @PortalID       Int,
+    @CultureCode    nvarchar(10)
+AS
+BEGIN
+    DECLARE @MasterLanguage nvarchar(10) = Null;
+    DECLARE @LocalizationExists bit = 0;
+
+    IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Languages] L 
+                    JOIN {databaseOwner}[{objectQualifier}PortalLanguages] P ON L.LanguageID = P.LanguageID 
+                    WHERE P.PortalID = @PortalID AND L.CultureCode = @CultureCode)
+        RETURN; -- language does not exist for this portal
+
+    IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+                WHERE CultureCode = @CultureCode AND PortalID = @PortalID)
+        RETURN; -- already localized
+    
+    IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+                    JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+                    WHERE P.PortalID = @PortalID)
+        SELECT @MasterLanguage = DefaultLanguage 
+        FROM {databaseOwner}[{objectQualifier}Portals] 
+        WHERE PortalID = @PortalID
+    ELSE IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+                    WHERE CultureCode = 'en-US' and PortalID = @PortalID)
+        SET @MasterLanguage = 'en-US'
+    ELSE -- neither default nor system language available: take the language that was assigned first
+        SELECT TOP (1) @MasterLanguage = CultureCode 
+        FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+        WHERE PortalID = @PortalID 
+        ORDER BY PortalID ASC;
+
+    IF NOT (@MasterLanguage Is Null OR @MasterLanguage LIKE @CultureCode) 
+    BEGIN  -- copy localized values from (existing and different) master language:                    
+        INSERT INTO {databaseOwner}[{objectQualifier}PortalLocalization]
+        (    PortalId,
+            CultureCode,
+            PortalName,
+            LogoFile,
+            FooterText,
+            Description,
+            KeyWords,
+            BackgroundFile, 
+            HomeTabId,
+            LoginTabId,
+            UserTabId,
+            AdminTabId,
+            RegisterTabId,
+            SearchTabId,
+            Custom404TabId,
+            Custom500TabId,
+            CreatedByUserID,
+            CreatedOnDate,
+            LastModifiedByUserID,
+            LastModifiedOnDate
+        ) SELECT
+            PortalId,
+            @CultureCode,
+            PortalName,
+            LogoFile,
+            FooterText,
+            Description,
+            KeyWords,
+            BackgroundFile, 
+            HomeTabId,
+            LoginTabId,
+            UserTabId,
+            AdminTabId,
+            RegisterTabId,
+            SearchTabId,
+            Custom404TabId,
+            Custom500TabId,
+            -1,
+            GETDATE(),
+            -1,
+            GETDATE()
+         FROM {databaseOwner}[{objectQualifier}PortalLocalization] 
+         WHERE PortalID = @PortalID AND CultureCode = @MasterLanguage;
+    
+        -- copy missing localized settings:
+        DECLARE    
+            @LocalPortalSettings TABLE(
+            [PortalID]             INT             NOT NULL,
+            [CultureCode]          NVARCHAR (10)   NOT NULL,
+            [SettingName]          NVARCHAR (50)   NOT NULL,
+            [SettingValue]         NVARCHAR (2000) NULL
+        );
+
+        INSERT INTO @LocalPortalSettings
+        (
+            PortalID,
+            CultureCode,
+            SettingName,
+            SettingValue
+        )
+        SELECT
+            PortalID,
+            CultureCode,
+            SettingName,
+            SettingValue
+        FROM {databaseOwner}[{objectQualifier}PortalSettings]
+        WHERE PortalID = @PortalID AND CultureCode = @CultureCode
+
+        MERGE INTO @LocalPortalSettings target
+        USING (SELECT * FROM {databaseOwner}[{objectQualifier}PortalSettings]
+                WHERE PortalId = @PortalID and CultureCode = @MasterLanguage) source 
+        ON (target.SettingName = source.SettingName)
+        WHEN NOT MATCHED THEN 
+            INSERT (  
+                PortalID,   
+                CultureCode,   
+                SettingName,   
+                SettingValue) 
+            VALUES (
+                source.PortalID, 
+                @CultureCode, 
+                source.SettingName, 
+                source.SettingValue
+            );
+
+        MERGE INTO {databaseOwner}[{objectQualifier}PortalSettings]  target
+        USING (SELECT * FROM @LocalPortalSettings) source 
+        ON (target.PortalID = source.PortalID AND 
+            target.CultureCode = source.CultureCode AND 
+            target.SettingName = source.SettingName)
+        WHEN NOT MATCHED THEN 
+            INSERT (  
+                PortalID,   
+                CultureCode,   
+                SettingName,   
+                SettingValue,
+                CreatedByUserID, 
+                CreatedOnDate, 
+                LastModifiedByUserID, 
+                LastModifiedOnDate) 
+            VALUES (
+                source.PortalID, 
+                @CultureCode, 
+                source.SettingName, 
+                source.SettingValue,
+                -1,
+                GETDATE(),
+                -1,
+                GETDATE()
+            );
+    END;
+END
+GO
+
 -- DNN-5743 / DNN-6419 / DNN-6580 / DNN-6620 / DNN-6742 / DNN-6779:
 IF  EXISTS (
 	SELECT * 
