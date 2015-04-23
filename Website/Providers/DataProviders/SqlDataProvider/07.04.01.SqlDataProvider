@@ -464,6 +464,29 @@ CREATE UNIQUE NONCLUSTERED INDEX IX_{objectQualifier}ModulePermission_Roles ON {
 	WHERE RoleID IS NOT Null
 GO
 
+-- DNN-5743 / DNN-6419 / DNN-6580 / DNN-6620 / DNN-6742 / DNN-6779:
+IF  EXISTS (
+	SELECT * 
+	FROM sys.procedures 
+	WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortals]'))
+    
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+	@CultureCode	nVarChar(50) -- pass Null | '' to return portal default language
+AS
+BEGIN
+	SELECT * 
+	FROM  {databaseOwner}[{objectQualifier}vw_Portals]
+	WHERE CultureCode = 
+		CASE 
+			WHEN IsNull(@CultureCode, N'') = N'' THEN DefaultLanguage
+			ELSE @CultureCode 
+		END 
+	ORDER BY PortalName;
+END
+GO
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
