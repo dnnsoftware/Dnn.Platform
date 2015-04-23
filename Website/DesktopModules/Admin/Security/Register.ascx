@@ -9,7 +9,7 @@
     </div>
     <br/>
     <div class="dnnFormItem dnnClear">
-        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
+        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" />
         <div class="dnnSocialRegistration">
             <div id="mainContainer">
                 <ul class="buttonList">
@@ -22,7 +22,6 @@
         <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
         <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha" runat="server" />
     </div>
-    <input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" />
     <ul id="actionsRow" runat="server" class="dnnActions dnnClear">
         <li><asp:LinkButton id="registerButton" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdRegister" /></li>
         <li><asp:LinkButton id="cancelButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
