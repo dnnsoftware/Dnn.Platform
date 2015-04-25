@@ -3263,16 +3263,12 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         }
     }
     
-    function prepareForFilteredContent(hideSync) {
+    function prepareForFilteredContent() {
         grid.clearSelectedItems();
         toggleColumn('LastModifiedOnDate', false);
         toggleColumn('ParentFolder', !settings.isFilteredContent);
         
         $('#dnnModuleDigitalAssetsMainToolbar .folderRequired', "#" + controls.scopeWrapperId).hide();
-        if (hideSync === true) {
-            $('#dnnModuleDigitalAssetsMainToolbar .DigitalAssetsMenuButton_menu', "#" + controls.scopeWrapperId)
-                .find('#Sync, #SyncRecursively').addClass("permission_denied");
-        }
     }
     
     function getController() {
