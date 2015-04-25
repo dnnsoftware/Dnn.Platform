@@ -361,6 +361,8 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "firstState">The first state.</param>
         private void DisplayInitialContent(WorkflowStateInfo firstState)
         {
+            cmdHistory.Enabled = false;
+
             txtContent.Text = GetLocalizedString("AddContent");
             litPreview.Text = GetLocalizedString("AddContent");
             lblCurrentWorkflowInUse.Text = firstState.WorkflowName;
