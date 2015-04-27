@@ -19,17 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data;
-using System.Globalization;
 using System.Linq;
-using System.Xml.Linq;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
 
 namespace DotNetNuke.Collections
 {
