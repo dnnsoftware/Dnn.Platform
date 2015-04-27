@@ -1,6 +1,6 @@
 #region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeÂ® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2014
 // by DotNetNuke Corporation
 // 
@@ -198,7 +198,7 @@ namespace DotNetNuke.UI.Skins
             var strImage = "";
             if (File.Exists(strFile.Replace(".ascx", ".jpg")))
             {
-                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", "") + "\" target=\"_new\"><img src=\"" +
+                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", "") + "\" target=\"_blank\"><img src=\"" +
                             CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("\\", "/") + "\" border=\"1\"></a>";
             }
             else

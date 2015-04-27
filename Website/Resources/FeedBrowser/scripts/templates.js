@@ -23,7 +23,7 @@ htmlTemplates['default'] =
 
 '<table width=\"100%\">' +
 '<tr>' +
-     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"_new\" class=\"Head\">[[title]]</a></td>' +
+     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"_blank\" class=\"Head\">[[title]]</a></td>' +
 '</tr>' + 
 '<tr>' + 
       '<td align=\"left\" valign=\"top\" class=\"Normal\">' + 
@@ -44,7 +44,7 @@ htmlTemplates['dotnetnuke'] =
 
 '<table width=\"100%\">' +
 '<tr>' +
-     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"background-color:#cc0000;padding:5px\"><a href=\"[[link]]\" target=\"_new\" class=\"Head\" style=\"color:white\">[[title]]</a></td>' +
+     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"background-color:#cc0000;padding:5px\"><a href=\"[[link]]\" target=\"_blank\" class=\"Head\" style=\"color:white\">[[title]]</a></td>' +
 '</tr>' + 
 '<tr>' + 
       '<td align=\"left\" valign=\"top\" class=\"Normal\" style=\"padding-top:5px\">' + 
@@ -58,7 +58,7 @@ htmlTemplates['hosting'] =
 
 '<table width=\"100%\">' +
 '<tr>' +
-     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"_new\" class=\"Head\">[[title]]</a></td>' +
+     '<td class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding-bottom:10px\"><a href=\"[[link]]\" target=\"_blank\" class=\"Head\">[[title]]</a></td>' +
 '</tr>' + 
 '<tr>' + 
       '<td align=\"left\" valign=\"top\" class=\"Normal\">' + 
@@ -68,8 +68,8 @@ htmlTemplates['hosting'] =
 '</table><br /><br />';
 
 
-htmlHeaders['dotnetnuke'] = '<div style=\"padding-bottom:5px;position:relative;top:-15px\"><a href=\"http://www.dotnetnuke.com\" target=\"_new\"><img src=\"http://www.dotnetnuke.com/portals/25/SolutionsExplorer/images/DNN-small.gif\" border=\"0\"></a></div>';
-htmlHeaders['marketplace'] = '<div style=\"padding-bottom:5px;position:relative;top:-25px\"><a href=\"http://marketplace.dotnetnuke.com\" target=\"_new\"><img src=\"http://www.dotnetnuke.com/portals/25/SolutionsExplorer/images/DNNMarketplace-small.gif\" border=\"0\"></a></div>';
+htmlHeaders['dotnetnuke'] = '<div style=\"padding-bottom:5px;position:relative;top:-15px\"><a href=\"http://www.dotnetnuke.com\" target=\"_blank\"><img src=\"http://www.dotnetnuke.com/portals/25/SolutionsExplorer/images/DNN-small.gif\" border=\"0\"></a></div>';
+htmlHeaders['marketplace'] = '<div style=\"padding-bottom:5px;position:relative;top:-25px\"><a href=\"http://marketplace.dotnetnuke.com\" target=\"_blank\"><img src=\"http://www.dotnetnuke.com/portals/25/SolutionsExplorer/images/DNNMarketplace-small.gif\" border=\"0\"></a></div>';
 
 // Used by Marketplace template
 function marketplacePreviewHandler(url)
@@ -92,7 +92,7 @@ function marketplaceItemRenderer(title, url, description, imageUrl, isReviewed, 
         '<!-- 0: Reviewed Product -->' + // Add a comment to force reviewed products to be grouped first
         '<table width=\"100%\" style=\"margin-bottom:15px\">' +
         '<tr>' +
-             '<td colspan=\"2\" class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding:5px;background-color:#ededed\"><img src=\"http://marketplace.dotnetnuke.com/reviewprogram/logos/reviewed-tiny.gif\" align="right"><a href=\"' + url + '\" target=\"_new\" class=\"Head\">' + title + '</a> <span class=\"Normal\"><br /><small> by <a href=\"' + vendorUrl + '\" target=\"_new\" class=\"Normal\">' + vendor + '</a></small></span></td>' +
+             '<td colspan=\"2\" class=\"Head\" align=\"left\" valign=\"middle\" style=\"padding:5px;background-color:#ededed\"><img src=\"http://marketplace.dotnetnuke.com/reviewprogram/logos/reviewed-tiny.gif\" align="right"><a href=\"' + url + '\" target=\"_blank\" class=\"Head\">' + title + '</a> <span class=\"Normal\"><br /><small> by <a href=\"' + vendorUrl + '\" target=\"_blank\" class=\"Normal\">' + vendor + '</a></small></span></td>' +
         '</tr>' +
         '<tr>' + 
               '<td align=\"center\" valign=\"top\" class=\"Normal\" style=\"width:100px;padding-top:10px\">' +
@@ -100,7 +100,7 @@ function marketplaceItemRenderer(title, url, description, imageUrl, isReviewed, 
                  '<br /><p>from $' + price + '</p>' +
                  '<p class=\"Head\">' + 
                  '<a href=\"javascript:void(0)\" onClick=\"marketplacePreviewHandler(\'' + overviewUrl + '\')\">Info</a> | ' +
-                 '<a href=\"' + url + '\" target=\"_new\">BUY</a> <br />' +
+                 '<a href=\"' + url + '\" target=\"_blank\">BUY</a> <br />' +
                  '</p>'+ 
               '</td>' +
               '<td align=\"left\" valign=\"top\" class=\"Normal\" style=\"padding-left:10px;padding-top:10px\">' + 
@@ -115,8 +115,8 @@ function marketplaceItemRenderer(title, url, description, imageUrl, isReviewed, 
         '<!-- 1: Non-Reviewed Product -->' + // Add a comment to force non-reviewed products to be grouped first
         '<table width=\"100%\" cellspacing=\"0\" style=\"margin-bottom:15px\">' +
         '<tr>' +
-             '<td class=\"Head\" width=\"80%\"align=\"left\" valign=\"middle\" style=\"padding:5px;background-color:#f3f3f3\"><a href=\"' + url + '\" target=\"_new\" class=\"SubHead\">' + title + '</a> <span class=\"Normal\"><br/><small> by <a href=\"' + vendorUrl + '\" target=\"_new\" class=\"Normal\">' + vendor + '</a></small></td>' + 
-             '<td class=\"Normal\" width=\"20%\" valign=\"middle\" style=\"padding:5px;background-color:#f3f3f3\">from $' + price + ' <a class=\"SubHead\" href=\"' + url + '\" target=\"_new\">BUY</a></span></td>' +
+             '<td class=\"Head\" width=\"80%\"align=\"left\" valign=\"middle\" style=\"padding:5px;background-color:#f3f3f3\"><a href=\"' + url + '\" target=\"_blank\" class=\"SubHead\">' + title + '</a> <span class=\"Normal\"><br/><small> by <a href=\"' + vendorUrl + '\" target=\"_blank\" class=\"Normal\">' + vendor + '</a></small></td>' + 
+             '<td class=\"Normal\" width=\"20%\" valign=\"middle\" style=\"padding:5px;background-color:#f3f3f3\">from $' + price + ' <a class=\"SubHead\" href=\"' + url + '\" target=\"_blank\">BUY</a></span></td>' +
          '</tr>';
          
          var firstSentence = description.indexOf(". ");
