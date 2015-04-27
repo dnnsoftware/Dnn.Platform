@@ -26,12 +26,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 
 #endregion
@@ -115,10 +117,18 @@ namespace DotNetNuke.Web.UI.WebControls
 				}
 			}
 
-			Page.ClientScript.RegisterClientScriptResource(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
 
-			ClientAPI.RegisterClientVariable(Page, "TermsSelectorCallback",
-				ClientAPI.GetCallbackEventReference(this, "'[PARAMS]'", "webcontrols.termsSelector.itemDataLoaded", "this", "webcontrols.termsSelector.itemDataLoadError"), true);
+			if (!Page.IsPostBack)
+			{
+				Page.ClientScript.RegisterClientScriptResource(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
+
+				ClientResourceManager.RegisterStyleSheet(Page,
+					Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css"));
+
+				ClientAPI.RegisterClientVariable(Page, "TermsSelectorCallback",
+					ClientAPI.GetCallbackEventReference(this, "'[PARAMS]'", "webcontrols.termsSelector.itemDataLoaded", "this",
+						"webcontrols.termsSelector.itemDataLoadError"), true);
+			}
 		}
 
         protected override void OnPreRender(EventArgs e)
