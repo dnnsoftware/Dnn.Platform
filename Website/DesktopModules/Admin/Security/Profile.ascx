@@ -5,7 +5,7 @@
 (function ($, Sys) {
     function setUpProfile() {
     	$('.dnnButtonDropdown').dnnSettingDropdown();
-	    $('#<%=ProfileProperties.ClientID%>').dnnPanels();
+	    $('#<%=ProfileProperties.ClientID%>').parent().dnnPanels();
     }
 
     $(document).ready(function () {
