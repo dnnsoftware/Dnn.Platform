@@ -212,7 +212,7 @@ dnnModule.digitalAssets = function ($, $find, $telerik, dnnModal) {
         gridSelectUnselectAll = $("<input type='checkbox'>");
         checkColumn.append(gridSelectUnselectAll);
         gridSelectUnselectAll.click(function (evt) {
-            sender._selectAllRows(grid.get_element().id, "", evt);
+            sender._owner._selectAllRows(grid.get_element().id, "", evt);
         }).dnnCheckbox();
     }
 
