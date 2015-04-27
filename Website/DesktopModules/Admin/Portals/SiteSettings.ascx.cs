@@ -622,24 +622,29 @@ namespace DesktopModules.Admin.Portals
 
                 basicRegistrationSettings.DataSource = settings;
                 basicRegistrationSettings.DataBind();
+                chkRegistrationUseAuthProviders.Checked = PortalController.GetPortalSettingAsBoolean("Registration_UseAuthProviders", portal.PortalID, false);
+                chkRegistrationUseProfanityFilter.Checked = PortalController.GetPortalSettingAsBoolean("Registration_UseProfanityFilter", portal.PortalID, false);
+				
+                registrationFormType.Select(PortalSettings.Registration.RegistrationFormType.ToString(CultureInfo.InvariantCulture));
 
-				registrationFormType.Select(PortalSettings.Registration.RegistrationFormType.ToString(CultureInfo.InvariantCulture));
-
-                standardRegistrationSettings.DataSource = settings;
-                standardRegistrationSettings.DataBind();
+                //standard registration settings
+                chkRegistrationUseEmailAsUserName.Checked = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", portal.PortalID, false);
 
                 validationRegistrationSettings.DataSource = settings;
                 validationRegistrationSettings.DataBind();
+                chkRegistrationRequireUniqueDisplayName.Checked = PortalController.GetPortalSettingAsBoolean("Registration_RequireUniqueDisplayName", portal.PortalID, false);
 
 				var customRegistrationFields = PortalSettings.Registration.RegistrationFields;
 
                 CustomRegistrationFields = BuildCustomRegistrationFields(customRegistrationFields);
 
-                passwordRegistrationSettings.DataSource = settings;
-                passwordRegistrationSettings.DataBind();
+                //password registration settings
+                chkRegistrationRandomPassword.Checked = PortalController.GetPortalSettingAsBoolean("Registration_RandomPassword", portal.PortalID, false);
+                chkRegistrationRequireConfirmPassword.Checked = PortalController.GetPortalSettingAsBoolean("Registration_RequireConfirmPassword", portal.PortalID, true);
 
-                otherRegistrationSettings.DataSource = settings;
-                otherRegistrationSettings.DataBind();
+                //other registration settings
+                chkSecurityRequireValidProfile.Checked = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfile", portal.PortalID, false);
+                chkSecurityCaptchaRegister.Checked = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRegister", portal.PortalID, false);
 
                 //Set up special page lists
                 List<TabInfo> listTabs = TabController.GetPortalTabs(TabController.GetTabsBySortOrder(portal.PortalID, activeLanguage, true),
@@ -672,9 +677,11 @@ namespace DesktopModules.Admin.Portals
                 PasswordStrengthRegularExpressionLabel.Text = MembershipProviderConfig.PasswordStrengthRegularExpression;
                 MaxInvalidPasswordAttemptsLabel.Text = MembershipProviderConfig.MaxInvalidPasswordAttempts.ToString(CultureInfo.InvariantCulture);
                 PasswordAttemptWindowLabel.Text = MembershipProviderConfig.PasswordAttemptWindow.ToString(CultureInfo.InvariantCulture);
-
-                loginSettings.DataSource = settings;
-                loginSettings.DataBind();
+                //login settings
+                chkSecurityCaptchaLogin.Checked = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", portal.PortalID, false);
+                chkSecurityRequireValidProfileAtLogin.Checked = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", portal.PortalID, true);
+                chkSecurityCaptchaRetrivePassword.Checked = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", portal.PortalID, false);
+                chkSecurityCaptchaChangePassword.Checked = PortalController.GetPortalSettingAsBoolean("Security_CaptchaChangePassword", portal.PortalID, false);
 
                 //using values from current portal
                 redirectTab = PortalSettings.Registration.RedirectAfterLogin;
@@ -703,7 +710,7 @@ namespace DesktopModules.Admin.Portals
                 userVisiblity.EnumType = "DotNetNuke.Entities.Users.UserVisibilityMode, DotNetNuke";
                 profileSettings.DataSource = settings;
                 profileSettings.DataBind();
-
+                chkProfileDisplayVisibility.Checked = PortalController.GetPortalSettingAsBoolean("Profile_DisplayVisibility", portal.PortalID, true);
                 //Bind auth providers
                 var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
                 var authProviders = (from authProvider in authSystems let authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authProvider.LoginControlSrc) let oAuthLoginControl = authLoginControl as OAuthLoginBase where oAuthLoginControl ==null && authLoginControl.Enabled select authProvider.AuthenticationType).ToList();
@@ -1468,7 +1475,7 @@ namespace DesktopModules.Admin.Portals
                             return;
                         }
 
-                        if (!setting.Contains("DisplayName") && Convert.ToBoolean(requireUniqueDisplayName.Value))
+                        if (!setting.Contains("DisplayName") && chkRegistrationRequireUniqueDisplayName.Checked)
                         {
                             PortalController.UpdatePortalSetting(_portalId, "Registration_RegistrationFormType", "0", false);
                             Skin.AddModuleMessage(this, Localization.GetString("NoDisplayName", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
@@ -1484,33 +1491,33 @@ namespace DesktopModules.Admin.Portals
                     {
                         PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
                     }
+                    PortalController.UpdatePortalSetting(_portalId, "Registration_UseProfanityFilter", chkRegistrationUseProfanityFilter.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "Registration_UseAuthProviders", chkRegistrationUseAuthProviders.Checked.ToString(), false);
 
-                    //DNN-6093
-                    foreach (DnnFormItemBase item in standardRegistrationSettings.Items)
+
+                    if (chkRegistrationUseEmailAsUserName.Checked && UserController.GetDuplicateEmailCount() > 0)
                     {
-                        //Make sure that enabling Registration_UseEmailAsUserName doesn't cause issues with duplicate e-mail addresses
-                        if (item.DataField.ToLower() == "registration_useemailasusername" && Boolean.Parse(item.Value.ToString()) == true)
-                        {
-                            if (UserController.GetDuplicateEmailCount() > 0)
-                            {
-                                string message = Localization.GetString("ContainsDuplicateAddresses", LocalResourceFile);
-                                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
-                                return;
-                            }
-                            
-                            // can't actualy use this as web.config settings are system wide.
-
-                            //if (MembershipProvider.Instance().RequiresUniqueEmail == false)
-                            //{
-                            //    string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
-                            //    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
-                            //    return;
-                            //}
-
-                        }
-                        PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
+                        string message = Localization.GetString("ContainsDuplicateAddresses", LocalResourceFile);
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                        return;
                     }
+                    else
+                    {
+                        PortalController.UpdatePortalSetting(_portalId, "Registration_UseEmailAsUserName", chkRegistrationUseEmailAsUserName.Checked.ToString(), false);
+                    }
+                            
+                    // can't actualy use this as web.config settings are system wide.
 
+                    //if (MembershipProvider.Instance().RequiresUniqueEmail == false)
+                    //{
+                    //    string message = Localization.GetString("MustEnableUniqueEmail", LocalResourceFile);
+                    //    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                    //    return;
+                    //}
+
+                    
+                    PortalController.UpdatePortalSetting(_portalId, "Registration_RequireUniqueDisplayName", chkRegistrationRequireUniqueDisplayName.Checked.ToString(), false);
+                    
                     foreach (DnnFormItemBase item in validationRegistrationSettings.Items)
                     {
                         try
@@ -1528,24 +1535,22 @@ namespace DesktopModules.Admin.Portals
                         }
                     }
 
-                    foreach (DnnFormItemBase item in passwordRegistrationSettings.Items)
-                    {
-                        PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
-                    }
+                    PortalController.UpdatePortalSetting(_portalId, "Registration_RandomPassword", chkRegistrationRandomPassword.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "Registration_RequireConfirmPassword", chkRegistrationRequireConfirmPassword.Checked.ToString(), true);
 
-                    foreach (DnnFormItemBase item in otherRegistrationSettings.Items)
-                    {
-                        PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
-                    }
+                    PortalController.UpdatePortalSetting(_portalId, "Security_RequireValidProfile", chkSecurityRequireValidProfile.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "Security_CaptchaRegister", chkSecurityCaptchaRegister.Checked.ToString(), false);
+
                     var redirectTabId = !String.IsNullOrEmpty(RedirectAfterRegistration.SelectedItem.Value) ?
                                         RedirectAfterRegistration.SelectedItem.Value
                                         : "-1";
                     PortalController.UpdatePortalSetting(_portalId, "Redirect_AfterRegistration", redirectTabId, SelectedCultureCode);
 
-                    foreach (DnnFormItemBase item in loginSettings.Items)
-                    {
-                        PortalController.UpdatePortalSetting(_portalId, item.DataField, item.Value.ToString());
-                    }
+                    PortalController.UpdatePortalSetting(_portalId, "Security_CaptchaLogin", chkSecurityCaptchaLogin.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "Security_RequireValidProfileAtLogin", chkSecurityRequireValidProfileAtLogin.Checked.ToString(), true);
+                    PortalController.UpdatePortalSetting(_portalId, "Security_CaptchaRetrivePassword", chkSecurityCaptchaRetrivePassword.Checked.ToString(), false);
+                    PortalController.UpdatePortalSetting(_portalId, "Security_CaptchaChangePassword", chkSecurityCaptchaChangePassword.Checked.ToString(), false);
+
                     redirectTabId = !String.IsNullOrEmpty(RedirectAfterLogin.SelectedItem.Value) ?
                                         RedirectAfterLogin.SelectedItem.Value
                                         : "-1";
@@ -1569,6 +1574,7 @@ namespace DesktopModules.Admin.Portals
                                                                     : item.Value.ToString()
                                                                 );
                     }
+                    PortalController.UpdatePortalSetting(_portalId, "Profile_DisplayVisibility", chkProfileDisplayVisibility.Checked.ToString(), true);
 
                     PortalController.UpdatePortalSetting(_portalId, "PageHeadText", string.IsNullOrEmpty(txtPageHeadText.Text) ? "false" : txtPageHeadText.Text); // Hack to store empty string portalsetting with non empty default value
                     PortalController.UpdatePortalSetting(_portalId, "InjectModuleHyperLink", chkInjectModuleHyperLink.Checked.ToString());
