@@ -147,7 +147,7 @@
                     <asp:CheckBox ID="chkUpgradeForceSSL" runat="server" />
                 </div>
                 <div id="sslDomainRow" class="dnnFormItem">
-                    <dnn:label id="plSSLDomain" controlname="chkUseCustomModuleCssClass"
+                    <dnn:label id="plSSLDomain" controlname="txtSSLDomain"
                         runat="server" />
                     <asp:TextBox ID="txtSSLDomain" runat="server" MaxLength="256" />
                 </div>
