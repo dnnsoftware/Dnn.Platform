@@ -100,6 +100,20 @@ namespace DotNetNuke.UI.WebControls
 			}
 		}
 
+		public string AssociatedControlId
+		{
+			get
+			{
+				EnsureChildControls();
+				return lblLabel.AssociatedControlID;
+			}
+			set
+			{
+				EnsureChildControls();
+				lblLabel.AssociatedControlID = value;
+			}
+		}
+
 		/// <summary>
 		/// Gets and Sets the related Edit Control
 		/// </summary>

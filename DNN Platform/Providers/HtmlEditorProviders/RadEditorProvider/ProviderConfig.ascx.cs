@@ -1101,13 +1101,14 @@ namespace DotNetNuke.Providers.RadEditorProvider
                 else
                 {
                     var pnlRow = new Panel { CssClass = "dnnFormItem" }; // a row starts here and ends at the right before next, where it is added to the fieldset)
-                    pnlRow.Controls.Add(this.BuildLabel(key));
+	                var editControlId = "ctl_rc_" + key;
+					pnlRow.Controls.Add(this.BuildLabel(key, editControlId));
 
                     switch (key.ToLower())
                     {
                         case "stripformattingoptions":
                             {
-                                var ctl = new CheckBoxList { ID = "ctl_rc_" + key, RepeatColumns = 2, CssClass = "dnnCBItem" };
+								var ctl = new CheckBoxList { ID = editControlId, RepeatColumns = 2, CssClass = "dnnCBItem" };
 
                                 foreach (string objEnum in Enum.GetNames(typeof(Telerik.Web.UI.EditorStripFormattingOptions)))
                                 {
@@ -1123,7 +1124,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         case "toolbarmode":
                             {
-                                var ctl = new RadioButtonList { ID = "ctl_rc_" + key, RepeatColumns = 2, CssClass = "dnnFormRadioButtons" };
+								var ctl = new RadioButtonList { ID = editControlId, RepeatColumns = 2, CssClass = "dnnFormRadioButtons" };
 
                                 foreach (string objEnum in Enum.GetNames(typeof(Telerik.Web.UI.EditorToolbarMode)))
                                 {
@@ -1136,7 +1137,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         case "editmodes":
                             {
-                                var ctl = new CheckBoxList { ID = "ctl_rc_" + key, RepeatColumns = 1, CssClass = "dnnCBItem" };
+								var ctl = new CheckBoxList { ID = editControlId, RepeatColumns = 1, CssClass = "dnnCBItem" };
 
                                 foreach (string objEnum in Enum.GetNames(typeof(Telerik.Web.UI.EditModes)))
                                 {
@@ -1152,7 +1153,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                         case "contentfilters":
                             {
                                 var ctl = new CheckBoxList();
-                                ctl.ID = "ctl_rc_" + key;
+								ctl.ID = editControlId;
                                 ctl.RepeatColumns = 2;
                                 ctl.CssClass = "dnnCBItem";
 
@@ -1174,7 +1175,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                         case "silverlightpath":
                         case "templatepath":
                             {
-                                var ctl = new DnnComboBox { ID = "ctl_rc_" + key };
+								var ctl = new DnnComboBox { ID = editControlId };
                                 // ctl.Width = Unit.Pixel(253)
                                 ctl.Items.Clear();
 
@@ -1201,7 +1202,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         case "skin":
                             {
-                                var ctl = new DnnComboBox { ID = "ctl_rc_" + key };
+								var ctl = new DnnComboBox { ID = editControlId };
                                 ctl.AddItem("Default", "Default");
                                 ctl.AddItem("Black", "Black");
                                 ctl.AddItem("Sunset", "Sunset");
@@ -1215,7 +1216,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         case "linkstype":
                             {
-                                var ctl = new DnnComboBox { ID = "ctl_rc_" + key };
+								var ctl = new DnnComboBox { ID = editControlId };
                                 ctl.AddItem(this.LocalizeString("LinksType_Normal"), "Normal");
                                 ctl.AddItem(this.LocalizeString("LinksType_UseTabName"), "UseTabName");
                                 ctl.AddItem(this.LocalizeString("LinksType_UseTabId"), "UseTabId");
@@ -1231,7 +1232,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                         case "linksuserelativeurls":
                         case "newlinebr":
                             {
-                                var ctl = new CheckBox { ID = "ctl_rc_" + key, CssClass = "dnnCBItem" };
+								var ctl = new CheckBox { ID = editControlId, CssClass = "dnnCBItem" };
 
                                 pnlRow.Controls.Add(ctl);
                                 break;
@@ -1241,7 +1242,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                         case "width":
                         case "toolswidth":
                             {
-                                var ctl = new TextBox { Text = @"5", CssClass = "SpinnerStepOne", ID = "ctl_rc_" + key };
+								var ctl = new TextBox { Text = @"5", CssClass = "SpinnerStepOne", ID = editControlId };
                                 pnlRow.Controls.Add(ctl);
                                 break;
                             }
@@ -1253,14 +1254,14 @@ namespace DotNetNuke.Providers.RadEditorProvider
                         case "maxdocumentsize":
                         case "maxmediasize":
                             {
-                                var ctl = new TextBox { Text = @"1024", CssClass = "SpinnerStep1024", ID = "ctl_rc_" + key };
+								var ctl = new TextBox { Text = @"1024", CssClass = "SpinnerStep1024", ID = editControlId };
                                 pnlRow.Controls.Add(ctl);
                                 break;
                             }
 
                         case "contentareamode":
                             {
-                                var ctl = new DnnComboBox { ID = "ctl_rc_" + key };
+								var ctl = new DnnComboBox { ID = editControlId };
 
                                 foreach (string name in Enum.GetNames(typeof(EditorContentAreaMode)))
                                 {
@@ -1278,7 +1279,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
                             {
                                 var ctl = new DnnLanguageComboBox
                                               {
-                                                  ID = "ctl_rc_" + key,
+												  ID = editControlId,
                                                   LanguagesListType = LanguagesListType.All,
                                                   IncludeNoneSpecified = true,
                                                   CssClass = "languageComboBox"
@@ -1289,7 +1290,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         default:
                             {
-                                var ctl = new TextBox { ID = "ctl_rc_" + key, Text = value };
+								var ctl = new TextBox { ID = editControlId, Text = value };
                                 pnlRow.Controls.Add(ctl);
                                 break;
                             }
@@ -1310,9 +1311,9 @@ namespace DotNetNuke.Providers.RadEditorProvider
         /// <param name="resourceKey"></param>
         /// <returns></returns>
         /// <remarks></remarks>
-        private PropertyLabelControl BuildLabel(string resourceKey)
+		private PropertyLabelControl BuildLabel(string resourceKey, string associatedControlId)
         {
-            var propLabel = new PropertyLabelControl { ID = resourceKey + "_Label", ShowHelp = true, ResourceKey = resourceKey };
+			var propLabel = new PropertyLabelControl { ID = resourceKey + "_Label", ShowHelp = true, ResourceKey = resourceKey, AssociatedControlId = associatedControlId };
 
             return propLabel;
         }
