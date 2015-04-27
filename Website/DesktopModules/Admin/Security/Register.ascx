@@ -25,7 +25,7 @@
     <input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" />
     <ul id="actionsRow" runat="server" class="dnnActions dnnClear">
         <li><asp:LinkButton id="registerButton" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdRegister" /></li>
-        <li><asp:LinkButton id="cancelButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
+        <li><asp:HyperLink ID="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
     </ul>
 </div>
 <script type="text/javascript">
