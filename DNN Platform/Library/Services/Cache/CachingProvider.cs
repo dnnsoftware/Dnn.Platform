@@ -33,7 +33,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 
 #endregion
@@ -62,8 +61,6 @@ namespace DotNetNuke.Services.Cache
     {
 		#region Private Members
 
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
-
         private static System.Web.Caching.Cache _cache;
         private const string CachePrefix = "DNN_";
 		
@@ -82,12 +79,6 @@ namespace DotNetNuke.Services.Cache
                 return _cache ?? (_cache = HttpRuntime.Cache);
             }
         }
-
-		/// <summary>
-		/// Whether current caching provider disabled to expire cache.
-		/// </summary>
-		/// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
-		protected static bool CacheExpirationDisable { get; private set; }
 		
 		#endregion
 
@@ -131,30 +122,6 @@ namespace DotNetNuke.Services.Cache
         {
             return ComponentFactory.GetComponent<CachingProvider>();
         }
-
-		/// <summary>
-		/// Disable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
-		/// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
-		/// </summary>
-		/// <seealso cref="CacheExpirationDisable"/>
-		internal static void DisableCacheExpiration()
-		{
-			CacheExpirationDisable = true;
-			Logger.Warn("Disable cache expiration.");
-
-		}
-
-		/// <summary>
-		/// Enable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
-		/// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
-		/// </summary>
-		/// <seealso cref="CacheExpirationDisable"/>
-		internal static void EnableCacheExpiration()
-		{
-			CacheExpirationDisable = false;
-			DataCache.ClearHostCache(true);
-			Logger.Warn("Enable cache expiration.");
-		}
 		
 	#endregion
 
@@ -522,7 +489,7 @@ namespace DotNetNuke.Services.Cache
         {
             RemoveInternal(CacheKey);
         }
-
+		
 		#endregion
 
         #region Obsolete Methods
