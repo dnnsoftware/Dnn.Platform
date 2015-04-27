@@ -18,7 +18,7 @@
 				<component type="Module">
 					<desktopModule>
 						<moduleName>DotNetNuke.MobileManagement</moduleName>
-						<foldername>DNNCorp/MobileManagement</foldername>
+						<foldername>MobileManagement</foldername>
 						<businessControllerClass/>
 						<supportedFeatures />
 						<isPremium>true</isPremium>
