@@ -256,6 +256,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             emailItemContent = emailItemContent.Replace("[CONTENT]", messageDetails.Body);
             emailItemContent = emailItemContent.Replace("[PROFILEPICURL]", GetProfilePicUrl(portalSettings, authorId));
             emailItemContent = emailItemContent.Replace("[PROFILEURL]", GetProfileUrl(portalSettings, authorId));
+            emailItemContent = emailItemContent.Replace("[DISPLAYNAME]", GetDisplayName(portalSettings, authorId));
 
             if (messageDetails.NotificationTypeID == 1)
             {
@@ -455,6 +456,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 portalSettings.UserTabId,
                 userId.ToString(),
                 Globals.glbDefaultPage);
+        }
+
+        private static string GetDisplayName(PortalSettings portalSettings, int userId)
+        {
+            return (UserController.GetUserById(portalSettings.PortalId, userId) != null)
+                ? UserController.GetUserById(portalSettings.PortalId, userId).DisplayName
+                : portalSettings.PortalName;
         }
 
         private static string GetNotificationUrl(PortalSettings portalSettings, int userId)
