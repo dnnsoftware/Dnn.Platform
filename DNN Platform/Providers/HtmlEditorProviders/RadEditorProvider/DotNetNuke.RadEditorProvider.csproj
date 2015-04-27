@@ -163,6 +163,7 @@
     <Content Include="images\attachment.png" />
     <Content Include="images\Black.gif" />
     <Content Include="images\CommandSprites.gif" />
+    <Content Include="images\CustomLinksSprites.gif" />
     <Content Include="images\down.png" />
     <Content Include="images\editorSprite.png" />
     <Content Include="images\help.png" />
