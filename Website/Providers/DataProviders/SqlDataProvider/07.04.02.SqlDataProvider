@@ -25,6 +25,25 @@ GO
 
  GO
 
+ /* DNN-5631 */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteList]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+	@ListName  nVarChar( 50), -- Not Null
+	@ParentKey nVarChar(150)  -- Not Null
+AS
+BEGIN
+	DELETE L
+	 FROM  {databaseOwner}[{objectQualifier}Lists] L
+	 WHERE ListName = @ListName 
+	   AND {databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) = @ParentKey;
+END
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
