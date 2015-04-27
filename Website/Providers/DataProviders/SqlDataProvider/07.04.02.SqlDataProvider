@@ -8,6 +8,14 @@
 /*****                                                  *****/
 /************************************************************/
 
+/* DNN-6398 */
+/************/
+
+UPDATE {databaseOwner}{objectQualifier}HostSettings
+  SET SettingValue ='http://www.dnnsoftware.com/help'
+  WHERE SettingName='HelpURL'
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
