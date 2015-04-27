@@ -712,6 +712,60 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        /// <summary>
+        /// overload will validate the token and if valid change the password
+        /// it does not require an old password as it supports hashed passwords
+        /// errorMessage will define why reset failed
+        /// </summary>
+        /// <param name="newPassword">The new password.</param>
+        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        {
+            bool retValue;
+            errorMessage = Null.NullString;
+            Guid resetTokenGuid = new Guid(resetToken);
+
+            var user = GetUserByName(portalid, username);
+            //if user does not exist return false 
+            if (user == null)
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_UserUndefined");
+                return false;
+            }
+            //check if the token supplied is the same as the users and is still valid
+            if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_ResetLinkExpired");
+                return false;
+            }
+            var m = new MembershipPasswordController();
+            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory");
+                return false;
+            }
+
+            //Although we would hope that the caller has already validated the password,
+            //Validate the new Password
+            if (ValidatePassword(newPassword))
+            {
+                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+
+                //update reset token values to ensure token is 1-time use
+                user.PasswordResetExpiration = DateTime.MinValue;
+                user.PasswordResetToken = Guid.NewGuid();
+
+                //Update User
+                user.Membership.UpdatePassword = false;
+                UpdateUser(user.PortalID, user);
+            }
+            else
+            {
+                throw new Exception("Invalid Password");
+            }
+            return retValue;
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question

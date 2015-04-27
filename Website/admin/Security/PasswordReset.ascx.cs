@@ -152,11 +152,11 @@ namespace DotNetNuke.Modules.Admin.Security
                     username = testUser.Username; //we need the username of the account in order to change the password in the next step
                 }
             }
-
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken) == false)
+            string errorMessage;
+            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken, out errorMessage) == false)
             {
                 resetMessages.Visible = true;
-                var failed = Localization.GetString("PasswordResetFailed", LocalResourceFile);
+                var failed = errorMessage;
                 LogFailure(failed);
                 lblHelp.Text = failed;
             }
