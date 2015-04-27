@@ -275,6 +275,10 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_PASSWORD_UPDATED_SUBJECT";
                     body = "EMAIL_PASSWORD_UPDATED_BODY";
                     break;
+                case MessageType.PasswordReminderUserIsNotApproved:
+                    subject = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT";
+                    body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY";
+                    break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";
                     body = "EMAIL_USER_UPDATED_OWN_PASSWORD_BODY";
