@@ -70,9 +70,9 @@ namespace DotNetNuke.Services.FileSystem
         #region Abstract Methods
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
-            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("folderPath", folderPath);
             Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.PropertyNotNull("newFolderPath", newFolderPath);
+            Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             if (folderPath == newFolderPath) return;
@@ -119,14 +119,14 @@ namespace DotNetNuke.Services.FileSystem
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
-            Requires.PropertyNotNull("fileName", fileName);
+            Requires.NotNullOrEmpty("fileName", fileName);
 
             return FileWrapper.Instance.Exists(GetActualPath(folder, fileName));
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             return DirectoryWrapper.Instance.Exists(GetActualPath(folderMapping, folderPath));
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             return DirectoryWrapper.Instance.GetDirectories(GetActualPath(folderMapping, folderPath))
