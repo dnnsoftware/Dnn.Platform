@@ -34,8 +34,10 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public DynamicContentItem(int portalId)
         {
             Requires.NotNegative("portalId", portalId);
+
             PortalId = portalId;
-            ModuleId = -1;
+
+            Initialize(null);
         }
 
         public DynamicContentItem(DynamicContentType contentType)
@@ -44,24 +46,31 @@ namespace DotNetNuke.Entities.Content.DynamicContent
             Requires.PropertyNotNegative(contentType, "PortalId");
 
             PortalId = contentType.PortalId;
-            ModuleId = -1;
 
             Initialize(contentType);
         }
 
         private void Initialize(DynamicContentType contentType)
         {
-            ContentType = contentType;
+            ModuleId = -1;
+            ContentItemId = -1;
 
-            Fields = new Dictionary<string, DynamicContentField>();
-
-            foreach (var fieldDefinition in contentType.FieldDefinitions)
+            if (contentType != null)
             {
-                var field = new DynamicContentField(fieldDefinition);
+                ContentType = contentType;
 
-                Fields.Add(fieldDefinition.Name, field);
+                Fields = new Dictionary<string, DynamicContentField>();
+
+                foreach (var fieldDefinition in contentType.FieldDefinitions)
+                {
+                    var field = new DynamicContentField(fieldDefinition);
+
+                    Fields.Add(fieldDefinition.Name, field);
+                }
             }
         }
+
+        public int ContentItemId { get; set; }
 
         public DynamicContentType ContentType { get; private set; }
 

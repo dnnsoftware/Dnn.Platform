@@ -46,6 +46,18 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
+        public void Constructor_Instantiates_Settings_Collection()
+        {
+            //Arrange
+
+            //Act
+            var rule = new ValidationRule();
+
+            //Assert
+            Assert.AreEqual(0, rule.ValidationSettings.Count);
+        }
+
+        [Test]
         public void ValidatorType_Property_Calls_ValidatorTypeController_Get()
         {
             //Arrange

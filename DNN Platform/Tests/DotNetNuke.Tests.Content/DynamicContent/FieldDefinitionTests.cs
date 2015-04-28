@@ -56,6 +56,17 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
+        public void Constructor_Instantiates_ValidationRules_Collection()
+        {
+            //Arrange
+
+            //Act
+            var field = new FieldDefinition();
+
+            //Assert
+            Assert.AreEqual(0, field.ValidationRules.Count);
+        }
+        [Test]
         public void DataType_Property_Calls_DataTypeController_Get()
         {
             //Arrange

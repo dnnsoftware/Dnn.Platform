@@ -198,6 +198,8 @@
     <Compile Include="Entities\Content\DynamicContent\DynamicContentTypeController.cs" />
     <Compile Include="Entities\Content\DynamicContent\Exceptions\DataTypeInUseException.cs" />
     <Compile Include="Entities\Content\DynamicContent\Exceptions\InvalidValidationTypeException.cs" />
+    <Compile Include="Entities\Content\DynamicContent\Exceptions\CreateValidatorException.cs" />
+    <Compile Include="Entities\Content\DynamicContent\Exceptions\InvalidValidatorException.cs" />
     <Compile Include="Entities\Content\DynamicContent\Exceptions\JsonContentTypeInvalidException.cs" />
     <Compile Include="Entities\Content\DynamicContent\Exceptions\JsonInvalidFieldException.cs" />
     <Compile Include="Entities\Content\DynamicContent\Exceptions\JsonMissingContentException.cs" />
@@ -211,11 +213,15 @@
     <Compile Include="Entities\Content\DynamicContent\IValidationRuleController.cs" />
     <Compile Include="Entities\Content\DynamicContent\IFieldDefinitionController.cs" />
     <Compile Include="Entities\Content\DynamicContent\ValidationRule.cs" />
+    <Compile Include="Entities\Content\DynamicContent\ValidatorSetting.cs" />
+    <Compile Include="Entities\Content\DynamicContent\Validators\BaseValidator.cs" />
     <Compile Include="Entities\Content\DynamicContent\Validators\IValidator.cs" />
     <Compile Include="Entities\Content\DynamicContent\Validators\RequiredValidator.cs" />
     <Compile Include="Entities\Content\DynamicContent\Validators\DynamicContentValidator.cs" />
+    <Compile Include="Entities\Content\DynamicContent\Validators\StringLengthValidator.cs" />
     <Compile Include="Entities\Content\DynamicContent\Validators\ValidationFailure.cs" />
     <Compile Include="Entities\Content\DynamicContent\Validators\ValidationResult.cs" />
+    <Compile Include="Entities\Content\DynamicContent\Validators\ValidatorFactory.cs" />
     <Compile Include="Entities\Content\DynamicContent\ValidatorType.cs" />
     <Compile Include="Entities\Content\DynamicContent\IContentTemplateController.cs" />
     <Compile Include="Entities\Content\DynamicContent\ValidatorTypeController.cs" />

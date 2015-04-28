@@ -20,30 +20,30 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.Web.Caching;
+using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace DotNetNuke.Entities.Content.DynamicContent
 {
-    public class RequiredValidator : BaseValidator
+    [Serializable]
+    [TableName("ContentTypes_ValidationRuleSettings")]
+    [PrimaryKey("ValidatorSettingID", "ValidatorSettingId")]
+    [Cacheable("ContentTypes_ValidationRuleSettings", CacheItemPriority.Normal, 20)]
+    [Scope("ValidationRuleId")]
+    public class ValidatorSetting
     {
-        public override void Validate(object value)
+        public ValidatorSetting()
         {
-            IsValid = true;
-            if (value == null)
-            {
-                IsValid = false;
-            }
-            else
-            {
-                var stringValue = value as String;
-                if (stringValue != null)
-                {
-                    if (String.IsNullOrEmpty(stringValue))
-                    {
-                        IsValid = false;
-                    }
-                }
-            }
+            ValidationRuleId = -1;
+            ValidatorSettingId = -1;
         }
+
+        public string SettingName { get; set; }
+
+        public string SettingValue { get; set; }
+
+        public int ValidationRuleId { get; set; }
+
+        public int ValidatorSettingId { get; set; }
     }
 }

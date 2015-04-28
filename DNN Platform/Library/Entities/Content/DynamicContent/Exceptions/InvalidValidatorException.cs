@@ -20,30 +20,16 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace DotNetNuke.Entities.Content.DynamicContent.Exceptions
 {
-    public class RequiredValidator : BaseValidator
+    public class InvalidValidatorException : InvalidOperationException
     {
-        public override void Validate(object value)
+        public InvalidValidatorException(ValidatorType validatorType)
+            : base(Localization.GetExceptionMessage("InvalidValidatorException", String.Format("Could not create ValidatorType - - {0}.", validatorType.ValidatorClassName)))
         {
-            IsValid = true;
-            if (value == null)
-            {
-                IsValid = false;
-            }
-            else
-            {
-                var stringValue = value as String;
-                if (stringValue != null)
-                {
-                    if (String.IsNullOrEmpty(stringValue))
-                    {
-                        IsValid = false;
-                    }
-                }
-            }
+                
         }
     }
 }

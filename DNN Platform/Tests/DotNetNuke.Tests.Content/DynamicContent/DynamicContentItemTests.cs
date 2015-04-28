@@ -95,6 +95,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             Assert.AreEqual(-1, content.ModuleId);
+            Assert.AreEqual(-1, content.ContentItemId);
         }
 
         [Test]
@@ -123,6 +124,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             Assert.AreEqual(-1, content.ModuleId);
+            Assert.AreEqual(-1, content.ContentItemId);
         }
 
         [Test]

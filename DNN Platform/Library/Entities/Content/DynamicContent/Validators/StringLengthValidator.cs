@@ -21,13 +21,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Web.UI;
+
+using DotNetNuke.Collections;
 
 namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
-    public class RequiredValidator : BaseValidator
+    public class StringLengthValidator : BaseValidator
     {
+        public const string MaxLengthSettingName = "MaxLength";
+
         public override void Validate(object value)
         {
+            var maxLengthSetting = ValidatorSettings[MaxLengthSettingName];
+
             IsValid = true;
             if (value == null)
             {
@@ -36,9 +43,17 @@ namespace DotNetNuke.Entities.Content.DynamicContent.Validators
             else
             {
                 var stringValue = value as String;
-                if (stringValue != null)
+                if (stringValue == null)
                 {
-                    if (String.IsNullOrEmpty(stringValue))
+                    IsValid = false;
+                }
+                else
+                {
+                    int maxLength = -1;
+
+                    maxLength = Int32.Parse(maxLengthSetting.SettingValue);
+
+                    if (stringValue.Length > maxLength)
                     {
                         IsValid = false;
                     }

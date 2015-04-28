@@ -19,6 +19,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
+
 namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
     public interface IValidator
@@ -26,5 +28,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent.Validators
         bool IsValid { get; set; }
 
         void Validate(object value);
+
+        IDictionary<string, ValidatorSetting> ValidatorSettings { get; set; }
     }
 }

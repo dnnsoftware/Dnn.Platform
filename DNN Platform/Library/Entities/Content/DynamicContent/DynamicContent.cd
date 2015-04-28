@@ -19,7 +19,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DotNetNuke.Entities.Content.DynamicContent.ValidationRule">
-    <Position X="11.75" Y="3.25" Width="1.5" />
+    <Position X="11.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAAAAEAAAAEAAAAQAABAAAAAAA=</HashCode>
       <FileName>Entities\Content\DynamicContent\ValidationRule.cs</FileName>
@@ -38,7 +38,7 @@
   <Class Name="DotNetNuke.Entities.Content.DynamicContent.DataType">
     <Position X="11.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAACAAAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Content\DynamicContent\DataType.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -63,7 +63,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAQAAAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAQAAAQAAAAQAAAAAIAAAJAAQAAAAgAA=</HashCode>
       <FileName>Entities\Content\DynamicContent\DynamicContentItem.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

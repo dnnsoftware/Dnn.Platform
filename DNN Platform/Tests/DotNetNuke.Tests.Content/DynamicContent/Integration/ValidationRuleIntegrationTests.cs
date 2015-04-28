@@ -28,6 +28,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
+using Moq;
 using NUnit.Framework;
 
 // ReSharper disable UseStringInterpolation
@@ -65,6 +66,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void AddValidationRule_Inserts_New_Record_In_Database()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var validationRuleController = new ValidationRuleController(dataContext);
@@ -87,6 +93,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void AddValidationRule_Clears_Cache()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
@@ -108,6 +119,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void DeleteValidationRule_Deletes_Record_From_Database()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
@@ -132,6 +149,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void DeleteValidationRule_Deletes_Correct_Record_From_Database()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
@@ -154,6 +176,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void DeleteValidationRule_Clears_Cache()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
@@ -220,6 +247,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void UpdateValidationRule_Updates_Correct_Record_In_Database()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
@@ -245,6 +277,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Integration
         public void UpdateValidationRule_Clears_Cache()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);

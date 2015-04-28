@@ -459,4 +459,10 @@
   <data name="JsonMissingContent.Text" xml:space="preserve">
     <value>There is no content node in the json document.</value>
   </data>
+  <data name="CreateValidatorException.Text" xml:space="preserve">
+    <value>Could not instantiate Validator - {0}.</value>
+  </data>
+  <data name="InvalidValidatorException.Text" xml:space="preserve">
+    <value>Could not create ValidatorType - - {0}.</value>
+  </data>
 </root>

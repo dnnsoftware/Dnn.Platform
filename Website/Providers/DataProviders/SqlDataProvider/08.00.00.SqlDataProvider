@@ -136,6 +136,25 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 	END
 GO
 
+/* DNN-6787 Manage DCC ContentItem */
+/*********************************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings](
+			[ValidatorSettingID] [int] IDENTITY(1,1) NOT NULL,
+			[ValidationRuleID] [int] NOT NULL,
+			[SettingName] [nvarchar](100) NOT NULL,
+			[SettingValue] [nvarchar](1000) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRuleSettings] PRIMARY KEY CLUSTERED ([ValidatorSettingID] ASC)
+
+		ALTER TABLE [{databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]  WITH CHECK 
+			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRuleSettings_{objectQualifier}ContentTypes_ValidationRules] FOREIGN KEY([ValidationRuleID])
+				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules] ([ValidationRuleID])
+	END
+GO
+
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

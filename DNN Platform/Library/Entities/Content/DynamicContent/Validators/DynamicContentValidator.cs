@@ -20,19 +20,40 @@
 #endregion
 
 using System.Collections.Generic;
-using Telerik.Web.UI;
+using DotNetNuke.Common;
 
 namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
     public class DynamicContentValidator
     {
-        public ValidationResult Validate(DynamicContentItem content)
+        public DynamicContentValidator(DynamicContentItem content)
+        {
+            Requires.NotNull("content", content);
+
+            ContentItem = content;
+        }
+
+        public DynamicContentItem ContentItem { get; set; }
+
+        public ValidationResult Validate()
         {
             var failures = new List<ValidationFailure>();
 
-            foreach (var field in content.Fields.Values)
+            foreach (var field in ContentItem.Fields.Values)
             {
-                
+                var definition = field.Definition;
+
+                foreach (var rule in definition.ValidationRules)
+                {
+                    IValidator validator = ValidatorFactory.CreateValidator(rule);
+                    validator.Validate(field.Value);
+
+                    if (!validator.IsValid)
+                    {
+                        //Log failure
+                        failures.Add(new ValidationFailure(field, rule));
+                    }
+                }
             }
 
             return new ValidationResult(failures);

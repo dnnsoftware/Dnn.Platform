@@ -19,31 +19,21 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
-    public class RequiredValidator : BaseValidator
+    public abstract class BaseValidator : IValidator
     {
-        public override void Validate(object value)
+        protected BaseValidator()
         {
-            IsValid = true;
-            if (value == null)
-            {
-                IsValid = false;
-            }
-            else
-            {
-                var stringValue = value as String;
-                if (stringValue != null)
-                {
-                    if (String.IsNullOrEmpty(stringValue))
-                    {
-                        IsValid = false;
-                    }
-                }
-            }
+            IsValid = false;
         }
+
+        public bool IsValid { get; set; }
+
+        public abstract void Validate(object value);
+
+        public IDictionary<string, ValidatorSetting> ValidatorSettings { get; set; }
     }
 }

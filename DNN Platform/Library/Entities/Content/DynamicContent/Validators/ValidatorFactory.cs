@@ -20,30 +20,49 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
-    public class RequiredValidator : BaseValidator
+    public class ValidatorFactory
     {
-        public override void Validate(object value)
+        public static IValidator CreateValidator(ValidationRule rule)
         {
-            IsValid = true;
-            if (value == null)
+            IValidator validator;
+            var validatorType = rule.ValidatorType;
+
+            switch (validatorType.Name)
             {
-                IsValid = false;
-            }
-            else
-            {
-                var stringValue = value as String;
-                if (stringValue != null)
-                {
-                    if (String.IsNullOrEmpty(stringValue))
+                case "Required":
+                    validator = new RequiredValidator();
+                    break;
+                case "StringLength":
+                    validator = new StringLengthValidator();
+                    break;
+                default:
+                    var type = Reflection.CreateType(validatorType.ValidatorClassName);
+
+                    if (type == null)
                     {
-                        IsValid = false;
+                        throw new InvalidValidatorException(validatorType);
                     }
-                }
+
+                    validator = Reflection.CreateInstance(type) as IValidator;
+
+                    if (validator == null)
+                    {
+                        throw new CreateValidatorException(validatorType);
+                    }
+
+                    break;
+
             }
+
+            //Add Settings
+            validator.ValidatorSettings = rule.ValidationSettings;
+
+            return validator;
         }
     }
 }

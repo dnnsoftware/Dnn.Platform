@@ -126,6 +126,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         public void AddValidationRule_Returns_ValidId_On_Valid_ValidationRule()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
                             .Callback((ValidationRule df) => df.ValidationRuleId = Constants.CONTENTTYPE_AddValidationRuleId);
 
@@ -148,6 +153,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         public void AddValidationRule_Sets_ValidId_On_Valid_ValidationRule()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
                             .Callback((ValidationRule dt) => dt.ValidationRuleId = Constants.CONTENTTYPE_AddValidationRuleId);
 
@@ -164,6 +174,72 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_AddValidationRuleId, validationRule.ValidationRuleId);
+        }
+
+        [Test]
+        public void AddValidationRule_Calls_Repository_Insert_For_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_AddValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+                                        {
+                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+                                        };
+            var validatorSetting = new ValidatorSetting
+                                        {
+                                            SettingName = "Name",
+                                            SettingValue = "Value"
+                                        };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.AddValidationRule(validationRule);
+
+            //Assert
+            mockValidatorSettingRepository.Verify(settingRep => settingRep.Insert(validatorSetting));
+        }
+
+        [Test]
+        public void AddValidationRule_Sets_ValidationRuleId_Property_Of_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_AddValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+                                        {
+                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+                                        };
+            var validatorSetting = new ValidatorSetting
+                                        {
+                                            SettingName = "Name",
+                                            SettingValue = "Value"
+                                        };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.AddValidationRule(validationRule);
+
+            //Assert
+            Assert.AreEqual(validationRuleId, validatorSetting.ValidationRuleId);
         }
 
         [Test]
@@ -192,6 +268,9 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         public void DeleteValidationRule_Calls_Repository_Delete_On_Valid_ValidationRuleId()
         {
             //Arrange
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
             var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
@@ -207,7 +286,41 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
-        public void GetValidationRules_Overload_Calls_Repository_Get()
+        public void DeleteValidationRule_Calls_Repository_Delete_For_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+                                        {
+                                            ValidationRuleId = validationRuleId,
+                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+                                        };
+            var validatorSetting = new ValidatorSetting
+                                        {
+                                            SettingName = "Name",
+                                            SettingValue = "Value"
+                                        };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.DeleteValidationRule(validationRule);
+
+            //Assert
+            mockValidatorSettingRepository.Verify(settingRep => settingRep.Delete(validatorSetting));
+        }
+
+        [Test]
+        public void GetValidationRules_Calls_Repository_Get()
         {
             //Arrange
             var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
@@ -221,7 +334,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
-        public void GetValidationRules_Overload_Returns_Empty_List_Of_ValidationRules_If_No_ValidationRules()
+        public void GetValidationRules_Returns_Empty_List_Of_ValidationRules_If_No_ValidationRules()
         {
             //Arrange
             _mockValidationRuleRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidFieldDefinitionId))
@@ -237,7 +350,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
-        public void GetValidationRules_Overload_Returns_List_Of_ValidationRules()
+        public void GetValidationRules_Returns_List_Of_ValidationRules()
         {
             //Arrange
             _mockValidationRuleRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidFieldDefinitionId))
@@ -249,6 +362,61 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_ValidValidationRuleCount, validationRules.Count());
+        }
+
+        [Test]
+        public void GetValidationSettings_Calls_Settings_Repository_Get()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var validationRules = validationRuleController.GetValidationSettings(validationRuleId);
+
+            //Assert
+            mockValidatorSettingRepository.Verify(r => r.Get(validationRuleId));
+        }
+
+        [Test]
+        public void GetValidationSettings_Returns_Empty_List_Of_ValidationSettings_If_No_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+            mockValidatorSettingRepository.Setup(r => r.Get(validationRuleId))
+                .Returns(new List<ValidatorSetting>());
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            //Act
+            var settings = validationRuleController.GetValidationSettings(validationRuleId);
+
+            //Assert
+            Assert.IsNotNull(settings);
+            Assert.AreEqual(0, settings.Count());
+        }
+
+        [Test]
+        public void GetValidationSettings_Returns_List_Of_ValidationSettings()
+        {
+            //Arrange
+            var settingCount = 5;
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+            mockValidatorSettingRepository.Setup(r => r.Get(validationRuleId))
+                .Returns(GetValidatorSettings(settingCount, validationRuleId));
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            //Act
+            var settings = validationRuleController.GetValidationSettings(validationRuleId);
+
+            //Assert
+            Assert.AreEqual(settingCount, settings.Count());
         }
 
         [Test]
@@ -315,6 +483,11 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         public void UpdateValidationRule_Calls_Repository_Update()
         {
             //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
             var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
 
             var field = new ValidationRule
@@ -331,13 +504,137 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             _mockValidationRuleRepository.Verify(r => r.Update(field));
         }
 
+        [Test]
+        public void UpdateValidationRule_Calls_Repository_Insert_For_New_ValidationSettings()
+        {
+            //Arrange
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
+                                    .Returns(new Dictionary<string, ValidatorSetting>());
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+                                        {
+                                            ValidationRuleId = validationRuleId,
+                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+                                        };
+            var validatorSetting = new ValidatorSetting
+                                        {
+                                            SettingName = "Name",
+                                            SettingValue = "Value"
+                                        };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.UpdateValidationRule(validationRule);
+
+            //Assert
+            mockValidatorSettingRepository.Verify(settingRep => settingRep.Insert(validatorSetting));
+        }
+
+        [Test]
+        public void UpdateValidationRule_Calls_Repository_Update_For_Existing_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+                                        {
+                                            ValidationRuleId = validationRuleId,
+                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+                                        };
+            var validatorSetting = new ValidatorSetting
+                                        {
+                                            ValidatorSettingId = 2,
+                                            SettingName = "Name",
+                                            SettingValue = "Value"
+                                        };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.UpdateValidationRule(validationRule);
+
+            //Assert
+            mockValidatorSettingRepository.Verify(settingRep => settingRep.Update(validatorSetting));
+        }
+
+        [Test]
+        public void UpdateValidationRule_Sets_ValidationRuleId_Property_Of_ValidationSettings()
+        {
+            //Arrange
+            var validationRuleId = Constants.CONTENTTYPE_AddValidationRuleId;
+            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
+                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
+            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
+            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
+
+
+            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+
+            var validationRule = new ValidationRule
+            {
+                FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
+                ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
+            };
+            var validatorSetting = new ValidatorSetting
+            {
+                SettingName = "Name",
+                SettingValue = "Value"
+            };
+
+            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
+
+            //Act
+            validationRuleController.AddValidationRule(validationRule);
+
+            //Assert
+            Assert.AreEqual(validationRuleId, validatorSetting.ValidationRuleId);
+        }
+
+        private List<ValidatorSetting> GetValidatorSettings(int count, int validationRuleId)
+        {
+            var list = new List<ValidatorSetting>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new ValidatorSetting()
+                                {
+                                    ValidationRuleId = validationRuleId,
+                                    SettingName = String.Format("Name_{0}", i),
+                                    SettingValue = String.Format("Value_{0}", i)
+                });
+            }
+
+            return list;
+        }
+
         private List<ValidationRule> GetValidValidationRules(int count)
         {
             var list = new List<ValidationRule>();
 
             for (int i = 1; i <= count; i++)
             {
-                list.Add(new ValidationRule() { ValidationRuleId = i, ValidatorTypeId = i, FieldDefinitionId = i});
+                list.Add(new ValidationRule() { ValidationRuleId = i, ValidatorTypeId = i, FieldDefinitionId = i });
             }
 
             return list;

@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     public class ValidationRule
     {
         private ValidatorType _validatorType;
+        private IDictionary<string, ValidatorSetting> _validationSettings;
 
         public ValidationRule()
         {
@@ -47,6 +49,22 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public int FieldDefinitionId { get; set; }
 
         public int ValidatorTypeId { get; set; }
+
+        [IgnoreColumn]
+        public IDictionary<string, ValidatorSetting> ValidationSettings
+        {
+            get
+            {
+                // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
+                if (_validationSettings == null)
+                {
+                    _validationSettings = (ValidationRuleId == -1)
+                                        ? new Dictionary<string, ValidatorSetting>()
+                                        : ValidationRuleController.Instance.GetValidationSettings(ValidationRuleId);
+                }
+                return _validationSettings;
+            }
+        }
 
         [IgnoreColumn]
         public ValidatorType ValidatorType

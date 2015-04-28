@@ -79,7 +79,10 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
         public void DeleteContentItem(DynamicContentItem dynamicContent)
         {
+            Requires.NotNull(dynamicContent);
+            Requires.PropertyNotNegative(dynamicContent, "ContentItemId");
 
+            ContentController.Instance.DeleteContentItem(dynamicContent.ContentItemId);
         }
 
         public IQueryable<DynamicContentItem> GetContentItems(int contentTypeId, int moduleId)
@@ -94,7 +97,23 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
         public void UpdateContentItem(DynamicContentItem dynamicContent)
         {
+            Requires.NotNull(dynamicContent);
+            Requires.PropertyNotNegative(dynamicContent, "ContentItemId");
+            Requires.PropertyNotNull(dynamicContent, "ContentType");
+            Requires.PropertyNotNegative(dynamicContent.ContentType, "ContentTypeId");
+            Requires.PropertyNotNegative(dynamicContent, "ModuleId");
 
+            var contentItem = new ContentItem
+                                {
+                                    ContentItemId = dynamicContent.ContentItemId,
+                                    ContentTypeId = dynamicContent.ContentType.ContentTypeId,
+                                    Content = dynamicContent.ToJson(),
+                                    ModuleID = dynamicContent.ModuleId,
+                                    TabID = -1,
+                                    ContentKey = String.Empty
+                                };
+
+            ContentController.Instance.UpdateContentItem(contentItem);
         }
     }
 }

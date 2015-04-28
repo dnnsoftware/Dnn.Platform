@@ -19,6 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
@@ -47,6 +48,13 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         /// <param name="fieldDefinitionId">The Id of the parent Field Definition</param>
         /// <returns>rule collection.</returns>
         IQueryable<ValidationRule> GetValidationRules(int fieldDefinitionId);
+
+        /// <summary>
+        /// Gets the settings for a validation rule.
+        /// </summary>
+        /// <param name="validationRuleId">The Id of the parent Validation Rule</param>
+        /// <returns>setting dictionary.</returns>
+        IDictionary<string, ValidatorSetting> GetValidationSettings(int validationRuleId);
 
         /// <summary>
         /// Updates the rule.

@@ -23,6 +23,14 @@ namespace DotNetNuke.Entities.Content.DynamicContent.Validators
 {
     public class ValidationFailure
     {
+        public ValidationFailure(DynamicContentField field, ValidationRule rule)
+        {
+            AttemptedValue = field.Value;
+            PropertyName = field.Definition.Name;
+
+            ErrorMessage = rule.ValidatorType.ErrorMessage;
+        }
+
         public object AttemptedValue { get; private set; }
 
         public string ErrorMessage { get; private set; }

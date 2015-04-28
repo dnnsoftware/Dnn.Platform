@@ -20,6 +20,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
@@ -49,10 +50,24 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public int AddValidationRule(ValidationRule rule)
         {
             //Argument Contract
+            Requires.NotNull(rule);
             Requires.PropertyNotNegative(rule, "FieldDefinitionId");
             Requires.PropertyNotNegative(rule, "ValidatorTypeId");
 
-            Add(rule);
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<ValidationRule>();
+
+                rep.Insert(rule);
+
+                //Add any Validation Settings
+                var settingRep = DataContext.GetRepository<ValidatorSetting>();
+                foreach (var setting in rule.ValidationSettings.Values)
+                {
+                    setting.ValidationRuleId = rule.ValidationRuleId;
+                    settingRep.Insert(setting);
+                }
+            }
 
             return rule.ValidationRuleId;
         }
@@ -65,7 +80,24 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">rule id is less than 0.</exception>
         public void DeleteValidationRule(ValidationRule rule)
         {
-            Delete(rule);
+            //Argument Contract
+            Requires.NotNull(rule);
+            Requires.PropertyNotNull(rule, "ValidationRuleId");
+            Requires.PropertyNotNegative(rule, "ValidationRuleId");
+
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<ValidationRule>();
+
+                rep.Delete(rule);
+
+                //Delete any Validation Settings
+                var settingRep = DataContext.GetRepository<ValidatorSetting>();
+                foreach (var setting in rule.ValidationSettings.Values)
+                {
+                    settingRep.Delete(setting);
+                }
+            }
         }
 
         /// <summary>
@@ -79,6 +111,26 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         }
 
         /// <summary>
+        /// Gets the settings for a validation rule.
+        /// </summary>
+        /// <param name="validationRuleId">The Id of the parent Validation Rule</param>
+        /// <returns>setting dictionary.</returns>
+        public IDictionary<string, ValidatorSetting> GetValidationSettings(int validationRuleId)
+        {
+            var settings = new Dictionary<string, ValidatorSetting>();
+            using (DataContext)
+            {
+                var settingRep = DataContext.GetRepository<ValidatorSetting>();
+
+                foreach (var setting in settingRep.Get(validationRuleId))
+                {
+                    settings.Add(setting.SettingName, setting);
+                }
+            }
+            return settings;
+        }
+
+        /// <summary>
         /// Updates the rule.
         /// </summary>
         /// <param name="rule">The rule.</param>
@@ -87,10 +139,34 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public void UpdateValidationRule(ValidationRule rule)
         {
             //Argument Contract
+            Requires.NotNull(rule);
+            Requires.PropertyNotNull(rule, "ValidationRuleId");
+            Requires.PropertyNotNegative(rule, "ValidationRuleId");
             Requires.PropertyNotNegative(rule, "FieldDefinitionId");
             Requires.PropertyNotNegative(rule, "ValidatorTypeId");
 
-            Update(rule);
+            using (DataContext)
+            {
+                var rep = DataContext.GetRepository<ValidationRule>();
+
+                rep.Update(rule);
+
+                //Upsert any Validation Settings
+                var settingRep = DataContext.GetRepository<ValidatorSetting>();
+                foreach (var setting in rule.ValidationSettings.Values)
+                {
+                    if (setting.ValidatorSettingId == -1)
+                    {
+                        //Insert
+                        setting.ValidationRuleId = rule.ValidationRuleId;
+                        settingRep.Insert(setting);
+                    }
+                    else
+                    {
+                        settingRep.Update(setting);
+                    }
+                }
+            }
         }
     }
 }
