@@ -54,6 +54,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
