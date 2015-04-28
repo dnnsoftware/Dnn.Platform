@@ -131,13 +131,20 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>ArrayList of PortalInfo objects</returns>
         ArrayList GetPortals();
 
-
         /// <summary>
         /// Gets the portal settings dictionary.
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
         /// <returns>portal settings.</returns>
         Dictionary<string, string> GetPortalSettings(int portalId);
+
+        /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code</param>
+        /// <returns>portal settings.</returns>
+        Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode);
 
         /// <summary>
         /// Gets the portal space used bytes.

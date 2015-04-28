@@ -2372,11 +2372,6 @@ namespace DotNetNuke.Entities.Portals
 			return new ArrayList(GetPortalList(Null.NullString));
 		}
 
-        //public ArrayList GetPortals()
-        //{
-        //    return new ArrayList(GetPortalList(Localization.SystemLocale));
-        //}
-
         /// <summary>
         /// Get portals in specific culture.
         /// </summary>
@@ -2389,9 +2384,25 @@ namespace DotNetNuke.Entities.Portals
                                                     GetPortalsCallBack);
         }
 
+        /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>portal settings.</returns>
         public Dictionary<string, string> GetPortalSettings(int portalId)
         {
             return GetPortalSettingsDictionary(portalId, string.Empty);
+        }
+
+        /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code</param>
+        /// <returns>portal settings.</returns>
+        public Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode)
+        {
+            return GetPortalSettingsDictionary(portalId, cultureCode);
         }
 
         /// <summary>
@@ -2992,7 +3003,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
+                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -3016,8 +3027,8 @@ namespace DotNetNuke.Entities.Portals
 			try
 			{
 				string setting;
-				GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(settingName, out setting);
-				retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
+                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
+                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
 			}
 			catch (Exception exc)
 			{
