@@ -339,7 +339,7 @@ namespace DotNetNuke.Entities.Portals
 		}
 		else if (String.IsNullOrEmpty(activeTab.ContainerSrc))
 		{
-			activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
+			activeTab.ContainerSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
 				Host.Host.DefaultPortalContainer, portalSettings.CultureCode)) ? portalSettings.DefaultPortalContainer : PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
 				Host.Host.DefaultPortalContainer, portalSettings.CultureCode);
 		}
