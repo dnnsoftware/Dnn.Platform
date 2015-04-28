@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
+	            return _desktopModule ?? (_desktopModule = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
 	        }
 	    }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
+	            return _module ?? (_module = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
 	        }
 	    }
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
+                return _tab ?? (_tab = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
             }
         }
 
