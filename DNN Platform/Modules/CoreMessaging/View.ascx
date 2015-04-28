@@ -24,7 +24,7 @@
         </ul>
         <!-- start core messaging -->
         <div class="coreMessaging" id="dnnCoreMessaging">
-            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage"><%=LocalizeString("ComposeNewMessage")%></a></div>
+            <div class="dnnFormExpandContent"><a href="#" class="ComposeMessage" data-bind="visible: !disablePrivateMessage()"><%=LocalizeString("ComposeNewMessage")%></a></div>
             <!-- ko ifnot: showReplies -->
             <div class="dnnCoreMessagingContent dnnClear">
                 <div class="messageControls dnnClear">
@@ -145,7 +145,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="dnnCoreMessagingFooter"><a href="#" class="dnnPrimaryAction ComposeMessage dnnRight" data-bind="visible: !disablePrivateMessage"><%=LocalizeString("ComposeNewMessage")%></a> <a href="#" class="dnnTertiaryAction" data-bind="click: loadMore, visible: loadMoreVisible"><%=LocalizeString("LoadMore")%></a><div class="dnnClear"></div></div>
+            <div class="dnnCoreMessagingFooter"><a href="#" class="dnnPrimaryAction ComposeMessage dnnRight" data-bind="visible: !disablePrivateMessage()"><%=LocalizeString("ComposeNewMessage")%></a> <a href="#" class="dnnTertiaryAction" data-bind="click: loadMore, visible: loadMoreVisible"><%=LocalizeString("LoadMore")%></a><div class="dnnClear"></div></div>
             <!-- /ko -->
             <!-- ko if: showReplies -->
             <div class="dnnForm DnnModule-Messaging-Details dnnClear">
