@@ -115,11 +115,13 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Validators
             {
                 ValidatorSettings = new Dictionary<string, ValidatorSetting>
                 {
-                    [maxLengthSetting] = new ValidatorSetting()
+                    { 
+                        maxLengthSetting,  new ValidatorSetting
                                                 {
                                                     SettingName = maxLengthSetting,
                                                     SettingValue = "20"
                                                 }
+                    }
                 }
             };
 
@@ -139,10 +141,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Validators
             {
                 ValidatorSettings = new Dictionary<string, ValidatorSetting>
                 {
-                    [maxLengthSetting] = new ValidatorSetting()
-                    {
-                        SettingName = maxLengthSetting,
-                        SettingValue = "20"
+                    { 
+                        maxLengthSetting,  new ValidatorSetting
+                                                {
+                                                    SettingName = maxLengthSetting,
+                                                    SettingValue = "20"
+                                                }
                     }
                 }
             };
@@ -163,10 +167,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Validators
             {
                 ValidatorSettings = new Dictionary<string, ValidatorSetting>
                 {
-                    [maxLengthSetting] = new ValidatorSetting()
-                    {
-                        SettingName = maxLengthSetting,
-                        SettingValue = "20"
+                      { 
+                        maxLengthSetting,  new ValidatorSetting
+                                                {
+                                                    SettingName = maxLengthSetting,
+                                                    SettingValue = "20"
+                                                }
                     }
                 }
             };
@@ -187,10 +193,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Validators
             {
                 ValidatorSettings = new Dictionary<string, ValidatorSetting>
                 {
-                    [maxLengthSetting] = new ValidatorSetting()
-                    {
-                        SettingName = maxLengthSetting,
-                        SettingValue = "20"
+                    { 
+                        maxLengthSetting,  new ValidatorSetting
+                                                {
+                                                    SettingName = maxLengthSetting,
+                                                    SettingValue = "20"
+                                                }
                     }
                 }
             };
@@ -211,10 +219,12 @@ namespace DotNetNuke.Tests.Content.DynamicContent.Validators
             {
                 ValidatorSettings = new Dictionary<string, ValidatorSetting>
                 {
-                    [maxLengthSetting] = new ValidatorSetting()
-                    {
-                        SettingName = maxLengthSetting,
-                        SettingValue = "30"
+                    { 
+                        maxLengthSetting,  new ValidatorSetting
+                                                {
+                                                    SettingName = maxLengthSetting,
+                                                    SettingValue = "30"
+                                                }
                     }
                 }
             };

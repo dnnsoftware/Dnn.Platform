@@ -144,12 +144,23 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Determines whether the argValue is null.
+        /// </summary>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void PropertyNotNull(string argName, string argValue)
+        {
+            NotNull(argName, argValue);
+        }
+
+        /// <summary>
         /// Determines whether a property is null.
         /// </summary>
         /// <param name="item">The object to test.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void PropertyNotNull<T>(T item, string propertyName)
+        public static void PropertyNotNull<T>(T item, string propertyName) where T : class
         {
             //Check first if the item is null
             NotNull(item);

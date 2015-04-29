@@ -14,6 +14,7 @@
 
 ## Ignore VS2015/Roslyn artifacts
 *.sln.ide/
+.vs/
 
 # Build results
 [Rr]elease

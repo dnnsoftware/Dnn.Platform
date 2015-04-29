@@ -14,14 +14,14 @@
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'PortalID')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-		ADD [PortalID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_PortalID] DEFAULT (-1)
+			ADD [PortalID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_PortalID] DEFAULT (-1)
     END 
 GO
 
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsStructured')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-		ADD [IsDynamic] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic] DEFAULT (0)
+			ADD [IsDynamic] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic] DEFAULT (0)
     END 
 GO
 
@@ -50,7 +50,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[DataTypeID] [int] IDENTITY(1,1) NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[UnderlyingDataType] [int] NOT NULL,
-			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)	
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)
+			)	
 	END
 GO
 
@@ -99,7 +100,6 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[FieldDefinitionID] [int] NOT NULL,
 			[ValidatorTypeID] [int] NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRules] PRIMARY KEY CLUSTERED ([ValidationRuleID] ASC)
-		
 		)
 
 		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
@@ -109,7 +109,6 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules]  WITH CHECK 
 			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRules_{objectQualifier}ContentTypes_ValidatorTypes] FOREIGN KEY([ValidatorTypeID])
 				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidatorTypes] ([ValidatorTypeID])
-		
 	END
 GO
 
@@ -147,8 +146,9 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[SettingName] [nvarchar](100) NOT NULL,
 			[SettingValue] [nvarchar](1000) NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_ValidationRuleSettings] PRIMARY KEY CLUSTERED ([ValidatorSettingID] ASC)
+		)
 
-		ALTER TABLE [{databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]  WITH CHECK 
+		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_ValidationRuleSettings]  WITH CHECK 
 			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_ValidationRuleSettings_{objectQualifier}ContentTypes_ValidationRules] FOREIGN KEY([ValidationRuleID])
 				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes_ValidationRules] ([ValidationRuleID])
 	END
