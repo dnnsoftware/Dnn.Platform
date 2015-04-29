@@ -24,6 +24,7 @@ using System.Data;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Content.DynamicContent
@@ -65,7 +66,6 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         /// <param name="dataType">The data type to delete.</param>
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
-        /// <exception cref="System.InvalidOperationException">dataType is in use.</exception>
         public void DeleteDataType(DataType dataType)
         {
             //Argument Contract
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
                 }
                 else
                 {
-                    throw new InvalidOperationException(String.Format(Localization.GetString("DataTypeInUse", Localization.ExceptionsResourceFile), dataType.DataTypeId));
+                    throw new DataTypeInUseException(dataType);
                 }
             }
         }
@@ -109,7 +109,6 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         /// <exception cref="System.ArgumentNullException">data type is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">data type id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">dataType.Name is empty.</exception>
-        /// <exception cref="System.InvalidOperationException">dataType is in use.</exception>
         public void UpdateDataType(DataType dataType, bool overrideWarning = false)
         {
             //Argument Contract
@@ -149,7 +148,7 @@ namespace DotNetNuke.Entities.Content.DynamicContent
                 }
                 else
                 {
-                    throw new InvalidOperationException(String.Format(Localization.GetString("DataTypeInUse", Localization.ExceptionsResourceFile), dataType.DataTypeId));
+                    throw new DataTypeInUseException(dataType);
                 }
             }
         }

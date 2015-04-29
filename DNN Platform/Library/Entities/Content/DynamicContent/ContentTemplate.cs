@@ -26,6 +26,9 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 namespace DotNetNuke.Entities.Content.DynamicContent
 {
 
+    /// <summary>
+    /// Represents a Content Template for a Dynamic Content Type
+    /// </summary>
     [Serializable]
     [TableName("ContentTypes_Templates")]
     [PrimaryKey("TemplateID", "TemplateId")]
@@ -33,11 +36,32 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     [Scope(ContentTemplateController.ContentTemplateScope)]
     public class ContentTemplate
     {
+        public ContentTemplate()
+        {
+            ContentTypeId = -1;
+            TemplateId = -1;
+            TemplateFileId = -1;
+            Name = String.Empty;
+        }
+
+        /// <summary>
+        /// The Id of the <see cref="T:DotNetNuke.Entities.Content.DynamicContent.DynamicContentType"/> to which this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/> belongs
+        /// </summary>
         public int ContentTypeId { get; set; }
 
+        /// <summary>
+        /// The id of the File which contains the HTML for this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// </summary>
         public int TemplateFileId { get; set; }
 
+        /// <summary>
+        /// The name of this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The Id of this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// </summary>
 
         public int TemplateId { get; set; }
     }

@@ -1506,8 +1506,8 @@ namespace DotNetNuke.Services.Upgrade
             //Remove Module Definitions Module from Host Page (if present)
             RemoveCoreModule("Module Definitions", "Host", "Module Definitions", false);
 
-            //Remove old Module Definition Validator module
-            DesktopModuleController.DeleteDesktopModule("Module Definition Validator");
+            //Remove old Module Definition DynamicContentValidator module
+            DesktopModuleController.DeleteDesktopModule("Module Definition DynamicContentValidator");
 
             //Get Module Definitions
             TabInfo definitionsPage = TabController.Instance.GetTabByName("Module Definitions", Null.NullInteger);

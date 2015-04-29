@@ -47,6 +47,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             var field = new FieldDefinition();
 
             //Assert
+            Assert.AreEqual(-1, field.FieldDefinitionId);
             Assert.AreEqual(-1, field.ContentTypeId);
             Assert.AreEqual(-1, field.DataTypeId);
             Assert.AreEqual(String.Empty, field.Name);
@@ -54,6 +55,17 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             Assert.AreEqual(String.Empty, field.Description);
         }
 
+        [Test]
+        public void Constructor_Instantiates_ValidationRules_Collection()
+        {
+            //Arrange
+
+            //Act
+            var field = new FieldDefinition();
+
+            //Assert
+            Assert.AreEqual(0, field.ValidationRules.Count);
+        }
         [Test]
         public void DataType_Property_Calls_DataTypeController_Get()
         {
@@ -93,10 +105,28 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
-        public void ValidationRules_Property_Calls_ValidationRuleController_Get()
+        public void ValidationRules_Property_Creates_New_List_If_FieldDefinition_Negative()
         {
             //Arrange
             var field = new FieldDefinition();
+            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataType = field.ValidationRules;
+
+            //Assert
+            mockValidationRuleController.Verify(c => c.GetValidationRules(It.IsAny<int>()), Times.Never);
+        }
+
+        [Test]
+        public void ValidationRules_Property_Calls_ValidationRuleController_Get_If_FieldDefinition_Not_Negative()
+        {
+            //Arrange
+            var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
+            var field = new FieldDefinition() { FieldDefinitionId = fieldDefinitionId };
+
             var mockValidationRuleController = new Mock<IValidationRuleController>();
             ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
 

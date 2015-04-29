@@ -444,4 +444,25 @@
   <data name="DataTypeInUse.Text" xml:space="preserve">
     <value>The Data Type with Id {0} is in use, so it cannot be deleted.</value>
   </data>
+  <data name="PropertyCannotBeEmpty.Text" xml:space="preserve">
+    <value>The property '{1}' in object '{0}' cannot be empty (count = 0).</value>
+  </data>
+  <data name="ErrorMessageCannotBeNullOrEmpty.Text" xml:space="preserve">
+    <value>Both the ErorrKey and the ErrorMessage cannot be null or empty.</value>
+  </data>
+  <data name="JsonContentTypeInvalid.Text" xml:space="preserve">
+    <value>The contentTypeId specified in the json document - {0} - does not exist.</value>
+  </data>
+  <data name="JsonInvalidField.Text" xml:space="preserve">
+    <value>The content type does not specify the field - {0}.</value>
+  </data>
+  <data name="JsonMissingContent.Text" xml:space="preserve">
+    <value>There is no content node in the json document.</value>
+  </data>
+  <data name="CreateValidatorException.Text" xml:space="preserve">
+    <value>Could not instantiate Validator - {0}.</value>
+  </data>
+  <data name="InvalidValidatorException.Text" xml:space="preserve">
+    <value>Could not create ValidatorType - - {0}.</value>
+  </data>
 </root>

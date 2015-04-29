@@ -40,6 +40,9 @@ namespace DotNetNuke.Tests.Content.DynamicContent
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<DynamicContentType>> _mockContentTypeRepository;
+        private Mock<IFieldDefinitionController> _mockFieldDefinitionController;
+        private Mock<IContentTemplateController> _mockContentTemplateController;
+
         private Mock<CachingProvider> _mockCache;
         private string _contentTypeCacheKey;
 
@@ -56,6 +59,16 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             _mockContentTypeRepository = new Mock<IRepository<DynamicContentType>>();
             _mockDataContext.Setup(dc => dc.GetRepository<DynamicContentType>()).Returns(_mockContentTypeRepository.Object);
+
+            _mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
+            _mockFieldDefinitionController.Setup(vr => vr.GetFieldDefinitions(It.IsAny<int>()))
+                .Returns(new List<FieldDefinition>().AsQueryable());
+            FieldDefinitionController.SetTestableInstance(_mockFieldDefinitionController.Object);
+
+            _mockContentTemplateController = new Mock<IContentTemplateController>();
+            _mockContentTemplateController.Setup(vr => vr.GetContentTemplates(It.IsAny<int>()))
+                .Returns(new List<ContentTemplate>().AsQueryable());
+            ContentTemplateController.SetTestableInstance(_mockContentTemplateController.Object);
         }
 
         [TearDown]
@@ -148,6 +161,110 @@ namespace DotNetNuke.Tests.Content.DynamicContent
         }
 
         [Test]
+        public void AddContentType_Adds_FieldDefinitions_On_Valid_ContentType()
+        {
+            //Arrange
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition());
+            }
+
+            //Act
+            contentTypeController.AddContentType(contentType);
+
+            //Assert
+            _mockFieldDefinitionController.Verify(fd => fd.AddFieldDefinition(It.IsAny<FieldDefinition>()), Times.Exactly(fieldDefinitionCount));
+        }
+
+        [Test]
+        public void AddContentType_Sets_ContentTypeId_Property_Of_New_FieldDefinitions_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_AddContentTypeId;
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
+
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition());
+            }
+
+            //Act
+            contentTypeController.AddContentType(contentType);
+
+            //Assert
+            foreach (var field in contentType.FieldDefinitions)
+            {
+                Assert.AreEqual(contentTypeId, field.ContentTypeId);
+            }
+        }
+
+        [Test]
+        public void AddContentType_Adds_ContentTemplates_On_Valid_ContentType()
+        {
+            //Arrange
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate());
+            }
+
+            //Act
+            contentTypeController.AddContentType(contentType);
+
+            //Assert
+            _mockContentTemplateController.Verify(ct => ct.AddContentTemplate(It.IsAny<ContentTemplate>()), Times.Exactly(contentTemplateCount));
+        }
+
+        [Test]
+        public void AddContentType_Sets_ContentTypeId_Property_Of_New_ContentTemplates_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeId = Constants.CONTENTTYPE_AddContentTypeId;
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
+
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate());
+            }
+
+            //Act
+            contentTypeController.AddContentType(contentType);
+
+            //Assert
+            foreach (var template in contentType.Templates)
+            {
+                Assert.AreEqual(contentTypeId, template.ContentTypeId);
+            }
+        }
+
+        [Test]
         public void DeleteContentType_Throws_On_Null_ContentType()
         {
             //Arrange
@@ -190,6 +307,57 @@ namespace DotNetNuke.Tests.Content.DynamicContent
 
             //Assert
             _mockContentTypeRepository.Verify(r => r.Delete(contentType));
+        }
+
+        [Test]
+        public void DeleteContentType_Deletes_FieldDefinitions_On_Valid_ContentTypeId()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+                                    {
+                                        ContentType = Constants.CONTENTTYPE_ValidContentType,
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                    };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition());
+            }
+
+            //Act
+            contentTypeController.DeleteContentType(contentType);
+
+            //Assert
+            _mockFieldDefinitionController.Verify(f => f.DeleteFieldDefinition(It.IsAny<FieldDefinition>()), Times.Exactly(fieldDefinitionCount));
+
+        }
+
+        [Test]
+        public void DeleteContentType_Deletes_Templates_On_Valid_ContentTypeId()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+                                    {
+                                        ContentType = Constants.CONTENTTYPE_ValidContentType,
+                                        ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                    };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate());
+            }
+
+            //Act
+            contentTypeController.DeleteContentType(contentType);
+
+            //Assert
+            _mockContentTemplateController.Verify(ct => ct.DeleteContentTemplate(It.IsAny<ContentTemplate>()), Times.Exactly(contentTemplateCount));
         }
 
         [Test]
@@ -320,6 +488,167 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             //Assert
             _mockContentTypeRepository.Verify(r => r.Update(contentType));
         }
+
+        [Test]
+        public void UpdateContentType_Adds_New_FieldDefinitions_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                        ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                    };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition());
+            }
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            _mockFieldDefinitionController.Verify(fd => fd.AddFieldDefinition(It.IsAny<FieldDefinition>()), Times.Exactly(fieldDefinitionCount));
+        }
+
+        [Test]
+        public void UpdateContentType_Sets_ContentTypeId_Property_Of_New_New_FieldDefinitions_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
+            var contentType = new DynamicContentType
+                                {
+                                    ContentTypeId = contentTypeId,
+                                    ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition());
+            }
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            foreach (var field in contentType.FieldDefinitions)
+            {
+                Assert.AreEqual(contentTypeId, field.ContentTypeId);
+            }
+        }
+
+        [Test]
+        public void UpdateContentType_Updates_Existing_FieldDefinitions_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+            {
+                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                ContentType = Constants.CONTENTTYPE_UpdateContentType
+            };
+
+            var fieldDefinitionCount = 5;
+            for (int i = 0; i < fieldDefinitionCount; i++)
+            {
+                contentType.FieldDefinitions.Add(new FieldDefinition() {FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId});
+            }
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            _mockFieldDefinitionController.Verify(fd => fd.UpdateFieldDefinition(It.IsAny<FieldDefinition>()), Times.Exactly(fieldDefinitionCount));
+        }
+
+        [Test]
+        public void UpdateContentType_Adds_New_Templates_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                        ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                    };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate());
+            }
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            _mockContentTemplateController.Verify(ct => ct.AddContentTemplate(It.IsAny<ContentTemplate>()), Times.Exactly(contentTemplateCount));
+        }
+
+        [Test]
+        public void UpdateContentType_Sets_ContentTypeId_Property_Of_New_New_Templates_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
+            var contentType = new DynamicContentType
+            {
+                ContentTypeId = contentTypeId,
+                ContentType = Constants.CONTENTTYPE_UpdateContentType
+            };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate());
+            }
+
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            foreach (var template in contentType.Templates)
+            {
+                Assert.AreEqual(contentTypeId, template.ContentTypeId);
+            }
+        }
+
+        [Test]
+        public void UpdateContentType_Updates_Existing_Templates_On_Valid_ContentType()
+        {
+            //Arrange
+            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType
+            {
+                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                ContentType = Constants.CONTENTTYPE_UpdateContentType
+            };
+
+            var contentTemplateCount = 5;
+            for (int i = 0; i < contentTemplateCount; i++)
+            {
+                contentType.Templates.Add(new ContentTemplate() {TemplateId = Constants.CONTENTTYPE_ValidContentTemplateId});
+            }
+
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            _mockContentTemplateController.Verify(ct => ct.UpdateContentTemplate(It.IsAny<ContentTemplate>()), Times.Exactly(contentTemplateCount));
+        }
+
 
         private List<DynamicContentType> CreateValidContentTypes(int count)
         {

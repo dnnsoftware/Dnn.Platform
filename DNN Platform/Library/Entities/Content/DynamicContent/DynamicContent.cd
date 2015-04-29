@@ -3,7 +3,7 @@
   <Class Name="DotNetNuke.Entities.Content.DynamicContent.DynamicContentType">
     <Position X="4.75" Y="2" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAgAAAAAAEAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAAAAAAAEAAAAgAAAAAAEAABAAAIAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Content\DynamicContent\DynamicContentType.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -29,16 +29,16 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DotNetNuke.Entities.Content.DynamicContent.ValidatorType">
-    <Position X="14.5" Y="4.75" Width="1.5" />
+    <Position X="14.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAQA=</HashCode>
+      <HashCode>AQBAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAQA=</HashCode>
       <FileName>Entities\Content\DynamicContent\ValidatorType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DotNetNuke.Entities.Content.DynamicContent.DataType">
-    <Position X="11.75" Y="2" Width="1.5" />
+    <Position X="11.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAACAAAACAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Content\DynamicContent\DataType.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -54,6 +54,39 @@
     <ShowAsCollectionAssociation>
       <Property Name="ValidationRules" />
     </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.DynamicContentItem">
+    <Position X="4.75" Y="5.75" Width="2" />
+    <AssociationLine Name="ContentType" Type="DotNetNuke.Entities.Content.DynamicContent.DynamicContentType">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.117" Y="0.366" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAQAAAAQAAAAAIAAAJAAQAAAAgAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\DynamicContentItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContentType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Fields" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DotNetNuke.Entities.Content.DynamicContent.DynamicContentField">
+    <Position X="8.75" Y="6" Width="1.5" />
+    <AssociationLine Name="Definition" Type="DotNetNuke.Entities.Content.DynamicContent.FieldDefinition">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.103" Y="0.289" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Entities\Content\DynamicContent\DynamicContentField.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Definition" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

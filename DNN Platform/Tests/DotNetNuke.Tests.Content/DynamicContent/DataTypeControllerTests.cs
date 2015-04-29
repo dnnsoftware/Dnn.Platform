@@ -26,6 +26,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.DynamicContent;
+using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -205,7 +206,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId };
 
             //Act, Assert
-            Assert.Throws<InvalidOperationException>(() => dataTypeController.DeleteDataType(dataType));
+            Assert.Throws<DataTypeInUseException>(() => dataTypeController.DeleteDataType(dataType));
         }
 
         [Test]
@@ -351,7 +352,7 @@ namespace DotNetNuke.Tests.Content.DynamicContent
                                 };
 
             //Act, Assert
-            Assert.Throws<InvalidOperationException>(() => dataTypeController.UpdateDataType(dataType));
+            Assert.Throws<DataTypeInUseException>(() => dataTypeController.UpdateDataType(dataType));
         }
 
         [Test]

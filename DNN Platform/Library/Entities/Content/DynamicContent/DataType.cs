@@ -31,8 +31,15 @@ namespace DotNetNuke.Entities.Content.DynamicContent
     [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
     public class DataType
     {
+        public DataType()
+        {
+            UnderlyingDataType = UnderlyingDataType.String;
+        }
+
         public int DataTypeId { get; set; }
 
         public string Name { get; set; }
+
+        public UnderlyingDataType UnderlyingDataType { get; set; }
     }
 }

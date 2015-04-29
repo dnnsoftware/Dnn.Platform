@@ -57,6 +57,13 @@ namespace DotNetNuke.Entities.Content.DynamicContent
 
             Add(field);
 
+            //Add any new ValidationRules
+            foreach (var validationRule in field.ValidationRules)
+            {
+                validationRule.FieldDefinitionId = field.FieldDefinitionId;
+                ValidationRuleController.Instance.AddValidationRule(validationRule);
+            }
+
             return field.FieldDefinitionId;
         }
 
@@ -69,6 +76,12 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         public void DeleteFieldDefinition(FieldDefinition field)
         {
             Delete(field);
+
+            //Delete any ValidationRules
+            foreach (var validationRule in field.ValidationRules)
+            {
+                ValidationRuleController.Instance.DeleteValidationRule(validationRule);
+            }
         }
 
         /// <summary>
@@ -97,6 +110,20 @@ namespace DotNetNuke.Entities.Content.DynamicContent
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
             Update(field);
+
+            //Upsert any ValidationRules
+            foreach (var validationRule in field.ValidationRules)
+            {
+                if (validationRule.ValidationRuleId == -1)
+                {
+                    validationRule.FieldDefinitionId = field.FieldDefinitionId;
+                    ValidationRuleController.Instance.AddValidationRule(validationRule);
+                }
+                else
+                {
+                    ValidationRuleController.Instance.UpdateValidationRule(validationRule);
+                }
+            }
         }
     }
 }
