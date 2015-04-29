@@ -137,14 +137,14 @@ namespace DotNetNuke.Services.FileSystem
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
-            Requires.PropertyNotNull("fileName", fileName);
+            Requires.NotNullOrEmpty("fileName", fileName);
 
             return (FileManager.Instance.GetFile(folder, fileName) != null);
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             return (FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath) != null);
@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
-            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             var folderManager = FolderManager.Instance;

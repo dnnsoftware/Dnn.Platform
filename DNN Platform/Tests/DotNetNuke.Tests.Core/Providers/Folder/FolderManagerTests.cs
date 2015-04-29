@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #region AddFolder
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void AddFolder_Throws_On_Null_FolderPath()
         {
             _folderManager.AddFolder(It.IsAny<FolderMappingInfo>(), null);
@@ -478,7 +478,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #region FolderExists
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void ExistsFolder_Throws_On_Null_FolderPath()
         {
             _folderManager.FolderExists(Constants.CONTENT_ValidPortalId, null);
@@ -656,7 +656,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetFolder_Throws_On_Null_FolderPath()
         {
             _folderManager.GetFolder(It.IsAny<int>(), null);
@@ -868,7 +868,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #region Synchronize
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void SynchronizeFolder_Throws_On_Null_RelativePath()
         {
             _folderManager.Synchronize(It.IsAny<int>(), null, It.IsAny<bool>(), It.IsAny<bool>());
