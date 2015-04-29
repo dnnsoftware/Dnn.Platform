@@ -14,7 +14,7 @@
 
 ## Ignore VS2015/Roslyn artifacts
 *.sln.ide/
-.vs/config/applicationhost.config
+.vs/
 
 # Build results
 [Rr]elease
