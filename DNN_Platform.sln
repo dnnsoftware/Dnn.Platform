@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -271,6 +271,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.RecycleBin", "DNN Platform\Admin Modules\Dnn.Modules.RecycleBin\Dnn.Modules.RecycleBin.csproj", "{0A65E1A2-BB41-4C76-8012-17CB90B9333F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Log4Net", "DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj", "{04F77171-0634-46E0-A95E-D7477C88712E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.DynamicContent", "DNN Platform\Dnn.DynamicContent\Dnn.DynamicContent.csproj", "{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentManager", "DNN Platform\Modules\Dnn.Modules.DynamicContentManager\Dnn.Modules.DynamicContentManager.csproj", "{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.DynamicContentViewer", "DNN Platform\Modules\Dnn.Modules.DynamicContentViewer\Dnn.Modules.DynamicContentViewer.csproj", "{3B984D43-33BE-4918-A7B3-84729F4CEC92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -614,6 +620,30 @@ Global
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.ActiveCfg = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.Build.0 = Release|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F}.Release|x86.Build.0 = Release|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Debug|x86.Build.0 = Debug|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|x86.ActiveCfg = Release|Any CPU
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3}.Release|x86.Build.0 = Release|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -692,5 +722,8 @@ Global
 		{99780E6C-A19B-4B03-B092-87BE4CD9E575} = {B816AB39-0689-420B-94A3-581463EB9E40}
 		{0A65E1A2-BB41-4C76-8012-17CB90B9333F} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
 		{04F77171-0634-46E0-A95E-D7477C88712E} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
+		{7C0DE7D8-3F9C-4F69-873B-8B0EB800348F} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
+		{296FAD9F-D5A9-454F-8755-9EFE1FFBFAF3} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
+		{3B984D43-33BE-4918-A7B3-84729F4CEC92} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 	EndGlobalSection
 EndGlobal
