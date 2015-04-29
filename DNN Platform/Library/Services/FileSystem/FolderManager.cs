@@ -497,7 +497,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The added folder.</returns>
         public virtual IFolderInfo AddFolder(FolderMappingInfo folderMapping, string folderPath, string mappedPath)
         {
-            Requires.NotNullOrEmpty("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             if (FolderExists(folderMapping.PortalID, folderPath))
@@ -622,7 +622,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A bool value indicating whether the folder exists or not in the specified portal.</returns>
         public virtual bool FolderExists(int portalId, string folderPath)
         {
-            Requires.NotNullOrEmpty("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
 
             return GetFolder(portalId, folderPath) != null;
         }
@@ -741,7 +741,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(int portalId, string folderPath)
         {
-            Requires.NotNullOrEmpty("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
 
             folderPath = PathUtils.Instance.FormatFolderPath(folderPath);
 
@@ -1027,7 +1027,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The number of folder collisions.</returns>
         public virtual int Synchronize(int portalId, string relativePath, bool isRecursive, bool syncFiles)
         {
-            Requires.NotNullOrEmpty("relativePath", relativePath);
+            Requires.PropertyNotNull("relativePath", relativePath);
 
             if (AreThereFolderMappingsRequiringNetworkConnectivity(portalId, relativePath, isRecursive) && !IsNetworkAvailable())
             {

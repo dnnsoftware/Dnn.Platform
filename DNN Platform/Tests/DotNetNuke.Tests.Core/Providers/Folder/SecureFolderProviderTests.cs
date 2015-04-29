@@ -155,7 +155,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_FileName()
         {
             _sfp.FileExists(_folderInfo.Object, null);
@@ -207,7 +207,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderPath()
         {
             var folderMapping = new FolderMappingInfo();
@@ -495,7 +495,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderPath()
         {
             var folderMapping = new FolderMappingInfo();
