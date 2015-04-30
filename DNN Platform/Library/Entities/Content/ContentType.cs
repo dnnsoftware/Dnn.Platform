@@ -20,15 +20,12 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Entities.Modules;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.Entities.Content

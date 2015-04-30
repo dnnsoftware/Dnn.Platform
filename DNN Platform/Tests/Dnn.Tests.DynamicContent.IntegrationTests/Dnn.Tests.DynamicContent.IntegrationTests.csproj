@@ -30,6 +30,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Tests.Data">
+      <HintPath>..\DotNetNuke.Tests.Data\bin\DotNetNuke.Tests.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Tests.Utilities">
+      <HintPath>..\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +57,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentTemplateIntegrationTests.cs" />
+    <Compile Include="DataTypeIntegrationTests.cs" />
+    <Compile Include="DynamicContentTypeIntegrationTests.cs" />
+    <Compile Include="FieldDefinitionIntegrationTests.cs" />
+    <Compile Include="IntegrationTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationRuleIntegrationTests.cs" />
+    <Compile Include="ValidatorTypeIntegrationTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dnn.DynamicContent\Dnn.DynamicContent.csproj">
+      <Project>{7c0de7d8-3f9c-4f69-873b-8b0eb800348f}</Project>
+      <Name>Dnn.DynamicContent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

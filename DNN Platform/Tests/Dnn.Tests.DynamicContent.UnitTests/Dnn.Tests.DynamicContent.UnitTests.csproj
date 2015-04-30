@@ -30,6 +30,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke">
+      <HintPath>..\..\Library\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Tests.Utilities">
+      <HintPath>..\DotNetNuke.Tests.Utilities\bin\DotNetNuke.Tests.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +58,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentTemplateControllerTests.cs" />
+    <Compile Include="ContentTemplateTests.cs" />
+    <Compile Include="DataTypeControllerTests.cs" />
+    <Compile Include="DataTypeTests.cs" />
+    <Compile Include="DynamicContentItemControllerTests.cs" />
+    <Compile Include="DynamicContentItemTests.cs" />
+    <Compile Include="DynamicContentTypeControllerTests.cs" />
+    <Compile Include="DynamicContentTypeTests.cs" />
+    <Compile Include="FieldDefinitionControllerTests.cs" />
+    <Compile Include="FieldDefinitionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationRuleControllerTests.cs" />
+    <Compile Include="ValidationRuleTests.cs" />
+    <Compile Include="Validators\DynamicContentValidatorTests.cs" />
+    <Compile Include="Validators\FakeValidator.cs" />
+    <Compile Include="Validators\NotAValidator.cs" />
+    <Compile Include="Validators\ValidatorFactoryTests.cs" />
+    <Compile Include="Validators\ValidatorTests.cs" />
+    <Compile Include="ValidatorTypeControllerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dnn.DynamicContent\Dnn.DynamicContent.csproj">
+      <Project>{7c0de7d8-3f9c-4f69-873b-8b0eb800348f}</Project>
+      <Name>Dnn.DynamicContent</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
