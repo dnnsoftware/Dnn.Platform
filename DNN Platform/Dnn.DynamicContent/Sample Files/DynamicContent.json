@@ -1,18 +1,18 @@
 ﻿{
-    'contentTypeId': 234,
-    'content': {
-        'field': [
+    "contentTypeId": 234,
+    "content": {
+        "field": [
             {
-                'name': 'FieldName1',
-                'value':  1
+                "name": "FieldName1",
+                "value":  1
             },
             {
-                'name': 'FieldName2',
-                'value': true
+                "name": "FieldName2",
+                "value": true
             },
             {
-                'name': 'FieldName2',
-                'value': 'value'
+                "name": "FieldName2",
+                "value": "value"
             }
         ]
     }
