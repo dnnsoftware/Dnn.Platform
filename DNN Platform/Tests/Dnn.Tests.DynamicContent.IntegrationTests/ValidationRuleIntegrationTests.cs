@@ -37,16 +37,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class ValidationRuleIntegrationTests : IntegrationTestBase
     {
-        private const string CreateValidationRuleTableSql = @"
-            CREATE TABLE ContentTypes_ValidationRules(
-	            ValidationRuleID int IDENTITY(1,1) NOT NULL,
-                FieldDefinitionID int NOT NULL,
-                ValidatorTypeID int NOT NULL)";
-
-        private const string InsertValidationRuleSql = @"INSERT INTO ContentTypes_ValidationRules 
-                                                            (FieldDefinitionID, ValidatorTypeID) 
-                                                            VALUES ({0}, {1})";
-
         private readonly string _cacheKey = CachingProvider.GetCacheKey(ValidationRuleController.ValidationRuleCacheKey);
 
         [SetUp]
@@ -71,8 +61,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
 
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
                                 {
                                     FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
@@ -99,8 +89,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
             {
                 FieldDefinitionId = fieldDefinitionId,
@@ -126,8 +116,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
                                     {
                                         ValidationRuleId = validationRuleId,
@@ -155,8 +145,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
                                     {
                                         ValidationRuleId = validationRuleId,
@@ -183,8 +173,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
             {
                 ValidationRuleId = validationRuleId,
@@ -206,8 +196,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionId = 5;
             MockCache.Setup(c => c.GetItem(GetCacheKey(fieldDefinitionId))).Returns(null);
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
 
             //Act
             var validationRules = validationRuleController.GetValidationRules(fieldDefinitionId);
@@ -228,8 +218,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var cacheCount = 15;
             MockCache.Setup(c => c.GetItem(GetCacheKey(fieldDefinitionId))).Returns(SetUpCache(cacheCount));
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
 
             //Act
             var validationRules = validationRuleController.GetValidationRules(fieldDefinitionId);
@@ -253,8 +243,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
                                         {
                                             ValidationRuleId = validationRuleId,
@@ -284,8 +274,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var validationRuleId = 4;
             SetUpValidationRules(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validationRuleController = new ValidationRuleController(dataContext);
+
+            var validationRuleController = new ValidationRuleController();
             var validationRule = new ValidationRule
             {
                 ValidationRuleId = validationRuleId,
@@ -303,17 +293,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         private string GetCacheKey(int fieldDefinitionId)
         {
             return String.Format("{0}_{1}_{2}", _cacheKey, ValidationRuleController.ValidationRuleScope, fieldDefinitionId);
-        }
-
-        private void SetUpValidationRules(int count)
-        {
-            DataUtil.CreateDatabase(DatabaseName);
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateValidationRuleTableSql);
-
-            for (int i = 0; i < count; i++)
-            {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertValidationRuleSql, i, i));
-            }
         }
 
         private IQueryable<ValidationRule> SetUpCache(int count)

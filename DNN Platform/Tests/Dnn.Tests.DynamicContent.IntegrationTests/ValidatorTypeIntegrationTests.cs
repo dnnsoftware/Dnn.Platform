@@ -39,25 +39,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class ValidatorTypeIntegrationTests : IntegrationTestBase
     {
-        private const string CreateValidatorTypeTableSql = @"
-            CREATE TABLE ContentTypes_ValidatorTypes(
-	            ValidatorTypeID int IDENTITY(1,1) NOT NULL,
-	            Name nvarchar(100) NOT NULL,
-	            ValidatorClassName nvarchar(1000) NOT NULL,
-	            ErrorKey nvarchar(100) NULL,
-	            ErrorMessage nvarchar(1000) NULL)";
-
-        private const string InsertValidatorTypeSql = @"INSERT INTO ContentTypes_ValidatorTypes (Name, ValidatorClassName) 
-                                                            VALUES ('{0}', '{1}')";
-
         private readonly string _cacheKey = CachingProvider.GetCacheKey(ValidatorTypeController.ValidatorTypeCacheKey);
 
         [SetUp]
         public void SetUp()
         {
             SetUpInternal();
-
-            DataUtil.CreateDatabase(DatabaseName);
         }
 
         [TearDown]
@@ -72,8 +59,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpValidatorTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+
+            var validatorTypeController = new ValidatorTypeController();
             var validatorType = new ValidatorType()
                                     {
                                         Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -96,8 +83,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpValidatorTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+
+            var validatorTypeController = new ValidatorTypeController();
             var validatorType = new ValidatorType()
                                     {
                                         Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -140,8 +127,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var validatorTypeId = 6;
             SetUpValidatorTypes(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+            var validatorTypeController = new ValidatorTypeController();
             var validatorType = new ValidatorType() { ValidatorTypeId = validatorTypeId, Name = "New_Type" };
 
             //Act
@@ -158,8 +144,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
             SetUpValidatorTypes(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+            var validatorTypeController = new ValidatorTypeController();
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -177,8 +162,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             SetUpValidatorTypes(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+            var validatorTypeController = new ValidatorTypeController();
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -193,8 +177,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var validatorTypeId = 2;
             SetUpValidatorTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+
+            var validatorTypeController = new ValidatorTypeController();
             var validatorType = new ValidatorType
                                     {
                                         ValidatorTypeId = validatorTypeId,
@@ -225,8 +209,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var validatorTypeId = 2;
             SetUpValidatorTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+
+            var validatorTypeController = new ValidatorTypeController();
             var validatorType = new ValidatorType
                                     {
                                         ValidatorTypeId = validatorTypeId,
@@ -246,16 +230,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             //Assert
             MockCache.Verify(c => c.Remove(_cacheKey));
-        }
-
-        private void SetUpValidatorTypes(int count)
-        {
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateValidatorTypeTableSql);
-
-            for (int i = 0; i < count; i++)
-            {
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertValidatorTypeSql, String.Format("Type_{0}", i), String.Format("ClassName_{0}", i)));
-            }
         }
 
         private IQueryable<ValidatorType> SetUpCache(int count)

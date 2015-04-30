@@ -98,8 +98,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
                             {
                                 Name = "Fake Validator",
                                 ValidatorTypeId = validatorTypeId,
-                                ValidatorClassName = "DotNetNuke.Tests.Content.DynamicContent.Validators.FakeValidator, DotNetNuke.Tests.Content"
-                            };
+                                ValidatorClassName = "Dnn.Tests.DynamicContent.UnitTests.Validators.FakeValidator, Dnn.Tests.DynamicContent.UnitTests"
+            };
             var rule = new ValidationRule() { ValidatorTypeId = validatorTypeId };
             _mockValidatorTypeController.Setup(vt => vt.GetValidatorTypes())
                 .Returns(new List<ValidatorType>() { type }.AsQueryable());
@@ -120,7 +120,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
                             {
                                 Name = "Fake Validator",
                                 ValidatorTypeId = validatorTypeId,
-                                ValidatorClassName = "DotNetNuke.Tests.Content.DynamicContent.Validators.UnknownType"
+                                ValidatorClassName = "Dnn.Tests.DynamicContent.UnitTests.Validators.UnknownType"
             };
             var rule = new ValidationRule() { ValidatorTypeId = validatorTypeId };
             _mockValidatorTypeController.Setup(vt => vt.GetValidatorTypes())
@@ -140,8 +140,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
                                 {
                                     Name = "Not A Validator",
                                     ValidatorTypeId = validatorTypeId,
-                                    ValidatorClassName = "DotNetNuke.Tests.Content.DynamicContent.Validators.NotAValidator, DotNetNuke.Tests.Content"
-                                };
+                                    ValidatorClassName = "Dnn.Tests.DynamicContent.UnitTests.Validators.NotAValidator, Dnn.Tests.DynamicContent.UnitTests"
+            };
             var rule = new ValidationRule() { ValidatorTypeId = validatorTypeId };
             _mockValidatorTypeController.Setup(vt => vt.GetValidatorTypes())
                 .Returns(new List<ValidatorType>() { type }.AsQueryable());
