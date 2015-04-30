@@ -500,6 +500,8 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
+	        folderPath = folderPath.Trim();
+
             if (FolderExists(folderMapping.PortalID, folderPath))
             {
                 throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("AddFolderAlreadyExists", "The provided folder path already exists. The folder has not been added."));
