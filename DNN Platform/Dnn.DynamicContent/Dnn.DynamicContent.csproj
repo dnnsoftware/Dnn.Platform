@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Architecture\DynamicContent.cd" />
+    <None Include="Architecture\Validation.cd" />
     <None Include="Library.build" />
     <None Include="Sample Files\DynamicContent.json" />
     <None Include="packages.config" />

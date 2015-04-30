@@ -90,13 +90,6 @@ namespace Dnn.DynamicContent
                 var rep = DataContext.GetRepository<ValidationRule>();
 
                 rep.Delete(rule);
-
-                //Delete any Validation Settings
-                var settingRep = DataContext.GetRepository<ValidatorSetting>();
-                foreach (var setting in rule.ValidationSettings.Values)
-                {
-                    settingRep.Delete(setting);
-                }
             }
         }
 
@@ -150,22 +143,6 @@ namespace Dnn.DynamicContent
                 var rep = DataContext.GetRepository<ValidationRule>();
 
                 rep.Update(rule);
-
-                //Upsert any Validation Settings
-                var settingRep = DataContext.GetRepository<ValidatorSetting>();
-                foreach (var setting in rule.ValidationSettings.Values)
-                {
-                    if (setting.ValidatorSettingId == -1)
-                    {
-                        //Insert
-                        setting.ValidationRuleId = rule.ValidationRuleId;
-                        settingRep.Insert(setting);
-                    }
-                    else
-                    {
-                        settingRep.Update(setting);
-                    }
-                }
             }
         }
     }

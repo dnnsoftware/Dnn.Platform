@@ -39,25 +39,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class ContentTemplateIntegrationTests : IntegrationTestBase
     {
-        private const string CreateContentTemplateTableSql = @"
-            CREATE TABLE ContentTypes_Templates(
-			[TemplateID] [int] IDENTITY(1,1) NOT NULL,
-			[ContentTypeID] [int] NOT NULL,
-			[Name] [nvarchar](100) NOT NULL,
-			[TemplateFileID] [int] NOT NULL)";
-
-        private const string InsertContentTemplateSql = @"INSERT INTO ContentTypes_Templates 
-                                                            (ContentTypeID, Name, TemplateFileID) 
-                                                            VALUES ({0}, '{1}', {2})";
-
         private readonly string _cacheKey = CachingProvider.GetCacheKey(ContentTemplateController.ContentTemplateCacheKey);
 
         [SetUp]
         public void SetUp()
         {
             SetUpInternal();
-
-            DataUtil.CreateDatabase(DatabaseName);
         }
 
         [TearDown]
@@ -72,8 +59,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTemplates(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = "Name",
@@ -96,8 +82,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             SetUpContentTemplates(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, Name = "New_Type" };
 
             //Act
@@ -114,8 +99,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate() { TemplateId = templateId, Name = "New_Type" };
 
             //Act
@@ -135,8 +119,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, TemplateId = templateId, Name = "New_Type" };
 
             //Act
@@ -154,8 +137,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpContentTemplates(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -174,8 +156,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             SetUpContentTemplates(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+            var contentTemplateController = new ContentTemplateController();
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -190,8 +171,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var templateId = 2;
             SetUpContentTemplates(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = "Name",
@@ -221,8 +202,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             var templateId = 2;
             SetUpContentTemplates(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTemplateController = new ContentTemplateController(dataContext);
+
+            var contentTemplateController = new ContentTemplateController();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, TemplateId = templateId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -240,18 +221,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         private string GetCacheKey(int contentTypeId)
         {
             return String.Format("{0}_{1}_{2}", _cacheKey, ContentTemplateController.ContentTemplateScope, contentTypeId);
-        }
-
-
-
-        private void SetUpContentTemplates(int count)
-        {
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTemplateTableSql);
-
-            for (int i = 0; i < count; i++)
-            {
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTemplateSql, i, String.Format("Type_{0}", i), i));
-            }
         }
 
         private IQueryable<ContentTemplate> SetUpCache(int count)

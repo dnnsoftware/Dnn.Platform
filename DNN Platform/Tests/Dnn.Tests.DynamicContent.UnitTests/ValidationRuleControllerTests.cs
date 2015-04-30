@@ -286,40 +286,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void DeleteValidationRule_Calls_Repository_Delete_For_ValidationSettings()
-        {
-            //Arrange
-            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
-            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
-                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
-            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
-            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
-
-
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
-
-            var validationRule = new ValidationRule
-                                        {
-                                            ValidationRuleId = validationRuleId,
-                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
-                                        };
-            var validatorSetting = new ValidatorSetting
-                                        {
-                                            SettingName = "Name",
-                                            SettingValue = "Value"
-                                        };
-
-            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
-
-            //Act
-            validationRuleController.DeleteValidationRule(validationRule);
-
-            //Assert
-            mockValidatorSettingRepository.Verify(settingRep => settingRep.Delete(validatorSetting));
-        }
-
-        [Test]
         public void GetValidationRules_Calls_Repository_Get()
         {
             //Arrange
@@ -502,80 +468,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             _mockValidationRuleRepository.Verify(r => r.Update(field));
-        }
-
-        [Test]
-        public void UpdateValidationRule_Calls_Repository_Insert_For_New_ValidationSettings()
-        {
-            //Arrange
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
-            mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
-                                    .Returns(new Dictionary<string, ValidatorSetting>());
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
-
-            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
-            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
-                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
-            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
-            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
-
-
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
-
-            var validationRule = new ValidationRule
-                                        {
-                                            ValidationRuleId = validationRuleId,
-                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
-                                        };
-            var validatorSetting = new ValidatorSetting
-                                        {
-                                            SettingName = "Name",
-                                            SettingValue = "Value"
-                                        };
-
-            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
-
-            //Act
-            validationRuleController.UpdateValidationRule(validationRule);
-
-            //Assert
-            mockValidatorSettingRepository.Verify(settingRep => settingRep.Insert(validatorSetting));
-        }
-
-        [Test]
-        public void UpdateValidationRule_Calls_Repository_Update_For_Existing_ValidationSettings()
-        {
-            //Arrange
-            var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
-            _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
-                            .Callback((ValidationRule dt) => dt.ValidationRuleId = validationRuleId);
-            var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
-            _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
-
-
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
-
-            var validationRule = new ValidationRule
-                                        {
-                                            ValidationRuleId = validationRuleId,
-                                            FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId,
-                                            ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId
-                                        };
-            var validatorSetting = new ValidatorSetting
-                                        {
-                                            ValidatorSettingId = 2,
-                                            SettingName = "Name",
-                                            SettingValue = "Value"
-                                        };
-
-            validationRule.ValidationSettings.Add(validatorSetting.SettingName, validatorSetting);
-
-            //Act
-            validationRuleController.UpdateValidationRule(validationRule);
-
-            //Assert
-            mockValidatorSettingRepository.Verify(settingRep => settingRep.Update(validatorSetting));
         }
 
         [Test]

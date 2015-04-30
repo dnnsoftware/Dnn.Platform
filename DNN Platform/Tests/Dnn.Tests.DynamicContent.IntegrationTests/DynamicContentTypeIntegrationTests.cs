@@ -36,16 +36,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class DynamicContentTypeIntegrationTests : IntegrationTestBase
     {
-        private const string CreateContentTypeTableSql = @"
-            CREATE TABLE ContentTypes(
-	            ContentTypeID int IDENTITY(1,1) NOT NULL,
-	            ContentType nvarchar(100) NOT NULL,
-	            PortalID int NOT NULL DEFAULT -1,
-	            IsDynamic bit NOT NULL DEFAULT 0)";
-
-        private const string InsertContentTypeSql = "INSERT INTO ContentTypes (ContentType, PortalID, IsDynamic) VALUES ('{0}',{1}, {2})";
-
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataCache.ContentTypesCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataCache.ContentTypesCacheKey) + "_PortalId_{0}";
 
         [SetUp]
         public void SetUp()
@@ -64,8 +55,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
             var contentType = new DynamicContentType() {ContentType = "New_Type"};
 
             //Act
@@ -78,19 +68,18 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         }
 
         [Test]
-        public void AddContentType_Clears_Cache_On_Valid_ContentType()
+        public void AddContentType_Clears_Cache()
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new ContentTypeController(dataContext);
-            var contentType = new ContentType() { ContentType = "New_Type" };
+            var contentTypeController = new DynamicContentTypeController();
+            var contentType = new DynamicContentType() { ContentType = "New_Type", PortalId = PortalId};
 
             //Act
             contentTypeController.AddContentType(contentType);
 
             //Assert
-            MockCache.Verify(r => r.Remove(_cacheKey));
+            MockCache.Verify(r => r.Remove(String.Format(_cacheKey, PortalId)));
         }
 
         [Test]
@@ -99,8 +88,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
@@ -118,8 +106,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
 
             //Act
@@ -130,12 +117,27 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         }
 
         [Test]
+        public void DeleteContentType_Clears_Cache()
+        {
+            //Arrange
+            var typeId = 2;
+            SetUpContentTypes(RecordCount);
+            var contentTypeController = new DynamicContentTypeController();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "New_Type", PortalId = PortalId };
+
+            //Act
+            contentTypeController.DeleteContentType(contentType);
+
+            //Assert
+            MockCache.Verify(r => r.Remove(String.Format(_cacheKey, PortalId)));
+        }
+
+        [Test]
         public void GetContentTypes_Returns_Records_For_Portal_From_Database()
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes(PortalId);
@@ -155,8 +157,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(recordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes(PortalId, pageIndex, pageSize);
@@ -182,8 +183,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = 2;
             SetUpContentTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var contentTypeController = new DynamicContentTypeController(dataContext);
+            var contentTypeController = new DynamicContentTypeController();
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
 
             //Act
@@ -196,22 +196,22 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             DataAssert.IsFieldValueEqual("NewType", DatabaseName, "ContentTypes", "ContentType", "ContentTypeId", contentTypeId);
         }
 
-        private void SetUpContentTypes(int count)
+        [Test]
+        public void UpdateContentType_Clears_Cache()
         {
-            DataUtil.CreateDatabase(DatabaseName);
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateContentTypeTableSql);
+            //Arrange
+            var typeId = 2;
+            SetUpContentTypes(RecordCount);
+            var contentTypeController = new DynamicContentTypeController();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "New_Type", PortalId = PortalId };
 
-            for (int i = 0; i < count; i++)
-            {
-                int isStructured = 0;
-                int portalId = -1;
-                if(i % 2 == 0)
-                {
-                    isStructured = 1;
-                    portalId = PortalId;
-                }
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTypeSql, String.Format("Type_{0}", i), portalId, isStructured));
-            }
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            MockCache.Verify(r => r.Remove(String.Format(_cacheKey, PortalId)));
         }
+
+
     }
 }

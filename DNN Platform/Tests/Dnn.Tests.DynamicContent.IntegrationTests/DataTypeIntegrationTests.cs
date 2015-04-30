@@ -40,35 +40,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class DataTypeIntegrationTests : IntegrationTestBase
     {
-        private const string CreateDataTypeTableSql = @"
-            CREATE TABLE ContentTypes_DataTypes(
-	            DataTypeID int IDENTITY(1,1) NOT NULL,
-	            Name nvarchar(100) NOT NULL,
-                UnderlyingDataType int NOT NULL)";
-
-        private const string CreateFieldDefinitionTableSql = @"
-            CREATE TABLE ContentTypes_FieldDefinitions(
-	            FieldDefinitionID int IDENTITY(1,1) NOT NULL,
-                ContentTypeID int NOT NULL,
-                DataTypeID int NOT NULL,
-	            Name nvarchar(100) NOT NULL,
-	            Label nvarchar(100) NOT NULL,
-	            Description nvarchar(2000) NULL)";
-
-        private const string InsertDataTypeSql = "INSERT INTO ContentTypes_DataTypes (Name, UnderlyingDataType) VALUES ('{0}', {1})";
-
-        private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
-                                                            (ContentTypeID, DataTypeID, Name, Label, Description) 
-                                                            VALUES ({0}, {1}, '{2}', '{3}', '{4}')";
-
         private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeController.DataTypeCacheKey);
 
         [SetUp]
         public void SetUp()
         {
             SetUpInternal();
-
-            DataUtil.CreateDatabase(DatabaseName);
         }
 
         [TearDown]
@@ -83,8 +60,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { Name = "New_Type" };
 
             //Act
@@ -101,8 +77,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { Name = "New_Type" };
 
             //Act
@@ -120,8 +95,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
@@ -140,8 +114,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 6;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
@@ -158,8 +131,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 6;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(RecordCount);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act, Assert
@@ -174,8 +146,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
@@ -192,8 +163,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
             SetUpDataTypes(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
 
             //Act
             var dataTypes = dataTypeController.GetDataTypes();
@@ -211,8 +181,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             SetUpDataTypes(RecordCount);
 
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
 
             //Act
             var dataTypes = dataTypeController.GetDataTypes();
@@ -228,8 +197,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -254,8 +222,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -274,8 +241,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeController();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -314,31 +280,6 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             //Assert
             MockCache.Verify(c => c.Remove(_cacheKey));
-        }
-
-        private void SetUpDataTypes(int count)
-        {
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateDataTypeTableSql);
-
-            for (int i = 0; i < count; i++)
-            {
-                var dataType = i;
-                if (dataType > 8)
-                {
-                    dataType = 0;
-                }
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, String.Format("Type_{0}", i), dataType));
-            }
-        }
-
-        private void SetUpFieldDefinitions(int count)
-        {
-            DataUtil.ExecuteNonQuery(DatabaseName, CreateFieldDefinitionTableSql);
-
-            for (int i = 0; i < count; i++)
-            {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i)));
-            }
         }
 
         private IQueryable<DataType> SetUpCache(int count)
