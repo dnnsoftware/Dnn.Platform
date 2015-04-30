@@ -20,12 +20,12 @@
 #endregion
 
 using System;
-using DotNetNuke.Entities.Content.DynamicContent;
-using DotNetNuke.Entities.Content.DynamicContent.Validators;
+using Dnn.DynamicContent;
+using Dnn.DynamicContent.Validators;
 using DotNetNuke.Tests.Utilities;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent.Validators
+namespace Dnn.Tests.DynamicContent.UnitTests.Validators
 {
     [TestFixture]
     class DynamicContentValidatorTests

@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class ValidationFailure
     {

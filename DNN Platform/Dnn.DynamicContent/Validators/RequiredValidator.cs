@@ -20,9 +20,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class RequiredValidator : BaseValidator
     {

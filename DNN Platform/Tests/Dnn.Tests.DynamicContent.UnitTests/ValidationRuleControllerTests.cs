@@ -22,16 +22,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     public class ValidationRuleControllerTests

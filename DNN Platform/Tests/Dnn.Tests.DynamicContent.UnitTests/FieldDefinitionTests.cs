@@ -22,12 +22,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Entities.Content.DynamicContent;
+using Dnn.DynamicContent;
 using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     public class FieldDefinitionTests

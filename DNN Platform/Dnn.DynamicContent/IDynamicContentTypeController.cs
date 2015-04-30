@@ -22,7 +22,7 @@
 using System.Linq;
 using DotNetNuke.Collections;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public interface IDynamicContentTypeController
     {

@@ -24,9 +24,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Content;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     [Serializable]
     [TableName("ContentTypes")]

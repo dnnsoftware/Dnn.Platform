@@ -22,7 +22,7 @@
 using System;
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Exceptions
+namespace Dnn.DynamicContent.Exceptions
 {
     public class InvalidValidationTypeException : InvalidOperationException
     {

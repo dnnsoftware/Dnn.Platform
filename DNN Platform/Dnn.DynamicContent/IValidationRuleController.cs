@@ -22,7 +22,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public interface IValidationRuleController
     {

@@ -19,11 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class ValidatorFactory
     {

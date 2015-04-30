@@ -19,10 +19,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using DotNetNuke.Entities.Content.DynamicContent;
+using Dnn.DynamicContent;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     class DataTypeTests

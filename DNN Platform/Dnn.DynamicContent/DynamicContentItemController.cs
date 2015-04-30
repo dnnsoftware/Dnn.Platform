@@ -24,10 +24,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Entities.Content;
 using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class DynamicContentItemController : ServiceLocator<IDynamicContentItemController, DynamicContentItemController>, IDynamicContentItemController
     {

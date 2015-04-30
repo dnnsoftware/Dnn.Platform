@@ -21,12 +21,11 @@
 
 using System;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
-using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class ValidatorTypeController : ControllerBase<ValidatorType, IValidatorTypeController, ValidatorTypeController>, IValidatorTypeController
     {

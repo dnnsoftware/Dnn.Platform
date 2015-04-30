@@ -22,10 +22,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -34,7 +34,7 @@ using NUnit.Framework;
 
 // ReSharper disable UseStringInterpolation
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     public class ContentTemplateControllerTests

@@ -22,11 +22,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.DynamicContent;
 using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Integration;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
 using Moq;
@@ -35,7 +34,7 @@ using NUnit.Framework;
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle
 
-namespace DotNetNuke.Tests.Content.DynamicContent.Integration
+namespace Dnn.Tests.DynamicContent.IntegrationTests
 {
     [TestFixture]
     public class ContentTemplateIntegrationTests : IntegrationTestBase

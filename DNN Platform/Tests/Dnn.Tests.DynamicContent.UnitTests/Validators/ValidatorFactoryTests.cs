@@ -19,19 +19,18 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Entities.Content.DynamicContent;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
-using DotNetNuke.Entities.Content.DynamicContent.Validators;
+using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
+using Dnn.DynamicContent.Validators;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent.Validators
+namespace Dnn.Tests.DynamicContent.UnitTests.Validators
 {
     [TestFixture]
     public class ValidatorFactoryTests

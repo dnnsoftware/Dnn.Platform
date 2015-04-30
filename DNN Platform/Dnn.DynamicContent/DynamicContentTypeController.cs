@@ -25,7 +25,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class DynamicContentTypeController : ControllerBase<DynamicContentType, IDynamicContentTypeController, DynamicContentTypeController>, IDynamicContentTypeController
     {

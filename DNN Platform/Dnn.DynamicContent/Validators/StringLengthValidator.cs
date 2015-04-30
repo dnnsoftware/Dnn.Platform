@@ -20,12 +20,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Web.UI;
 
-using DotNetNuke.Collections;
-
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class StringLengthValidator : BaseValidator
     {

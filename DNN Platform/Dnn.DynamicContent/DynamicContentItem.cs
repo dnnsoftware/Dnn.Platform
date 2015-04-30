@@ -22,12 +22,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Common;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using Newtonsoft.Json.Linq;
+
 // ReSharper disable UseStringInterpolation
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class DynamicContentItem
     {

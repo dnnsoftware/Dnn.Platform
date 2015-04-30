@@ -20,14 +20,13 @@
 #endregion
 
 using System;
-using System.Data;
 using System.Linq;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
-using DotNetNuke.Services.Localization;
+using DotNetNuke.Entities.Content;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class DataTypeController : ControllerBase<DataType, IDataTypeController, DataTypeController>, IDataTypeController
     {

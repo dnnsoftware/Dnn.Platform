@@ -22,7 +22,7 @@
 using System.Collections.Generic;
 using DotNetNuke.Common;
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class DynamicContentValidator
     {

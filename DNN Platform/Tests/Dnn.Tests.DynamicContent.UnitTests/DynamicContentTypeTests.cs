@@ -22,11 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Entities.Content.DynamicContent;
+using Dnn.DynamicContent;
 using Moq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     class DynamicContentTypeTests

@@ -20,9 +20,10 @@
 #endregion
 
 using System.Collections.Generic;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 
-namespace DotNetNuke.Entities.Content.DynamicContent.Validators
+namespace Dnn.DynamicContent.Validators
 {
     public class ValidationResult
     {

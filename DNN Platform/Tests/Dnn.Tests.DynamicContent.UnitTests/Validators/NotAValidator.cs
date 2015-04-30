@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Tests.Content.DynamicContent.Validators
+namespace Dnn.Tests.DynamicContent.UnitTests.Validators
 {
     public class NotAValidator
     {

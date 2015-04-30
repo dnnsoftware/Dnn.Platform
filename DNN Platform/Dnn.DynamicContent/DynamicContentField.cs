@@ -19,7 +19,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class DynamicContentField
     {

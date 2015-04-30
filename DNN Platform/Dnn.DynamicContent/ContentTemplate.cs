@@ -23,7 +23,7 @@ using System;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
 
     /// <summary>
@@ -45,22 +45,22 @@ namespace DotNetNuke.Entities.Content.DynamicContent
         }
 
         /// <summary>
-        /// The Id of the <see cref="T:DotNetNuke.Entities.Content.DynamicContent.DynamicContentType"/> to which this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/> belongs
+        /// The Id of the <see cref="T:DotNetNuke.Entities.Content.DynamicContent.DynamicContentType"/> to which this <see cref="T:Dnn.DynamicContent.ContentTemplate"/> belongs
         /// </summary>
         public int ContentTypeId { get; set; }
 
         /// <summary>
-        /// The id of the File which contains the HTML for this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// The id of the File which contains the HTML for this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>
         /// </summary>
         public int TemplateFileId { get; set; }
 
         /// <summary>
-        /// The name of this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// The name of this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// The Id of this <see cref="T:DotNetNuke.Entities.Content.DynamicContent.ContentTemplate"/>
+        /// The Id of this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>
         /// </summary>
 
         public int TemplateId { get; set; }

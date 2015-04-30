@@ -20,10 +20,10 @@
 #endregion
 
 using System.Collections.Generic;
-using DotNetNuke.Entities.Content.DynamicContent;
-using DotNetNuke.Entities.Content.DynamicContent.Validators;
+using Dnn.DynamicContent;
+using Dnn.DynamicContent.Validators;
 
-namespace DotNetNuke.Tests.Content.DynamicContent.Validators
+namespace Dnn.Tests.DynamicContent.UnitTests.Validators
 {
     public class FakeValidator : IValidator
     {

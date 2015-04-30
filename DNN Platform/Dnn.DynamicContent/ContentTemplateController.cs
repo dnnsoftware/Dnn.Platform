@@ -23,9 +23,8 @@ using System;
 using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
-using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class ContentTemplateController : ControllerBase<ContentTemplate, IContentTemplateController, ContentTemplateController>, IContentTemplateController
     {

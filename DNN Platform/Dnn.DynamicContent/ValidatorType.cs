@@ -20,11 +20,10 @@
 #endregion
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     /// <summary>
     /// Represents a DynamicContentValidator Type

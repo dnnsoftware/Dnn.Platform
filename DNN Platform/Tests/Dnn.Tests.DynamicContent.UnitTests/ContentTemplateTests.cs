@@ -20,10 +20,10 @@
 #endregion
 
 using System;
-using DotNetNuke.Entities.Content.DynamicContent;
+using Dnn.DynamicContent;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     public class ContentTemplateTests

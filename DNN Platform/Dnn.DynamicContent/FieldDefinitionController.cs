@@ -24,7 +24,7 @@ using System.Linq;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public class FieldDefinitionController : ControllerBase<FieldDefinition, IFieldDefinitionController, FieldDefinitionController>, IFieldDefinitionController
     {

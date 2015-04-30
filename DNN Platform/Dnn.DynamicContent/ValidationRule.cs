@@ -25,7 +25,7 @@ using System.Linq;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     [Serializable]
     [TableName("ContentTypes_ValidationRules")]

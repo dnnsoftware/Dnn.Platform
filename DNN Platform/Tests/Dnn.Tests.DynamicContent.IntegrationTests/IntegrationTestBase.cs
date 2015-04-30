@@ -29,7 +29,7 @@ using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using DataUtil = DotNetNuke.Tests.Data.DataUtil;
 
-namespace DotNetNuke.Tests.Content.Integration
+namespace Dnn.Tests.DynamicContent.IntegrationTests
 {
     public abstract class IntegrationTestBase
     {

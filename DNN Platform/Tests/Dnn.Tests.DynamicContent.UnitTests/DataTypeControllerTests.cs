@@ -22,11 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.DynamicContent;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -36,7 +36,7 @@ using NUnit.Framework;
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     class DataTypeControllerTests
     {

@@ -22,14 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Entities.Content.DynamicContent;
-using DotNetNuke.Entities.Content.DynamicContent.Exceptions;
+using Dnn.DynamicContent;
+using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Tests.Utilities;
 using Moq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace DotNetNuke.Tests.Content.DynamicContent
+namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
     public class DynamicContentItemTests

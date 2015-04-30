@@ -22,8 +22,9 @@
 
 using System.Linq;
 using DotNetNuke.Collections;
+using DotNetNuke.Entities.Content;
 
-namespace DotNetNuke.Entities.Content.DynamicContent
+namespace Dnn.DynamicContent
 {
     public interface IDynamicContentItemController
     {
