@@ -32,6 +32,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 
@@ -43,6 +44,7 @@ namespace DotNetNuke.Services.Sitemap
     {
         private bool includeHiddenPages;
         private float minPagePriority;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
 
         private PortalSettings ps;
         private bool useLevelBasedPagePriority;
@@ -80,8 +82,16 @@ namespace DotNetNuke.Services.Sitemap
 	                    {
 	                        if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
 	                        {
-	                            pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
-	                            urls.Add(pageUrl);
+                        try
+                        {
+                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
+                        urls.Add(pageUrl);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
+                        }
+
 	                        }
 	                    }
 	                }
