@@ -1,4 +1,27 @@
-﻿<div>
+﻿[JavaScript: { jsname: "Knockout" }]
+[JavaScript: { jsname: "Knockout.Mapping" }]
+[JavaScript: { path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/Manager.js"}]
 
+<div id="manager-[[moduleId]]">
+    <div class="navbar">
+        Title = [Resx: { key: "ModuleTitle" }]
 
+    </div>
+    <div class="panel">
+
+    </div>
 </div>
+
+<script language="javascript" type="text/javascript">
+    var moduleId = [[moduleId]];
+    jQuery(Document).ready(function ($) {
+        var localizedSettings = {
+            ModuleTitle: '[Resx: { key: "ModuleTitle" }]'
+        }
+        var manager = new Manager($, ko, localizedSettings, {
+
+        });
+
+        manager.init("manager-" + moduleId);
+    });
+</script>

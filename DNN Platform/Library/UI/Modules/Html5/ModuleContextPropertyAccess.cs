@@ -19,23 +19,30 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Web.UI;
-using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
+using Newtonsoft.Json;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class ModuleActionsTokenReplace : HtmlTokenReplace
+    public class ModuleContextDto
     {
-        public ModuleActionsTokenReplace(Page page, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
-            : base(page)
-        {
-            AccessingUser = moduleContext.PortalSettings.UserInfo;
-            DebugMessages = moduleContext.PortalSettings.UserMode != Entities.Portals.PortalSettings.Mode.View;
-            ModuleId = moduleContext.ModuleId;
-            PortalSettings = moduleContext.PortalSettings;
+        [JsonProperty("moduleId")]
+        public int ModuleId { get; set; }
+    }
 
-            PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
+    public class ModuleContextPropertyAccess : JsonPropertyAccess<ModuleContextDto>
+    {
+        private ModuleInstanceContext _moduleContext;
+
+        public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
+        {
+            _moduleContext = moduleContext;
+        }
+
+        protected override string ProcessToken(ModuleContextDto model, UserInfo accessingUser, Scope accessLevel)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

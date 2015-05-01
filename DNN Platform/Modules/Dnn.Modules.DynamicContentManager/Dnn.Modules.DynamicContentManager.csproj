@@ -70,8 +70,18 @@
     <Content Include="module.css" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_LocalResources\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module.build">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dnn_DCCManager.dnn" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Manager.resx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
