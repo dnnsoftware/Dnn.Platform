@@ -90,34 +90,10 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ContentControllerTests.cs" />
-    <Compile Include="DynamicContent\ContentTemplateControllerTests.cs" />
     <Compile Include="ContentTypeControllerTests.cs" />
     <Compile Include="AttachmentControllerTests.cs" />
     <Compile Include="ContentTypeTests.cs" />
-    <Compile Include="DynamicContent\ContentTemplateTests.cs" />
-    <Compile Include="DynamicContent\DataTypeTests.cs" />
-    <Compile Include="DynamicContent\Validators\FakeValidator.cs" />
-    <Compile Include="DynamicContent\Integration\ValidatorTypeIntegrationTests.cs" />
-    <Compile Include="DynamicContent\ValidationRuleTests.cs" />
-    <Compile Include="DynamicContent\Validators\DynamicContentValidatorTests.cs" />
-    <Compile Include="DynamicContent\Validators\NotAValidator.cs" />
-    <Compile Include="DynamicContent\Validators\ValidatorFactoryTests.cs" />
-    <Compile Include="DynamicContent\Validators\ValidatorTests.cs" />
-    <Compile Include="DynamicContent\ValidatorTypeControllerTests.cs" />
-    <Compile Include="DynamicContent\DataTypeControllerTests.cs" />
-    <Compile Include="DynamicContent\DynamicContentItemControllerTests.cs" />
-    <Compile Include="DynamicContent\DynamicContentItemTests.cs" />
-    <Compile Include="DynamicContent\DynamicContentTypeControllerTests.cs" />
-    <Compile Include="DynamicContent\DynamicContentTypeTests.cs" />
-    <Compile Include="DynamicContent\Integration\ContentTemplateIntegrationTests.cs" />
-    <Compile Include="DynamicContent\Integration\DynamicContentTypeIntegrationTests.cs" />
-    <Compile Include="DynamicContent\Integration\ValidationRuleIntegrationTests.cs" />
-    <Compile Include="DynamicContent\ValidationRuleControllerTests.cs" />
-    <Compile Include="DynamicContent\FieldDefinitionControllerTests.cs" />
-    <Compile Include="DynamicContent\FieldDefinitionTests.cs" />
     <Compile Include="Integration\ContentTypeIntegrationTests.cs" />
-    <Compile Include="DynamicContent\Integration\DataTypeIntegrationTests.cs" />
-    <Compile Include="DynamicContent\Integration\FieldDefinitionIntegrationTests.cs" />
     <Compile Include="Integration\IntegrationTestBase.cs" />
     <Compile Include="Mocks\MockHelper.cs">
       <SubType>Code</SubType>
