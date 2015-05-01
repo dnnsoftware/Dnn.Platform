@@ -653,23 +653,23 @@ namespace DotNetNuke.Entities.Users
                 if (profileProp.DataType > -1)
                 {
                     var controller = new ListController();
-                    var dataType = controller.GetListEntryInfo(profileProp.DataType);
+                    var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
                     if (dataType.Value == "Country" || dataType.Value == "Region")
                     {
-                        propValue = GetListValue(propValue);
+                        propValue = GetListValue(dataType.Value, propValue);
                     }
                 }
             }
             return propValue;
         }
 
-        private string GetListValue(string value)
+        private string GetListValue(string listName, string value)
         {
             ListController lc = new ListController();
             int entryId;
             if (int.TryParse(value, out entryId))
             {
-                ListEntryInfo item = lc.GetListEntryInfo(entryId);
+                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
                 if (item != null)
                 {
                     return item.Text;
