@@ -4,7 +4,7 @@
   <Target Name="GetFiles">
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
-      <SourceFiles Include="*.css;*.htm;*.xsl;*.png;*.gif" />
+      <SourceFiles Include="*.css;*.htm;*.html;*.xsl;*.png;*.gif" />
       <ConfigFiles Include="*.config" Exclude="web.config;packages.config"/>
       <RootConfig Include="*eb.config" />
       <RootViews Include="*.ascx;*.asmx;*.ashx;" />

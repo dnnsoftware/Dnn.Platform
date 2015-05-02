@@ -25,9 +25,9 @@ using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class ModuleActionsTokenReplace : HtmlTokenReplace
+    public class Html5ModuleTokenReplace : HtmlTokenReplace
     {
-        public ModuleActionsTokenReplace(Page page, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
+        public Html5ModuleTokenReplace(Page page, string html5File, ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
             : base(page)
         {
             AccessingUser = moduleContext.PortalSettings.UserInfo;
@@ -36,6 +36,8 @@ namespace DotNetNuke.UI.Modules.Html5
             PortalSettings = moduleContext.PortalSettings;
 
             PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
+            PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
+            PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
         }
     }
 }

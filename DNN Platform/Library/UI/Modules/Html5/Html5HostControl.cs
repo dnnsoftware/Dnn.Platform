@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 }
 
                 ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new ModuleActionsTokenReplace(Page, ModuleContext, ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(Page, _html5File, ModuleContext, ModuleActions);
                 _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
             }
         }
