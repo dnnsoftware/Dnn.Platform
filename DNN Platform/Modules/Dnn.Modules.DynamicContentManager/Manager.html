@@ -1,27 +1,77 @@
-﻿[JavaScript: { jsname: "Knockout" }]
-[JavaScript: { jsname: "Knockout.Mapping" }]
-[JavaScript: { path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/Manager.js"}]
+﻿[JavaScript:{ jsname: "Knockout" }]
+[JavaScript:{ jsname: "Knockout.Mapping" }]
+[JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/Manager.js"}]
+[Css:{ path: "//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"}]
 
-<div id="manager-[[moduleId]]">
+<div id="DCCmanager-[ModuleContext:ModuleId]" class="dnnContentTypeManager">
     <div class="navbar">
-        Title = [Resx: { key: "ModuleTitle" }]
-
+        <div class="navbarLogo">
+            <div class="top">[Resx:{key:"DCC"}]</div>
+            <div class="bottom">[Resx:{key:"Admin"}]</div>
+        </div>
+        <div class="menu">
+            <ul>
+                <li data-panel-id="#content-types-panel">
+                    <i class="fa fa-table"></i>
+                    <div>[Resx:{key:"ContentTypes"}]</div>
+                </li>
+                <li data-panel-id="#data-types-panel">
+                    <i class="fa fa-list-alt"></i>
+                    <div>[Resx:{key:"DataTypes"}]</div>
+                </li>
+                <li data-panel-id="#content-templates-panel">
+                    <i class="fa fa-file-text-o"></i>
+                    <div>[Resx:{key:"Templates"}]</div>
+                </li>
+                <li data-panel-id="#settings-panel">
+                    <i class="fa fa-asterisk"></i>
+                    <div>[Resx:{key:"Settings"}]</div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="panel">
+    <div class="panels">
+        <div class="panel" id="content-types-panel">
+            <div class="heading">[Resx:{key:"ContentTypes"}]</div>
+            <div class="subpanel">
 
+            </div>
+        </div>
+        <div class="panel" id="data-types-panel" style="left: -850px">
+            <div class="heading">[Resx:{key:"DataTypes"}]</div>
+            <div class="subpanel">
+
+            </div>
+        </div>
+        <div class="panel" id="content-templates-panel" style="left: -850px">
+            <div class="heading">[Resx:{key:"Templates"}]</div>
+            <div class="subpanel">
+
+            </div>
+        </div>
+        <div class="panel" id="settings-panel" style="left: -850px">
+            <div class="heading">[Resx:{key:"Settings"}]</div>
+            <div class="subpanel">
+
+            </div>
+        </div>
     </div>
 </div>
 
 <script language="javascript" type="text/javascript">
-    var moduleId = [[moduleId]];
-    jQuery(Document).ready(function ($) {
+    var moduleId = "[ModuleContext:ModuleId]";
+
+    jQuery(document).ready(function ($) {
         var localizedSettings = {
-            ModuleTitle: '[Resx: { key: "ModuleTitle" }]'
+
+        };
+
+        var settings = {
+            initialPanel: '#content-types-panel'
         }
-        var manager = new Manager($, ko, localizedSettings, {
 
-        });
+        var manager = new Manager($, ko, settings, localizedSettings);
 
-        manager.init("manager-" + moduleId);
+        manager.init("#DCCmanager-" + moduleId);
     });
 </script>

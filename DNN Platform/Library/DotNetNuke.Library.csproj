@@ -1521,6 +1521,7 @@
     </Compile>
     <Compile Include="UI\Modules\Html5\Html5ModuleTokenReplace.cs" />
     <Compile Include="UI\Modules\Html5\ModuleActionsPropertyAccess.cs" />
+    <Compile Include="UI\Modules\Html5\ModuleContextPropertyAccess.cs" />
     <Compile Include="UI\Modules\Html5\ModuleLocalizationPropertyAccess.cs" />
     <Compile Include="UI\Modules\IModuleControl.cs" />
     <Compile Include="UI\Modules\IModuleControlFactory.cs" />

@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Admin.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="ContentTypes.Text" xml:space="preserve">
+    <value>Content Types</value>
+  </data>
+  <data name="DataTypes.Text" xml:space="preserve">
+    <value>Data Types</value>
+  </data>
+  <data name="DCC.Text" xml:space="preserve">
+    <value>DCC</value>
+  </data>
   <data name="ModuleTitle.Text" xml:space="preserve">
     <value>Content Manager</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Templates.Text" xml:space="preserve">
+    <value>Templates</value>
   </data>
 </root>

@@ -1,2 +1,86 @@
-﻿body {
+﻿.dnnContentTypeManager{
+
+}
+
+.dnnContentTypeManager .navbar{
+    width: 100px;
+    background-color: black;
+    height: 602px;
+    float: left
+}
+
+.dnnContentTypeManager .navbar .navbarLogo{
+    color: white;
+    margin-bottom: 25px;
+}
+
+.dnnContentTypeManager .navbar .navbarLogo div{
+    color: white;
+    margin-left: 25px;
+    margin-right: 25px;
+    font-size: 20px;
+    text-align: center;
+}
+.dnnContentTypeManager .navbar .navbarLogo div.top{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    border-bottom: solid 3px white;
+}
+
+.dnnContentTypeManager .navbar .navbarLogo div.bottom{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.dnnContentTypeManager .navbar .menu ul{
+    margin-left: 5px;
+    margin-right: 5px
+}
+
+.dnnContentTypeManager .navbar .menu ul li{
+    color: white;
+    text-align: center;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.dnnContentTypeManager .navbar .menu ul li .fa{
+    font-size: 40px;
+    display: block;
+}
+
+.dnnContentTypeManager .navbar .menu ul li div{
+    padding-top:10px;
+    padding-bottom: 25px;
+}
+.dnnContentTypeManager .panels{
+    margin-left: 100px;
+    height: 600px;
+    width: 850px;
+    border: solid 1px black;
+    overflow: hidden;
+    position: relative;
+}
+
+.dnnContentTypeManager .panels .panel{
+    position: absolute;
+    height: 500px;
+    width: 850px;
+}
+
+.dnnContentTypeManager .panels .panel .heading{
+    font-size: 32px;
+    padding-top: 25px;
+    padding-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-bottom: solid 2px black;
+}
+
+.dnnContentTypeManager .panels .panel .subpanel{
+    position: absolute;
+    height: 500px;
+    width: 800px;
+    margin: 25px;
+    border: solid 1px black;
 }

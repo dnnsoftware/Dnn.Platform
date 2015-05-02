@@ -19,19 +19,15 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System.Globalization;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
-using Newtonsoft.Json;
+
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    public class ModuleContextDto
-    {
-        [JsonProperty("moduleId")]
-        public int ModuleId { get; set; }
-    }
-
-    public class ModuleContextPropertyAccess : JsonPropertyAccess<ModuleContextDto>
+    public class ModuleContextPropertyAccess : IPropertyAccess
     {
         private ModuleInstanceContext _moduleContext;
 
@@ -40,9 +36,21 @@ namespace DotNetNuke.UI.Modules.Html5
             _moduleContext = moduleContext;
         }
 
-        protected override string ProcessToken(ModuleContextDto model, UserInfo accessingUser, Scope accessLevel)
+        public virtual CacheLevel Cacheability
         {
-            throw new System.NotImplementedException();
+            get { return CacheLevel.notCacheable; }
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
+            switch (propertyName.ToLower())
+            {
+                case "moduleid":
+                    return _moduleContext.ModuleId.ToString();
+            }
+
+            propertyNotFound = true;
+            return string.Empty;
         }
     }
 }
