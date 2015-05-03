@@ -25,7 +25,7 @@ GO
 
  GO
 
- /* DNN-5631 */
+/* DNN-5631 */
 /*************/
 
 IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteList]'))
@@ -42,6 +42,21 @@ BEGIN
 	 WHERE ListName = @ListName 
 	   AND {databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) = @ParentKey;
 END
+GO
+
+/* DNN-6015: Add missing view */
+/* ************************** */
+IF EXISTS (select * from Sys.Views where object_id = object_id(N'{databaseOwner}[{objectQualifier}vw_MasterPortals]'))
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_MasterPortals]
+GO
+
+CREATE VIEW {databaseOwner}[{objectQualifier}vw_MasterPortals]
+AS
+	SELECT  P.PortalID,
+			P.PortalGroupID,
+			IsNull(G.MasterPortalID, P.PortalID) AS MasterPortalID
+	FROM      {databaseOwner}[{objectQualifier}Portals] AS P
+	LEFT JOIN {databaseOwner}[{objectQualifier}PortalGroups] AS G ON P.PortalGroupID = G.PortalGroupID
 GO
 
 /************************************************************/
