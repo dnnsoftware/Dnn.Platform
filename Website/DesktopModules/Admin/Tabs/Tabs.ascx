@@ -416,14 +416,14 @@
 		<div class="ssasContent dnnClear">
 			<h2 id="Panel-SEO" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("SEO.Tabname")%></a></h2>
 			<fieldset>
-				<div class="dnnFormItem">
-					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" />
-					<asp:TextBox ID="txtSitemapPriority" runat="server" ValidationGroup="Page" />
-                    <asp:RequiredFieldValidator ID="valPriorityRequired" runat="server" ControlToValidate="txtSitemapPriority" 
-                        resourcekey="valPriorityRequired.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-                    <asp:CompareValidator ID="valPriority" runat="server" ControlToValidate="txtSitemapPriority" Operator="DataTypeCheck" Type="Double" 
-                        resourcekey="valPriority.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-				</div>
+                <div class="dnnFormItem">
+                    <dnn:Label ID="lblSitemapPriority" runat="server" ControlName="txtSitemapPriority"
+                        CssClass="dnnFormRequired" />
+                    <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="10" />
+                    <asp:RequiredFieldValidator ID="val2" runat="server" ControlToValidate="txtSitemapPriority"
+                        Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
+                </div>
+
 				<div class="dnnFormItem">
 					<dnn:Label ID="lblDescription" runat="server" suffix=":" />
 					<asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Height="40px" />
@@ -508,3 +508,29 @@
 		</ul>
 	</div>
 </div>
+<script language="javascript" type="text/javascript">
+    /*globals jQuery, window, Sys */
+    (function ($, Sys) {
+        $(document).ready(function () {
+
+            function setupPrioritySpinner() {
+                var updatePrioritySpinner = function (clientId) {
+                    var txtCtrl = $('#' + clientId);
+                    var defaultVal = txtCtrl.val();
+                    txtCtrl.dnnSpinner({
+                        type: 'list',
+                        defaultVal: defaultVal,
+                        typedata: { list: '1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0' }
+                    });
+                };
+
+                updatePrioritySpinner('<%= txtSitemapPriority.ClientID %>');
+            }
+
+            setupPrioritySpinner();
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                setupPrioritySpinner();
+            });
+        });
+    }(jQuery, window.Sys));
+</script>
