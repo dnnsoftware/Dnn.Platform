@@ -60,8 +60,8 @@ DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehist
 	WHERE (
   SELECT COUNT(*) 
   FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh
-  WHERE sh.ScheduleID = ScheduleHistory.ScheduleID
-  AND sh.StartDate >= ScheduleHistory.StartDate
+  WHERE sh.ScheduleID = {databaseOwner}[{objectQualifier}ScheduleHistory].ScheduleID
+  AND sh.StartDate >= {databaseOwner}[{objectQualifier}ScheduleHistory].StartDate
 ) > s.RetainHistoryNum
 		AND s.RetainHistoryNum <> -1
 		AND s.ScheduleID = sh.ScheduleID
