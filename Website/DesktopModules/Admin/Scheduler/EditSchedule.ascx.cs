@@ -267,6 +267,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             }
         }
 
+
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked
         /// </summary>
@@ -285,7 +286,21 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             if (ViewState["ScheduleID"] != null)
             {
                 objScheduleItem.ScheduleID = Convert.ToInt32(ViewState["ScheduleID"]);
-                SchedulingProvider.Instance().UpdateSchedule(objScheduleItem);
+                var scheduleItem = SchedulingProvider.Instance().GetSchedule(Convert.ToInt32(Request.QueryString["ScheduleID"]));
+                if ((startScheduleDatePicker.SelectedDate != scheduleItem.ScheduleStartDate) || (chkEnabled.Checked) ||
+                    (txtTimeLapse.Text != Convert.ToString(scheduleItem.TimeLapse)) ||
+                    (txtRetryTimeLapse.Text != Convert.ToString(scheduleItem.RetryTimeLapse)) ||
+                    (ddlRetryTimeLapseMeasurement.SelectedValue != scheduleItem.RetryTimeLapseMeasurement) ||
+                    (ddlTimeLapseMeasurement.SelectedValue != scheduleItem.TimeLapseMeasurement))
+                {
+                    SchedulingProvider.Instance().UpdateSchedule(objScheduleItem);     
+                }
+                else
+                {
+                    SchedulingProvider.Instance().UpdateScheduleWithoutExecution(objScheduleItem);
+                                 
+                }
+
             }
             else
             {

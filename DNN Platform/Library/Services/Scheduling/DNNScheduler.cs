@@ -268,6 +268,24 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
+        public override void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem)
+        {
+            SchedulingController.UpdateSchedule(scheduleItem.ScheduleID,
+                                    scheduleItem.TypeFullName,
+                                    scheduleItem.TimeLapse,
+                                    scheduleItem.TimeLapseMeasurement,
+                                    scheduleItem.RetryTimeLapse,
+                                    scheduleItem.RetryTimeLapseMeasurement,
+                                    scheduleItem.RetainHistoryNum,
+                                    scheduleItem.AttachToEvent,
+                                    scheduleItem.CatchUpEnabled,
+                                    scheduleItem.Enabled,
+                                    scheduleItem.ObjectDependencies,
+                                    scheduleItem.Servers,
+                                    scheduleItem.FriendlyName,
+                                    scheduleItem.ScheduleStartDate);
+        }
+
         public override void UpdateSchedule(ScheduleItem scheduleItem)
         {
             //Remove item from queue
@@ -285,7 +303,8 @@ namespace DotNetNuke.Services.Scheduling
                                                 scheduleItem.Enabled,
                                                 scheduleItem.ObjectDependencies,
                                                 scheduleItem.Servers,
-                                                scheduleItem.FriendlyName);
+                                                scheduleItem.FriendlyName,
+                                                scheduleItem.ScheduleStartDate);
             //Update items that are already scheduled
             var futureHistory = GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 
