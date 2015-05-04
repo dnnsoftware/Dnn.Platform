@@ -67,8 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientScripts\Manager.js" />
+    <Content Include="license.txt" />
     <Content Include="Manager.html" />
     <Content Include="module.css" />
+    <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
