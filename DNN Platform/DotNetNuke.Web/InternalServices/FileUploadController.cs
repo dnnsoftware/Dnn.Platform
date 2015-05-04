@@ -696,6 +696,31 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private bool VerifySafeUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            if (uri.Scheme != "http" || uri.Scheme != "https")
+            {
+                return false;
+            }
+            if (url.Contains("#") || !url.Contains(".") || url.Contains(":"))
+            {
+                return false;
+            }
+
+            if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
+            {
+                //check nonroutable IP addresses
+                if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
+                    NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
+                    NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
 }
