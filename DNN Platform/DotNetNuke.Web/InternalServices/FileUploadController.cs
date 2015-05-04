@@ -774,7 +774,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return false;
             }
-            if (url.Contains("#") || !url.Contains("."))
+            if (url.Contains("#") || !url.Contains(".") || url.Contains(":"))
             {
                 return false;
             }
