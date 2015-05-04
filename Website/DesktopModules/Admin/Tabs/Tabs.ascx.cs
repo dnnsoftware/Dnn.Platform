@@ -681,7 +681,7 @@ namespace DesktopModules.Admin.Tabs
 
                 tab.RefreshInterval = txtRefresh.Text == "" ? Null.NullInteger : Convert.ToInt32(txtRefresh.Text);
 
-                tab.SiteMapPriority = float.Parse(txtSitemapPriority.Text);
+                tab.SiteMapPriority = float.Parse(txtSitemapPriority.Text, NumberFormatInfo.InvariantInfo);
                 tab.PageHeadText = txtMeta.Text;
                 tab.IsSecure = chkSecure.Checked;
                 tab.PermanentRedirect = chkPermanentRedirect.Checked;
