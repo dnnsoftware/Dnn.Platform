@@ -44,6 +44,31 @@ BEGIN
 END
 GO
 
+ /* DNN-6877 */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehistoryid IN (
+	SELECT TOP 50000 ScheduleHistoryID FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh 
+		INNER JOIN {databaseOwner}[{objectQualifier}Schedule] s ON s.ScheduleID = sh.ScheduleID AND s.Enabled = 1
+	WHERE (
+  SELECT COUNT(*) 
+  FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh
+  WHERE sh.ScheduleID = ScheduleHistory.ScheduleID
+  AND sh.StartDate >= ScheduleHistory.StartDate
+) > s.RetainHistoryNum
+		AND s.RetainHistoryNum <> -1
+		AND s.ScheduleID = sh.ScheduleID
+	ORDER BY ScheduleHistoryID
+)
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
