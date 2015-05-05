@@ -27,18 +27,18 @@ using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent
 {
-    public class ValidatorTypeController : ControllerBase<ValidatorType, IValidatorTypeController, ValidatorTypeController>, IValidatorTypeController
+    public class ValidatorTypeManager : ControllerBase<ValidatorType, IValidatorTypeManager, ValidatorTypeManager>, IValidatorTypeManager
     {
         internal const string ValidatorTypeCacheKey = "ContentTypes_ValidationTypes";
 
-        protected override Func<IValidatorTypeController> GetFactory()
+        protected override Func<IValidatorTypeManager> GetFactory()
         {
-            return () => new ValidatorTypeController();
+            return () => new ValidatorTypeManager();
         }
 
-        public ValidatorTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public ValidatorTypeManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public ValidatorTypeController(IDataContext dataContext) : base(dataContext) { }
+        public ValidatorTypeManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds a new validator type for use with Structured(Dynamic) Content Types.

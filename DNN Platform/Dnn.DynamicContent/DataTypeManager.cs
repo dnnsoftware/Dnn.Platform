@@ -28,19 +28,19 @@ using DotNetNuke.Entities.Content;
 
 namespace Dnn.DynamicContent
 {
-    public class DataTypeController : ControllerBase<DataType, IDataTypeController, DataTypeController>, IDataTypeController
+    public class DataTypeManager : ControllerBase<DataType, IDataTypeManager, DataTypeManager>, IDataTypeManager
     {
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
         internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
 
-        protected override Func<IDataTypeController> GetFactory()
+        protected override Func<IDataTypeManager> GetFactory()
         {
-            return () => new DataTypeController();
+            return () => new DataTypeManager();
         }
 
-        public DataTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public DataTypeManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public DataTypeController(IDataContext dataContext) : base(dataContext) { }
+        public DataTypeManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds a new data type for use with Structured(Dynamic) Content Types.

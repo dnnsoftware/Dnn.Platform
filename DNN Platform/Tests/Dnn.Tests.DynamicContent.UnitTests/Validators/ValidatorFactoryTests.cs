@@ -36,7 +36,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
     public class ValidatorFactoryTests
     {
         private Mock<CachingProvider> _mockCache;
-        private Mock<IValidatorTypeController> _mockValidatorTypeController;
+        private Mock<IValidatorTypeManager> _mockValidatorTypeController;
 
         [SetUp]
         public void SetUp()
@@ -44,15 +44,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests.Validators
             //Register MockCachingProvider
             _mockCache = MockComponentProvider.CreateNew<CachingProvider>();
 
-            _mockValidatorTypeController = new Mock<IValidatorTypeController>();
-            ValidatorTypeController.SetTestableInstance(_mockValidatorTypeController.Object);
+            _mockValidatorTypeController = new Mock<IValidatorTypeManager>();
+            ValidatorTypeManager.SetTestableInstance(_mockValidatorTypeController.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
-            ValidatorTypeController.ClearInstance();
+            ValidatorTypeManager.ClearInstance();
         }
 
         [Test]

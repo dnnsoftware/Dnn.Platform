@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace Dnn.DynamicContent
 {
-    public interface IValidatorTypeController
+    public interface IValidatorTypeManager
     {
         /// <summary>
         /// Adds a new validator type for use with Structured(Dynamic) Content Types.

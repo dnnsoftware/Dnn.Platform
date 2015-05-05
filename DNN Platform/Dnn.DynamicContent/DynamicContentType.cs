@@ -59,7 +59,7 @@ namespace Dnn.DynamicContent
                 {
                     _fieldDefitions = (ContentTypeId == -1)
                                         ? new List<FieldDefinition>()
-                                        : FieldDefinitionController.Instance.GetFieldDefinitions(ContentTypeId).ToList();
+                                        : FieldDefinitionManager.Instance.GetFieldDefinitions(ContentTypeId).ToList();
                 }
                 return _fieldDefitions;
             }
@@ -82,7 +82,7 @@ namespace Dnn.DynamicContent
                 {
                     _templates = (ContentTypeId == -1)
                                         ? new List<ContentTemplate>()
-                                        : ContentTemplateController.Instance.GetContentTemplates(ContentTypeId).ToList();
+                                        : ContentTemplateManager.Instance.GetContentTemplates(ContentTypeId).ToList();
                 }
                 return _templates;
             }

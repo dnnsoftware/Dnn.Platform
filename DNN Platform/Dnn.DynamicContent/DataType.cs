@@ -28,7 +28,7 @@ namespace Dnn.DynamicContent
     [Serializable]
     [TableName("ContentTypes_DataTypes")]
     [PrimaryKey("DataTypeID", "DataTypeId")]
-    [Cacheable(DataTypeController.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
+    [Cacheable(DataTypeManager.DataTypeCacheKey, CacheItemPriority.Normal, 20)]
     public class DataType
     {
         public DataType()

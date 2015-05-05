@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace Dnn.DynamicContent
 {
-    public interface IDataTypeController
+    public interface IDataTypeManager
     {
         int AddDataType(DataType dataType);
 

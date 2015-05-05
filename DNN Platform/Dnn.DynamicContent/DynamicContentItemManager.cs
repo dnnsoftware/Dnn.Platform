@@ -29,11 +29,11 @@ using DotNetNuke.Framework;
 
 namespace Dnn.DynamicContent
 {
-    public class DynamicContentItemController : ServiceLocator<IDynamicContentItemController, DynamicContentItemController>, IDynamicContentItemController
+    public class DynamicContentItemManager : ServiceLocator<IDynamicContentItemManager, DynamicContentItemManager>, IDynamicContentItemManager
     {
-        protected override Func<IDynamicContentItemController> GetFactory()
+        protected override Func<IDynamicContentItemManager> GetFactory()
         {
-            return () => new DynamicContentItemController();
+            return () => new DynamicContentItemManager();
         }
 
         public int AddContentItem(DynamicContentItem dynamicContent)

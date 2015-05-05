@@ -61,8 +61,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var rule = new ValidationRule();
-            var mockValidatorTypeController = new Mock<IValidatorTypeController>();
-            ValidatorTypeController.SetTestableInstance(mockValidatorTypeController.Object);
+            var mockValidatorTypeController = new Mock<IValidatorTypeManager>();
+            ValidatorTypeManager.SetTestableInstance(mockValidatorTypeController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -78,10 +78,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var validatorTypeId = 2;
             var rule = new ValidationRule() { ValidatorTypeId = validatorTypeId };
-            var mockValidatorTypeController = new Mock<IValidatorTypeController>();
+            var mockValidatorTypeController = new Mock<IValidatorTypeManager>();
             mockValidatorTypeController.Setup(dt => dt.GetValidatorTypes())
                 .Returns(new List<ValidatorType>() { new ValidatorType() { ValidatorTypeId = validatorTypeId } }.AsQueryable());
-            ValidatorTypeController.SetTestableInstance(mockValidatorTypeController.Object);
+            ValidatorTypeManager.SetTestableInstance(mockValidatorTypeController.Object);
 
             //Act
             // ReSharper disable UnusedVariable

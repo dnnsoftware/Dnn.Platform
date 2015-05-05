@@ -36,12 +36,12 @@ using NUnit.Framework;
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
-    public class DynamicContentTypeControllerTests
+    public class DynamicContentTypeManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<DynamicContentType>> _mockContentTypeRepository;
-        private Mock<IFieldDefinitionController> _mockFieldDefinitionController;
-        private Mock<IContentTemplateController> _mockContentTemplateController;
+        private Mock<IFieldDefinitionManager> _mockFieldDefinitionController;
+        private Mock<IContentTemplateManager> _mockContentTemplateController;
 
         private Mock<CachingProvider> _mockCache;
         private string _contentTypeCacheKey;
@@ -60,15 +60,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository = new Mock<IRepository<DynamicContentType>>();
             _mockDataContext.Setup(dc => dc.GetRepository<DynamicContentType>()).Returns(_mockContentTypeRepository.Object);
 
-            _mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
+            _mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
             _mockFieldDefinitionController.Setup(vr => vr.GetFieldDefinitions(It.IsAny<int>()))
                 .Returns(new List<FieldDefinition>().AsQueryable());
-            FieldDefinitionController.SetTestableInstance(_mockFieldDefinitionController.Object);
+            FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
 
-            _mockContentTemplateController = new Mock<IContentTemplateController>();
+            _mockContentTemplateController = new Mock<IContentTemplateManager>();
             _mockContentTemplateController.Setup(vr => vr.GetContentTemplates(It.IsAny<int>()))
                 .Returns(new List<ContentTemplate>().AsQueryable());
-            ContentTemplateController.SetTestableInstance(_mockContentTemplateController.Object);
+            ContentTemplateManager.SetTestableInstance(_mockContentTemplateController.Object);
         }
 
         [TearDown]
@@ -85,14 +85,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange, Act, Arrange
             // ReSharper disable once ObjectCreationAsStatement
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentNullException>(() => new DynamicContentTypeController(dataContent));
+            Assert.Throws<ArgumentNullException>(() => new DynamicContentTypeManager(dataContent));
         }
 
         [Test]
         public void AddContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.AddContentType(null));
@@ -102,7 +102,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => contentTypeController.AddContentType(new DynamicContentType()));
@@ -112,7 +112,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentType_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -131,7 +131,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -149,7 +149,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -167,7 +167,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -192,7 +192,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -219,7 +219,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -244,7 +244,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
                             .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
 
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
 
@@ -278,7 +278,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {
@@ -294,7 +294,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentType_Calls_Repository_Delete_On_Valid_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {
@@ -313,7 +313,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentType_Deletes_FieldDefinitions_On_Valid_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
                                     {
@@ -339,7 +339,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentType_Deletes_Templates_On_Valid_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
                                     {
@@ -364,7 +364,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetContentTypes_Calls_Repository_Get()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -380,7 +380,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
                 .Returns(new List<DynamicContentType>());
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
@@ -396,7 +396,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockContentTypeRepository.Setup(r => r.Get(Constants.PORTAL_ValidPortalId))
                 .Returns(CreateValidContentTypes(Constants.CONTENTTYPE_ValidContentTypeCount));
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId);
@@ -409,7 +409,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetContentTypes_Overload_Calls_Repository_GetPage()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -423,7 +423,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetContentTypes_Overload_Returns_PagedList()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
             _mockContentTypeRepository.Setup(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount))
                 .Returns(new PagedList<DynamicContentType>(new List<DynamicContentType>(), Constants.PAGE_First, Constants.PAGE_RecordCount));
 
@@ -438,7 +438,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.UpdateContentType(null));
@@ -448,7 +448,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
             var contentType = new DynamicContentType { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId };
 
             //Act, Arrange
@@ -459,7 +459,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {
@@ -474,7 +474,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Calls_Repository_Update_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {
@@ -493,7 +493,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Adds_New_FieldDefinitions_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
                                     {
@@ -518,7 +518,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Sets_ContentTypeId_Property_Of_New_New_FieldDefinitions_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
             var contentType = new DynamicContentType
@@ -547,7 +547,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Updates_Existing_FieldDefinitions_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {
@@ -572,7 +572,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Adds_New_Templates_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
                                     {
@@ -597,7 +597,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Sets_ContentTypeId_Property_Of_New_New_Templates_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
             var contentType = new DynamicContentType
@@ -627,7 +627,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentType_Updates_Existing_Templates_On_Valid_ContentType()
         {
             //Arrange
-            var contentTypeController = new DynamicContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
             {

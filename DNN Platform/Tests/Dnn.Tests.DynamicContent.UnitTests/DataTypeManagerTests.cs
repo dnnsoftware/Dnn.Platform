@@ -38,7 +38,7 @@ using NUnit.Framework;
 
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
-    class DataTypeControllerTests
+    class DataTypeManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<DataType>> _mockDataTypeRepository;
@@ -73,7 +73,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddDataType_Throws_On_Null_DataType()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => dataTypeController.AddDataType(null));
@@ -83,7 +83,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddDataType_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentException>(() => dataTypeController.AddDataType(new DataType()));
@@ -93,7 +93,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddDataType_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType() { Name = "DataType1" };
 
@@ -112,7 +112,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataTypeRepository.Setup(r => r.Insert(It.IsAny<DataType>()))
                             .Callback((DataType dt) => dt.DataTypeId = Constants.CONTENTTYPE_AddDataTypeId);
 
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType() { Name = "DataType1" };
 
@@ -130,7 +130,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataTypeRepository.Setup(r => r.Insert(It.IsAny<DataType>()))
                             .Callback((DataType dt) => dt.DataTypeId = Constants.CONTENTTYPE_AddDataTypeId);
 
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType() { Name = "DataType1" };
 
@@ -145,7 +145,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteDataType_Throws_On_Null_DataType()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => dataTypeController.DeleteDataType(null));
@@ -155,7 +155,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteDataType_Throws_On_Negative_DataTypeId()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType {DataTypeId = Null.NullInteger};
 
@@ -167,7 +167,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteDataType_Calls_FieldDefinition_Repository_Find_On_Valid_DataTypeId()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId };
 
@@ -175,15 +175,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             dataTypeController.DeleteDataType(dataType);
 
             //Assert
-            _mockFieldDefinitionRepository.Verify(r => r.Find(DataTypeController.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId));
+            _mockFieldDefinitionRepository.Verify(r => r.Find(DataTypeManager.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId));
         }
 
         [Test]
         public void DeleteDataType_Calls_Repository_Delete_If_DataType_UnUsed()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
-            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeController.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
                 .Returns(new List<FieldDefinition>());
 
             var dataType = new DataType {DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId};
@@ -199,8 +199,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteDataType_Throws_If_DataType_Used()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
-            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeController.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() });
 
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId };
@@ -213,7 +213,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetDataTypes_Calls_Repository_Get()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -229,7 +229,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockDataTypeRepository.Setup(r => r.Get())
                 .Returns(GetValidDataTypes(0));
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
             var dataTypes = dataTypeController.GetDataTypes();
@@ -245,7 +245,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockDataTypeRepository.Setup(r => r.Get())
                 .Returns(GetValidDataTypes(Constants.CONTENTTYPE_ValidDataTypeCount));
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
             var dataTypes = dataTypeController.GetDataTypes();
@@ -258,7 +258,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateDataType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => dataTypeController.UpdateDataType(null));
@@ -268,7 +268,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateDataType_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId };
 
             //Act, Arrange
@@ -279,7 +279,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateDataType_Throws_On_Negative_DataTypeId()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_InValidDataTypeId, Name = "Test" };
 
@@ -290,7 +290,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateDataType_Calls_Repository_Update_If_DataType_Is_UnUsed()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             var dataType = new DataType
                 {
@@ -309,8 +309,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateDataType_Calls_Repository_Update_If_DataType_Is_Used_But_No_ContentItems()
         {
             //Arrange
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
-            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeController.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId } });
 
             var mockContentController = new Mock<IContentController>();
@@ -336,8 +336,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var dataTypeId = Constants.CONTENTTYPE_UpdateDataTypeId;
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
-            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeController.FindWhereDataTypeSql, dataTypeId))
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, dataTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId} });
 
             var mockContentController = new Mock<IContentController>();
@@ -360,8 +360,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var dataTypeId = Constants.CONTENTTYPE_UpdateDataTypeId;
-            var dataTypeController = new DataTypeController(_mockDataContext.Object);
-            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeController.FindWhereDataTypeSql, dataTypeId))
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, dataTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId } });
 
             var mockContentController = new Mock<IContentController>();

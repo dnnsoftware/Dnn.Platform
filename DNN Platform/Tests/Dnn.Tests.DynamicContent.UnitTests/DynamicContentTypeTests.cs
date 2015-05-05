@@ -51,8 +51,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentType = new DynamicContentType();
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
-            FieldDefinitionController.SetTestableInstance(mockFieldDefinitionController.Object);
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -68,8 +68,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = 3;
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
-            FieldDefinitionController.SetTestableInstance(mockFieldDefinitionController.Object);
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -86,10 +86,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = 3;
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
-            var mockFieldDefinitionController = new Mock<IFieldDefinitionController>();
+            var mockFieldDefinitionController = new Mock<IFieldDefinitionManager>();
             mockFieldDefinitionController.Setup(fd => fd.GetFieldDefinitions(contentTypeId))
                 .Returns(new List<FieldDefinition> { new FieldDefinition() { ContentTypeId = contentTypeId } }.AsQueryable());
-            FieldDefinitionController.SetTestableInstance(mockFieldDefinitionController.Object);
+            FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable UnusedVariable
@@ -107,8 +107,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentType = new DynamicContentType();
-            var mockFieldDefinitionController = new Mock<IContentTemplateController>();
-            ContentTemplateController.SetTestableInstance(mockFieldDefinitionController.Object);
+            var mockFieldDefinitionController = new Mock<IContentTemplateManager>();
+            ContentTemplateManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -124,8 +124,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = 3;
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
-            var mockFieldDefinitionController = new Mock<IContentTemplateController>();
-            ContentTemplateController.SetTestableInstance(mockFieldDefinitionController.Object);
+            var mockFieldDefinitionController = new Mock<IContentTemplateManager>();
+            ContentTemplateManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -141,10 +141,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = 3;
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
-            var mockFieldDefinitionController = new Mock<IContentTemplateController>();
+            var mockFieldDefinitionController = new Mock<IContentTemplateManager>();
             mockFieldDefinitionController.Setup(fd => fd.GetContentTemplates(contentTypeId))
                 .Returns(new List<ContentTemplate> { new ContentTemplate() { ContentTypeId = contentTypeId } }.AsQueryable());
-            ContentTemplateController.SetTestableInstance(mockFieldDefinitionController.Object);
+            ContentTemplateManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             //Act
             // ReSharper disable UnusedVariable

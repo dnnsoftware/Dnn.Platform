@@ -52,14 +52,14 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="ContentTemplate.cs" />
-    <Compile Include="ContentTemplateController.cs" />
+    <Compile Include="ContentTemplateManager.cs" />
     <Compile Include="DataType.cs" />
-    <Compile Include="DataTypeController.cs" />
+    <Compile Include="DataTypeManager.cs" />
     <Compile Include="DynamicContentField.cs" />
     <Compile Include="DynamicContentItem.cs" />
-    <Compile Include="DynamicContentItemController.cs" />
+    <Compile Include="DynamicContentItemManager.cs" />
     <Compile Include="DynamicContentType.cs" />
-    <Compile Include="DynamicContentTypeController.cs" />
+    <Compile Include="DynamicContentTypeManager.cs" />
     <Compile Include="Exceptions\CreateValidatorException.cs" />
     <Compile Include="Exceptions\DataTypeInUseException.cs" />
     <Compile Include="Exceptions\InvalidValidationTypeException.cs" />
@@ -68,18 +68,18 @@
     <Compile Include="Exceptions\JsonInvalidFieldException.cs" />
     <Compile Include="Exceptions\JsonMissingContentException.cs" />
     <Compile Include="FieldDefinition.cs" />
-    <Compile Include="FieldDefinitionController.cs" />
-    <Compile Include="IContentTemplateController.cs" />
-    <Compile Include="IDataTypeController.cs" />
-    <Compile Include="IDynamicContentItemController.cs" />
-    <Compile Include="IDynamicContentTypeController.cs" />
-    <Compile Include="IFieldDefinitionController.cs" />
-    <Compile Include="IValidationRuleController.cs" />
-    <Compile Include="IValidatorTypeController.cs" />
+    <Compile Include="FieldDefinitionManager.cs" />
+    <Compile Include="IContentTemplateManager.cs" />
+    <Compile Include="IDataTypeManager.cs" />
+    <Compile Include="IDynamicContentItemManager.cs" />
+    <Compile Include="IDynamicContentTypeManager.cs" />
+    <Compile Include="IFieldDefinitionManager.cs" />
+    <Compile Include="IValidationRuleManager.cs" />
+    <Compile Include="IValidatorTypeManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnderlyingDataType.cs" />
     <Compile Include="ValidationRule.cs" />
-    <Compile Include="ValidationRuleController.cs" />
+    <Compile Include="ValidationRuleManager.cs" />
     <Compile Include="ValidatorSetting.cs" />
     <Compile Include="Validators\BaseValidator.cs" />
     <Compile Include="Validators\DynamicContentValidator.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Validators\ValidationResult.cs" />
     <Compile Include="Validators\ValidatorFactory.cs" />
     <Compile Include="ValidatorType.cs" />
-    <Compile Include="ValidatorTypeController.cs" />
+    <Compile Include="ValidatorTypeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Architecture\DynamicContent.cd" />

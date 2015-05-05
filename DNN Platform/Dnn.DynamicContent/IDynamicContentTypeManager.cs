@@ -24,7 +24,7 @@ using DotNetNuke.Collections;
 
 namespace Dnn.DynamicContent
 {
-    public interface IDynamicContentTypeController
+    public interface IDynamicContentTypeManager
     {
         /// <summary>
         /// Adds the type of the content.

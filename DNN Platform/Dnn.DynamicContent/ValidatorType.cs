@@ -31,7 +31,7 @@ namespace Dnn.DynamicContent
     [Serializable]
     [TableName("ContentTypes_ValidatorTypes")]
     [PrimaryKey("ValidatorTypeID", "ValidatorTypeId")]
-    [Cacheable(ValidatorTypeController.ValidatorTypeCacheKey, CacheItemPriority.Normal, 20)]
+    [Cacheable(ValidatorTypeManager.ValidatorTypeCacheKey, CacheItemPriority.Normal, 20)]
     public class ValidatorType
     {
         /// <summary>

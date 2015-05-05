@@ -27,18 +27,18 @@ using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent
 {
-    public class DynamicContentTypeController : ControllerBase<DynamicContentType, IDynamicContentTypeController, DynamicContentTypeController>, IDynamicContentTypeController
+    public class DynamicContentTypeManager : ControllerBase<DynamicContentType, IDynamicContentTypeManager, DynamicContentTypeManager>, IDynamicContentTypeManager
     {
         internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
 
-        protected override Func<IDynamicContentTypeController> GetFactory()
+        protected override Func<IDynamicContentTypeManager> GetFactory()
         {
-            return () => new DynamicContentTypeController();
+            return () => new DynamicContentTypeManager();
         }
 
-        public DynamicContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public DynamicContentTypeManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public DynamicContentTypeController(IDataContext dataContext) : base(dataContext) { }
+        public DynamicContentTypeManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds the type of the content.
@@ -58,14 +58,14 @@ namespace Dnn.DynamicContent
             foreach (var definition in contentType.FieldDefinitions)
             {
                 definition.ContentTypeId = contentType.ContentTypeId;
-                FieldDefinitionController.Instance.AddFieldDefinition(definition);
+                FieldDefinitionManager.Instance.AddFieldDefinition(definition);
             }
 
             //Save Content Templates
             foreach (var template in contentType.Templates)
             {
                 template.ContentTypeId = contentType.ContentTypeId;
-                ContentTemplateController.Instance.AddContentTemplate(template);
+                ContentTemplateManager.Instance.AddContentTemplate(template);
             }
 
             return contentType.ContentTypeId;
@@ -84,13 +84,13 @@ namespace Dnn.DynamicContent
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
             {
-                FieldDefinitionController.Instance.DeleteFieldDefinition(definition);
+                FieldDefinitionManager.Instance.DeleteFieldDefinition(definition);
             }
 
             //Delete Content Templates
             foreach (var template in contentType.Templates)
             {
-                ContentTemplateController.Instance.DeleteContentTemplate(template);
+                ContentTemplateManager.Instance.DeleteContentTemplate(template);
             }
         }
 
@@ -152,11 +152,11 @@ namespace Dnn.DynamicContent
                 if (definition.FieldDefinitionId == -1)
                 {
                     definition.ContentTypeId = contentType.ContentTypeId;
-                    FieldDefinitionController.Instance.AddFieldDefinition(definition);
+                    FieldDefinitionManager.Instance.AddFieldDefinition(definition);
                 }
                 else
                 {
-                    FieldDefinitionController.Instance.UpdateFieldDefinition(definition);
+                    FieldDefinitionManager.Instance.UpdateFieldDefinition(definition);
                 }
             }
 
@@ -166,11 +166,11 @@ namespace Dnn.DynamicContent
                 if (template.TemplateId == -1)
                 {
                     template.ContentTypeId = contentType.ContentTypeId;
-                    ContentTemplateController.Instance.AddContentTemplate(template);
+                    ContentTemplateManager.Instance.AddContentTemplate(template);
                 }
                 else
                 {
-                    ContentTemplateController.Instance.UpdateContentTemplate(template);
+                    ContentTemplateManager.Instance.UpdateContentTemplate(template);
                 }
             }
 

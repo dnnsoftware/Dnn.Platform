@@ -26,7 +26,7 @@ using DotNetNuke.Entities.Content;
 
 namespace Dnn.DynamicContent
 {
-    public interface IDynamicContentItemController
+    public interface IDynamicContentItemManager
     {
         int AddContentItem(DynamicContentItem dynamicContent);
 

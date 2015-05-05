@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace Dnn.DynamicContent
 {
-    public interface IValidationRuleController
+    public interface IValidationRuleManager
     {
         /// <summary>
         /// Adds a new rule for use with Structured(Dynamic) Content Types.

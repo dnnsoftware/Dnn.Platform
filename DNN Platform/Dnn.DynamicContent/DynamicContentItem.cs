@@ -88,7 +88,7 @@ namespace Dnn.DynamicContent
             var jObject = JObject.Parse(json);
             var contentTypeId = jObject["contentTypeId"].Value<int>();
 
-            ContentType = DynamicContentTypeController.Instance.GetContentTypes(PortalId)
+            ContentType = DynamicContentTypeManager.Instance.GetContentTypes(PortalId)
                                     .SingleOrDefault(t => t.ContentTypeId == contentTypeId);
 
             if (ContentType == null)
