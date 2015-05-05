@@ -1290,7 +1290,7 @@ namespace DesktopModules.Admin.Portals
                     float hostFee = existingPortal.HostFee;
                     if (!String.IsNullOrEmpty(txtHostFee.Text))
                     {
-                        hostFee = float.Parse(txtHostFee.Text);
+                        hostFee = float.Parse(txtHostFee.Text, NumberFormatInfo.InvariantInfo);
                     }
 
                     int hostSpace = existingPortal.HostSpace;

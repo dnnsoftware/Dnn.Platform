@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -883,7 +884,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 return Null.NullInteger;
             }
-            Tab.SiteMapPriority = float.Parse(txtPriority.Text);
+            Tab.SiteMapPriority = float.Parse(txtPriority.Text, NumberFormatInfo.InvariantInfo);
             Tab.PageHeadText = txtPageHeadText.Text;
             Tab.IsSecure = chkSecure.Checked;
             Tab.PermanentRedirect = chkPermanentRedirect.Checked;

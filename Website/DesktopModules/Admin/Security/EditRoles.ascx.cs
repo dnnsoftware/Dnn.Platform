@@ -367,14 +367,14 @@ namespace DotNetNuke.Modules.Admin.Security
 
                     if (!String.IsNullOrEmpty(txtServiceFee.Text) && cboBillingFrequency.SelectedItem.Value != "N")
                     {
-                        sglServiceFee = float.Parse(txtServiceFee.Text);
+                        sglServiceFee = float.Parse(txtServiceFee.Text, NumberFormatInfo.InvariantInfo);
                         intBillingPeriod = String.IsNullOrEmpty(txtBillingPeriod.Text) ? 1 : int.Parse(txtBillingPeriod.Text);
                         strBillingFrequency = cboBillingFrequency.SelectedItem.Value;
                     }
 
                     if (sglServiceFee != 0 && !String.IsNullOrEmpty(txtTrialFee.Text) && cboTrialFrequency.SelectedItem.Value != "N")
                     {
-                        sglTrialFee = float.Parse(txtTrialFee.Text);
+                        sglTrialFee = float.Parse(txtTrialFee.Text, NumberFormatInfo.InvariantInfo);
                         intTrialPeriod = string.IsNullOrEmpty(txtTrialPeriod.Text) ? 1 : int.Parse(txtTrialPeriod.Text);
                         strTrialFrequency = cboTrialFrequency.SelectedItem.Value;
                     }

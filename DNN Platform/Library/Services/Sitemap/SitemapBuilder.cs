@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Sitemap
                     // check if we should override the priorities
                     isProviderPriorityOverrided = bool.Parse(PortalController.GetPortalSetting(_provider.Name + "Override", PortalSettings.PortalId, "False"));
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
-                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50")) / 100;
+                    providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50"), NumberFormatInfo.InvariantInfo) / 100;
 
                     // Get all urls from provider
                     List<SitemapUrl> urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
