@@ -22,7 +22,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class DataTypeIntegrationTests : IntegrationTestBase
     {
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeManager.DataTypeCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeManager.DataTypeCacheKey) + "_PortalId_{0}";
 
         [SetUp]
         public void SetUp()
@@ -66,7 +66,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             dataTypeController.AddDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         [Test]
@@ -135,20 +135,21 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             dataTypeController.DeleteDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         [Test]
         public void GetDataTypes_Fetches_Records_From_Database_If_Cache_Is_Null()
         {
             //Arrange
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
-            SetUpDataTypes(RecordCount);
+            var portalId = Constants.PORTAL_ValidPortalId;
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(null);
+            SetUpDataTypes(RecordCount, portalId);
 
             var dataTypeController = new DataTypeManager();
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.AreEqual(RecordCount, dataTypes.Count());
@@ -158,15 +159,16 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void GetDataTypes_Fetches_Records_From_Cache_If_Not_Null()
         {
             //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
             var cacheCount = 15;
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(SetUpCache(cacheCount));
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(SetUpCache(cacheCount));
 
             SetUpDataTypes(RecordCount);
 
             var dataTypeController = new DataTypeManager();
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.AreEqual(cacheCount, dataTypes.Count());
@@ -261,7 +263,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             dataTypeController.UpdateDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         private IQueryable<DataType> SetUpCache(int count)

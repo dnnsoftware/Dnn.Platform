@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
+using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -49,6 +51,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             MockComponentProvider.ResetContainer();
             ContentController.ClearInstance();
+            UserController.ClearInstance();
         }
 
         [Test]
@@ -124,6 +127,29 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void AddDataType_Sets_CreatedByUserId_On_Valid_DataType()
+        {
+            //Arrange
+            var userId = Constants.USER_ValidId;
+            _mockDataTypeRepository.Setup(r => r.Insert(It.IsAny<DataType>()))
+                            .Callback((DataType dt) => dt.DataTypeId = Constants.CONTENTTYPE_AddDataTypeId);
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo {UserID = userId});
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            var dataType = new DataType() { Name = "DataType1" };
+
+            //Act
+            dataTypeController.AddDataType(dataType);
+
+            //Assert
+            Assert.AreEqual(userId, dataType.CreatedByUserId);
+        }
+
+        [Test]
         public void DeleteDataType_Throws_On_Null_DataType()
         {
             //Arrange
@@ -192,29 +218,47 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetDataTypes_Calls_Repository_Get()
+        public void GetDataTypes_Calls_Repository_Get_With_PortalId()
         {
             //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
-            _mockDataTypeRepository.Verify(r => r.Get());
+            _mockDataTypeRepository.Verify(r => r.Get(portalId));
         }
 
         [Test]
-        public void GetDataTypess_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
+        public void GetDataTypes_Calls_Repository_Get_With_Host_PortalId_If_IncludeSystem_True()
         {
             //Arrange
-            _mockDataTypeRepository.Setup(r => r.Get())
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes(portalId, true);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetDataTypess_Returns_Empty_List_Of_DataTypes_If_No_DataTypes()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            _mockDataTypeRepository.Setup(r => r.Get(portalId))
                 .Returns(GetValidDataTypes(0));
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.IsNotNull(dataTypes);
@@ -222,19 +266,102 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetDataTypes_Returns_List_Of_ContentTypes()
+        public void GetDataTypes_Returns_List_Of_DataTypes()
         {
             //Arrange
-            _mockDataTypeRepository.Setup(r => r.Get())
+            var portalId = Constants.PORTAL_ValidPortalId;
+            _mockDataTypeRepository.Setup(r => r.Get(portalId))
                 .Returns(GetValidDataTypes(Constants.CONTENTTYPE_ValidDataTypeCount));
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.AreEqual(Constants.CONTENTTYPE_ValidDataTypeCount, dataTypes.Count());
         }
+
+        [Test]
+        public void GetDataTypes_Overload_Calls_Repository_Get_With_PortalId()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes("Search", portalId, pageIndex, pageSize, false);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(portalId));
+        }
+
+        [Test]
+        public void GetDataTypes_Overload_Calls_Repository_Get_With_Host_PortalId_If_IncludeSystem_True()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes("Search", portalId, pageIndex, pageSize, true);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetDataTypes_Overload_Returns_PagedList()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes("Name", portalId, pageIndex, pageSize, true);
+
+            //Assert
+            Assert.IsInstanceOf<IPagedList<DataType>>(dataTypes);
+        }
+
+        [TestCaseAttribute(25, 0, "Name", 25, 5)]
+        [TestCaseAttribute(20, 0, "N", 20, 4)]
+        [TestCaseAttribute(150, 0, "nam", 150, 30)]
+        [TestCaseAttribute(10, 0, "_2", 1, 1)]
+        public void GetDataTypes_Returns_Correct_DataTypes(int recordCount, int portalId, string searchTerm, int totalCount, int pageCount)
+        {
+            //Arrange
+            var pageIndex = 0;
+            var pageSize = 5;
+            _mockDataTypeRepository.Setup(r => r.Get(portalId))
+                .Returns(GetValidDataTypes(recordCount, portalId));
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            var dataTypes = dataTypeController.GetDataTypes(searchTerm, portalId, pageIndex, pageSize, true);
+
+            //Assert
+            Assert.AreEqual(totalCount, dataTypes.TotalCount);
+            Assert.AreEqual(pageCount, dataTypes.PageCount);
+            if (pageCount > 1)
+            {
+                Assert.IsTrue(dataTypes.HasNextPage);
+            }
+            else
+            {
+                Assert.IsFalse(dataTypes.HasNextPage);
+            }
+        }
+
 
         [Test]
         public void UpdateDataType_Throws_On_Null_ContentType()
@@ -352,16 +479,48 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(new List<ContentItem>() { new ContentItem() }.AsQueryable());
 
             var dataType = new DataType
-            {
-                DataTypeId = dataTypeId,
-                Name = "New_Name"
-            };
+                                    {
+                                        DataTypeId = dataTypeId,
+                                        Name = "New_Name"
+                                    };
 
             //Act
             dataTypeController.UpdateDataType(dataType, true);
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Update(dataType));
+        }
+
+        [Test]
+        public void UpdateDataType_Updates_LastModifiedBy_On_Valid_DataType()
+        {
+            //Arrange
+            var userId = Constants.USER_ValidId;
+
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+            _mockFieldDefinitionRepository.Setup(r => r.Find(DataTypeManager.FindWhereDataTypeSql, Constants.CONTENTTYPE_ValidDataTypeId))
+                .Returns(new List<FieldDefinition> { new FieldDefinition() { ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId } });
+
+            var mockContentController = new Mock<IContentController>();
+            ContentController.SetTestableInstance(mockContentController.Object);
+            mockContentController.Setup(c => c.GetContentItemsByContentType(Constants.CONTENTTYPE_ValidContentTypeId))
+                .Returns(new List<ContentItem>().AsQueryable());
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo { UserID = userId });
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var dataType = new DataType
+                                {
+                                    DataTypeId = Constants.CONTENTTYPE_UpdateDataTypeId,
+                                    Name = "New_Name"
+                                };
+
+            //Act
+            dataTypeController.UpdateDataType(dataType);
+
+            //Assert
+            Assert.AreEqual(userId, dataType.LastModifiedByUserId);
         }
 
         private List<DataType> GetValidDataTypes(int count)
@@ -371,6 +530,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             for (int i = 1; i <= count; i++)
             {
                 list.Add(new DataType() { DataTypeId = i, Name = String.Format("Name_{0}", i) });
+            }
+
+            return list;
+        }
+
+        private List<DataType> GetValidDataTypes(int count, int portalId)
+        {
+            var list = new List<DataType>();
+
+            for (int i = 1; i <= count; i++)
+            {
+                list.Add(new DataType()
+                                {
+                                    DataTypeId = i,
+                                    Name = String.Format("Name_{0}", i),
+                                    PortalId = portalId
+                                });
             }
 
             return list;

@@ -49,6 +49,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(0, field.ValidationRules.Count);
         }
         [Test]
+        //TODO - update when FieldDefinition Todo is completed
         public void DataType_Property_Calls_DataTypeController_Get()
         {
             //Arrange
@@ -61,17 +62,18 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dataType = field.DataType;
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(), Times.Once);
+            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Test]
+        //TODO - update when FieldDefinition Todo is completed
         public void DataType_Property_Calls_DataTypeController_Get_Once_Only()
         {
             //Arrange
             var datatTypeId = 2;
             var field = new FieldDefinition() {DataTypeId = datatTypeId};
             var mockDataTypeController = new Mock<IDataTypeManager>();
-            mockDataTypeController.Setup(dt => dt.GetDataTypes())
+            mockDataTypeController.Setup(dt => dt.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(new List<DataType>() {new DataType() { DataTypeId = datatTypeId } }.AsQueryable());
             DataTypeManager.SetTestableInstance(mockDataTypeController.Object);
 
@@ -83,7 +85,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             // ReSharper restore UnusedVariable
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(), Times.AtMostOnce);
+            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.AtMostOnce);
         }
 
         [Test]

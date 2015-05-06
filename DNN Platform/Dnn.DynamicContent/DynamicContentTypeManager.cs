@@ -83,15 +83,7 @@ namespace Dnn.DynamicContent
         /// <returns>content type collection.</returns>
         public IQueryable<DynamicContentType> GetContentTypes(int portalId)
         {
-            IQueryable<DynamicContentType> contentTypes;
-            using (DataContext)
-            {
-                var rep = DataContext.GetRepository<DynamicContentType>();
-
-                contentTypes = rep.Get(portalId).AsQueryable();
-            }
-
-            return contentTypes;
+            return Get(portalId).AsQueryable();
         }
 
         /// <summary>

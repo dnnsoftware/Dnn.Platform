@@ -51,6 +51,7 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="ContentTemplate.cs" />
     <Compile Include="ContentTemplateManager.cs" />
     <Compile Include="DataType.cs" />

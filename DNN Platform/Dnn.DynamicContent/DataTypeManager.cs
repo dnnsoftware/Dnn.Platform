@@ -2,11 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using Dnn.DynamicContent.Exceptions;
+using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.DynamicContent
 {
@@ -14,6 +18,7 @@ namespace Dnn.DynamicContent
     {
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
         internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
+        internal const string PortalScope = "PortalId";
 
         protected override Func<IDataTypeManager> GetFactory()
         {
@@ -35,6 +40,8 @@ namespace Dnn.DynamicContent
         {
             //Argument Contract
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
+
+            dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
 
             Add(dataType);
 
@@ -74,12 +81,42 @@ namespace Dnn.DynamicContent
         }
 
         /// <summary>
-        /// Gets the data types.
+        /// This GetDataTypes overloads retrieves all the data types for a portal, optionally including system types
         /// </summary>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System Data Types (ie. Data Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>data type collection.</returns>
-        public IQueryable<DataType> GetDataTypes()
+        public IQueryable<DataType> GetDataTypes(int portalId, bool includeSystem = false)
         {
-            return Get().AsQueryable();
+            List<DataType> dataTypes = Get(portalId).ToList();
+            if (includeSystem)
+            {
+                dataTypes.AddRange(Get(-1));
+            }
+            return dataTypes.AsQueryable();
+        }
+
+        /// <summary>
+        /// This GetDataTypes overload retrieves a page of data types for a given portal, based on a Search Term that can appear anywhere in the Name.
+        /// </summary>
+        /// <param name="searchTerm">The search term to use</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="pageIndex">The page number - 0 represents the first page</param>
+        /// <param name="pageSize">The size of the page</param>
+        /// <param name="includeSystem">A flag to determine if System Data Types (ie. Data Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
+        /// <returns>a PagedList of DataTypes</returns>
+        public IPagedList<DataType> GetDataTypes(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false)
+        {
+            var dataTypes = GetDataTypes(portalId, includeSystem);
+
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                dataTypes = dataTypes.Where(dt => dt.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()));
+            }
+
+            return new PagedList<DataType>(dataTypes, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -97,6 +134,8 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNull(dataType, "DataTypeId");
             Requires.PropertyNotNegative(dataType, "DataTypeId");
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
+
+            dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
 
             using (DataContext)
             {

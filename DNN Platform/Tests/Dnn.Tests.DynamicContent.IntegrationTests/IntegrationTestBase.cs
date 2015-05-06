@@ -17,6 +17,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 {
     public abstract class IntegrationTestBase
     {
+        public int CreatedByUserId = 1;
+        public int LastModifiedByUserId = 2;
+
         private const string CreateContentTypeTableSql = @"
             CREATE TABLE ContentTypes(
 	            ContentTypeID int IDENTITY(1,1) NOT NULL,
@@ -51,8 +54,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         private const string CreateDataTypeTableSql = @"
             CREATE TABLE ContentTypes_DataTypes(
 	            DataTypeID int IDENTITY(1,1) NOT NULL,
+                PortalID int NOT NULL,
 	            Name nvarchar(100) NOT NULL,
-                UnderlyingDataType int NOT NULL
+                UnderlyingDataType int NOT NULL,
+                CreatedByUserID int NOT NULL,
+                LastModifiedByUserID int NOT NULL
             )";
 
         private const string CreateFieldDefinitionTableSql = @"
@@ -78,7 +84,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
         private const string InsertContentTypeSql = "INSERT INTO ContentTypes (ContentType, PortalID, IsDynamic) VALUES ('{0}',{1}, {2})";
 
-        private const string InsertDataTypeSql = "INSERT INTO ContentTypes_DataTypes (Name, UnderlyingDataType) VALUES ('{0}', {1})";
+        private const string InsertDataTypeSql = @"INSERT INTO ContentTypes_DataTypes 
+                                                            (PortalID, Name, UnderlyingDataType, CreatedByUserID, LastModifiedByUserID) 
+                                                            VALUES ({0}, '{1}', {2}, {3}, {4})";
 
         private const string InsertContentTemplateSql = @"INSERT INTO ContentTypes_Templates 
                                                             (ContentTypeID, Name, TemplateFileID) 
@@ -163,7 +171,20 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                 {
                     dataType = 0;
                 }
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, String.Format("Type_{0}", i), dataType));
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, i, String.Format("Type_{0}", i), dataType, CreatedByUserId, LastModifiedByUserId));
+            }
+        }
+
+        protected void SetUpDataTypes(int count, int portalId)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var dataType = i;
+                if (dataType > 8)
+                {
+                    dataType = 0;
+                }
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertDataTypeSql, portalId, String.Format("Type_{0}", i), dataType, CreatedByUserId, LastModifiedByUserId));
             }
         }
 

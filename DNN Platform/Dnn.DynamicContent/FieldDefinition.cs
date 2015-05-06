@@ -40,7 +40,8 @@ namespace Dnn.DynamicContent
         {
             get
             {
-                return _dataType ?? (_dataType = DataTypeManager.Instance.GetDataTypes().SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
+                //TODO - figure out how to get PortalId for the GetDataTypes call
+                return _dataType ?? (_dataType = DataTypeManager.Instance.GetDataTypes(-1).SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
             }
         }
 
