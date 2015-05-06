@@ -1264,7 +1264,7 @@ td > .dnnLabel {
     display: block;
 }
 
-.dnnTooltip .dnnFormHelpContent span:after,
+/*.dnnTooltip .dnnFormHelpContent span:after,
 .dnnHelperTip .dnnFormHelpContent span:after {
     position: absolute;
     content: "";
@@ -1276,6 +1276,32 @@ td > .dnnLabel {
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 7px solid #000;
+}*/
+
+.bottomArrow:after
+{
+    position: absolute;
+    content: "";
+    left: 15px;
+    bottom: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #000;
+}
+.topArrow:before {
+    position: absolute;
+    content: "";
+    left: 15px;
+    top: -7px;
+    width: 0;
+    height: 0;
+    opacity: 0.75;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #000;
 }
 
 a.pinHelp {

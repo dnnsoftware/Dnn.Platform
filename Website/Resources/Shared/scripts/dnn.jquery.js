@@ -441,7 +441,19 @@
                     hoverOnPd = true;
                     var tooltipHeight = helpSelector.height();
                     var top = -(tooltipHeight + 30);
-                    helpSelector.parent().css({ top: top + 'px' });
+                    if ((tooltipHeight + 30) <= $this.parent().offset().top) {
+                        helpSelector.parent().css({ top: top + 'px' });
+                        //hide before style
+                        $this.find("div.dnnFormHelpContent span").addClass("bottomArrow");
+                        $this.find("div.dnnFormHelpContent span").removeClass("topArrow");
+
+                    } else {
+                        helpSelector.parent().css({ top: 30 + 'px' });                  
+                        //hide after style
+                        $this.find("div.dnnFormHelpContent span").addClass("topArrow");
+                        $this.find("div.dnnFormHelpContent span").removeClass("bottomArrow");
+                        //$("div.dnnHelpText").addClass("bottomArrow");
+                    }
                     helpSelector.css('visibility', 'visible');
                 },
                 out: function () {
