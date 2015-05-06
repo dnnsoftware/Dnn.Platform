@@ -1278,6 +1278,10 @@ td > .dnnLabel {
     border-top: 7px solid #000;
 }*/
 
+.dnnTooltip .dnnFormHelpContent .dnnHelpText {
+    word-wrap: break-word;
+}
+
 .bottomArrow:after
 {
     position: absolute;
