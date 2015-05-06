@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return Request.IsAuthenticated && (User.UserID == UserInfo.UserID);
+                return Request.IsAuthenticated && (UserId == UserInfo.UserID);
             }
         }
 
