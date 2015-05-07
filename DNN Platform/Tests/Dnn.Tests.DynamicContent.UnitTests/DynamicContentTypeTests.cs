@@ -25,7 +25,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(-1, type.PortalId);
             Assert.AreEqual(true, type.IsDynamic);
             Assert.AreEqual(-1, type.ContentTypeId);
-            Assert.AreEqual(String.Empty, type.ContentType);
+            Assert.AreEqual(String.Empty, type.Name);
         }
 
         [Test]

@@ -6,6 +6,7 @@ using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.DynamicContent
 {
@@ -32,7 +33,10 @@ namespace Dnn.DynamicContent
         public int AddContentType(DynamicContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.PropertyNotNullOrEmpty(contentType, "Name");
+
+            contentType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             Add(contentType);
 
@@ -116,7 +120,10 @@ namespace Dnn.DynamicContent
         public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.PropertyNotNullOrEmpty(contentType, "Name");
+
+            contentType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             Update(contentType);
 

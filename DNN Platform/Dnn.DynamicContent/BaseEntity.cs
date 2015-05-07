@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Data.SqlTypes;
 using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace Dnn.DynamicContent
@@ -12,16 +13,16 @@ namespace Dnn.DynamicContent
         {
             CreatedByUserId = -1;
             LastModifiedByUserId = -1;
+            CreatedOnDate = SqlDateTime.MinValue.Value;
+            LastModifiedOnDate = SqlDateTime.MinValue.Value;
         }
 
         public int CreatedByUserId { get; set; }
 
-        [ReadOnlyColumn]
         public DateTime CreatedOnDate { get; set; }
 
         public int LastModifiedByUserId { get; set; }
 
-        [ReadOnlyColumn]
         public DateTime LastModifiedOnDate { get; set; }
     }
 }

@@ -42,6 +42,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             Add(dataType);
 
@@ -136,6 +137,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             using (DataContext)
             {

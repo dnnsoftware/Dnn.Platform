@@ -9,6 +9,7 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
@@ -57,6 +58,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void TearDown()
         {
             MockComponentProvider.ResetContainer();
+            UserController.ClearInstance();
         }
 
         [Test]
@@ -96,7 +98,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -115,7 +117,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
             int contentTypeId = contentTypeController.AddContentType(contentType);
@@ -129,11 +131,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             //Act
             contentTypeController.AddContentType(contentType);
@@ -147,11 +149,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             var fieldDefinitionCount = 5;
             for (int i = 0; i < fieldDefinitionCount; i++)
@@ -172,11 +174,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_AddContentTypeId;
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = contentTypeId);
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             var fieldDefinitionCount = 5;
             for (int i = 0; i < fieldDefinitionCount; i++)
@@ -199,11 +201,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             var contentTemplateCount = 5;
             for (int i = 0; i < contentTemplateCount; i++)
@@ -224,11 +226,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_AddContentTypeId;
             _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
-                            .Callback((ContentType ct) => ct.ContentTypeId = contentTypeId);
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = contentTypeId);
 
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
-            var contentType = new DynamicContentType { ContentType = Constants.CONTENTTYPE_ValidContentType };
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
 
             var contentTemplateCount = 5;
             for (int i = 0; i < contentTemplateCount; i++)
@@ -247,10 +249,34 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void AddContentType_Sets_CreatedByUserId_Property_On_Valid_ContentType()
+        {
+            //Arrange
+            int userId = Constants.USER_ValidId;
+            _mockContentTypeRepository.Setup(r => r.Insert(It.IsAny<DynamicContentType>()))
+                            .Callback((DynamicContentType ct) => ct.ContentTypeId = Constants.CONTENTTYPE_AddContentTypeId);
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo { UserID = userId });
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            var contentType = new DynamicContentType { Name = Constants.CONTENTTYPE_ValidContentType };
+
+            //Act
+            contentTypeController.AddContentType(contentType);
+
+            //Assert
+            Assert.AreEqual(userId, contentType.CreatedByUserId);
+        }
+
+
+        [Test]
         public void DeleteContentType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTypeController = new ContentTypeController(_mockDataContext.Object);
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTypeController.DeleteContentType(null));
@@ -263,10 +289,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentType = Constants.CONTENTTYPE_ValidContentType,
-                ContentTypeId = Null.NullInteger
-            };
+                                        {
+                                            Name = Constants.CONTENTTYPE_ValidContentType,
+                                            ContentTypeId = Null.NullInteger
+                                        };
 
             //Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => contentTypeController.DeleteContentType(contentType));
@@ -279,10 +305,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentType = Constants.CONTENTTYPE_ValidContentType,
-                ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
-            };
+                                        {
+                                            Name = Constants.CONTENTTYPE_ValidContentType,
+                                            ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
+                                        };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -299,7 +325,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var contentType = new DynamicContentType
                                     {
-                                        ContentType = Constants.CONTENTTYPE_ValidContentType,
+                                        Name = Constants.CONTENTTYPE_ValidContentType,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
                                     };
 
@@ -325,7 +351,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var contentType = new DynamicContentType
                                     {
-                                        ContentType = Constants.CONTENTTYPE_ValidContentType,
+                                        Name = Constants.CONTENTTYPE_ValidContentType,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
                                     };
 
@@ -444,10 +470,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
-                ContentType = Constants.CONTENTTYPE_ValidContentType
-            };
+                                        {
+                                            ContentTypeId = Constants.CONTENTTYPE_InValidContentTypeId,
+                                            Name = Constants.CONTENTTYPE_ValidContentType
+                                        };
 
             Assert.Throws<ArgumentOutOfRangeException>(() => contentTypeController.UpdateContentType(contentType));
         }
@@ -459,10 +485,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
-                ContentType = Constants.CONTENTTYPE_UpdateContentType
-            };
+                                        {
+                                            ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                            Name = Constants.CONTENTTYPE_UpdateContentType
+                                        };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
@@ -480,7 +506,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = new DynamicContentType
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
-                                        ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                        Name = Constants.CONTENTTYPE_UpdateContentType
                                     };
 
             var fieldDefinitionCount = 5;
@@ -506,7 +532,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = new DynamicContentType
                                 {
                                     ContentTypeId = contentTypeId,
-                                    ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                    Name = Constants.CONTENTTYPE_UpdateContentType
                                 };
 
             var fieldDefinitionCount = 5;
@@ -532,10 +558,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
-                ContentType = Constants.CONTENTTYPE_UpdateContentType
-            };
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                        Name = Constants.CONTENTTYPE_UpdateContentType
+                                    };
 
             var fieldDefinitionCount = 5;
             for (int i = 0; i < fieldDefinitionCount; i++)
@@ -559,7 +585,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = new DynamicContentType
                                     {
                                         ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
-                                        ContentType = Constants.CONTENTTYPE_UpdateContentType
+                                        Name = Constants.CONTENTTYPE_UpdateContentType
                                     };
 
             var contentTemplateCount = 5;
@@ -583,10 +609,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             var contentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId;
             var contentType = new DynamicContentType
-            {
-                ContentTypeId = contentTypeId,
-                ContentType = Constants.CONTENTTYPE_UpdateContentType
-            };
+                                        {
+                                            ContentTypeId = contentTypeId,
+                                            Name = Constants.CONTENTTYPE_UpdateContentType
+                                        };
 
             var contentTemplateCount = 5;
             for (int i = 0; i < contentTemplateCount; i++)
@@ -612,10 +638,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             var contentType = new DynamicContentType
-            {
-                ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
-                ContentType = Constants.CONTENTTYPE_UpdateContentType
-            };
+                                        {
+                                            ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                            Name = Constants.CONTENTTYPE_UpdateContentType
+                                        };
 
             var contentTemplateCount = 5;
             for (int i = 0; i < contentTemplateCount; i++)
@@ -631,6 +657,30 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTemplateController.Verify(ct => ct.UpdateContentTemplate(It.IsAny<ContentTemplate>()), Times.Exactly(contentTemplateCount));
         }
 
+        [Test]
+        public void UpdateContentType_Updates_LastModifed_Proeprty_On_Valid_ContentType()
+        {
+            //Arrange
+            var userId = Constants.USER_ValidId;
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            var mockUserController = new Mock<IUserController>();
+            mockUserController.Setup(uc => uc.GetCurrentUserInfo()).Returns(new UserInfo { UserID = userId });
+            UserController.SetTestableInstance(mockUserController.Object);
+
+            var contentType = new DynamicContentType
+                                    {
+                                        ContentTypeId = Constants.CONTENTTYPE_UpdateContentTypeId,
+                                        Name = Constants.CONTENTTYPE_UpdateContentType
+                                    };
+
+            //Act
+            contentTypeController.UpdateContentType(contentType);
+
+            //Assert
+            Assert.AreEqual(userId, contentType.LastModifiedByUserId);
+        }
+
 
         private List<DynamicContentType> CreateValidContentTypes(int count)
         {
@@ -639,7 +689,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 string contentType = Constants.CONTENTTYPE_ValidContentType;
 
-                contentTypes.Add(new DynamicContentType { ContentTypeId = i, ContentType = contentType });
+                contentTypes.Add(new DynamicContentType { ContentTypeId = i, Name = contentType });
             }
 
             return contentTypes;

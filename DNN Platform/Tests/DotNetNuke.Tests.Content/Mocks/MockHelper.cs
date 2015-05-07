@@ -67,35 +67,35 @@ namespace DotNetNuke.Tests.Content.Mocks
 
         private static void AddBaseEntityColumns(DataTable table)
         {
-            table.Columns.Add("CreatedByUserID", typeof (int));
-            table.Columns.Add("CreatedOnDate", typeof (DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof (int));
-            table.Columns.Add("LastModifiedOnDate", typeof (DateTime));
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
         }
 
         private static void AddContentItemToTable(DataTable table, int id, string content, string contentKey, bool indexed, int userId, string term)
         {
-            table.Rows.Add(new object[] {id, content, Null.NullInteger, Null.NullInteger, Null.NullInteger, contentKey, indexed, userId, term});
+            table.Rows.Add(new object[] { id, content, Null.NullInteger, Null.NullInteger, Null.NullInteger, contentKey, indexed, userId, term });
         }
 
         private static void AddContentTypeToTable(DataTable table, int id, string contentType)
         {
-            table.Rows.Add(new object[] {id, contentType});
+            table.Rows.Add(new object[] { id, contentType });
         }
 
         private static void AddScopeTypeToTable(DataTable table, int id, string scopeType)
         {
-            table.Rows.Add(new object[] {id, scopeType});
+            table.Rows.Add(new object[] { id, scopeType });
         }
 
         private static void AddTermToTable(DataTable table, int id, int contentItemId, int vocabularyId, string name, string description, int weight, int parentId)
         {
-            table.Rows.Add(new object[] {id, contentItemId, vocabularyId, name, description, weight, parentId});
+            table.Rows.Add(new object[] { id, contentItemId, vocabularyId, name, description, weight, parentId });
         }
 
         private static void AddVocabularyToTable(DataTable table, int id, int typeId, string name, string description, int scopeId, int scopeTypeId, int weight)
         {
-            table.Rows.Add(new object[] {id, typeId, false, name, description, scopeId, scopeTypeId, weight});
+            table.Rows.Add(new object[] { id, typeId, false, name, description, scopeId, scopeTypeId, weight });
         }
 
         private static DataTable CreateContentItemTable()
@@ -104,20 +104,20 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = new DataTable();
 
             // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ContentItemID", typeof (int));
-            table.Columns.Add("Content", typeof (string));
-            table.Columns.Add("ContentTypeID", typeof (int));
-            table.Columns.Add("TabID", typeof (int));
-            table.Columns.Add("ModuleID", typeof (int));
-            table.Columns.Add("ContentKey", typeof (string));
-            table.Columns.Add("Indexed", typeof (bool));
-            table.Columns.Add("UserID", typeof (int));
-            table.Columns.Add("Term", typeof (string));
-            table.Columns.Add("StateID", typeof (int));
+            DataColumn idColumn = table.Columns.Add("ContentItemID", typeof(int));
+            table.Columns.Add("Content", typeof(string));
+            table.Columns.Add("ContentTypeID", typeof(int));
+            table.Columns.Add("TabID", typeof(int));
+            table.Columns.Add("ModuleID", typeof(int));
+            table.Columns.Add("ContentKey", typeof(string));
+            table.Columns.Add("Indexed", typeof(bool));
+            table.Columns.Add("UserID", typeof(int));
+            table.Columns.Add("Term", typeof(string));
+            table.Columns.Add("StateID", typeof(int));
             AddBaseEntityColumns(table);
 
             // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] {idColumn};
+            table.PrimaryKey = new[] { idColumn };
 
             return table;
         }
@@ -128,10 +128,10 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = new DataTable();
 
             // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof (int));
-            table.Columns.Add("ContentType", typeof (string));
+            DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof(int));
+            table.Columns.Add("ContentType", typeof(string));
             // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] {idColumn};
+            table.PrimaryKey = new[] { idColumn };
 
             return table;
         }
@@ -142,10 +142,10 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = new DataTable();
 
             // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof (int));
-            table.Columns.Add("ScopeType", typeof (string));
+            DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof(int));
+            table.Columns.Add("ScopeType", typeof(string));
             // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] {idColumn};
+            table.PrimaryKey = new[] { idColumn };
 
             return table;
         }
@@ -156,19 +156,19 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = new DataTable();
 
             // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("TermID", typeof (int));
-            table.Columns.Add("ContentItemID", typeof (int));
-            table.Columns.Add("VocabularyID", typeof (int));
-            table.Columns.Add("Name", typeof (string));
-            table.Columns.Add("Description", typeof (string));
-            table.Columns.Add("Weight", typeof (int));
-            table.Columns.Add("ParentTermID", typeof (int));
-            table.Columns.Add("TermLeft", typeof (int));
-            table.Columns.Add("TermRight", typeof (int));
+            DataColumn idColumn = table.Columns.Add("TermID", typeof(int));
+            table.Columns.Add("ContentItemID", typeof(int));
+            table.Columns.Add("VocabularyID", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("Weight", typeof(int));
+            table.Columns.Add("ParentTermID", typeof(int));
+            table.Columns.Add("TermLeft", typeof(int));
+            table.Columns.Add("TermRight", typeof(int));
             AddBaseEntityColumns(table);
 
             // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] {idColumn};
+            table.PrimaryKey = new[] { idColumn };
 
             return table;
         }
@@ -179,18 +179,18 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = new DataTable();
 
             // Create columns, ID and Name.
-            DataColumn idColumn = table.Columns.Add("VocabularyID", typeof (int));
-            table.Columns.Add("VocabularyTypeID", typeof (int));
-            table.Columns.Add("IsSystem", typeof (bool));
-            table.Columns.Add("Name", typeof (string));
-            table.Columns.Add("Description", typeof (string));
-            table.Columns.Add("ScopeID", typeof (int));
-            table.Columns.Add("ScopeTypeID", typeof (int));
-            table.Columns.Add("Weight", typeof (int));
+            DataColumn idColumn = table.Columns.Add("VocabularyID", typeof(int));
+            table.Columns.Add("VocabularyTypeID", typeof(int));
+            table.Columns.Add("IsSystem", typeof(bool));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Description", typeof(string));
+            table.Columns.Add("ScopeID", typeof(int));
+            table.Columns.Add("ScopeTypeID", typeof(int));
+            table.Columns.Add("Weight", typeof(int));
             AddBaseEntityColumns(table);
 
             // Set the ID column as the primary key column.
-            table.PrimaryKey = new[] {idColumn};
+            table.PrimaryKey = new[] { idColumn };
 
             return table;
         }
@@ -302,17 +302,17 @@ namespace DotNetNuke.Tests.Content.Mocks
             return table.CreateDataReader();
         }
 
-        internal static List<ContentType> CreateValidContentTypes(int count)
+        internal static IDataReader CreateValidContentTypesReader(int count)
         {
-            var contentTypes = new List<ContentType>();
+            DataTable table = CreateContentTypeTable();
             for (int i = Constants.CONTENTTYPE_ValidContentTypeId; i < Constants.CONTENTTYPE_ValidContentTypeId + count; i++)
             {
                 string contentType = (count == 1) ? Constants.CONTENTTYPE_ValidContentType : ContentTestHelper.GetContentType(i);
 
-                contentTypes.Add( new ContentType {ContentTypeId = i, ContentType = contentType});
+                AddContentTypeToTable(table, i, contentType);
             }
 
-            return contentTypes;
+            return table.CreateDataReader();
         }
 
         internal static IDataReader CreateValidScopeTypesReader(int count)
@@ -331,8 +331,8 @@ namespace DotNetNuke.Tests.Content.Mocks
         internal static DataTable CreateMetaDataTable()
         {
             var table = new DataTable();
-            table.Columns.Add("MetaDataName", typeof (string));
-            table.Columns.Add("MetaDataValue", typeof (string));
+            table.Columns.Add("MetaDataName", typeof(string));
+            table.Columns.Add("MetaDataValue", typeof(string));
 
             return table;
         }
@@ -344,7 +344,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             {
                 for (int i = 0; i < Constants.CONTENT_MetaDataCount; i++)
                 {
-                    table.Rows.Add(new object[] {String.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue});
+                    table.Rows.Add(new object[] { String.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue });
                 }
 
                 return table.CreateDataReader();
