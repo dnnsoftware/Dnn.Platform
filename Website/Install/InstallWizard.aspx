@@ -21,6 +21,7 @@
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.PasswordStrength.js"></script>
     <script type="text/javascript" src="../DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.extensions.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>  
