@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Tabs
             try
             {
                 var tabInfo = _tabController.GetTab(tabId, portalId);
-                if (_workflowEngine.IsWorkflowCompleted(tabInfo))
+				if (tabInfo!= null && !tabInfo.IsDeleted && _workflowEngine.IsWorkflowCompleted(tabInfo))
                 {
                     var workflow = GetCurrentOrDefaultWorkflow(tabInfo, portalId);
                     if (workflow == null)
