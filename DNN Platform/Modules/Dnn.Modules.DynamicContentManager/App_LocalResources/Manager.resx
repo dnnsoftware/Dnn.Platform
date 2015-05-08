@@ -138,4 +138,52 @@
   <data name="Templates.Text" xml:space="preserve">
     <value>Templates</value>
   </data>
+  <data name="AddDataType.Text" xml:space="preserve">
+    <value>Add Data Type</value>
+  </data>
+  <data name="Created.Text" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="DataType.Text" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="FindDataType.Text" xml:space="preserve">
+    <value>Find Data Type</value>
+  </data>
+  <data name="System.Text" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="AddContentType.Text" xml:space="preserve">
+    <value>Add Content Type</value>
+  </data>
+  <data name="AddTemplate.Text" xml:space="preserve">
+    <value>Add Template</value>
+  </data>
+  <data name="ContentType.Text" xml:space="preserve">
+    <value>Content Type</value>
+  </data>
+  <data name="FindContentType.Text" xml:space="preserve">
+    <value>Find Content Type</value>
+  </data>
+  <data name="FindTemplate.Text" xml:space="preserve">
+    <value>Find Template</value>
+  </data>
+  <data name="Template.Text" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="ContentTypes_NoPagerFormat.Text" xml:space="preserve">
+    <value>Showing {0} Content Types</value>
+  </data>
+  <data name="ContentTypes_PagerFormat.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} Content Types</value>
+  </data>
+  <data name="DataTypes_NoPagerFormat.Text" xml:space="preserve">
+    <value>Showing {0} Data Types</value>
+  </data>
+  <data name="DataTypes_PagerFormat.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} Data Types</value>
+  </data>
+  <data name="Pager_PageDesc.Text" xml:space="preserve">
+    <value>Page {0} of {1}</value>
+  </data>
 </root>
