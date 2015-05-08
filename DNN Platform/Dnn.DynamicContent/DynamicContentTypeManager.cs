@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
@@ -84,30 +85,39 @@ namespace Dnn.DynamicContent
         /// Gets the content types for a specific portal.
         /// </summary>
         /// <param name="portalId">The portalId</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        public IQueryable<DynamicContentType> GetContentTypes(int portalId)
+        public IQueryable<DynamicContentType> GetContentTypes(int portalId, bool includeSystem = false)
         {
-            return Get(portalId).AsQueryable();
+            List<DynamicContentType> contentTypes = Get(portalId).ToList();
+            if (includeSystem)
+            {
+                contentTypes.AddRange(Get(-1).Where(t => t.IsDynamic));
+            }
+            return contentTypes.AsQueryable();
         }
 
         /// <summary>
         /// Gets a page of content types for a specific portal.
         /// </summary>
+        /// <param name="searchTerm">The search term to use</param>
         /// <param name="portalId">The portalId</param>
         /// <param name="pageIndex">The page index to return</param>
         /// <param name="pageSize">The page size</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        public IPagedList<DynamicContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
+        public IPagedList<DynamicContentType> GetContentTypes(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false)
         {
-            IPagedList<DynamicContentType> contentTypes;
-            using (DataContext)
-            {
-                var rep = DataContext.GetRepository<DynamicContentType>();
+            var contentTypes = GetContentTypes(portalId, includeSystem);
 
-                contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                contentTypes = contentTypes.Where(dt => dt.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()));
             }
 
-            return contentTypes;
+            return new PagedList<DynamicContentType>(contentTypes, pageIndex, pageSize);
         }
 
         /// <summary>

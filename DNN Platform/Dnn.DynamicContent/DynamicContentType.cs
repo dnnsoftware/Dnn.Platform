@@ -22,11 +22,13 @@ namespace Dnn.DynamicContent
         private IList<FieldDefinition> _fieldDefitions;
         private IList<ContentTemplate> _templates;
 
-        public DynamicContentType()
+        public DynamicContentType() : this(-1) { }
+
+        public DynamicContentType(int portalId) : base()
         {
             ContentTypeId = Null.NullInteger;
             Name = String.Empty;
-            PortalId = -1;
+            PortalId = portalId;
             IsDynamic = true;
         }
 
@@ -60,8 +62,20 @@ namespace Dnn.DynamicContent
             }
         }
 
+        /// <summary>
+        /// A flag that indicates whether the Content Type is Dynamic
+        /// </summary>
         public bool IsDynamic { get; set; }
 
+        /// <summary>
+        /// A flag that indicates whether the Content Type is a system type
+        /// </summary>
+        [IgnoreColumn]
+        public bool IsSystem { get { return (PortalId == -1); } }
+
+        /// <summary>
+        /// The Id of the portal
+        /// </summary>
         public int PortalId { get; set; }
 
         /// <summary>

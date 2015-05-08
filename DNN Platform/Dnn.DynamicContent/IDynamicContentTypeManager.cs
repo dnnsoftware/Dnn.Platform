@@ -28,17 +28,23 @@ namespace Dnn.DynamicContent
         /// <summary>
         /// Gets the content types.
         /// </summary>
+        /// <param name="portalId">The portalId</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        IQueryable<DynamicContentType> GetContentTypes(int portalId);
+        IQueryable<DynamicContentType> GetContentTypes(int portalId, bool includeSystem = false);
 
         /// <summary>
         /// Gets a page of content types for a specific portal.
         /// </summary>
+        /// <param name="searchTerm">The search term to use</param>
         /// <param name="portalId">The portalId</param>
         /// <param name="pageIndex">The page index to return</param>
         /// <param name="pageSize">The page size</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        IPagedList<DynamicContentType> GetContentTypes(int portalId, int pageIndex, int pageSize);
+        IPagedList<DynamicContentType> GetContentTypes(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false);
 
         /// <summary>
         /// Updates the type of the content.
