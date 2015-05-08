@@ -369,7 +369,23 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetContentTypes_Calls_Repository_Get()
+        public void GetContentTypes_Calls_Repository_Get_With_PortalId()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var contentTypes = contentTypeController.GetContentTypes(portalId, true);
+
+            //Assert
+            _mockContentTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetContentTypes_Calls_Repository_Get_With_HostPortalId_If_IsSystem()
         {
             //Arrange
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
@@ -414,32 +430,83 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetContentTypes_Overload_Calls_Repository_GetPage()
+        public void GetContentTypes_Overload_Calls_Repository_Get_With_PortalId()
         {
             //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
-            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+            var contentTypes = contentTypeController.GetContentTypes("Name", portalId, pageIndex, pageSize, false);
 
             //Assert
-            _mockContentTypeRepository.Verify(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount));
+            _mockContentTypeRepository.Verify(r => r.Get(portalId));
+        }
+
+        [Test]
+        public void GetContentTypes_Overload_Calls_Repository_Get_With_HostPortalId_If_IsSystem()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
+            var hostPortalId = -1;
+            var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var contentTypes = contentTypeController.GetContentTypes("Name", portalId, pageIndex, pageSize, true);
+
+            //Assert
+            _mockContentTypeRepository.Verify(r => r.Get(hostPortalId));
         }
 
         [Test]
         public void GetContentTypes_Overload_Returns_PagedList()
         {
             //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
-            _mockContentTypeRepository.Setup(r => r.GetPage(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount))
-                .Returns(new PagedList<DynamicContentType>(new List<DynamicContentType>(), Constants.PAGE_First, Constants.PAGE_RecordCount));
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes(Constants.PORTAL_ValidPortalId, Constants.PAGE_First, Constants.PAGE_RecordCount);
+            var contentTypes = contentTypeController.GetContentTypes("Name", portalId, pageIndex, pageSize, false);
 
             //Assert
             Assert.IsInstanceOf<IPagedList<DynamicContentType>>(contentTypes);
+        }
+
+        [TestCase(25, 0, "Name", 25, 5)]
+        [TestCase(20, 0, "N", 20, 4)]
+        [TestCase(150, 0, "nam", 150, 30)]
+        [TestCase(10, 0, "_2", 1, 1)]
+        public void GetContentTypes_Returns_Correct_ContentTypes(int recordCount, int portalId, string searchTerm, int totalCount, int pageCount)
+        {
+            //Arrange
+            var pageIndex = 0;
+            var pageSize = 5;
+            _mockContentTypeRepository.Setup(r => r.Get(portalId))
+                .Returns(CreateValidContentTypes(recordCount, portalId));
+            var dataTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
+
+            //Act
+            var contentTypes = dataTypeController.GetContentTypes(searchTerm, portalId, pageIndex, pageSize, true);
+
+            //Assert
+            Assert.AreEqual(totalCount, contentTypes.TotalCount);
+            Assert.AreEqual(pageCount, contentTypes.PageCount);
+            if (pageCount > 1)
+            {
+                Assert.IsTrue(contentTypes.HasNextPage);
+            }
+            else
+            {
+                Assert.IsFalse(contentTypes.HasNextPage);
+            }
         }
 
         [Test]
@@ -681,15 +748,27 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(userId, contentType.LastModifiedByUserId);
         }
 
-
         private List<DynamicContentType> CreateValidContentTypes(int count)
         {
             var contentTypes = new List<DynamicContentType>();
             for (int i = Constants.CONTENTTYPE_ValidContentTypeId; i < Constants.CONTENTTYPE_ValidContentTypeId + count; i++)
             {
-                string contentType = Constants.CONTENTTYPE_ValidContentType;
+                string contentType = String.Format("Name_{0}", i);
 
                 contentTypes.Add(new DynamicContentType { ContentTypeId = i, Name = contentType });
+            }
+
+            return contentTypes;
+        }
+
+        private List<DynamicContentType> CreateValidContentTypes(int count, int portalId)
+        {
+            var contentTypes = new List<DynamicContentType>();
+            for (int i = Constants.CONTENTTYPE_ValidContentTypeId; i < Constants.CONTENTTYPE_ValidContentTypeId + count; i++)
+            {
+                string contentType = String.Format("Name_{0}", i);
+
+                contentTypes.Add(new DynamicContentType { ContentTypeId = i, Name = contentType, PortalId = portalId });
             }
 
             return contentTypes;

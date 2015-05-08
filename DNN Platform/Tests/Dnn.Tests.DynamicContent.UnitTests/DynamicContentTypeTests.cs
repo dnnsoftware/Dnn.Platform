@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -26,6 +27,31 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(true, type.IsDynamic);
             Assert.AreEqual(-1, type.ContentTypeId);
             Assert.AreEqual(String.Empty, type.Name);
+        }
+
+        [Test]
+        public void Constructor_Sets_PortalId_Property()
+        {
+            //Arrange
+
+            //Act
+            var contentType = new DynamicContentType(Constants.CONTENT_ValidPortalId);
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENT_ValidPortalId, contentType.PortalId);
+        }
+
+        [TestCase(-1, true)]
+        [TestCase(0, false)]
+        public void IsSystem_Returns_Correct_Value(int portalId, bool isSystem)
+        {
+            //Arrange
+
+            //Act
+            var contentType = new DynamicContentType(portalId);
+
+            //Assert
+            Assert.AreEqual(isSystem, contentType.IsSystem);
         }
 
         [Test]
@@ -60,7 +86,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Assert
             mockFieldDefinitionController.Verify(c => c.GetFieldDefinitions(It.IsAny<int>()), Times.Once);
         }
-
 
         [Test]
         public void FieldDefinitions_Property_Calls_FieldDefinitionController_Get_Once_Only()

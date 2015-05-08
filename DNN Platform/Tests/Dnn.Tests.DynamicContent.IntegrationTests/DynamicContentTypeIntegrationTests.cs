@@ -142,7 +142,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeController = new DynamicContentTypeManager();
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes(PortalId, pageIndex, pageSize);
+            var contentTypes = contentTypeController.GetContentTypes("Name", PortalId, pageIndex, pageSize, false);
 
             //Assert
             Assert.AreEqual(recordCount / 2, contentTypes.TotalCount);

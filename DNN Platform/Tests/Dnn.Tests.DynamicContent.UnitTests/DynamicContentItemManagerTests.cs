@@ -139,7 +139,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentTypes(portalId))
+            mockContentTypeController.Setup(c => c.GetContentTypes(portalId, false))
                 .Returns(new List<DynamicContentType>() { GetContentType(contentTypeId, portalId) }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
@@ -287,7 +287,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentType = GetContentType(contentTypeId, portalId);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentTypes(portalId))
+            mockContentTypeController.Setup(c => c.GetContentTypes(portalId, false))
                 .Returns(new List<DynamicContentType>() { contentType }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 
@@ -464,7 +464,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             FieldDefinitionManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
             var mockContentTypeController = new Mock<IDynamicContentTypeManager>();
-            mockContentTypeController.Setup(c => c.GetContentTypes(portalId))
+            mockContentTypeController.Setup(c => c.GetContentTypes(portalId, false))
                 .Returns(new List<DynamicContentType>() { GetContentType(contentTypeId, portalId) }.AsQueryable());
             DynamicContentTypeManager.SetTestableInstance(mockContentTypeController.Object);
 

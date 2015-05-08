@@ -333,10 +333,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.IsInstanceOf<IPagedList<DataType>>(dataTypes);
         }
 
-        [TestCaseAttribute(25, 0, "Name", 25, 5)]
-        [TestCaseAttribute(20, 0, "N", 20, 4)]
-        [TestCaseAttribute(150, 0, "nam", 150, 30)]
-        [TestCaseAttribute(10, 0, "_2", 1, 1)]
+        [TestCase(25, 0, "Name", 25, 5)]
+        [TestCase(20, 0, "N", 20, 4)]
+        [TestCase(150, 0, "nam", 150, 30)]
+        [TestCase(10, 0, "_2", 1, 1)]
         public void GetDataTypes_Returns_Correct_DataTypes(int recordCount, int portalId, string searchTerm, int totalCount, int pageCount)
         {
             //Arrange
@@ -361,7 +361,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 Assert.IsFalse(dataTypes.HasNextPage);
             }
         }
-
 
         [Test]
         public void UpdateDataType_Throws_On_Null_ContentType()
