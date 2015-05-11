@@ -62,7 +62,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
             string strResult = "NOTFOUND";
 
             string strFile = Request.QueryString["file"];
-            if (strFile != null && !IsImageFile(strFile))
+            if (strFile != null && IsImageFile(strFile))
             {
                 string path = strFile.Replace("http://", "");
                 path = path.Substring(path.IndexOf("/"));
