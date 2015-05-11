@@ -1107,12 +1107,27 @@ namespace DotNetNuke.Entities.Portals
         {
             if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
-                cultureCode = GetActivePortalLanguage(portalId);
+                //Lookup culturecode but cache it in the HttpContext for performance
+                var key = String.Format("ActivePortalLanguage{0}", portalId);
+                cultureCode = (string)HttpContext.Current.Items[key];
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = GetActivePortalLanguage(portalId);
+                    HttpContext.Current.Items[key] = cultureCode;
+                }
             }
-            var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
-            return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
-                                                                   GetPortalSettingsDictionaryCallback,
-                                                                   true);
+
+            //Get PortalSettings from Context or from cache
+            var contextKey = String.Format("PortalSettingsDictionary{0}{1}", portalId, cultureCode);
+            var dictionary = HttpContext.Current.Items[contextKey] as Dictionary<string, string>;
+            if (dictionary == null)
+            {
+                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                                                                       GetPortalSettingsDictionaryCallback,
+                                                                       true);
+            }
+            return dictionary;
         }
 
         private string GetTemplateName(string languageFileName)
@@ -3343,7 +3358,8 @@ namespace DotNetNuke.Entities.Portals
         public static string GetPortalDefaultLanguage(int portalID)
         {
             string cacheKey = String.Format("PortalDefaultLanguage_{0}", portalID);
-            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, portalID), GetPortalDefaultLanguageCallBack);
+            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, portalID), 
+                                                    GetPortalDefaultLanguageCallBack, true);
         }
 
         /// <summary>
