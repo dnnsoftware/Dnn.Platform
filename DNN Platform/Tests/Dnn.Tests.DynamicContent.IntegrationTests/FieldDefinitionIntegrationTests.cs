@@ -18,7 +18,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class FieldDefinitionIntegrationTests : IntegrationTestBase
     {
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionController.FieldDefinitionCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionManager.FieldDefinitionCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -38,7 +38,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId,
@@ -62,7 +62,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 ContentTypeId = contentTypeId,
@@ -84,7 +84,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var definitionId = 4;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 FieldDefinitionId = definitionId
@@ -105,7 +105,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var definitionId = 4;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 FieldDefinitionId = definitionId
@@ -125,7 +125,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             var definitionId = 4;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
             {
                 FieldDefinitionId = definitionId,
@@ -146,7 +146,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeId = 5;
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act
             var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
@@ -167,7 +167,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var cacheCount = 15;
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(SetUpCache(cacheCount));
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
 
             //Act
             var fields = fieldDefinitionController.GetFieldDefinitions(contentTypeId);
@@ -186,7 +186,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var definitionId = 4;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
                             {
                                 FieldDefinitionId = definitionId,
@@ -213,7 +213,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var definitionId = 4;
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             SetUpFieldDefinitions(RecordCount);
-            var fieldDefinitionController = new FieldDefinitionController();
+            var fieldDefinitionController = new FieldDefinitionManager();
             var field = new FieldDefinition
             {
                 FieldDefinitionId = definitionId,
@@ -232,7 +232,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
         private string GetCacheKey(int contentTypeId)
         {
-            return String.Format("{0}_{1}_{2}", _cacheKey, FieldDefinitionController.FieldDefinitionScope, contentTypeId);
+            return String.Format("{0}_{1}_{2}", _cacheKey, FieldDefinitionManager.FieldDefinitionScope, contentTypeId);
         }
 
         private IQueryable<FieldDefinition> SetUpCache(int count)

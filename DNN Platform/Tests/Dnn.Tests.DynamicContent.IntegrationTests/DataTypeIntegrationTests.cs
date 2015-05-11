@@ -22,7 +22,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class DataTypeIntegrationTests : IntegrationTestBase
     {
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeController.DataTypeCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(DataTypeManager.DataTypeCacheKey) + "_PortalId_{0}";
 
         [SetUp]
         public void SetUp()
@@ -42,7 +42,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { Name = "New_Type" };
 
             //Act
@@ -59,14 +59,14 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { Name = "New_Type" };
 
             //Act
             dataTypeController.AddDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
 
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
@@ -96,7 +96,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 6;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
@@ -113,7 +113,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 6;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(RecordCount);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act, Assert
@@ -128,27 +128,28 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
 
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
             //Act
             dataTypeController.DeleteDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         [Test]
         public void GetDataTypes_Fetches_Records_From_Database_If_Cache_Is_Null()
         {
             //Arrange
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
-            SetUpDataTypes(RecordCount);
+            var portalId = Constants.PORTAL_ValidPortalId;
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(null);
+            SetUpDataTypes(RecordCount, portalId);
 
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.AreEqual(RecordCount, dataTypes.Count());
@@ -158,15 +159,16 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void GetDataTypes_Fetches_Records_From_Cache_If_Not_Null()
         {
             //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
             var cacheCount = 15;
-            MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(SetUpCache(cacheCount));
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(SetUpCache(cacheCount));
 
             SetUpDataTypes(RecordCount);
 
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
 
             //Act
-            var dataTypes = dataTypeController.GetDataTypes();
+            var dataTypes = dataTypeController.GetDataTypes(portalId);
 
             //Assert
             Assert.AreEqual(cacheCount, dataTypes.Count());
@@ -179,7 +181,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -204,7 +206,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -223,7 +225,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
-            var dataTypeController = new DataTypeController();
+            var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -249,7 +251,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var dataTypeController = new DataTypeController(dataContext);
+            var dataTypeController = new DataTypeManager(dataContext);
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -261,7 +263,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             dataTypeController.UpdateDataType(dataType);
 
             //Assert
-            MockCache.Verify(c => c.Remove(_cacheKey));
+            MockCache.Verify(c => c.Remove(String.Format(_cacheKey, -1)));
         }
 
         private IQueryable<DataType> SetUpCache(int count)

@@ -21,7 +21,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class ValidatorTypeIntegrationTests : IntegrationTestBase
     {
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(ValidatorTypeController.ValidatorTypeCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(ValidatorTypeManager.ValidatorTypeCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -42,7 +42,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
             var validatorType = new ValidatorType()
                                     {
                                         Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -66,7 +66,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
             var validatorType = new ValidatorType()
                                     {
                                         Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -90,7 +90,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpValidatorTypes(RecordCount);
 
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
-            var validatorTypeController = new ValidatorTypeController(dataContext);
+            var validatorTypeController = new ValidatorTypeManager(dataContext);
             var validatorType = new ValidatorType() { ValidatorTypeId = validatorTypeId, Name = "New_Type" };
 
             //Act
@@ -109,7 +109,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var validatorTypeId = 6;
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
             var validatorType = new ValidatorType() { ValidatorTypeId = validatorTypeId, Name = "New_Type" };
 
             //Act
@@ -126,7 +126,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             MockCache.Setup(c => c.GetItem(_cacheKey)).Returns(null);
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -144,7 +144,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -160,7 +160,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var validatorTypeId = 2;
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
             var validatorType = new ValidatorType
                                     {
                                         ValidatorTypeId = validatorTypeId,
@@ -192,7 +192,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var validatorTypeId = 2;
             SetUpValidatorTypes(RecordCount);
 
-            var validatorTypeController = new ValidatorTypeController();
+            var validatorTypeController = new ValidatorTypeManager();
             var validatorType = new ValidatorType
                                     {
                                         ValidatorTypeId = validatorTypeId,

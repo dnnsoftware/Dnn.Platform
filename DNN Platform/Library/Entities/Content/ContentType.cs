@@ -18,39 +18,43 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+#region Usings
 
 using System;
 using System.Data;
 using System.Linq;
+
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
 
-// ReSharper disable ConvertPropertyToExpressionBody
+#endregion
 
 namespace DotNetNuke.Entities.Content
 {
     /// <summary>
-	/// Content type of a content item.
-	/// </summary>
-	/// <remarks>
-	/// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item. 
-	/// Each product (ie. module) that wishes to allow categorization of data (via Taxonomy or Folksonomy) for it's content items
-	///  will likely need to create its own content type. 
-	/// </remarks>
+    /// Content type of a content item.
+    /// </summary>
+    /// <remarks>
+    /// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item. 
+    /// Each product (ie. module) that wishes to allow categorization of data (via Taxonomy or Folksonomy) for it's content items
+    ///  will likely need to create its own content type. 
+    /// </remarks>
     [Serializable]
-    [TableName("ContentTypes")]
-    [PrimaryKey("ContentTypeID", "ContentTypeId")]
-    [Cacheable(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCachePriority, DataCache.ContentTypesCacheTimeOut)]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
+        #region Private Members
+
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
 
-        internal const string DesktopModuleContentTypeName = "DesktopModule";
-        internal const string ModuleContentTypeName = "Module";
-        internal const string TabContentTypeName = "Tab";
+        private const string desktopModuleContentTypeName = "DesktopModule";
+        private const string moduleContentTypeName = "Module";
+        private const string tabContentTypeName = "Tab";
+
+        #endregion
+
+        #region Constructors
 
         public ContentType() : this(Null.NullString)
         {
@@ -62,32 +66,35 @@ namespace DotNetNuke.Entities.Content
             ContentType = contentType;
         }
 
-        [IgnoreColumn]
+        #endregion
+
+        #region Public Static Properties
+
         public static ContentType DesktopModule
-	    {
-	        get
-	        {
-	            return _desktopModule ?? (_desktopModule = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType ==  DesktopModuleContentTypeName));
-	        }
-	    }
-
-        [IgnoreColumn]
-        public static ContentType Module
-	    {
-	        get
-	        {
-	            return _module ?? (_module = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType ==  ModuleContentTypeName));
-	        }
-	    }
-
-        [IgnoreColumn]
-        public static ContentType Tab 
         {
             get
             {
-                return _tab ?? (_tab = ContentTypeController.Instance.GetContentTypes().FirstOrDefault(type => type.ContentType == TabContentTypeName));
+                return _desktopModule ?? (_desktopModule = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == desktopModuleContentTypeName));
             }
         }
+
+        public static ContentType Module
+        {
+            get
+            {
+                return _module ?? (_module = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == moduleContentTypeName));
+            }
+        }
+
+        public static ContentType Tab
+        {
+            get
+            {
+                return _tab ?? (_tab = new ContentTypeController().GetContentTypes().FirstOrDefault(type => type.ContentType == tabContentTypeName));
+            }
+        }
+
+        #endregion
 
         /// <summary>
 		/// Gets or sets the content type id.
@@ -97,24 +104,48 @@ namespace DotNetNuke.Entities.Content
 		/// </value>
         public int ContentTypeId { get; set; }
 
-        public override string ToString()
-        {
-            return ContentType;
-        }
+        #region IHydratable Implementation
 
-        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
-        [IgnoreColumn]
-        public int KeyID
-        {
-            get { return ContentTypeId; }
-            set { ContentTypeId = value; }
-        }
-
-        [Obsolete("Deprecated in DNN 8.0.0.  ContentTypeController methods use DAL2 so IHydratable is no longer needed")]
+        /// <summary>
+        /// Fill this content object will the information from data reader.
+        /// </summary>
+        /// <param name="dr">The data reader.</param>
+        /// <seealso cref="IHydratable.Fill"/>
         public void Fill(IDataReader dr)
         {
             ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
             ContentType = Null.SetNullString(dr["ContentType"]);
+        }
+
+        /// <summary>
+        /// Gets or sets the key ID.
+        /// </summary>
+        /// <value>
+        /// ContentTypeID
+        /// </value>
+        public int KeyID
+        {
+            get
+            {
+                return ContentTypeId;
+            }
+            set
+            {
+                ContentTypeId = value;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// override ToString to return content type
+        /// </summary>
+        /// <returns>
+        /// property ContentType's value.
+        /// </returns>
+        public override string ToString()
+        {
+            return ContentType;
         }
     }
 }

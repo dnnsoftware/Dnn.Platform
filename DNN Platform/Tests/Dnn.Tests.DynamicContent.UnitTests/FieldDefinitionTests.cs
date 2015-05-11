@@ -17,7 +17,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         [TearDown]
         public void TearDown()
         {
-            DataTypeController.ClearInstance();
+            DataTypeManager.ClearInstance();
         }
 
         [Test]
@@ -49,31 +49,33 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(0, field.ValidationRules.Count);
         }
         [Test]
+        //TODO - update when FieldDefinition Todo is completed
         public void DataType_Property_Calls_DataTypeController_Get()
         {
             //Arrange
             var field = new FieldDefinition();
-            var mockDataTypeController = new Mock<IDataTypeController>();
-            DataTypeController.SetTestableInstance(mockDataTypeController.Object);
+            var mockDataTypeController = new Mock<IDataTypeManager>();
+            DataTypeManager.SetTestableInstance(mockDataTypeController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
             var dataType = field.DataType;
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(), Times.Once);
+            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Test]
+        //TODO - update when FieldDefinition Todo is completed
         public void DataType_Property_Calls_DataTypeController_Get_Once_Only()
         {
             //Arrange
             var datatTypeId = 2;
             var field = new FieldDefinition() {DataTypeId = datatTypeId};
-            var mockDataTypeController = new Mock<IDataTypeController>();
-            mockDataTypeController.Setup(dt => dt.GetDataTypes())
+            var mockDataTypeController = new Mock<IDataTypeManager>();
+            mockDataTypeController.Setup(dt => dt.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(new List<DataType>() {new DataType() { DataTypeId = datatTypeId } }.AsQueryable());
-            DataTypeController.SetTestableInstance(mockDataTypeController.Object);
+            DataTypeManager.SetTestableInstance(mockDataTypeController.Object);
 
             //Act
             // ReSharper disable UnusedVariable
@@ -83,7 +85,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             // ReSharper restore UnusedVariable
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(), Times.AtMostOnce);
+            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.AtMostOnce);
         }
 
         [Test]
@@ -91,8 +93,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var field = new FieldDefinition();
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -109,8 +111,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var field = new FieldDefinition() { FieldDefinitionId = fieldDefinitionId };
 
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -126,10 +128,10 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             var fieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId;
             var field = new FieldDefinition() { FieldDefinitionId = fieldDefinitionId };
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
             mockValidationRuleController.Setup(dt => dt.GetValidationRules(fieldDefinitionId))
                 .Returns(new List<ValidationRule>() { new ValidationRule() { FieldDefinitionId = fieldDefinitionId } }.AsQueryable());
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
             //Act
             // ReSharper disable UnusedVariable

@@ -1,27 +1,12 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent
 {
-    public class ContentTemplateController : ControllerBase<ContentTemplate, IContentTemplateController, ContentTemplateController>, IContentTemplateController
+    public interface IContentTemplateManager
     {
-        internal const string ContentTemplateCacheKey = "ContentTypes_Templates";
-        internal const string ContentTemplateScope = "ContentTypeId";
-
-        protected override Func<IContentTemplateController> GetFactory()
-        {
-            return () => new ContentTemplateController();
-        }
-
-        public ContentTemplateController() : this(DotNetNuke.Data.DataContext.Instance()) { }
-
-        public ContentTemplateController(IDataContext dataContext) : base(dataContext) { }
-
         /// <summary>
         /// Adds a new content template for use with Structured(Dynamic) Content Types.
         /// </summary>
@@ -29,16 +14,7 @@ namespace Dnn.DynamicContent
         /// <returns>content template id.</returns>
         /// <exception cref="System.ArgumentNullException">content template is null.</exception>
         /// <exception cref="System.ArgumentException">contentTemplate.Name is empty.</exception>
-        public int AddContentTemplate(ContentTemplate contentTemplate)
-        {
-            //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentTemplate, "Name");
-            Requires.PropertyNotNegative(contentTemplate, "ContentTypeId");
-
-            Add(contentTemplate);
-
-            return contentTemplate.TemplateId;
-        }
+        int AddContentTemplate(ContentTemplate contentTemplate);
 
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
@@ -47,19 +23,14 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentNullException">content template is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">content template id is less than 0.</exception>
         /// <exception cref="System.InvalidOperationException">contentTemplate is in use.</exception>
-        public void DeleteContentTemplate(ContentTemplate contentTemplate)
-        {
-            Delete(contentTemplate);
-        }
+        void DeleteContentTemplate(ContentTemplate contentTemplate);
 
         /// <summary>
         /// Gets the content templates.
         /// </summary>
+        /// <param name="contentTypeId">The Id of the content type which this template is for</param>
         /// <returns>content template collection.</returns>
-        public IQueryable<ContentTemplate> GetContentTemplates(int contentTypeId)
-        {
-            return Get(contentTypeId).AsQueryable();
-        }
+        IQueryable<ContentTemplate> GetContentTemplates(int contentTypeId);
 
         /// <summary>
         /// Updates the content template.
@@ -69,13 +40,6 @@ namespace Dnn.DynamicContent
         /// <exception cref="System.ArgumentOutOfRangeException">content template id is less than 0.</exception>
         /// <exception cref="System.ArgumentException">contentTemplate.Name is empty.</exception>
         /// <exception cref="System.InvalidOperationException">contentTemplate is in use.</exception>
-        public void UpdateContentTemplate(ContentTemplate contentTemplate)
-        {
-            //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentTemplate, "Name");
-            Requires.PropertyNotNegative(contentTemplate, "ContentTypeId");
-
-            Update(contentTemplate);
-        }
+        void UpdateContentTemplate(ContentTemplate contentTemplate);
     }
 }

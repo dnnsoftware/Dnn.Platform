@@ -12,8 +12,8 @@ namespace Dnn.DynamicContent
     [Serializable]
     [TableName("ContentTypes_ValidationRules")]
     [PrimaryKey("ValidationRuleID", "ValidationRuleId")]
-    [Cacheable(ValidationRuleController.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ValidationRuleController.ValidationRuleScope)]
+    [Cacheable(ValidationRuleManager.ValidationRuleCacheKey, CacheItemPriority.Normal, 20)]
+    [Scope(ValidationRuleManager.ValidationRuleScope)]
     public class ValidationRule
     {
         private ValidatorType _validatorType;
@@ -42,7 +42,7 @@ namespace Dnn.DynamicContent
                 {
                     _validationSettings = (ValidationRuleId == -1)
                                         ? new Dictionary<string, ValidatorSetting>()
-                                        : ValidationRuleController.Instance.GetValidationSettings(ValidationRuleId);
+                                        : ValidationRuleManager.Instance.GetValidationSettings(ValidationRuleId);
                 }
                 return _validationSettings;
             }
@@ -51,7 +51,7 @@ namespace Dnn.DynamicContent
         [IgnoreColumn]
         public ValidatorType ValidatorType
         {
-            get { return _validatorType ?? (_validatorType = ValidatorTypeController.Instance.GetValidatorTypes()
+            get { return _validatorType ?? (_validatorType = ValidatorTypeManager.Instance.GetValidatorTypes()
                                                     .SingleOrDefault(vt => vt.ValidatorTypeId == ValidatorTypeId)); }
         }
     }

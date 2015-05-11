@@ -21,7 +21,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     [TestFixture]
     public class ContentTemplateIntegrationTests : IntegrationTestBase
     {
-        private readonly string _cacheKey = CachingProvider.GetCacheKey(ContentTemplateController.ContentTemplateCacheKey);
+        private readonly string _cacheKey = CachingProvider.GetCacheKey(ContentTemplateManager.ContentTemplateCacheKey);
 
         [SetUp]
         public void SetUp()
@@ -41,7 +41,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTemplates(RecordCount);
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = "Name",
@@ -64,7 +64,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             SetUpContentTemplates(RecordCount);
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, Name = "New_Type" };
 
             //Act
@@ -81,7 +81,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { TemplateId = templateId, Name = "New_Type" };
 
             //Act
@@ -101,7 +101,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 6;
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, TemplateId = templateId, Name = "New_Type" };
 
             //Act
@@ -119,7 +119,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             MockCache.Setup(c => c.GetItem(GetCacheKey(contentTypeId))).Returns(null);
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -138,7 +138,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -154,7 +154,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 2;
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = "Name",
@@ -185,7 +185,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var templateId = 2;
             SetUpContentTemplates(RecordCount);
 
-            var contentTemplateController = new ContentTemplateController();
+            var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { ContentTypeId = contentTypeId, TemplateId = templateId, Name = "NewType" };
 
             var mockContentController = new Mock<IContentController>();
@@ -202,7 +202,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
         private string GetCacheKey(int contentTypeId)
         {
-            return String.Format("{0}_{1}_{2}", _cacheKey, ContentTemplateController.ContentTemplateScope, contentTypeId);
+            return String.Format("{0}_{1}_{2}", _cacheKey, ContentTemplateManager.ContentTemplateScope, contentTypeId);
         }
 
         private IQueryable<ContentTemplate> SetUpCache(int count)

@@ -37,8 +37,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() {ContentType = "New_Type"};
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { Name = "New_Type"};
 
             //Act
             contentTypeController.AddContentType(contentType);
@@ -54,8 +54,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentType = "New_Type", PortalId = PortalId};
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { Name = "New_Type", PortalId = PortalId};
 
             //Act
             contentTypeController.AddContentType(contentType);
@@ -70,8 +70,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -88,8 +88,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "Type_2" };
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -104,8 +104,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "New_Type", PortalId = PortalId };
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "New_Type", PortalId = PortalId };
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -119,7 +119,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
+            var contentTypeController = new DynamicContentTypeManager();
 
             //Act
             var contentTypes = contentTypeController.GetContentTypes(PortalId);
@@ -139,10 +139,10 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(recordCount);
-            var contentTypeController = new DynamicContentTypeController();
+            var contentTypeController = new DynamicContentTypeManager();
 
             //Act
-            var contentTypes = contentTypeController.GetContentTypes(PortalId, pageIndex, pageSize);
+            var contentTypes = contentTypeController.GetContentTypes("Name", PortalId, pageIndex, pageSize, false);
 
             //Assert
             Assert.AreEqual(recordCount / 2, contentTypes.TotalCount);
@@ -165,8 +165,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = 2;
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, ContentType = "NewType" };
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, Name = "NewType" };
 
             //Act
             contentTypeController.UpdateContentType(contentType);
@@ -184,8 +184,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
-            var contentTypeController = new DynamicContentTypeController();
-            var contentType = new DynamicContentType() { ContentTypeId = typeId, ContentType = "New_Type", PortalId = PortalId };
+            var contentTypeController = new DynamicContentTypeManager();
+            var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "New_Type", PortalId = PortalId };
 
             //Act
             contentTypeController.UpdateContentType(contentType);

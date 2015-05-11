@@ -8,19 +8,19 @@ using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent
 {
-    public class FieldDefinitionController : ControllerBase<FieldDefinition, IFieldDefinitionController, FieldDefinitionController>, IFieldDefinitionController
+    public class FieldDefinitionManager : ControllerBase<FieldDefinition, IFieldDefinitionManager, FieldDefinitionManager>, IFieldDefinitionManager
     {
         internal const string FieldDefinitionCacheKey = "ContentTypes_FieldDefinitions";
         internal const string FieldDefinitionScope = "ContentTypeId";
 
-        protected override Func<IFieldDefinitionController> GetFactory()
+        protected override Func<IFieldDefinitionManager> GetFactory()
         {
-            return () => new FieldDefinitionController();
+            return () => new FieldDefinitionManager();
         }
 
-        public FieldDefinitionController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public FieldDefinitionManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public FieldDefinitionController(IDataContext dataContext) : base(dataContext) { }
+        public FieldDefinitionManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds a new field definition for use with Structured(Dynamic) Content Types.
@@ -43,7 +43,7 @@ namespace Dnn.DynamicContent
             foreach (var validationRule in field.ValidationRules)
             {
                 validationRule.FieldDefinitionId = field.FieldDefinitionId;
-                ValidationRuleController.Instance.AddValidationRule(validationRule);
+                ValidationRuleManager.Instance.AddValidationRule(validationRule);
             }
 
             return field.FieldDefinitionId;
@@ -62,7 +62,7 @@ namespace Dnn.DynamicContent
             //Delete any ValidationRules
             foreach (var validationRule in field.ValidationRules)
             {
-                ValidationRuleController.Instance.DeleteValidationRule(validationRule);
+                ValidationRuleManager.Instance.DeleteValidationRule(validationRule);
             }
         }
 
@@ -99,11 +99,11 @@ namespace Dnn.DynamicContent
                 if (validationRule.ValidationRuleId == -1)
                 {
                     validationRule.FieldDefinitionId = field.FieldDefinitionId;
-                    ValidationRuleController.Instance.AddValidationRule(validationRule);
+                    ValidationRuleManager.Instance.AddValidationRule(validationRule);
                 }
                 else
                 {
-                    ValidationRuleController.Instance.UpdateValidationRule(validationRule);
+                    ValidationRuleManager.Instance.UpdateValidationRule(validationRule);
                 }
             }
         }

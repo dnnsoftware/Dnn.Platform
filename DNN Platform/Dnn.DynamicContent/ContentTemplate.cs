@@ -14,8 +14,8 @@ namespace Dnn.DynamicContent
     [Serializable]
     [TableName("ContentTypes_Templates")]
     [PrimaryKey("TemplateID", "TemplateId")]
-    [Cacheable(ContentTemplateController.ContentTemplateCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(ContentTemplateController.ContentTemplateScope)]
+    [Cacheable(ContentTemplateManager.ContentTemplateCacheKey, CacheItemPriority.Normal, 20)]
+    [Scope(ContentTemplateManager.ContentTemplateScope)]
     public class ContentTemplate
     {
         public ContentTemplate()

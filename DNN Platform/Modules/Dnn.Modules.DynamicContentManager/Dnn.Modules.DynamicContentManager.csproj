@@ -41,7 +41,20 @@
     <DocumentationFile>bin\Dnn.Modules.DynamicContentManager.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetNuke, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -51,6 +64,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Web\bin\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -64,16 +81,29 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ContentTypeController.cs" />
+    <Compile Include="Services\DataTypeController.cs" />
+    <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="Services\ViewModels\ContentTypeViewModel.cs" />
+    <Compile Include="Services\ViewModels\DataTypeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientScripts\Manager.js" />
+    <Content Include="ClientScripts\contentTypes.js" />
+    <Content Include="ClientScripts\dataTypes.js" />
+    <Content Include="ClientScripts\manager.js" />
+    <Content Include="ClientScripts\pager.js" />
+    <Content Include="ClientScripts\settings.js" />
+    <Content Include="ClientScripts\templates.js" />
     <Content Include="license.txt" />
     <Content Include="Manager.html" />
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\..\Dnn.DynamicContent\Dnn.DynamicContent.csproj">
+      <Project>{7c0de7d8-3f9c-4f69-873b-8b0eb800348f}</Project>
+      <Name>Dnn.DynamicContent</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Module.build">
@@ -85,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Manager.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

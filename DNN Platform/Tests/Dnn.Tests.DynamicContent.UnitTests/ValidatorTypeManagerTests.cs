@@ -19,7 +19,7 @@ using NUnit.Framework;
 
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
-    class ValidatorTypeControllerTests
+    class ValidatorTypeManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<ValidatorType>> _mockValidatorTypeRepository;
@@ -53,7 +53,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidatorType_Throws_On_Null_ValidatorType()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validatorTypeController.AddValidatorType(null));
@@ -63,7 +63,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidatorType_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType()
                                         {
                                             Name = String.Empty,
@@ -80,7 +80,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidatorType_Throws_On_Empty_ValidatorClassName_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType()
                                         {
                                             Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -97,7 +97,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidatorType_Throws_On_Empty_ErrorKey_And_ErrorMessage_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType()
                                         {
                                             Name = Constants.CONTENTTYPE_ValidValidatorTypeName,
@@ -114,7 +114,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidatorType_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType()
                                     {
@@ -139,7 +139,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockValidatorTypeRepository.Setup(r => r.Insert(It.IsAny<ValidatorType>()))
                             .Callback((ValidatorType dt) => dt.ValidatorTypeId = Constants.CONTENTTYPE_AddValidatorTypeId);
 
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType()
                                     {
@@ -163,7 +163,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockValidatorTypeRepository.Setup(r => r.Insert(It.IsAny<ValidatorType>()))
                             .Callback((ValidatorType dt) => dt.ValidatorTypeId = Constants.CONTENTTYPE_AddValidatorTypeId);
 
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType()
                                     {
@@ -184,7 +184,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteValidatorType_Throws_On_Null_ValidatorType()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validatorTypeController.DeleteValidatorType(null));
@@ -194,7 +194,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteValidatorType_Throws_On_Negative_ValidatorTypeId()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType {ValidatorTypeId = Null.NullInteger};
 
@@ -206,7 +206,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteValidatorType_Calls_Repository_Delete_If_ValidatorType_Valid()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType {ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId};
 
@@ -221,7 +221,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetValidatorTypes_Calls_Repository_Get()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -237,7 +237,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockValidatorTypeRepository.Setup(r => r.Get())
                 .Returns(GetValidValidatorTypes(0));
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -253,7 +253,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockValidatorTypeRepository.Setup(r => r.Get())
                 .Returns(GetValidValidatorTypes(Constants.CONTENTTYPE_ValidValidatorTypeCount));
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act
             var validatorTypes = validatorTypeController.GetValidatorTypes();
@@ -266,7 +266,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Throws_On_Null_ContentType()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validatorTypeController.UpdateValidatorType(null));
@@ -276,7 +276,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType
                                     {
                                         ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId,
@@ -294,7 +294,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Throws_On_Empty_ValidatorClassName_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType
                                         {
                                             ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId,
@@ -311,7 +311,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Throws_On_Empty_ErrorKey_And_ErrorMessage_Property()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
             var validatorType = new ValidatorType
                                         {
                                             ValidatorTypeId = Constants.CONTENTTYPE_ValidValidatorTypeId,
@@ -329,7 +329,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Throws_On_Negative_ValidatorTypeId()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType
                                         {
@@ -347,7 +347,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidatorType_Calls_Repository_Update_If_ValidatorType_Is_Valid()
         {
             //Arrange
-            var validatorTypeController = new ValidatorTypeController(_mockDataContext.Object);
+            var validatorTypeController = new ValidatorTypeManager(_mockDataContext.Object);
 
             var validatorType = new ValidatorType()
                                     {

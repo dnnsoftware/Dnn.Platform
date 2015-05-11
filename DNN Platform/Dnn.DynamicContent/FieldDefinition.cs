@@ -14,8 +14,8 @@ namespace Dnn.DynamicContent
     [Serializable]
     [TableName("ContentTypes_FieldDefinitions")]
     [PrimaryKey("FieldDefinitionID", "FieldDefinitionId")]
-    [Cacheable(FieldDefinitionController.FieldDefinitionCacheKey, CacheItemPriority.Normal, 20)]
-    [Scope(FieldDefinitionController.FieldDefinitionScope)]
+    [Cacheable(FieldDefinitionManager.FieldDefinitionCacheKey, CacheItemPriority.Normal, 20)]
+    [Scope(FieldDefinitionManager.FieldDefinitionScope)]
     public class FieldDefinition
     {
         private DataType _dataType;
@@ -40,7 +40,8 @@ namespace Dnn.DynamicContent
         {
             get
             {
-                return _dataType ?? (_dataType = DataTypeController.Instance.GetDataTypes().SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
+                //TODO - figure out how to get PortalId for the GetDataTypes call
+                return _dataType ?? (_dataType = DataTypeManager.Instance.GetDataTypes(-1).SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
             }
         }
 
@@ -62,7 +63,7 @@ namespace Dnn.DynamicContent
                 {
                     _validationRules = (FieldDefinitionId == -1)
                                         ? new List<ValidationRule>() 
-                                        : ValidationRuleController.Instance.GetValidationRules(FieldDefinitionId).ToList();
+                                        : ValidationRuleManager.Instance.GetValidationRules(FieldDefinitionId).ToList();
                 }
                 return _validationRules;
             }

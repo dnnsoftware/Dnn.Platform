@@ -18,24 +18,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+#region Usings
 
-using System;
+using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
+
+#endregion
 
 namespace DotNetNuke.Entities.Content
 {
-	/// <summary>
-	/// ContentTypeController provides the business layer of ContentType.
-	/// </summary>
-	/// <remarks>
-	/// </remarks>
-	/// <example>
-	/// <code lang="C#">
-	/// IContentTypeController typeController = new ContentTypeController();
+    /// <summary>
+    /// ContentTypeController provides the business layer of ContentType.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <example>
+    /// <code lang="C#">
+    /// IContentTypeController typeController = new ContentTypeController();
     /// ContentType contentType = (from t in typeController.GetContentTypes()
     ///                            where t.ContentType == "DesktopModule"
     ///                            select t).SingleOrDefault();
@@ -44,20 +48,26 @@ namespace DotNetNuke.Entities.Content
     ///     contentType = new ContentType {ContentType = "DesktopModule"};
     ///     contentType.ContentTypeId = typeController.AddContentType(contentType);
     /// }
-	/// </code>
-	/// </example>
-    public class ContentTypeController : ControllerBase<ContentType, IContentTypeController, ContentTypeController>,  IContentTypeController
-	{
-	    internal const string GetWhereSql = "WHERE IsDynamic = 0";
+    /// </code>
+    /// </example>
+    public class ContentTypeController : IContentTypeController
+    {
+        private readonly IDataService _DataService;
 
-        protected override Func<IContentTypeController> GetFactory()
+        #region Constructors
+
+        public ContentTypeController() : this(Util.GetDataService())
         {
-            return () => new ContentTypeController();
         }
 
-        public ContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public ContentTypeController(IDataService dataService)
+        {
+            _DataService = dataService;
+        }
 
-        public ContentTypeController(IDataContext dataContext) : base(dataContext) { }
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Adds the type of the content.
@@ -69,11 +79,23 @@ namespace DotNetNuke.Entities.Content
         public int AddContentType(ContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.NotNull("contentType", contentType);
+            Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            Add(contentType);
+            contentType.ContentTypeId = _DataService.AddContentType(contentType);
+
+            //Refresh cached collection of types
+            ClearContentTypeCache();
 
             return contentType.ContentTypeId;
+        }
+
+        /// <summary>
+        /// Clears the content type cache.
+        /// </summary>
+        public void ClearContentTypeCache()
+        {
+            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
         }
 
         /// <summary>
@@ -84,7 +106,14 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         public void DeleteContentType(ContentType contentType)
         {
-            Delete(contentType);
+            //Argument Contract
+            Requires.NotNull("contentType", contentType);
+            Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
+
+            _DataService.DeleteContentType(contentType);
+
+            //Refresh cached collection of types
+            ClearContentTypeCache();
         }
 
         /// <summary>
@@ -92,9 +121,11 @@ namespace DotNetNuke.Entities.Content
         /// </summary>
         /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
-		{
-            var cacheArgs = new CacheItemArgs(DataCache.ContentTypesCacheKey, DataCache.ContentTypesCacheTimeOut, DataCache.ContentTypesCachePriority);
-            return DataCache.GetCachedData<IQueryable<ContentType>>(cacheArgs, c => Find(GetWhereSql).AsQueryable()); 
+        {
+            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey,
+                                                                            DataCache.ContentTypesCacheTimeOut,
+                                                                            DataCache.ContentTypesCachePriority),
+                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
         /// <summary>
@@ -107,19 +138,16 @@ namespace DotNetNuke.Entities.Content
         public void UpdateContentType(ContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.NotNull("contentType", contentType);
+            Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
+            Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            Update(contentType);
+            _DataService.UpdateContentType(contentType);
+
+            //Refresh cached collection of types
+            ClearContentTypeCache();
         }
 
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 which manages the cache automagically")]
-        public void ClearContentTypeCache()
-        {
-            DataCache.RemoveCache(DataCache.ContentTypesCacheKey);
-        }
-
-        [Obsolete("Deprecated in DNN 8.  ContentTypeController methods use DAL2 so IDataService is no longer needed")]
-        // ReSharper disable once UnusedParameter.Local
-        public ContentTypeController(IDataService dataService) { }
+        #endregion
     }
 }

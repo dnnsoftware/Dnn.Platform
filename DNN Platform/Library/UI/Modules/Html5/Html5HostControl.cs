@@ -27,6 +27,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
@@ -71,6 +72,9 @@ namespace DotNetNuke.UI.Modules.Html5
                 var tokenReplace = new Html5ModuleTokenReplace(Page, _html5File, ModuleContext, ModuleActions);
                 _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
             }
+
+            //Register for Services Framework
+            ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 
         protected override void OnPreRender(EventArgs e)

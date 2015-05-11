@@ -19,7 +19,7 @@ using NUnit.Framework;
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
-    public class ContentTemplateControllerTests
+    public class ContentTemplateManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<ContentTemplate>> _mockContentTemplateRepository;
@@ -50,7 +50,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentTemplate_Throws_On_Null_ContentTemplate()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTemplateController.AddContentTemplate(null));
@@ -60,7 +60,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentTemplate_Throws_On_Empty_Name_Property()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = String.Empty,
@@ -77,7 +77,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentTemplate_Throws_On_Negative_ContentTypeId_Property()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
             var contentTemplate = new ContentTemplate()
                                         {
                                             Name = "Name",
@@ -93,7 +93,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddContentTemplate_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate()
                                         {
@@ -117,7 +117,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTemplateRepository.Setup(r => r.Insert(It.IsAny<ContentTemplate>()))
                             .Callback((ContentTemplate dt) => dt.TemplateId = Constants.CONTENTTYPE_AddContentTemplateId);
 
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate()
                                         {
@@ -140,7 +140,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockContentTemplateRepository.Setup(r => r.Insert(It.IsAny<ContentTemplate>()))
                             .Callback((ContentTemplate dt) => dt.TemplateId = Constants.CONTENTTYPE_AddContentTemplateId);
 
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate()
                                         {
@@ -160,7 +160,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentTemplate_Throws_On_Null_ContentTemplate()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTemplateController.DeleteContentTemplate(null));
@@ -170,7 +170,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentTemplate_Throws_On_Negative_TemplateId()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate { TemplateId = Null.NullInteger };
 
@@ -182,7 +182,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteContentTemplate_Calls_Repository_Delete_If_Valid()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate { TemplateId = Constants.CONTENTTYPE_ValidContentTemplateId };
 
@@ -198,7 +198,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -215,7 +215,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             _mockContentTemplateRepository.Setup(r => r.Get(contentTypeId))
                 .Returns(GetValidContentTemplates(0));
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -232,7 +232,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeId = Constants.CONTENTTYPE_ValidContentTypeId;
             _mockContentTemplateRepository.Setup(r => r.Get(contentTypeId))
                 .Returns(GetValidContentTemplates(Constants.CONTENTTYPE_ValidContentTemplateCount));
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act
             var contentTemplates = contentTemplateController.GetContentTemplates(contentTypeId);
@@ -245,7 +245,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentTemplate_Throws_On_Null_ContentType()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => contentTemplateController.UpdateContentTemplate(null));
@@ -255,7 +255,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentTemplate_Throws_On_Empty_ContentType_Property()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
             var contentTemplate = new ContentTemplate { TemplateId = Constants.CONTENTTYPE_ValidContentTemplateId };
 
             //Act, Arrange
@@ -266,7 +266,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentTemplate_Throws_On_Negative_ContentTypeId()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate()
                                             {
@@ -282,7 +282,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentTemplate_Throws_On_Negative_ContentTemplateId()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate { TemplateId = Constants.CONTENTTYPE_InValidContentTemplateId, Name = "Test" };
 
@@ -293,7 +293,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateContentTemplate_Calls_Repository_Update_If_ContentTemplate_Is_Valid()
         {
             //Arrange
-            var contentTemplateController = new ContentTemplateController(_mockDataContext.Object);
+            var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
 
             var contentTemplate = new ContentTemplate()
                                         {

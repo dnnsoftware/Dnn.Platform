@@ -16,7 +16,7 @@ using NUnit.Framework;
 namespace Dnn.Tests.DynamicContent.UnitTests
 {
     [TestFixture]
-    public class ValidationRuleControllerTests
+    public class ValidationRuleManagerTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<ValidationRule>> _mockValidationRuleRepository;
@@ -46,7 +46,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Throws_On_Null_ValidationRule()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validationRuleController.AddValidationRule(null));
@@ -56,7 +56,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Throws_On_Negative_FieldDefinitionId_Property()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -72,7 +72,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Throws_On_Negative_ValidatorTypeId_Property()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -88,7 +88,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Calls_Repository_Insert_On_Valid_Arguments()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                 {
@@ -108,15 +108,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Returns_ValidId_On_Valid_ValidationRule()
         {
             //Arrange
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
             mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
                                     .Returns(new Dictionary<string, ValidatorSetting>());
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
             _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
                             .Callback((ValidationRule df) => df.ValidationRuleId = Constants.CONTENTTYPE_AddValidationRuleId);
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -135,15 +135,15 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void AddValidationRule_Sets_ValidId_On_Valid_ValidationRule()
         {
             //Arrange
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
             mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
                                     .Returns(new Dictionary<string, ValidatorSetting>());
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
             _mockValidationRuleRepository.Setup(r => r.Insert(It.IsAny<ValidationRule>()))
                             .Callback((ValidationRule dt) => dt.ValidationRuleId = Constants.CONTENTTYPE_AddValidationRuleId);
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -169,7 +169,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
 
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                         {
@@ -202,7 +202,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
 
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                         {
@@ -228,7 +228,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteValidationRule_Throws_On_Null_ValidationRule()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validationRuleController.DeleteValidationRule(null));
@@ -238,7 +238,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DeleteValidationRule_Throws_On_Negative_ValidationRuleId()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule { ValidationRuleId = Null.NullInteger };
 
@@ -253,7 +253,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
             {
@@ -271,7 +271,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void GetValidationRules_Calls_Repository_Get()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act
             // ReSharper disable once UnusedVariable
@@ -287,7 +287,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockValidationRuleRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidFieldDefinitionId))
                 .Returns(new List<ValidationRule>());
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act
             var validationRules = validationRuleController.GetValidationRules(Constants.CONTENTTYPE_ValidFieldDefinitionId);
@@ -303,7 +303,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Arrange
             _mockValidationRuleRepository.Setup(r => r.Get(Constants.CONTENTTYPE_ValidFieldDefinitionId))
                 .Returns(GetValidValidationRules(Constants.CONTENTTYPE_ValidValidationRuleCount));
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act
             var validationRules = validationRuleController.GetValidationRules(Constants.CONTENTTYPE_ValidFieldDefinitionId);
@@ -317,7 +317,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var validationRuleId = Constants.CONTENTTYPE_ValidValidationRuleId;
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
             var mockValidatorSettingRepository = new Mock<IRepository<ValidatorSetting>>();
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
 
@@ -338,7 +338,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
             mockValidatorSettingRepository.Setup(r => r.Get(validationRuleId))
                 .Returns(new List<ValidatorSetting>());
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act
             var settings = validationRuleController.GetValidationSettings(validationRuleId);
@@ -358,7 +358,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
             mockValidatorSettingRepository.Setup(r => r.Get(validationRuleId))
                 .Returns(GetValidatorSettings(settingCount, validationRuleId));
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act
             var settings = validationRuleController.GetValidationSettings(validationRuleId);
@@ -371,7 +371,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidationRule_Throws_On_Null_ValidationRule()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             //Act, Arrange
             Assert.Throws<ArgumentNullException>(() => validationRuleController.UpdateValidationRule(null));
@@ -381,7 +381,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidationRule_Throws_On_Negative_FieldDefinitionId_Property()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -398,7 +398,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidationRule_Throws_On_Negative_ValidatorTypeId_Property()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
                                     {
@@ -415,7 +415,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidationRule_Throws_On_Negative_ValidationRuleId()
         {
             //Arrange
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var field = new ValidationRule
                             {
@@ -431,12 +431,12 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void UpdateValidationRule_Calls_Repository_Update()
         {
             //Arrange
-            var mockValidationRuleController = new Mock<IValidationRuleController>();
+            var mockValidationRuleController = new Mock<IValidationRuleManager>();
             mockValidationRuleController.Setup(vr => vr.GetValidationSettings(It.IsAny<int>()))
                                     .Returns(new Dictionary<string, ValidatorSetting>());
-            ValidationRuleController.SetTestableInstance(mockValidationRuleController.Object);
+            ValidationRuleManager.SetTestableInstance(mockValidationRuleController.Object);
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var field = new ValidationRule
                             {
@@ -463,7 +463,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             _mockDataContext.Setup(dc => dc.GetRepository<ValidatorSetting>()).Returns(mockValidatorSettingRepository.Object);
 
 
-            var validationRuleController = new ValidationRuleController(_mockDataContext.Object);
+            var validationRuleController = new ValidationRuleManager(_mockDataContext.Object);
 
             var validationRule = new ValidationRule
             {

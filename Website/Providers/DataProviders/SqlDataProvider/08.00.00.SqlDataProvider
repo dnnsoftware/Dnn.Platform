@@ -18,10 +18,38 @@ IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseO
     END 
 GO
 
-IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsStructured')
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'IsDynamic')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
 			ADD [IsDynamic] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_IsDynamic] DEFAULT (0)
+    END 
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedByUserID')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+			ADD [CreatedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedByUserID] DEFAULT (-1)
+    END 
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedOnDate')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+			ADD [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate())
+    END 
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedByUserID')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+			ADD [LastModifiedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedByUserID] DEFAULT (-1)
+    END 
+GO
+
+IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedOnDate')
+   BEGIN
+		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
+			ADD [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate())
     END 
 GO
 
@@ -48,8 +76,13 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 	BEGIN
 		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_DataTypes](
 			[DataTypeID] [int] IDENTITY(1,1) NOT NULL,
+			[PortalID] [int] NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[UnderlyingDataType] [int] NOT NULL,
+			[CreatedByUserID] [int] NOT NULL,
+			[CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate()),
+			[LastModifiedByUserID] [int] NOT NULL,
+			[LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate()),
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)
 			)	
 	END

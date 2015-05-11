@@ -2,25 +2,27 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 
 namespace Dnn.DynamicContent
 {
-    public class DynamicContentTypeController : ControllerBase<DynamicContentType, IDynamicContentTypeController, DynamicContentTypeController>, IDynamicContentTypeController
+    public class DynamicContentTypeManager : ControllerBase<DynamicContentType, IDynamicContentTypeManager, DynamicContentTypeManager>, IDynamicContentTypeManager
     {
         internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
 
-        protected override Func<IDynamicContentTypeController> GetFactory()
+        protected override Func<IDynamicContentTypeManager> GetFactory()
         {
-            return () => new DynamicContentTypeController();
+            return () => new DynamicContentTypeManager();
         }
 
-        public DynamicContentTypeController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public DynamicContentTypeManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public DynamicContentTypeController(IDataContext dataContext) : base(dataContext) { }
+        public DynamicContentTypeManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds the type of the content.
@@ -32,7 +34,10 @@ namespace Dnn.DynamicContent
         public int AddContentType(DynamicContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.PropertyNotNullOrEmpty(contentType, "Name");
+
+            contentType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             Add(contentType);
 
@@ -40,14 +45,14 @@ namespace Dnn.DynamicContent
             foreach (var definition in contentType.FieldDefinitions)
             {
                 definition.ContentTypeId = contentType.ContentTypeId;
-                FieldDefinitionController.Instance.AddFieldDefinition(definition);
+                FieldDefinitionManager.Instance.AddFieldDefinition(definition);
             }
 
             //Save Content Templates
             foreach (var template in contentType.Templates)
             {
                 template.ContentTypeId = contentType.ContentTypeId;
-                ContentTemplateController.Instance.AddContentTemplate(template);
+                ContentTemplateManager.Instance.AddContentTemplate(template);
             }
 
             return contentType.ContentTypeId;
@@ -66,13 +71,13 @@ namespace Dnn.DynamicContent
             //Delete Field Definitions
             foreach (var definition in contentType.FieldDefinitions)
             {
-                FieldDefinitionController.Instance.DeleteFieldDefinition(definition);
+                FieldDefinitionManager.Instance.DeleteFieldDefinition(definition);
             }
 
             //Delete Content Templates
             foreach (var template in contentType.Templates)
             {
-                ContentTemplateController.Instance.DeleteContentTemplate(template);
+                ContentTemplateManager.Instance.DeleteContentTemplate(template);
             }
         }
 
@@ -80,38 +85,39 @@ namespace Dnn.DynamicContent
         /// Gets the content types for a specific portal.
         /// </summary>
         /// <param name="portalId">The portalId</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        public IQueryable<DynamicContentType> GetContentTypes(int portalId)
+        public IQueryable<DynamicContentType> GetContentTypes(int portalId, bool includeSystem = false)
         {
-            IQueryable<DynamicContentType> contentTypes;
-            using (DataContext)
+            List<DynamicContentType> contentTypes = Get(portalId).ToList();
+            if (includeSystem)
             {
-                var rep = DataContext.GetRepository<DynamicContentType>();
-
-                contentTypes = rep.Get(portalId).AsQueryable();
+                contentTypes.AddRange(Get(-1).Where(t => t.IsDynamic));
             }
-
-            return contentTypes;
+            return contentTypes.AsQueryable();
         }
 
         /// <summary>
         /// Gets a page of content types for a specific portal.
         /// </summary>
+        /// <param name="searchTerm">The search term to use</param>
         /// <param name="portalId">The portalId</param>
         /// <param name="pageIndex">The page index to return</param>
         /// <param name="pageSize">The page size</param>
+        /// <param name="includeSystem">A flag to determine if System Content Types (ie. Content Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
         /// <returns>content type collection.</returns>
-        public IPagedList<DynamicContentType> GetContentTypes(int portalId, int pageIndex, int pageSize)
+        public IPagedList<DynamicContentType> GetContentTypes(string searchTerm, int portalId, int pageIndex, int pageSize, bool includeSystem = false)
         {
-            IPagedList<DynamicContentType> contentTypes;
-            using (DataContext)
-            {
-                var rep = DataContext.GetRepository<DynamicContentType>();
+            var contentTypes = GetContentTypes(portalId, includeSystem);
 
-                contentTypes = rep.GetPage(portalId, pageIndex, pageSize);
+            if (!String.IsNullOrEmpty(searchTerm))
+            {
+                contentTypes = contentTypes.Where(dt => dt.Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant()));
             }
 
-            return contentTypes;
+            return new PagedList<DynamicContentType>(contentTypes, pageIndex, pageSize);
         }
 
         /// <summary>
@@ -124,7 +130,10 @@ namespace Dnn.DynamicContent
         public void UpdateContentType(DynamicContentType contentType)
         {
             //Argument Contract
-            Requires.PropertyNotNullOrEmpty(contentType, "ContentType");
+            Requires.PropertyNotNullOrEmpty(contentType, "Name");
+
+            contentType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
+            //TODO - do we need to set other audit proeprties
 
             Update(contentType);
 
@@ -134,11 +143,11 @@ namespace Dnn.DynamicContent
                 if (definition.FieldDefinitionId == -1)
                 {
                     definition.ContentTypeId = contentType.ContentTypeId;
-                    FieldDefinitionController.Instance.AddFieldDefinition(definition);
+                    FieldDefinitionManager.Instance.AddFieldDefinition(definition);
                 }
                 else
                 {
-                    FieldDefinitionController.Instance.UpdateFieldDefinition(definition);
+                    FieldDefinitionManager.Instance.UpdateFieldDefinition(definition);
                 }
             }
 
@@ -148,11 +157,11 @@ namespace Dnn.DynamicContent
                 if (template.TemplateId == -1)
                 {
                     template.ContentTypeId = contentType.ContentTypeId;
-                    ContentTemplateController.Instance.AddContentTemplate(template);
+                    ContentTemplateManager.Instance.AddContentTemplate(template);
                 }
                 else
                 {
-                    ContentTemplateController.Instance.UpdateContentTemplate(template);
+                    ContentTemplateManager.Instance.UpdateContentTemplate(template);
                 }
             }
 

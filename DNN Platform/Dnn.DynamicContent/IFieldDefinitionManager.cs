@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Dnn.DynamicContent
 {
-    public interface IFieldDefinitionController
+    public interface IFieldDefinitionManager
     {
         /// <summary>
         /// Adds a new field definition for use with Structured(Dynamic) Content Types.

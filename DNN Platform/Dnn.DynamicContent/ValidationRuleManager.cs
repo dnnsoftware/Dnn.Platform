@@ -9,19 +9,19 @@ using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent
 {
-    public class ValidationRuleController : ControllerBase<ValidationRule, IValidationRuleController, ValidationRuleController>, IValidationRuleController
+    public class ValidationRuleManager : ControllerBase<ValidationRule, IValidationRuleManager, ValidationRuleManager>, IValidationRuleManager
     {
         internal const string ValidationRuleCacheKey = "ContentTypes_ValidationRules";
         internal const string ValidationRuleScope = "FieldDefinitionId";
 
-        protected override Func<IValidationRuleController> GetFactory()
+        protected override Func<IValidationRuleManager> GetFactory()
         {
-            return () => new ValidationRuleController();
+            return () => new ValidationRuleManager();
         }
 
-        public ValidationRuleController() : this(DotNetNuke.Data.DataContext.Instance()) { }
+        public ValidationRuleManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
 
-        public ValidationRuleController(IDataContext dataContext) : base(dataContext) { }
+        public ValidationRuleManager(IDataContext dataContext) : base(dataContext) { }
 
         /// <summary>
         /// Adds a new rule for use with Structured(Dynamic) Content Types.

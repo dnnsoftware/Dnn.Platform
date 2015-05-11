@@ -238,13 +238,50 @@ namespace DotNetNuke.Entities.Content.Data
 
         #endregion
 
+        #region "ContentType Methods"
+
+        /// <summary>
+        /// Adds the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns>content type id.</returns>
+        public int AddContentType(ContentType contentType)
+        {
+            return _provider.ExecuteScalar<int>("AddContentType", contentType.ContentType);
+        }
+
+        public void DeleteContentType(ContentType contentType)
+        {
+            _provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
+        }
+
+        /// <summary>
+        /// Gets the content types.
+        /// </summary>
+        /// <returns>data reader.</returns>
+        public IDataReader GetContentTypes()
+        {
+            return _provider.ExecuteReader("GetContentTypes");
+        }
+
+        /// <summary>
+        /// Updates the type of the content.
+        /// </summary>
+        /// <param name="contentType">Type of the content.</param>
+        public void UpdateContentType(ContentType contentType)
+        {
+            _provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
+        }
+
+        #endregion
+
         #region "ScopeType Methods"
 
-		/// <summary>
-		/// Adds the type of the scope.
-		/// </summary>
-		/// <param name="scopeType">Type of the scope.</param>
-		/// <returns>scope type id.</returns>
+        /// <summary>
+        /// Adds the type of the scope.
+        /// </summary>
+        /// <param name="scopeType">Type of the scope.</param>
+        /// <returns>scope type id.</returns>
         public int AddScopeType(ScopeType scopeType)
         {
             return _provider.ExecuteScalar<int>("AddScopeType", scopeType.ScopeType);
