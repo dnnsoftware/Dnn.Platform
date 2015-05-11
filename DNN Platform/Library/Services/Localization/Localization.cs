@@ -398,15 +398,24 @@ namespace DotNetNuke.Services.Localization
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {
-            //Default to 1 (maybe called during portal creation before languages are enabled for portal)
+            string cacheKey = String.Format("PortalActiveLangauges_{0}", portalID);
+            return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, 
+                                                                DataCache.PortalCacheTimeOut, 
+                                                                DataCache.PortalCachePriority, 
+                                                                portalID), c =>
+                                                                {
+                                                                    //Default to 1 (maybe called during portal creation before languages are enabled for portal)
+                                                                    int count = 1;
+                                                                    Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalID);
+                                                                    if (locales != null)
+                                                                    {
+                                                                        count = locales.Count;
+                                                                    }
+                                                                    return count;
+                                                                },
+                                                                true);
 
-            int count = 1;
-            Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalID);
-            if (locales != null)
-            {
-                count = locales.Count;
-            }
-            return count;
+
         }
 
         public static void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
