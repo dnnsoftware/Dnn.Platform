@@ -51,6 +51,22 @@ namespace DotNetNuke.UI.WebControls
             SystemType = "System.Boolean";
         }
 
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            string postedValue = postCollection[postDataKey];
+            bool boolValue = false;
+            if (!(postedValue == null || postedValue == string.Empty))
+            {
+                boolValue = true;
+            }
+            if (!BooleanValue.Equals(boolValue))
+            {
+                Value = boolValue;
+                return true;
+            }
+            return false;
+        }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
