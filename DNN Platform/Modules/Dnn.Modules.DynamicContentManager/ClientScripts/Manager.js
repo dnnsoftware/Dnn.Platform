@@ -52,12 +52,14 @@
         //Build the ViewModel
         viewModel.resx = resx;
 
+        var util = dcc.utility(settings);
+
         //Wire up contentTypes subModel
         dcc.contentTypes(ko, viewModel, resx, settings);
         viewModel.contentTypes.init();
 
         //Wire up dataTypes subModel
-        dcc.dataTypes(ko, viewModel, resx, settings);
+        dcc.dataTypes(ko, viewModel, resx, settings, util);
         viewModel.dataTypes.init();
 
         viewModel.templates = dcc.templates(ko, resx, settings);
@@ -74,6 +76,8 @@
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
+
+        $rootElement.find('input[type="checkbox"]').dnnCheckbox();
     }
 
     return {

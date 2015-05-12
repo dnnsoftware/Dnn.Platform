@@ -13,7 +13,15 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     public class DataTypeViewModel
     {
         /// <summary>
-        /// Constructs a DatatTypeViewModel from a DataType object
+        /// Constructs a DataTypeViewModel
+        /// </summary>
+        public DataTypeViewModel()
+        {
+            
+        }
+
+        /// <summary>
+        /// Constructs a DataTypeViewModel from a DataType object
         /// </summary>
         /// <param name="dataType">The DataType object</param>
         public DataTypeViewModel(DataType dataType)

@@ -82,6 +82,26 @@ namespace Dnn.DynamicContent
         }
 
         /// <summary>
+        /// GetDataType retrieves a data type for a portal, optionally including system types
+        /// </summary>
+        /// <param name="dataTypeId">The Id of the dataType</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System Data Types (ie. Data Types that are available for all portals)
+        /// should be returned. Defaults to false</param>
+        /// <returns>data type</returns>
+        //TODO add Unit Tests for this method
+        public DataType GetDataType(int dataTypeId, int portalId, bool includeSystem = false)
+        {
+            DataType dataType = Get(portalId).SingleOrDefault(dt => dt.DataTypeId == dataTypeId);
+
+            if (dataType == null && includeSystem)
+            {
+                dataType = Get(-1).SingleOrDefault(dt => dt.DataTypeId == dataTypeId);
+            }
+            return dataType;
+        }
+
+        /// <summary>
         /// This GetDataTypes overloads retrieves all the data types for a portal, optionally including system types
         /// </summary>
         /// <param name="portalId">The Id of the portal</param>

@@ -186,4 +186,40 @@
   <data name="Pager_PageDesc.Text" xml:space="preserve">
     <value>Page {0} of {1}</value>
   </data>
+  <data name="BaseType.Text" xml:space="preserve">
+    <value>Base Type</value>
+  </data>
+  <data name="Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SystemType.Text" xml:space="preserve">
+    <value>System Type</value>
+  </data>
+  <data name="Boolean.Text" xml:space="preserve">
+    <value>Boolean</value>
+  </data>
+  <data name="Bytes.Text" xml:space="preserve">
+    <value>Bytes</value>
+  </data>
+  <data name="DateTime.Text" xml:space="preserve">
+    <value>Date Time</value>
+  </data>
+  <data name="Float.Text" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="Guid.Text" xml:space="preserve">
+    <value>Guid</value>
+  </data>
+  <data name="Integer.Text" xml:space="preserve">
+    <value>Integer</value>
+  </data>
+  <data name="String.Text" xml:space="preserve">
+    <value>String</value>
+  </data>
+  <data name="TimeSpan.Text" xml:space="preserve">
+    <value>Time Span</value>
+  </data>
+  <data name="Uri.Text" xml:space="preserve">
+    <value>Uri</value>
+  </data>
 </root>
