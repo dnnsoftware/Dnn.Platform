@@ -19,9 +19,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using System;
 using System.Threading;
 using System.Web;
-using System.Web.WebPages;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         internal static bool TryGetUrlVersion(out int versionInt)
         {
             var version = GetTabVersionQueryStringValue();
-            if (version.IsEmpty())
+            if (String.IsNullOrEmpty(version))
             {
                 versionInt = Null.NullInteger;
                 return false;

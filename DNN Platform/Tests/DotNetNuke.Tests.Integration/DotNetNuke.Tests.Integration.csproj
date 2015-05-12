@@ -62,8 +62,9 @@
     <Reference Include="DotNetNuke.Instrumentation">
       <HintPath>..\..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
+    <Reference Include="dotnetnuke.log4net, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
