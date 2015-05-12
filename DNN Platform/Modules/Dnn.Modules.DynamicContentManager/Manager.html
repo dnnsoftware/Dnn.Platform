@@ -83,8 +83,12 @@
             <div class="dccSubPanel">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findDataType}"/>
-                    <a class="dccButton right">[Resx:{key:"AddDataType"}]</a>
+                    <a class="dccButton right" data-bind="click: addDataType">[Resx:{key:"AddDataType"}]</a>
                 </div>
+                <table class="dccTable" id="createDataType">
+                    <tbody id='dataTypes-addbody' class="edit-body">
+                    </tbody>
+                </table>
                 <table class="dccTable">
                     <thead>
                         <tr>
@@ -94,7 +98,7 @@
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                        <tr data-bind="click: $parent.expand">
+                        <tr data-bind="click: $parent.editDataType">
                             <td data-bind="text: name"></td>
                             <td data-bind="text: created"></td>
                             <td><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem"></i></td>
@@ -110,25 +114,16 @@
                                     </div>
                                     <div>
                                         <label>[Resx:{key:"BaseType"}]</label>
-                                        <select data-bind="optionsCaption: 'choose one ...', value: baseType, valueAllowUnset: false">
-                                            <option value="0">[Resx:{key:"String"}]</option>
-                                            <option value="1">[Resx:{key:"Boolean"}]</option>
-                                            <option value="2">[Resx:{key:"Integer"}]</option>
-                                            <option value="3">[Resx:{key:"Float"}]</option>
-                                            <option value="4">[Resx:{key:"Bytes"}]</option>
-                                            <option value="5">[Resx:{key:"Guid"}]</option>
-                                            <option value="6">[Resx:{key:"Uri"}]</option>
-                                            <option value="7">[Resx:{key:"DateTime"}]</option>
-                                            <option value="8">[Resx:{key:"TimeSpan"}]</option>
-                                        </select>
+                                        <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value'"></select>
                                     </div>
-                                    <div class="toggle">
-                                        <span><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem()"></i></span>
+                                    <div class="toggle" data-bind="visible: parentViewModel.isSystemUser">
+                                        <span data-bind="visible: isAddMode()"><input type="checkbox" data-bind="checked: isSystem"></span>
+                                        <span data-bind="visible: !isAddMode()"><i class="fa fa-check-square-o" data-bind="visible: isSystem()"></i><i class="fa fa-square-o" data-bind="visible: !isSystem()"></i></span>
                                         <span>[Resx:{key:"SystemType"}]</span>
                                     </div>
 
                                     <div class="buttons">
-                                        <a class="secondarybtn" data-bind="click: deleteType">[Resx:{key:"Delete"}]</a>
+                                        <a class="secondarybtn" data-bind="visible: !isAddMode(), click: deleteType">[Resx:{key:"Delete"}]</a>
                                         <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
                                         <a class="primarybtn" data-bind="click: saveType">[Resx:{key:"Save"}]</a>
                                     </div>
@@ -212,11 +207,20 @@
             findDataType: '[Resx:{key:"FindDataType"}]',
             pager_PageDesc: '[Resx:{key:"Pager_PageDesc"}]',
             templates: '[Resx:{key:"Templates"}]',
-            settings: '[Resx:{key:"Settings"}]'
+            settings: '[Resx:{key:"Settings"}]',
+            string: '[Resx:{key:"String"}]',
+            bool: '[Resx:{key:"Boolean"}]',
+            integer: '[Resx:{key:"Integer"}]',
+            float: '[Resx:{key:"Float"}]',
+            bytes: '[Resx:{key:"Bytes"}]',
+            guid: '[Resx:{key:"Guid"}]',
+            uri: '[Resx:{key:"Uri"}]',
+            dateTime: '[Resx:{key:"DateTime"}]',
+            timeSpan: '[Resx:{key:"TimeSpan"}]'
         };
 
         var settings = {
-            canEditSystem: isSystemUser,
+            isSystemUser: isSystemUser,
             initialPanel: '#content-types-panel',
             contentTypesPanel: '#content-types-panel',
             dataTypesPanel: '#data-types-panel',

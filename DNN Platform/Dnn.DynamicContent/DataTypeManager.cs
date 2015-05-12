@@ -8,6 +8,7 @@ using System.Web.UI;
 using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Users;
@@ -42,7 +43,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            //TODO - do we need to set other audit proeprties
+            dataType.CreatedOnDate = DateUtils.GetDatabaseTime();
 
             Add(dataType);
 
@@ -157,7 +158,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            //TODO - do we need to set other audit proeprties
+            dataType.LastModifiedOnDate = DateUtils.GetDatabaseTime();
 
             using (DataContext)
             {

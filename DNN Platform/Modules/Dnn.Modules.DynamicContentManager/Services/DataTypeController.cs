@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -106,7 +107,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 {
                     Name = viewModel.Name,
                     UnderlyingDataType = viewModel.BaseType,
-                    PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId
+                    PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId,
+                    CreatedOnDate = DateUtils.GetDatabaseTime()
                 };
                 DataTypeManager.Instance.AddDataType(dataType);
             }
@@ -119,7 +121,6 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 {
                     dataType.Name = viewModel.Name;
                     dataType.UnderlyingDataType = viewModel.BaseType;
-
                     DataTypeManager.Instance.UpdateDataType(dataType);
                 }
             }
