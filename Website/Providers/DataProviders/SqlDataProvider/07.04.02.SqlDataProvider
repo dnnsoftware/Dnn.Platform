@@ -69,6 +69,13 @@ DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehist
 )
 END
 GO
+
+ /* DNN-6982 */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflows]') AND type in (N'U'))
+	EXEC sp_rename '{databaseOwner}{objectQualifier}ContentWorkflows.PortalID ', 'PortalID', 'COLUMN';
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
