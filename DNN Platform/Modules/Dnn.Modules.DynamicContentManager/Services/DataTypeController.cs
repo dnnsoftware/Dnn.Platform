@@ -57,7 +57,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                 success = true,
                                 data = new
                                             {
-                                                dataType = new DataTypeViewModel(dataType)
+                                                dataType = new DataTypeViewModel(dataType, PortalSettings.UserInfo.IsSuperUser)
                                 }
                             };
 
@@ -76,7 +76,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         {
             var dataTypeList = DataTypeManager.Instance.GetDataTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true);
             var dataTypes = dataTypeList
-                            .Select(dataType => new DataTypeViewModel(dataType))
+                            .Select(dataType => new DataTypeViewModel(dataType, PortalSettings.UserInfo.IsSuperUser))
                             .ToList();
 
             var response = new

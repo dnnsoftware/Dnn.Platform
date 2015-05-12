@@ -97,7 +97,7 @@
                         <tr data-bind="click: $parent.expand">
                             <td data-bind="text: name"></td>
                             <td data-bind="text: created"></td>
-                            <td><i class="fa fa-check" data-bind="visible: isSystem"></i></td>
+                            <td><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem"></i></td>
                         </tr>
                     </tbody>
                     <tbody id='dataTypes-editbody' class="edit-body">
@@ -123,7 +123,7 @@
                                         </select>
                                     </div>
                                     <div class="toggle">
-                                        <input type="checkbox" data-bind="checked: isSystem" />
+                                        <span><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem()"></i></span>
                                         <span>[Resx:{key:"SystemType"}]</span>
                                     </div>
 
@@ -196,7 +196,9 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-    var moduleId = "[ModuleContext:ModuleId]";
+    var moduleId = parseInt("[ModuleContext:ModuleId]");
+    var str = "[ModuleContext:IsSuperUser]";
+    var isSystemUser = (str.toLowerCase() === "true");
 
     jQuery(document).ready(function ($) {
         var localizedSettings = {
@@ -214,7 +216,7 @@
         };
 
         var settings = {
-            canEditSystem: false,
+            canEditSystem: isSystemUser,
             initialPanel: '#content-types-panel',
             contentTypesPanel: '#content-types-panel',
             dataTypesPanel: '#data-types-panel',

@@ -16,6 +16,7 @@ dcc.dataTypes = function(ko, parentViewModel, resx, settings, util){
         pager_PagerFormat: resx.dataTypes_PagerFormat,
         pager_NoPagerFormat: resx.dataTypes_NoPagerFormat,
         selectedDataType: {
+            canEdit: ko.observable(false),
             dataTypeId: ko.observable(-1),
             baseType: ko.observable(0),
             name: ko.observable(''),
@@ -70,8 +71,10 @@ dcc.dataTypes = function(ko, parentViewModel, resx, settings, util){
         },
 
         expand: function(data, e){
-            viewDetail(data, e.target);
-            e.preventDefault();
+            if(data.canEdit){
+                viewDetail(data, e.target);
+                e.preventDefault();
+            }
         },
 
         getDataType: function (dataTypeId, cb) {
@@ -89,6 +92,7 @@ dcc.dataTypes = function(ko, parentViewModel, resx, settings, util){
                         viewModel.selectedDataType.baseType(dataType.baseType);
                         viewModel.selectedDataType.name(dataType.name);
                         viewModel.selectedDataType.isSystem(dataType.isSystem);
+                        viewModel.selectedDataType.canEdit(dataType.canEdit);
                     } else {
                         //Error
                     }

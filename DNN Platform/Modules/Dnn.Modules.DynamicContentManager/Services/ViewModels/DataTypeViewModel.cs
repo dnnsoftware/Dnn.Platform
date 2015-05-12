@@ -24,13 +24,14 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a DataTypeViewModel from a DataType object
         /// </summary>
         /// <param name="dataType">The DataType object</param>
-        public DataTypeViewModel(DataType dataType)
+        public DataTypeViewModel(DataType dataType, bool isSuperUser)
         {
             BaseType = dataType.UnderlyingDataType;
             Created = dataType.CreatedOnDate.ToShortDateString();
             DataTypeId = dataType.DataTypeId;
             IsSystem = dataType.IsSystem;
             Name = dataType.Name;
+            CanEdit = !(IsSystem) || isSuperUser;
         }
 
         /// <summary>
@@ -38,6 +39,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("baseType")]
         public UnderlyingDataType BaseType { get; set; }
+
+        /// <summary>
+        /// A flag that determines if the current user can edit the object
+        /// </summary>
+        [JsonProperty("canEdit")]
+        public bool CanEdit { get; set; }
 
         /// <summary>
         /// The Date when the Data Type was created

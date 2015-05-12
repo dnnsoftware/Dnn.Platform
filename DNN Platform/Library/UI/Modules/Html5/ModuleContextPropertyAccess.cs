@@ -47,6 +47,8 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 case "moduleid":
                     return _moduleContext.ModuleId.ToString();
+                case "issuperuser":
+                    return _moduleContext.PortalSettings.UserInfo.IsSuperUser.ToString();
             }
 
             propertyNotFound = true;
