@@ -1,25 +1,14 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
 
-namespace WatchersNET.CKEditor.Module
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Upgrade;
+
+namespace DNNConnect.CKEditorProvider.Module
 {
-    using System;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.Upgrade;
 
     /// <summary>
     /// Add Settings Module to Host -> Html Editor Manager Page
@@ -36,7 +25,7 @@ namespace WatchersNET.CKEditor.Module
             try
             {
                 const string ResourceFile =
-                    "~/Providers/HtmlEditorProviders/CKEditor/Module/App_LocalResources/EditorConfigManager.ascx.resx";
+					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/App_LocalResources/EditorConfigManager.ascx.resx";
 
                 var pageName = Localization.GetString("EditorMangerPageName.Text", ResourceFile);
                 var moduleTitle = Localization.GetString("EditorMangerName.Text", ResourceFile);
@@ -49,8 +38,8 @@ namespace WatchersNET.CKEditor.Module
                 var editorManagerPage = Upgrade.AddHostPage(
                     pageName,
                     pageDescription,
-                    "~/Providers/HtmlEditorProviders/CKEditor/images/editor_config_small.png",
-                    "~/Providers/HtmlEditorProviders/CKEditor/images/editor_config_large.png",
+					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_small.png",
+					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/editor_config_large.png",
                     true);
 
                 // Add Module To Page
@@ -60,7 +49,7 @@ namespace WatchersNET.CKEditor.Module
                     editorManagerPage,
                     moduleDefId,
                     moduleTitle,
-                    "~/Providers/HtmlEditorProviders/CKEditor/CKEditorConfig.png",
+					"~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png",
                     true);
             }
             catch (Exception ex)

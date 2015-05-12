@@ -10,7 +10,7 @@
  * this file is part of the Source Code of the CKEditor Provider.
  */
 
-namespace WatchersNET.CKEditor.Constants
+namespace DNNConnect.CKEditorProvider.Constants
 {
     using System;
 

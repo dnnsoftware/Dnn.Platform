@@ -1,39 +1,24 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
-namespace WatchersNET.CKEditor.Module
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
+
+namespace DNNConnect.CKEditorProvider.Module
 {
-    #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
-
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-
-    using WatchersNET.CKEditor.Objects;
-    using WatchersNET.CKEditor.Utilities;
-
-    #endregion
 
     /// <summary>
     /// The Editor Config Manger Module
@@ -61,7 +46,7 @@ namespace WatchersNET.CKEditor.Module
                 return
                     this.ResolveUrl(
                         string.Format(
-                            "~/Providers/HtmlEditorProviders/CKEditor/{0}/Options.aspx.resx",
+							"~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx",
                             Localization.LocalResourceDirectory));
             }
         }
@@ -92,7 +77,7 @@ namespace WatchersNET.CKEditor.Module
             {
                 this.EditorOptions =
                    (CKEditorOptions)
-                   this.Page.LoadControl("~/Providers/HtmlEditorProviders/CKEditor/CKEditorOptions.ascx");
+                   this.Page.LoadControl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx");
 
                 this.EditorOptions.IsHostMode = true;
 
@@ -286,7 +271,7 @@ namespace WatchersNET.CKEditor.Module
 
             var moduleController = new ModuleController();
 
-            var settingsDictionary = Utility.GetEditorHostSettings();
+            var settingsDictionary = EditorController.GetEditorHostSettings();
 
             if (this.PortalOnly.Checked)
             {
@@ -300,7 +285,7 @@ namespace WatchersNET.CKEditor.Module
                     this.RenderPortalNode(portal, moduleController, settingsDictionary);
                 }
             }
-            
+
             this.PortalTabsAndModulesTree.DataBind();
         }
 
@@ -323,8 +308,8 @@ namespace WatchersNET.CKEditor.Module
                 Value = string.Format("p{0}", portal.PortalID),
                 ImageUrl =
                     portalSettingsExists
-                        ? "../images/PortalHasSetting.png"
-                        : "../images/PortalNoSetting.png",
+                        ? "../CKEditor/images/PortalHasSetting.png"
+                        : "../CKEditor/images/PortalNoSetting.png",
                 Expanded = this.PortalOnly.Checked
             };
 
@@ -360,8 +345,8 @@ namespace WatchersNET.CKEditor.Module
                                   Value = string.Format("t{0}", tabInfo.TabID),
                                   ImageUrl =
                                       tabSettingsExists
-                                          ? "../images/PageHasSetting.png"
-                                          : "../images/PageNoSetting.png"
+                                          ? "../CKEditor/images/PageHasSetting.png"
+                                          : "../CKEditor/images/PageNoSetting.png"
                               };
 
             if (tabInfo.HasChildren)
@@ -384,8 +369,8 @@ namespace WatchersNET.CKEditor.Module
                                                    Text = moduleInfo.ModuleTitle,
                                                    ImageUrl =
                                                        moduleSettingsExists
-                                                           ? "../images/ModuleHasSetting.png"
-                                                           : "../images/ModuleNoSetting.png",
+                                                           ? "../CKEditor/images/ModuleHasSetting.png"
+                                                           : "../CKEditor/images/ModuleNoSetting.png",
                                                    Value = string.Format("m{0}", moduleInfo.ModuleID)
                                                })
             {

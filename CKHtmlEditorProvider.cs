@@ -1,29 +1,14 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System.Collections;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace WatchersNET.CKEditor
+using DotNetNuke.Common;
+using DotNetNuke.Modules.HTMLEditorProvider;
+
+using DNNConnect.CKEditorProvider.Web;
+
+namespace DNNConnect.CKEditorProvider
 {
-    #region
-
-    using System.Collections;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Modules.HTMLEditorProvider;
-
-    using WatchersNET.CKEditor.Web;
-
-    #endregion
 
     /// <summary>
     /// The CKEditor Provider.
@@ -40,7 +25,7 @@ namespace WatchersNET.CKEditor
         /// <summary>
         /// The _html editor control.
         /// </summary>
-        private CKEditorControl htmlEditorControl;
+        private EditorControl htmlEditorControl;
 
         /// <summary>
         /// The _root image directory.
@@ -172,7 +157,7 @@ namespace WatchersNET.CKEditor
         /// </summary>
         public override void Initialize()
         {
-            this.htmlEditorControl = new CKEditorControl { ID = this.ControlID };
+            this.htmlEditorControl = new EditorControl { ID = this.ControlID };
         }
 
         #endregion

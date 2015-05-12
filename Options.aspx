@@ -1,4 +1,4 @@
-﻿<%@ Page language="c#" Codebehind="Options.aspx.cs" AutoEventWireup="True" Inherits="WatchersNET.CKEditor.Options" %>
+﻿<%@ Page language="c#" Codebehind="Options.aspx.cs" AutoEventWireup="True" Inherits="DNNConnect.CKEditorProvider.Options" %>
 
 <!DOCTYPE html>
 <html lang="en">

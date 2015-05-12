@@ -1,0 +1,41 @@
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteCurrentPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteCurrentPageSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllPortalSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPortalSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllChildPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllChildPageSettings
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_GetEditorHostSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_GetEditorHostSettings
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettingsByTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettingsByTab
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_AddOrUpdateEditorHostSetting') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_AddOrUpdateEditorHostSetting
+GO
+
+/** Delete All settings **/
+
+
+
+if exists (select top 1 1 from {databaseOwner}sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}CKE_Settings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE {databaseOwner}{objectQualifier}CKE_Settings
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ModuleDefID IS NULL AND ControlKey = 'CKEditorOptions'

@@ -1,59 +1,44 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Xml.Serialization;
 
-namespace WatchersNET.CKEditor
+using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Framework.Providers;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Controls;
+using DNNConnect.CKEditorProvider.Extensions;
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
+
+using DataCache = DotNetNuke.Common.Utilities.DataCache;
+using Globals = DotNetNuke.Common.Globals;
+
+namespace DNNConnect.CKEditorProvider
 {
-    #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Web;
-    using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
-    using System.Xml.Serialization;
-
-    using DotNetNuke.Collections;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Installer.Packages;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-
-    using WatchersNET.CKEditor.Constants;
-    using WatchersNET.CKEditor.Controls;
-    using WatchersNET.CKEditor.Extensions;
-    using WatchersNET.CKEditor.Objects;
-    using WatchersNET.CKEditor.Utilities;
-
-    using DataCache = DotNetNuke.Common.Utilities.DataCache;
-    using Globals = DotNetNuke.Common.Globals;
-
-    #endregion
 
     /// <summary>
     /// The CKEditor options page.
@@ -100,7 +85,7 @@ namespace WatchersNET.CKEditor
         /// <summary>
         ///   The list of all available toolbar buttons.
         /// </summary>
-        private List<ToolbarButton> listButtons; 
+        private List<ToolbarButton> listButtons;
 
         /// <summary>
         ///   The module instance name
@@ -165,7 +150,7 @@ namespace WatchersNET.CKEditor
                 if (o != null)
                 {
                     return (int)o;
-            }
+                }
 
                 return 1;
             }
@@ -218,9 +203,9 @@ namespace WatchersNET.CKEditor
         {
             get
             {
-               return !string.IsNullOrEmpty(this.request.QueryString["langCode"])
-                           ? this.request.QueryString["langCode"]
-                           : CultureInfo.CurrentCulture.Name;
+                return !string.IsNullOrEmpty(this.request.QueryString["langCode"])
+                            ? this.request.QueryString["langCode"]
+                            : CultureInfo.CurrentCulture.Name;
             }
         }
 
@@ -234,7 +219,7 @@ namespace WatchersNET.CKEditor
                 return
                     this.ResolveUrl(
                         string.Format(
-                            "~/Providers/HtmlEditorProviders/CKEditor/{0}/Options.aspx.resx",
+                            "~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx",
                             Localization.LocalResourceDirectory));
             }
         }
@@ -407,7 +392,7 @@ namespace WatchersNET.CKEditor
                 }
                 else
                 {
-                    var settingsDictionary = Utility.GetEditorHostSettings();
+                    var settingsDictionary = EditorController.GetEditorHostSettings();
 
                     this.LoadSettings(SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, pageKey) ? 1 : 0);
                 }
@@ -461,7 +446,7 @@ namespace WatchersNET.CKEditor
                 // Remove CKFinder from the Browser list if not installed
                 if (
                     !File.Exists(
-                        this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.js")))
+                        this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js")))
                 {
                     this.ddlBrowser.Items.RemoveAt(2);
                 }
@@ -487,11 +472,11 @@ namespace WatchersNET.CKEditor
         {
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/jquery.notification.css"));
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/jquery.notification.css"));
 
             ClientResourceManager.RegisterStyleSheet(
                 this.Page,
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/css/Options.css"));
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/Options.css"));
 
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
             JavaScript.RequestRegistration(CommonJs.jQuery);
@@ -503,13 +488,13 @@ namespace WatchersNET.CKEditor
                 this,
                 typeof(Page),
                 "jquery.notification",
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/jquery.notification.js"));
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.notification.js"));
 
             ScriptManager.RegisterClientScriptInclude(
                 this,
                 typeof(Page),
                 "OptionsJs",
-                this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/Options.js"));
+                this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/Options.js"));
         }
 
 
@@ -638,7 +623,7 @@ namespace WatchersNET.CKEditor
                     SettingsUtil.GetEditorConfigProperties())
             {
                 object value = null;
-                
+
                 if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                 {
                     value = info.GetValue(importedSettings.Config, null);
@@ -744,42 +729,42 @@ namespace WatchersNET.CKEditor
                         break;
                     case "WordCount":
                         {
-                             foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
-                             {
-                                 value = wordCountInfo.GetValue(importedSettings.Config.WordCount, null);
+                            foreach (var wordCountInfo in typeof(WordCountConfig).GetProperties())
+                            {
+                                value = wordCountInfo.GetValue(importedSettings.Config.WordCount, null);
 
-                                 if (value == null)
-                                 {
-                                     continue;
-                                 }
+                                if (value == null)
+                                {
+                                    continue;
+                                }
 
-                                 switch (wordCountInfo.PropertyType.Name)
-                                 {
-                                     case "String":
-                                         {
-                                             var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, wordCountInfo.Name);
+                                switch (wordCountInfo.PropertyType.Name)
+                                {
+                                    case "String":
+                                        {
+                                            var textBox = Utility.FindControl<TextBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
-                                             if (textBox != null)
-                                             {
-                                                 textBox.Text = value.ToString();
-                                             }
-                                         }
+                                            if (textBox != null)
+                                            {
+                                                textBox.Text = value.ToString();
+                                            }
+                                        }
 
-                                         break;
+                                        break;
 
-                                     case "Boolean":
-                                         {
-                                             var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, wordCountInfo.Name);
+                                    case "Boolean":
+                                        {
+                                            var checkBox = Utility.FindControl<CheckBox>(this.EditorConfigHolder, wordCountInfo.Name);
 
-                                             if (checkBox != null)
-                                             {
-                                                 checkBox.Checked = (bool)value;
-                                             }
-                                         }
+                                            if (checkBox != null)
+                                            {
+                                                checkBox.Checked = (bool)value;
+                                            }
+                                        }
 
-                                         break;
-                                 }
-                             }
+                                        break;
+                                }
+                            }
                         }
 
                         break;
@@ -791,7 +776,7 @@ namespace WatchersNET.CKEditor
                 && this.ddlSkin.Items.FindByValue(importedSettings.Config.Skin) != null)
             {
                 this.ddlSkin.ClearSelection();
-                this.ddlSkin.SelectedValue = importedSettings.Config.Skin;    
+                this.ddlSkin.SelectedValue = importedSettings.Config.Skin;
             }
 
             if (!string.IsNullOrEmpty(importedSettings.Config.CodeMirror.Theme)
@@ -1282,7 +1267,7 @@ namespace WatchersNET.CKEditor
             this.ddlSkin.Items.Clear();
 
             DirectoryInfo objDir =
-                new DirectoryInfo(this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/skins")));
+                new DirectoryInfo(this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/skins")));
 
             foreach (ListItem skinItem in
                 objDir.GetDirectories().Select(
@@ -1296,7 +1281,7 @@ namespace WatchersNET.CKEditor
 
             var themesFolder =
                 new DirectoryInfo(
-                    this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/plugins/codemirror/theme")));
+                    this.MapPath(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/plugins/codemirror/theme")));
 
             // add default theme
             this.CodeMirrorTheme.Items.Add(new ListItem { Text = "default", Value = "default" });
@@ -1670,8 +1655,8 @@ namespace WatchersNET.CKEditor
 
                 this.rBlSetMode.SelectedIndexChanged += this.SetMode_SelectedIndexChanged;
 
-                this.ToolbarGroupsRepeater.ItemDataBound += this.ToolbarGroupsRepeater_ItemDataBound; 
-                
+                this.ToolbarGroupsRepeater.ItemDataBound += this.ToolbarGroupsRepeater_ItemDataBound;
+
                 this.RenderEditorConfigSettings();
             }
             catch (Exception ex)
@@ -1954,7 +1939,7 @@ namespace WatchersNET.CKEditor
 
             this.LoadDefaultSettings();
 
-            var settingsDictionary = Utility.GetEditorHostSettings();
+            var settingsDictionary = EditorController.GetEditorHostSettings();
             var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
 
             var portalKey = string.Format("DNNCKP#{0}#", this._portalSettings.PortalId);
@@ -2235,7 +2220,7 @@ namespace WatchersNET.CKEditor
                                                  .Where(codeMirrorInfo => !codeMirrorInfo.Name.Equals("Theme")))
                             {
                                 var codeMirrorDescription = codeMirrorInfo.GetCustomAttribute<DescriptionAttribute>(true);
-                                
+
                                 var settingValueContainer2 = new HtmlGenericControl("div");
                                 settingValueContainer2.Attributes.Add("class", "dnnFormItem");
 
@@ -2668,7 +2653,7 @@ namespace WatchersNET.CKEditor
 
                             if (textBox != null)
                             {
-                                Utility.AddOrUpdateEditorHostSetting(
+                                EditorController.AddOrUpdateEditorHostSetting(
                                     string.Format("{0}{1}", key, info.Name),
                                     textBox.Text);
                             }
@@ -2681,7 +2666,7 @@ namespace WatchersNET.CKEditor
 
                             if (checkBox != null)
                             {
-                                Utility.AddOrUpdateEditorHostSetting(
+                                EditorController.AddOrUpdateEditorHostSetting(
                                     string.Format("{0}{1}", key, info.Name),
                                     checkBox.Checked.ToString());
                             }
@@ -2704,7 +2689,7 @@ namespace WatchersNET.CKEditor
                             {
                                 if (dropDownList.SelectedItem != null)
                                 {
-                                    Utility.AddOrUpdateEditorHostSetting(
+                                    EditorController.AddOrUpdateEditorHostSetting(
                                         string.Format("{0}{1}", key, info.Name),
                                         dropDownList.SelectedValue);
                                 }
@@ -2728,7 +2713,7 @@ namespace WatchersNET.CKEditor
 
                                             if (textBox != null)
                                             {
-                                                Utility.AddOrUpdateEditorHostSetting(
+                                                EditorController.AddOrUpdateEditorHostSetting(
                                                     string.Format("{0}{1}", key, codeMirrorInfo.Name),
                                                     textBox.Text);
                                             }
@@ -2744,7 +2729,7 @@ namespace WatchersNET.CKEditor
 
                                             if (checkBox != null)
                                             {
-                                                Utility.AddOrUpdateEditorHostSetting(
+                                                EditorController.AddOrUpdateEditorHostSetting(
                                                     string.Format("{0}{1}", key, codeMirrorInfo.Name),
                                                     checkBox.Checked.ToString());
                                             }
@@ -2770,7 +2755,7 @@ namespace WatchersNET.CKEditor
 
                                             if (textBox != null)
                                             {
-                                                Utility.AddOrUpdateEditorHostSetting(
+                                                EditorController.AddOrUpdateEditorHostSetting(
                                                     string.Format("{0}{1}", key, wordCountInfo.Name),
                                                     textBox.Text);
                                             }
@@ -2786,7 +2771,7 @@ namespace WatchersNET.CKEditor
 
                                             if (checkBox != null)
                                             {
-                                                Utility.AddOrUpdateEditorHostSetting(
+                                                EditorController.AddOrUpdateEditorHostSetting(
                                                     string.Format("{0}{1}", key, wordCountInfo.Name),
                                                     checkBox.Checked.ToString());
                                             }
@@ -2802,91 +2787,91 @@ namespace WatchersNET.CKEditor
             }
             ///////////////////
 
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.SKIN),
                 this.ddlSkin.SelectedValue);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.CODEMIRRORTHEME),
                 this.CodeMirrorTheme.SelectedValue);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.BROWSER),
                 this.ddlBrowser.SelectedValue);
 
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.FILELISTVIEWMODE),
                 this.FileListViewMode.SelectedValue);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.DEFAULTLINKMODE),
                 this.DefaultLinkMode.SelectedValue);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.USEANCHORSELECTOR),
                 this.UseAnchorSelector.Checked.ToString());
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.SHOWPAGELINKSTABFIRST),
                 this.ShowPageLinksTabFirst.Checked.ToString());
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.OVERRIDEFILEONUPLOAD),
                 this.OverrideFileOnUpload.Checked.ToString());
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.SUBDIRS),
                 this.cbBrowserDirs.Checked.ToString());
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.BROWSERROOTDIRID),
                 this.BrowserRootDir.SelectedValue);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.UPLOADDIRID),
                 this.UploadDir.SelectedValue);
 
             if (Utility.IsNumeric(this.FileListPageSize.Text))
             {
-                Utility.AddOrUpdateEditorHostSetting(
+                EditorController.AddOrUpdateEditorHostSetting(
                     string.Format("{0}{1}", key, SettingConstants.FILELISTPAGESIZE),
                     this.FileListPageSize.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeWidth.Text))
             {
-                Utility.AddOrUpdateEditorHostSetting(
+                EditorController.AddOrUpdateEditorHostSetting(
                     string.Format("{0}{1}", key, SettingConstants.RESIZEWIDTH),
                     this.txtResizeWidth.Text);
             }
 
             if (Utility.IsNumeric(this.txtResizeHeight.Text))
             {
-                Utility.AddOrUpdateEditorHostSetting(
+                EditorController.AddOrUpdateEditorHostSetting(
                     string.Format("{0}{1}", key, SettingConstants.RESIZEHEIGHT),
                     this.txtResizeHeight.Text);
             }
 
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}injectjs", key),
                 this.InjectSyntaxJs.Checked.ToString());
 
             if (Utility.IsUnit(this.txtWidth.Text))
             {
-                Utility.AddOrUpdateEditorHostSetting(
+                EditorController.AddOrUpdateEditorHostSetting(
                     string.Format("{0}{1}", key, SettingConstants.WIDTH),
                     this.txtWidth.Text);
             }
 
             if (Utility.IsUnit(this.txtHeight.Text))
             {
-                Utility.AddOrUpdateEditorHostSetting(
+                EditorController.AddOrUpdateEditorHostSetting(
                     string.Format("{0}{1}", key, SettingConstants.HEIGHT),
                     this.txtHeight.Text);
             }
 
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.BLANKTEXT),
                 this.txtBlanktext.Text);
-            Utility.AddOrUpdateEditorHostSetting(string.Format("{0}{1}", key, SettingConstants.CSS), this.CssUrl.Url);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(string.Format("{0}{1}", key, SettingConstants.CSS), this.CssUrl.Url);
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.TEMPLATEFILES),
                 this.TemplUrl.Url);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.CUSTOMJSFILE),
                 this.CustomJsFile.Url);
-            Utility.AddOrUpdateEditorHostSetting(
+            EditorController.AddOrUpdateEditorHostSetting(
                 string.Format("{0}{1}", key, SettingConstants.CONFIG),
                 this.ConfigUrl.Url);
 
@@ -2896,7 +2881,7 @@ namespace WatchersNET.CKEditor
 
             if (sRoles != string.Empty)
             {
-                Utility.AddOrUpdateEditorHostSetting(string.Format("{0}{1}", key, SettingConstants.ROLES), sRoles);
+                EditorController.AddOrUpdateEditorHostSetting(string.Format("{0}{1}", key, SettingConstants.ROLES), sRoles);
             }
 
             // Save Toolbar Setting for every Role
@@ -2913,7 +2898,7 @@ namespace WatchersNET.CKEditor
 
                 if (label.Text.Equals("Unauthenticated Users"))
                 {
-                    Utility.AddOrUpdateEditorHostSetting(
+                    EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}toolb#{1}", key, "-1"),
                         ddLToolB.SelectedValue);
                 }
@@ -2921,7 +2906,7 @@ namespace WatchersNET.CKEditor
                 {
                     RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
-                    Utility.AddOrUpdateEditorHostSetting(
+                    EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}toolb#{1}", key, objRole.RoleID),
                         ddLToolB.SelectedValue);
                 }
@@ -2941,7 +2926,7 @@ namespace WatchersNET.CKEditor
 
                 if (label.Text.Equals("Unauthenticated Users"))
                 {
-                    Utility.AddOrUpdateEditorHostSetting(
+                    EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}{2}#{1}", key, "-1", SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
                 }
@@ -2949,13 +2934,13 @@ namespace WatchersNET.CKEditor
                 {
                     RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
-                    Utility.AddOrUpdateEditorHostSetting(
+                    EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
                         sizeLimit.Text);
                 }
             }
         }
-        
+
         /// <summary>
         /// Save all Settings for the Current Selected Mode
         /// </summary>
@@ -3021,8 +3006,8 @@ namespace WatchersNET.CKEditor
             this.lblSettings.Text = Localization.GetString("lblSettings.Text", this.ResXFile, this.LangCode);
             this.lblSetFor.Text = Localization.GetString("lblSetFor.Text", this.ResXFile, this.LangCode);
             this.lblBrowser.Text = Localization.GetString("lblBrowser.Text", this.ResXFile, this.LangCode);
-            
-            this.lblBlanktext.Text = Localization.GetString("lblBlanktext.Text", this.ResXFile, this.LangCode); 
+
+            this.lblBlanktext.Text = Localization.GetString("lblBlanktext.Text", this.ResXFile, this.LangCode);
             this.txtBlanktext.ToolTip = Localization.GetString("BlanktextTT.Text", this.ResXFile, this.LangCode);
 
             this.lblBrowsSec.Text = Localization.GetString("lblBrowsSec.Text", this.ResXFile, this.LangCode);
@@ -3079,7 +3064,7 @@ namespace WatchersNET.CKEditor
 
             this.iBDelete.AlternateText = Localization.GetString("DeleteToolbar.Text", this.ResXFile, this.LangCode);
             this.iBDelete.ToolTip = Localization.GetString("DeleteToolbar.Text", this.ResXFile, this.LangCode);
-            
+
             this.lblExport.Text = Localization.GetString("lnkExport.Text", this.ResXFile, this.LangCode);
 
             this.ExportNow.Text = Localization.GetString("ExportNow.Text", this.ResXFile, this.LangCode);
@@ -3158,10 +3143,10 @@ namespace WatchersNET.CKEditor
             switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Portal:
-                    Utility.DeleteAllPortalSettings(this._portalSettings.PortalId);
+                    EditorController.DeleteAllPortalSettings(this._portalSettings.PortalId);
                     break;
                 case SettingsMode.Page:
-                    Utility.DeleteCurrentPageSettings(this.CurrentOrSelectedTabId);
+                    EditorController.DeleteCurrentPageSettings(this.CurrentOrSelectedTabId);
                     break;
                 case SettingsMode.ModuleInstance:
                     this.DelModuleSettings();
@@ -3181,13 +3166,13 @@ namespace WatchersNET.CKEditor
             switch (this.CurrentSettingsMode)
             {
                 case SettingsMode.Portal:
-                    Utility.DeleteAllPortalSettings(this._portalSettings.PortalId);
+                    EditorController.DeleteAllPortalSettings(this._portalSettings.PortalId);
                     break;
                 case SettingsMode.Page:
-                    Utility.DeleteAllPageSettings(this._portalSettings.PortalId);
+                    EditorController.DeleteAllPageSettings(this._portalSettings.PortalId);
                     break;
                 case SettingsMode.ModuleInstance:
-                    Utility.DeleteAllModuleSettings(this._portalSettings.PortalId);
+                    EditorController.DeleteAllModuleSettings(this._portalSettings.PortalId);
                     break;
             }
 
@@ -3206,14 +3191,14 @@ namespace WatchersNET.CKEditor
                 case SettingsMode.Page:
                     {
                         // Delete all Page Setting for all Child Tabs
-                        Utility.DeleteAllChildPageSettings(this.CurrentOrSelectedTabId);
+                        EditorController.DeleteAllChildPageSettings(this.CurrentOrSelectedTabId);
                     }
 
                     break;
                 case SettingsMode.ModuleInstance:
                     {
                         // Delete all Module Instance Settings for the Current Tab
-                        Utility.DeleteAllModuleSettingsById(this.CurrentOrSelectedTabId);
+                        EditorController.DeleteAllModuleSettingsById(this.CurrentOrSelectedTabId);
                     }
 
                     break;
@@ -3274,7 +3259,7 @@ namespace WatchersNET.CKEditor
                     "ShowNotificationBar('{0}','{1}','{2}');",
                     message,
                     type,
-                    this.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/images/")),
+                    this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/")),
                 true);
         }
 

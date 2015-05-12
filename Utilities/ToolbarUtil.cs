@@ -1,33 +1,18 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
-namespace WatchersNET.CKEditor.Utilities
+using DotNetNuke.Common;
+
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Objects;
+
+namespace DNNConnect.CKEditorProvider.Utilities
 {
-    #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Xml.Serialization;
-
-    using DotNetNuke.Common;
-
-    using WatchersNET.CKEditor.Constants;
-    using WatchersNET.CKEditor.Objects;
-
-    #endregion
 
     /// <summary>
     /// Toolbar Helper Class

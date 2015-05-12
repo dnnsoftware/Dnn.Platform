@@ -1,66 +1,46 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Xml.Serialization;
 
-namespace WatchersNET.CKEditor.Web
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.Providers;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Extensions;
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
+
+
+namespace DNNConnect.CKEditorProvider.Web
 {
-    #region
 
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text;
-    using System.Threading;
-    using System.Web;
-    using System.Web.Script.Serialization;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
-    using System.Xml.Serialization;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Installer.Packages;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.Web.Client;
-
-    using WatchersNET.CKEditor.Constants;
-    using WatchersNET.CKEditor.Extensions;
-    using WatchersNET.CKEditor.Objects;
-    using WatchersNET.CKEditor.Utilities;
-
-    using Assembly = System.Reflection.Assembly;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-
-    #endregion
 
     /// <summary>
     /// The CKEditor control.
     /// </summary>
-    public class CKEditorControl : WebControl, IPostBackDataHandler
+    public class EditorControl : WebControl, IPostBackDataHandler
     {
         #region Constants and Fields
 
@@ -115,13 +95,13 @@ namespace WatchersNET.CKEditor.Web
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CKEditorControl"/> class.
+        /// Initializes a new instance of the <see cref="EditorControl"/> class.
         /// </summary>
-        public CKEditorControl()
+        public EditorControl()
         {
-            this.LoadConfigSettings();
+            LoadConfigSettings();
 
-            this.Init += this.CKEditorInit;
+            Init += CKEditorInit;
         }
 
         #endregion
@@ -140,15 +120,15 @@ namespace WatchersNET.CKEditor.Web
         {
             get
             {
-                if (this.isMerged)
+                if (isMerged)
                 {
-                    return this._settings;
+                    return _settings;
                 }
 
                 // Override local settings with attributes
-                foreach (string key in this.Attributes.Keys)
+                foreach (string key in Attributes.Keys)
                 {
-                    this._settings[key] = this.Attributes[key];
+                    _settings[key] = Attributes[key];
                 }
 
                 // Inject all Editor Config 
@@ -161,12 +141,12 @@ namespace WatchersNET.CKEditor.Web
 
                     if (!info.Name.Equals("CodeMirror") && !info.Name.Equals("WordCount"))
                     {
-                        if (info.GetValue(this.currentSettings.Config, null) == null)
+                        if (info.GetValue(currentSettings.Config, null) == null)
                         {
                             continue;
                         }
 
-                        var rawValue = info.GetValue(this.currentSettings.Config, null);
+                        var rawValue = info.GetValue(currentSettings.Config, null);
 
                         settingValue = info.PropertyType.Name.Equals("Double")
                                            ? Convert.ToDouble(rawValue)
@@ -183,29 +163,29 @@ namespace WatchersNET.CKEditor.Web
 
                     if (info.PropertyType.Name == "Boolean")
                     {
-                        this._settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                        _settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
                     }
                     else
                     {
                         switch (info.Name)
                         {
                             case "ToolbarLocation":
-                                this._settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
+                                _settings[xmlAttributeAttribute.AttributeName] = settingValue.ToLower();
                                 break;
                             case "EnterMode":
                             case "ShiftEnterMode":
                                 switch (settingValue)
                                 {
                                     case "P":
-                                        this._settings[xmlAttributeAttribute.AttributeName] = "1";
+                                        _settings[xmlAttributeAttribute.AttributeName] = "1";
                                         break;
                                     case "BR":
-                                        this._settings[xmlAttributeAttribute.AttributeName] = "2";
+                                        _settings[xmlAttributeAttribute.AttributeName] = "2";
                                         break;
                                     case "DIV":
-                                        this._settings[xmlAttributeAttribute.AttributeName] = "3";
+                                        _settings[xmlAttributeAttribute.AttributeName] = "3";
                                         break;
-                                } 
+                                }
 
                                 break;
                             case "ContentsLangDirection":
@@ -213,15 +193,15 @@ namespace WatchersNET.CKEditor.Web
                                     switch (settingValue)
                                     {
                                         case "LeftToRight":
-                                            this._settings[xmlAttributeAttribute.AttributeName] = "ltr";
+                                            _settings[xmlAttributeAttribute.AttributeName] = "ltr";
                                             break;
                                         case "RightToLeft":
-                                            this._settings[xmlAttributeAttribute.AttributeName] = "rtl";
+                                            _settings[xmlAttributeAttribute.AttributeName] = "rtl";
                                             break;
                                         default:
-                                            this._settings[xmlAttributeAttribute.AttributeName] = string.Empty;
+                                            _settings[xmlAttributeAttribute.AttributeName] = string.Empty;
                                             break;
-                                    } 
+                                    }
                                 }
 
                                 break;
@@ -235,7 +215,7 @@ namespace WatchersNET.CKEditor.Web
                                         var xmlAttribute =
                                             codeMirrorInfo.GetCustomAttribute<XmlAttributeAttribute>(true);
                                         var rawSettingValue = codeMirrorInfo.GetValue(
-                                            this.currentSettings.Config.CodeMirror, null);
+                                            currentSettings.Config.CodeMirror, null);
 
                                         var codeMirrorSettingValue = rawSettingValue.ToString();
 
@@ -243,7 +223,7 @@ namespace WatchersNET.CKEditor.Web
                                         {
                                             continue;
                                         }
-                                             
+
                                         switch (codeMirrorInfo.PropertyType.Name)
                                         {
                                             case "String":
@@ -257,7 +237,7 @@ namespace WatchersNET.CKEditor.Web
 
                                     var codemirrorSettings = codeMirrorArray.ToString();
 
-                                    this._settings["codemirror"] = string.Format(
+                                    _settings["codemirror"] = string.Format(
                                         "{{ {0} }}", codemirrorSettings.Remove(codemirrorSettings.Length - 1, 1));
                                 }
 
@@ -272,7 +252,7 @@ namespace WatchersNET.CKEditor.Web
                                             wordCountInfo.GetCustomAttribute<XmlAttributeAttribute>(true);
 
                                         var rawSettingValue =
-                                            wordCountInfo.GetValue(this.currentSettings.Config.WordCount, null);
+                                            wordCountInfo.GetValue(currentSettings.Config.WordCount, null);
 
                                         var wordCountSettingValue = rawSettingValue.ToString();
 
@@ -294,13 +274,13 @@ namespace WatchersNET.CKEditor.Web
 
                                     var wordcountSettings = wordcountArray.ToString();
 
-                                    this._settings["wordcount"] = string.Format(
+                                    _settings["wordcount"] = string.Format(
                                         "{{ {0} }}", wordcountSettings.Remove(wordcountSettings.Length - 1, 1));
                                 }
 
                                 break;
                             default:
-                                this._settings[xmlAttributeAttribute.AttributeName] = settingValue;
+                                _settings[xmlAttributeAttribute.AttributeName] = settingValue;
                                 break;
                         }
                     }
@@ -310,291 +290,291 @@ namespace WatchersNET.CKEditor.Web
                 {
                     var currentCulture = Thread.CurrentThread.CurrentUICulture;
 
-                    this._settings["language"] = currentCulture.Name.ToLowerInvariant();
+                    _settings["language"] = currentCulture.Name.ToLowerInvariant();
 
-                    if (string.IsNullOrEmpty(this.currentSettings.Config.Scayt_sLang))
+                    if (string.IsNullOrEmpty(currentSettings.Config.Scayt_sLang))
                     {
-                        this._settings["scayt_sLang"] = currentCulture.Name.ToLowerInvariant();
+                        _settings["scayt_sLang"] = currentCulture.Name.ToLowerInvariant();
                     }
                 }
                 catch (Exception)
                 {
-                    this._settings["language"] = "en";
+                    _settings["language"] = "en";
                 }
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.CustomConfig))
+                if (!string.IsNullOrEmpty(currentSettings.Config.CustomConfig))
                 {
-                    this._settings["customConfig"] = this.FormatUrl(this.currentSettings.Config.CustomConfig);
+                    _settings["customConfig"] = FormatUrl(currentSettings.Config.CustomConfig);
                 }
                 else
                 {
-                    this._settings["customConfig"] = string.Empty;
+                    _settings["customConfig"] = string.Empty;
                 }
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Skin))
+                if (!string.IsNullOrEmpty(currentSettings.Config.Skin))
                 {
-                    if (this.currentSettings.Config.Skin.Equals("office2003")
-                        || this.currentSettings.Config.Skin.Equals("BootstrapCK-Skin")
-                        || this.currentSettings.Config.Skin.Equals("chris")
-                        || this.currentSettings.Config.Skin.Equals("v2"))
+                    if (currentSettings.Config.Skin.Equals("office2003")
+                        || currentSettings.Config.Skin.Equals("BootstrapCK-Skin")
+                        || currentSettings.Config.Skin.Equals("chris")
+                        || currentSettings.Config.Skin.Equals("v2"))
                     {
-                        this._settings["skin"] = "moono";
+                        _settings["skin"] = "moono";
                     }
                     else
                     {
-                        this._settings["skin"] = this.currentSettings.Config.Skin;
+                        _settings["skin"] = currentSettings.Config.Skin;
                     }
                 }
                 var cssFiles = new List<string>();
-                var skinSrc = this.GetSkinSource();
-                var containerSrc = this.GetContainerSource();
+                var skinSrc = GetSkinSource();
+                var containerSrc = GetContainerSource();
 
                 cssFiles.Add("~/portals/_default/default.css");
                 cssFiles.Add(skinSrc.Replace(skinSrc.Substring(skinSrc.LastIndexOf('/'), skinSrc.Length - skinSrc.Substring(0, skinSrc.LastIndexOf('/')).Length), "/skin.css"));
                 cssFiles.Add(containerSrc.Replace(containerSrc.Substring(containerSrc.LastIndexOf('/'), containerSrc.Length - containerSrc.Substring(0, containerSrc.LastIndexOf('/')).Length), "/container.css"));
-                cssFiles.Add("~/DesktopModules/" + this.myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
-                cssFiles.Add("~" + this._portalSettings.HomeDirectory + "portal.css");
+                cssFiles.Add("~/DesktopModules/" + myParModule.ModuleConfiguration.DesktopModule.FolderName + "/module.css");
+                cssFiles.Add("~" + _portalSettings.HomeDirectory + "portal.css");
 
-                var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(this.MapPathSecure(cssFile))).Select(Globals.ResolveUrl).ToList();
+                var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(MapPathSecure(cssFile))).Select(Globals.ResolveUrl).ToList();
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.ContentsCss))
+                if (!string.IsNullOrEmpty(currentSettings.Config.ContentsCss))
                 {
-                    var customCss = Globals.ResolveUrl(this.ReFormatURL(this.currentSettings.Config.ContentsCss));
+                    var customCss = Globals.ResolveUrl(ReFormatURL(currentSettings.Config.ContentsCss));
                     resolvedCssFiles.Add(customCss);
                 }
 
                 var serializer = new JavaScriptSerializer();
-                this._settings["contentsCss"] = serializer.Serialize(resolvedCssFiles);
+                _settings["contentsCss"] = serializer.Serialize(resolvedCssFiles);
 
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Templates_Files))
+                if (!string.IsNullOrEmpty(currentSettings.Config.Templates_Files))
                 {
-                    var templateUrl = this.FormatUrl(this.currentSettings.Config.Templates_Files);
+                    var templateUrl = FormatUrl(currentSettings.Config.Templates_Files);
 
-                    this._settings["templates_files"] = string.Format(
+                    _settings["templates_files"] = string.Format(
                         "[ '{0}' ]",
                         templateUrl.EndsWith(".xml") ? string.Format("xml:{0}", templateUrl) : templateUrl);
                 }
 
-                if (!string.IsNullOrEmpty(this.toolBarNameOverride))
+                if (!string.IsNullOrEmpty(toolBarNameOverride))
                 {
-                    this._settings["toolbar"] = this.toolBarNameOverride;
+                    _settings["toolbar"] = toolBarNameOverride;
                 }
                 else
                 {
-                    var toolbarName = this.SetUserToolbar(this._settings["configFolder"]);
+                    var toolbarName = SetUserToolbar(_settings["configFolder"]);
 
-                    var listToolbarSets = ToolbarUtil.GetToolbars(this._portalSettings.HomeDirectoryMapPath, this._settings["configFolder"]);
+                    var listToolbarSets = ToolbarUtil.GetToolbars(_portalSettings.HomeDirectoryMapPath, _settings["configFolder"]);
 
                     var toolbarSet = listToolbarSets.FirstOrDefault(toolbar => toolbar.Name.Equals(toolbarName));
 
                     var toolbarSetString = ToolbarUtil.ConvertToolbarSetToString(toolbarSet, true);
 
-                    this._settings["toolbar"] = string.Format(
+                    _settings["toolbar"] = string.Format(
                         "[{0}]", toolbarSetString);
                 }
 
                 // Editor Width
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Width))
+                if (!string.IsNullOrEmpty(currentSettings.Config.Width))
                 {
-                    this._settings["width"] = this.currentSettings.Config.Width;
+                    _settings["width"] = currentSettings.Config.Width;
                 }
                 else
                 {
-                    if (this.Width.Value > 0)
+                    if (Width.Value > 0)
                     {
-                        this._settings["width"] = this.Width.ToString();
+                        _settings["width"] = Width.ToString();
                     }
                 }
 
                 // Editor Height
-                if (!string.IsNullOrEmpty(this.currentSettings.Config.Height))
+                if (!string.IsNullOrEmpty(currentSettings.Config.Height))
                 {
-                    this._settings["height"] = this.currentSettings.Config.Height;
+                    _settings["height"] = currentSettings.Config.Height;
                 }
                 else
                 {
-                    if (this.Height.Value > 0)
+                    if (Height.Value > 0)
                     {
-                        this._settings["height"] = this.Height.ToString();
+                        _settings["height"] = Height.ToString();
                     }
                 }
 
-                if (!string.IsNullOrEmpty(this._settings["extraPlugins"])
-                    && this._settings["extraPlugins"].Contains("xmlstyles"))
+                if (!string.IsNullOrEmpty(_settings["extraPlugins"])
+                    && _settings["extraPlugins"].Contains("xmlstyles"))
                 {
-                    this._settings["extraPlugins"] = this._settings["extraPlugins"].Replace(",xmlstyles", string.Empty);
+                    _settings["extraPlugins"] = _settings["extraPlugins"].Replace(",xmlstyles", string.Empty);
                 }
 
                 // fix oEmbed/oembed issue and other bad settings
-                if (!string.IsNullOrEmpty(this._settings["extraPlugins"])
-                    && this._settings["extraPlugins"].Contains("oEmbed"))
+                if (!string.IsNullOrEmpty(_settings["extraPlugins"])
+                    && _settings["extraPlugins"].Contains("oEmbed"))
                 {
-                    this._settings["extraPlugins"] = this._settings["extraPlugins"].Replace("oEmbed", "oembed");
+                    _settings["extraPlugins"] = _settings["extraPlugins"].Replace("oEmbed", "oembed");
                 }
 
-                if (this._settings["PasteFromWordCleanupFile"] != null
-                    && this._settings["PasteFromWordCleanupFile"].Equals("default"))
+                if (_settings["PasteFromWordCleanupFile"] != null
+                    && _settings["PasteFromWordCleanupFile"].Equals("default"))
                 {
-                    this._settings["PasteFromWordCleanupFile"] = string.Empty;
+                    _settings["PasteFromWordCleanupFile"] = string.Empty;
                 }
 
-                if (this._settings["menu_groups"] != null
-                    && this._settings["menu_groups"].Equals("clipboard,table,anchor,link,image"))
+                if (_settings["menu_groups"] != null
+                    && _settings["menu_groups"].Equals("clipboard,table,anchor,link,image"))
                 {
-                    this._settings["menu_groups"] =
+                    _settings["menu_groups"] =
                         "clipboard,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,div";
                 }
 
                 // Inject maxFileSize
-                this._settings["maxFileSize"] = Utility.GetMaxUploadSize().ToString();
+                _settings["maxFileSize"] = Utility.GetMaxUploadSize().ToString();
 
-                HttpContext.Current.Session["CKDNNtabid"] = this._portalSettings.ActiveTab.TabID;
-                HttpContext.Current.Session["CKDNNporid"] = this._portalSettings.PortalId;
+                HttpContext.Current.Session["CKDNNtabid"] = _portalSettings.ActiveTab.TabID;
+                HttpContext.Current.Session["CKDNNporid"] = _portalSettings.PortalId;
 
                 // Add FileBrowser
-                switch (this.currentSettings.BrowserMode)
+                switch (currentSettings.BrowserMode)
                 {
-                    case Browser.StandardBrowser:
+                    case BrowserType.StandardBrowser:
                         {
-                            this._settings["filebrowserBrowseUrl"] =
+                            _settings["filebrowserBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId,
-                                        this.parentModulId,
-                                        this.ID,
-                                        this.currentSettings.SettingMode,
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Link&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
-                            this._settings["filebrowserImageBrowseUrl"] =
+                            _settings["filebrowserImageBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId,
-                                        this.parentModulId,
-                                        this.ID,
-                                        this.currentSettings.SettingMode,
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Image&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
-                            this._settings["filebrowserFlashBrowseUrl"] =
+                            _settings["filebrowserFlashBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId,
-                                        this.parentModulId,
-                                        this.ID,
-                                        this.currentSettings.SettingMode,
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Type=Flash&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId,
+                                        parentModulId,
+                                        ID,
+                                        currentSettings.SettingMode,
                                         CultureInfo.CurrentCulture.Name));
 
-                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this._portalSettings))
+                            if (Utility.CheckIfUserHasFolderWriteAccess(currentSettings.UploadDirId, _portalSettings))
                             {
-                                this._settings["filebrowserUploadUrl"] =
+                                _settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FileUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
-                                this._settings["filebrowserFlashUploadUrl"] =
+                                _settings["filebrowserFlashUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=FlashUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
-                                this._settings["filebrowserImageUploadUrl"] =
+                                _settings["filebrowserImageUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId,
-                                            this.parentModulId,
-                                            this.ID,
-                                            this.currentSettings.SettingMode,
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&tabid={0}&PortalID={1}&mid={2}&ckid={3}&mode={4}&lang={5}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId,
+                                            parentModulId,
+                                            ID,
+                                            currentSettings.SettingMode,
                                             CultureInfo.CurrentCulture.Name));
                             }
 
-                            this._settings["filebrowserWindowWidth"] = "870";
-                            this._settings["filebrowserWindowHeight"] = "800";
+                            _settings["filebrowserWindowWidth"] = "870";
+                            _settings["filebrowserWindowHeight"] = "800";
 
                             // Set Browser Authorize 
-                            const bool CKDNNIsAuthorized = true;
+                            const bool isAuthorized = true;
 
-                            HttpContext.Current.Session["CKDNNIsAuthorized"] = CKDNNIsAuthorized;
+                            HttpContext.Current.Session["CKE_DNNIsAuthorized"] = isAuthorized;
 
-                            DataCache.SetCache("CKDNNIsAuthorized", CKDNNIsAuthorized);
+                            DataCache.SetCache("CKE_DNNIsAuthorized", isAuthorized);
                         }
 
                         break;
-                    case Browser.CKFinder:
+                    case BrowserType.CKFinder:
                         {
-                            this._settings["filebrowserBrowseUrl"] =
+                            _settings["filebrowserBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.html?tabid={0}&PortalID={1}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId));
-                            this._settings["filebrowserImageBrowseUrl"] =
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?tabid={0}&PortalID={1}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId));
+                            _settings["filebrowserImageBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.html?type=Images&tabid={0}&PortalID={1}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId));
-                            this._settings["filebrowserFlashBrowseUrl"] =
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Images&tabid={0}&PortalID={1}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId));
+                            _settings["filebrowserFlashBrowseUrl"] =
                                 Globals.ResolveUrl(
                                     string.Format(
-                                        "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.html?type=Flash&tabid={0}&PortalID={1}",
-                                        this._portalSettings.ActiveTab.TabID,
-                                        this._portalSettings.PortalId));
+										"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.html?type=Flash&tabid={0}&PortalID={1}",
+                                        _portalSettings.ActiveTab.TabID,
+                                        _portalSettings.PortalId));
 
-                            if (Utility.CheckIfUserHasFolderWriteAccess(this.currentSettings.UploadDirId, this._portalSettings))
+                            if (Utility.CheckIfUserHasFolderWriteAccess(currentSettings.UploadDirId, _portalSettings))
                             {
-                                this._settings["filebrowserUploadUrl"] =
+                                _settings["filebrowserUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files&tabid={0}&PortalID={1}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId));
-                                this._settings["filebrowserFlashUploadUrl"] =
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files&tabid={0}&PortalID={1}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId));
+                                _settings["filebrowserFlashUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash&tabid={0}&PortalID={1}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId));
-                                this._settings["filebrowserImageUploadUrl"] =
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash&tabid={0}&PortalID={1}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId));
+                                _settings["filebrowserImageUploadUrl"] =
                                     Globals.ResolveUrl(
                                         string.Format(
-                                            "~/Providers/HtmlEditorProviders/CKEditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images&tabid={0}&PortalID={1}",
-                                            this._portalSettings.ActiveTab.TabID,
-                                            this._portalSettings.PortalId));
+											"~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images&tabid={0}&PortalID={1}",
+                                            _portalSettings.ActiveTab.TabID,
+                                            _portalSettings.PortalId));
                             }
 
-                            HttpContext.Current.Session["CKDNNSubDirs"] = this.currentSettings.SubDirs;
+                            HttpContext.Current.Session["CKDNNSubDirs"] = currentSettings.SubDirs;
 
-                            HttpContext.Current.Session["CKDNNRootDirId"] = this.currentSettings.BrowserRootDirId;
-                            HttpContext.Current.Session["CKDNNUpDirId"] = this.currentSettings.UploadDirId;
+                            HttpContext.Current.Session["CKDNNRootDirId"] = currentSettings.BrowserRootDirId;
+                            HttpContext.Current.Session["CKDNNUpDirId"] = currentSettings.UploadDirId;
 
                             // Set Browser Authorize 
-                            const bool CKDNNIsAuthorized = true;
+                            const bool isAuthorized = true;
 
-                            HttpContext.Current.Session["CKDNNIsAuthorized"] = CKDNNIsAuthorized;
+                            HttpContext.Current.Session["CKE_DNNIsAuthorized"] = isAuthorized;
 
-                            DataCache.SetCache("CKDNNIsAuthorized", CKDNNIsAuthorized);
+                            DataCache.SetCache("CKE_DNNIsAuthorized", isAuthorized);
                         }
 
                         break;
                 }
 
-                this.isMerged = true;
+                isMerged = true;
 
-                return this._settings;
+                return _settings;
             }
         }
 
@@ -612,15 +592,15 @@ namespace WatchersNET.CKEditor.Web
                 return inputUrl;
             }
 
-            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, this._portalSettings.PortalId));
+            return string.Format("FileID={0}", Utility.ConvertFilePathToFileId(inputUrl, _portalSettings.PortalId));
         }
 
         /// <summary>Gets the container source.</summary>
         /// <returns>The container source path</returns>
         private string GetContainerSource()
         {
-            var containerSource = this._portalSettings.ActiveTab.ContainerSrc ?? this._portalSettings.DefaultPortalContainer;
-            containerSource = this.ResolveSourcePath(containerSource);
+            var containerSource = _portalSettings.ActiveTab.ContainerSrc ?? _portalSettings.DefaultPortalContainer;
+            containerSource = ResolveSourcePath(containerSource);
             return containerSource;
         }
 
@@ -628,8 +608,8 @@ namespace WatchersNET.CKEditor.Web
         /// <returns>The skin source path</returns>
         private string GetSkinSource()
         {
-            var skinSource = this._portalSettings.ActiveTab.SkinSrc ?? this._portalSettings.DefaultPortalSkin;
-            skinSource = this.ResolveSourcePath(skinSource);
+            var skinSource = _portalSettings.ActiveTab.SkinSrc ?? _portalSettings.DefaultPortalSkin;
+            skinSource = ResolveSourcePath(skinSource);
             return skinSource;
         }
 
@@ -650,12 +630,12 @@ namespace WatchersNET.CKEditor.Web
             // EL 20101006
             get
             {
-                return this.toolBarNameOverride;
+                return toolBarNameOverride;
             }
 
             set
             {
-                this.toolBarNameOverride = value;
+                toolBarNameOverride = value;
             }
         }
 
@@ -667,14 +647,14 @@ namespace WatchersNET.CKEditor.Web
         {
             get
             {
-                object o = this.ViewState["Value"];
+                object o = ViewState["Value"];
 
                 return o == null ? string.Empty : Convert.ToString(o);
             }
 
             set
             {
-                this.ViewState["Value"] = value;
+                ViewState["Value"] = value;
             }
         }
 
@@ -694,7 +674,7 @@ namespace WatchersNET.CKEditor.Web
 
                 var appAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-                foreach (Assembly asm in
+                foreach (System.Reflection.Assembly asm in
                     appAssemblies.Where(asm => asm.ManifestModule.Name == "System.Web.Extensions.dll"))
                 {
                     try
@@ -727,7 +707,7 @@ namespace WatchersNET.CKEditor.Web
             {
                 return
                     Globals.ResolveUrl(
-                        string.Format("~/Providers/HtmlEditorProviders/CKEditor/{0}/Options.aspx.resx", Localization.LocalResourceDirectory));
+                        string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx", Localization.LocalResourceDirectory));
             }
         }
 
@@ -787,12 +767,12 @@ namespace WatchersNET.CKEditor.Web
         /// </returns>
         public bool HasRenderedTextArea(Control control)
         {
-            if (control is CKEditorControl && ((CKEditorControl)control).IsRendered)
+            if (control is EditorControl && ((EditorControl)control).IsRendered)
             {
                 return true;
             }
 
-            return control.Controls.Cast<Control>().Any(this.HasRenderedTextArea);
+            return control.Controls.Cast<Control>().Any(HasRenderedTextArea);
         }
 
         #endregion
@@ -817,12 +797,12 @@ namespace WatchersNET.CKEditor.Web
         {
             try
             {
-                string currentValue = this.Value;
+                string currentValue = Value;
                 string postedValue = postCollection[postDataKey];
 
                 if (currentValue == null | !postedValue.Equals(currentValue))
                 {
-                    if (this.currentSettings.InjectSyntaxJs)
+                    if (currentSettings.InjectSyntaxJs)
                     {
                         if (postedValue.Contains("<pre class=\"brush:") && !postedValue.Contains("shCore.js"))
                         {
@@ -830,7 +810,7 @@ namespace WatchersNET.CKEditor.Web
                             postedValue =
                                 string.Format(
                                     "<!-- Injected Syntax Highlight Code --><script type=\"text/javascript\" src=\"{0}plugins/syntaxhighlight/scripts/shCore.js\"></script><link type=\"text/css\" rel=\"stylesheet\" href=\"{0}plugins/syntaxhighlight/styles/shCore.css\"/><script type=\"text/javascript\">SyntaxHighlighter.all();</script>{1}",
-                                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/"),
+                                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/"),
                                     postedValue);
                         }
 
@@ -844,7 +824,7 @@ namespace WatchersNET.CKEditor.Web
                         }
                     }
 
-                    this.Value = postedValue;
+                    Value = postedValue;
 
                     return true;
                 }
@@ -885,9 +865,9 @@ namespace WatchersNET.CKEditor.Web
                 return;
             }
 
-            this.RegisterCKEditorLibrary();
+            RegisterCKEditorLibrary();
 
-            this.GenerateEditorLoadScript();
+            GenerateEditorLoadScript();
         }
 
         /// <summary>
@@ -908,19 +888,19 @@ namespace WatchersNET.CKEditor.Web
 
             outWriter.Write(
                 "<input type=\"hidden\" name=\"CKDNNporid\" id=\"CKDNNporid\" value=\"{0}\">",
-                this._portalSettings.PortalId);
+                _portalSettings.PortalId);
 
             outWriter.Write(outWriter.NewLine);
 
-            var styleWidth = !string.IsNullOrEmpty(this.currentSettings.Config.Width)
-                                 ? string.Format(" style=\"width:{0};\"", this.currentSettings.Config.Width)
+            var styleWidth = !string.IsNullOrEmpty(currentSettings.Config.Width)
+                                 ? string.Format(" style=\"width:{0};\"", currentSettings.Config.Width)
                                  : string.Empty;
 
             outWriter.Write("<div{0}>", styleWidth);
 
             // Write text area
-            outWriter.AddAttribute("id", this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty));
-            outWriter.AddAttribute("name", this.UniqueID);
+            outWriter.AddAttribute("id", ClientID.Replace("-", string.Empty).Replace(".", string.Empty));
+            outWriter.AddAttribute("name", UniqueID);
 
             outWriter.AddAttribute("cols", "80");
             outWriter.AddAttribute("rows", "10");
@@ -931,47 +911,47 @@ namespace WatchersNET.CKEditor.Web
 
             outWriter.RenderBeginTag("textarea");
 
-            if (string.IsNullOrEmpty(this.Value))
+            if (string.IsNullOrEmpty(Value))
             {
-                if (!string.IsNullOrEmpty(this.currentSettings.BlankText))
+                if (!string.IsNullOrEmpty(currentSettings.BlankText))
                 {
-                    outWriter.Write(this.Context.Server.HtmlEncode(this.currentSettings.BlankText));
+                    outWriter.Write(Context.Server.HtmlEncode(currentSettings.BlankText));
                 }
             }
             else
             {
-                outWriter.Write(this.Context.Server.HtmlEncode(this.Value));
+                outWriter.Write(Context.Server.HtmlEncode(Value));
             }
 
             outWriter.RenderEndTag();
 
             outWriter.Write("</div>");
 
-            this.IsRendered = true;
+            IsRendered = true;
 
             /////////////////
 
-            if (!this.HasRenderedTextArea(this.Page))
+            if (!HasRenderedTextArea(Page))
             {
                 return;
             }
 
             outWriter.Write("<p style=\"text-align:center;\">");
 
-            if (PortalSecurity.IsInRoles(this._portalSettings.AdministratorRoleName))
+            if (PortalSecurity.IsInRoles(_portalSettings.AdministratorRoleName))
             {
                 var editorUrl = Globals.NavigateURL(
                     "CKEditorOptions",
-                    "ModuleId=" + this.parentModulId,
-                    "minc=" + this.ID,
-                    "PortalID=" + this._portalSettings.PortalId,
+                    "ModuleId=" + parentModulId,
+                    "minc=" + ID,
+                    "PortalID=" + _portalSettings.PortalId,
                     "langCode=" + CultureInfo.CurrentCulture.Name,
                     "popUp=true");
 
                 outWriter.Write(
                     "<a href=\"javascript:void(0)\" onclick='window.open({0},\"Options\", \"width=850,height=750,resizable=yes\")' class=\"CommandButton\" id=\"{1}\">{2}</a>",
                     HttpUtility.HtmlAttributeEncode(HttpUtility.JavaScriptStringEncode(editorUrl, true)),
-                    string.Format("{0}_ckoptions", this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty)),
+                    string.Format("{0}_ckoptions", ClientID.Replace("-", string.Empty).Replace(".", string.Empty)),
                     Localization.GetString("Options.Text", SResXFile));
             }
 
@@ -985,50 +965,50 @@ namespace WatchersNET.CKEditor.Web
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void CKEditorInit(object sender, EventArgs e)
         {
-            if (this.Page != null)
+            if (Page != null)
             {
-                this.Page.RegisterRequiresPostBack(this); // Ensures that postback is handled
+                Page.RegisterRequiresPostBack(this); // Ensures that postback is handled
             }
 
-            this.myParModule = (PortalModuleBase)FindModuleInstance(this);
+            myParModule = (PortalModuleBase)FindModuleInstance(this);
 
-            if (this.myParModule == null || this.myParModule.ModuleId == -1)
+            if (myParModule == null || myParModule.ModuleId == -1)
             {
                 // Get Parent ModuleID From this ClientID
-                string sClientId = this.ClientID.Substring(this.ClientID.IndexOf("ctr") + 3);
+                string sClientId = ClientID.Substring(ClientID.IndexOf("ctr") + 3);
 
-                sClientId = sClientId.Remove(this.ClientID.IndexOf("_"));
+                sClientId = sClientId.Remove(ClientID.IndexOf("_"));
 
                 try
                 {
-                    this.parentModulId = int.Parse(sClientId);
+                    parentModulId = int.Parse(sClientId);
                 }
                 catch (Exception)
                 {
                     // The is no real module, then use the "User Accounts" module (Profile editor)
                     ModuleController db = new ModuleController();
-                    ModuleInfo objm = db.GetModuleByDefinition(this._portalSettings.PortalId, "User Accounts");
+                    ModuleInfo objm = db.GetModuleByDefinition(_portalSettings.PortalId, "User Accounts");
 
-                    this.parentModulId = objm.TabModuleID;
+                    parentModulId = objm.TabModuleID;
                 }
             }
             else
             {
-                this.parentModulId = this.myParModule.ModuleId;
+                parentModulId = myParModule.ModuleId;
             }
 
-            this.CheckFileBrowser();
+            CheckFileBrowser();
 
-            this.LoadAllSettings();
+            LoadAllSettings();
 
             if (!HasMsAjax)
             {
                 return;
             }
 
-            this.RegisterCKEditorLibrary();
+            RegisterCKEditorLibrary();
 
-            this.GenerateEditorLoadScript();
+            GenerateEditorLoadScript();
         }
 
         /// <summary>
@@ -1047,13 +1027,13 @@ namespace WatchersNET.CKEditor.Web
             switch (objProvider.Attributes["ck_browser"])
             {
                 case "ckfinder":
-                    this.currentSettings.BrowserMode = Browser.CKFinder;
+                    currentSettings.BrowserMode = BrowserType.CKFinder;
                     break;
                 case "standard":
-                    this.currentSettings.BrowserMode = Browser.StandardBrowser;
+                    currentSettings.BrowserMode = BrowserType.StandardBrowser;
                     break;
                 case "none":
-                    this.currentSettings.BrowserMode = Browser.None;
+                    currentSettings.BrowserMode = BrowserType.None;
                     break;
             }
         }
@@ -1063,57 +1043,57 @@ namespace WatchersNET.CKEditor.Web
         /// </summary>
         private void LoadAllSettings()
         {
-            var settingsDictionary = Utility.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
+            var settingsDictionary = EditorController.GetEditorHostSettings();
+            var portalRoles = new RoleController().GetPortalRoles(_portalSettings.PortalId);
 
             // Load Default Settings
-            this.currentSettings = SettingsUtil.GetDefaultSettings(
-                this._portalSettings,
-                this._portalSettings.HomeDirectoryMapPath,
-                this._settings["configFolder"],
+            currentSettings = SettingsUtil.GetDefaultSettings(
+                _portalSettings,
+                _portalSettings.HomeDirectoryMapPath,
+                _settings["configFolder"],
                 portalRoles);
 
             // Set Current Mode to Default
-            this.currentSettings.SettingMode = SettingsMode.Default;
+            currentSettings.SettingMode = SettingsMode.Default;
 
-            var portalKey = string.Format("DNNCKP#{0}#", this._portalSettings.PortalId);
-            var pageKey = string.Format("DNNCKT#{0}#", this._portalSettings.ActiveTab.TabID);
-            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", this.parentModulId, this.ID);
+            var portalKey = string.Format("DNNCKP#{0}#", _portalSettings.PortalId);
+            var pageKey = string.Format("DNNCKT#{0}#", _portalSettings.ActiveTab.TabID);
+            var moduleKey = string.Format("DNNCKMI#{0}#INS#{1}#", parentModulId, ID);
 
             // Load Portal Settings ?!
             if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, portalKey))
             {
-               /* throw new ApplicationException(settingsDictionary.FirstOrDefault(
-                            setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
+                /* throw new ApplicationException(settingsDictionary.FirstOrDefault(
+                             setting => setting.Name.Equals(string.Format("{0}{1}", portalKey, "StartupMode"))).Value);*/
 
-                this.currentSettings = SettingsUtil.LoadPortalOrPageSettings(
-                    this._portalSettings, this.currentSettings, settingsDictionary, portalKey, portalRoles);
+                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                    _portalSettings, currentSettings, settingsDictionary, portalKey, portalRoles);
 
                 // Set Current Mode to Portal
-                this.currentSettings.SettingMode = SettingsMode.Portal;
+                currentSettings.SettingMode = SettingsMode.Portal;
             }
 
             // Load Page Settings ?!
             if (SettingsUtil.CheckExistsPortalOrPageSettings(settingsDictionary, pageKey))
             {
-                this.currentSettings = SettingsUtil.LoadPortalOrPageSettings(
-                    this._portalSettings, this.currentSettings, settingsDictionary, pageKey, portalRoles);
+                currentSettings = SettingsUtil.LoadPortalOrPageSettings(
+                    _portalSettings, currentSettings, settingsDictionary, pageKey, portalRoles);
 
                 // Set Current Mode to Page
-                this.currentSettings.SettingMode = SettingsMode.Page;
+                currentSettings.SettingMode = SettingsMode.Page;
             }
 
             // Load Module Settings ?!
-            if (!SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, this.parentModulId))
+            if (!SettingsUtil.CheckExistsModuleInstanceSettings(moduleKey, parentModulId))
             {
                 return;
             }
 
-            this.currentSettings = SettingsUtil.LoadModuleSettings(
-                this._portalSettings, this.currentSettings, moduleKey, this.parentModulId, portalRoles);
+            currentSettings = SettingsUtil.LoadModuleSettings(
+                _portalSettings, currentSettings, moduleKey, parentModulId, portalRoles);
 
             // Set Current Mode to Module Instance
-            this.currentSettings.SettingMode = SettingsMode.ModuleInstance;
+            currentSettings.SettingMode = SettingsMode.ModuleInstance;
         }
 
         /// <summary>
@@ -1142,11 +1122,11 @@ namespace WatchersNET.CKEditor.Web
             {
                 int iFileId = int.Parse(sInputUrl.Substring(7));
 
-               // FileController objFileController = new FileController();
-               var objFileInfo = FileManager.Instance.GetFile(iFileId);
+                // FileController objFileController = new FileController();
+                var objFileInfo = FileManager.Instance.GetFile(iFileId);
 
                 // FileInfo objFileInfo = objFileController.GetFileById(iFileId, this._portalSettings.PortalId);
-                sImageUrl = this._portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
+                sImageUrl = _portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
             }
 
             return sImageUrl;
@@ -1157,7 +1137,7 @@ namespace WatchersNET.CKEditor.Web
         /// </summary>
         private void LoadConfigSettings()
         {
-            this._settings = new NameValueCollection();
+            _settings = new NameValueCollection();
 
             var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
             var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
@@ -1178,7 +1158,7 @@ namespace WatchersNET.CKEditor.Web
 
                 if (sAdjustedKey != string.Empty)
                 {
-                    this._settings[sAdjustedKey] = objProvider.Attributes[key];
+                    _settings[sAdjustedKey] = objProvider.Attributes[key];
                 }
             }
         }
@@ -1199,12 +1179,12 @@ namespace WatchersNET.CKEditor.Web
         {
             if (HasMsAjax)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, addScriptTags);
+                ScriptManager.RegisterStartupScript(this, GetType(), key, script, addScriptTags);
             }
             else
             {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, true);
-            } 
+                Page.ClientScript.RegisterStartupScript(GetType(), key, script, true);
+            }
         }
 
         /// <summary>
@@ -1239,18 +1219,18 @@ namespace WatchersNET.CKEditor.Web
             string toolbarName = HttpContext.Current.Request.IsAuthenticated ? "Full" : "Basic";
 
             var listToolbarSets = ToolbarUtil.GetToolbars(
-                this._portalSettings.HomeDirectoryMapPath, alternateConfigSubFolder);
+                _portalSettings.HomeDirectoryMapPath, alternateConfigSubFolder);
 
             var listUserToolbarSets = new List<ToolbarSet>();
 
             var roleController = new RoleController();
 
-            if (this.currentSettings.ToolBarRoles.Count <= 0)
+            if (currentSettings.ToolBarRoles.Count <= 0)
             {
                 return toolbarName;
             }
 
-            foreach (var roleToolbar in this.currentSettings.ToolBarRoles)
+            foreach (var roleToolbar in currentSettings.ToolBarRoles)
             {
                 if (roleToolbar.RoleId.Equals(-1) && !HttpContext.Current.Request.IsAuthenticated)
                 {
@@ -1263,7 +1243,7 @@ namespace WatchersNET.CKEditor.Web
                 }
 
                 // Role
-                var role = roleController.GetRole(roleToolbar.RoleId, this._portalSettings.PortalId);
+                var role = roleController.GetRole(roleToolbar.RoleId, _portalSettings.PortalId);
 
                 if (role == null)
                 {
@@ -1311,12 +1291,12 @@ namespace WatchersNET.CKEditor.Web
         private void RegisterCKEditorLibrary()
         {
             ClientResourceManager.RegisterStyleSheet(
-                this.Page,
-                Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/editor.css"));
+                Page,
+                Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/editor.css"));
 
-            ClientScriptManager cs = this.Page.ClientScript;
+            ClientScriptManager cs = Page.ClientScript;
 
-            Type csType = this.GetType();
+            Type csType = GetType();
 
             const string CsName = "CKEdScript";
             const string CsAdaptName = "CKAdaptScript";
@@ -1332,44 +1312,44 @@ namespace WatchersNET.CKEditor.Web
                     this, csType, "jquery_registered", "//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
             }
 
-            if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/CKEditor/ckeditor.js"))
+            if (File.Exists(Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
             {
                 cs.RegisterClientScriptInclude(
-                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/ckeditor.js"));
+                    csType, CsName, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/ckeditor.js"));
             }
 
             if (
                 File.Exists(
-                    this.Context.Server.MapPath(
-                        "~/Providers/HtmlEditorProviders/CKEditor/js/jquery.ckeditor.adapter.js"))
+                    Context.Server.MapPath(
+						"~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsAdaptName))
             {
                 cs.RegisterClientScriptInclude(
                     csType,
                     CsAdaptName,
-                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/js/jquery.ckeditor.adapter.js"));
+                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/jquery.ckeditor.adapter.js"));
             }
 
             if (
                 File.Exists(
-                    this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.js")) &&
-                !cs.IsClientScriptIncludeRegistered(csType, CsFindName) && this.currentSettings.BrowserMode.Equals(Browser.CKFinder))
+                    Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js")) &&
+                !cs.IsClientScriptIncludeRegistered(csType, CsFindName) && currentSettings.BrowserMode.Equals(BrowserType.CKFinder))
             {
                 cs.RegisterClientScriptInclude(
                     csType,
                     CsFindName,
-                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/CKEditor/ckfinder/ckfinder.js"));
+                    Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"));
             }
 
             // Load Custom JS File
-            if (!string.IsNullOrEmpty(this.currentSettings.CustomJsFile)
+            if (!string.IsNullOrEmpty(currentSettings.CustomJsFile)
                 && !cs.IsClientScriptIncludeRegistered(csType, "CKCustomJSFile"))
             {
                 cs.RegisterClientScriptInclude(
                     csType,
                     "CKCustomJSFile",
-                    this.FormatUrl(this.currentSettings.CustomJsFile)); 
+                    FormatUrl(currentSettings.CustomJsFile));
             }
         }
 
@@ -1380,10 +1360,10 @@ namespace WatchersNET.CKEditor.Web
         {
             var editorVar = string.Format(
                 "editor{0}",
-                this.ClientID.Substring(this.ClientID.LastIndexOf("_", StringComparison.Ordinal) + 1).Replace(
+                ClientID.Substring(ClientID.LastIndexOf("_", StringComparison.Ordinal) + 1).Replace(
                     "-", string.Empty));
 
-            var editorFixedId = this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
+            var editorFixedId = ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
 
             if (HasMsAjax)
             {
@@ -1392,8 +1372,8 @@ namespace WatchersNET.CKEditor.Web
                         @"if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement(); CKEDITOR.instances.{0}.destroy(); }}",
                         editorFixedId);
 
-                this.RegisterOnSubmitStatement(
-                    this.GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
+                RegisterOnSubmitStatement(
+                    GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
             }
 
             var editorScript = new StringBuilder();
@@ -1415,13 +1395,13 @@ namespace WatchersNET.CKEditor.Web
             var test = new StringBuilder();
             test.AppendFormat("var editorConfig{0} = {{", editorVar);
 
-            var keysCount = this.Settings.Keys.Count;
+            var keysCount = Settings.Keys.Count;
             var currentCount = 0;
 
             // Write options
-            foreach (string key in this.Settings.Keys)
+            foreach (string key in Settings.Keys)
             {
-                var value = this.Settings[key];
+                var value = Settings[key];
 
                 currentCount++;
 
@@ -1437,7 +1417,7 @@ namespace WatchersNET.CKEditor.Web
                     else if (value.Equals("False"))
                     {
                         value = "false";
-                    } 
+                    }
 
                     test.AppendFormat("{0}:{1}", key, value);
 
@@ -1460,7 +1440,7 @@ namespace WatchersNET.CKEditor.Web
             editorScript.AppendFormat(
                 "if (CKEDITOR.instances.{0}){{return;}}",
                 editorFixedId);
-            
+
             // Check if we can use jQuery or $, and if both fail use ckeditor without the adapter
             editorScript.Append("if (jQuery().ckeditor) {");
 
@@ -1489,7 +1469,7 @@ namespace WatchersNET.CKEditor.Web
             // End of LoadScript
             editorScript.Append("}");
 
-            this.RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
+            RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
         }
 
         #endregion

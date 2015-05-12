@@ -1,26 +1,11 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Web;
 
-namespace WatchersNET.CKEditor.Browser
+namespace DNNConnect.CKEditorProvider.Browser
 {
-    #region
-
-    using System;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.IO;
-    using System.Web;
-
-    #endregion
 
     /// <summary>
     /// The process image.
@@ -193,7 +178,7 @@ namespace WatchersNET.CKEditor.Browser
             string sNewFilePath = !string.IsNullOrEmpty(sNewFileName)
                                       ? Path.Combine(sSourcePath, sNewFileName + sExtension)
                                       : Path.Combine(
-                                          sSourcePath, 
+                                          sSourcePath,
                                           string.Format(
                                               "{0}_crop{1}", Path.GetFileNameWithoutExtension(sSourceFullPath), sExtension));
 

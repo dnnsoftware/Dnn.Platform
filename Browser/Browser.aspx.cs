@@ -1,67 +1,52 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
-namespace WatchersNET.CKEditor.Browser
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework.Providers;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
+
+using Telerik.Web.UI;
+
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Controls;
+using DNNConnect.CKEditorProvider.Objects;
+using DNNConnect.CKEditorProvider.Utilities;
+
+using Encoder = System.Drawing.Imaging.Encoder;
+using Globals = DotNetNuke.Common.Globals;
+using Image = System.Drawing.Image;
+
+namespace DNNConnect.CKEditorProvider.Browser
 {
-    #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
-    using System.Drawing.Imaging;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Script.Services;
-    using System.Web.Services;
-    using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
-
-    using Telerik.Web.UI;
-
-    using WatchersNET.CKEditor.Constants;
-    using WatchersNET.CKEditor.Controls;
-    using WatchersNET.CKEditor.Objects;
-    using WatchersNET.CKEditor.Utilities;
-
-    using Encoder = System.Drawing.Imaging.Encoder;
-    using Globals = DotNetNuke.Common.Globals;
-    using Image = System.Drawing.Image;
-
-    #endregion
 
     /// <summary>
     /// The browser.
     /// </summary>
     [ScriptService]
-    public partial class Browser : Page 
+    public partial class Browser : Page
     {
         #region Constants and Fields
 
@@ -699,7 +684,7 @@ namespace WatchersNET.CKEditor.Browser
                     this.Response.Write("<script type=\"text/javascript\">");
                     this.Response.Write(
                         string.Format(
-                            "javascript:alert('{0}');", 
+                            "javascript:alert('{0}');",
                             Localization.GetString("Error5.Text", this.ResXFile, this.LanguageCode)));
                     this.Response.Write("</script>");
 
@@ -738,7 +723,7 @@ namespace WatchersNET.CKEditor.Browser
                 {
                     fileUrl = fileUrl.Replace("%3A", ":");
                 }
-                
+
                 if (fileUrl.Contains(".aspx%23"))
                 {
                     fileUrl = fileUrl.Replace("aspx%23", "aspx#");
@@ -880,7 +865,7 @@ namespace WatchersNET.CKEditor.Browser
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
             Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
-            var settingsDictionary = Utility.GetEditorHostSettings();
+            var settingsDictionary = EditorController.GetEditorHostSettings();
             var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
 
             switch (this.currentSettings.SettingMode)
@@ -926,7 +911,7 @@ namespace WatchersNET.CKEditor.Browser
                 this._portalSettings,
                 HttpContext.Current.Request);
 
-            if (this.currentSettings.BrowserMode.Equals(Constants.Browser.StandardBrowser)
+            if (this.currentSettings.BrowserMode.Equals(Constants.BrowserType.StandardBrowser)
                 && HttpContext.Current.Request.IsAuthenticated)
             {
                 string command = null;
@@ -1047,8 +1032,8 @@ namespace WatchersNET.CKEditor.Browser
                 {
                     if (!this.IsPostBack)
                     {
-                        this.OverrideFile.Checked = this.currentSettings.OverrideFileOnUpload; 
-                        
+                        this.OverrideFile.Checked = this.currentSettings.OverrideFileOnUpload;
+
                         this.SetLanguage();
 
                         this.GetLanguageList();
@@ -2165,7 +2150,7 @@ namespace WatchersNET.CKEditor.Browser
             }
 
             var selectedDir = MapPath(fileUrl).Replace(fileName, string.Empty);
-            
+
             if (!Directory.Exists(selectedDir))
             {
                 ckFileUrl = null;
@@ -2315,33 +2300,33 @@ namespace WatchersNET.CKEditor.Browser
             this.Syncronize.ToolTip = Localization.GetString("Syncronize.Help", this.ResXFile, this.LanguageCode);
 
             this.cmdCreate.Text = string.Format(
-                "<img src=\"Images/CreateFolder.png\" alt=\"{0}\" title=\"{1}\" />", 
-                Localization.GetString("cmdCreate.Text", this.ResXFile, this.LanguageCode), 
+                "<img src=\"Images/CreateFolder.png\" alt=\"{0}\" title=\"{1}\" />",
+                Localization.GetString("cmdCreate.Text", this.ResXFile, this.LanguageCode),
                 Localization.GetString("cmdCreate.Help", this.ResXFile, this.LanguageCode));
             this.cmdCreate.ToolTip = Localization.GetString("cmdCreate.Help", this.ResXFile, this.LanguageCode);
 
             this.cmdDownload.Text =
                 string.Format(
-                    "<img src=\"Images/DownloadButton.png\" alt=\"{0}\" title=\"{1}\" />", 
-                    Localization.GetString("cmdDownload.Text", this.ResXFile, this.LanguageCode), 
+                    "<img src=\"Images/DownloadButton.png\" alt=\"{0}\" title=\"{1}\" />",
+                    Localization.GetString("cmdDownload.Text", this.ResXFile, this.LanguageCode),
                     Localization.GetString("cmdDownload.Help", this.ResXFile, this.LanguageCode));
             this.cmdDownload.ToolTip = Localization.GetString("cmdDownload.Help", this.ResXFile, this.LanguageCode);
 
             this.cmdUpload.Text = string.Format(
-                "<img src=\"Images/UploadButton.png\" alt=\"{0}\" title=\"{1}\" />", 
-                Localization.GetString("cmdUpload.Text", this.ResXFile, this.LanguageCode), 
+                "<img src=\"Images/UploadButton.png\" alt=\"{0}\" title=\"{1}\" />",
+                Localization.GetString("cmdUpload.Text", this.ResXFile, this.LanguageCode),
                 Localization.GetString("cmdUpload.Help", this.ResXFile, this.LanguageCode));
             this.cmdUpload.ToolTip = Localization.GetString("cmdUpload.Help", this.ResXFile, this.LanguageCode);
 
             this.cmdDelete.Text = string.Format(
-                "<img src=\"Images/DeleteFile.png\" alt=\"{0}\" title=\"{1}\" />", 
-                Localization.GetString("cmdDelete.Text", this.ResXFile, this.LanguageCode), 
+                "<img src=\"Images/DeleteFile.png\" alt=\"{0}\" title=\"{1}\" />",
+                Localization.GetString("cmdDelete.Text", this.ResXFile, this.LanguageCode),
                 Localization.GetString("cmdDelete.Help", this.ResXFile, this.LanguageCode));
             this.cmdDelete.ToolTip = Localization.GetString("cmdDelete.Help", this.ResXFile, this.LanguageCode);
 
             this.cmdResizer.Text = string.Format(
-                "<img src=\"Images/ResizeImage.png\" alt=\"{0}\" title=\"{1}\" />", 
-                Localization.GetString("cmdResizer.Text", this.ResXFile, this.LanguageCode), 
+                "<img src=\"Images/ResizeImage.png\" alt=\"{0}\" title=\"{1}\" />",
+                Localization.GetString("cmdResizer.Text", this.ResXFile, this.LanguageCode),
                 Localization.GetString("cmdResizer.Help", this.ResXFile, this.LanguageCode));
             this.cmdResizer.ToolTip = Localization.GetString("cmdResizer.Help", this.ResXFile, this.LanguageCode);
 
@@ -2474,7 +2459,7 @@ namespace WatchersNET.CKEditor.Browser
                     case FolderController.StorageLocationTypes.DatabaseSecure:
                         {
                             isSecureFolder = true;
-                            
+
                             this.cmdResizer.Enabled = false;
                             this.cmdResizer.CssClass = "LinkDisabled";
 
@@ -3000,7 +2985,7 @@ namespace WatchersNET.CKEditor.Browser
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(imageFullPath);
 
                 imageFullPath = Path.Combine(
-                    this.lblCurrentDir.Text, 
+                    this.lblCurrentDir.Text,
                     string.Format("{0}_{1}{2}", fileNameWithoutExtension, counter, Path.GetExtension(imageFullPath)));
             }
 
@@ -3428,7 +3413,7 @@ namespace WatchersNET.CKEditor.Browser
                     this.RenderTabs();
                     break;
             }
-            
+
             this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
 
             this.SetDefaultLinkTypeText();

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WatchersNET.CKEditor {
+namespace DNNConnect.CKEditorProvider {
     
     
     public partial class CKEditorOptions {
@@ -226,7 +226,7 @@ namespace WatchersNET.CKEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.UrlControl ctlConfigUrl;
+        protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlConfigUrl;
         
         /// <summary>
         /// CodeMirrorLabel control.
@@ -280,7 +280,7 @@ namespace WatchersNET.CKEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.UrlControl ctlCssurl;
+        protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlCssurl;
         
         /// <summary>
         /// lblTemplFiles control.
@@ -298,7 +298,7 @@ namespace WatchersNET.CKEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.UrlControl ctlTemplUrl;
+        protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlTemplUrl;
         
         /// <summary>
         /// CustomJsFileLabel control.
@@ -316,7 +316,7 @@ namespace WatchersNET.CKEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.UrlControl ctlCustomJsFile;
+        protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlCustomJsFile;
         
         /// <summary>
         /// lblBrowser control.
@@ -946,7 +946,7 @@ namespace WatchersNET.CKEditor {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.UrlControl ctlImportFile;
+        protected global::DNNConnect.CKEditorProvider.Controls.UrlControl ctlImportFile;
         
         /// <summary>
         /// lnkImportNow control.

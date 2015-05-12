@@ -1,21 +1,10 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System.ComponentModel;
+using System.Xml.Serialization;
 
-namespace WatchersNET.CKEditor.Objects
+using DNNConnect.CKEditorProvider.Constants;
+
+namespace DNNConnect.CKEditorProvider.Objects
 {
-    using System.ComponentModel;
-    using System.Xml.Serialization;
-
-    using WatchersNET.CKEditor.Constants;
 
     /// <summary>
     /// Editor Configuration Settings
@@ -1232,7 +1221,7 @@ namespace WatchersNET.CKEditor.Objects
         [XmlAttribute("linkJavaScriptLinksAllowed")]
         [Description("Whether JavaScript code is allowed as a href attribute in an anchor tag. With this option enabled it is possible to create links")]
         public bool LinkJavaScriptLinksAllowed { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether [link show advanced tab].
         /// </summary>
@@ -1363,7 +1352,7 @@ namespace WatchersNET.CKEditor.Objects
         [XmlAttribute("oembed_WrapperClass")]
         [Description("Wrapper Css Class for the Div element around the embeded Content.")]
         public string Oembed_WrapperClass { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the paste from word cleanup file.
         /// </summary>

@@ -1,26 +1,11 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
 
-namespace WatchersNET.CKEditor.Objects
+using DNNConnect.CKEditorProvider.Constants;
+
+namespace DNNConnect.CKEditorProvider.Objects
 {
-    #region
-
-    using System;
-    using System.Collections.Generic;
-    using System.Web.UI.WebControls;
-
-    using WatchersNET.CKEditor.Constants;
-
-    #endregion
 
     /// <summary>
     /// The Settings Base
@@ -121,7 +106,7 @@ namespace WatchersNET.CKEditor.Objects
         /// <value>
         /// The browser.
         /// </value>
-        public Browser browser { get; set; }
+        public BrowserType browser { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether Editor File Browser

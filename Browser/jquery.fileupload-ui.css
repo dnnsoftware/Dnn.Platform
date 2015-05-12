@@ -28,7 +28,7 @@
   display: block;
   width: 32px;
   height: 32px;
-  background: url("Images/loading.gif") center no-repeat;
+  background: url("../CKEditor/Images/loading.gif") center no-repeat;
   background-size: contain;
 }
 .files audio,

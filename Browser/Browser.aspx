@@ -1,6 +1,6 @@
-﻿<%@ Page language="c#" Codebehind="Browser.aspx.cs" AutoEventWireup="True" Inherits="WatchersNET.CKEditor.Browser.Browser" %>
+﻿<%@ Page language="c#" Codebehind="Browser.aspx.cs" AutoEventWireup="True" Inherits="DNNConnect.CKEditorProvider.Browser.Browser" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="wnet" Namespace="WatchersNET.CKEditor.Controls" Assembly="WatchersNET.CKEditor" %>
+<%@ Register TagPrefix="wnet" Namespace="DNNConnect.CKEditorProvider.Controls" Assembly="DNNConnect.CKEditorProvider" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>

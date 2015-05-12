@@ -1,4 +1,4 @@
-<%@ Control Language="c#" AutoEventWireup="True" Codebehind="EditorConfigManager.ascx.cs" Inherits="WatchersNET.CKEditor.Module.EditorConfigManager" %>
+<%@ Control Language="c#" AutoEventWireup="True" Codebehind="EditorConfigManager.ascx.cs" Inherits="DNNConnect.CKEditorProvider.Module.EditorConfigManager" %>
 <script type="text/javascript">
     var saveGroupName = '<%= DotNetNuke.Services.Localization.Localization.GetString("SaveGroupName.Text", this.ResXFile, this.LangCode) %>';
     var deleteGroup = '<%= DotNetNuke.Services.Localization.Localization.GetString("DeleteGroup.Text", this.ResXFile, this.LangCode) %>';
@@ -35,27 +35,27 @@
         <div class="iconLegend">
             <ul>
                 <li>
-                    <asp:Image ID="PortalHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/PortalHasSetting.png" />&nbsp;
+                    <asp:Image ID="PortalHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/PortalHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="PortalHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PortalNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/PortalNoSetting.png"/>&nbsp;
+                    <asp:Image ID="PortalNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/PortalNoSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="PortalNoSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PageHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/PageHasSetting.png"/>&nbsp;
+                    <asp:Image ID="PageHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/PageHasSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="PageHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="PageNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/PageNoSetting.png" />&nbsp;
+                    <asp:Image ID="PageNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/PageNoSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="PageNoSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="ModuleHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/ModuleHasSetting.png" />&nbsp;
+                    <asp:Image ID="ModuleHasSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/ModuleHasSetting.png" />&nbsp;
                     <asp:Label runat="server" ID="ModuleHasSettingLabel"></asp:Label>
                 </li>
                 <li>
-                    <asp:Image ID="ModuleNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/CKEditor/images/ModuleNoSetting.png"/>&nbsp;
+                    <asp:Image ID="ModuleNoSettingImage" runat="server" ImageUrl="~/Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditor/images/ModuleNoSetting.png"/>&nbsp;
                     <asp:Label runat="server" ID="ModuleNoSettingLabel"></asp:Label>
                 </li>
             </ul>

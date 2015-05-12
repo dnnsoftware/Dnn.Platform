@@ -1,30 +1,14 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 
-namespace WatchersNET.CKEditor
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+
+namespace DNNConnect.CKEditorProvider
 {
-    #region
-
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-
-    #endregion
-
     /// <summary>
     /// Renders the Tab Java Script
     /// </summary>
@@ -41,7 +25,7 @@ namespace WatchersNET.CKEditor
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
         /// </summary>
@@ -71,7 +55,7 @@ namespace WatchersNET.CKEditor
 
 
                 tabUrl = Globals.ResolveUrl(Regex.Replace(tabUrl, domainName, "~", RegexOptions.IgnoreCase));
-                
+
                 var tabName = Microsoft.JScript.GlobalObject.escape(tab.TabName);
 
                 if (tab.Level.Equals(0))

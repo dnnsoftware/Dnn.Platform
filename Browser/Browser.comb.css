@@ -330,7 +330,7 @@ img {border:0}
 
 .ModalFooter {float:right}
 
-.LoadingContent h3 {background: url(Images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingContent h3 {background: url(../CKEditor/Images/loading.gif) no-repeat 102px 5px;height:20px}
 .LoadingMessage {text-align:center}
 
 #cmdCreate img,
@@ -475,7 +475,7 @@ img {border:0}
 }
 .progress-animated .progress-bar,
 .progress-animated .bar {
-  background: url("Images/progressbar.gif") !important;
+  background: url("../CKEditor/Images/progressbar.gif") !important;
   filter: none;
 }
 .fileupload-process {
@@ -487,7 +487,7 @@ img {border:0}
   display: block;
   width: 32px;
   height: 32px;
-  background: url("Images/loading.gif") center no-repeat;
+  background: url("../CKEditor/Images/loading.gif") center no-repeat;
   background-size: contain;
 }
 .files audio,

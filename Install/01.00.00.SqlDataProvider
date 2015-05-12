@@ -1,0 +1,152 @@
+﻿/***************************************************
+ * Settings Table
+ ***************************************************/
+if not exists (select top 1 1 from sys.objects where object_id = object_id(N'{databaseOwner}{objectQualifier}CKE_Settings') and OBJECTPROPERTY(object_id, N'IsTable') = 1)
+	CREATE TABLE {databaseOwner}{objectQualifier}CKE_Settings (
+		 [SettingName] [nvarchar] (300)   NOT NULL,
+		 [SettingValue] [ntext]   NOT NULL
+	) ON [PRIMARY]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}CKE_Settings] ADD CONSTRAINT [PK_{objectQualifier}CKE_Settings] PRIMARY KEY CLUSTERED  ([SettingName])
+GO
+
+/***************************************************
+ * Settings SPROCS
+ ***************************************************/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettingsByTab') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettingsByTab
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettingsByTab
+  @TabID int
+	AS
+	SET NOCOUNT ON
+	Delete ms
+  FROM {databaseOwner}{objectQualifier}ModuleSettings ms
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}TabModules tm  ON tm.TabID = @TabID
+  Where SettingName like 'DNNCKMI#%' AND ms.ModuleID  = tm.ModuleID
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllModuleSettings
+  @PortalID varchar
+	AS
+	SET NOCOUNT ON
+	Delete ms
+  FROM {databaseOwner}{objectQualifier}ModuleSettings ms
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}Modules m  ON m.PortalID = @PortalID
+   Where SettingName like 'DNNCKMI#%' AND ms.ModuleID  = m.ModuleID
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPageSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPageSettings
+  @PortalID varchar
+	AS
+	SET NOCOUNT ON
+	DELETE  hs
+  FROM {databaseOwner}{objectQualifier}CKE_Settings hs
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}Tabs t  ON t.PortalID = @PortalID
+   Where SettingName like 'DNNCKT#%' AND t.TabID  = t.TabID
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteCurrentPageSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteCurrentPageSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteCurrentPageSettings
+  @TabID varchar
+	AS
+	SET NOCOUNT ON
+	delete from {databaseOwner}{objectQualifier}CKE_Settings where SettingName like 'DNNCKT#' + @TabID + '%'
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllChildPageSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllChildPageSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllChildPageSettings
+  @TabID int
+	AS
+	SET NOCOUNT ON
+	DELETE  hs
+  FROM {databaseOwner}{objectQualifier}CKE_Settings hs
+  INNER JOIN	
+		{databaseOwner}{objectQualifier}Tabs t  ON t.ParentId = @TabID
+  Where SettingName like 'DNNCKT#%' AND t.TabID  = t.TabID
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_DeleteAllPortalSettings') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPortalSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_DeleteAllPortalSettings
+  @PortalID varchar
+	AS
+	SET NOCOUNT ON
+	delete from {databaseOwner}{objectQualifier}CKE_Settings where SettingName like 'DNNCKP#' + @PortalID + '%'
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_GetEditorHostSettings') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+	DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_GetEditorHostSettings
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_GetEditorHostSettings
+  AS
+	SET NOCOUNT ON
+    SELECT SettingName,
+	       SettingValue
+    FROM {databaseOwner}{objectQualifier}CKE_Settings
+GO
+
+IF  EXISTS (select top 1 1 from sys.objects where object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CKE_AddOrUpdateEditorHostSetting') and OBJECTPROPERTY(object_id, N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}{objectQualifier}CKE_AddOrUpdateEditorHostSetting
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}CKE_AddOrUpdateEditorHostSetting
+    @SettingName		nvarchar(300),
+	@SettingValue		ntext
+AS
+    if exists (select 1 from {databaseOwner}{objectQualifier}CKE_Settings where SettingName = @SettingName)
+	    begin
+		    update {databaseOwner}{objectQualifier}CKE_Settings 
+			   set
+			       SettingValue = @SettingValue
+			   where
+			       SettingName = @SettingName
+		end
+    else 
+	    begin
+		    insert into {databaseOwner}{objectQualifier}CKE_Settings (SettingName, SettingValue) 
+	                    values (@SettingName,@SettingValue)
+		end
+go
+
+
+/***************************************************/
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}ModuleControls] WHERE ModuleDefID IS NULL AND ControlKey = 'CKEditorOptions')
+BEGIN
+	EXEC {databaseOwner}[{objectQualifier}AddModuleControl]
+		@ModuleDefId=NULL, 
+		@ControlKey='CKEditorOptions', 
+		@ControlTitle='CKEditor Options', 
+		@ControlSrc='Providers/HtmlEditorProviders/DNNConnect.CKE/CKEditorOptions.ascx', 
+		@IconFile='~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png', 
+		@ControlType=-1, 
+		@ViewOrder=NULL, 
+		@HelpUrl=NULL, 
+		@SupportsPartialRendering=0, 
+		@SupportsPopUps=1, 
+		@CreatedByUserID=-1;
+END;
+GO

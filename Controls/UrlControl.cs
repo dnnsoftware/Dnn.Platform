@@ -1,27 +1,16 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections;
+using System.Linq;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-namespace WatchersNET.CKEditor.Controls
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+
+namespace DNNConnect.CKEditorProvider.Controls
 {
-    using System;
-    using System.Collections;
-    using System.Linq;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Localization;
 
     /// <summary>
     /// The url control.
@@ -264,7 +253,7 @@ namespace WatchersNET.CKEditor.Controls
                 if (_url.ToLower().StartsWith("fileid="))
                 {
                     var objFile = FileManager.Instance.GetFile(int.Parse(_url.Substring(7)));
-                    
+
                     if (objFile != null)
                     {
                         _url = objFile.Folder + objFile.FileName;

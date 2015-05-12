@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="page-header">
-            <h1>CKEditor Editor Provider <small>LICENSE</small></h1>
+            <h1>CKEditor Provider <small>LICENSE</small></h1>
         </div>
 
         <div class="panel panel-default">
@@ -24,7 +24,7 @@
                 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
             </div>
             <div class="panel-footer">
-               <p>Copyright (c) Ingo Herbote  - http://dnnckeditor.codeplex.com/</p>
+               <p>Copyright (c) DNN-Connect  - https://github.com/DNN-Connect/CKEditorProvider</p>
             </div>
         </div>
     </div>

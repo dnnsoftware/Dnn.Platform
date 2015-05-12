@@ -330,7 +330,7 @@ img {border:0}
 
 .ModalFooter {float:right}
 
-.LoadingContent h3 {background: url(Images/loading.gif) no-repeat 102px 5px;height:20px}
+.LoadingContent h3 {background: url(../CKEditor/Images/loading.gif) no-repeat 102px 5px;height:20px}
 .LoadingMessage {text-align:center}
 
 #cmdCreate img,

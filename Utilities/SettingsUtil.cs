@@ -1,46 +1,31 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
 
-namespace WatchersNET.CKEditor.Utilities
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Roles;
+
+using DNNConnect.CKEditorProvider.Constants;
+using DNNConnect.CKEditorProvider.Objects;
+using System.Web;
+
+namespace DNNConnect.CKEditorProvider.Utilities
 {
-    #region
-
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Xml;
-    using System.Xml.Serialization;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Roles;
-
-    using WatchersNET.CKEditor.Constants;
-    using WatchersNET.CKEditor.Objects;
-    using System.Web;
-
-    #endregion
 
     /// <summary>
     /// Settings Base Helper Class
     /// </summary>
     public class SettingsUtil
     {
-       #region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// Checks the exists portal or page settings.
@@ -426,12 +411,12 @@ namespace WatchersNET.CKEditor.Utilities
                             {
                                 if (PortalSecurity.IsInRoles(sRoleName))
                                 {
-                                    currentSettings.BrowserMode = Browser.CKFinder;
+                                    currentSettings.BrowserMode = BrowserType.CKFinder;
 
                                     break;
                                 }
 
-                                currentSettings.BrowserMode = Browser.None;
+                                currentSettings.BrowserMode = BrowserType.None;
                             }
 
                             break;
@@ -440,17 +425,17 @@ namespace WatchersNET.CKEditor.Utilities
                             {
                                 if (PortalSecurity.IsInRoles(sRoleName))
                                 {
-                                    currentSettings.BrowserMode = Browser.StandardBrowser;
+                                    currentSettings.BrowserMode = BrowserType.StandardBrowser;
 
                                     break;
                                 }
 
-                                currentSettings.BrowserMode = Browser.None;
+                                currentSettings.BrowserMode = BrowserType.None;
                             }
 
                             break;
                         case "none":
-                            currentSettings.BrowserMode = Browser.None;
+                            currentSettings.BrowserMode = BrowserType.None;
                             break;
                     }
                 }
@@ -799,7 +784,7 @@ namespace WatchersNET.CKEditor.Utilities
                         .Where(
                             info =>
                             !string.IsNullOrEmpty((string)hshModSet[string.Format("{0}{1}", key, info.Name)])
-                            /*|| info.Name.Equals("CodeMirror") || info.Name.Equals("WordCount")*/))
+                /*|| info.Name.Equals("CodeMirror") || info.Name.Equals("WordCount")*/))
             {
                 switch (info.PropertyType.Name)
                 {
@@ -1026,12 +1011,12 @@ namespace WatchersNET.CKEditor.Utilities
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
                             {
-                                currentSettings.BrowserMode = Browser.CKFinder;
+                                currentSettings.BrowserMode = BrowserType.CKFinder;
 
                                 break;
                             }
 
-                            currentSettings.BrowserMode = Browser.None;
+                            currentSettings.BrowserMode = BrowserType.None;
                         }
 
                         break;
@@ -1040,17 +1025,17 @@ namespace WatchersNET.CKEditor.Utilities
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
                             {
-                                currentSettings.BrowserMode = Browser.StandardBrowser;
+                                currentSettings.BrowserMode = BrowserType.StandardBrowser;
 
                                 break;
                             }
 
-                            currentSettings.BrowserMode = Browser.None;
+                            currentSettings.BrowserMode = BrowserType.None;
                         }
 
                         break;
                     case "none":
-                        currentSettings.BrowserMode = Browser.None;
+                        currentSettings.BrowserMode = BrowserType.None;
                         break;
                 }
             }
@@ -1310,12 +1295,12 @@ namespace WatchersNET.CKEditor.Utilities
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
                             {
-                                settings.BrowserMode = Browser.CKFinder;
+                                settings.BrowserMode = BrowserType.CKFinder;
 
                                 break;
                             }
 
-                            settings.BrowserMode = Browser.None;
+                            settings.BrowserMode = BrowserType.None;
                         }
 
                         break;
@@ -1324,17 +1309,17 @@ namespace WatchersNET.CKEditor.Utilities
                         {
                             if (PortalSecurity.IsInRoles(sRoleName))
                             {
-                                settings.BrowserMode = Browser.StandardBrowser;
+                                settings.BrowserMode = BrowserType.StandardBrowser;
 
                                 break;
                             }
 
-                            settings.BrowserMode = Browser.None;
+                            settings.BrowserMode = BrowserType.None;
                         }
 
                         break;
                     case "none":
-                        settings.BrowserMode = Browser.None;
+                        settings.BrowserMode = BrowserType.None;
                         break;
                 }
             }

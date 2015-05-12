@@ -1,37 +1,21 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Web;
+using System.Web.UI.HtmlControls;
 
-namespace WatchersNET.CKEditor
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+
+using DNNConnect.CKEditorProvider.Controls;
+
+using Globals = DotNetNuke.Common.Globals;
+
+namespace DNNConnect.CKEditorProvider
 {
-    #region
-
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Web;
-    using System.Web.UI.HtmlControls;
-
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
-
-    using WatchersNET.CKEditor.Controls;
-
-    using Globals = DotNetNuke.Common.Globals;
-
-    #endregion
-
     /// <summary>
     /// The options page.
     /// </summary>

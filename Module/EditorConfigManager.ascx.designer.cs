@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WatchersNET.CKEditor.Module {
+namespace DNNConnect.CKEditorProvider.Module {
     
     
     public partial class EditorConfigManager {

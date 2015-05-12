@@ -1,38 +1,22 @@
-﻿/*
- * CKEditor Html Editor Provider for DotNetNuke
- * ========
- * http://dnnckeditor.codeplex.com/
- * Copyright (C) Ingo Herbote
- *
- * The software, this file and its contents are subject to the CKEditor Provider
- * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
- * this file is part of the Source Code of the CKEditor Provider.
- */
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
 
-namespace WatchersNET.CKEditor.Utilities
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.FileSystem;
+
+namespace DNNConnect.CKEditorProvider.Utilities
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.FileSystem;
-
-    using WatchersNET.CKEditor.Objects;
-
     /// <summary>
     /// Utility Class for various helper Functions
     /// </summary>
@@ -148,7 +132,7 @@ namespace WatchersNET.CKEditor.Utilities
 
             return numeric;
         }
-        
+
         /// <summary>
         /// Validates the <paramref name="path"/>.
         /// </summary>
@@ -263,7 +247,7 @@ namespace WatchersNET.CKEditor.Utilities
 
             input = Encoding.ASCII.GetString(Encoding.GetEncoding(1251).GetBytes(input));
 
-            input = input.Replace("�", string.Empty); 
+            input = input.Replace("�", string.Empty);
             input = input.Replace("\t", string.Empty);
             input = input.Replace("@", "at");
             input = input.Replace("\r", string.Empty);
@@ -387,121 +371,6 @@ namespace WatchersNET.CKEditor.Utilities
         }
 
         /// <summary>
-        /// Deletes all module settings of the Editor, for the specified <paramref name="tabId"/>.
-        /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        public static void DeleteAllModuleSettingsById(int tabId)
-        {
-            DataProvider.Instance()
-                        .ExecuteNonQuery("CKEditor_DeleteAllModuleSettingsByTab", tabId);
-        }
-
-        /// <summary>
-        /// Deletes all module settings of the Editor, for the Current Portal.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        public static void DeleteAllModuleSettings(int portalId)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_DeleteAllModuleSettings", portalId.ToString());
-        }
-
-        /// <summary>
-        /// Deletes all page settings of the Editor, for the Current Portal.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        public static void DeleteAllPageSettings(int portalId)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_DeleteAllPageSettings", portalId.ToString());
-
-            // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
-        }
-
-        /// <summary>
-        /// Deletes current page settings of the Editor, for the Current Portal.
-        /// </summary>
-        /// <param name="tabId">The tab id.</param>
-        public static void DeleteCurrentPageSettings(int tabId)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_DeleteCurrentPageSettings", tabId.ToString());
-
-            // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
-        }
-
-        /// <summary>
-        /// Deletes all page settings of the Editor, for the specified child tabs from the specified <paramref name="tabId"/>.
-        /// </summary>
-        /// <param name="tabId">
-        /// The tab Id.
-        /// </param>
-        public static void DeleteAllChildPageSettings(int tabId)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_DeleteAllChildPageSettings", tabId);
-
-            // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
-        }
-
-        /// <summary>
-        /// Deletes all portal settings of the Editor, for the Current Portal.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        public static void DeleteAllPortalSettings(int portalId)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_DeleteAllPortalSettings", portalId.ToString());
-
-            // Finally Clear Cache
-            DataCache.RemoveCache("CKEditorHost");
-        }
-
-        /// <summary>
-        /// Gets the editor host settings.
-        /// </summary>
-        /// <returns>Returns the list of all Editor Host Settings</returns>
-        public static List<EditorHostSetting> GetEditorHostSettings()
-        {
-            var editorHostSettings = new List<EditorHostSetting>();
-
-            var cache = DataCache.GetCache("CKEditorHost");
-
-            if (cache == null)
-            {
-                var timeOut = 20 * Convert.ToInt32(Host.PerformanceSetting);
-
-                using (var dr = DataProvider.Instance().ExecuteReader("CKEditor_GetEditorHostSettings"))
-                {
-                    while (dr.Read())
-                    {
-                        editorHostSettings.Add(
-                            new EditorHostSetting(Convert.ToString(dr["SettingName"]), Convert.ToString(dr["SettingValue"])));
-                    }
-                }
-
-                if (timeOut > 0)
-                {
-                    DataCache.SetCache("CKEditorHost", editorHostSettings, TimeSpan.FromMinutes(timeOut));
-                }
-            }
-            else
-            {
-                editorHostSettings = cache as List<EditorHostSetting>;
-            }
-
-            return editorHostSettings;
-        }
-
-        /// <summary>
-        /// Adds or update's the editor host setting.
-        /// </summary>
-        /// <param name="settingName">Name of the setting.</param>
-        /// <param name="settingValue">The setting value.</param>
-        public static void AddOrUpdateEditorHostSetting(string settingName, string settingValue)
-        {
-            DataProvider.Instance().ExecuteNonQuery("CKEditor_AddOrUpdateEditorHostSetting", settingName, settingValue);
-        }
-
-        /// <summary>
         /// Determines whether user is in the specified role.
         /// </summary>
         /// <param name="roles">The roles.</param>
@@ -584,7 +453,7 @@ namespace WatchersNET.CKEditor.Utilities
                     }
                     else
                     {
-                        found = FindControl<T>(activeControl, id);
+                        found = Utility.FindControl<T>(activeControl, id);
 
                         if (found != null)
                         {

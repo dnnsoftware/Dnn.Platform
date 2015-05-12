@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WatchersNET.CKEditor.Browser {
+namespace DNNConnect.CKEditorProvider.Browser {
     
     
     public partial class Browser {
@@ -748,7 +748,7 @@ namespace WatchersNET.CKEditor.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::WatchersNET.CKEditor.Controls.Pager PagerFileLinks;
+        protected global::DNNConnect.CKEditorProvider.Controls.Pager PagerFileLinks;
         
         /// <summary>
         /// panInfo control.

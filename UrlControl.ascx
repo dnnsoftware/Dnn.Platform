@@ -1,6 +1,6 @@
-<%@ Control Language="c#" AutoEventWireup="false" Inherits="WatchersNET.CKEditor.Controls.UrlControl" %>
+<%@ Control Language="c#" AutoEventWireup="false" Inherits="DNNConnect.CKEditorProvider.Controls.UrlControl" %>
 
-<div style="float:left;">
+<div style="float: left;">
     <div>
         <asp:Label ID="FolderLabel" runat="server" EnableViewState="False" resourcekey="Folder" CssClass="NormalBold" />
         <asp:DropDownList ID="Folders" runat="server" AutoPostBack="True" CssClass="NormalTextBox" Width="300" />
