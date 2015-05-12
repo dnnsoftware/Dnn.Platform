@@ -710,10 +710,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (VerifySafeUrl(dto.Url) == false)
             {
-                   return Request.CreateResponse(
-                HttpStatusCode.Forbidden,
-                mediaTypeFormatter,
-                "text/plain");
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
 
@@ -770,27 +767,36 @@ namespace DotNetNuke.Web.InternalServices
         private bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
-            if (uri.Scheme != "http" || uri.Scheme != "https")
+            if (uri.Scheme == "http" ||uri.Scheme == "https")
             {
-                return false;
-            }
-            if (url.Contains("#") || !url.Contains(".") || url.Contains(":"))
-            {
-                return false;
-            }
-
-            if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
-            {
-                //check nonroutable IP addresses
-                if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
-                    NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
-                    NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
+                
+                if (!uri.Host.Contains("."))
                 {
                     return false;
                 }
-            }
+                if (uri.IsLoopback)
+                {
+                    return false;
+                }
+                if (uri.PathAndQuery.Contains("#")  || uri.PathAndQuery.Contains(":"))
+                {
+                    return false;
+                }
+
+                if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
+                {
+                    //check nonroutable IP addresses
+                    if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
+                    {
+                        return false;
+                    }
+                }
 
             return true;
+            }
+            return false;
         }
     }
 
