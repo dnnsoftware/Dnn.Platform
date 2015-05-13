@@ -69,39 +69,37 @@ dcc.dataTypesViewModel = function(settings, resx, utility) {
     };
 
     self.editDataType = function(data, e){
-        if(data.canEdit()){
-            var row = $(e.target);
+        var row = $(e.target);
 
-            if(row.is("tr") == false){
-                row = row.closest('tr');
-            }
-
-            if(row.hasClass('in-edit-row')){
-                row.removeClass('in-edit-row');
-                $('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
-                    $('#dataTypes-editrow').appendTo('#dataTypes-editbody');
-                });
-                return;
-            }
-
-            var tbody = row.parent();
-            $('tr', tbody).removeClass('in-edit-row');
-            row.addClass('in-edit-row');
-
-            util.asyncParallel([
-                function(cb1){
-                    self.getDataType(data.dataTypeId(), cb1);
-                },
-                function(cb2){
-                    $('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
-                        cb2();
-                    });
-                }
-            ], function() {
-                $('#dataTypes-editrow').insertAfter(row);
-                $('#dataTypes-editrow > td > div').slideDown(400, 'linear');
-            });
+        if(row.is("tr") == false){
+            row = row.closest('tr');
         }
+
+        if(row.hasClass('in-edit-row')){
+            row.removeClass('in-edit-row');
+            $('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+                $('#dataTypes-editrow').appendTo('#dataTypes-editbody');
+            });
+            return;
+        }
+
+        var tbody = row.parent();
+        $('tr', tbody).removeClass('in-edit-row');
+        row.addClass('in-edit-row');
+
+        util.asyncParallel([
+            function(cb1){
+                self.getDataType(data.dataTypeId(), cb1);
+            },
+            function(cb2){
+                $('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                    cb2();
+                });
+            }
+        ], function() {
+            $('#dataTypes-editrow').insertAfter(row);
+            $('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+        });
     };
 
     self.getDataType = function (dataTypeId, cb) {

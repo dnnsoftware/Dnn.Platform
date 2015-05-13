@@ -110,16 +110,15 @@
                                 <div>
                                     <div>
                                         <label>[Resx:{key:"Name"}]</label>
-                                        <input type="text" data-bind="value: name" />
+                                        <input type="text" data-bind="value: name, enable: parentViewModel.isSystemUser" />
                                     </div>
                                     <div>
                                         <label>[Resx:{key:"BaseType"}]</label>
-                                        <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value'"></select>
+                                        <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value', enable: parentViewModel.isSystemUser"></select>
                                     </div>
-                                    <div class="toggle" data-bind="visible: parentViewModel.isSystemUser">
-                                        <span data-bind="visible: isAddMode()"><input type="checkbox" data-bind="checked: isSystem"></span>
-                                        <span data-bind="visible: !isAddMode()"><i class="fa fa-check-square-o" data-bind="visible: isSystem()"></i><i class="fa fa-square-o" data-bind="visible: !isSystem()"></i></span>
-                                        <span>[Resx:{key:"SystemType"}]</span>
+                                    <div class="toggle">
+                                        <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
+                                        <span clas="label">[Resx:{key:"SystemType"}]</span>
                                     </div>
 
                                     <div class="buttons">

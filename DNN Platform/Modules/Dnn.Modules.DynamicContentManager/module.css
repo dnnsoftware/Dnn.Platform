@@ -231,6 +231,11 @@
     margin-left: 15px;
 }
 
+.dccContainer .dccTable tr.edit-row > td > div > div.toggle > span.label {
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
 .dccContainer .dnnCheckbox {
     display: inline-block;
     width: 41px;
