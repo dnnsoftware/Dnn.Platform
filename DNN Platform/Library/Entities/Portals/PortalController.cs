@@ -1105,14 +1105,47 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
+            var httpContext = HttpContext.Current;
+
             if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
-                cultureCode = GetActivePortalLanguage(portalId);
+                //Lookup culturecode but cache it in the HttpContext for performance
+                var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
+                if (httpContext != null)
+                {
+                    cultureCode = (string)httpContext.Items[activeLanguageKey];
+                }
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = GetActivePortalLanguage(portalId);
+                    if (httpContext != null)
+                    {
+                        httpContext.Items[activeLanguageKey] = cultureCode;
+                    }
+                }
             }
-            var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
-            return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
-                                                                   GetPortalSettingsDictionaryCallback,
-                                                                   true);
+
+            //Get PortalSettings from Context or from cache
+            var dictionaryKey = String.Format("PortalSettingsDictionary{0}{1}", portalId, cultureCode);
+            Dictionary<string, string> dictionary = null;
+            if (httpContext != null)
+            {
+                dictionary = httpContext.Items[dictionaryKey] as Dictionary<string, string>;
+            }
+            if (dictionary == null)
+            {
+                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, 
+                                                                                DataCache.PortalSettingsCacheTimeOut,
+                                                                                DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                                                                            GetPortalSettingsDictionaryCallback,
+                                                                            true);
+                if (httpContext != null)
+                {
+                    httpContext.Items[dictionaryKey] = dictionary;
+                }
+            }
+            return dictionary;
         }
 
         private string GetTemplateName(string languageFileName)
