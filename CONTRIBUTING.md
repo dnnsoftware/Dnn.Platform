@@ -80,7 +80,7 @@ a ticket number.
 * We may ask you to make further changes or reject the change (with proper reasonsing - we hope that's not the case though).
 * You should get an email notification as we complete processing of your pull request.
 
-## Downloaing latest package with your changes
+## Downloading latest package with your changes
 * As soon as changes are accepted, our team city build server gets into action.
 * New builds are usually available within 10 minutes of acceptance.
 * You can download the latest build by logging as a 'guest user' at: https://build.dnnsoftware.com/
