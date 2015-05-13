@@ -110,11 +110,11 @@
                                 <div>
                                     <div>
                                         <label>[Resx:{key:"Name"}]</label>
-                                        <input type="text" data-bind="value: name, enable: parentViewModel.isSystemUser" />
+                                        <input type="text" data-bind="value: name, enable: !isSystem() || parentViewModel.isSystemUser" />
                                     </div>
                                     <div>
                                         <label>[Resx:{key:"BaseType"}]</label>
-                                        <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value', enable: parentViewModel.isSystemUser"></select>
+                                        <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value', enable: !isSystem() || parentViewModel.isSystemUser"></select>
                                     </div>
                                     <div class="toggle">
                                         <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
