@@ -47,7 +47,7 @@
           <assemblies>
             <assembly>
               <path>bin</path>
-              <name>Dnn.Modules.DynamicContentManagers.dll</name>
+              <name>Dnn.Modules.DynamicContentManager.dll</name>
             </assembly>
           </assemblies>
         </component>
