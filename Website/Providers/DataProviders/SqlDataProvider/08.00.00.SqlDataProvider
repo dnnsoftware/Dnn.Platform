@@ -35,7 +35,7 @@ GO
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'CreatedOnDate')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate())
+			ADD [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_CreatedOnDate] DEFAULT (getdate())
     END 
 GO
 
@@ -49,7 +49,7 @@ GO
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'LastModifiedOnDate')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate())
+			ADD [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_LastModifiedOnDate] DEFAULT (getdate())
     END 
 GO
 
