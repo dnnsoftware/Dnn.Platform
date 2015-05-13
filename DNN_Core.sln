@@ -64,6 +64,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://loca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Urls", "DNN Platform\Tests\DotNetNuke.Tests.Urls\DotNetNuke.Tests.Urls.csproj", "{F9CE7C63-C729-4E3A-A266-6B23D75A1247}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,14 @@ Global
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|x86.ActiveCfg = Release|Any CPU
 		{6629A64D-58B9-48B9-B932-15AF193C2212}.Release|x86.Build.0 = Release|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,5 +174,6 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{AF3A5042-B67B-4F84-9E40-BE06B1105337} = {88E649D7-1379-430F-B794-1F3B9B442C80}
 		{6629A64D-58B9-48B9-B932-15AF193C2212} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
+		{F9CE7C63-C729-4E3A-A266-6B23D75A1247} = {7E98CA08-903E-45F7-BD83-853763D5E15B}
 	EndGlobalSection
 EndGlobal
