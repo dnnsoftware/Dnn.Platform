@@ -58,6 +58,7 @@
     height: 600px;
     width: 850px;
     border: solid 1px #092836;
+	background-color:white;
     overflow: hidden;
     position: relative;
 }
