@@ -31,7 +31,7 @@
                     <div>[Resx:{key:"Templates"}]</div>
                 </li>
                 <li data-panel-id="#settings-panel" data-bind="click: selectSettings">
-                    <i class="fa fa-asterisk"></i>
+                    <i class="fa fa-gear"></i>
                     <div>[Resx:{key:"Settings"}]</div>
                 </li>
             </ul>
@@ -116,13 +116,13 @@
                                         <label>[Resx:{key:"BaseType"}]</label>
                                         <select data-bind="value: baseType, valueAllowUnset: false, options: $parent.baseDataTypeOptions, optionsText: 'name', optionsValue: 'value', enable: !isSystem() || parentViewModel.isSystemUser"></select>
                                     </div>
-                                    <div class="toggle">
+                                    <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
                                         <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
-                                        <span clas="label">[Resx:{key:"SystemType"}]</span>
+                                        <span class="label">[Resx:{key:"SystemType"}]</span>
                                     </div>
 
                                     <div class="buttons">
-                                        <a class="secondarybtn" data-bind="visible: !isAddMode(), click: deleteType">[Resx:{key:"Delete"}]</a>
+                                        <a class="secondarybtn" id="dataTypes-deleteButton" data-bind="click: deleteType, visible: !isAddMode()">[Resx:{key:"Delete"}]</a>
                                         <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
                                         <a class="primarybtn" data-bind="click: saveType">[Resx:{key:"Save"}]</a>
                                     </div>
@@ -187,6 +187,17 @@
     <div id="loadingbar" style="display: none;">
         <div></div>
     </div>
+
+    <div id="mask"></div>
+    <div id="confirmation-dialog" class="dnnFormPopup dnnClear"  style="display: none;">
+        <div class="dnnDialogHeader">[Resx: {key: "Confirm"}]</div>
+        <div class="dnnDialog"></div>
+        <div class="buttonpanel">
+            <a id="confirmbtn" class="dnnPrimaryAction"></a>
+            <a id="cancelbtn" class="dnnSecondaryAction"></a>
+        </div>
+    </div>
+
 </div>
 
 <script language="javascript" type="text/javascript">
@@ -215,7 +226,10 @@
             guid: '[Resx:{key:"Guid"}]',
             uri: '[Resx:{key:"Uri"}]',
             dateTime: '[Resx:{key:"DateTime"}]',
-            timeSpan: '[Resx:{key:"TimeSpan"}]'
+            timeSpan: '[Resx:{key:"TimeSpan"}]',
+            deleteDataTypeConfirmMessage: '[Resx:{key:"DeleteDataTypeConfirmMessage"}]',
+            no: '[Resx:{key:"No"}]',
+            yes: '[Resx:{key:"Yes"}]'
         };
 
         var settings = {

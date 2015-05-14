@@ -256,6 +256,10 @@
     background-color: #48d348;
 }
 
+.dccContainer div.toggle.disabled .dnnCheckbox.dnnCheckbox-checked {
+    background-color: #ccc;
+}
+
 .dccContainer .dnnCheckbox .mark {
     width: 22px;
     height: 22px;
@@ -352,3 +356,24 @@
     height: 4px;
 }
 
+.dccContainer .dnnFormPopup {
+    left: 300px;
+    top: 300px;
+}
+
+.dccContainer .dnnDialogHeader {
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 18px;
+}
+
+.dccContainer .buttonpanel {
+    margin: .5em 0 0 0;
+    padding: .3em 1em 0em 0em;
+    overflow: hidden;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    text-align: left;
+    border-top: 1px solid #ddd;
+}

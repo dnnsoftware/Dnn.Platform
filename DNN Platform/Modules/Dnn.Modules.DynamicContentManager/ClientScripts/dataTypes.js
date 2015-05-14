@@ -2,20 +2,21 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.dataTypes = function(ko, parentViewModel, resx, settings, utility){
-    var serviceFramework = settings.servicesFramework;
-    var baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager') + 'DataType/';
+dcc.dataTypes = function(ko, parentViewModel, config){
+    //var serviceFramework = settings.servicesFramework;
+    //var baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager') + 'DataType/';
 
-    var viewModel = new dcc.dataTypesViewModel(settings, resx, utility);
-
-    parentViewModel.dataTypes = viewModel;
+    parentViewModel.dataTypes = new dcc.dataTypesViewModel(config);
 
     return;
 };
 
-dcc.dataTypesViewModel = function(settings, resx, utility) {
+dcc.dataTypesViewModel = function(config) {
     var self = this;
-    var util = utility;
+    var resx = config.resx;
+    var settings = config.settings;
+    var util = config.util;
+
     self.isSystemUser = settings.isSystemUser;
     self.heading = ko.observable(resx.dataTypes);
     self.searchText = ko.observable("");
@@ -36,7 +37,7 @@ dcc.dataTypesViewModel = function(settings, resx, utility) {
         { name: resx.dateTime, value:7},
         { name: resx.timeSpan, value:8}
     ]);
-    self.selectedDataType = new dcc.dataTypeViewModel(self, util);
+    self.selectedDataType = new dcc.dataTypeViewModel(self, config);
 
     var findDataTypes =  function() {
         self.pageIndex(0);
@@ -163,7 +164,7 @@ dcc.dataTypesViewModel = function(settings, resx, utility) {
         self.results.removeAll();
         for(var i=0; i < data.results.length; i++){
             var result = data.results[i];
-            var dataType = new dcc.dataTypeViewModel();
+            var dataType = new dcc.dataTypeViewModel(self, config);
             dataType.load(result);
             self.results.push(dataType);
         }
@@ -173,12 +174,12 @@ dcc.dataTypesViewModel = function(settings, resx, utility) {
     self.refresh = function() {
         self.getDataTypes();
     };
-
 }
 
-dcc.dataTypeViewModel = function(parentViewModel, utility){
+dcc.dataTypeViewModel = function(parentViewModel, config){
     var self = this;
-    var util = utility;
+    var util = config.util;
+    var resx = config.resx;
     self.parentViewModel = parentViewModel;
     self.canEdit = ko.observable(false);
     self.created = ko.observable('');
@@ -204,24 +205,26 @@ dcc.dataTypeViewModel = function(parentViewModel, utility){
     },
 
     self.deleteType = function (data, e) {
-        var params = {
-            dataTypeId: data.dataTypeId(),
-            baseType: data.baseType(),
-            name: data.name(),
-            isSystem: data.isSystem()
-        };
+        util.confirm(resx.deleteDataTypeConfirmMessage, resx.yes, resx.no, function() {
+            var params = {
+                dataTypeId: data.dataTypeId(),
+                baseType: data.baseType(),
+                name: data.name(),
+                isSystem: data.isSystem()
+            };
 
-        util.sf.serviceController = "DataType";
-        util.sf.post("DeleteDataType", params,
-            function(data){
-                //Success
-                collapseDetailRow(parentViewModel.refresh);
-            },
+            util.sf.serviceController = "DataType";
+            util.sf.post("DeleteDataType", params,
+                function(data){
+                    //Success
+                    collapseDetailRow(parentViewModel.refresh);
+                },
 
-            function(data){
-                //Failure
-            }
-        )
+                function(data){
+                    //Failure
+                }
+            );
+        });
     };
 
     self.saveType = function(data, e) {

@@ -222,4 +222,16 @@
   <data name="Uri.Text" xml:space="preserve">
     <value>Uri</value>
   </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="DeleteDataTypeConfirmMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Data Type?</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>

@@ -49,17 +49,21 @@
 
         activePanel = settings.initialPanel;
 
+        var config = {
+            settings: settings,
+            resx: resx,
+            util: dcc.utility(settings)
+        };
+
         //Build the ViewModel
         viewModel.resx = resx;
-
-        var util = dcc.utility(settings);
 
         //Wire up contentTypes subModel
         dcc.contentTypes(ko, viewModel, resx, settings);
         viewModel.contentTypes.init();
 
         //Wire up dataTypes subModel
-        dcc.dataTypes(ko, viewModel, resx, settings, util);
+        dcc.dataTypes(ko, viewModel, config);
         viewModel.dataTypes.init();
 
         viewModel.templates = dcc.templates(ko, resx, settings);
