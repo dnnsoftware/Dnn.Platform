@@ -69,6 +69,27 @@ DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehist
 )
 END
 GO
+
+/* DNN-DNN-6980 */
+/************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteUserNotifications
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
+	@UserId INT,
+	@PortalId INT
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages
+	WHERE PortalId = @PortalId
+	  AND NotificationTypeID IS NOT NULL
+	  AND MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE UserID = @UserId)
+
+	SELECT @@ROWCOUNT
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
