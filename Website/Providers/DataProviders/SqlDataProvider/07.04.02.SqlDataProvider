@@ -25,8 +25,8 @@ GO
 
  GO
 
- /* DNN-5631 */
-/*************/
+/* DNN-5631 */
+/************/
 
 IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteList]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
@@ -44,8 +44,8 @@ BEGIN
 END
 GO
 
- /* DNN-6877 */
-/*************/
+/* DNN-6877 */
+/************/
 
 IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
     DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
@@ -69,6 +69,13 @@ DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehist
 )
 END
 GO
+
+/* DNN-6982 */
+/************/
+IF  EXISTS (SELECT * FROM sys.columns WHERE object_ID  = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflows]') AND Name Like 'PortalID ')
+	EXEC sp_rename '{databaseOwner}[{objectQualifier}ContentWorkflows].[PortalID ]', 'PortalID', 'COLUMN';
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
