@@ -54,6 +54,21 @@
 		}
 		
 		$(document).ready(function () {
+
+			$('.dnnLoginService').on('keydown', function(e) {
+				if (e.keyCode === 13) {
+					var $loginButton = $('#<%=cmdLogin.ClientID%>');
+					if ($loginButton.hasClass("dnnDisabledAction")) {
+						return false;
+					}
+
+					$loginButton.addClass("dnnDisabledAction");
+					eval($loginButton.attr('href'));
+					e.preventDefault();
+					return false;
+				}
+			});
+
 			setUpLogin();
 			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 				setUpLogin();
