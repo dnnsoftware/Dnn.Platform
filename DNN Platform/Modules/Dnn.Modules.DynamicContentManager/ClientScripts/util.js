@@ -19,11 +19,34 @@ dcc.utility = function(settings){
         });
     };
 
+    var confirm = function(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler) {
+        $('#confirmation-dialog > div.dnnDialog').html(text);
+        $('#confirmation-dialog a#confirmbtn').html(confirmBtnText).unbind('click').bind('click', function() {
+            if (typeof confirmHandler === 'function') confirmHandler.apply();
+            $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
+        });
+        $('#confirmation-dialog a#cancelbtn').html(cancelBtnText).unbind('click').bind('click', function() {
+            if (typeof cancelHandler === 'function') cancelHandler.apply();
+            $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
+        });
+        $('#mask').show();
+        $('#confirmation-dialog').fadeIn(200, 'linear');
+
+        $(window).off('keydown.confirmDialog').on('keydown.confirmDialog', function(evt) {
+
+            if (evt.keyCode === 27) {
+                $(window).off('keydown.confirmDialog');
+                $('#confirmation-dialog a#cancelbtn').trigger('click');
+            }
+        });
+    };
+
     var sf = dcc.sf();
     sf.init(settings);
 
     return {
         asyncParallel: asyncParallel,
+        confirm: confirm,
         sf: sf
     }
 };
