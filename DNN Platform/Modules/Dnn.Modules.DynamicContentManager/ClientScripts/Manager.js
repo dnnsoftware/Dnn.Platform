@@ -4,7 +4,17 @@
 
     var viewModel = {};
 
-    var menuClick = function (panel) {
+    var menuClick = function (target, panel) {
+        $rootElement.find(".dccMenu li").removeClass("selected");
+
+        var listItem = $(target);
+
+        if(listItem.is("li") == false){
+            listItem = listItem.closest('li');
+        }
+
+        listItem.addClass("selected");
+
         if (activePanel === panel) {
             return;
         }
@@ -22,26 +32,26 @@
         activePanel = panel;
     };
 
-    var selectContentTypes = function() {
-        menuClick(settings.contentTypesPanel);
+    var selectContentTypes = function(data, e) {
+        menuClick(e.target, settings.contentTypesPanel);
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
     };
 
-    var selectDataTypes = function () {
-        menuClick(settings.dataTypesPanel);
+    var selectDataTypes = function (data, e) {
+        menuClick(e.target, settings.dataTypesPanel);
         viewModel.dataTypes.pageIndex(0);
         viewModel.dataTypes.searchText('');
         viewModel.dataTypes.getDataTypes();
     };
 
-    var selectTemplates = function () {
-        menuClick(settings.contentTemplatesPanel);
+    var selectTemplates = function (data, e) {
+        menuClick(e.target, settings.contentTemplatesPanel);
     };
 
-    var selectSettings = function () {
-        menuClick(settings.settingsPanel);
+    var selectSettings = function (data, e) {
+        menuClick(e.target, settings.settingsPanel);
     };
 
     var init = function(element) {
@@ -59,11 +69,11 @@
         viewModel.resx = resx;
 
         //Wire up contentTypes subModel
-        dcc.contentTypes(ko, viewModel, resx, settings);
+        viewModel.contentTypes = new dcc.contentTypesViewModel(config);
         viewModel.contentTypes.init();
 
         //Wire up dataTypes subModel
-        dcc.dataTypes(ko, viewModel, config);
+        viewModel.dataTypes = new dcc.dataTypesViewModel(config);
         viewModel.dataTypes.init();
 
         viewModel.templates = dcc.templates(ko, resx, settings);
@@ -80,6 +90,7 @@
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
+        $rootElement.find("#contentTypes-menu").addClass("selected");
 
         $rootElement.find('input[type="checkbox"]').dnnCheckbox();
     }

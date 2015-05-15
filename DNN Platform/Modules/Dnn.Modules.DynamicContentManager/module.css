@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.dccContainer .dccNavBar .dccMenu ul li.selected{
+    color: #0087c6;
+}
+
 .dccContainer .dccNavBar .dccMenu ul li .fa{
     font-size: 40px;
     display: block;

@@ -2,20 +2,16 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.dataTypes = function(ko, parentViewModel, config){
-    //var serviceFramework = settings.servicesFramework;
-    //var baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager') + 'DataType/';
-
-    parentViewModel.dataTypes = new dcc.dataTypesViewModel(config);
-
-    return;
-};
-
 dcc.dataTypesViewModel = function(config) {
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
+
+    util.dataTypeService = function(){
+        util.sf.serviceController = "DataType";
+        return util.sf;
+    };
 
     self.isSystemUser = settings.isSystemUser;
     self.heading = ko.observable(resx.dataTypes);
@@ -108,8 +104,7 @@ dcc.dataTypesViewModel = function(config) {
             dataTypeId: dataTypeId
         };
 
-        util.sf.serviceController = "DataType";
-        util.sf.get("GetDataType", params,
+        util.dataTypeService().get("GetDataType", params,
             function(data) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
@@ -134,8 +129,7 @@ dcc.dataTypesViewModel = function(config) {
             pageSize: self.pageSize
         };
 
-        util.sf.serviceController = "DataType";
-        util.sf.get("GetDataTypes", params,
+        util.dataTypeService().get("GetDataTypes", params,
             function(data) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
@@ -213,8 +207,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
                 isSystem: data.isSystem()
             };
 
-            util.sf.serviceController = "DataType";
-            util.sf.post("DeleteDataType", params,
+            util.dataTypeService().sf.post("DeleteDataType", params,
                 function(data){
                     //Success
                     collapseDetailRow(parentViewModel.refresh);
@@ -227,6 +220,15 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         });
     };
 
+    self.load = function(data) {
+        self.canEdit(data.canEdit);
+        self.created(data.created);
+        self.dataTypeId(data.dataTypeId);
+        self.baseType(data.baseType);
+        self.name(data.name);
+        self.isSystem(data.isSystem);
+    };
+
     self.saveType = function(data, e) {
         var params = {
             dataTypeId: data.dataTypeId(),
@@ -235,8 +237,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             isSystem: data.isSystem()
         };
 
-        util.sf.serviceController = "DataType";
-        util.sf.post("SaveDataType", params,
+        util.dataTypeService().sf.post("SaveDataType", params,
             function(data){
                 //Success
                 collapseDetailRow(parentViewModel.refresh);
@@ -247,15 +248,6 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             }
         )
 
-    };
-
-    self.load = function(data) {
-        self.canEdit(data.canEdit);
-        self.created(data.created);
-        self.dataTypeId(data.dataTypeId);
-        self.baseType(data.baseType);
-        self.name(data.name);
-        self.isSystem(data.isSystem);
     };
 }
 
