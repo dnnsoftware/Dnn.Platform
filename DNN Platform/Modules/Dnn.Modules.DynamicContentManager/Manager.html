@@ -6,6 +6,8 @@
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/templates.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/settings.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/pager.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/util.js"}]
+[JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
 [Css:{ path: "//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"}]
 
 <div id="DCCmanager-[ModuleContext:ModuleId]" class="dccContainer">
@@ -35,6 +37,7 @@
             </ul>
         </div>
     </div>
+
     <div class="dccPanels">
         <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes">
             <div class="dccHeading" data-bind="text: heading()"></div>
@@ -55,7 +58,7 @@
                     <tr>
                         <td data-bind="text: name"></td>
                         <td data-bind="text: created"></td>
-                        <td data-bind="text: isSystem"></td>
+                        <td><i class="fa fa-check" data-bind="visible: isSystem"></i></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -91,10 +94,48 @@
                         </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                        <tr>
+                        <tr data-bind="click: $parent.expand">
                             <td data-bind="text: name"></td>
                             <td data-bind="text: created"></td>
-                            <td data-bind="text: isSystem"></td>
+                            <td><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem"></i></td>
+                        </tr>
+                    </tbody>
+                    <tbody id='dataTypes-editbody' class="edit-body">
+                        <tr class="edit-row" id="dataTypes-editrow">
+                            <td colspan="3" data-bind="with: selectedDataType">
+                                <div>
+                                    <div>
+                                        <label>[Resx:{key:"Name"}]</label>
+                                        <input type="text" data-bind="value: name" />
+                                    </div>
+                                    <div>
+                                        <label>[Resx:{key:"BaseType"}]</label>
+                                        <select data-bind="optionsCaption: 'choose one ...', value: baseType, valueAllowUnset: false">
+                                            <option value="0">[Resx:{key:"String"}]</option>
+                                            <option value="1">[Resx:{key:"Boolean"}]</option>
+                                            <option value="2">[Resx:{key:"Integer"}]</option>
+                                            <option value="3">[Resx:{key:"Float"}]</option>
+                                            <option value="4">[Resx:{key:"Bytes"}]</option>
+                                            <option value="5">[Resx:{key:"Guid"}]</option>
+                                            <option value="6">[Resx:{key:"Uri"}]</option>
+                                            <option value="7">[Resx:{key:"DateTime"}]</option>
+                                            <option value="8">[Resx:{key:"TimeSpan"}]</option>
+                                        </select>
+                                    </div>
+                                    <div class="toggle">
+                                        <span><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem()"></i></span>
+                                        <span>[Resx:{key:"SystemType"}]</span>
+                                    </div>
+
+                                    <div class="buttons">
+                                        <a class="secondarybtn" data-bind="click: deleteType">[Resx:{key:"Delete"}]</a>
+                                        <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
+                                        <a class="primarybtn" data-bind="click: saveType">[Resx:{key:"Save"}]</a>
+                                    </div>
+
+                                    <div class="clear"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -148,10 +189,16 @@
             </div>
         </div>
     </div>
+
+    <div id="loadingbar" style="display: none;">
+        <div></div>
+    </div>
 </div>
 
 <script language="javascript" type="text/javascript">
-    var moduleId = "[ModuleContext:ModuleId]";
+    var moduleId = parseInt("[ModuleContext:ModuleId]");
+    var str = "[ModuleContext:IsSuperUser]";
+    var isSystemUser = (str.toLowerCase() === "true");
 
     jQuery(document).ready(function ($) {
         var localizedSettings = {
@@ -169,12 +216,14 @@
         };
 
         var settings = {
+            canEditSystem: isSystemUser,
             initialPanel: '#content-types-panel',
             contentTypesPanel: '#content-types-panel',
             dataTypesPanel: '#data-types-panel',
             contentTemplatesPanel: '#content-templates-panel',
             settingsPanel: '#settings-panel',
-            pageSize: 2,
+            loadingBarId: '#loadingbar',
+            pageSize: 5,
             servicesFramework: $.ServicesFramework(moduleId)
         }
 

@@ -1,5 +1,4 @@
 ﻿.dccContainer{
-
 }
 
 .dccContainer .dccNavBar{
@@ -60,7 +59,7 @@
     border: solid 1px #092836;
 	background-color:white;
     overflow: hidden;
-    position: relative;
+    position: absolute;
 }
 
 .dccContainer .dccPanels .dccPanel{
@@ -120,16 +119,22 @@
 
 .dccContainer .dccTable th:first-child, .dccContainer .dccTable td:first-child{
     border-left: none;
+    text-align: left;
 }
 
 .dccContainer .dccTable th, .dccContainer .dccTable td {
     padding: 8px 9px 7px 9px;
-    text-align: left;
+    text-align: center;
 }
 
 .dccContainer .dccTable tr:nth-child(2n) td {
     background: #ddd;
 }
+
+.dccContainer .dccTable .fa{
+    font-size: 18px;
+}
+
 .dccContainer .dccTable tfoot{
     border-top: 1px solid #aaa;
     border-bottom-left-radius: 8px;
@@ -144,6 +149,16 @@
     margin-bottom: 6px;
 }
 
+.dccContainer .dccTable tr.in-edit-row td, .dccContainer .dccTable tr.in-edit-row:hover td{
+    background: #0087c6;
+    color: #fff;
+    border-color: #0087c6;
+}
+
+.dccContainer .dccTable tr.edit-row td, .dccContainer .dccTable tr.edit-row:hover td{
+    background-color: transparent;
+}
+
 .dccContainer ul.pager{
     display: block;
     list-style-type: none;
@@ -156,12 +171,12 @@
     list-style-type: none;
 }
 
-.dccContainer td a{
+.dccContainer .dccTable td a{
     color: #0087c6;
     text-decoration: none;
 }
 
-.dccContainer td a.prev, .dccContainer td a.next{
+.dccContainer .dccTable td a.prev, .dccContainer .dccTable td a.next{
     background-position: center center;
     background-repeat: no-repeat;
     border: 1px solid #ddd;
@@ -173,17 +188,105 @@
     background-color: #fff;
 }
 
-.dccContainer td a.prev {
+.dccContainer .dccTable td a.prev {
     background-image: url('images/left.png');
 }
 
-.dccContainer td a.next {
+.dccContainer .dccTable td a.next {
     background-image: url('images/right.png');
 }
 
-.dccContainer td a.prev.disabled, .dccContainer td a.next.disabled {
+.dccContainer .dccTable td a.prev.disabled, .dccContainer .dccTable td a.next.disabled {
     opacity: 0.50;
     cursor: default;
+}
+
+.dccContainer .dccTable tr.edit-row td, .dccContainer .dccTable tr.edit-row:hover td {
+    padding: 0;
+}
+.dccContainer .dccTable tr.edit-row > td > div {
+    display: none;
+    padding: 20px 9px 10px 9px;
+    border-bottom: 2px solid #0087c6;
+    min-height: 150px;
+}
+
+.dccContainer .dccTable tr.edit-row > td > div > div {
+    width: 33%;
+    float: left;
+    margin: 0 0 9px 0;
+    position: relative;
+}
+
+.dccContainer .dccTable tr.edit-row > td > div > div > label{
+    display:block;
+    cursor: default;
+}
+
+.dccContainer .dccTable tr.edit-row > td > div > div.toggle {
+    padding-top:25px;
+}
+
+.dccContainer .dccTable tr.edit-row > td > div > div.toggle > span {
+    vertical-align: middle;
+    margin-left: 15px;
+}
+
+.dccContainer .dnnCheckbox {
+    display: inline-block;
+    width: 41px;
+    height: 18px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    background-color: #ccc;
+    margin: 0;
+    cursor: pointer;
+    -webkit-transition: background 100ms linear;
+    -moz-transition: background 100ms linear;
+    -o-transition: background 100ms linear;
+    transition: background 100ms linear;
+}
+
+.dccContainer .dnnCheckbox.dnnCheckbox-checked {
+    background-color: #48d348;
+}
+
+.dccContainer .dnnCheckbox .mark {
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    background-color: #fff;
+    border: 2px solid #b5b5b5;
+    position: relative;
+    top: -2px;
+    left: 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: left 100ms linear;
+    -moz-transition: left 100ms linear;
+    -o-transition: left 100ms linear;
+    transition: left 100ms linear;
+}
+
+.dccContainer  .dnnCheckbox.dnnCheckbox-checked .mark {
+    left: 19px;
+}
+
+.dccContainer .dnnCheckbox .mark img {
+    display: none;
+}
+
+.dccContainer .dccTable tr.edit-row > td > div > div.buttons {
+    clear: both;
+    border-top: 1px solid #aaa;
+    width: 100%;
+    padding-top: 21px;
+    text-align: center;
 }
 
 .dccContainer .dccButton {
@@ -198,3 +301,50 @@
     font-size: 13px;
     border: 1px solid #aaa;
 }
+
+.dccContainer .dccTable tr.edit-row > td > div > div > a.primarybtn, .dccContainer .dccTable tr.edit-row > td > div > div > a.secondarybtn {
+    margin-left: 5px;
+}
+
+.dccContainer a.primarybtn {
+    background: #0087c6;
+    color: #fff !important;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    min-width: 75px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.dccContainer a.secondarybtn {
+    background: #e4e4e4;
+    color: #0e181c !important;
+    display: inline-block;
+    padding: 9px 9px;
+    cursor: pointer;
+    min-width: 75px;
+    border-radius: 3px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.dccContainer #loadingbar {
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 860px;
+    height: 4px;
+    display: none;
+}
+
+.dccContainer #loadingbar > div {
+    background-color: #0087c6;
+    top: 0;
+    left: 100px;
+    height: 4px;
+}
+
