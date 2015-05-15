@@ -36,8 +36,13 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             CREATE TABLE ContentTypes_Templates(
 			    [TemplateID] [int] IDENTITY(1,1) NOT NULL,
 			    [ContentTypeID] [int] NOT NULL,
+                PortalID int NOT NULL DEFAULT -1,
 			    [Name] [nvarchar](100) NOT NULL,
-			    [TemplateFileID] [int] NOT NULL
+                [TemplateFileID] [int] NOT NULL,
+                CreatedByUserID int NOT NULL,
+                CreatedOnDate datetime NOT NULL DEFAULT getdate(),
+                LastModifiedByUserID int NOT NULL,
+                LastModifiedOnDate datetime NOT NULL DEFAULT getdate()
             )";
 
         private const string CreateValidatorTypeTableSql = @"
@@ -98,8 +103,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                                             VALUES ({0}, '{1}', {2}, {3}, {4})";
 
         private const string InsertContentTemplateSql = @"INSERT INTO ContentTypes_Templates 
-                                                            (ContentTypeID, Name, TemplateFileID) 
-                                                            VALUES ({0}, '{1}', {2})";
+                                                            (ContentTypeID, Name, TemplateFileID, PortalId, CreatedByUserID, LastModifiedByUserID) 
+                                                            VALUES ({0}, '{1}', {2}, {3}, {4}, {5})";
 
 
         protected Mock<CachingProvider> MockCache;
@@ -217,7 +222,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTemplateSql, i, String.Format("Type_{0}", i), i));
+                DataUtil.ExecuteNonQuery(DatabaseName, String.Format(InsertContentTemplateSql, i, String.Format("Type_{0}", i), i, PortalId, CreatedByUserId, LastModifiedByUserId));
             }
         }
     }

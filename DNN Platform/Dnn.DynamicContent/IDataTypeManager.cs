@@ -8,8 +8,17 @@ namespace Dnn.DynamicContent
 {
     public interface IDataTypeManager
     {
+        /// <summary>
+        /// Adds a new data type for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="dataType">The data type to add.</param>
+        /// <returns>data type id.</returns>
         int AddDataType(DataType dataType);
 
+        /// <summary>
+        /// Deletes the data type for use with Structured(Dynamic) Content Types.
+        /// </summary>
+        /// <param name="dataType">The data type to delete.</param>
         void DeleteDataType(DataType dataType);
 
         /// <summary>

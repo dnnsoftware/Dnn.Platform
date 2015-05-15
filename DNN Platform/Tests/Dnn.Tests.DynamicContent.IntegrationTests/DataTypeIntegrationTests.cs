@@ -14,6 +14,7 @@ using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
+using Dnn.DynamicContent.Common;
 
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle

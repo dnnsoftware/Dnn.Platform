@@ -26,12 +26,12 @@ namespace Dnn.DynamicContent
 
         public int DataTypeId { get; set; }
 
+        [IgnoreColumn]
+        public bool IsSystem { get { return (PortalId == -1); } }
+
         public string Name { get; set; }
 
         public int PortalId { get; set; }
-
-        [IgnoreColumn]
-        public bool IsSystem {  get { return (PortalId == -1); } }
 
         public UnderlyingDataType UnderlyingDataType { get; set; }
     }

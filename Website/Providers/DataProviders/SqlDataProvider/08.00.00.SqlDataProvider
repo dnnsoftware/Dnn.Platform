@@ -132,21 +132,26 @@ GO
 /* DNN-6789 Allow developers to Manage Content Templates */
 /*********************************************************/
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Template]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Templates]') AND type in (N'U'))
 	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Template](
+        CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates](
 			[TemplateID] [int] IDENTITY(1,1) NOT NULL,
 			[ContentTypeID] [int] NOT NULL,
-			[Name] [nvarchar](100) NOT NULL,
-			[TemplateFileID] [int] NOT NULL,
+            [PortalID] [int] NOT NULL,
+            [Name] [nvarchar](100) NOT NULL,
+            [TemplateFileID] [int] NOT NULL,
+            [CreatedByUserID] [int] NOT NULL,
+            [CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Templatess_CreatedOnDate] DEFAULT (getdate()),
+            [LastModifiedByUserID] [int] NOT NULL,
+            [LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Templates_LastModifiedOnDate] DEFAULT (getdate()),
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_Templates] PRIMARY KEY CLUSTERED ( [TemplateID] ASC )		
 		)
 
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Template]  WITH CHECK 
+        ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
 			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}ContentTypes] FOREIGN KEY([ContentTypeID])
 				REFERENCES {databaseOwner}[{objectQualifier}ContentTypes] ([ContentTypeID])
 
-		ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Template]  WITH CHECK 
+        ALTER TABLE {databaseOwner}[{objectQualifier}ContentTypes_Templates]  WITH CHECK 
 			ADD  CONSTRAINT [FK_{objectQualifier}ContentTypes_Templates_{objectQualifier}Files] FOREIGN KEY([TemplateFileID])
 				REFERENCES {databaseOwner}[{objectQualifier}Files] ([FileId])
 	END

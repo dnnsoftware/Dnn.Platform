@@ -127,7 +127,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void AddDataType_Sets_CreatedByUserId_On_Valid_DataType()
+        public void AddDataType_Sets_Created_Audit_Info_On_Valid_DataType()
         {
             //Arrange
             var userId = Constants.USER_ValidId;
@@ -249,7 +249,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void GetDataTypess_Returns_Empty_List_Of_DataTypes_If_No_DataTypes()
+        public void GetDataTypes_Returns_Empty_List_Of_DataTypes_If_No_DataTypes()
         {
             //Arrange
             var portalId = Constants.PORTAL_ValidPortalId;
@@ -491,7 +491,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
-        public void UpdateDataType_Updates_LastModifiedBy_On_Valid_DataType()
+        public void UpdateDataType_Sets_Updated_Audit_Info_On_Valid_DataType()
         {
             //Arrange
             var userId = Constants.USER_ValidId;

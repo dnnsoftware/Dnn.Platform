@@ -3,6 +3,7 @@
 
 using System;
 using Dnn.DynamicContent;
+using DotNetNuke.Tests.Utilities;
 using NUnit.Framework;
 
 namespace Dnn.Tests.DynamicContent.UnitTests
@@ -19,10 +20,37 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var template = new ContentTemplate();
 
             //Assert
+            Assert.AreEqual(-1, template.PortalId);
             Assert.AreEqual(-1, template.TemplateId);
             Assert.AreEqual(-1, template.ContentTypeId);
             Assert.AreEqual(-1, template.TemplateFileId);
             Assert.AreEqual(String.Empty, template.Name);
         }
+
+        [Test]
+        public void Constructor_Sets_PortalId_Property()
+        {
+            //Arrange
+
+            //Act
+            var dataType = new ContentTemplate(Constants.CONTENT_ValidPortalId);
+
+            //Assert
+            Assert.AreEqual(Constants.CONTENT_ValidPortalId, dataType.PortalId);
+        }
+
+        [TestCase(-1, true)]
+        [TestCase(0, false)]
+        public void IsSystem_Returns_Correct_Value(int portalId, bool isSystem)
+        {
+            //Arrange
+
+            //Act
+            var dataType = new ContentTemplate(portalId);
+
+            //Assert
+            Assert.AreEqual(isSystem, dataType.IsSystem);
+        }
+
     }
 }

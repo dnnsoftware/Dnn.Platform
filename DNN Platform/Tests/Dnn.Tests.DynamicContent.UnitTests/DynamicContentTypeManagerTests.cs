@@ -49,7 +49,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             FieldDefinitionManager.SetTestableInstance(_mockFieldDefinitionController.Object);
 
             _mockContentTemplateController = new Mock<IContentTemplateManager>();
-            _mockContentTemplateController.Setup(vr => vr.GetContentTemplates(It.IsAny<int>()))
+            _mockContentTemplateController.Setup(vr => vr.GetContentTemplates(It.IsAny<int>(), false))
                 .Returns(new List<ContentTemplate>().AsQueryable());
             ContentTemplateManager.SetTestableInstance(_mockContentTemplateController.Object);
         }

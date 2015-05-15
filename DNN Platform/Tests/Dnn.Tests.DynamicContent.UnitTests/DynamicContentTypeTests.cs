@@ -122,7 +122,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fields = contentType.Templates;
 
             //Assert
-            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(It.IsAny<int>()), Times.Never);
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never);
         }
 
         [Test]
@@ -130,7 +130,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTypeId = 3;
-            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, PortalId = portalId };
             var mockFieldDefinitionController = new Mock<IContentTemplateManager>();
             ContentTemplateManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
@@ -139,7 +140,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var fields = contentType.Templates;
 
             //Assert
-            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(It.IsAny<int>()), Times.Once);
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(contentTypeId, portalId, true), Times.Once);
         }
 
         [Test]
@@ -149,7 +150,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var contentTypeId = 3;
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId };
             var mockFieldDefinitionController = new Mock<IContentTemplateManager>();
-            mockFieldDefinitionController.Setup(fd => fd.GetContentTemplates(contentTypeId))
+            mockFieldDefinitionController.Setup(fd => fd.GetContentTemplates(contentTypeId, It.IsAny<int>(), false))
                 .Returns(new List<ContentTemplate> { new ContentTemplate() { ContentTypeId = contentTypeId } }.AsQueryable());
             ContentTemplateManager.SetTestableInstance(mockFieldDefinitionController.Object);
 
@@ -161,7 +162,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             // ReSharper restore UnusedVariable
 
             //Assert
-            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(contentTypeId), Times.AtMostOnce);
+            mockFieldDefinitionController.Verify(c => c.GetContentTemplates(contentTypeId, It.IsAny<int>(), false), Times.AtMostOnce);
         }
     }
 }
