@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
@@ -35,6 +36,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             TearDownInternal();
             ContentController.ClearInstance();
+            DateUtilitiesManager.ClearInstance();
         }
 
         [Test]
@@ -42,6 +44,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { Name = "New_Type" };
 
@@ -59,6 +66,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpDataTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { Name = "New_Type" };
 
@@ -181,6 +193,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
@@ -206,6 +223,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
@@ -225,6 +247,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };
 
@@ -250,6 +277,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeId = 2;
             SetUpDataTypes(RecordCount);
             SetUpFieldDefinitions(5);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var dataContext = new PetaPocoDataContext(ConnectionStringName);
             var dataTypeController = new DataTypeManager(dataContext);
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "NewType" };

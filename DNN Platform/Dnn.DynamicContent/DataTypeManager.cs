@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
@@ -43,7 +44,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            dataType.CreatedOnDate = DateUtils.GetDatabaseTime();
+            dataType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(dataType);
 
@@ -158,7 +159,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(dataType, "Name");
 
             dataType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            dataType.LastModifiedOnDate = DateUtils.GetDatabaseTime();
+            dataType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             using (DataContext)
             {

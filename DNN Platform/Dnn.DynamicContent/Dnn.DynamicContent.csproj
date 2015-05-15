@@ -52,6 +52,8 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="Common\DateUtilitiesManager.cs" />
+    <Compile Include="Common\IDateUtilitiesManager.cs" />
     <Compile Include="ContentTemplate.cs" />
     <Compile Include="ContentTemplateManager.cs" />
     <Compile Include="DataType.cs" />
