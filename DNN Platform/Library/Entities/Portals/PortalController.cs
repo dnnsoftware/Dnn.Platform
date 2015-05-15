@@ -1106,14 +1106,47 @@ namespace DotNetNuke.Entities.Portals
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
         {
-            if (string.IsNullOrEmpty(cultureCode))
+            var httpContext = HttpContext.Current;
+
+            if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
-                cultureCode = GetActivePortalLanguage(portalId);
+                //Lookup culturecode but cache it in the HttpContext for performance
+                var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
+                if (httpContext != null)
+                {
+                    cultureCode = (string)httpContext.Items[activeLanguageKey];
+                }
+                if (string.IsNullOrEmpty(cultureCode))
+                {
+                    cultureCode = GetActivePortalLanguage(portalId);
+                    if (httpContext != null)
+                    {
+                        httpContext.Items[activeLanguageKey] = cultureCode;
+                    }
+                }
             }
-            var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
-            return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, DataCache.PortalSettingsCacheTimeOut, DataCache.PortalSettingsCachePriority, portalId, cultureCode),
-                                                                   GetPortalSettingsDictionaryCallback,
-                                                                   true);
+
+            //Get PortalSettings from Context or from cache
+            var dictionaryKey = String.Format("PortalSettingsDictionary{0}{1}", portalId, cultureCode);
+            Dictionary<string, string> dictionary = null;
+            if (httpContext != null)
+            {
+                dictionary = httpContext.Items[dictionaryKey] as Dictionary<string, string>;
+            }
+            if (dictionary == null)
+            {
+                var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
+                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey, 
+                                                                                DataCache.PortalSettingsCacheTimeOut,
+                                                                                DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                                                                            GetPortalSettingsDictionaryCallback,
+                                                                            true);
+                if (httpContext != null)
+                {
+                    httpContext.Items[dictionaryKey] = dictionary;
+                }
+            }
+            return dictionary;
         }
 
         private string GetTemplateName(string languageFileName)
@@ -2377,11 +2410,6 @@ namespace DotNetNuke.Entities.Portals
 			return new ArrayList(GetPortalList(Null.NullString));
 		}
 
-        //public ArrayList GetPortals()
-        //{
-        //    return new ArrayList(GetPortalList(Localization.SystemLocale));
-        //}
-
         /// <summary>
         /// Get portals in specific culture.
         /// </summary>
@@ -2394,9 +2422,25 @@ namespace DotNetNuke.Entities.Portals
                                                     GetPortalsCallBack);
         }
 
+        /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <returns>portal settings.</returns>
         public Dictionary<string, string> GetPortalSettings(int portalId)
         {
             return GetPortalSettingsDictionary(portalId, string.Empty);
+        }
+
+        /// <summary>
+        /// Gets the portal settings dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code</param>
+        /// <returns>portal settings.</returns>
+        public Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode)
+        {
+            return GetPortalSettingsDictionary(portalId, cultureCode);
         }
 
         /// <summary>
@@ -2997,7 +3041,7 @@ namespace DotNetNuke.Entities.Portals
             try
             {
                 string setting;
-                PortalController.Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
+                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -3021,8 +3065,8 @@ namespace DotNetNuke.Entities.Portals
 			try
 			{
 				string setting;
-				GetPortalSettingsDictionary(portalID, cultureCode).TryGetValue(settingName, out setting);
-				retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
+                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
+                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
 			}
 			catch (Exception exc)
 			{

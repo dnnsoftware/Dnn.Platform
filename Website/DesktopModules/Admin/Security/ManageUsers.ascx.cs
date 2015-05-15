@@ -1035,7 +1035,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void UserUpdateCompleted(object sender, EventArgs e)
         {
-            Response.Redirect(Request.RawUrl, true);
+            Response.Redirect(Request.RawUrl, false);
+            ApplicationInstance.CompleteRequest();
         }
 
         /// -----------------------------------------------------------------------------

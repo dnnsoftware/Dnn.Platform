@@ -53,6 +53,7 @@ namespace DotNetNuke.UI.WebControls
 		#region "Private Members"
 
         private object[] _CustomAttributes;
+	    private string _editControlId;
 
 		#endregion
 
@@ -200,6 +201,14 @@ namespace DotNetNuke.UI.WebControls
         protected abstract string StringValue { get; set; }
 
         public UserInfo User { get; set; }
+
+	    public virtual string EditControlClientId
+	    {
+		    get
+		    {
+			    return ClientID;
+		    }
+	    }
 
         #endregion
 

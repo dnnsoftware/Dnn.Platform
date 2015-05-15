@@ -275,6 +275,10 @@ namespace DotNetNuke.Services.Mail
                     subject = "EMAIL_PASSWORD_UPDATED_SUBJECT";
                     body = "EMAIL_PASSWORD_UPDATED_BODY";
                     break;
+                case MessageType.PasswordReminderUserIsNotApproved:
+                    subject = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT";
+                    body = "EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY";
+                    break;
                 default:
                     subject = "EMAIL_USER_UPDATED_OWN_PASSWORD_SUBJECT";
                     body = "EMAIL_USER_UPDATED_OWN_PASSWORD_BODY";
@@ -283,8 +287,10 @@ namespace DotNetNuke.Services.Mail
           
             subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
-        
-            SendEmail(settings.Email, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
+
+            var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email)!=null)?
+                String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
+            SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
 
             return Null.NullString;
         }
@@ -485,7 +491,21 @@ namespace DotNetNuke.Services.Mail
             }
 			
             MailMessage mailMessage = null;
-            mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
+            if (PortalSettings.Current != null)
+            {
+                mailMessage = (UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom) != null)
+                    ? new MailMessage
+                    {
+                        From =
+                            new MailAddress(mailFrom,
+                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
+                    }
+                    : new MailMessage {From = new MailAddress(mailFrom)};
+            }
+            else
+            {
+                mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
+            }          
             if (!String.IsNullOrEmpty(mailTo))
             {
                 //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons

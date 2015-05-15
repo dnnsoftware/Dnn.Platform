@@ -285,11 +285,11 @@
                     <asp:CheckBox ID="chkUrl" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="detectBrowserLable" runat="server" />
+                    <dnn:Label ID="detectBrowserLable" ControlName="chkBrowser" runat="server" />
                     <asp:CheckBox ID="chkBrowser" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:Label ID="allowUserCulture" runat="server" />
+                    <dnn:Label ID="allowUserCulture" ControlName="chkUserCulture" runat="server" />
                     <asp:CheckBox ID="chkUserCulture" runat="server" />
                 </div>
                 <ul class="dnnActions dnnClear">

@@ -413,6 +413,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
             var mockHostController = new Mock<IHostController>();
             mockHostController.Setup(c => c.GetString("DefaultPortalSkin")).Returns(DefaultSkin);
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
             HostController.RegisterInstance(mockHostController.Object);
 
             var mockLocaleController = new Mock<ILocaleController>();
@@ -449,6 +450,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
+            var mockHostController = new Mock<IHostController>();
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
+            HostController.RegisterInstance(mockHostController.Object);
+
             //Act
             controller.ConfigureActiveTab(settings);
 
@@ -473,6 +478,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
+
+            var mockHostController = new Mock<IHostController>();
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
+            HostController.RegisterInstance(mockHostController.Object);
 
             //Act
             controller.ConfigureActiveTab(settings);
@@ -499,6 +508,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
+
+            var mockHostController = new Mock<IHostController>();
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
+            HostController.RegisterInstance(mockHostController.Object);
 
             //Act
             controller.ConfigureActiveTab(settings);
@@ -577,6 +590,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
 
+            var mockHostController = new Mock<IHostController>();
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
+            HostController.RegisterInstance(mockHostController.Object);
+
             //Act
             controller.ConfigureActiveTab(settings);
 
@@ -604,6 +621,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab, parentTab }));
             mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             TabController.SetTestableInstance(mockTabController.Object);
+
+            var mockHostController = new Mock<IHostController>();
+            mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
+            HostController.RegisterInstance(mockHostController.Object);
 
             //Act
             controller.ConfigureActiveTab(settings);

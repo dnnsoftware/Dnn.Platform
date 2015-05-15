@@ -1521,7 +1521,7 @@ Please do not reply to this email.</value>
         &lt;td&gt;
             &lt;table width="80" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
                 &lt;tr&gt;
-                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;a href="PROFILEURL"&gt;&lt;img src="[PROFILEPICURL]" /&gt;&lt;/a&gt;&lt;br/&gt;[DISPLAYNAME]&lt;/td&gt;
                 &lt;/tr&gt;
             &lt;/table&gt;
             &lt;table width="350" border="0" cellspacing="0" cellpadding="8" align="left"&gt;
@@ -1575,5 +1575,21 @@ Sincerely,
   </data>
   <data name="MESSAGE_USERNAME_CHANGED_INSTRUCTIONS.Text" xml:space="preserve">
     <value>Please verify your e-mail address change by re-entering your password.</value>
+  </data>
+  <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_BODY.Text" xml:space="preserve">
+    <value>Dear [User:DisplayName],
+
+You have requested a Password Reset Token from [Portal:PortalName], but Your account is pending approval.
+
+Password can be reset after account is approved.
+
+Sincerely,
+[Portal:PortalName]
+
+*Note: If you did not request a Password Reset Token, please disregard this Message.
+    </value>
+  </data>
+  <data name="EMAIL_PASSWORD_REMINDER_USER_ISNOT_APPROVED_SUBJECT.Text" xml:space="preserve">
+    <value>[Portal:PortalName] Password Reminder</value>
   </data>
 </root>

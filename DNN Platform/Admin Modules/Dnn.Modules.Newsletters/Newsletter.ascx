@@ -18,7 +18,7 @@
     <div class="newMessage" id="newMessage">
         <fieldset>
             <div class="dnnFormItem">
-                <dnn:Label ID="plRoles" runat="server" ControlName="chkRoles" />
+                <dnn:Label ID="plRoles" runat="server" ControlName="recipients" />
                 <input type='text' id='recipients' name='recipients' runat="server" />
             </div>
             <div class="dnnFormItem">
@@ -164,6 +164,8 @@
                 });
             }
         });
+
+	    $('label[for="<%=recipients.ClientID%>"]').attr('for', 'token-input-<%=recipients.ClientID%>');
     }
     $(document).ready(function () {
         setUpDnnNewsletter();

@@ -202,6 +202,7 @@ namespace DotNetNuke.UI.WebControls
 
 			//Render the Select Tag
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
 			writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
 			//Render None selected option

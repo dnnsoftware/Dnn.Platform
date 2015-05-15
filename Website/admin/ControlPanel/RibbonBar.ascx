@@ -24,7 +24,7 @@
                 </Items>
             </dnn:DnnComboBox>
         </div>
-        <asp:HyperLink ID="hypMessage" runat="server" Target="_new" CssClass="dnnCPHMessage" />
+        <asp:HyperLink ID="hypMessage" runat="server" Target="_blank" CssClass="dnnCPHMessage" />
     </div>
     <div id="BodyPanel" runat="server" class="dnnCPContent" style="display: none">
         <asp:Panel ID="CommonTasksPanel" runat="server" CssClass="cpcbCommonTasks dnnClear">

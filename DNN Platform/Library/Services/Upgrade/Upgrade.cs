@@ -63,6 +63,7 @@ using DotNetNuke.Services.Analytics;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.EventQueue.Config;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Log;
@@ -2994,7 +2995,7 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
 
             //update help url
-            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
+            HostController.Instance.Update("HelpURL", "http://www.dnnsoftware.com/help", false);
         }
 
         private static void UpgradeToVersion733()
@@ -4880,13 +4881,55 @@ namespace DotNetNuke.Services.Upgrade
                 var files = Directory.GetFiles(installPackagePath);
                 if (files.Length <= 0){ continue;}
 
+	            var optionalPackages = new List<string>();
                 foreach (var file in files)
                 {
-                    if (Path.GetExtension(file.ToLower()) == ".zip")
-                    {
-                        PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                    }
+	                var extension = Path.GetExtension(file.ToLowerInvariant());
+	                if (extension != ".zip" && extension != ".resources")
+	                {
+		                continue;
+	                }
+
+					PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
+	                if (packages.ContainsKey(file))
+	                {
+		                //check whether have version conflict and remove old version.
+		                var package = packages[file];
+		                if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1)
+		                {
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName == package.FriendlyName && kvp.Value.Version < package.Version).ToList();
+			                if (oldPackages.Any())
+			                {
+				                foreach (var oldPackage in oldPackages)
+				                {
+					                try
+					                {
+						                packages.Remove(oldPackage.Key);
+										FileWrapper.Instance.Delete(oldPackage.Key);
+					                }
+					                catch (Exception ex)
+					                {
+						                //do nothing here.
+					                }
+				                }
+			                }
+		                }
+	                }
+
+	                if (extension != ".zip")
+	                {
+		                optionalPackages.Add(file);
+	                }
                 }
+
+				//remove optional
+				optionalPackages.ForEach(f =>
+				                         {
+					                         if (packages.ContainsKey(f))
+					                         {
+						                         packages.Remove(f);
+					                         }
+				                         });
             }
         }
 

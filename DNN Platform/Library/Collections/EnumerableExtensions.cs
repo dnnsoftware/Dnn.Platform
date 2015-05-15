@@ -18,38 +18,41 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
 using System.Collections.Generic;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Data;
+using System.Linq;
 
-#endregion
-
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Collections
 {
-    internal class DnnFormSectionTemplate : ITemplate
+    public static class EnumerableExtensions
     {
-        public DnnFormSectionTemplate()
+        /// <summary>
+        /// Extension method to convert dynamic data to a DataTable. Useful for databinding.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns>A DataTable with the copied dynamic data.</returns>
+        public static DataTable ToDataTable(this IEnumerable<dynamic> items)
         {
-            Items = new List<DnnFormItemBase>();
-        }
+            var data = items.ToArray();
 
-        public List<DnnFormItemBase> Items { get; private set; }
+            if (!data.Any()) 
+                return null;
 
-        public string LocalResourceFile { get; set; }
-
-        #region ITemplate Members
-
-        public void InstantiateIn(Control container)
-        {
-            var webControl = container as WebControl;
-            if (webControl != null)
+            var dt = new DataTable();
+            
+            //Create the columns
+            foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
             {
-                DnnFormEditor.SetUpItems(Items, webControl, LocalResourceFile, false);
+                dt.Columns.Add(key);
             }
-        }
 
-        #endregion
+            // Add data rows to the datatable
+            foreach (var d in data)
+            {
+                dt.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
+            }
+            return dt;
+        }
     }
 }

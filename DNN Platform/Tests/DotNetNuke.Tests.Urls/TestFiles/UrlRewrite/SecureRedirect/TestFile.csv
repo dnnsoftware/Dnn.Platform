@@ -2,7 +2,7 @@
 Disabled,						false,		false,		false,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
 Enabled,						false,		false,		true,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
 Enforced,						false,		false,		false,		true,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
-Enforced HTTPS,					false,		false,		false,		true,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				301,		http://{alias}/About-Us,			Secure_Page_Requested		
+Enforced HTTPS,					false,		false,		false,		true,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
 IsSecure Disabled,				false,		true,		false,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,
 IsSecure Enabled,				false,		true,		true,		false,		http://,	About Us,		http://{alias}/About-Us,			{defaultPage}?TabId={tabId},				301,		https://{alias}/About-Us,			Secure_Page_Requested
 IsSecure Enabled HTTPS,			false,		true,		true,		false,		https://,	About Us,		https://{alias}/About-Us,			{defaultPage}?TabId={tabId},				200,

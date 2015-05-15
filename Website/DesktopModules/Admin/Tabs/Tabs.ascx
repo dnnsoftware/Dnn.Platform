@@ -347,24 +347,24 @@
 			<h2 id="Panel-Common" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Common.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblName" runat="server" Suffix=":" CssClass="dnnFormRequired"  />
+					<dnn:Label ID="lblName" runat="server" Suffix=":" CssClass="dnnFormRequired" ControlName="txtName"  />
 					<asp:TextBox ID="txtName" runat="server" MaxLength="200" ValidationGroup="Page" />
 					<asp:RequiredFieldValidator ID="valName" runat="server" EnableClientScript="True" Display="Dynamic" resourcekey="valName.ErrorMessage" ControlToValidate="txtName" CssClass="dnnFormMessage dnnFormError" ValidationGroup="Page"/>
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblTitle" runat="server" suffix=":" />
+					<dnn:Label ID="lblTitle" runat="server" suffix=":" ControlName="txtTitle" />
 					<asp:TextBox ID="txtTitle" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblVisible" runat="server" suffix="?" />
+					<dnn:Label ID="lblVisible" runat="server" suffix="?" ControlName="chkVisible" />
 					<asp:CheckBox ID="chkVisible" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblDisabledPage" runat="server" suffix="?" />
+					<dnn:Label ID="lblDisabledPage" runat="server" suffix="?" ControlName="chkDisabled" />
 					<asp:CheckBox ID="chkDisabled" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblPageSSL" runat="server" suffix="?" />
+					<dnn:Label ID="lblPageSSL" runat="server" suffix="?" ControlName="chkSecure" />
 					<asp:CheckBox ID="chkSecure" runat="server" />
 				</div> 
 				<div class="dnnFormItem">
@@ -416,24 +416,23 @@
 		<div class="ssasContent dnnClear">
 			<h2 id="Panel-SEO" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("SEO.Tabname")%></a></h2>
 			<fieldset>
+                <div class="dnnFormItem">
+					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" ControlName="txtSitemapPriority" />
+                    <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="10" />
+                    <asp:RequiredFieldValidator ID="val2" runat="server" ControlToValidate="txtSitemapPriority"
+                        Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
+                </div>
+
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" />
-					<asp:TextBox ID="txtSitemapPriority" runat="server" ValidationGroup="Page" />
-                    <asp:RequiredFieldValidator ID="valPriorityRequired" runat="server" ControlToValidate="txtSitemapPriority" 
-                        resourcekey="valPriorityRequired.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-                    <asp:CompareValidator ID="valPriority" runat="server" ControlToValidate="txtSitemapPriority" Operator="DataTypeCheck" Type="Double" 
-                        resourcekey="valPriority.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-				</div>
-				<div class="dnnFormItem">
-					<dnn:Label ID="lblDescription" runat="server" suffix=":" />
+					<dnn:Label ID="lblDescription" runat="server" suffix=":" ControlName="txtDescription" />
 					<asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblKeywords" runat="server" suffix=":" />
+					<dnn:Label ID="lblKeywords" runat="server" suffix=":" ControlName="txtKeywords" />
 					<asp:TextBox ID="txtKeywords" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblTags" runat="server" suffix=":" />
+					<dnn:Label ID="lblTags" runat="server" suffix=":" ControlName="termsSelector" AssociateFormat="{0}_Input" />
 					<dnnweb:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>
 			</fieldset>
@@ -442,13 +441,13 @@
 			<h2 id="Panel-Meta" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Metatags.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblMetaRefresh" runat="server" suffix=":" />
+					<dnn:Label ID="lblMetaRefresh" runat="server" suffix=":" ControlName="txtRefresh" />
 					<asp:TextBox ID="txtRefresh" runat="server" ValidationGroup="Page" />
                     <asp:RegularExpressionValidator ID="valRefresh" runat="server" ControlToValidate="txtRefresh" ValidationGroup="Page"
                         resourcekey="valRefresh.ErrorMessage" ValidationExpression="^\d+$" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblMetaHead" runat="server" suffix=":" />
+					<dnn:Label ID="lblMetaHead" runat="server" suffix=":" ControlName="txtMeta" />
 					<asp:TextBox ID="txtMeta" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 			</fieldset>
@@ -457,11 +456,11 @@
 			<h2 id="Panel-Appearance" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Appearance.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblSkin" runat="server" suffix=":" />
+					<dnn:Label ID="lblSkin" runat="server" suffix=":" ControlName="drpSkin" AssociateFormat="{0}_Input" />
                     <dnnweb:DnnSkinComboBox ID="drpSkin" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblContainer" runat="server" suffix=":" />
+					<dnn:Label ID="lblContainer" runat="server" suffix=":" ControlName="drpContainer" AssociateFormat="{0}_Input" />
                     <dnnweb:DnnSkinComboBox ID="drpContainer" runat="server"  />
 					
 				</div>
@@ -470,11 +469,11 @@
                     <asp:LinkButton ID="cmdCopySkin" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCopySkin" />
                 </div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblIconLarge" runat="server" suffix=":" />
+					<dnn:Label ID="lblIconLarge" runat="server" suffix=":" ControlName="ctlIconLarge" />
 					<dnn:URL ID="ctlIconLarge" runat="server" ShowLog="False" ShowTrack="false" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblIconSmall" runat="server" suffix=":" />
+					<dnn:Label ID="lblIconSmall" runat="server" suffix=":" ControlName="ctlIcon" />
 					<dnn:URL ID="ctlIcon" runat="server" ShowLog="False" />
 				</div>
 			</fieldset>
@@ -483,11 +482,11 @@
 			<h2 id="Panel-Link" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Link.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblUrl" runat="server" suffix=":" />
+					<dnn:Label ID="lblUrl" runat="server" suffix=":" ControlName="ctlURL" />
 					<dnn:URL ID="ctlURL" runat="server" ShowLog="False" ShowNone="True" ShowTrack="False" ShowNewWindow="True" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblPermanentRedirect" runat="server" suffix=":" />
+					<dnn:Label ID="lblPermanentRedirect" runat="server" suffix=":" ControlName="chkPermanentRedirect" />
 					<asp:CheckBox ID="chkPermanentRedirect" runat="server" />
 				</div>
 			</fieldset>
@@ -508,3 +507,29 @@
 		</ul>
 	</div>
 </div>
+<script language="javascript" type="text/javascript">
+    /*globals jQuery, window, Sys */
+    (function ($, Sys) {
+        $(document).ready(function () {
+
+            function setupPrioritySpinner() {
+                var updatePrioritySpinner = function (clientId) {
+                    var txtCtrl = $('#' + clientId);
+                    var defaultVal = txtCtrl.val();
+                    txtCtrl.dnnSpinner({
+                        type: 'list',
+                        defaultVal: defaultVal,
+                        typedata: { list: '1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0' }
+                    });
+                };
+
+                updatePrioritySpinner('<%= txtSitemapPriority.ClientID %>');
+            }
+
+            setupPrioritySpinner();
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                setupPrioritySpinner();
+            });
+        });
+    }(jQuery, window.Sys));
+</script>

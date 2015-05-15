@@ -409,7 +409,7 @@ namespace DotNetNuke.Entities.Urls
 
             friendlyPath = CheckPathLength(Globals.ResolveUrl(friendlyPath), path);
 
-            // Replace http:// by https:// if SSL is enabled an site is marked as secure
+            // Replace http:// by https:// if SSL is enabled and site is marked as secure
             // (i.e. requests to http://... will be redirected to https://...)
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
@@ -417,6 +417,13 @@ namespace DotNetNuke.Entities.Urls
             {
                 var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
                 friendlyPath = regex.Replace(friendlyPath, "https://");
+
+                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                var sslUrl = portalSettings.SSLURL;
+                if (!string.IsNullOrEmpty(sslUrl))
+                {
+                    friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
+                }
             }
 
             return friendlyPath;

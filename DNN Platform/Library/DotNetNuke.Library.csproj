@@ -178,6 +178,7 @@
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Obsolete\Arg.cs" />
     <Compile Include="Entities\Content\ContentTypeMemberNameFixer.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Entities\WorkflowUsageItem.cs" />
     <Compile Include="Entities\Modules\Actions\IModuleEventHandler.cs" />
     <Compile Include="Entities\Modules\Actions\ModuleEventArgs.cs" />

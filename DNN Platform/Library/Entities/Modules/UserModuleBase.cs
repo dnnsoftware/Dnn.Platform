@@ -28,6 +28,7 @@ using System.IO;
 using System.Web.Caching;
 
 using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -190,7 +191,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return Request.IsAuthenticated && (User.UserID == UserInfo.UserID);
+                return Request.IsAuthenticated && (UserId == UserInfo.UserID);
             }
         }
 
@@ -325,6 +326,13 @@ namespace DotNetNuke.Entities.Modules
             country = LookupCountry();
             if (!String.IsNullOrEmpty(country))
             {
+                ListController listController = new ListController();
+                var listitem = listController.GetListEntryInfo("Country", country);
+                if (listitem != null)
+                {
+                    country = listitem.EntryID.ToString();
+                }
+
                 newUser.Profile.Country = country;
             }
             //Set AffiliateId

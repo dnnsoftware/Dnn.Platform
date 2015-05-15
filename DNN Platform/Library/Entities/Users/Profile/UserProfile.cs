@@ -157,18 +157,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                string _country = GetPropertyValue(USERPROFILE_Country);
-                ListController lc = new ListController();
-				int entryId;
-				if (int.TryParse(_country, out entryId))
-				{
-					ListEntryInfo item = lc.GetListEntryInfo(entryId);
-					if (item != null)
-					{
-						return item.Text;
-					}
-				}
-				return _country;
+                return GetPropertyValue(USERPROFILE_Country);
             }
             set
             {
@@ -502,18 +491,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                string _region = GetPropertyValue(USERPROFILE_Region);
-                ListController lc = new ListController();
-				int entryId;
-				if (int.TryParse(_region, out entryId))
-				{
-					ListEntryInfo item = lc.GetListEntryInfo(entryId);
-					if (item != null)
-					{
-						return item.Text;
-					}
-				}
-				return _region;
+                return GetPropertyValue(USERPROFILE_Region);
             }
             set
             {
@@ -671,8 +649,33 @@ namespace DotNetNuke.Entities.Users
             if (profileProp != null)
             {
                 propValue = profileProp.PropertyValue;
+
+                if (profileProp.DataType > -1)
+                {
+                    var controller = new ListController();
+                    var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
+                    if (dataType.Value == "Country" || dataType.Value == "Region")
+                    {
+                        propValue = GetListValue(dataType.Value, propValue);
+                    }
+                }
             }
             return propValue;
+        }
+
+        private string GetListValue(string listName, string value)
+        {
+            ListController lc = new ListController();
+            int entryId;
+            if (int.TryParse(value, out entryId))
+            {
+                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
+                if (item != null)
+                {
+                    return item.Text;
+                }
+            }
+            return value;
         }
 
         /// -----------------------------------------------------------------------------

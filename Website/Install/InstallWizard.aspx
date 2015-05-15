@@ -21,6 +21,7 @@
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.PasswordStrength.js"></script>
     <script type="text/javascript" src="../DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.extensions.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>  
@@ -476,7 +477,7 @@
 
                 installWizard.progressBarIntervalId = setInterval(function () {
                     $.getInstallProgress();
-                }, 100);
+                }, 500);
 
                 installWizard.timerIntervalId = setInterval(function () {
                     totalSeconds = totalSeconds + 1;
@@ -498,6 +499,10 @@
                 //Call PageMethod which triggers long running operation
                 PageMethods.RunInstall(function () {
                 }, function (err) {
+	                if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
+		                return;
+	                }
+
                     $.stopProgressbarOnError();
                 });
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
@@ -852,7 +857,7 @@
                             $('#installation-log').append(result);
                         
                         installationLogStartLine += 500;
-                        setTimeout(getInstallationLog, 100);
+                        setTimeout(getInstallationLog, 1000);
                     } else {
                         if (installationLogStartLine === 0)
                             $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');

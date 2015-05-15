@@ -88,23 +88,16 @@ namespace DotNetNuke.Common.Lists
                 try
                 {
                     string key;
-                    if (string.IsNullOrEmpty(this.ParentKey))
+                    if (string.IsNullOrEmpty(ParentKey))
                     {
-                        key = this.Value + ".Text";
+                        key = Value + ".Text";
                     }
                     else
                     {
-                        key = this.ParentKey + '.' + this.Value + ".Text";
+                        key = ParentKey + '.' + Value + ".Text";
                     }
 
-                    var listName = this.ListName;
-                    if (this.ListName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
-                    {
-                        listName = Globals.CleanFileName(this.ListName);
-                    }
-
-                    var resourceFileRoot = "~/App_GlobalResources/List_" + listName + ".resx";
-                    res = Services.Localization.Localization.GetString(key, resourceFileRoot);
+                    res = Services.Localization.Localization.GetString(key, ResourceFileRoot);
                 }
                 catch { }
                 if (string.IsNullOrEmpty(res)) { res = _Text; };
@@ -147,5 +140,19 @@ namespace DotNetNuke.Common.Lists
         public string ParentKey { get; set; }
 
         public bool SystemList { get; set; }
+
+	    internal string ResourceFileRoot
+	    {
+		    get
+		    {
+				var listName = ListName.Replace(":", ".");
+				if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+				{
+					listName = Globals.CleanFileName(listName);
+				}
+
+				return "~/App_GlobalResources/List_" + listName + ".resx";
+		    }
+	    }
     }
 }

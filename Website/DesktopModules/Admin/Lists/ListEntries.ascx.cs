@@ -655,11 +655,12 @@ namespace DotNetNuke.Common.Lists
                 entryText = ps.InputFilter(txtEntryText.Text, PortalSecurity.FilterFlag.NoScripting);
             }
 			var listController = new ListController();
+			var listName = string.IsNullOrEmpty(ListName) ? txtEntryName.Text : (!string.IsNullOrEmpty(ParentKey) ? ParentKey + ":" : string.Empty) + ListName;
 			var entry = new ListEntryInfo();
 			{
 				entry.DefinitionID = Null.NullInteger;
 				entry.PortalID = ListPortalID;
-				entry.ListName = (string.IsNullOrEmpty(ListName)) ? txtEntryName.Text : ListName;
+				entry.ListName = listName;
                 entry.Value = entryValue;
                 entry.Text = entryText;
 			}

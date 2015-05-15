@@ -36,7 +36,7 @@
                     <controlTitle>Core Messaging View</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Message Centre/About the Messaging Module.htm</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

@@ -370,6 +370,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                     filePath = filePathSansQueryString;
                 }
             }
+			else if (filePath.Contains("WebResource.axd"))
+			{
+				fileExists = true;
+			}
 
             if (fileExists || FileExists(page, filePath))
             {

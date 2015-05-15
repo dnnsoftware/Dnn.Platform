@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Utilities.Fakes
 
         public override object GetItem(string cacheKey)
         {
-            return _dictionary[cacheKey];
+            return _dictionary.ContainsKey(cacheKey) ? _dictionary[cacheKey] : null;
         }
     }
 }

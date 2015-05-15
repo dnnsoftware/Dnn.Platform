@@ -43,7 +43,7 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plAvailable" controlname="hypUpgrade" runat="server" />
-                    <asp:HyperLink ID="hypUpgrade" Target="_new" runat="server" />
+                    <asp:HyperLink ID="hypUpgrade" Target="_blank" runat="server" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plDataProvider" controlname="lblDataProvider" runat="server" />
@@ -147,7 +147,7 @@
                     <asp:CheckBox ID="chkUpgradeForceSSL" runat="server" />
                 </div>
                 <div id="sslDomainRow" class="dnnFormItem">
-                    <dnn:label id="plSSLDomain" controlname="chkUseCustomModuleCssClass"
+                    <dnn:label id="plSSLDomain" controlname="txtSSLDomain"
                         runat="server" />
                     <asp:TextBox ID="txtSSLDomain" runat="server" MaxLength="256" />
                 </div>
