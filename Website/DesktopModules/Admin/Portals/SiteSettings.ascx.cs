@@ -1399,8 +1399,10 @@ namespace DesktopModules.Admin.Portals
 
                     if (!refreshPage)
                     {
-                        refreshPage = (PortalSettings.DefaultAdminSkin == editSkinCombo.SelectedValue) ||
-                                        (PortalSettings.DefaultAdminContainer == editContainerCombo.SelectedValue);
+						refreshPage = PortalSettings.DefaultPortalSkin != portalSkinCombo.SelectedValue ||
+										PortalSettings.DefaultPortalContainer != portalContainerCombo.SelectedValue ||
+										PortalSettings.DefaultAdminSkin != editSkinCombo.SelectedValue ||
+                                        PortalSettings.DefaultAdminContainer != editContainerCombo.SelectedValue;
                     }
 
                     PortalController.UpdatePortalSetting(_portalId, ClientResourceSettings.OverrideDefaultSettingsKey, chkOverrideDefaultSettings.Checked.ToString(CultureInfo.InvariantCulture), false);
