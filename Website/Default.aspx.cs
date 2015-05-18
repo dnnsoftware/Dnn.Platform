@@ -827,7 +827,7 @@ namespace DotNetNuke.Framework
                 MetaDescription.Visible = (!String.IsNullOrEmpty(Description));
             }
             Page.Header.Title = Title;
-            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader))
+            if (!string.IsNullOrEmpty(PortalSettings.AddCompatibleHttpHeader) && !HeaderIsWritten)
             {
                 Page.Response.AddHeader("X-UA-Compatible", PortalSettings.AddCompatibleHttpHeader);
             }

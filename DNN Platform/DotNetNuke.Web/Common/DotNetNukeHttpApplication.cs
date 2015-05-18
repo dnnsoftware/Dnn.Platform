@@ -28,6 +28,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.HTMLEditorProvider;
 using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.Security.Membership;
@@ -175,5 +176,15 @@ namespace DotNetNuke.Web.Common.Internal
             Initialize.Init(app);
             Initialize.RunSchedule(app.Request);
         }
+
+		private void Application_PreSendRequestHeaders(object sender, EventArgs e)
+		{
+			if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
+			{
+				var page = HttpContext.Current.Handler as PageBase;
+				page.HeaderIsWritten = true;
+			}
+		}
+
     }
 }
