@@ -491,7 +491,8 @@ namespace DotNetNuke.Services.FileSystem
                             }  
                             else
                             {
-                                UpdateFile(file);
+                                //File Events for updating will be fired. Only events for adding nust be fired
+                                UpdateFile(file, true, false);
                             }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
@@ -510,7 +511,8 @@ namespace DotNetNuke.Services.FileSystem
                             {
                                 if (fileExists)
                                 {
-                                    UpdateFile(file);
+                                    //File Events for updating will not be fired. Only events for adding nust be fired
+                                    UpdateFile(file, true, false);
                                 }
                             }    
                         }                        
@@ -595,7 +597,7 @@ namespace DotNetNuke.Services.FileSystem
                 var addedFile = GetFile(file.FileId);
 
                 // Notify file event
-                if (fileExists && folderWorkflow == null)
+                if (fileExists && (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
                 {
                     OnFileOverwritten(addedFile, createdByUserID);
                 }
@@ -1268,7 +1270,6 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo UpdateFile(IFileInfo file)
         {
             Requires.NotNull("file", file);
-
             string message;
             if (!ValidMetadata(file, out message))
             {
@@ -1836,13 +1837,28 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+
+        /// <summary>
+        /// Update file info to database.
+        /// </summary>
+        /// <param name="file">File info.</param>
+        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>        
+        /// <returns>The file info</returns>
+        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
+        {
+            //By default File Events will be fired
+            return UpdateFile(file, updateLazyload, true);
+        }
+
+
         /// <summary>
         /// Update file info to database.
         /// </summary>
         /// <param name="file">File info.</param>
         /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
+        /// <param name="fireEvent">Whether to fire File events or not</param>
         /// <returns>The file info</returns>
-        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
+        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload, bool fireEvent)
         {
             Requires.NotNull("file", file);
 
@@ -1867,7 +1883,10 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.RemoveCache("GetFileById" + file.FileId);
             var updatedFile = GetFile(file.FileId);
 
-            OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+            if (fireEvent)
+            {
+                OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+            }
             return updatedFile;
         }
 
