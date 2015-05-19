@@ -234,4 +234,19 @@
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="DeleteContentTypeConfirmMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Content Type?</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Alert.Text" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="Ok.Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="SaveContentTypeMessage.Text" xml:space="preserve">
+    <value>The Content Type - {0} - was successfully saved.</value>
+  </data>
 </root>

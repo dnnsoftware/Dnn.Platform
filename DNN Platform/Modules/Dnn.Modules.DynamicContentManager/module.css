@@ -4,7 +4,7 @@
 .dccContainer .dccNavBar{
     width: 100px;
     background-color: #092836;
-    height: 602px;
+    height: 702px;
     float: left
 }
 
@@ -58,7 +58,7 @@
 }
 .dccContainer .dccPanels{
     margin-left: 100px;
-    height: 600px;
+    height: 700px;
     width: 850px;
     border: solid 1px #092836;
 	background-color:white;
@@ -68,7 +68,7 @@
 
 .dccContainer .dccPanels .dccPanel{
     position: absolute;
-    height: 500px;
+    height: 600px;
     width: 850px;
 }
 
@@ -81,12 +81,20 @@
     border-bottom: solid 2px #092836;
 }
 
+.dccContainer .dccPanels .dccPanel .dccHeading a{
+    float: right;
+}
+
 .dccContainer .dccPanels .dccPanel .dccSubPanel{
     position: absolute;
     width: 800px;
     margin: 25px;
     border: solid 1px #aaa;
     border-radius: 5px;
+}
+
+.dccContainer #contentTypes-editView {
+    height:600px;
 }
 
 .dccContainer .dccSearchPanel{
@@ -129,6 +137,7 @@
 .dccContainer .dccTable th, .dccContainer .dccTable td {
     padding: 8px 9px 7px 9px;
     text-align: center;
+    height: 20px;
 }
 
 .dccContainer .dccTable tr:nth-child(2n) td {
@@ -208,35 +217,62 @@
 .dccContainer .dccTable tr.edit-row td, .dccContainer .dccTable tr.edit-row:hover td {
     padding: 0;
 }
-.dccContainer .dccTable tr.edit-row > td > div {
-    display: none;
-    padding: 20px 9px 10px 9px;
-    border-bottom: 2px solid #0087c6;
-    min-height: 150px;
+
+.dccContainer div.dccEditForm {
+    padding: 10px 9px 10px 9px;
+    min-height: 135px;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div {
+.dccContainer .dccTable div.dccEditForm {
+    border-bottom: 2px solid #0087c6;
+}
+
+.dccContainer div.dccEditRow {
+    float: left;
+    width: 100%;
+}
+
+.dccContainer div.dccEditRow > div {
+    float: left;
+}
+
+.dccContainer .dccTable div.dccEditRow > div {
     width: 33%;
     float: left;
     margin: 0 0 9px 0;
     position: relative;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div > label{
+.dccContainer div.dccEditRow > div > label{
     display:block;
     cursor: default;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div.toggle {
-    padding-top:25px;
+.dccContainer div.dccEditRow > div > textarea{
+    height: 35px;
+    width: 750px;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div.toggle > span {
+.dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
+    margin-bottom: 10px;
+}
+
+.dccContainer div.dccEditRow > div.toggle {
+    float: right;
+    padding-right: 25px;
+}
+
+.dccContainer .dccTable div.dccEditRow > div.toggle {
+    padding-top:25px;
+    padding-right: 0px;
+}
+
+.dccContainer div.dccEditRow > div.toggle > span {
     vertical-align: middle;
     margin-left: 15px;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div.toggle > span.label {
+.dccContainer div.dccEditRow > div.toggle > span.label {
     padding-bottom: 15px;
     display: inline-block;
 }
@@ -294,11 +330,10 @@
     display: none;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div.buttons {
+.dccContainer div.dccEditForm > div.buttons {
     clear: both;
-    border-top: 1px solid #aaa;
     width: 100%;
-    padding-top: 21px;
+    padding-top: 10px;
     text-align: center;
 }
 
@@ -315,7 +350,7 @@
     border: 1px solid #aaa;
 }
 
-.dccContainer .dccTable tr.edit-row > td > div > div > a.primarybtn, .dccContainer .dccTable tr.edit-row > td > div > div > a.secondarybtn {
+.dccContainer div.dccEditForm > div > a.primarybtn, .dccContainer div.dccEditForm > div > a.secondarybtn {
     margin-left: 5px;
 }
 
@@ -362,8 +397,9 @@
 }
 
 .dccContainer .dnnFormPopup {
-    left: 300px;
-    top: 300px;
+    left: 250px;
+    top: 250px;
+    width: 300px;
 }
 
 .dccContainer .dnnDialogHeader {
@@ -371,6 +407,17 @@
     font-size: 18px;
     font-weight: bold;
     padding-bottom: 18px;
+}
+
+.dccContainer #mask{
+    position: absolute;
+    background: transparent;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    display: none;
 }
 
 .dccContainer .buttonpanel {
@@ -381,4 +428,19 @@
     background-image: none;
     text-align: left;
     border-top: 1px solid #ddd;
+}
+
+.dccContainer a.dccIcon {
+    padding: 0px 5px 0px 5px;
+    cursor: pointer;
+}
+
+.dccContainer .dccFieldsPanel {
+    width: 750px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    padding:9px;
+    border: solid 1px #aaaaaa;
+    border-radius: 5px;
+    height: 340px;
 }

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dnn.DynamicContent.Common;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
@@ -37,7 +38,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
 
             contentType.CreatedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            //TODO - do we need to set other audit proeprties
+            contentType.CreatedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Add(contentType);
 
@@ -79,6 +80,26 @@ namespace Dnn.DynamicContent
             {
                 ContentTemplateManager.Instance.DeleteContentTemplate(template);
             }
+        }
+
+        /// <summary>
+        /// GetContentType retrieves a dynamic content type for a portal, optionally including system types
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the content type</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System content types (ie. content types that are available for all portals)
+        /// should be returned. Defaults to false</param>
+        /// <returns>content type</returns>
+        //TODO add Unit Tests for this method
+        public DynamicContentType GetContentType(int contentTypeId, int portalId, bool includeSystem = false)
+        {
+            DynamicContentType contentType = Get(portalId).SingleOrDefault(ct => ct.ContentTypeId == contentTypeId);
+
+            if (contentType == null && includeSystem)
+            {
+                contentType = Get(-1).SingleOrDefault(dt => dt.ContentTypeId == contentTypeId);
+            }
+            return contentType;
         }
 
         /// <summary>
@@ -133,7 +154,7 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(contentType, "Name");
 
             contentType.LastModifiedByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            //TODO - do we need to set other audit proeprties
+            contentType.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Update(contentType);
 

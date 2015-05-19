@@ -7,6 +7,7 @@ dcc.dataTypesViewModel = function(config) {
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
+    var $rootElement = config.$rootElement;
 
     util.dataTypeService = function(){
         util.sf.serviceController = "DataType";
@@ -41,7 +42,7 @@ dcc.dataTypesViewModel = function(config) {
     };
 
     self.addDataType = function(){
-        var tbody = $("#dataTypes-addbody");
+        var tbody = $rootElement.find("#dataTypes-addbody");
 
         util.asyncParallel([
             function(cb1){
@@ -55,18 +56,18 @@ dcc.dataTypesViewModel = function(config) {
                 cb1();
             }            ,
             function(cb2){
-                $('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
                     cb2();
                 });
             }
         ], function() {
-            $('#dataTypes-editrow').appendTo(tbody);
-            $('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+            $rootElement.find('#dataTypes-editrow').appendTo(tbody);
+            $rootElement.find('#dataTypes-editrow > td > div').slideDown(400, 'linear');
         });
     };
 
     self.editDataType = function(data, e){
-        var row = $(e.target);
+        var row = $rootElement.find(e.target);
 
         if(row.is("tr") == false){
             row = row.closest('tr');
@@ -74,14 +75,14 @@ dcc.dataTypesViewModel = function(config) {
 
         if(row.hasClass('in-edit-row')){
             row.removeClass('in-edit-row');
-            $('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
-                $('#dataTypes-editrow').appendTo('#dataTypes-editbody');
+            $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             });
             return;
         }
 
         var tbody = row.parent();
-        $('tr', tbody).removeClass('in-edit-row');
+        $rootElement.find('tr', tbody).removeClass('in-edit-row');
         row.addClass('in-edit-row');
 
         util.asyncParallel([
@@ -89,13 +90,13 @@ dcc.dataTypesViewModel = function(config) {
                 self.getDataType(data.dataTypeId(), cb1);
             },
             function(cb2){
-                $('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
+                $rootElement.find('#dataTypes-editrow > td > div').slideUp(200, 'linear', function(){
                     cb2();
                 });
             }
         ], function() {
-            $('#dataTypes-editrow').insertAfter(row);
-            $('#dataTypes-editrow > td > div').slideDown(400, 'linear');
+            $rootElement.find('#dataTypes-editrow').insertAfter(row);
+            $rootElement.find('#dataTypes-editrow > td > div').slideDown(400, 'linear');
         });
     };
 
@@ -146,7 +147,7 @@ dcc.dataTypesViewModel = function(config) {
     };
 
     self.init = function() {
-        $('#dataTypes-editrow > td > div').hide();
+        $rootElement.find('#dataTypes-editrow > td > div').hide();
         dcc.pager().init(self);
 
         self.searchText.subscribe(function () {
@@ -174,6 +175,8 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     var self = this;
     var util = config.util;
     var resx = config.resx;
+    var $rootElement = config.$rootElement;
+
     self.parentViewModel = parentViewModel;
     self.canEdit = ko.observable(false);
     self.created = ko.observable('');
@@ -187,9 +190,9 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     });
 
     var collapseDetailRow = function(cb) {
-        $("tr.in-edit-row").removeClass('in-edit-row')
-        $('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
-            $('#dataTypes-editrow').appendTo('#dataTypes-editbody');
+        $rootElement.find("tr.in-edit-row").removeClass('in-edit-row')
+        $rootElement.find('#dataTypes-editrow > td > div').slideUp(600, 'linear', function(){
+            $rootElement.find('#dataTypes-editrow').appendTo('#dataTypes-editbody');
             if(typeof cb === 'function') cb();
         });
     };
@@ -198,7 +201,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         collapseDetailRow();
     },
 
-    self.deleteType = function (data, e) {
+    self.deleteDataType = function (data, e) {
         util.confirm(resx.deleteDataTypeConfirmMessage, resx.yes, resx.no, function() {
             var params = {
                 dataTypeId: data.dataTypeId(),
@@ -207,7 +210,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
                 isSystem: data.isSystem()
             };
 
-            util.dataTypeService().sf.post("DeleteDataType", params,
+            util.dataTypeService().post("DeleteDataType", params,
                 function(data){
                     //Success
                     collapseDetailRow(parentViewModel.refresh);
@@ -229,7 +232,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         self.isSystem(data.isSystem);
     };
 
-    self.saveType = function(data, e) {
+    self.saveDataType = function(data, e) {
         var params = {
             dataTypeId: data.dataTypeId(),
             baseType: data.baseType(),
@@ -237,7 +240,7 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
             isSystem: data.isSystem()
         };
 
-        util.dataTypeService().sf.post("SaveDataType", params,
+        util.dataTypeService().post("SaveDataType", params,
             function(data){
                 //Success
                 collapseDetailRow(parentViewModel.refresh);

@@ -771,15 +771,6 @@ namespace DotNetNuke.Entities.Portals
             return portalDic;
         }
 
-        private object GetPortalsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var cultureCode = (string)cacheItemArgs.ParamList[0];
-            string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
-            List<PortalInfo> portals = CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode));
-            DataCache.SetCache(cacheKey, portals);
-            return portals;
-        }
-
         private static object GetPortalSettingsDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
@@ -2419,7 +2410,8 @@ namespace DotNetNuke.Entities.Portals
         {
             string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
             return CBO.GetCachedObject<List<PortalInfo>>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
-                                                    GetPortalsCallBack);
+                                                                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode))
+                                                        );
         }
 
         /// <summary>

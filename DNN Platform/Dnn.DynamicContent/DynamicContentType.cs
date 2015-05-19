@@ -33,15 +33,14 @@ namespace Dnn.DynamicContent
         }
 
         /// <summary>
-        /// Gets or sets the name of the ContentType.
-        /// </summary>
-        [ColumnName("ContentType")]
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the content type id.
         /// </summary>
         public int ContentTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a description for the ContentType.
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets a list of Field Definitions associated with this Content Type
@@ -72,6 +71,12 @@ namespace Dnn.DynamicContent
         /// </summary>
         [IgnoreColumn]
         public bool IsSystem { get { return (PortalId == -1); } }
+
+        /// <summary>
+        /// Gets or sets the name of the ContentType.
+        /// </summary>
+        [ColumnName("ContentType")]
+        public string Name { get; set; }
 
         /// <summary>
         /// The Id of the portal
