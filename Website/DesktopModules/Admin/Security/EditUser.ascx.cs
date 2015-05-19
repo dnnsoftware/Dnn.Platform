@@ -419,6 +419,8 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlPassword.PasswordUpdated += PasswordUpdated;
             ctlPassword.PasswordQuestionAnswerUpdated += PasswordQuestionAnswerUpdated;
 
+			email.ValidationExpression = PortalSettings.Registration.EmailValidator;
+
             jQuery.RequestDnnPluginsRegistration();
             JavaScript.RequestRegistration(CommonJs.Knockout);
 
