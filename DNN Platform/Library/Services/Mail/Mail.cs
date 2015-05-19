@@ -469,7 +469,29 @@ namespace DotNetNuke.Services.Mail
                             smtpEnableSSL);
         }
 
-        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
+		        public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
+                                      string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+				{
+					return SendMail(mailFrom,
+							string.Empty,
+							mailTo,
+							cc,
+							bcc,
+							replyTo,
+							priority,
+							subject,
+							bodyFormat,
+							bodyEncoding,
+							body,
+							attachments,
+							smtpServer,
+							smtpAuthentication,
+							smtpUsername,
+							smtpPassword,
+							smtpEnableSSL);
+				}
+
+        public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             //SMTP server configuration
@@ -505,7 +527,13 @@ namespace DotNetNuke.Services.Mail
             else
             {
                 mailMessage = new MailMessage { From = new MailAddress(mailFrom) };
-            }          
+            }
+
+	        if (!string.IsNullOrEmpty(mailSender))
+	        {
+		        mailMessage.Sender = new MailAddress(mailSender);
+	        }
+
             if (!String.IsNullOrEmpty(mailTo))
             {
                 //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons

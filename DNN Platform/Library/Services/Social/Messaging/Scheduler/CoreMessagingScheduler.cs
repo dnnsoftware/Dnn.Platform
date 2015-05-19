@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
 using System.Web.Caching;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -34,6 +36,10 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Social.Messaging.Internal;
+using DotNetNuke.Services.Mail;
+using MailPriority = DotNetNuke.Services.Mail.MailPriority;
+using DotNetNuke.Entities.Controllers;
+
 #endregion
 
 namespace DotNetNuke.Services.Social.Messaging.Scheduler
@@ -62,23 +68,25 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var schedulerInstance = Guid.NewGuid();
                 ScheduleHistoryItem.AddLogNote("Messaging Scheduler DoWork Starting " + schedulerInstance);
 
-                if (string.IsNullOrEmpty(Host.SMTPServer))
+				Progressing();
+
+				var portalsHasNoSmtpConfig = new Dictionary<int, string>(); ;
+
+				var instantMessages = HandleInstantMessages(schedulerInstance, portalsHasNoSmtpConfig);
+                var remainingMessages = Host.MessageSchedulerBatchSize - instantMessages;
+                if (remainingMessages > 0)
                 {
-                    ScheduleHistoryItem.AddLogNote("<br>No SMTP Servers have been configured for this host. Terminating task.");
-                    ScheduleHistoryItem.Succeeded = true;
+					HandleFrequentDigests(schedulerInstance, remainingMessages, portalsHasNoSmtpConfig);
                 }
-                else
-                {
-                    Progressing();
-                   
-                    var instantMessages = HandleInstantMessages(schedulerInstance);
-                    var remainingMessages = Host.MessageSchedulerBatchSize - instantMessages;
-                    if (remainingMessages > 0)
-                    {
-                        HandleFrequentDigests(schedulerInstance, remainingMessages);
-                    }
-                    ScheduleHistoryItem.Succeeded = true;
-                }
+
+	            if (portalsHasNoSmtpConfig.Count > 0)
+	            {
+					portalsHasNoSmtpConfig.Values.ToList().ForEach(n =>
+					                                               {
+						                                               ScheduleHistoryItem.AddLogNote(n);
+					                                               });
+	            }
+                ScheduleHistoryItem.Succeeded = true;
             }
             catch (Exception ex)
             {
@@ -88,22 +96,22 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             }
         }
 
-        private void HandleFrequentDigests(Guid schedulerInstance, int remainingMessages)
-        {            
-         
-            var handledMessages = HandleFrenquencyDigest(DateTime.Now.AddHours(-1), SettingLastHourlyRun, Frequency.Hourly, schedulerInstance, remainingMessages);
-            remainingMessages = remainingMessages - handledMessages;
-         
-            handledMessages = HandleFrenquencyDigest(DateTime.Now.AddDays(-1), SettingLastDailyRun, Frequency.Daily, schedulerInstance, remainingMessages);        
-            remainingMessages = remainingMessages - handledMessages;
-            
-            handledMessages = HandleFrenquencyDigest(DateTime.Now.AddDays(-7), SettingLastWeeklyRun, Frequency.Weekly, schedulerInstance, remainingMessages);         
-            remainingMessages = remainingMessages - handledMessages;           
+		private void HandleFrequentDigests(Guid schedulerInstance, int remainingMessages, IDictionary<int, string> portalsHasNoSmtpConfig)
+        {
 
-            HandleFrenquencyDigest(DateTime.Now.AddDays(-30), SettingLastMonthlyRun, Frequency.Monthly, schedulerInstance, remainingMessages);                    
+			var handledMessages = HandleFrenquencyDigest(DateTime.Now.AddHours(-1), SettingLastHourlyRun, Frequency.Hourly, schedulerInstance, remainingMessages, portalsHasNoSmtpConfig);
+            remainingMessages = remainingMessages - handledMessages;
+
+			handledMessages = HandleFrenquencyDigest(DateTime.Now.AddDays(-1), SettingLastDailyRun, Frequency.Daily, schedulerInstance, remainingMessages, portalsHasNoSmtpConfig);        
+            remainingMessages = remainingMessages - handledMessages;
+
+			handledMessages = HandleFrenquencyDigest(DateTime.Now.AddDays(-7), SettingLastWeeklyRun, Frequency.Weekly, schedulerInstance, remainingMessages, portalsHasNoSmtpConfig);         
+            remainingMessages = remainingMessages - handledMessages;
+
+			HandleFrenquencyDigest(DateTime.Now.AddDays(-30), SettingLastMonthlyRun, Frequency.Monthly, schedulerInstance, remainingMessages, portalsHasNoSmtpConfig);                    
         }
 
-        private int HandleFrenquencyDigest(DateTime dateToCompare, string settingKeyLastRunDate, Frequency frequency, Guid schedulerInstance, int remainingMessages)
+		private int HandleFrenquencyDigest(DateTime dateToCompare, string settingKeyLastRunDate, Frequency frequency, Guid schedulerInstance, int remainingMessages, IDictionary<int, string> portalsHasNoSmtpConfig)
         {
             int handledMessages = 0;
             if (remainingMessages <= 0)
@@ -114,7 +122,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var lastRunDate = GetScheduleItemDateSetting(settingKeyLastRunDate);            
             if (dateToCompare >= lastRunDate)
             {
-                handledMessages = HandleDigest(schedulerInstance, frequency, remainingMessages);
+				handledMessages = HandleDigest(schedulerInstance, frequency, remainingMessages, portalsHasNoSmtpConfig);
                 if (handledMessages < remainingMessages)
                 {
                     SchedulingProvider.Instance().AddScheduleItemSetting(
@@ -124,7 +132,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return handledMessages;
         }
 
-        private int HandleDigest(Guid schedulerInstance, Frequency frequency, int remainingMessages)
+		private int HandleDigest(Guid schedulerInstance, Frequency frequency, int remainingMessages, IDictionary<int, string> portalsHasNoSmtpConfig)
         {
             var messagesSent = 0;
             // get subscribers based on frequency, utilize remaining batch size as part of count of users to return (note, if multiple subscriptions have the same frequency they will be combined into 1 email)
@@ -154,7 +162,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                                 var senderUser = UserController.Instance.GetUser(messageDetails.PortalID, messageDetails.SenderUserID);
                                 var recipientUser = UserController.Instance.GetUser(messageDetails.PortalID, singleMessage.UserID);
 
-                                SendDigest(messageRecipients, portalSettings, senderUser, recipientUser);
+								SendDigest(messageRecipients, portalSettings, senderUser, recipientUser, portalsHasNoSmtpConfig);
                             }
                             messagesSent = messagesSent + 1;
                         }
@@ -178,9 +186,27 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return messagesSent;
         }
 
-        private void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings portalSettings, UserInfo senderUser, UserInfo recipientUser)
+		private void SendDigest(IEnumerable<MessageRecipient> messages, PortalSettings portalSettings, UserInfo senderUser, UserInfo recipientUser, IDictionary<int, string> portalsHasNoSmtpConfig)
         {
-            var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
+			var messageRecipients = messages as MessageRecipient[] ?? messages.ToArray();
+
+			var portalId = portalSettings.PortalId;
+			string smtpServer = GetSmtpSetting(portalSettings.PortalId, "SMTPServer");
+			string smtpAuthentication = GetSmtpSetting(portalSettings.PortalId, "SMTPAuthentication");
+			string smtpUsername = GetSmtpSetting(portalSettings.PortalId, "SMTPUsername");
+			string smtpPassword = GetSmtpPassword(portalSettings.PortalId);
+			bool smtpSslEnabled = SmtpSslEnabled(portalSettings.PortalId);
+
+			if (string.IsNullOrEmpty(smtpServer))
+			{
+				if (!portalsHasNoSmtpConfig.ContainsKey(portalId))
+				{
+					portalsHasNoSmtpConfig.Add(portalId, string.Format("<br>No SMTP Servers have been configured for portal {0}.", portalSettings.PortalName));
+				}
+
+				MarkMessagesAsDispatched(messageRecipients);
+				return;
+			}
 
             if (!IsUserAbleToReceiveAnEmail(recipientUser))
             {
@@ -194,7 +220,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 return;
             }
 
-            var defaultLanguage = recipientUser.Profile.PreferredLocale;
+			var defaultLanguage = recipientUser.Profile.PreferredLocale;
 
             var emailSubjectTemplate = GetEmailSubjectTemplate(defaultLanguage);
             var emailBodyTemplate = GetEmailBodyTemplate(defaultLanguage);
@@ -212,7 +238,9 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
             var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, recipientUser);
 
-            Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);
+			Mail.Mail.SendMail(fromAddress, senderAddress, toAddress, string.Empty, string.Empty, string.Empty, MailPriority.Normal, subject, HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text, Encoding.UTF8,
+								  body, new List<Attachment>(), smtpServer, smtpAuthentication, smtpUsername, smtpPassword, smtpSslEnabled);
+
 
             MarkMessagesAsDispatched(messageRecipients);
         }
@@ -323,7 +351,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return dateValue;
         }
 
-        private int HandleInstantMessages(Guid schedulerInstance)
+		private int HandleInstantMessages(Guid schedulerInstance, IDictionary<int, string> portalsHasNoSmtpConfig)
         {
             var messageLeft = true;
             var messagesSent = 0;
@@ -338,7 +366,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                     {
                         foreach (var messageRecipient in batchMessages)
                         {
-                            SendMessage(messageRecipient);
+							SendMessage(messageRecipient, portalsHasNoSmtpConfig);
                             messagesSent = messagesSent + 1;
                         }
 
@@ -358,10 +386,28 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return messagesSent;
         }
 
-        private void SendMessage(MessageRecipient messageRecipient)
+		private void SendMessage(MessageRecipient messageRecipient, IDictionary<int, string> portalsHasNoSmtpConfig)
         {
-            //todo: check if host user can send to multiple portals...
-            var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);            
+			//todo: check if host user can send to multiple portals...
+			var messageDetails = InternalMessagingController.Instance.GetMessage(messageRecipient.MessageID);
+
+			var portalId = messageDetails.PortalID;
+			string smtpServer = GetSmtpSetting(portalId, "SMTPServer");
+			string smtpAuthentication = GetSmtpSetting(portalId, "SMTPAuthentication");
+			string smtpUsername = GetSmtpSetting(portalId, "SMTPUsername");
+			string smtpPassword = GetSmtpPassword(portalId);
+			bool smtpSslEnabled = SmtpSslEnabled(portalId);
+
+			if (string.IsNullOrEmpty(smtpServer))
+			{
+				if (!portalsHasNoSmtpConfig.ContainsKey(portalId))
+				{
+					portalsHasNoSmtpConfig.Add(portalId, string.Format("<br>No SMTP Servers have been configured for portal {0}.", portalId));
+				}
+
+				InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
+				return;
+			}
 
             var toUser = UserController.Instance.GetUser(messageDetails.PortalID, messageRecipient.UserID);
             if (!IsUserAbleToReceiveAnEmail(toUser))
@@ -394,8 +440,9 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var emailBodyItemContent = GetEmailItemContent(portalSettings, messageRecipient, emailBodyItemTemplate);
                 var subject = string.Format(emailSubjectTemplate, portalSettings.PortalName);
                 var body = GetEmailBody(emailBodyTemplate, emailBodyItemContent, portalSettings, toUser);
-                
-                Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body);            
+
+				Mail.Mail.SendMail(fromAddress, senderAddress, toAddress, string.Empty, string.Empty, string.Empty, MailPriority.Normal, subject, HtmlUtils.IsHtml(body) ? MailFormat.Html : MailFormat.Text, Encoding.UTF8,
+									  body, new List<Attachment>(), smtpServer, smtpAuthentication, smtpUsername, smtpPassword, smtpSslEnabled);
             }
 
             InternalMessagingController.Instance.MarkMessageAsDispatched(messageRecipient.MessageID, messageRecipient.RecipientID);
@@ -561,6 +608,63 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             //default to User Profile Page
             return portalSettings.UserTabId;
+        }
+
+		private static string GetSmtpSetting(int portalId, string settingName)
+		{
+			if (SmtpConfigInPortalLevel(portalId))
+			{
+				return PortalController.GetPortalSetting(settingName, portalId, Null.NullString);
+			}
+
+			return HostController.Instance.GetString(settingName);
+		}
+
+		private static string GetSmtpPassword(int portalId)
+		{
+			if (SmtpConfigInPortalLevel(portalId))
+			{
+				return PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
+			}
+			else
+			{
+				string decryptedText;
+				try
+				{
+					decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+				}
+				catch (Exception)
+				{
+					//fixes case where smtppassword failed to encrypt due to failing upgrade
+					var current = HostController.Instance.GetString("SMTPPassword");
+					if (!string.IsNullOrEmpty(current))
+					{
+						HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+						decryptedText = current;
+					}
+					else
+					{
+						decryptedText = string.Empty;
+					}
+				}
+				return decryptedText;
+			}
+		}
+
+		private static bool SmtpSslEnabled(int portalId)
+		{
+			if (SmtpConfigInPortalLevel(portalId))
+			{
+				return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false);
+			}
+
+			return HostController.Instance.GetBoolean("SMTPEnableSSL");
+		}
+
+		private static bool  SmtpConfigInPortalLevel(int portalId)
+        {
+                var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString);
+                return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
