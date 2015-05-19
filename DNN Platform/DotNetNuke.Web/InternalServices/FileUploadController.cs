@@ -311,7 +311,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message);
+                Logger.Error(ex);
                 errorMessage = ex.Message;
                 return savedFileDto;
             }
@@ -580,7 +580,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception exe)
             {
-                Logger.Error(exe.Message);
+                Logger.Error(exe);
                 result.Message = exe.Message;
                 return result;
             }
