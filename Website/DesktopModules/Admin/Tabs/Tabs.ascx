@@ -13,9 +13,9 @@
 		fieldsChanged = true;
 	}
 
-	var _originalPostBack = window['__doPostBack'];
+	var originalPostBack = window['__doPostBack'];
 	var executePostBackAndClean = function (sender, args){
-		_originalPostBack(sender, args);
+		originalPostBack(sender, args);
 		postBackElement = postBackArguments = null;
 	};
 
@@ -27,7 +27,11 @@
 			postBackElement = sender;
 			postBackArguments = args;
 		}
-		executePostBackAndClean(sender, args);
+		if (fieldsChanged){
+			originalPostBack(sender, args);
+		} else {
+			executePostBackAndClean(sender, args);
+		}
 	}
 
 	var isPendingAction = function (element) {
