@@ -13,7 +13,12 @@
 		fieldsChanged = true;
 	}
 
-	var originalPostBack = window['__doPostBack'];
+	var _originalPostBack = window['__doPostBack'];
+	var executePostBackAndClean = function (sender, args){
+		_originalPostBack(sender, args);
+		postBackElement = postBackArguments = null;
+	};
+
 	var postBackElement = null;
 	var postBackArguments = null;
 
@@ -22,7 +27,7 @@
 			postBackElement = sender;
 			postBackArguments = args;
 		}
-		originalPostBack(sender, args);
+		executePostBackAndClean(sender, args);
 	}
 
 	var isPendingAction = function (element) {
@@ -32,8 +37,7 @@
 
 	var delayPostBack = function () {
 		if (postBackElement && postBackArguments) {
-			originalPostBack(postBackElement, postBackArguments);
-			postBackElement = postBackArguments = null;
+			executePostBackAndClean(postBackElement, postBackArguments);
 		}
 	}
 
