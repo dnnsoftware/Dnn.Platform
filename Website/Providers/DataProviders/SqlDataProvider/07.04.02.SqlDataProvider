@@ -103,6 +103,44 @@ BEGIN
 	END
 END
 GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortalSettings]', N'P') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+GO
+-- SQL 2012/2014:
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortalSettings]
+    @PortalId    Int,            -- not Null!
+    @CultureCode nVarChar(20)    -- Null|'' for neutral language
+AS
+BEGIN
+	DECLARE @DefaultLanguage nVarChar(20) = '';
+
+	IF EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}PortalLocalization] L
+					JOIN {databaseOwner}[{objectQualifier}Portals] P ON L.PortalID = P.PortalID AND L.CultureCode = P.DefaultLanguage
+					WHERE P.PortalID = @PortalID)
+		SELECT @DefaultLanguage = DefaultLanguage 
+		FROM {databaseOwner}[{objectQualifier}Portals] 
+		WHERE PortalID = @PortalID
+
+	SELECT DISTINCT
+		PS.SettingName,
+		CASE WHEN Lower(PS.SettingValue) LIKE 'fileid=%'
+			THEN {databaseOwner}[{objectQualifier}FilePath](PS.SettingValue)
+			ELSE PS.SettingValue END   AS SettingValue,
+		PS.CreatedByUserID,
+		PS.CreatedOnDate,
+		PS.LastModifiedByUserID,
+		PS.LastModifiedOnDate,
+		PS.CultureCode
+		FROM {databaseOwner}[{objectQualifier}PortalSettings] PS
+		JOIN (SELECT SettingName, PortalID, First_Value(CultureCode) OVER (PARTITION BY PortalID, SettingName 
+		                                                                   ORDER BY Settingname, CASE CultureCode WHEN @CultureCode THEN 2 WHEN Null THEN 1 WHEN @DefaultLanguage THEN 0 ELSE -1 END DESC) CultureCode
+				FROM {databaseOwner}[{objectQualifier}PortalSettings]
+				WHERE PortalID = @PortalId  
+		) S ON PS.PortalID = S.PortalID AND PS.SettingName = S.SettingName AND IsNull(PS.CultureCode, '') = ISNull(S.CultureCode, '')
+	ORDER BY SettingName
+END
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
