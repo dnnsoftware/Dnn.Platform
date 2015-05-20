@@ -2362,7 +2362,7 @@ namespace DotNetNuke.Entities.Portals
                     //Get Fallback language
                     string fallbackLanguage = string.Empty;
 
-                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = Localization.SystemLocale;
+                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId);
 
                     Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
                     if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
@@ -2371,7 +2371,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                     if (String.IsNullOrEmpty(fallbackLanguage))
                     {
-                        fallbackLanguage = Localization.SystemLocale;
+                        fallbackLanguage = Localization.SystemLocale; 
                     }
                     portal = GetPortalInternal(portalId, fallbackLanguage);
                     //if we cannot find any fallback, it mean's it's a non portal default langauge

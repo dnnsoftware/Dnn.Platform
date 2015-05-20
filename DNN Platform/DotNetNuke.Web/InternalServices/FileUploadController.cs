@@ -40,6 +40,7 @@ using System.Web.UI.WebControls;
 using ClientDependency.Core;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common.Utils;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
@@ -659,7 +660,10 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
-                                stream = item.ReadAsStreamAsync().Result;
+                                if (Regex.Match(fileName, "[\\\\/]\\.\\.[\\\\/]").Success==false )
+                                    {
+                                        stream = item.ReadAsStreamAsync().Result;
+                                    }
                                 break;
                         }
                     }
@@ -703,7 +707,14 @@ namespace DotNetNuke.Web.InternalServices
             Stream responseStream = null;
             var mediaTypeFormatter = new JsonMediaTypeFormatter();
             mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-            try
+
+            if (VerifySafeUrl(dto.Url) == false)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+
+    try
             {
                 var request = (HttpWebRequest) WebRequest.Create(dto.Url);
                 request.Credentials = CredentialCache.DefaultCredentials;
@@ -753,6 +764,40 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private bool VerifySafeUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            if (uri.Scheme == "http" ||uri.Scheme == "https")
+            {
+                
+                if (!uri.Host.Contains("."))
+                {
+                    return false;
+                }
+                if (uri.IsLoopback)
+                {
+                    return false;
+                }
+                if (uri.PathAndQuery.Contains("#")  || uri.PathAndQuery.Contains(":"))
+                {
+                    return false;
+                }
+
+                if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
+                {
+                    //check nonroutable IP addresses
+                    if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
+                        NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
+                    {
+                        return false;
+                    }
+                }
+
+            return true;
+            }
+            return false;
+        }
     }
 
 }
