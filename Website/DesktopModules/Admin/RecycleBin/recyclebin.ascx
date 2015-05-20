@@ -81,9 +81,6 @@
 		            });
 		            e.preventDefault();
 		            e.stopImmediatePropagation();
-		        } else {
-		            e.preventDefault();
-		            e.stopImmediatePropagation();
 		        }
 		    }).dnnConfirm({
 				text: '<%= LocalizeSafeJsString("RestoreTab") %>',
