@@ -20,6 +20,9 @@
       <RadSpell Include="..\Website\App_Data\RadSpell\*.tdf" />
       <ConfigFiles Include="..\Website\Config\*.*" />
       <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
+      <ModuleFiles Include="..\Website\Install\Module\*.*" />
+      <ProviderFiles Include="..\Website\Install\Provider\*.*" />
+      <CleanupFiles Include="..\Website\Install\Cleanup\*.*" />
       <ConfigMergeFiles Include="..\Website\Install\Config\*.*" />
       <WebConfig Include="$(WebsitePath)\we*.config" />
       <WebsiteDatabase Include="$(WebsiteAppDataPath)\Data*ase.mdf" />
@@ -60,7 +63,9 @@
     <Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(WebsiteConfigPath)" Condition="'@(WebsiteConfig)' == ''"/>
     <Copy SourceFiles="@(CleanupFiles)" DestinationFolder="$(WebsiteInstallPath)\Cleanup" Condition="'@(WebsiteCleanup)' == ''" />
     <Copy SourceFiles="@(ConfigMergeFiles)" DestinationFolder="$(WebsiteInstallPath)\Config" Condition="'@(WebsiteConfigMerge)' == ''" />
-
+    <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(WebsiteInstallPath)\Module"  />  
+    <Copy SourceFiles="@(ProviderFiles)" DestinationFolder="$(WebsiteInstallPath)\Provider"  />
+    
     <!-- Copy development.config or release.config to web.config -->
     <Copy SourceFiles="$(WebsitePath)\development.config" DestinationFiles="$(WebsitePath)\web.config" 
           Condition="'@(WebConfig)' == '' And '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"/>
