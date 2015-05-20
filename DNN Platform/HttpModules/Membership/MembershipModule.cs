@@ -163,9 +163,9 @@ namespace DotNetNuke.HttpModules.Membership
 
                 //save userinfo object in context
                 if (context.Items["UserInfo"] != null)
-                    context.Items["UserInfo"] = userInfo; //update
+                    context.Items["UserInfo"] = userInfo == null ? new UserInfo() : userInfo; //update
                 else
-                    context.Items.Add("UserInfo", userInfo); //set new
+                    context.Items.Add("UserInfo", userInfo == null ? new UserInfo() : userInfo); //set new
 
                 //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (userInfo != null)
