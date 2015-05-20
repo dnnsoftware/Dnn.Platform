@@ -491,7 +491,7 @@ namespace DotNetNuke.Services.FileSystem
                             }  
                             else
                             {
-                                //File Events for updating will be fired. Only events for adding nust be fired
+                                //File Events for updating will be not fired. Only events for adding nust be fired
                                 UpdateFile(file, true, false);
                             }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
