@@ -22,6 +22,7 @@
 
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -114,8 +115,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         _RedirectURL = Request.QueryString["returnurl"];
                         //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
                         if (_RedirectURL.Contains("://") &&
-                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-                                StringComparison.InvariantCultureIgnoreCase))
+							!Regex.Replace(_RedirectURL, @"^https*://", "", RegexOptions.IgnoreCase).StartsWith(PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
                         {
                             _RedirectURL = "";
                         }
