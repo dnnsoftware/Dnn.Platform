@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
                 //Check if js file exists
                 var jsFile = Path.ChangeExtension(_html5File, ".js");
-                if (File.Exists(Page.Server.MapPath(cssFile)))
+                if (File.Exists(Page.Server.MapPath(jsFile)))
                 {
                     ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
                 }
