@@ -463,7 +463,8 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (String.IsNullOrEmpty(HMACAppId.Text))
             {
-                Guid hmacAppId = new Guid();
+                Guid hmacAppId;
+                hmacAppId = Guid.NewGuid();
                 using (var cryptoProvider = new RNGCryptoServiceProvider())
                 {
                     byte[] secretKeyByteArray = new byte[32]; //256 bit

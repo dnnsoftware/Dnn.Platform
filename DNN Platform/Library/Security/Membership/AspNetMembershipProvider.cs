@@ -1127,7 +1127,7 @@ namespace DotNetNuke.Security.Membership
         /// <returns>The User as a UserInfo object</returns>
         public override UserInfo GetUserByHmacAppId(int portalId, string appId)
         {
-            IDataReader dr = _dataProvider.GetUserByHmacAppId(portalId, appId);
+            IDataReader dr = _dataProvider.GetUserByHmacAppId(appId);
             UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
             return objUserInfo;
         }

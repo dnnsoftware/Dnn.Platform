@@ -169,6 +169,22 @@ AS
 	WHERE  HmacAppId=@HmacAppId 
 GO
 
+/* Add GetHmacSecretByHmacAppId Procedure */
+/*******************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetHmacSecretByHmacAppId]
+(
+	@HmacAppId nvarchar(256)
+)
+
+AS
+	SELECT top 1 HmacAppSecret FROM {databaseOwner}{objectQualifier}vw_Users
+	WHERE  HmacAppId=@HmacAppId 
+GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/

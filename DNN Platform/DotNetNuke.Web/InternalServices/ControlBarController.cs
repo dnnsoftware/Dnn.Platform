@@ -101,6 +101,16 @@ namespace DotNetNuke.Web.InternalServices
             public string Language { get; set; }
         }
 
+
+        [HttpGet]
+        [AllowAnonymous]
+        [HmacAuthentication]
+        public HttpResponseMessage TestHMAC()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "test hmac worked");
+        }
+
+
         [HttpGet]
         [DnnPageEditor]
         public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "", bool sortBookmarks = false, string topModule = "")

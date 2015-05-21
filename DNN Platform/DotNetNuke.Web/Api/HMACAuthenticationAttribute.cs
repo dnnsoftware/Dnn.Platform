@@ -15,13 +15,15 @@ using System.Web.Http.Filters;
 using System.Web.Http.Results;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Data;
 
 namespace DotNetNuke.Web.Api
 {
     public class HmacAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
 
-        private static Dictionary<string, string> allowedApps = new Dictionary<string, string>();
+        
+        private readonly DataProvider _dataProvider = DataProvider.Instance();
         
         private readonly string authenticationScheme = "amx";
 
@@ -47,9 +49,12 @@ namespace DotNetNuke.Web.Api
                     if (isValid.Result)
                     {
                         var uc = new UserController();
-                        var validatedUser = uc.GetUserByHmacAppId(APPId);
-                        var currentPrincipal = new GenericPrincipal(new GenericIdentity(validatedUser.Username), null);
-                        context.Principal = currentPrincipal;
+                        UserInfo validatedUser = uc.GetUserByHmacAppId(APPId);
+                        if (validatedUser != null)
+                        {
+                            var currentPrincipal = new GenericPrincipal(new GenericIdentity(validatedUser.Username), null);
+                            context.Principal = currentPrincipal;
+                        }                      
                     }
                     else
                     {
@@ -102,12 +107,8 @@ namespace DotNetNuke.Web.Api
             string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
             string requestHttpMethod = req.Method.Method;
 
-            if (!allowedApps.ContainsKey(APPId))
-            {
-                return false;
-            }
-
-            var sharedKey = allowedApps[APPId];
+            
+            var sharedKey = _dataProvider.GetHmacSecretByHmacAppId(APPId);
 
             if (isReplayRequest(nonce, requestTimeStamp))
             {
