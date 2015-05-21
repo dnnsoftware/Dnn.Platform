@@ -13,14 +13,18 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using System.Web.Http.Results;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Data;
 
 namespace DotNetNuke.Web.Api
 {
-    public class HMACAuthenticationAttribute : Attribute, IAuthenticationFilter
+    public class HmacAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
 
-        private static Dictionary<string, string> allowedApps = new Dictionary<string, string>();
-        private readonly UInt64 requestMaxAgeInSeconds = 300;  //5 mins
+        
+        private readonly DataProvider _dataProvider = DataProvider.Instance();
+        
         private readonly string authenticationScheme = "amx";
 
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
@@ -44,8 +48,13 @@ namespace DotNetNuke.Web.Api
 
                     if (isValid.Result)
                     {
-                        var currentPrincipal = new GenericPrincipal(new GenericIdentity(APPId), null);
-                        context.Principal = currentPrincipal;
+                        var uc = new UserController();
+                        UserInfo validatedUser = uc.GetUserByHmacAppId(APPId);
+                        if (validatedUser != null)
+                        {
+                            var currentPrincipal = new GenericPrincipal(new GenericIdentity(validatedUser.Username), null);
+                            context.Principal = currentPrincipal;
+                        }                      
                     }
                     else
                     {
@@ -98,12 +107,8 @@ namespace DotNetNuke.Web.Api
             string requestUri = HttpUtility.UrlEncode(req.RequestUri.AbsoluteUri.ToLower());
             string requestHttpMethod = req.Method.Method;
 
-            if (!allowedApps.ContainsKey(APPId))
-            {
-                return false;
-            }
-
-            var sharedKey = allowedApps[APPId];
+            
+            var sharedKey = _dataProvider.GetHmacSecretByHmacAppId(APPId);
 
             if (isReplayRequest(nonce, requestTimeStamp))
             {
@@ -134,10 +139,14 @@ namespace DotNetNuke.Web.Api
 
         private bool isReplayRequest(string nonce, string requestTimeStamp)
         {
-            //if (System.Runtime.Caching.MemoryCache.Default.Contains(nonce))
-            //{
-            //    return true;
-            //}
+            var cacheKey = string.Format(DataCache.HmacCacheKey, nonce);
+            var cacheObj = DataCache.GetCache(cacheKey);
+
+            if (cacheObj != null)
+            {
+                return true;
+            }
+            
 
             DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan currentTs = DateTime.UtcNow - epochStart;
@@ -145,13 +154,12 @@ namespace DotNetNuke.Web.Api
             var serverTotalSeconds = Convert.ToUInt64(currentTs.TotalSeconds);
             var requestTotalSeconds = Convert.ToUInt64(requestTimeStamp);
 
-            if ((serverTotalSeconds - requestTotalSeconds) > requestMaxAgeInSeconds)
+            if ((serverTotalSeconds - requestTotalSeconds) > DataCache.HmacCacheTimeout)
             {
                 return true;
             }
 
-           // System.Runtime.Caching.MemoryCache.Default.Add(nonce, requestTimeStamp, DateTimeOffset.UtcNow.AddSeconds(requestMaxAgeInSeconds));
-
+            DataCache.SetCache(cacheKey, nonce, TimeSpan.FromMinutes(DataCache.HmacCacheTimeout));
             return false;
         }
 

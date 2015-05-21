@@ -132,6 +132,17 @@ namespace DotNetNuke.Entities.Users
             set { Profile.FirstName = value; }
         }
 
+        /// <summary>
+        /// Gets and sets the HMAC AppId
+        /// </summary>
+        public string HmacAppId { get; set; }
+
+        /// <summary>
+        /// Gets and sets the HMAC AppSecret
+        /// </summary>
+        public string HmacAppSecret { get; set; }
+
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the User is deleted

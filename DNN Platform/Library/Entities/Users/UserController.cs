@@ -548,6 +548,13 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetUserByDisplayName(PortalController.GetEffectivePortalId(portalId), displayName);
         }
 
+        
+        public UserInfo GetUserByHmacAppId(string appId)
+        {
+            return MembershipProvider.Instance().GetUserByHmacAppId(PortalSettings.Current.PortalId, appId);
+            
+        }
+
         UserInfo IUserController.GetUserById(int portalId, int userId)
         {
             return GetUserById(portalId, userId);
@@ -596,6 +603,8 @@ namespace DotNetNuke.Entities.Users
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
+
+    
         #endregion
 
         #region Public Helper Methods
