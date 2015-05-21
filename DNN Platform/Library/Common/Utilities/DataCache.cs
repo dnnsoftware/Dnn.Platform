@@ -286,6 +286,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
         public const int CaptchaCacheTimeout = 2;
 
+        public const string HmacCacheKey = "HMAC_{0}";
+        public const CacheItemPriority HmacCachePriority = CacheItemPriority.NotRemovable;
+        public const int HmacCacheTimeout =5;
+
         private static string _CachePersistenceEnabled = "";
 
         private static readonly ReaderWriterLock dictionaryLock = new ReaderWriterLock();

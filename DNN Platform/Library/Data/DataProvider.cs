@@ -2310,9 +2310,9 @@ namespace DotNetNuke.Data
             return ExecuteScalar<int>("GetDuplicateEmailCount", portalId);
         }
 
-        public virtual string GetUsernameByAppId(string appId)
+        public virtual IDataReader GetUserByHmacAppId(int portalId, string appId)
         {
-            return ExecuteScalar<string>("GetUsernameByAppID", appId);
+            return ExecuteReader("GetUserByHmacAppId", GetNull(portalId));
         }
 
         public virtual int GetSingleUserByEmail(int portalId, string emailToMatch)
@@ -2333,7 +2333,7 @@ namespace DotNetNuke.Data
 		public virtual void UpdateUser(int userId, int portalID, string firstName, string lastName, bool isSuperUser,
 										string email, string displayName, string vanityUrl, bool updatePassword,
 										bool isApproved, bool refreshRoles, string lastIpAddress, Guid passwordResetToken,
-										DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID)
+                                        DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID, string hmacAppId, string hmacAppSecret )
 		{
 			ExecuteNonQuery("UpdateUser",
 									  userId,
@@ -2351,7 +2351,9 @@ namespace DotNetNuke.Data
 									  passwordResetToken,
 									  GetNull(passwordResetExpiration),
 									  isDeleted,
-									  lastModifiedByUserID);
+									  lastModifiedByUserID,
+                                      hmacAppId,
+                                      hmacAppSecret);
 		}
 
 		#endregion

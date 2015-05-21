@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
+
+using System;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
@@ -37,20 +39,29 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             //cnonce="0a4f113b",
             //response="6629fae49393a05397450978507c4ef1",
             //opaque="5ccc069c403ebaf9f0171e9517f40e41"
-            RequestParams = new NameValueCollection();
-            foreach (
-                Match m in
-                    Regex.Matches(authorizationHeader, "\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))"))
+            try
             {
-                RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
+                RequestParams = new NameValueCollection();
+                foreach (
+                    Match m in
+                        Regex.Matches(authorizationHeader, "\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))"))
+                {
+                    RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
+                }
+                HttpMethod = httpMethod;
+                RawUsername = RequestParams["username"].Replace("\\\\", "\\");
+                CleanUsername = RawUsername;
+                if (CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) > 0)
+                {
+                    CleanUsername = CleanUsername.Substring(CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) + 2 - 1);
+                }
             }
-            HttpMethod = httpMethod;
-            RawUsername = RequestParams["username"].Replace("\\\\", "\\");
-            CleanUsername = RawUsername;
-            if (CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) > 0)
+            catch (Exception)
             {
-                CleanUsername = CleanUsername.Substring(CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) + 2 - 1);
+                
+                //suppress any issue e.g. another 401 from a different auth method
             }
+            
         }
 
         public NameValueCollection RequestParams { get; set; }

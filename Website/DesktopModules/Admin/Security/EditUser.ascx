@@ -125,15 +125,13 @@
                    </Items>
                 </dnn:DnnFormEditor>
                 <asp:Panel class="dnnFormItem" ID="HMACRow" runat="server" Visible="True" ViewStateMode="Disabled">
-                   
-                  <dnn:Label ID="HMACAppIdLabel" runat="server" />
-                    <asp:Label runat="server" ID="HMACAppId"/><br/>
-			<dnn:Label ID="HMACAppSecretLabel" runat="server" />
+                   <dnn:Label ID="HMACAppIdLabel" runat="server" />
+                   <asp:Label runat="server" ID="HMACAppId"/><br/>
+			        <dnn:Label ID="HMACAppSecretLabel" runat="server" />
                     <asp:Label runat="server" ID="HMACAppSecret" />
- <ul id="Ul1" runat="server" class="dnnActions dnnClear">
-            <li><asp:LinkButton id="cmdHMACGenerate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdHMACGenerate" /></li>
-          
-        </ul>
+                    <ul id="Ul1" runat="server" class="dnnActions dnnClear">
+                        <li><asp:LinkButton id="cmdHMACGenerate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdHMACGenerate" /></li>
+                    </ul>
                 </asp:Panel>
                 <asp:Panel class="dnnFormItem" ID="VanityUrlRow" runat="server" Visible="False" ViewStateMode="Disabled">
                     <dnn:Label ID="VanityUrlLabel" runat="server" />

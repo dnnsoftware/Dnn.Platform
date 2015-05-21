@@ -528,6 +528,14 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
+                        if (schema.Select("ColumnName = 'HmacAppId'").Length > 0)
+                        {
+                            user.HmacAppId = Null.SetNullString(dr["HmacAppId"]);
+                        }
+                        if (schema.Select("ColumnName = 'HmacAppSecret'").Length > 0)
+                        {
+                            user.HmacAppSecret = Null.SetNullString(dr["HmacAppSecret"]);
+                        }
                     }
 
                     user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
@@ -1111,6 +1119,19 @@ namespace DotNetNuke.Security.Membership
             return objUserInfo;
         }
 
+        /// <summary>
+        /// Get a user based on their HMAC AppId
+        /// </summary>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="appId">HMAC AppId</param>
+        /// <returns>The User as a UserInfo object</returns>
+        public override UserInfo GetUserByHmacAppId(int portalId, string appId)
+        {
+            IDataReader dr = _dataProvider.GetUserByHmacAppId(portalId, appId);
+            UserInfo objUserInfo = FillUserInfo(portalId, dr, true);
+            return objUserInfo;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUserByUserName retrieves a User from the DataStore
@@ -1654,7 +1675,9 @@ namespace DotNetNuke.Security.Membership
                                      user.PasswordResetToken,
                                      user.PasswordResetExpiration,
                                      user.IsDeleted,
-                                     UserController.Instance.GetCurrentUserInfo().UserID);
+                                     UserController.Instance.GetCurrentUserInfo().UserID,
+                                     user.HmacAppId,
+                                     user.HmacAppSecret);
 
             //Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);

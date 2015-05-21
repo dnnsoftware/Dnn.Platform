@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -235,6 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 userForm.DataSource = User;
 
+
                 // hide username field in UseEmailAsUserName mode
                 bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
                 if (disableUsername)
@@ -367,6 +369,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private void BindUser()
         {
             BindMembership();
+          
         }
 
         private void DisableForm()
@@ -448,19 +451,29 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             //hmac values
-           HMACAppId.Text= PortalController.GetPortalSetting("HMACAppId", UserPortalID, String.Empty);
+           HMACAppId.Text= User.HmacAppId;
            if (!String.IsNullOrEmpty(HMACAppId.Text))
            {
                cmdHMACGenerate.Visible = false;
            }
-           HMACAppSecret.Text = String.Empty;
+           HMACAppSecret.Text = User.HmacAppSecret;
         }
 
         private void cmdHMACGenerate_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(HMACAppId.Text))
             {
-                PortalController.UpdatePortalSetting(UserPortalID, "HMACAppId", Guid.NewGuid().ToString());
+                Guid hmacAppId = new Guid();
+                using (var cryptoProvider = new RNGCryptoServiceProvider())
+                {
+                    byte[] secretKeyByteArray = new byte[32]; //256 bit
+                    cryptoProvider.GetBytes(secretKeyByteArray);
+                    var APIKey = Convert.ToBase64String(secretKeyByteArray);
+                    UserInfo user = User;
+                    user.HmacAppId = hmacAppId.ToString();
+                    user.HmacAppSecret = APIKey;
+                    UserController.UpdateUser(UserPortalID, User);
+                }
                 
             }
             Response.Redirect(Request.RawUrl, true);
