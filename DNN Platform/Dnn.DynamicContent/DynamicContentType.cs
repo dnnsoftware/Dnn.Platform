@@ -30,6 +30,7 @@ namespace Dnn.DynamicContent
             Name = String.Empty;
             PortalId = portalId;
             IsDynamic = true;
+            Description = String.Empty;
         }
 
         /// <summary>

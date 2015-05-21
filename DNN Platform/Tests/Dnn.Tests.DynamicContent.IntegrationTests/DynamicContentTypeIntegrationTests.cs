@@ -4,11 +4,13 @@
 using System;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
+using Moq;
 using NUnit.Framework;
 
 // ReSharper disable UseStringInterpolation
@@ -37,6 +39,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { Name = "New_Type"};
 
@@ -54,6 +61,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { Name = "New_Type", PortalId = PortalId};
 
@@ -119,6 +131,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             //Arrange
             SetUpContentTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var contentTypeController = new DynamicContentTypeManager();
 
             //Act
@@ -165,6 +182,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var contentTypeId = 2;
             SetUpContentTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = contentTypeId, Name = "NewType" };
 
@@ -184,6 +206,11 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             //Arrange
             var typeId = 2;
             SetUpContentTypes(RecordCount);
+
+            var mockDateUtilitesManager = new Mock<IDateUtilitiesManager>();
+            mockDateUtilitesManager.Setup(dt => dt.GetDatabaseTime()).Returns(DateTime.UtcNow);
+            DateUtilitiesManager.SetTestableInstance(mockDateUtilitesManager.Object);
+
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "New_Type", PortalId = PortalId };
 

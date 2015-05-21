@@ -26,6 +26,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 	            ContentType nvarchar(100) NOT NULL,
 	            PortalID int NOT NULL DEFAULT -1,
 	            IsDynamic bit NOT NULL DEFAULT 0,
+	            Description nvarchar(100) NOT NULL DEFAULT '',
                 CreatedByUserID int NOT NULL,
                 CreatedOnDate datetime NOT NULL DEFAULT getdate(),
                 LastModifiedByUserID int NOT NULL,
