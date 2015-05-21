@@ -102,14 +102,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
 
-        [HttpGet]
-        [AllowAnonymous]
-        [HmacAuthentication]
-        public HttpResponseMessage TestHMAC()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, "test hmac worked");
-        }
-
 
         [HttpGet]
         [DnnPageEditor]
