@@ -516,6 +516,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user identifier.</summary>
+        /// <value>The user identifier.</value>
 		public int UserId
 		{
 			get
@@ -528,6 +530,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user.</summary>
+        /// <value>The current user information.</value>
 		public UserInfo UserInfo
 		{
 			get
