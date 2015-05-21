@@ -22,12 +22,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <summary>
         /// DeleteDataType deletes a single DataType
         /// </summary>
-        /// <param name="viewMode">The Data Type to delete</param>
+        /// <param name="viewModel">The Data Type to delete</param>
         /// <returns></returns>
         [HttpPost]
-        public HttpResponseMessage DeleteDataType(DataTypeViewModel viewMode)
+        public HttpResponseMessage DeleteDataType(DataTypeViewModel viewModel)
         {
-            var dataType = DataTypeManager.Instance.GetDataType(viewMode.DataTypeId, PortalSettings.PortalId, true);
+            var dataType = DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true);
 
             if (dataType != null)
             {
@@ -107,8 +107,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 {
                     Name = viewModel.Name,
                     UnderlyingDataType = viewModel.BaseType,
-                    PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId,
-                    CreatedOnDate = DateUtils.GetDatabaseTime()
+                    PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId
                 };
                 DataTypeManager.Instance.AddDataType(dataType);
             }

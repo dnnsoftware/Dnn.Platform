@@ -26,6 +26,16 @@ namespace Dnn.DynamicContent
         void DeleteContentType(DynamicContentType contentType);
 
         /// <summary>
+        /// GetContentType retrieves a dynamic content type for a portal, optionally including system types
+        /// </summary>
+        /// <param name="contentTypeId">The Id of the content type</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System content types (ie. content types that are available for all portals)
+        /// should be returned. Defaults to false</param>
+        /// <returns>content type</returns>
+        DynamicContentType GetContentType(int contentTypeId, int portalId, bool includeSystem = false);
+
+        /// <summary>
         /// Gets the content types.
         /// </summary>
         /// <param name="portalId">The portalId</param>

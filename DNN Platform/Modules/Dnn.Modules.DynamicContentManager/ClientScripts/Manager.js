@@ -62,7 +62,8 @@
         var config = {
             settings: settings,
             resx: resx,
-            util: dcc.utility(settings)
+            util: dcc.utility(settings, resx),
+            $rootElement: $rootElement
         };
 
         //Build the ViewModel
