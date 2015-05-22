@@ -899,7 +899,8 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-	        var arrUsers = GetUnAuthorizedUsers(portalId);
+            //DNN-6924 for superusers call GetUsers(includeDeleted, superUsersOnly, portalId)
+	        var arrUsers = (portalId == -1) ? GetUsers(true, true, portalId) : GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
                 var user = arrUsers[i] as UserInfo;
