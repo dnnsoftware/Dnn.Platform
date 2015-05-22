@@ -46,6 +46,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             }
 
             ModuleContext = controller.ModuleContext;
+            LocalResourceFile = controller.LocalResourceFile;
         }
 
         public ModuleInfo ActiveModule
