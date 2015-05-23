@@ -28,7 +28,7 @@ GO
 IF NOT EXISTS( SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('{databaseOwner}{objectQualifier}ContentTypes') AND name = 'Description')
    BEGIN
 		ALTER TABLE {databaseOwner}{objectQualifier}ContentTypes 
-			ADD [Description] [nvarchar(1000)] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Description] DEFAULT ('')
+			ADD [Description] nvarchar(1000) NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_Description] DEFAULT ('')
     END 
 GO
 
