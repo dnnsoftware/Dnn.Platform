@@ -50,6 +50,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
@@ -641,7 +642,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
             {
-                profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
+                if (LocaleController.IsValidCultureName(user.Locale.Replace('_', '-')))
+                {
+                    profileProperties.Add("PreferredLocale", user.Locale.Replace('_', '-'));
+                }
+                else
+                {
+                    profileProperties.Add("PreferredLocale", settings.CultureCode);
+                }
             }
 
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
