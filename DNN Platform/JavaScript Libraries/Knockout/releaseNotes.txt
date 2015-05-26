@@ -1,0 +1,30 @@
+Version 3.3.0
+=============
+
+Enhancements
+------------
+
+#1504 - Component configuration can specify a synchronous option to render already loaded components synchronously.
+#1463 - Component child elements are provided to the createViewModel method, component child elements are exposed on the binding context as $componentTemplateNodes, and the template binding can accept an array of DOM nodes directly through the nodes option.
+#1449 - Binding context now contains a $component property that references the nearest component view model (allows for easily binding to the root of the current component).
+#1596 - Create a writable computed within a custom element component when an expression evaluates to an observable (less need to use .$raw property).
+#1576 - computed observables (pure or deferred) notify an awake event with the current value when awakening, pure computeds notify an asleep event with an undefined value when going to sleep, and the getSubscriptionsCount method on an observable can accept an event name argument to return only the count of subscriptions for that event.
+#1543 - Sleeping pure computed observables now cache their value.
+#1635 - Export ko.utils.setTextContent
+#1427 - Export ko.dependencyDetection.ignore as ko.ignoreDependencies
+
+Fixes
+-----
+
+#1321 - Ensure that template nodes are created and moved within the correct document to fix cross-window issues in IE.
+#1434 - Binding parser skips all colons between the name and value. Support returning malformed bindings (non key-value pairs).
+#1468 - css binding was not clearing a previously added dynamic class when the value bound against changes to null.
+#1507 - Memory leak fix for foreach/template binding
+#1513 - Fix error in fixUpContinuousNodeArray when using jquery.tmpl
+#1515 - Update dependentObservable._latestValue when a pureComputed wakes up (affects debug build only)
+#1526 - Component's require option should not try to do an AMD-style require in a CommonJS scenario.
+#1556 - Check that the value passed to optionsAfterRender is a function before calling
+#1597 - CSS binding now works properly with SVG elements
+#1606 - Don't bind contents of <textarea> elements
+#1623 - When using valueAllowUnset: true, null selection should be maintained when option items are updated.
+#1634 - Better clean-up of arrayChange subscriptions
