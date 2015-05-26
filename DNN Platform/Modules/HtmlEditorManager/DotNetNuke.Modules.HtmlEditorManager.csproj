@@ -88,7 +88,6 @@
     <Compile Include="Presenters\ProviderConfigurationPresenter.cs" />
     <Compile Include="Controls\InvalidConfiguration.ascx.cs">
       <DependentUpon>InvalidConfiguration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\InvalidConfiguration.ascx.designer.cs">
       <DependentUpon>InvalidConfiguration.ascx</DependentUpon>
@@ -97,7 +96,6 @@
     <Compile Include="Views\IProviderConfigurationView.cs" />
     <Compile Include="Views\ProviderConfiguration.ascx.cs">
       <DependentUpon>ProviderConfiguration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Views\ProviderConfiguration.ascx.designer.cs">

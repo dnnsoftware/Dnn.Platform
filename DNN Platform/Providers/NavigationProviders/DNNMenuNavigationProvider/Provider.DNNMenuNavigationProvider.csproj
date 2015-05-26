@@ -70,9 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DNNMenuNavigationProvider.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="DNNMenuNavigationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
