@@ -369,6 +369,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     if (canSend)
                     {
                         LogSuccess();
+						cancelButton.Attributes["resourcekey"] = "cmdClose";
                     }
                     else
                     {
