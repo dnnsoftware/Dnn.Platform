@@ -1262,6 +1262,7 @@ td > .dnnLabel {
 
 .dnnFormHelpContent span {
     display: block;
+	word-wrap: break-word;
 }
 
 .dnnTooltip .dnnFormHelpContent span:after,
