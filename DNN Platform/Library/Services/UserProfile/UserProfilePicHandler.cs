@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.IO;
+using System.Threading;
 using System.Web;
 
 using DotNetNuke.Common.Utilities;
@@ -98,7 +99,15 @@ namespace DotNetNuke.Services.UserProfile
             {
                 if (!IsImageExtension(photoFile.Extension))
                 {
-                    context.Response.End();
+	                try
+	                {
+						context.Response.End();
+	                }
+					catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
+	                {
+		                
+	                }
+                    
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
@@ -154,7 +163,16 @@ namespace DotNetNuke.Services.UserProfile
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(1));
             context.Response.Cache.SetMaxAge(new TimeSpan(0, 1, 0));
             context.Response.AddHeader("Last-Modified", DateTime.Now.ToString("r"));
-            context.Response.End();
+
+	        try
+	        {
+				context.Response.End();
+	        }
+			catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
+			{
+
+			}
+            
         }
 
         //whether current user has permission to view target user's photo.
