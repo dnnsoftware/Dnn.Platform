@@ -136,7 +136,7 @@ namespace DotNetNuke.Web.InternalServices
 			List<ModuleDefDTO> modules = new List<ModuleDefDTO>();
 			foreach (var kvp in filteredList)
 			{			
-				foreach (var moduleDefPair in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(kvp.Value.DesktopModuleID))
+				foreach (var moduleDefPair in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(kvp.Value.DesktopModuleID).OrderBy(md => md.Value.FriendlyName))
 				{
 					var moduleDefDTO = new ModuleDefDTO
 					{
