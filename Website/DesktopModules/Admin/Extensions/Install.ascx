@@ -28,7 +28,7 @@
         </StepNavigationTemplate>
         <FinishNavigationTemplate>
             <ul class="dnnActions dnnClear">
-    	        <li><asp:LinkButton id="finishButtonStep" runat="server" CssClass="dnnPrimaryAction" CommandName="MoveComplete" resourcekey="Return" /></li>
+    	        <li><a href="<%=ReturnURL %>" class="dnnPrimaryAction"><%=Localization.GetString("Return", LocalResourceFile) %></a></li>
             </ul>
         </FinishNavigationTemplate>
         <WizardSteps>
