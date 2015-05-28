@@ -284,10 +284,6 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                // FIX DNN-5917
-                fileName = SanitizeFileName(fileName);
-                // END FIX
-
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -315,55 +311,6 @@ namespace DotNetNuke.Web.InternalServices
                 errorMessage = ex.Message;
                 return savedFileDto;
             }
-        }
-
-        /// <summary>
-        /// Sanitizes the upload filename to follow RFC2396 URL spec
-        /// </summary>
-        public static string SanitizeFileName(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName)) return null;
-
-            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-            if (string.IsNullOrEmpty(fileNameWithoutExt)) return null;
-
-            var fileNameExt = Path.GetExtension(fileName);
-
-            var disallowedChars = new[]
-                {
-                    ';',
-                    '/',
-                    '?',
-                    ':',
-                    '@',
-                    '&',
-                    '=',
-                    '+',
-                    '$',
-                    ',',
-                    '<',
-                    '>',
-                    '#',
-                    '%',
-                    '"',
-                    '\'',
-                    '{',
-                    '}',
-                    '|',
-                    '\\',
-                    '^',
-                    '[',
-                    ']',
-                    '`'
-                };
-
-            foreach (var c in disallowedChars)
-            {
-                if (fileNameWithoutExt.Contains(c))
-                    fileNameWithoutExt = fileNameWithoutExt.Replace(c, '_');
-            }
-
-            return string.Format("{0}{1}", fileNameWithoutExt, fileNameExt);
         }
 
         private static string GetLocalizedString(string key)
@@ -511,10 +458,6 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 IFileInfo file;
-
-                // FIX DNN-5917
-                fileName = SanitizeFileName(fileName);
-                // END FIX
 
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
