@@ -168,24 +168,7 @@ namespace DotNetNuke.Services.UserProfile
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
-                isVisible = (user.UserID == targetUser.UserID);
-                if (!isVisible)
-                {
-                    switch (photoProperty.ProfileVisibility.VisibilityMode)
-                    {
-                        case UserVisibilityMode.AllUsers:
-                        isVisible = true;
-                        break;
-                        case UserVisibilityMode.MembersOnly:
-                        isVisible = user.UserID > 0;
-                        break;
-                        case UserVisibilityMode.AdminOnly:
-                        isVisible = user.IsInRole(settings.AdministratorRoleName);
-                        break;
-                        case UserVisibilityMode.FriendsAndGroups:
-                        break;
-                    }
-                }
+	            isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
 
                 if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                 {
