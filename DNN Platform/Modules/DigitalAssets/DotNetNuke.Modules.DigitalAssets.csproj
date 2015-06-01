@@ -97,9 +97,7 @@
     <Compile Include="Components\Controllers\Models\PageViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PermissionViewModel.cs" />
     <Compile Include="Components\ExtensionPoint\IFieldsControl.cs" />
-    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\ExtensionPoint\PropertiesTabContentControl.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnlinkToolbarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\ManageFolderTypesToolBarButtonExtensionPoint.cs" />
     <Compile Include="Components\ExtensionPoint\ToolBarButton\UnzipFileToolBarButtonExtensionPoint.cs" />
@@ -110,14 +108,12 @@
     <Compile Include="Components\ExtensionPoint\UserControls\SearchBoxExtensionPoint.cs" />
     <Compile Include="FileFieldsControl.ascx.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileFieldsControl.ascx.designer.cs">
       <DependentUpon>FileFieldsControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderProperties.ascx.cs">
       <DependentUpon>FolderProperties.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderProperties.ascx.designer.cs">
       <DependentUpon>FolderProperties.ascx</DependentUpon>
@@ -155,21 +151,18 @@
     <Compile Include="Components\Controllers\Models\Field.cs" />
     <Compile Include="EditFolderMapping.ascx.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditFolderMapping.ascx.designer.cs">
       <DependentUpon>EditFolderMapping.ascx</DependentUpon>
     </Compile>
     <Compile Include="FileProperties.ascx.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FileProperties.ascx.designer.cs">
       <DependentUpon>FileProperties.ascx</DependentUpon>
     </Compile>
     <Compile Include="FolderMappings.ascx.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FolderMappings.ascx.designer.cs">
       <DependentUpon>FolderMappings.ascx</DependentUpon>
@@ -177,7 +170,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchBoxControl.ascx.cs">
       <DependentUpon>SearchBoxControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SearchBoxControl.ascx.designer.cs">
       <DependentUpon>SearchBoxControl.ascx</DependentUpon>
@@ -204,14 +196,12 @@
     <Compile Include="Services\Factory.cs" />
     <Compile Include="Settings.ascx.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="View.ascx.designer.cs">
       <DependentUpon>View.ascx</DependentUpon>

@@ -79,7 +79,6 @@
     </Compile>
     <Compile Include="Administration.ascx.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Administration.ascx.designer.cs">
       <DependentUpon>Administration.ascx</DependentUpon>
