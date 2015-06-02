@@ -91,7 +91,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     {
                         return;
                     }
-                    page.Load += OnPageLoad;
+                    page.Init += OnPageInit;
                 }
             }
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace DotNetNuke.HttpModules.Analytics
             }
         }
 
-        private void OnPageLoad(object sender, EventArgs e)
+        private void OnPageInit(object sender, EventArgs e)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace DotNetNuke.HttpModules.Analytics
             catch (Exception ex)
             {
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-                log.AddProperty("Analytics.AnalyticsModule", "OnPageLoad");
+                log.AddProperty("Analytics.AnalyticsModule", "OnPageInit");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);
