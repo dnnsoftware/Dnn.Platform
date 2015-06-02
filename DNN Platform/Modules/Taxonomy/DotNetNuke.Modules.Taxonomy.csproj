@@ -133,14 +133,12 @@
     </Compile>
     <Compile Include="CreateVocabulary.ascx.cs">
       <DependentUpon>CreateVocabulary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CreateVocabulary.ascx.designer.cs">
       <DependentUpon>CreateVocabulary.ascx</DependentUpon>
     </Compile>
     <Compile Include="EditVocabulary.ascx.cs">
       <DependentUpon>EditVocabulary.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="EditVocabulary.ascx.designer.cs">
       <DependentUpon>EditVocabulary.ascx</DependentUpon>
@@ -153,7 +151,6 @@
     <Compile Include="Validators\VocabularyNameValidator.cs" />
     <Compile Include="VocabularyList.ascx.cs">
       <DependentUpon>VocabularyList.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="VocabularyList.ascx.designer.cs">
       <DependentUpon>VocabularyList.ascx</DependentUpon>
