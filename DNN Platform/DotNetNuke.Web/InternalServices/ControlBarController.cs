@@ -338,7 +338,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule2("", moduleLstID, dto.Pane, positionID, permissionType, "");
+                            tabModuleId = DoAddNewModule("", moduleLstID, dto.Pane, positionID, permissionType, "");
                         }
                     }
 
@@ -745,7 +745,7 @@ namespace DotNetNuke.Web.InternalServices
             return 0;
         }
 
-		private int DoAddNewModule2(string title, int moduleDefinitionId, string paneName, int position, int permissionType, string align)
+		private int DoAddNewModule(string title, int moduleDefinitionId, string paneName, int position, int permissionType, string align)
 		{
 			ModuleDefinitionInfo objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(moduleDefinitionId);
 
@@ -800,76 +800,6 @@ namespace DotNetNuke.Web.InternalServices
 
 			return tabModuleId;
 		}
-
-        private int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
-        {
-            try
-            {
-                DesktopModuleInfo desktopModule;
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out desktopModule))
-                {
-                    throw new ArgumentException("desktopModuleId");
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-
-	        var tabModuleId = Null.NullInteger;
-            foreach (ModuleDefinitionInfo objModuleDefinition in
-                ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
-            {
-                var objModule = new ModuleInfo();
-                objModule.Initialize(PortalSettings.Current.ActiveTab.PortalID);
-
-                objModule.PortalID = PortalSettings.Current.ActiveTab.PortalID;
-                objModule.TabID = PortalSettings.Current.ActiveTab.TabID;
-                objModule.ModuleOrder = position;
-                objModule.ModuleTitle = string.IsNullOrEmpty(title) ? objModuleDefinition.FriendlyName : title;
-                objModule.PaneName = paneName;
-                objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
-                if (objModuleDefinition.DefaultCacheTime > 0)
-                {
-                    objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
-                    if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
-                    {
-                        ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if ((defaultModule != null))
-                        {
-                            objModule.CacheTime = defaultModule.CacheTime;
-                        }
-                    }
-                }
-
-                ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
-
-                if (PortalSettings.Current.ContentLocalizationEnabled)
-                {
-                    Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //set the culture of the module to that of the tab
-                    var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
-                    objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
-                }
-                else
-                {
-                    objModule.CultureCode = Null.NullString;
-                }
-                objModule.AllTabs = false;
-                objModule.Alignment = align;
-
-                ModuleController.Instance.AddModule(objModule);
-
-				if (tabModuleId == Null.NullInteger)
-				{
-					tabModuleId = objModule.ModuleID;
-				}
-				//update the position to let later modules with add after previous one.
-                position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
-            }
-
-			return tabModuleId;
-        }
 
 		private string GetModuleName(string moduleName)
 		{
