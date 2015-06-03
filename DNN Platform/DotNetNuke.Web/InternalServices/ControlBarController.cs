@@ -61,6 +61,7 @@ namespace DotNetNuke.Web.InternalServices
 
         public class ModuleDefDTO
         {
+			public int DesktopModuleID { get; set; }
             public int ModuleID { get; set; }
             public string ModuleName { get; set; }
             public string ModuleImage { get; set; }
@@ -101,48 +102,59 @@ namespace DotNetNuke.Web.InternalServices
             public string Language { get; set; }
         }
 
-        [HttpGet]
-        [DnnPageEditor]
-        public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "", bool sortBookmarks = false, string topModule = "")
-        {
-            if (string.IsNullOrEmpty(category))
-            {
-                category = "All";                
-            }            
-            var bookmarCategory = Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
-            var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
-            var bookmarkCategoryModules = Controller.GetCategoryDesktopModules(PortalSettings.PortalId, bookmarCategory, searchTerm);
+		[HttpGet]
+		[DnnPageEditor]
+		public HttpResponseMessage GetPortalDesktopModules(string category, int loadingStartIndex, int loadingPageSize, string searchTerm, string excludeCategories = "", bool sortBookmarks = false, string topModule = "")
+		{
+			if (string.IsNullOrEmpty(category))
+			{
+				category = "All";
+			}
+			var bookmarCategory = Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
+			var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
+			var bookmarkCategoryModules = Controller.GetCategoryDesktopModules(PortalSettings.PortalId, bookmarCategory, searchTerm);
 
-            var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct() 
-                                            : Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
+			var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct()
+											: Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
 
-            if (!string.IsNullOrEmpty(excludeCategories))
-            {
-                var excludeList = excludeCategories.ToLowerInvariant().Split(',');
-                filteredList =
-                    filteredList.Where(kvp => 
-                        !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
-            }
-            if(sortBookmarks)
-            {
-                //sort bookmarked modules
-                filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
-                //move Html on top
-                filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
-                                Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
-            }
+			if (!string.IsNullOrEmpty(excludeCategories))
+			{
+				var excludeList = excludeCategories.ToLowerInvariant().Split(',');
+				filteredList =
+					filteredList.Where(kvp =>
+						!excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
+			}
+			if (sortBookmarks)
+			{
+				//sort bookmarked modules
+				filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
+				//move Html on top
+				filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
+								Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
+			}
 
-            filteredList = filteredList
-                .Skip(loadingStartIndex)
-                .Take(loadingPageSize);
-            
-            var result = filteredList.Select(kvp => new ModuleDefDTO {ModuleID = kvp.Value.DesktopModuleID, 
-                                                                    ModuleName = kvp.Key, 
-                                                                    ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID), 
-                                                                    Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key), 
-                                                                    ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key)}).ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
-        }
+			List<ModuleDefDTO> modules = new List<ModuleDefDTO>();
+			foreach (var kvp in filteredList)
+			{			
+				foreach (var moduleDefPair in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(kvp.Value.DesktopModuleID).OrderBy(md => md.Value.FriendlyName))
+				{
+					var moduleDefDTO = new ModuleDefDTO
+					{
+						DesktopModuleID = moduleDefPair.Value.DesktopModuleID,
+						ModuleID = moduleDefPair.Value.ModuleDefID,
+						ModuleName = moduleDefPair.Value.FriendlyName,
+						ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+						Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
+						ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key)
+					};
+
+					modules.Add(moduleDefDTO);
+				}
+			}
+
+			modules = modules.Skip(loadingStartIndex).Take(loadingPageSize).ToList();
+			return Request.CreateResponse(HttpStatusCode.OK, modules);
+		}
         
         [HttpGet]
         [DnnPageEditor]
@@ -326,7 +338,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule("", moduleLstID, dto.Pane, positionID, permissionType, "");
+                            tabModuleId = DoAddNewModule2("", moduleLstID, dto.Pane, positionID, permissionType, "");
                         }
                     }
 
@@ -602,7 +614,6 @@ namespace DotNetNuke.Web.InternalServices
 
                 newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
 
-                newModule.PortalID = PortalSettings.Current.PortalId;
                 newModule.TabID = PortalSettings.Current.ActiveTab.TabID;
                 newModule.ModuleOrder = position;
                 newModule.PaneName = paneName;
@@ -733,6 +744,62 @@ namespace DotNetNuke.Web.InternalServices
 
             return 0;
         }
+
+		private int DoAddNewModule2(string title, int moduleDefinitionId, string paneName, int position, int permissionType, string align)
+		{
+			ModuleDefinitionInfo objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(moduleDefinitionId);
+
+			var tabModuleId = Null.NullInteger;
+			
+			var objModule = new ModuleInfo();
+			objModule.Initialize(PortalSettings.Current.ActiveTab.PortalID);
+
+			objModule.PortalID = PortalSettings.Current.ActiveTab.PortalID;
+			objModule.TabID = PortalSettings.Current.ActiveTab.TabID;
+			objModule.ModuleOrder = position;
+			objModule.ModuleTitle = string.IsNullOrEmpty(title) ? objModuleDefinition.FriendlyName : title;
+			objModule.PaneName = paneName;
+			objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
+			if (objModuleDefinition.DefaultCacheTime > 0)
+			{
+				objModule.CacheTime = objModuleDefinition.DefaultCacheTime;
+				if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
+				{
+					ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
+					if ((defaultModule != null))
+					{
+						objModule.CacheTime = defaultModule.CacheTime;
+					}
+				}
+			}
+
+			ModuleController.Instance.InitialModulePermission(objModule, objModule.TabID, permissionType);
+
+			if (PortalSettings.Current.ContentLocalizationEnabled)
+			{
+				Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
+				//set the culture of the module to that of the tab
+				var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
+				objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
+			}
+			else
+			{
+				objModule.CultureCode = Null.NullString;
+			}
+			objModule.AllTabs = false;
+			objModule.Alignment = align;
+
+			ModuleController.Instance.AddModule(objModule);
+
+			if (tabModuleId == Null.NullInteger)
+			{
+				tabModuleId = objModule.ModuleID;
+			}
+			//update the position to let later modules with add after previous one.
+			position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
+
+			return tabModuleId;
+		}
 
         private int DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
