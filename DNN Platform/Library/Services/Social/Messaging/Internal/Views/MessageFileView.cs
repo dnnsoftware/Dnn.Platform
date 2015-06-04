@@ -22,14 +22,12 @@ using System;
 
 namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
+    /// <summary>The MessageFileView class contains details about the attachment</summary>
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging.Views
     /// Class:      MessageFileView
     /// -----------------------------------------------------------------------------
-    /// <summary>
-    /// The MessageFileView class contains details about the attachment
-    /// </summary>
     /// -----------------------------------------------------------------------------
     public class MessageFileView
     {
@@ -40,13 +38,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// <value>The file identifier.</value>
         public int FileId { get; set; }
 
-        /// <summary>The name of the file with extension</summary>
+        /// <summary>Gets or sets the name of the file with extension</summary>
         /// <value>The name.</value>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Size of the File with Unit, e.g. 100 B, 12 KB, 200 MB, etc.
-        /// </summary>
+        /// <summary>Gets or sets the size of the File with Unit, e.g. 100 B, 12 KB, 200 MB, etc.</summary>
+        /// <value>The size.</value>
         public string Size
         {
             get { return _size; }
@@ -73,7 +70,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         }
 
         /// <summary>
-        /// Url of the file to download
+        /// Gets or sets the url of the file to download
         /// </summary>
         public string Url { get; set; }
     }
