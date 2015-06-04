@@ -91,6 +91,7 @@ namespace DotNetNuke.Tests.Utilities
         #region PortalSettings Constants
 
         public const string PORTALSETTING_MessagingAllowAttachments_Name = "MessagingAllowAttachments";
+        public const string PORTALSETTING_MessagingIncludeAttachments_Name = "MessagingIncludeAttachments";
         public const string PORTALSETTING_MessagingAllowAttachments_Value_YES = "YES";
         public const string PORTALSETTING_MessagingAllowAttachments_Value_NO = "NO";
 

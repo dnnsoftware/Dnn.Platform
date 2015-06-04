@@ -35,6 +35,8 @@ using DotNetNuke.Services.Social.Messaging.Internal.Views;
 
 namespace DotNetNuke.Services.Social.Messaging.Data
 {
+    using DotNetNuke.Services.FileSystem.EventArgs;
+
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
@@ -268,7 +270,8 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                                          {
                                              Name = file.FileName,
                                              Size = file.Size.ToString(CultureInfo.InvariantCulture),
-                                             Url = FileManager.Instance.GetUrl(file)
+                                             Url = FileManager.Instance.GetUrl(file),
+                                             FileId = fileId
                                          };
 
                     attachments.Add(attachment);

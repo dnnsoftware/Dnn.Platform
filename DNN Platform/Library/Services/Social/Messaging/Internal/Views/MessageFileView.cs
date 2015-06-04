@@ -33,11 +33,15 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// -----------------------------------------------------------------------------
     public class MessageFileView
     {
+        /// <summary>The _size</summary>
         private string _size;
 
-        /// <summary>
-        /// The name of the file with extension
-        /// </summary>
+        /// <summary>Gets or sets the file identifier.</summary>
+        /// <value>The file identifier.</value>
+        public int FileId { get; set; }
+
+        /// <summary>The name of the file with extension</summary>
+        /// <value>The name.</value>
         public string Name { get; set; }
 
         /// <summary>

@@ -410,6 +410,13 @@
                             </asp:RadioButtonList>
                         </div>
                         <div class="dnnFormItem">
+                            <dnn:label id="plIncludeAttachments" runat="server" controlname="optMsgIncludeAttachments" />
+                            <asp:RadioButtonList ID="optMsgIncludeAttachments" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
+                                <asp:ListItem Value="YES" resourcekey="MsgAllowAttachmentsYes" />
+                                <asp:ListItem Value="NO" resourcekey="MsgAllowAttachmentsNo" />
+                            </asp:RadioButtonList>
+                        </div>
+                        <div class="dnnFormItem">
                             <dnn:label id="plMsgSendEmail" runat="server" controlname="optMsgSendEmails" />
                             <asp:RadioButtonList ID="optMsgSendEmail" runat="server" RepeatDirection="Horizontal" CssClass="dnnFormRadioButtons">
                                 <asp:ListItem Value="YES" resourcekey="MsgSendEmailYes" />
