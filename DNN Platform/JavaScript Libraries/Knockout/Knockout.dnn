@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Knockout" type="JavaScript_Library" version="03.01.00">
+    <package name="Knockout" type="JavaScript_Library" version="03.03.00">
       <friendlyName>Knockout JavaScript Library</friendlyName>
       <description>Knockout is an MVVM library that is used for client side databinding.</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>
