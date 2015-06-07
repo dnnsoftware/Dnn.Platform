@@ -138,6 +138,7 @@ BEGIN
 		WHERE PortalSettingID = (SELECT Top(1) PortalSettingID FROM {databaseOwner}[{objectQualifier}PortalSettings] S 
 		                         WHERE PS.PortalID = S.PortalID AND PS.SettingName = S.SettingName 
 								 ORDER BY CASE CultureCode WHEN @CultureCode THEN 2 WHEN Null THEN 1 ELSE 0 END DESC)
+		  AND PortalID = @PortalID
 	 ORDER BY SettingName
 END
 GO
