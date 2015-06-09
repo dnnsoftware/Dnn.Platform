@@ -69,14 +69,23 @@ namespace DotNetNuke.Services.Sitemap
 
             foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem))
             {
-                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
+                try
                 {
-                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+                    if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+                        (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
                     {
-                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
-                        urls.Add(pageUrl);
+                        if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+                        {
+                            pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
+                            urls.Add(pageUrl);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapUrlGenerationError",
+                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                                tab.TabID, tab.TabName, ex.Message)));
                 }
             }
 

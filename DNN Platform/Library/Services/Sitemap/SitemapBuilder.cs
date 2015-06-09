@@ -101,7 +101,18 @@ namespace DotNetNuke.Services.Sitemap
                     providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50")) / 100;
 
                     // Get all urls from provider
-                    List<SitemapUrl> urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
+                    List<SitemapUrl> urls = new List<SitemapUrl>();
+                    try
+                    {
+                        urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
+                    }
+                    catch (Exception ex)
+                    {
+                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapProviderError",
+                            "URL sitemap provider '{0}' failed with error: {1}",
+                            _provider.Name, ex.Message)));
+                    }
+
                     foreach (SitemapUrl url in urls)
                     {
                         if (isProviderPriorityOverrided)
