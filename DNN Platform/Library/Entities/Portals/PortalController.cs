@@ -2750,10 +2750,16 @@ namespace DotNetNuke.Entities.Portals
                     Globals.DeleteFolderRecursive(serverPath + "Portals\\" + portal.PortalID);
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
-                        string HomeDirectory = portal.HomeDirectoryMapPath;
-                        if (Directory.Exists(HomeDirectory))
+                        string homeDirectory = portal.HomeDirectoryMapPath;
+
+                        if (homeDirectory.EndsWith("\\"))
                         {
-                            Globals.DeleteFolderRecursive(HomeDirectory);
+                            homeDirectory = homeDirectory.Substring(0, homeDirectory.Length - 1);
+                        }
+
+                        if (Directory.Exists(homeDirectory))
+                        {
+                            Globals.DeleteFolderRecursive(homeDirectory);
                         }
                     }
                     //remove database references
