@@ -167,15 +167,17 @@ namespace DotNetNuke.Services.Search
             DeletedCount = 0;
             var searchController = InternalSearchController.Instance;
             var dataProvider = DataProvider.Instance();
-            var reader = dataProvider.GetSearchDeletedItems(cutoffTime);
-            while (reader.Read())
+            using(var reader = dataProvider.GetSearchDeletedItems(cutoffTime))
             {
-                // Note: we saved this in the DB as SearchDocumentToDelete but retrieve as the descendant SearchDocument class
-                var document = JsonConvert.DeserializeObject<SearchDocument>(reader["document"] as string);
-                searchController.DeleteSearchDocument(document);
-                DeletedCount += 1;
+                while (reader.Read())
+                {
+                    // Note: we saved this in the DB as SearchDocumentToDelete but retrieve as the descendant SearchDocument class
+                    var document = JsonConvert.DeserializeObject<SearchDocument>(reader["document"] as string);
+                    searchController.DeleteSearchDocument(document);
+                    DeletedCount += 1;
+                }
+                reader.Close();
             }
-
             dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
 
