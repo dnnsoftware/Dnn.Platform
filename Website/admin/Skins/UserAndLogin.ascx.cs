@@ -90,15 +90,24 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-                string url = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
-
-                if (UsePopUp)
-                {
-                    url = "return " + UrlUtils.PopUpUrl(url, this, PortalSettings, true, false, 300, 650);
-                }
-                return url;
+                return Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
             }
         }
+
+		protected string LoginUrlForClickEvent
+		{
+			get
+			{
+				var url = LoginUrl;
+
+				if (UsePopUp)
+				{
+					return "return " + UrlUtils.PopUpUrl(LoginUrl, this, PortalSettings, true, false, 300, 650);
+				}
+
+				return string.Empty;
+			}
+		}
 
         protected bool UsePopUp
         {
@@ -114,15 +123,22 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                string url = Globals.RegisterURL(HttpUtility.UrlEncode(Globals.NavigateURL()), Null.NullString);
-
-                if (UsePopUp)
-                {
-                    url = "return " + UrlUtils.PopUpUrl(url, this, PortalSettings, true, false, 600, 950);
-                }
-                return url;
+                return Globals.RegisterURL(HttpUtility.UrlEncode(Globals.NavigateURL()), Null.NullString);
             }
         }
+
+		protected string RegisterUrlForClickEvent
+		{
+			get
+			{
+				if (UsePopUp)
+				{
+					return "return " + UrlUtils.PopUpUrl(RegisterUrl, this, PortalSettings, true, false, 600, 950);
+				}
+
+				return string.Empty;
+			}
+		}
 
         protected string UserProfileUrl
         {
@@ -149,7 +165,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
                 viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
                 logoffLink.NavigateUrl = Globals.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
-                editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=3");
+                editProfileLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=2");
                 accountLink.NavigateUrl = Globals.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
                 messagesLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
                 notificationsLink.NavigateUrl = Globals.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
@@ -181,8 +197,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (UsePopUp)
             {
-                registerLink.Attributes.Add("onclick", RegisterUrl);
-                loginLink.Attributes.Add("onclick", LoginUrl);
+                registerLink.Attributes.Add("onclick", RegisterUrlForClickEvent);
+                loginLink.Attributes.Add("onclick", LoginUrlForClickEvent);
             }
 
         }

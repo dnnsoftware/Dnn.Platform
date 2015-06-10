@@ -554,6 +554,11 @@ namespace DotNetNuke.Data
 			return reader;
 		}
 
+        public virtual IDataReader GetAllPortals()
+        {
+            return ExecuteReader("GetAllPortals");
+        }
+
 		public virtual IDataReader GetPortalsByName(string nameToMatch, int pageIndex, int pageSize)
 		{
 			return ExecuteReader("GetPortalsByName", nameToMatch, pageIndex, pageSize);
@@ -2524,7 +2529,12 @@ namespace DotNetNuke.Data
 									  lastModifiedByUserId);
 		}
 
-		#endregion
+	    public virtual IDataReader SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+	    {
+            return ExecuteReader("SearchProfilePropertyValues", portalId, propertyName, searchString);
+	    }
+
+	    #endregion
 
 		#region SkinControls
 

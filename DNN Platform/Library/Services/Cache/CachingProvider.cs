@@ -208,6 +208,7 @@ namespace DotNetNuke.Services.Cache
         private void ClearModuleCacheInternal(int tabId, bool clearRuntime)
         {
             RemoveFormattedCacheKey(DataCache.TabModuleCacheKey, clearRuntime, tabId);
+            RemoveFormattedCacheKey(DataCache.PublishedTabModuleCacheKey, clearRuntime, tabId);
             RemoveFormattedCacheKey(DataCache.ModulePermissionCacheKey, clearRuntime, tabId);
         }
 
@@ -221,7 +222,7 @@ namespace DotNetNuke.Services.Cache
 
         private void ClearPortalCacheInternal(int portalId, bool cascade, bool clearRuntime)
         {
-            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId);
+            RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, string.Empty);
 
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
@@ -229,13 +230,18 @@ namespace DotNetNuke.Services.Cache
                 //At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
                 RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
+                RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
             }
             else
             {
                 foreach (Locale portalLocale in LocaleController.Instance.GetLocales(portalId).Values)
                 {
                     RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
+                    RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
+                RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
             if (cascade)
             {

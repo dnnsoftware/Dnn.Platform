@@ -513,8 +513,6 @@ namespace DotNetNuke.Security.Membership
                             PortalID = Null.SetNullInteger(dr["PortalID"]),
                             IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                             UserID = Null.SetNullInteger(dr["UserID"]),
-                            FirstName = Null.SetNullString(dr["FirstName"]),
-                            LastName = Null.SetNullString(dr["LastName"]),
                             DisplayName = Null.SetNullString(dr["DisplayName"]),
                             LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
                         };
@@ -873,7 +871,10 @@ namespace DotNetNuke.Security.Membership
                     {
                         isOAuthUser = true;
                         //DNN-4133 Change username to email address to ensure multiple users with the same email prefix, but different email domains can authenticate
-                        user.Username = service + "-" + user.Email;
+	                    if (!string.IsNullOrEmpty(user.Email))
+	                    {
+		                    user.Username = service + "-" + user.Email;
+	                    }
                     }
                     else
                     {

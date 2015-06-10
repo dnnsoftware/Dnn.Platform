@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -66,20 +67,32 @@ namespace DotNetNuke.Services.Sitemap
             includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
 
             this.ps = ps;
-
-            foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem))
+            var currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
+            if (LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished)
             {
-                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal && (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
-                {
-                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
-                    {
-                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
-                        urls.Add(pageUrl);
-                    }
-                }
+                foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem && t.CultureCode.ToLowerInvariant() == currentLanguage.ToLowerInvariant()))
+				{
+	                try
+	                {
+	                    if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
+	                        (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+	                        (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
+	                    {
+	                        if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+	                        {
+	                            pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
+	                            urls.Add(pageUrl);
+	                        }
+	                    }
+	                }
+	                catch (Exception ex)
+	                {
+	                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapUrlGenerationError",
+	                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+	                                tab.TabID, tab.TabName, ex.Message)));
+	                }
+	            }
             }
-
             return urls;
         }
 

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Web.Compilation;
-
-using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Upgrade.Internals;
 
 namespace DotNetNuke.Services.Upgrade
 {
@@ -67,8 +63,8 @@ namespace DotNetNuke.Services.Upgrade
 
 		private static void LogInstaller(string logType, string message)
 		{
-			string logFile = "InstallerLog" + DateTime.Now.Year.ToString(CultureInfo.InvariantCulture) + DateTime.Now.Month.ToString(CultureInfo.InvariantCulture) + DateTime.Now.Day.ToString(CultureInfo.InvariantCulture) + ".resources";
-			string logfilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Portals\_default\Logs\" + logFile);
+		    var logFile = InstallController.Instance.InstallerLogName;
+			var logfilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Portals\_default\Logs\" + logFile);
 			using (var writer = new StreamWriter(logfilePath, true))
 			{
 				writer.WriteLine(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture) + " " + logType + " " + CallingType + " " + message);

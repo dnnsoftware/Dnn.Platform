@@ -1233,12 +1233,6 @@ The host-level settings are currently set as follows:
   <data name="MaxIdleTimeValidation.Text" xml:space="preserve">
     <value>Numbers from 1 to 2147483647 only!</value>
   </data>
-  <data name="enableModuleEffectLabel.Text" xml:space="preserve">
-    <value>Enable Module Effect?</value>
-  </data>
-  <data name="enableModuleEffectLabel.Help" xml:space="preserve">
-    <value>Check this box to enable highlight current edit module in edit mode.</value>
-  </data>
   <data name="pl404TabId.Help" xml:space="preserve">
     <value>The 404 Error Page for your site.  Users will be redirected to this page if the URL they are navigating to results in a "Page Not Found" error.</value>
   </data>
@@ -1274,5 +1268,17 @@ The host-level settings are currently set as follows:
   </data>
   <data name="plAddCompatibleHttpHeader.Text" xml:space="preserve">
     <value>X-UA-Compatible Http Header</value>
+  </data>
+  <data name="plAddCachebusterToResourceUris.Help" xml:space="preserve">
+    <value>Add a cache buster parameter (ver=[file timestamp]) to file resource URIs.</value>
+  </data>
+  <data name="plAddCachebusterToResourceUris.Text" xml:space="preserve">
+    <value>Cachebust resource URIs</value>
+  </data>
+  <data name="plDisablePrivateMessage.Help" xml:space="preserve">
+    <value>When this option is set, regular users can't send message to specific user or group anymore.</value>
+  </data>
+  <data name="plDisablePrivateMessage.Text" xml:space="preserve">
+    <value>Disable Private Message</value>
   </data>
 </root>

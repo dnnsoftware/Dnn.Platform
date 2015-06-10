@@ -4762,7 +4762,7 @@
       <pageheadtext />
       <permanentredirect>false</permanentredirect>
       <refreshinterval>-1</refreshinterval>
-      <sitemappriority>0.5</sitemappriority>
+      <sitemappriority>0</sitemappriority>
       <startdate>0001-01-01T00:00:00</startdate>
       <name>404 Error Page</name>
       <title>[Tab.404ErrorPage.Title.Text]</title>
@@ -4789,7 +4789,16 @@
           <rolename>Administrators</rolename>
         </permission>
       </tabpermissions>
-      <tabsettings />
+      <tabsettings>
+        <tabsetting>
+          <settingname>AllowIndex</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+        <tabsetting>
+          <settingname>LinkNewWindow</settingname>
+          <settingvalue>False</settingvalue>
+        </tabsetting>
+      </tabsettings>
       <panes>
         <pane>
           <name>ContentPane</name>
@@ -4923,4 +4932,42 @@
       </panes>
     </tab>
   </tabs>
+  <folders>
+    <folder>
+      <folderpath />
+      <storagelocation>0</storagelocation>
+      <folderpermissions>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>All Users</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>WRITE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>READ</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+        <permission>
+          <permissioncode>SYSTEM_FOLDER</permissioncode>
+          <permissionkey>BROWSE</permissionkey>
+          <rolename>Administrators</rolename>
+          <allowaccess>true</allowaccess>
+        </permission>
+      </folderpermissions>
+    </folder>
+  </folders>
 </portal>

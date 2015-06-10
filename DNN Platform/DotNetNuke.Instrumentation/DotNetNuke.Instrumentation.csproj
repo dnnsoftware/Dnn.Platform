@@ -37,10 +37,6 @@
     <NoWarn>1591, 0649</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.Log4Net">
-      <HintPath>..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -58,11 +54,17 @@
     <Compile Include="LoggerSourceImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
+      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
+      <Name>DotNetNuke.Log4Net</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
-    <Copy SourceFiles="..\Components\Log4Net\bin\DotNetNuke.Log4Net.dll" DestinationFolder="..\..\Website\bin\" />
+    <Copy SourceFiles="bin\DotNetNuke.Log4Net.dll" DestinationFolder="..\..\Website\bin\" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.dll" DestinationFolder="..\..\Website\bin" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.pdb" DestinationFolder="..\..\Website\bin" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.xml" DestinationFolder="..\..\Website\bin" />

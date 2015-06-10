@@ -424,7 +424,7 @@
     <value>You have been successfully unsubscribed</value>
   </data>
   <data name="lblSubscriptions.Help" xml:space="preserve">
-    <value>View and manage the items the user is subscribed to.</value>
+    <value>View and manage the items you are subscribed to.</value>
   </data>
   <data name="lblSubscriptions.Text" xml:space="preserve">
     <value>Subscriptions:</value>

@@ -24,7 +24,7 @@
                 </Items>
             </dnn:DnnComboBox>
         </div>
-        <asp:HyperLink ID="hypMessage" runat="server" Target="_new" CssClass="dnnCPHMessage" />
+        <asp:HyperLink ID="hypMessage" runat="server" Target="_blank" CssClass="dnnCPHMessage" />
     </div>
     <div id="BodyPanel" runat="server" class="dnnCPContent" style="display: none">
         <asp:Panel ID="CommonTasksPanel" runat="server" CssClass="cpcbCommonTasks dnnClear">
@@ -88,9 +88,9 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			if (!$(".dnnControlPanel").data("loaded")) {
-				var yesText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Yes.Text", Localization.SharedResourceFile)) %>';
-				var noText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("No.Text", Localization.SharedResourceFile)) %>';
-				var titleText = '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("Confirm.Text", Localization.SharedResourceFile)) %>';
+				var yesText = '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>';
+				var noText = '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>';
+				var titleText = '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>';
 
 				// Client IDs for the following three have _CPCommandBtn appended as a rule
 				$('#<%= DeletePage.ClientID %>_CPCommandBtn').dnnConfirm({

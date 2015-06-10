@@ -295,8 +295,12 @@ namespace DotNetNuke.Entities.Users
                 {
                     using (_social.GetWriteLock())
                     {
-                        userSocial = new UserSocial(this);
-                        _social.Add(PortalID, userSocial);
+						exists = _social.TryGetValue(PortalID, out userSocial);
+	                    if (!exists)
+	                    {
+							userSocial = new UserSocial(this);
+							_social.Add(PortalID, userSocial);
+						}
                     }
                 }
 

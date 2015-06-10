@@ -712,6 +712,60 @@ namespace DotNetNuke.Entities.Users
             return retValue;
         }
 
+        /// <summary>
+        /// overload will validate the token and if valid change the password
+        /// it does not require an old password as it supports hashed passwords
+        /// errorMessage will define why reset failed
+        /// </summary>
+        /// <param name="newPassword">The new password.</param>
+        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        {
+            bool retValue;
+            errorMessage = Null.NullString;
+            Guid resetTokenGuid = new Guid(resetToken);
+
+            var user = GetUserByName(portalid, username);
+            //if user does not exist return false 
+            if (user == null)
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_UserUndefined");
+                return false;
+            }
+            //check if the token supplied is the same as the users and is still valid
+            if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_ResetLinkExpired");
+                return false;
+            }
+            var m = new MembershipPasswordController();
+            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            {
+                errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory");
+                return false;
+            }
+
+            //Although we would hope that the caller has already validated the password,
+            //Validate the new Password
+            if (ValidatePassword(newPassword))
+            {
+                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+
+                //update reset token values to ensure token is 1-time use
+                user.PasswordResetExpiration = DateTime.MinValue;
+                user.PasswordResetToken = Guid.NewGuid();
+
+                //Update User
+                user.Membership.UpdatePassword = false;
+                UpdateUser(user.PortalID, user);
+            }
+            else
+            {
+                throw new Exception("Invalid Password");
+            }
+            return retValue;
+        }
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
@@ -845,7 +899,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-            var arrUsers = GetUsers(portalId);
+	        var arrUsers = GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
                 var user = arrUsers[i] as UserInfo;
@@ -874,7 +928,9 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            // If the HTTP Current Context is unavailable (e.g. when called from within a SchedulerClient) GetCurrentPortalSettings() returns null and the 
+            // PortalSettings are created/loaded for the portal (originally) assigned to the user.
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings() ?? new PortalSettings(portalId);
 
             var canDelete = deleteAdmin || (user.UserID != portalSettings.AdministratorId);
 
@@ -887,7 +943,7 @@ namespace DotNetNuke.Entities.Users
 
             if (canDelete)
             {
-                //Obtain PortalSettings from Current Context
+                //Obtain PortalSettings from Current Context or from the users (original) portal if the HTTP Current Context is unavailable.
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
@@ -1530,7 +1586,7 @@ namespace DotNetNuke.Entities.Users
 
         public static void RemoveDeletedUsers(int portalId)
         {
-            var arrUsers = GetUsers(true, false, portalId);
+	        var arrUsers = GetDeletedUsers(portalId);
 
             foreach (UserInfo objUser in arrUsers)
             {
@@ -1571,6 +1627,7 @@ namespace DotNetNuke.Entities.Users
                     {
                         //try to remove the parent folder if there is no other users use this folder.
                         var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
+                        FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
                         if(parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
                         {
                             FolderManager.Instance.DeleteFolder(parentFolder, notDeletedSubfolders);
@@ -1579,6 +1636,7 @@ namespace DotNetNuke.Entities.Users
                             {
                                 //try to remove the root folder if there is no other users use this folder.
                                 var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
+                                FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
                                 if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
                                 {
                                     FolderManager.Instance.DeleteFolder(rootFolder, notDeletedSubfolders);

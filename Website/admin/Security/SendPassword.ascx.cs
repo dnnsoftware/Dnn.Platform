@@ -309,8 +309,13 @@ namespace DotNetNuke.Modules.Admin.Security
                         {
                             canSend = false;
                         }
-                        else
+                        else 
                         {
+                            if (_user.Membership.Approved == false)
+                            {
+                                Mail.SendMail(_user, MessageType.PasswordReminderUserIsNotApproved, PortalSettings);
+                                canSend = false;
+                            }
                             //if (MembershipProviderConfig.PasswordRetrievalEnabled)
                             //{
                             //    try

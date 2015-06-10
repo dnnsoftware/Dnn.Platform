@@ -1,0 +1,95 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* DNN-6398 */
+/************/
+
+UPDATE {databaseOwner}{objectQualifier}HostSettings
+  SET SettingValue ='http://www.dnnsoftware.com/help'
+  WHERE SettingName='HelpURL'
+
+GO
+
+/* DNN-6758 */
+/************/
+
+ ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFile      nVarChar(255);
+ ALTER TABLE {databaseOwner}[{objectQualifier}Tabs] ALTER COLUMN IconFileLarge nVarChar(255);
+
+ GO
+
+ /* DNN-5631 */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}DeleteList]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteList]
+	@ListName  nVarChar( 50), -- Not Null
+	@ParentKey nVarChar(150)  -- Not Null
+AS
+BEGIN
+	DELETE L
+	 FROM  {databaseOwner}[{objectQualifier}Lists] L
+	 WHERE ListName = @ListName 
+	   AND {databaseOwner}[{objectQualifier}GetListParentKey](L.ParentID, L.ListName, N'ParentKey',  0) = @ParentKey;
+END
+GO
+
+ /* DNN-6877 */
+/*************/
+
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
+AS
+BEGIN
+DELETE FROM {databaseOwner}[{objectQualifier}schedulehistory] WHERE schedulehistoryid IN (
+	SELECT TOP 50000 ScheduleHistoryID FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh 
+		INNER JOIN {databaseOwner}[{objectQualifier}Schedule] s ON s.ScheduleID = sh.ScheduleID AND s.Enabled = 1
+	WHERE (
+  SELECT COUNT(*) 
+  FROM {databaseOwner}[{objectQualifier}ScheduleHistory] sh
+  WHERE sh.ScheduleID = {databaseOwner}[{objectQualifier}ScheduleHistory].ScheduleID
+  AND sh.StartDate >= {databaseOwner}[{objectQualifier}ScheduleHistory].StartDate
+) > s.RetainHistoryNum
+		AND s.RetainHistoryNum <> -1
+		AND s.ScheduleID = sh.ScheduleID
+	ORDER BY ScheduleHistoryID
+)
+END
+GO
+
+/* DNN-DNN-6980 */
+/************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteUserNotifications
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
+	@UserId INT,
+	@PortalId INT
+AS
+BEGIN
+	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_Messages
+	WHERE PortalId = @PortalId
+	  AND NotificationTypeID IS NOT NULL
+	  AND MessageID IN (SELECT MessageID FROM {databaseOwner}{objectQualifier}CoreMessaging_MessageRecipients WHERE UserID = @UserId)
+
+	SELECT @@ROWCOUNT
+END
+GO
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

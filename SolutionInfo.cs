@@ -32,7 +32,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("DNN Corporation")]
 [assembly: AssemblyProduct("http://www.dnnsoftware.com")]
-[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2014 by DNN Corporation. All Rights Reserved.")]
+[assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2015 by DNN Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
 // Version information for an assembly consists of the following four values:
 //
@@ -43,5 +43,5 @@ using System.Reflection;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("7.4.1.0")]
-[assembly: AssemblyFileVersion("7.4.1.0")]
+[assembly: AssemblyVersion("7.4.2.0")]
+[assembly: AssemblyFileVersion("7.4.2.0")]

@@ -65,6 +65,11 @@ namespace DotNetNuke.UI.WebControls
 
 		#region Protected Members
 
+		public PropertyLabelControl()
+		{
+			
+		}
+
 
 		protected override HtmlTextWriterTag TagKey
 		{
@@ -97,6 +102,20 @@ namespace DotNetNuke.UI.WebControls
 			{
 				EnsureChildControls();
 				lblLabel.Text = value;
+			}
+		}
+
+		public string AssociatedControlId
+		{
+			get
+			{
+				EnsureChildControls();
+				return lblLabel.AssociatedControlID;
+			}
+			set
+			{
+				EnsureChildControls();
+				lblLabel.AssociatedControlID = value;
 			}
 		}
 
@@ -352,7 +371,7 @@ namespace DotNetNuke.UI.WebControls
 			//DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
 			if (EditControl != null)
 			{
-				label.Attributes.Add("for", EditControl.ClientID);
+				label.Attributes.Add("for", EditControl is EditControl ? ((EditControl)EditControl).EditControlClientId : EditControl.ClientID);
 			}
 
             //make sure the help container have the default css class to active js handler.

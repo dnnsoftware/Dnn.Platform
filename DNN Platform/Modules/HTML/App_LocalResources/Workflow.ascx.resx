@@ -214,6 +214,6 @@
     <value>Manage Workflows</value>
   </data>
   <data name="WorkFlowStateHelp.Text" xml:space="preserve">
-    <value>In this section you can manage the workflow states.  Note that once a workflow is being used you cannot delete any of the workflow states associated with the workflow.  Also the first and last workflow states of a workflow canot be deleted.</value>
+    <value>In this section you can manage the workflow states.  Note that once a workflow is being used you cannot delete any of the workflow states associated with the workflow.  Also the first and last workflow states of a workflow cannot be deleted.</value>
   </data>
 </root>

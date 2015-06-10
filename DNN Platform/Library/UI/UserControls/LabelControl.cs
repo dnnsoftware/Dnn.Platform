@@ -76,6 +76,12 @@ namespace DotNetNuke.UI.UserControls
 		public string ControlName { get; set; }
 
 		/// <summary>
+		/// Set the associate control id format, combined used with ControlName for controls
+		///  which have child edit control and want that child control focus when click label.
+		/// </summary>
+		public string AssociateFormat { get; set; }
+
+		/// <summary>
 		/// Css style applied to the asp:label control
 		/// </summary>
 		/// <value>A string representing css class name</value>
@@ -271,7 +277,12 @@ namespace DotNetNuke.UI.UserControls
 				var c = Parent.FindControl(ControlName);
 				if (c != null)
 				{
-					//label.Attributes["for"] = c.ClientID;
+					var clientId = c.ClientID;
+					if (!string.IsNullOrEmpty(AssociateFormat))
+					{
+						clientId = string.Format(AssociateFormat, clientId);
+					}
+					label.Attributes["for"] = clientId;
 				}
 			}
 		}

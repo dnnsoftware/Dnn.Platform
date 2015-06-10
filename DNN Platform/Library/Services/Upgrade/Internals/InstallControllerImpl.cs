@@ -29,6 +29,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Xml;
 
@@ -548,6 +549,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 //no need to download english, always there
                 if (cultureCode != "en-us" && String.IsNullOrEmpty(downloadUrl) != true)
                 {
+                    var newCulture = new CultureInfo(cultureCode);
+                    Thread.CurrentThread.CurrentCulture = newCulture;
                     GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
@@ -614,9 +617,15 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public CultureInfo GetCultureFromCookie()
         {
-            string language = HttpContext.Current.Request.Cookies["language"].Value;
+            var langCookie = HttpContext.Current.Request.Cookies["language"];
+            var language = langCookie != null ? langCookie.Value : @"en-US";
             var culture = new CultureInfo(language);
             return culture;
+        }
+
+        public string InstallerLogName
+        {
+            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
 
         #endregion

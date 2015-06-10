@@ -64,7 +64,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             }
             var request = app.Context.Request;
 
-            if (!Initialize.ProcessHttpModule(request, false, true))
+            if (!Initialize.ProcessHttpModule(request, true, true))
             {
                 return;
             }

@@ -13,7 +13,7 @@
             <asp:textbox id="txtUrlParameter" runat="server" textmode="multiline" rows="6" Width="280px" />
         </div>
         <div class="dnnFormItem">
-            <dnn:label id="lblTrackForAdmin" runat="server" controlname="txtUrlParameter" suffix=":" />
+            <dnn:label id="lblTrackForAdmin" runat="server" controlname="chkTrackForAdmin" suffix=":" />
             <asp:CheckBox id="chkTrackForAdmin" runat="server" Checked="False" />
         </div>
     </fieldset>

@@ -388,7 +388,16 @@ namespace DotNetNuke.Modules.Admin.Portals
                     //Validate Portal Alias
                     if (!string.IsNullOrEmpty(strPortalAlias))
                     {
-                        PortalAliasInfo portalAlias = PortalAliasController.Instance.GetPortalAlias(strPortalAlias.ToLower());
+                        PortalAliasInfo portalAlias = null;
+                        foreach (PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values)
+                        {
+                            if (String.Equals(alias.HTTPAlias, strPortalAlias, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                portalAlias = alias;
+                                break;
+                            }
+                        }
+
                         if (portalAlias != null)
                         {
                             message = Localization.GetString("DuplicatePortalAlias", LocalResourceFile);
@@ -481,9 +490,12 @@ namespace DotNetNuke.Modules.Admin.Portals
                             {
                                 if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                                 {
-                                    message = Mail.SendMail(PortalSettings.Email,
+                                    message = (String.IsNullOrEmpty(PortalSettings.Email) &&
+                                        String.IsNullOrEmpty(Host.HostEmail)) ?
+                                        string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr):
+                                        Mail.SendMail(PortalSettings.Email,
                                                                txtEmail.Text,
-                                                               PortalSettings.Email + ";" + Host.HostEmail,
+                                                               string.IsNullOrEmpty(PortalSettings.Email)? Host.HostEmail : string.IsNullOrEmpty(Host.HostEmail)? PortalSettings.Email : PortalSettings.Email  + ";" + Host.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
                                                                "",
@@ -492,10 +504,13 @@ namespace DotNetNuke.Modules.Admin.Portals
                                                                "",
                                                                "",
                                                                "");
+                                    
                                 }
                                 else
                                 {
-                                    message = Mail.SendMail(Host.HostEmail,
+                                    message = String.IsNullOrEmpty(Host.HostEmail)?
+                                        string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr) :
+                                        Mail.SendMail(Host.HostEmail,
                                                                txtEmail.Text,
                                                                Host.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),

@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class StandardFolderProvider : FolderProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (StandardFolderProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
 
         #region Public Properties
 
@@ -191,24 +191,24 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            string rootFolder;
-            if (file.PortalId == Null.NullInteger)
-            {
-                //Host
-                rootFolder = Globals.HostPath;
-            }
-            else
-            {
-                //Portal
-                var portalSettings = GetPortalSettings(file.PortalId);
-                rootFolder = portalSettings.HomeDirectory;
-            }
+            var portalSettings = GetPortalSettings(file.PortalId);
+            var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
+
+            var fullPath = rootFolder + file.Folder + file.FileName;
+
             //check if a filename has a character that is not valid for urls
-            if (Regex.IsMatch(file.FileName, @"[&()<>?*]"))
+            if (Regex.IsMatch(fullPath, @"[&()<>?*+%]"))
             {
                 return Globals.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger);
             }
-            return TestableGlobals.Instance.ResolveUrl(rootFolder + file.Folder + file.FileName);
+
+            // Does site management want the cachebuster parameter?
+            if (portalSettings.AddCachebusterToResourceUris)
+            {
+                return TestableGlobals.Instance.ResolveUrl(fullPath + "?ver=" + file.LastModificationTime.ToString("yyyy-MM-dd-HHmmss-fff"));
+            }
+
+            return TestableGlobals.Instance.ResolveUrl(fullPath);
         }
 
         public override string GetFolderProviderIconPath()
@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            return Convert.ToInt32((file.LastModificationTime - GetLastModificationTime(file)).TotalSeconds) == 0;                        
+            return Convert.ToInt32((file.LastModificationTime - GetLastModificationTime(file)).TotalSeconds) == 0;
         }
 
         public override void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public override void MoveFolder(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
-           // The folder has already been moved in filesystem
+            // The folder has already been moved in filesystem
         }
 
         public override void RenameFile(IFileInfo file, string newFileName)
@@ -318,7 +318,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (FileWrapper.Instance.Exists(actualPath))
             {
-				FileWrapper.Instance.SetAttributes(actualPath, FileAttributes.Normal);
+                FileWrapper.Instance.SetAttributes(actualPath, FileAttributes.Normal);
                 FileWrapper.Instance.Delete(actualPath);
             }
 

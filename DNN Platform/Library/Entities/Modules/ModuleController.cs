@@ -715,23 +715,31 @@ namespace DotNetNuke.Entities.Modules
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
+
+	            var settingExist = false;
+	            string existValue = null;
                 if (dr.Read())
                 {
-                    if (dr.GetString(0) != settingValue)
-                    {
-                        dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                        EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                                                        "ModuleId", moduleId, settingName, settingValue, 
-                                                        currentUser.UserID);
-                    }
+					settingExist = true;
+	                existValue = dr.GetString(0);
                 }
-                else
-                {
-                    dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
-                                                    "ModuleId", moduleId, settingName, settingValue, 
-                                                    currentUser.UserID);
-                }
+
+				dr.Close();
+
+				if (settingExist && existValue != settingValue)
+	            {
+					dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+														"ModuleId", moduleId, settingName, settingValue,
+														currentUser.UserID);
+				}
+				else if (!settingExist)
+				{
+					dataProvider.AddModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
+					EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
+													"ModuleId", moduleId, settingName, settingValue,
+													currentUser.UserID);
+				}
 
                 if (updateVersion)
                 {
@@ -745,7 +753,10 @@ namespace DotNetNuke.Entities.Modules
             finally
             {
                 // Ensure DataReader is closed
-                CBO.CloseDataReader(dr, true);
+	            if (dr != null && !dr.IsClosed)
+	            {
+		            CBO.CloseDataReader(dr, true);
+	            }
             }
 
             ClearModuleSettingsCache(moduleId);
@@ -814,7 +825,12 @@ namespace DotNetNuke.Entities.Modules
                 //reorder all modules on tab
                 if (!uncopy)
                 {
-                    UpdateTabModuleOrder(moduleInfo.TabID);                    
+                    UpdateTabModuleOrder(moduleInfo.TabID);
+                    //ModuleRemove is only raised when doing a soft delete of the module
+                    if (softDelete && ModuleRemoved != null)
+                    { 
+                        ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
+                    }
                 }
 
                 //check if all modules instances have been deleted
@@ -1169,6 +1185,8 @@ namespace DotNetNuke.Entities.Modules
         ///	<param name="deleteBaseModule">A flag to indicate whether to delete the Module itself</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
+            var moduleInfo = GetModule(moduleId, tabId, false); 
+
             //Iterate through collection deleting the module from each Tab (except the current)
             foreach (TabInfo objTab in fromTabs)
             {
@@ -1187,8 +1205,9 @@ namespace DotNetNuke.Entities.Modules
             {
                 ClearCache(tabId);
 
-                if (ModuleRemoved != null)
-                    ModuleRemoved(null, new ModuleEventArgs { Module = new ModuleInfo { ModuleID = moduleId } });
+                //ModuleRemove is only raised when doing a soft delete of the module
+                if (softDelete && ModuleRemoved != null)
+                    ModuleRemoved(null, new ModuleEventArgs { Module = moduleInfo });
             }
         }
 

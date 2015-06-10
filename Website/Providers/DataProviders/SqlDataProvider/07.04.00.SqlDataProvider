@@ -650,54 +650,69 @@ BEGIN
 	DELETE FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions WHERE NotificationTypeId = @NotificationTypeId AND NameResourceKey = 'Review'
 
 	/* Add Approve notification action */
-    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
-        [NotificationTypeID],
-        [NameResourceKey],
-        [DescriptionResourceKey],
-        [ConfirmResourceKey],
-        [Order],
-        [APICall],
-        [CreatedByUserID],
-        [CreatedOnDate],
-        [LastModifiedByUserID],
-        [LastModifiedOnDate])
-    VALUES(
-        @NotificationTypeId,
-        'Approve',
-        'Approve',
-        NULL,
-        1,
-        'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
-        -1,
-        GETDATE(),
-        -1,
-        GETDATE()
-        )
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationTypeId 
+		AND ([Order] = 1 OR [NameResourceKey] = 'Approve'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationTypeId,
+			'Approve',
+			'Approve',
+			NULL,
+			1,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
 		
 	/* Add Reject notification action */
-	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
-        [NotificationTypeID],
-        [NameResourceKey],
-        [DescriptionResourceKey],
-        [ConfirmResourceKey],
-        [Order],
-        [APICall],
-        [CreatedByUserID],
-        [CreatedOnDate],
-        [LastModifiedByUserID],
-        [LastModifiedOnDate])
-    VALUES(
-        @NotificationTypeId,
-        'Reject',
-        'Reject',
-        NULL,
-        1,
-        'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
-        -1,
-        GETDATE(),
-        -1,
-        GETDATE()
-        )
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Reject'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationTypeId,
+			'Reject',
+			'Reject',
+			NULL,
+			3,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+
 END
 GO
 
@@ -710,55 +725,69 @@ IF @NotificationStartWorkflowTypeId IS NOT NULL
 BEGIN
 	/* Add Submit notification action */
 	/* also uses the existing Approve method */
-    INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
-        [NotificationTypeID],
-        [NameResourceKey],
-        [DescriptionResourceKey],
-        [ConfirmResourceKey],
-        [Order],
-        [APICall],
-        [CreatedByUserID],
-        [CreatedOnDate],
-        [LastModifiedByUserID],
-        [LastModifiedOnDate])
-    VALUES(
-        @NotificationStartWorkflowTypeId,
-        'Submit',
-        'Submit',
-        NULL,
-        1,
-        'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
-        -1,
-        GETDATE(),
-        -1,
-        GETDATE()
-        )
-		
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationStartWorkflowTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Submit'))   
+	BEGIN 
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationStartWorkflowTypeId,
+			'Submit',
+			'Submit',
+			NULL,
+			1,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Approve',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
+
 	/* Add Discard notification action */
 	/* also uses the existing Reject method */
-	INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
-        [NotificationTypeID],
-        [NameResourceKey],
-        [DescriptionResourceKey],
-        [ConfirmResourceKey],
-        [Order],
-        [APICall],
-        [CreatedByUserID],
-        [CreatedOnDate],
-        [LastModifiedByUserID],
-        [LastModifiedOnDate])
-    VALUES(
-        @NotificationStartWorkflowTypeId,
-        'Discard',
-        'Discard',
-        NULL,
-        1,
-        'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
-        -1,
-        GETDATE(),
-        -1,
-        GETDATE()
-        )
+	IF NOT EXISTS(
+		SELECT * 
+		FROM {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions 
+		WHERE NotificationTypeId = @NotificationStartWorkflowTypeId 
+		AND ([Order] = 2 OR [NameResourceKey] = 'Discard'))
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}CoreMessaging_NotificationTypeActions(
+			[NotificationTypeID],
+			[NameResourceKey],
+			[DescriptionResourceKey],
+			[ConfirmResourceKey],
+			[Order],
+			[APICall],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate])
+		VALUES(
+			@NotificationStartWorkflowTypeId,
+			'Discard',
+			'Discard',
+			NULL,
+			3,
+			'DesktopModules/InternalServices/API/ContentWorkflowService/Reject',
+			-1,
+			GETDATE(),
+			-1,
+			GETDATE()
+			)
+	END
 END
 GO
 
@@ -929,8 +958,15 @@ DEALLOCATE Portals_Cursor;
  ********************************************************/
 
 --Drop Foreign Key
-ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
+IF EXISTS (
+	SELECT * 
+	FROM Sys.Foreign_Keys 
+	WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PortalSettings]')
+	AND name = N'FK_{objectQualifier}PortalSettings_{objectQualifier}Portals')
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}PortalSettings
     DROP CONSTRAINT FK_{objectQualifier}PortalSettings_{objectQualifier}Portals
+END
 GO
 
 --Create Temp Table
@@ -2739,6 +2775,7 @@ insert into {databaseOwner}{objectQualifier}Portals (
   PageQuota,
   UserQuota,
   SiteLogHistory,
+  DefaultLanguage,
   HomeDirectory,
   CreatedByUserID,
   CreatedOnDate,
@@ -2755,6 +2792,7 @@ values (
   @PageQuota,
   @UserQuota,
   @SiteLogHistory,
+  @CultureCode,
   @HomeDirectory,
   @CreatedByUserID,
   getdate(),
@@ -2774,6 +2812,34 @@ insert into {databaseOwner}{objectQualifier}PortalLocalization (PortalID,Culture
            
   
 SELECT @PortalID
+
+GO
+
+
+/* GetPortals Procedure */
+/************************/
+/* 
+   DNN-6518 - Changed GetPortals Stored Procedure to ensure that one entry per portal is always returned. 
+   The PortalController.GetPortals always calls with SProc with CultureCode 'en-US' by design. 
+   When the site is installed in other non-English language the vw_Portals does not have any entry for en-US.
+*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetPortals]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetPortals]
+    @CultureCode	nvarchar(50)
+AS
+
+SELECT * 
+FROM   {databaseOwner}[{objectQualifier}vw_Portals]
+WHERE CultureCode = 
+	CASE 
+		WHEN IsNull(@CultureCode, '') = '' THEN DefaultLanguage
+		WHEN @CultureCode = 'en-US' THEN DefaultLanguage
+		ELSE @CultureCode 
+	END 
+ORDER BY PortalName;
 
 GO
 

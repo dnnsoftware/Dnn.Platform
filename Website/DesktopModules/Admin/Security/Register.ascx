@@ -3,13 +3,13 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 
-<div class="dnnForm dnnRegistrationForm">
+<div class="dnnForm dnnRegistrationForm" id="RegistrationForm" runat="server">
     <div class="dnnFormItem">
         <div class="dnnFormMessage dnnFormInfo"><asp:label id="userHelpLabel" runat="server" ViewStateMode="Disabled"/></div>
     </div>
     <br/>
     <div class="dnnFormItem dnnClear">
-        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" />
+        <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
         <div class="dnnSocialRegistration">
             <div id="mainContainer">
                 <ul class="buttonList">
@@ -22,9 +22,10 @@
         <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
         <dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" ErrorStyle-CssClass="dnnFormMessage dnnFormError dnnCaptcha" runat="server" />
     </div>
+    <input runat="server" id="gotcha" type="text" name="gotcha" style="display: none;" autocomplete="off" />
     <ul id="actionsRow" runat="server" class="dnnActions dnnClear">
         <li><asp:LinkButton id="registerButton" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdRegister" /></li>
-        <li><asp:LinkButton id="cancelButton" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
+        <li><asp:HyperLink ID="cancelLink" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCancel" CausesValidation="false" /></li>
     </ul>
 </div>
 <script type="text/javascript">

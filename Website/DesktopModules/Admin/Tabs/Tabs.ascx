@@ -7,11 +7,121 @@
 /*globals jQuery, window, Sys */
 (function ($, Sys) {
 	var needReload = false;
+
+	var fieldsChanged = false;
+	var fieldsChangedHandler = function(e) {
+		fieldsChanged = true;
+	}
+
+	var originalPostBack = window['__doPostBack'];
+	var executePostBackAndClean = function (sender, args){
+		originalPostBack(sender, args);
+		postBackElement = postBackArguments = null;
+	};
+
+	var postBackElement = null;
+	var postBackArguments = null;
+
+	window['__doPostBack'] = function (sender, args) {
+		if (sender.indexOf('cmdUpdate') === -1) {
+			postBackElement = sender;
+			postBackArguments = args;
+		}
+		if (fieldsChanged){
+			originalPostBack(sender, args);
+		} else {
+			executePostBackAndClean(sender, args);
+		}
+	}
+
+	var isPendingAction = function (element) {
+		var $el = $(element);
+		return $el.parents('#<%=pnlDetails.ClientID %>').length === 0;
+	}
+
+	var delayPostBack = function () {
+		if (postBackElement && postBackArguments) {
+			executePostBackAndClean(postBackElement, postBackArguments);
+		}
+	}
+
+	var msgQueue = [];
+	var processMsgQueue = function () {
+		while (msgQueue.length > 0) {
+			setTimeout(msgQueue[0], 0);
+			msgQueue.splice(0, 1);
+		}
+	};
+
+	var parseSelectedPageFromHash = function() {
+		if (location.hash != "") {
+			$.each(location.hash.toUpperCase().replace("#", "").split("&"), function (index, value) {
+				if (value == "P" || value == "H") {
+					$("input[type=radio][name$=rblMode][value=" + value + "]").trigger("click");
+				}
+				else if (/^\d+$/.test(value)) {
+					/*try to find node in tree, 
+					if can't find then push it into message queue to wait tree re-load and check again.*/
+					setTimeout(function () {
+						var selectNode = function () {
+							var tree = $find("<%=ctlPages.ClientID %>");
+							var node = tree.findNodeByValue(value);
+							if (node == null) {
+								return false;
+							}
+							else {
+								node.get_parent().expand();
+								node.select();
+								return true;
+							}
+						};
+
+						if (!selectNode()) {
+							msgQueue.push(selectNode);
+						}
+					}, 0);
+				}
+			});
+		}
+	}
+
+	var showConfirmSave = function () {
+		var pmr = Sys.WebForms.PageRequestManager.getInstance();
+		var ajaxPanelId = $('#' + pmr._updatePanelClientIDs[0]).find('> div').attr('id');
+		var ajaxPanel = $find(ajaxPanelId);
+
+		setTimeout(function() {
+			$('#' + ajaxPanel.get_loadingPanelID() + ajaxPanelId).remove();
+		}, 0);
+
+		var options = {
+			callbackTrue: function () {
+				fieldsChanged = false;
+				location.href = $('#<%=cmdUpdate.ClientID%>').attr('href');
+			},
+			callbackFalse: function () {
+				fieldsChanged = false;
+				if (needReload) {
+					parseSelectedPageFromHash();
+				} else {
+					delayPostBack();
+				}
+			},
+			text: '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>',
+			yesText: '<%=Localization.GetSafeJSString("Yes", LocalResourceFile)%>',
+			noText: '<%=Localization.GetSafeJSString("No", LocalResourceFile)%>',
+			title: '<%=Localization.GetSafeJSString("Confirm", LocalResourceFile)%>'
+		};
+
+		//show prompt
+		$.dnnConfirm(options);
+	}
+
 	function setUpTabsModule() {
 		$('#dnnTabsModule').dnnPanels()
 			.find('.dnnFormExpandContent a').dnnExpandAll({
-			    expandText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("ExpandAll", Localization.SharedResourceFile))%>',
-			    collapseText: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(Localization.GetString("CollapseAll", Localization.SharedResourceFile))%>',
+			    expandText: '<%=Localization.GetSafeJSString("ExpandAll", Localization.SharedResourceFile)%>',
+			    collapseText: '<%=Localization.GetSafeJSString("CollapseAll", Localization.SharedResourceFile)%>',
 				targetArea: '#dnnTabsModule'
 			});
 
@@ -27,15 +137,38 @@
 		
 		$("#<%=cmdUpdate.ClientID%>").click(function() {
 			needReload = true;
+			fieldsChanged = false;
 		});
 	    
         $('input[id$=cmdDeleteModule]').dnnConfirm({
-            text: '<%= DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("DeleteItem")) %>',
+            text: '<%= LocalizeSafeJsString("DeleteItem") %>',
             yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
             noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
         	title: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
         	isButton: true
         });
+
+		$('#<%=pnlDetails.ClientID%>').find('input:not([readonly]), textarea, select')
+            .change(fieldsChangedHandler)
+            .keyup(fieldsChangedHandler);
+
+		$('#<%=pnlDetails.ClientID%>').find('.dnnPermissionsGrid .dnnGridItem td img, .dnnPermissionsGrid .dnnGridAltItem td img')
+			.click(fieldsChangedHandler);
+
+		setTimeout(function() {
+			var tree = $find("<%=ctlPages.ClientID %>");
+			tree.add_nodeClicking(function (sender, args) {
+				var nodeValue = args.get_node().get_value();
+				location.hash = "#" + $("input[type=radio][name$=rblMode]:checked").val() + "&" + nodeValue;
+
+				if (fieldsChanged) {
+					args.set_cancel(true);
+					needReload = true;
+					showConfirmSave();
+				}
+			});
+		}, 0);
+		
 	}
 
 	var searchPages = function(keyword) {
@@ -66,50 +199,31 @@
 	$(document).ready(function () {
 		setUpTabsModule();
 
-		var msgQueue = [];
-		if (location.hash != "") {
-			$.each(location.hash.toUpperCase().replace("#", "").split("&"), function (index, value) {
-				if (value == "P" || value == "H") {
-					$("input[type=radio][name$=rblMode][value=" + value + "]").trigger("click");
-				}
-				else if (/^\d+$/.test(value)) {
-					/*try to find node in tree, 
-					if can't find then push it into message queue to wait tree re-load and check again.*/
-					setTimeout(function () {
-						var selectNode = function () {
-							var tree = $find("<%=ctlPages.ClientID %>");
-							var node = tree.findNodeByValue(value);
-							if (node == null) {
-								return false;
-							}
-							else {
-								node.get_parent().expand();
-								node.select();
-								return true;
-							}
-						};
-
-						if (!selectNode()) {
-							msgQueue.push(selectNode);
-						}
-					}, 0);
-				}
-			});
-		}
-
-		var processMsgQueue = function () {
-			while (msgQueue.length > 0) {
-				setTimeout(msgQueue[0], 0);
-				msgQueue.splice(0, 1);
+		parseSelectedPageFromHash();
+		$(window).on('beforeunload', function() {
+			if (fieldsChanged) {
+				return '<%=Localization.GetSafeJSString("ConfirmSave", LocalResourceFile)%>';
 			}
-		};
+		});
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			if (needReload) {
-				location.reload();
+			if (!needReload && postBackElement && postBackArguments) {
+				$('div.dnnFormMessage').remove();
+				delayPostBack();
+			} else if (needReload) {
+				if ($('div.dnnFormMessage.dnnFormValidationSummary').length === 0) {
+					location.reload();
+				}
 			} else {
 				setUpTabsModule();
 				processMsgQueue();
+			}
+		});
+
+		Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(function (sender, args) {
+			if (fieldsChanged && isPendingAction(args.get_postBackElement())) {
+				args.set_cancel(true);
+				showConfirmSave();
 			}
 		});
 	});
@@ -158,10 +272,6 @@
 				menu.findItemByValue('makehome').set_visible(a.getAttribute("CanMakeHome") == 'True');
 			}
 		}
-		function OnClientNodeClicked(sender, eventArgs) {
-			var nodeValue = eventArgs.get_node().get_value();
-			location.hash = "#" + $("input[type=radio][name$=rblMode]:checked").val() + "&" + nodeValue;
-		}
 	</script>
 </dnnweb:DnnScriptBlock>
 <div class="dnnForm dnnTabsModule dnnClear" id="dnnTabsModule">
@@ -185,7 +295,7 @@
 		</div>
 		<dnnweb:DnnTreeView ID="ctlPages" cssclass="dnnTreePages" runat="server" AllowNodeEditing="true"
 		 OnClientContextMenuShowing="onContextShowing" OnClientContextMenuItemClicking="onContextClicking"
-		  OnClientNodeClicked="OnClientNodeClicked" EnableDragAndDropBetweenNodes="true">
+		  EnableDragAndDropBetweenNodes="true">
 			<ContextMenus>                
 				<dnnweb:DnnTreeViewContextMenu ID="ctlContext" runat="server">
 					<Items>                                            
@@ -245,24 +355,24 @@
 			<h2 id="Panel-Common" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Common.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblName" runat="server" Suffix=":" CssClass="dnnFormRequired"  />
+					<dnn:Label ID="lblName" runat="server" Suffix=":" CssClass="dnnFormRequired" ControlName="txtName"  />
 					<asp:TextBox ID="txtName" runat="server" MaxLength="200" ValidationGroup="Page" />
 					<asp:RequiredFieldValidator ID="valName" runat="server" EnableClientScript="True" Display="Dynamic" resourcekey="valName.ErrorMessage" ControlToValidate="txtName" CssClass="dnnFormMessage dnnFormError" ValidationGroup="Page"/>
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblTitle" runat="server" suffix=":" />
+					<dnn:Label ID="lblTitle" runat="server" suffix=":" ControlName="txtTitle" />
 					<asp:TextBox ID="txtTitle" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblVisible" runat="server" suffix="?" />
+					<dnn:Label ID="lblVisible" runat="server" suffix="?" ControlName="chkVisible" />
 					<asp:CheckBox ID="chkVisible" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblDisabledPage" runat="server" suffix="?" />
+					<dnn:Label ID="lblDisabledPage" runat="server" suffix="?" ControlName="chkDisabled" />
 					<asp:CheckBox ID="chkDisabled" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblPageSSL" runat="server" suffix="?" />
+					<dnn:Label ID="lblPageSSL" runat="server" suffix="?" ControlName="chkSecure" />
 					<asp:CheckBox ID="chkSecure" runat="server" />
 				</div> 
 				<div class="dnnFormItem">
@@ -314,24 +424,23 @@
 		<div class="ssasContent dnnClear">
 			<h2 id="Panel-SEO" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("SEO.Tabname")%></a></h2>
 			<fieldset>
+                <div class="dnnFormItem">
+					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" ControlName="txtSitemapPriority" />
+                    <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="10" />
+                    <asp:RequiredFieldValidator ID="val2" runat="server" ControlToValidate="txtSitemapPriority"
+                        Display="Dynamic" CssClass="dnnFormMessage dnnFormError" resourcekey="valPriority" />
+                </div>
+
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblSitemapPriority" runat="server" suffix=":" CssClass="dnnFormRequired" />
-					<asp:TextBox ID="txtSitemapPriority" runat="server" ValidationGroup="Page" />
-                    <asp:RequiredFieldValidator ID="valPriorityRequired" runat="server" ControlToValidate="txtSitemapPriority" 
-                        resourcekey="valPriorityRequired.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-                    <asp:CompareValidator ID="valPriority" runat="server" ControlToValidate="txtSitemapPriority" Operator="DataTypeCheck" Type="Double" 
-                        resourcekey="valPriority.ErrorMessage" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" ValidationGroup="Page" />
-				</div>
-				<div class="dnnFormItem">
-					<dnn:Label ID="lblDescription" runat="server" suffix=":" />
+					<dnn:Label ID="lblDescription" runat="server" suffix=":" ControlName="txtDescription" />
 					<asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblKeywords" runat="server" suffix=":" />
+					<dnn:Label ID="lblKeywords" runat="server" suffix=":" ControlName="txtKeywords" />
 					<asp:TextBox ID="txtKeywords" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblTags" runat="server" suffix=":" />
+					<dnn:Label ID="lblTags" runat="server" suffix=":" ControlName="termsSelector" AssociateFormat="{0}_Input" />
 					<dnnweb:TermsSelector ID="termsSelector" runat="server" IncludeTags="False" />
 				</div>
 			</fieldset>
@@ -340,13 +449,13 @@
 			<h2 id="Panel-Meta" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Metatags.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblMetaRefresh" runat="server" suffix=":" />
+					<dnn:Label ID="lblMetaRefresh" runat="server" suffix=":" ControlName="txtRefresh" />
 					<asp:TextBox ID="txtRefresh" runat="server" ValidationGroup="Page" />
                     <asp:RegularExpressionValidator ID="valRefresh" runat="server" ControlToValidate="txtRefresh" ValidationGroup="Page"
                         resourcekey="valRefresh.ErrorMessage" ValidationExpression="^\d+$" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblMetaHead" runat="server" suffix=":" />
+					<dnn:Label ID="lblMetaHead" runat="server" suffix=":" ControlName="txtMeta" />
 					<asp:TextBox ID="txtMeta" runat="server" TextMode="MultiLine" Height="40px" />
 				</div>
 			</fieldset>
@@ -355,11 +464,11 @@
 			<h2 id="Panel-Appearance" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Appearance.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblSkin" runat="server" suffix=":" />
+					<dnn:Label ID="lblSkin" runat="server" suffix=":" ControlName="drpSkin" AssociateFormat="{0}_Input" />
                     <dnnweb:DnnSkinComboBox ID="drpSkin" runat="server" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblContainer" runat="server" suffix=":" />
+					<dnn:Label ID="lblContainer" runat="server" suffix=":" ControlName="drpContainer" AssociateFormat="{0}_Input" />
                     <dnnweb:DnnSkinComboBox ID="drpContainer" runat="server"  />
 					
 				</div>
@@ -368,11 +477,11 @@
                     <asp:LinkButton ID="cmdCopySkin" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdCopySkin" />
                 </div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblIconLarge" runat="server" suffix=":" />
+					<dnn:Label ID="lblIconLarge" runat="server" suffix=":" ControlName="ctlIconLarge" />
 					<dnn:URL ID="ctlIconLarge" runat="server" ShowLog="False" ShowTrack="false" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblIconSmall" runat="server" suffix=":" />
+					<dnn:Label ID="lblIconSmall" runat="server" suffix=":" ControlName="ctlIcon" />
 					<dnn:URL ID="ctlIcon" runat="server" ShowLog="False" />
 				</div>
 			</fieldset>
@@ -381,11 +490,11 @@
 			<h2 id="Panel-Link" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("Link.Tabname")%></a></h2>
 			<fieldset>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblUrl" runat="server" suffix=":" />
+					<dnn:Label ID="lblUrl" runat="server" suffix=":" ControlName="ctlURL" />
 					<dnn:URL ID="ctlURL" runat="server" ShowLog="False" ShowNone="True" ShowTrack="False" ShowNewWindow="True" />
 				</div>
 				<div class="dnnFormItem">
-					<dnn:Label ID="lblPermanentRedirect" runat="server" suffix=":" />
+					<dnn:Label ID="lblPermanentRedirect" runat="server" suffix=":" ControlName="chkPermanentRedirect" />
 					<asp:CheckBox ID="chkPermanentRedirect" runat="server" />
 				</div>
 			</fieldset>
@@ -406,3 +515,29 @@
 		</ul>
 	</div>
 </div>
+<script language="javascript" type="text/javascript">
+    /*globals jQuery, window, Sys */
+    (function ($, Sys) {
+        $(document).ready(function () {
+
+            function setupPrioritySpinner() {
+                var updatePrioritySpinner = function (clientId) {
+                    var txtCtrl = $('#' + clientId);
+                    var defaultVal = txtCtrl.val();
+                    txtCtrl.dnnSpinner({
+                        type: 'list',
+                        defaultVal: defaultVal,
+                        typedata: { list: '1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0' }
+                    });
+                };
+
+                updatePrioritySpinner('<%= txtSitemapPriority.ClientID %>');
+            }
+
+            setupPrioritySpinner();
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                setupPrioritySpinner();
+            });
+        });
+    }(jQuery, window.Sys));
+</script>

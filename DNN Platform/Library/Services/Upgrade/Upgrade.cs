@@ -63,6 +63,7 @@ using DotNetNuke.Services.Analytics;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.EventQueue.Config;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Log;
@@ -2994,7 +2995,7 @@ namespace DotNetNuke.Services.Upgrade
             DataProvider.Instance().RegisterAssembly(Null.NullInteger, "WebMatrix.WebData.dll", "2.0.20126");
 
             //update help url
-            HostController.Instance.Update("HelpURL", "http://help.dotnetnuke.com/070300/default.htm?showToc=true", false);
+            HostController.Instance.Update("HelpURL", "http://www.dnnsoftware.com/help", false);
         }
 
         private static void UpgradeToVersion733()
@@ -4825,49 +4826,26 @@ namespace DotNetNuke.Services.Upgrade
 
             var packages = new Dictionary<string, PackageInfo>();
 
-            foreach (string packageType in packageTypes)
-            {
-                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
-                if (Directory.Exists(installPackagePath))
-                {
-                    var files = Directory.GetFiles(installPackagePath);
-                    if (files.Length > 0)
-                    {
-                        foreach (string file in files)
-                        {
-                            if (Path.GetExtension(file.ToLower()) == ".zip")
-                            {
-                                PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                                //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Parsing - " + file.Replace(installPackagePath + @"\", "") + "<br/>");
-                            }
-                        }
-                    }
-                }
-            }
+            ParsePackagesFromApplicationPath(packageTypes, packages, invalidPackages);
 
             //Add packages with no dependency requirements
             var sortedPackages = packages.Where(p => p.Value.Dependencies.Count == 0).ToDictionary(p => p.Key, p => p.Value);
 
-            int prevDependentCount = -1;
+            var prevDependentCount = -1;
 
             var dependentPackages = packages.Where(p => p.Value.Dependencies.Count > 0).ToDictionary(p=> p.Key, p => p.Value);
-            int dependentCount = dependentPackages.Count;
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Start - Parsing Dependencies<br/>");
+            var dependentCount = dependentPackages.Count;
             while (dependentCount != prevDependentCount)
             {
                 prevDependentCount = dependentCount;
                 var addedPackages = new List<string>();
                 foreach (var package in dependentPackages)
                 {
-                    //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Parsing - " + package.Value.Name + "<br/>");
-                    foreach (var dependency in package.Value.Dependencies)
+                    if ( package.Value.Dependencies.All(
+                            d => sortedPackages.Any(p => p.Value.Name == d.PackageName && p.Value.Version >= d.Version) ) )
                     {
-                        if (sortedPackages.Count(p => p.Value.Name == dependency.PackageName && p.Value.Version >= dependency.Version) > 0)
-                        {
-                            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 4, "Dependency Resolved - " + package.Value.Name + "<br/>");
-                            sortedPackages.Add(package.Key, package.Value);
-                            addedPackages.Add(package.Key);
-                        }
+                        sortedPackages.Add(package.Key, package.Value);
+                        addedPackages.Add(package.Key);
                     }
                 }
                 foreach (var packageKey in addedPackages)
@@ -4883,13 +4861,69 @@ namespace DotNetNuke.Services.Upgrade
                 sortedPackages.Add(package.Key, package.Value);
             }
 
-            //HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "End - Parsing Dependencies<br/>");
-
-            //foreach (var package in sortedPackages)
-            //{
-            //    HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Installing - " + package.Key + "<br/>");
-            //}
             return sortedPackages;
+        }
+
+        private static void ParsePackagesFromApplicationPath(IEnumerable<string> packageTypes, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
+        {
+            foreach (var packageType in packageTypes)
+            {
+                var installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
+                if (!Directory.Exists(installPackagePath)){ continue;}
+
+                var files = Directory.GetFiles(installPackagePath);
+                if (files.Length <= 0){ continue;}
+
+	            var optionalPackages = new List<string>();
+                foreach (var file in files)
+                {
+	                var extension = Path.GetExtension(file.ToLowerInvariant());
+	                if (extension != ".zip" && extension != ".resources")
+	                {
+		                continue;
+	                }
+
+					PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
+	                if (packages.ContainsKey(file))
+	                {
+		                //check whether have version conflict and remove old version.
+		                var package = packages[file];
+		                if (packages.Values.Count(p => p.FriendlyName == package.FriendlyName) > 1)
+		                {
+			                var oldPackages = packages.Where(kvp => kvp.Value.FriendlyName == package.FriendlyName && kvp.Value.Version < package.Version).ToList();
+			                if (oldPackages.Any())
+			                {
+				                foreach (var oldPackage in oldPackages)
+				                {
+					                try
+					                {
+						                packages.Remove(oldPackage.Key);
+										FileWrapper.Instance.Delete(oldPackage.Key);
+					                }
+					                catch (Exception ex)
+					                {
+						                //do nothing here.
+					                }
+				                }
+			                }
+		                }
+	                }
+
+	                if (extension != ".zip")
+	                {
+		                optionalPackages.Add(file);
+	                }
+                }
+
+				//remove optional
+				optionalPackages.ForEach(f =>
+				                         {
+					                         if (packages.ContainsKey(f))
+					                         {
+						                         packages.Remove(f);
+					                         }
+				                         });
+            }
         }
 
         public static void InstallPackages(string packageType, bool writeFeedback)
@@ -5436,10 +5470,8 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
-                if (UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request))
-                {
-                    url = url.Replace("http://", "https://");
-                }
+                //use network path reference so it works in ssl-offload scenarios
+                url = url.Replace("http://", "//");
                 url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
                 url += "&type=" + packageType;

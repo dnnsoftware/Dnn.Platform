@@ -36,14 +36,22 @@ function CountryRegionService($) {
 function setupRegionLists() {
 	$('div[data-list="Region"]').each(function (index, value) {
 		var stringValue = $(value).children('input[data-editor="DNNRegionEditControl_Hidden"]').val();
-		if ($(value).children('select').children('option').length < 2) {
-			$(value).children('select').hide();
-			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').show();
-			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').val(stringValue);
+		var $row = $(value);
+		var $label = $row.prev().find('label');
+		var $textControl = $row.children('input[data-editor="DNNRegionEditControl_Text"]');
+		var $selectControl = $row.children('select');
+		if ($selectControl.children('option').length < 2) {
+			$selectControl.hide();
+			$textControl.show();
+			$textControl.val(stringValue);
+
+			$label.attr('for', $textControl.attr('id'));
 		} else {
-			$(value).children('select').show();
-			$(value).children('input[data-editor="DNNRegionEditControl_Text"]').hide();
-			$(value).children('select').children('option[value="' + stringValue + '"]').prop('selected', true);
+			$selectControl.show();
+			$textControl.hide();
+			$selectControl.children('option[value="' + stringValue + '"]').prop('selected', true);
+
+			$label.attr('for', $selectControl.attr('id'));
 		};
 	});
 	$('select[data-editor="DNNRegionEditControl_DropDown"]').change(function () {
@@ -52,7 +60,8 @@ function setupRegionLists() {
 }
 
 function loadRegionList(category, country) {
-	$('div[data-list="Region"][data-category="' + category + '"]').each(function (index, value) {
+	var selector = category ? 'div[data-list="Region"][data-category="' + category + '"]' : 'div[data-list="Region"]';
+	$(selector).each(function (index, value) {
 		var dd = $(value).children('select');
 		$(dd).children().not(':first').remove();
 		if (country != '') {
@@ -68,7 +77,7 @@ function loadRegionList(category, country) {
 }
 
 function clearCountryValue(countryControl) {
-	$('#' + $(countryControl).attr('id') + '_id').val('');
+	$('#' + $(countryControl).attr('id').replace('_name', '') + '_id').val('');
 	$(countryControl).attr('data-value', '');
 	$(countryControl).attr('value', '');
 	loadRegionList($(countryControl).attr('data-category'), '');
@@ -95,7 +104,7 @@ function setupCountryAutoComplete() {
 			})
 		},
 		select: function (event, ui) {
-			$('#' + $(this).attr('id') + '_id').val(ui.item.id);
+			$('#' + $(this).attr('id').replace('_name', '') + '_id').val(ui.item.id);
 			$(this).attr('data-value', ui.item.id);
 			$(this).attr('data-text', ui.item.name);
 		},

@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DotNetNuke.Taxonomy" type="Module" version="07.04.01" isSystem="true">
+		<package name="DotNetNuke.Taxonomy" type="Module" version="07.04.02"  isSystem="true">
 			<friendlyName>Taxonomy Manager</friendlyName>
 			<description>Administrators can manage the Taxonomy for their site.</description>
 			<iconFile>~/Icons/Sigma/Tag_32X32_Standard.png</iconFile>
@@ -35,7 +35,7 @@
 										<controlTitle />
 										<controlType>View</controlType>
 										<iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Taxonomy/About the Taxonomy Manager Module.html</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 									<moduleControl>
@@ -45,7 +45,7 @@
 										<controlTitle>Create Vocabulary</controlTitle>
 										<controlType>Edit</controlType>
 										<iconFile />
-										<helpUrl />
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>

@@ -83,11 +83,9 @@
     </Compile>
     <Compile Include="ClientDialog.cs" />
     <Compile Include="Components\Controllers\DigitalAssetsSettingsRepository.cs" />
-    <Compile Include="Components\Controllers\FolderPathComparer.cs" />
     <Compile Include="Components\Controllers\IDigitalAssetsControllerData.cs" />
     <Compile Include="Components\Controllers\Models\ExtractedItemViewModel.cs" />
     <Compile Include="Components\Controllers\Models\PreviewInfoViewModel.cs" />
-    <Compile Include="Components\Controllers\Models\SortProperties.cs" />
     <Compile Include="Components\Controllers\Models\ZipExtractViewModel.cs" />
     <Compile Include="Components\Controllers\Models\FolderMappingViewModel.cs" />
     <Compile Include="Components\Controllers\Models\FolderViewModel.cs" />

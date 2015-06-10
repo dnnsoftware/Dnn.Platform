@@ -78,6 +78,7 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             var allUrls = new List<SitemapUrl>();
+            var currentCulture = Localization.Localization.GetPageLocale(PortalSettings).Name.ToLowerInvariant();
 
             // excluded urls by priority
             float excludePriority = 0;
@@ -101,7 +102,18 @@ namespace DotNetNuke.Services.Sitemap
                     providerPriorityValue = float.Parse(PortalController.GetPortalSetting(_provider.Name + "Value", PortalSettings.PortalId, "50")) / 100;
 
                     // Get all urls from provider
-                    List<SitemapUrl> urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
+                    List<SitemapUrl> urls = new List<SitemapUrl>();
+                    try
+                    {
+                        urls = _provider.GetUrls(PortalSettings.PortalId, PortalSettings, SITEMAP_VERSION);
+                    }
+                    catch (Exception ex)
+                    {
+                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapProviderError",
+                            "URL sitemap provider '{0}' failed with error: {1}",
+                            _provider.Name, ex.Message)));
+                    }
+
                     foreach (SitemapUrl url in urls)
                     {
                         if (isProviderPriorityOverrided)
@@ -146,16 +158,16 @@ namespace DotNetNuke.Services.Sitemap
                         elements = elementsInFile;
                     }
 
-                    WriteSitemap(cached, output, index, allUrls.GetRange(lowerIndex, elements));
+                    WriteSitemap(cached, output, index, allUrls.GetRange(lowerIndex, elements), currentCulture);
                 }
 
                 // create the sitemap index
-                WriteSitemapIndex(output, index - 1);
+                WriteSitemapIndex(output, index - 1, currentCulture);
             }
             else
             {
                 // create a regular sitemap file
-                WriteSitemap(cached, output, 0, allUrls);
+                WriteSitemap(cached, output, 0, allUrls, currentCulture);
             }
 
 
@@ -190,7 +202,7 @@ namespace DotNetNuke.Services.Sitemap
         ///   the result of the generation. If the file is part of a sitemap, <paramref name = "index">index</paramref> will be appended to the
         ///   filename cached on disk ("sitemap_1.xml")
         /// </remarks>
-        private void WriteSitemap(bool cached, TextWriter output, int index, List<SitemapUrl> allUrls)
+        private void WriteSitemap(bool cached, TextWriter output, int index, List<SitemapUrl> allUrls, string culture)
         {
             // sitemap Output: can be a file is cache is enabled
             TextWriter sitemapOutput = output;
@@ -200,7 +212,7 @@ namespace DotNetNuke.Services.Sitemap
                 {
                     Directory.CreateDirectory(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
                 }
-                var cachedFile = (index > 0) ? "sitemap_" + index + ".xml": "sitemap.xml";                
+                var cachedFile = (index > 0) ? "sitemap_" + index + "." + culture + ".xml": "sitemap" + "." + culture +".xml";                
                 sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
             }
 
@@ -240,10 +252,10 @@ namespace DotNetNuke.Services.Sitemap
         /// </summary>
         /// <param name = "output">The output stream</param>
         /// <param name = "totalFiles">Number of files that are included in the sitemap index</param>
-        private void WriteSitemapIndex(TextWriter output, int totalFiles)
+        private void WriteSitemapIndex(TextWriter output, int totalFiles, string culture)
         {
             TextWriter sitemapOutput = null;
-            sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\sitemap.xml", false, Encoding.UTF8);
+            sitemapOutput = new StreamWriter(PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\sitemap" + "." + culture + ".xml", false, Encoding.UTF8);
 
             // Initialize writer
             var settings = new XmlWriterSettings();
@@ -297,17 +309,17 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLower());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
 
-            if (sitemapUrl.AlternateUrls != null)
-            {
-                foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
-                {
-                    writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
-                    writer.WriteAttributeString("rel", "alternate");
-                    writer.WriteAttributeString("hreflang", alternate.Language);
-                    writer.WriteAttributeString("href", alternate.Url);
-                    writer.WriteEndElement();
-                }
-            }
+            //if (sitemapUrl.AlternateUrls != null)
+            //{
+            //    foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+            //    {
+            //        writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+            //        writer.WriteAttributeString("rel", "alternate");
+            //        writer.WriteAttributeString("hreflang", alternate.Language);
+            //        writer.WriteAttributeString("href", alternate.Url);
+            //        writer.WriteEndElement();
+            //    }
+            //}
             writer.WriteEndElement();
         }
 

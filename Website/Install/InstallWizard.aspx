@@ -21,6 +21,7 @@
     <script type="text/javascript" src="../Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.PasswordStrength.js"></script>
     <script type="text/javascript" src="../DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js"></script>
+    <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.extensions.js"></script>
     <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.tooltip.js"></script>
     <asp:placeholder id="SCRIPTS" runat="server"></asp:placeholder>
 </head>  
@@ -468,6 +469,7 @@
             };
             this.progressBarIntervalId = {};
             this.timerIntervalId = {};
+            this.IsQueryingInstallProgress = false;
             this.startProgressBar = function () {
                 $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
                 var totalSeconds = 0;
@@ -475,7 +477,7 @@
 
                 installWizard.progressBarIntervalId = setInterval(function () {
                     $.getInstallProgress();
-                }, 100);
+                }, 500);
 
                 installWizard.timerIntervalId = setInterval(function () {
                     totalSeconds = totalSeconds + 1;
@@ -497,6 +499,10 @@
                 //Call PageMethod which triggers long running operation
                 PageMethods.RunInstall(function () {
                 }, function (err) {
+	                if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
+		                return;
+	                }
+
                     $.stopProgressbarOnError();
                 });
                 $('#seeLogs, #visitSite, #retry').addClass('dnnDisabledAction');
@@ -717,14 +723,19 @@
     <!-- Progressbar -->
     <script type="text/javascript">
         $.getInstallProgress = function () {
+            if (installWizard.IsQueryingInstallProgress) return;
+            installWizard.IsQueryingInstallProgress = true;
             var xmlhttp;
             if (window.XMLHttpRequest) {
                 xmlhttp = new XMLHttpRequest();
-            } 
+            }
             xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var statuslines = xmlhttp.responseText.split('\n');
-                    $.updateProgressbar(statuslines[statuslines.length - 2]);
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        var statuslines = xmlhttp.responseText.split('\n');
+                        $.updateProgressbar(statuslines[statuslines.length - 2]);
+                    }
+                    installWizard.IsQueryingInstallProgress = false;
                 } else {
                     installWizard.Status = "";
                 }
@@ -846,7 +857,7 @@
                             $('#installation-log').append(result);
                         
                         installationLogStartLine += 500;
-                        setTimeout(getInstallationLog, 100);
+                        setTimeout(getInstallationLog, 1000);
                     } else {
                         if (installationLogStartLine === 0)
                             $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');

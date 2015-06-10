@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -64,6 +65,16 @@ namespace DotNetNuke.UI.WebControls
 				return _CountryId;
 			}
 		}
+
+		public override string EditControlClientId
+		{
+			get
+			{
+				EnsureChildControls();
+				return CountryName.ClientID;
+			}
+		}
+
 		#endregion
 
 		#region " Properties "
@@ -114,7 +125,7 @@ namespace DotNetNuke.UI.WebControls
 			base.CreateChildControls();
 
 			CountryName.ControlStyle.CopyFrom(ControlStyle);
-			CountryName.ID = ID;
+			CountryName.ID = ID + "_name";
 			CountryName.Attributes.Add("data-name", Name);
 			CountryName.Attributes.Add("data-list", "Country");
 			CountryName.Attributes.Add("data-category", Category);
@@ -163,6 +174,7 @@ namespace DotNetNuke.UI.WebControls
 		#region " Page Events "
 		private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
 		{
+			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
 			ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
 			JavaScript.RequestRegistration(CommonJs.jQuery);

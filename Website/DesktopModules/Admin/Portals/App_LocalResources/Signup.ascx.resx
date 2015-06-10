@@ -280,7 +280,7 @@
     <value>Add Site</value>
   </data>
   <data name="SendMail.Error" xml:space="preserve">
-    <value>There was an error sending confirmation emails - {0}.  However, the website was created. &lt;a href='{1}' {2}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+    <value>There was an error sending confirmation emails - {0}  However, the website was created. &lt;a href='{1}' {2}&gt;Click Here To Access the new site&lt;/a&gt;</value>
   </data>
   <data name="AddPortal.Text" xml:space="preserve">
     <value>Add New Site</value>
@@ -293,6 +293,9 @@
   </data>
   <data name="UnknownSendMail.Error" xml:space="preserve">
     <value>There was an error sending confirmation emails.  However, the website was created. &lt;a href='{0}' {1}&gt;Click Here To Access the new site&lt;/a&gt;</value>
+  </data>
+  <data name="UnknownEmailAddress.Error" xml:space="preserve">
+    <value>There is no email address set on Site and/or Host level.</value>
   </data>
   <data name="ValidationResults.Text" xml:space="preserve">
     <value>Validation Results</value>

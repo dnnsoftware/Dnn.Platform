@@ -51,6 +51,13 @@ namespace DotNetNuke.Common.Utilities
     public class HtmlUtils
     {
         private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
+        private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
+        private static readonly Regex StripTagsRegex = new Regex("<[^>]*>", RegexOptions.Compiled);
+
+        //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
+        private readonly static Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -172,7 +179,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (Email.IndexOf("@") != -1)
                 {
-                    formatEmail = "<a href=\"mailto:" + Email + "\">" + Email + "</a>";
+                    formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", Email);
                 }
                 else
                 {
@@ -201,11 +208,9 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string FormatText(string HTML, bool RetainSpace)
         {
-            //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
-            string brMatch = "\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*";
-            //Replace Tags by replacement String and return mofified string
-            return Regex.Replace(HTML, brMatch, Environment.NewLine);
+            return ReplaceHtmlNewLinesRegex.Replace(HTML, Environment.NewLine);
         }
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -221,16 +226,17 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
-            string strHtml = strText;
 
-            if (!string.IsNullOrEmpty(strHtml))
+            if (!string.IsNullOrEmpty(strText))
             {
-                strHtml = strHtml.Replace("\r\n", "<br />");
-                strHtml = strHtml.Replace("\n", "<br />");
-                strHtml = strHtml.Replace("\r", "<br />");
+                var htmlBuilder = new StringBuilder(strText);
+                htmlBuilder.Replace("\r\n", "<br />");
+                htmlBuilder.Replace("\n", "<br />");
+                htmlBuilder.Replace("\r", "<br />");
+                return htmlBuilder.ToString();
             }
 
-            return strHtml;
+            return strText;
         }
 
         /// -----------------------------------------------------------------------------
@@ -282,7 +288,8 @@ namespace DotNetNuke.Common.Utilities
                 {
                     if (Website.ToString().IndexOf(".") > -1)
                     {
-                        formatWebsite = "<a href=\"" + (Website.ToString().IndexOf("://") > -1 ? "" : "http://") + Website + "\">" + Website + "</a>";
+                        formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
+                            (Website.ToString().IndexOf("://") > -1 ? "" : "http://"));
                     }
                     else
                     {
@@ -361,25 +368,10 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
-            if (string.IsNullOrWhiteSpace(HTML))
-            {
-                return string.Empty;
-            }
-
-            //Set up Replacement String
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
-
-            //Replace Tags by replacement String and return mofified string
-            return Regex.Replace(HTML, "<[^>]*>", RepString);
+            string RepString = RetainSpace ? " " : "";
+            return StripTagsRegex.Replace(HTML, RepString);
         }
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -453,7 +445,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             //Create Regular Expression objects
-            string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+            const string punctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
             var afterRegEx = new Regex(punctuationMatch + "\\s");
             var beforeRegEx = new Regex("\\s" + punctuationMatch);
 
@@ -482,6 +474,7 @@ namespace DotNetNuke.Common.Utilities
             return retHTML.Trim('"');
         }
 
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StripWhiteSpace removes the WhiteSpace from the content
@@ -498,30 +491,9 @@ namespace DotNetNuke.Common.Utilities
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
             if (string.IsNullOrWhiteSpace(HTML))
-            {
-                return string.Empty;
-            }
-
-            //Set up Replacement String
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
-
-            //Replace Tags by replacement String and return mofified string
-            if (HTML == Null.NullString)
-            {
                 return Null.NullString;
-            }
-            else
-            {
-                return Regex.Replace(HTML, "\\s+", RepString);
-            }
+
+            return StripWhiteSpaceRegex.Replace(HTML, RetainSpace ? " " : "");
         }
 
         /// -----------------------------------------------------------------------------
@@ -540,21 +512,10 @@ namespace DotNetNuke.Common.Utilities
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
             if (string.IsNullOrWhiteSpace(HTML))
-            {
-                return string.Empty;
-            }
+                return HTML;
 
-            //Set up Replacement String
-            string RepString;
-            if (RetainSpace)
-            {
-                RepString = " ";
-            }
-            else
-            {
-                RepString = "";
-            }
-            return Regex.Replace(HTML, "\\W*", RepString);
+            string RepString = RetainSpace ? " " : "";
+            return StripNonWordRegex.Replace(HTML, RepString);
         }
 
         /// <summary>
@@ -566,7 +527,7 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         public static bool IsHtml(string text)
         {
-            if ((string.IsNullOrEmpty(text)))
+            if (string.IsNullOrEmpty(text))
             {
                 return false;
             }

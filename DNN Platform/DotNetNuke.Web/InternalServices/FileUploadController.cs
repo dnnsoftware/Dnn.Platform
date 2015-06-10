@@ -32,12 +32,9 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.UI.WebControls;
 using ClientDependency.Core;
@@ -287,10 +284,6 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                // FIX DNN-5917
-                fileName = SanitizeFileName(fileName);
-                // END FIX
-
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -314,59 +307,10 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message);
+                Logger.Error(ex);
                 errorMessage = ex.Message;
                 return savedFileDto;
             }
-        }
-
-        /// <summary>
-        /// Sanitizes the upload filename to follow RFC2396 URL spec
-        /// </summary>
-        public static string SanitizeFileName(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName)) return null;
-
-            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-            if (string.IsNullOrEmpty(fileNameWithoutExt)) return null;
-
-            var fileNameExt = Path.GetExtension(fileName);
-
-            var disallowedChars = new[]
-                {
-                    ';',
-                    '/',
-                    '?',
-                    ':',
-                    '@',
-                    '&',
-                    '=',
-                    '+',
-                    '$',
-                    ',',
-                    '<',
-                    '>',
-                    '#',
-                    '%',
-                    '"',
-                    '\'',
-                    '{',
-                    '}',
-                    '|',
-                    '\\',
-                    '^',
-                    '[',
-                    ']',
-                    '`'
-                };
-
-            foreach (var c in disallowedChars)
-            {
-                if (fileNameWithoutExt.Contains(c))
-                    fileNameWithoutExt = fileNameWithoutExt.Replace(c, '_');
-            }
-
-            return string.Format("{0}{1}", fileNameWithoutExt, fileNameExt);
         }
 
         private static string GetLocalizedString(string key)
@@ -515,10 +459,6 @@ namespace DotNetNuke.Web.InternalServices
 
                 IFileInfo file;
 
-                // FIX DNN-5917
-                fileName = SanitizeFileName(fileName);
-                // END FIX
-
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     result.Message = GetLocalizedString("AlreadyExists");
@@ -583,7 +523,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (Exception exe)
             {
-                Logger.Error(exe.Message);
+                Logger.Error(exe);
                 result.Message = exe.Message;
                 return result;
             }
@@ -716,31 +656,20 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     throw new Exception("No server response");
                 }
-                var inMemoryStream = new MemoryStream();
-                {
-                    var count = 0;
-                    do
-                    {
-                        var buffer = new byte[4096];
-                        count = responseStream.Read(buffer, 0, 4096);
-                        inMemoryStream.Write(buffer, 0, count);
-                    } while (responseStream.CanRead && count > 0);
 
-                    var segments = dto.Url.Split('/');
-                    var fileName = segments[segments.Length - 1];
-                    result = UploadFile(inMemoryStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
-                        fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
+                var fileName = new Uri(dto.Url).Segments.Last();                    
+                result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
+                    fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
-                    /* Response Content Type cannot be application/json 
-                     * because IE9 with iframe-transport manages the response 
-                     * as a file download 
-                     */
-                    return Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        result,
-                        mediaTypeFormatter,
-                        "text/plain");
-                }
+                /* Response Content Type cannot be application/json 
+                    * because IE9 with iframe-transport manages the response 
+                    * as a file download 
+                    */
+                return Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    result,
+                    mediaTypeFormatter,
+                    "text/plain");
             }
             catch (Exception ex)
             {

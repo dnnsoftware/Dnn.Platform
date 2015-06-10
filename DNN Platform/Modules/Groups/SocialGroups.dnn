@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Social Groups" type="Module" version="07.04.01" isSystem="true">
+    <package name="Social Groups" type="Module" version="07.04.02"  isSystem="true">
       <friendlyName>Social Groups</friendlyName>
       <description>DotNetNuke Corporation Social Groups module</description>
       <iconFile>~/DesktopModules/SocialGroups/Images/Social_Groups_32X32.png</iconFile>
@@ -35,7 +35,7 @@
                     <controlTitle />
                     <controlType>View</controlType>
                     <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Social Groups/Adding a Social Group.html</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
@@ -46,7 +46,7 @@
                     <controlTitle>Create A Group</controlTitle>
                     <controlType>View</controlType>
                     <iconFile />
-                    <helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Building Your Site/Installed Modules/Social Groups/Adding a Social Group.html</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
                     <supportsPopUps>True</supportsPopUps>
                     <viewOrder>0</viewOrder>
                   </moduleControl>

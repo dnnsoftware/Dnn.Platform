@@ -24,52 +24,33 @@
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     /// <summary>
-    ///     this class contains a number of constants that map to javascript library LibraryName's
+    ///     this class contains a number of constants that map to <see cref="JavaScriptLibrary.LibraryName"/>s
     ///     done as a series of constants as enums do not allow hyphens or periods
     /// </summary>
     public static class CommonJs
     {
-        /// <summary>
-        ///     jquery LibraryName
-        /// </summary>
+        /// <summary>jQuery library name</summary>
         public const string jQuery = "jQuery";
 
-        /// <summary>
-        ///     jquery migrate LibraryName
-        /// </summary>
+        /// <summary>jQuery Migrate library name</summary>
         public const string jQueryMigrate = "jQuery-Migrate";
 
-        /// <summary>
-        ///     jqueryUI LibraryName
-        /// </summary>
+        /// <summary>jQuery UI library name</summary>
         public const string jQueryUI = "jQuery-UI";
 
-        /// <summary>
-        ///     knockout LibraryName
-        /// </summary>
+        /// <summary>Knockout library name</summary>
         public const string Knockout = "Knockout";
 
-        /// <summary>
-        ///     knockout mapping LibraryName
-        /// </summary>
+        /// <summary>Knockout Mapping library name</summary>
         public const string KnockoutMapping = "Knockout.Mapping";
 
-        /// <summary>
-        ///     knockout mapping LibraryName
-        /// </summary>
+        /// <summary>jQuery Fileupload library name</summary>
         public const string jQueryFileUpload = "jQuery.Fileupload";
 
-        /// <summary>
-        ///     knockout mapping LibraryName
-        /// </summary>
+        /// <summary>DNN jQuery plugins library name</summary>
         public const string DnnPlugins = "DnnPlugins";
 
-        /// <summary>
-        ///     knockout mapping LibraryName
-        /// </summary>
+        /// <summary>HoverIntent library name</summary>
         public const string HoverIntent = "HoverIntent";
-        
-        
-
     }
 }

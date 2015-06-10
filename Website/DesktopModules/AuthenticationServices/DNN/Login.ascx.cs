@@ -93,59 +93,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			}
 		}
 		
-		protected new string RedirectURL
-        {
-            get
-            {
-                string _RedirectURL = "";
-
-				if (PortalSettings.Registration.RedirectAfterRegistration > 0) //redirect to after registration page
-                {
-					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
-                }
-                else
-                {
-
-					if (PortalSettings.Registration.RedirectAfterRegistration <= 0)
-                {
-                    if (Request.QueryString["returnurl"] != null)
-                    {
-                        //return to the url passed to register
-                        _RedirectURL = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-                        //redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-                        if (_RedirectURL.Contains("://") &&
-                            !_RedirectURL.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-                                StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            _RedirectURL = "";
-                        }
-                        if (_RedirectURL.Contains("?returnurl"))
-                        {
-                            string baseURL = _RedirectURL.Substring(0,
-                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
-                            string returnURL =
-                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
-
-                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
-                        }
-                    }
-                    if (String.IsNullOrEmpty(_RedirectURL))
-                    {
-                        //redirect to current page 
-                        _RedirectURL = Globals.NavigateURL();
-                    }
-                }
-                else //redirect to after registration page
-                {
-					_RedirectURL = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
-                }
-                }
-
-                return _RedirectURL;
-            }
-        
-		}
-
 		#endregion
 
 		#region Event Handlers
@@ -155,8 +102,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			base.OnLoad(e);
 
 			cmdLogin.Click += OnLoginClick;
-			
-			cmdCancel.Click += OnCancelClick;
+
+			cancelLink.NavigateUrl = GetRedirectUrl(false);
 
 			ClientAPI.RegisterKeyCapture(Parent, cmdLogin, 13);
 
@@ -369,11 +316,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				OnUserAuthenticated(eventArgs);
 			}
 		}
-		
-		private void OnCancelClick(object sender, EventArgs e)
-		{
-			Response.Redirect(RedirectURL, true);
-		}
 
         private bool HasSocialAuthenticationEnabled()
         {
@@ -388,6 +330,51 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     select a).Any();
         }
 		
+		#endregion
+
+		#region Private Methods
+
+		protected new string GetRedirectUrl(bool checkSettings = true)
+		{
+			var redirectUrl = "";
+			var redirectAfterLogin = PortalSettings.Registration.RedirectAfterLogin;
+			if (checkSettings && redirectAfterLogin > 0) //redirect to after registration page
+			{
+				redirectUrl = Globals.NavigateURL(redirectAfterLogin);
+			}
+			else
+			{
+				if (Request.QueryString["returnurl"] != null)
+				{
+					//return to the url passed to register
+					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+					if (redirectUrl.Contains("://") &&
+						!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
+							StringComparison.InvariantCultureIgnoreCase))
+					{
+						redirectUrl = "";
+					}
+					if (redirectUrl.Contains("?returnurl"))
+					{
+						string baseURL = redirectUrl.Substring(0,
+							redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
+						string returnURL =
+							redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+						redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+					}
+				}
+				if (String.IsNullOrEmpty(redirectUrl))
+				{
+					//redirect to current page 
+					redirectUrl = Globals.NavigateURL();
+				}
+			}
+
+			return redirectUrl;
+		}
+
 		#endregion
 
 	}

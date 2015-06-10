@@ -88,9 +88,9 @@
                                 </a>
                             {{/if}}
                             {{if DetailURL}}
-                                <a class="galleryLink inline" href="${DetailURL}" target="_new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
+                                <a class="galleryLink inline" href="${DetailURL}" target="_blank"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
                             {{else Catalog.CatalogUrl}}                                            
-                                <a class="galleryLink inline" href="${Catalog.CatalogUrl}" target="_new"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
+                                <a class="galleryLink inline" href="${Catalog.CatalogUrl}" target="_blank"><img class='deploy galleryLink' alt='Browse ${Catalog.CatalogName}' Title='Browse ${Catalog.CatalogName}' src='${_gallery.resolveImage(Catalog.CatalogIcon)}' /></a>
                             {{/if}}                
                         </div>
                     </div>
@@ -138,20 +138,20 @@
 			$(document).ready(function () {
 				_gallery = new Gallery(
 					{
-						host: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("feedEndpoint")) %>'
-						, NameTextASC: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NameAZ")) %>'
-						, NameTextDESC: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NameZA")) %>'
-						, PriceTextASC: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PriceLowHigh")) %>'
-						, PriceTextDESC: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("PriceHighLow")) %>'
-						, tagLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("TagLabel")) %>'
-						, searchLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("SearchLabel")) %>'
-						, vendorLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("VendorLabel")) %>'
-						, extensionLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ExtensionsLabel")) %>'
-						, noneLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("NoneLabel")) %>'
-						, orderLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("OrderLabel")) %>'
-						, typeLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("TypeLabel")) %>'
-						, errorLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("ErrorLabel")) %>'
-						, loadingLabel: '<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("LoadingLabel")) %>'
+						host: '<%=LocalizeSafeJsString("feedEndpoint") %>'
+						, NameTextASC: '<%=LocalizeSafeJsString("NameAZ") %>'
+						, NameTextDESC: '<%=LocalizeSafeJsString("NameZA") %>'
+						, PriceTextASC: '<%=LocalizeSafeJsString("PriceLowHigh") %>'
+						, PriceTextDESC: '<%=LocalizeSafeJsString("PriceHighLow") %>'
+						, tagLabel: '<%=LocalizeSafeJsString("TagLabel") %>'
+						, searchLabel: '<%=LocalizeSafeJsString("SearchLabel") %>'
+						, vendorLabel: '<%=LocalizeSafeJsString("VendorLabel") %>'
+						, extensionLabel: '<%=LocalizeSafeJsString("ExtensionsLabel") %>'
+						, noneLabel: '<%=LocalizeSafeJsString("NoneLabel") %>'
+						, orderLabel: '<%=LocalizeSafeJsString("OrderLabel") %>'
+						, typeLabel: '<%=LocalizeSafeJsString("TypeLabel") %>'
+						, errorLabel: '<%=LocalizeSafeJsString("ErrorLabel") %>'
+						, loadingLabel: '<%=LocalizeSafeJsString("LoadingLabel") %>'
 						, siteRoot : '<%=ResolveUrl("~/")%>'
 						, DataBaseVersion : "<%=DotNetNuke.Common.Globals.DataBaseVersion%>"
 						, CacheTimeoutMinutes : <%=(IsDebugEnabled() ? 0: 1440) %>

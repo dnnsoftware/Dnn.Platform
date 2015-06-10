@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
             if (context.Exception != null)
             {
                 Exceptions.LogException(context.Exception);
-                context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception);
+                context.Response = context.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, context.Exception.Message, context.Exception);
             }
         }
     }

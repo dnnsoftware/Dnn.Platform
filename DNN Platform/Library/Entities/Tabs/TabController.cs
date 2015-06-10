@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -387,6 +388,18 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        private static void DeserializeTabUrls(XmlNode nodeTabUrl, TabUrlInfo objTabUrl)
+        {
+            objTabUrl.SeqNum = XmlUtils.GetAttributeValueAsInteger(nodeTabUrl.CreateNavigator(), "seqNum", 0);
+            objTabUrl.Url = String.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url")) ? "/" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url") ;
+            objTabUrl.QueryString = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "QueryString");
+            objTabUrl.CultureCode = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "CultureCode");
+            objTabUrl.HttpStatus = String.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus")) ? "200" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus");
+            objTabUrl.IsSystem = XmlUtils.GetAttributeValueAsBoolean(nodeTabUrl.CreateNavigator(), "IsSystem", true);
+            objTabUrl.PortalAliasId = Null.NullInteger;
+            objTabUrl.PortalAliasUsage = PortalAliasUsageType.Default;
+        }
+        
         private Dictionary<int, List<TabAliasSkinInfo>> GetAliasSkins(int portalId)
         {
             string cacheKey = string.Format(DataCache.TabAliasSkinCacheKey, portalId);
@@ -633,13 +646,15 @@ namespace DotNetNuke.Entities.Tabs
             return dic;
         }
 
-        private void HardDeleteTabInternal(int tabId)
+        private void HardDeleteTabInternal(int tabId, int portalId)
         {
             //Delete all tabModule Instances
             foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, false);
             }
+
+            var tab = GetTab(tabId, portalId, false);
 
             //Delete Tab
             Provider.DeleteTab(tabId);
@@ -660,7 +675,9 @@ namespace DotNetNuke.Entities.Tabs
             DataProvider.Instance().AddSearchDeletedItems(document);
 
             if (TabDeleted != null)
-                TabDeleted(null, new TabEventArgs { Tab = new TabInfo { TabID = tabId } });
+            {
+                TabDeleted(null, new TabEventArgs { Tab = tab });
+            }
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)
@@ -914,7 +931,7 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = GetTab(tabId, portalId, true);
                 foreach (var localizedTab in tab.LocalizedTabs.Values)
                 {
-                    HardDeleteTabInternal(localizedTab.TabID);
+                    HardDeleteTabInternal(localizedTab.TabID, portalId);
                 }
 
                 // reset culture of current tab back to neutral
@@ -1030,6 +1047,12 @@ namespace DotNetNuke.Entities.Tabs
                 //Save Tab
                 AddTabInternal(localizedCopy, -1, -1, false, false); //not include modules show on all page, it will handled in copy modules action.
 
+				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
+				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
+				{
+					UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
+				}
+
                 /* Tab versioning and workflow is disabled 
                  * during the creation of the Localized copy
                  */ 
@@ -1103,7 +1126,7 @@ namespace DotNetNuke.Entities.Tabs
             //parent tabs can not be deleted
             if (GetTabsByPortal(portalId).WithParentId(tabId).Count == 0)
             {
-                HardDeleteTabInternal(tabId);
+                HardDeleteTabInternal(tabId, portalId);
             }
             ClearCache(portalId);
         }
@@ -1122,7 +1145,7 @@ namespace DotNetNuke.Entities.Tabs
                 //Iterate through descendants from bottom - which will remove children first
                 for (int i = descendantList.Count - 1; i >= 0; i += -1)
                 {
-                    HardDeleteTabInternal(descendantList[i].TabID);
+                    HardDeleteTabInternal(descendantList[i].TabID, portalId);
                 }
             }
             DeleteTab(tabId, portalId);
@@ -1629,6 +1652,7 @@ namespace DotNetNuke.Entities.Tabs
             Provider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
             if (clearCache)
             {
+				DataCache.ClearTabsCache(originalTab.PortalID);
                 DataCache.ClearModuleCache(originalTab.TabID);
             }
         }
@@ -2372,9 +2396,17 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 else
                 {
-                    Instance.UpdateTab(tab);
+                    Instance.UpdateTab(tab);                   
                 }
 
+                //UpdateTabUrls
+                foreach (XmlNode oTabUrlNode in tabNode.SelectNodes("tabUrls/tabUrl"))
+                {
+                    var tabUrl = new TabUrlInfo();
+                    DeserializeTabUrls(oTabUrlNode, tabUrl);
+                    DataProvider.Instance().SaveTabUrl(tab.TabID, tabUrl.SeqNum, tabUrl.PortalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.Instance.GetCurrentUserInfo().UserID);
+                }
+                
                 //extra check for duplicate tabs in same level
                 if (tabs[tabName] == null)
                 {
@@ -2850,6 +2882,21 @@ namespace DotNetNuke.Entities.Tabs
                     modulesNode = panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']/modules");
                     modulesNode.AppendChild(tabXml.ImportNode(moduleNode, true));
                 }
+            }
+
+            //Serialize TabUrls
+            var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
+            foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, portal.PortalID))
+            {
+                var tabUrlXml = new XmlDocument();
+                XmlNode tabUrlNode = tabUrlXml.CreateElement("tabUrl");
+                tabUrlNode.AddAttribute("SeqNum", tabUrl.SeqNum.ToString(CultureInfo.InvariantCulture));
+                tabUrlNode.AddAttribute("Url", tabUrl.Url);
+                tabUrlNode.AddAttribute("QueryString", tabUrl.QueryString);
+                tabUrlNode.AddAttribute("HttpStatus", tabUrl.HttpStatus);
+                tabUrlNode.AddAttribute("CultureCode", tabUrl.CultureCode);
+                tabUrlNode.AddAttribute("IsSystem", tabUrl.IsSystem.ToString());
+                tabUrlsNode.AppendChild(tabXml.ImportNode(tabUrlNode, true));
             }
 
             if (TabSerialize != null)

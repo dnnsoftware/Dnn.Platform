@@ -322,6 +322,7 @@ namespace DotNetNuke.Entities.Portals
 		/// </summary>
 		/// <remarks>Defaults to True</remarks>
 		/// -----------------------------------------------------------------------------
+        [Obsolete("Deprecated in Platform 7.4.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -515,6 +516,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user identifier.</summary>
+        /// <value>The user identifier.</value>
 		public int UserId
 		{
 			get
@@ -527,6 +530,8 @@ namespace DotNetNuke.Entities.Portals
 			}
 		}
 
+        /// <summary>Gets the currently logged in user.</summary>
+        /// <value>The current user information.</value>
 		public UserInfo UserInfo
 		{
 			get
@@ -626,6 +631,30 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /*
+         * add a cachebuster parameter to generated file URI's
+         * 
+         * of the form ver=[file timestame] ie ver=2015-02-17-162255-735
+         * 
+         */
+        public bool AddCachebusterToResourceUris
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", PortalId, true);
+            }
+        }
+
+		/// <summary>
+		/// If this is true, then regular users can't send message to specific user/group.
+		/// </summary>
+		public bool DisablePrivateMessage
+		{
+			get
+			{
+				return PortalController.GetPortalSetting("DisablePrivateMessage", PortalId, "N") == "Y";
+			}
+		}
 
 		#endregion
 

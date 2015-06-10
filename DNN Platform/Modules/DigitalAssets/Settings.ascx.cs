@@ -25,6 +25,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+using DotNetNuke.Services.Assets;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Client;

@@ -999,6 +999,15 @@
   <data name="PasswordResetFailed.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and which is long and complex enough to meet the sites password complexity requirements.</value>
   </data>
+  <data name="PasswordResetFailed_UserUndefined.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password and username is correct.</value>
+  </data>
+  <data name="PasswordResetFailed_ResetLinkExpired.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Password reset link has expired and no longer valid.</value>
+  </data>
+  <data name="PasswordResetFailed_PasswordInHistory.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password.</value>
+  </data>
   <data name="InsecureAdmin.Text" xml:space="preserve">
     <value>Your admin account is still using a known default password. Please go to the Admin-&gt;User accounts menu and update the password. In addition, please ensure that you have updated the email address to a valid value.</value>
   </data>
@@ -1048,7 +1057,7 @@
     <value>CAPTCHA image</value>
   </data>
   <data name="PrivateConfirmationMessage.Text" xml:space="preserve">
-    <value>&lt;strong&gt;An e-mail with your details has been sent to the website administrator for verification. Once your registration has been approved an e-mail will be sent to your e-mail address: {0}. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
+    <value>&lt;strong&gt;An e-mail with your details has been sent to the website administrator for verification. Once your registration has been approved an e-mail will be sent to your e-mail address. In the meantime you can continue to browse this site by closing the popup.&lt;/strong&gt;  </value>
   </data>
   <data name="DNN_ReadingComponent.Text" xml:space="preserve">
     <value>Reading Component Manifest</value>
@@ -1121,6 +1130,12 @@
   </data>
   <data name="ASSEMBLY_Added.Text" xml:space="preserve">
     <value>Assembly registered</value>
+  </data>
+  <data name="ASSEMBLY_AddedBindingRedirect.Text" xml:space="preserve">
+    <value>Binding redirect added for assembly</value>
+  </data>
+  <data name="ASSEMBLY_RemovedBindingRedirect.Text" xml:space="preserve">
+    <value>Binding redirect removed for assembly</value>
   </data>
   <data name="ASSEMBLY_Updated.Text" xml:space="preserve">
     <value>Assembly updated</value>
@@ -1333,7 +1348,7 @@
     <value>Unable to determine jQuery Version.</value>
   </data>
   <data name="SendMail.Error" xml:space="preserve">
-    <value>There was an error sending confirmation emails - {0}.  However, your user account was created successfully.</value>
+    <value>There was an error sending confirmation emails - {0}  However, your user account was created successfully.</value>
   </data>
   <data name="TokenReplaceUnknownObject.Text" xml:space="preserve">
     <value>Error accessing [{0}:{1}], {0} is an unknown datasource.</value>

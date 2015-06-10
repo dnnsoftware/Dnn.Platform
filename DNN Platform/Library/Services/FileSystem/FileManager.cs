@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -70,6 +71,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Properties
 
         private IDictionary<string, string> _contentTypes;
+		private static readonly object _threadLocker = new object();
 
         public virtual IDictionary<string, string> ContentTypes
         {
@@ -77,20 +79,29 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (_contentTypes == null)
                 {
-                    var listController = new ListController();
-                    var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-                    if (listEntries == null || !listEntries.Any())
-                    {
-                        _contentTypes = GetDefaultContentTypes();
-                    }
-                    _contentTypes = new Dictionary<string, string>();
-                    if (listEntries != null)
-                    {
-                        foreach (var contentTypeEntry in listEntries)
-                        {
-                            _contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
-                        }
-                    }
+					lock (_threadLocker)
+	                {
+		                if (_contentTypes == null)
+		                {
+			                var listController = new ListController();
+			                var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+			                if (listEntries == null || !listEntries.Any())
+			                {
+				                _contentTypes = GetDefaultContentTypes();
+			                }
+			                else
+			                {
+				                _contentTypes = new Dictionary<string, string>();
+								if (listEntries != null)
+								{
+									foreach (var contentTypeEntry in listEntries)
+									{
+										_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+									}
+								}
+			                }
+		                }
+	                }
                 }
 
                 return _contentTypes;
@@ -480,7 +491,8 @@ namespace DotNetNuke.Services.FileSystem
                             }  
                             else
                             {
-                                UpdateFile(file);
+                                //File Events for updating will be not fired. Only events for adding nust be fired
+                                UpdateFile(file, true, false);
                             }
                             contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
@@ -499,7 +511,8 @@ namespace DotNetNuke.Services.FileSystem
                             {
                                 if (fileExists)
                                 {
-                                    UpdateFile(file);
+                                    //File Events for updating will not be fired. Only events for adding nust be fired
+                                    UpdateFile(file, true, false);
                                 }
                             }    
                         }                        
@@ -516,19 +529,38 @@ namespace DotNetNuke.Services.FileSystem
                     file.SHA1Hash = folderProvider.GetHashCode(file);
                 }
 
-                if (folderWorkflow == null || !fileExists)
-                {
-                    AddFile(file, fileHash, createdByUserID);
-                }
+				var isDatabaseProvider = folderMapping.FolderProviderType == "DatabaseFolderProvider";
 
                 try
                 {
-                    if (needToWriteFile)
-                    {
-                        folderProvider.AddFile(folder, contentFileName, fileContent);
-                    }
+					//add file into database first if folder provider is default providers
+					//add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+					if (isDatabaseProvider)
+	                {
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
 
-                    var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+	                }
+	                else
+	                {
+						if (needToWriteFile)
+						{
+							folderProvider.AddFile(folder, contentFileName, fileContent);
+						}
+
+		                if(folderWorkflow == null || !fileExists)
+						{
+							AddFile(file, fileHash, createdByUserID);
+						}
+	                }
+
+	                var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                     if (file.LastModificationTime != providerLastModificationTime)
                     {
                         DataProvider.Instance().UpdateFileLastModificationTime(file.FileId, providerLastModificationTime);
@@ -565,7 +597,7 @@ namespace DotNetNuke.Services.FileSystem
                 var addedFile = GetFile(file.FileId);
 
                 // Notify file event
-                if (fileExists && folderWorkflow == null)
+                if (fileExists && (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
                 {
                     OnFileOverwritten(addedFile, createdByUserID);
                 }
@@ -889,7 +921,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
         {
 
-            Requires.NotNullOrEmpty("relateivePath", relativePath);
+            Requires.NotNullOrEmpty("relativePath", relativePath);
 
             var folderPath = "";
             var seperatorIndex = relativePath.LastIndexOf('/');
@@ -1238,7 +1270,6 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo UpdateFile(IFileInfo file)
         {
             Requires.NotNull("file", file);
-
             string message;
             if (!ValidMetadata(file, out message))
             {
@@ -1748,7 +1779,8 @@ namespace DotNetNuke.Services.FileSystem
                     throw new ArgumentOutOfRangeException("contentDisposition");
             }
 
-            objResponse.AppendHeader("Content-Length", file.Size.ToString());
+            // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
+            if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
             objResponse.ContentType = GetContentType(file.Extension.Replace(".", ""));
 
             try
@@ -1805,13 +1837,28 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+
+        /// <summary>
+        /// Update file info to database.
+        /// </summary>
+        /// <param name="file">File info.</param>
+        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>        
+        /// <returns>The file info</returns>
+        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
+        {
+            //By default File Events will be fired
+            return UpdateFile(file, updateLazyload, true);
+        }
+
+
         /// <summary>
         /// Update file info to database.
         /// </summary>
         /// <param name="file">File info.</param>
         /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
+        /// <param name="fireEvent">Whether to fire File events or not</param>
         /// <returns>The file info</returns>
-        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
+        internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload, bool fireEvent)
         {
             Requires.NotNull("file", file);
 
@@ -1836,7 +1883,10 @@ namespace DotNetNuke.Services.FileSystem
             DataCache.RemoveCache("GetFileById" + file.FileId);
             var updatedFile = GetFile(file.FileId);
 
-            OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+            if (fireEvent)
+            {
+                OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+            }
             return updatedFile;
         }
 

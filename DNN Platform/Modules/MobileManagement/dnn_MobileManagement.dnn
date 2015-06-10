@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="6.0">
 	<packages>
-		<package name="DotNetNuke.MobileManagement" type="Module" version="07.04.01" isSystem="true">
+		<package name="DotNetNuke.MobileManagement" type="Module" version="07.04.02"  isSystem="true">
 			<friendlyName>Site Redirection Management</friendlyName>
 			<iconFile>Images/MobileManagement_Standard_32x32.png</iconFile>
 			<description>The Site Redirection Management module allows users to manage their website redirects.</description>
@@ -18,7 +18,7 @@
 				<component type="Module">
 					<desktopModule>
 						<moduleName>DotNetNuke.MobileManagement</moduleName>
-						<foldername>DNNCorp/MobileManagement</foldername>
+						<foldername>MobileManagement</foldername>
 						<businessControllerClass/>
 						<supportedFeatures />
 						<isPremium>true</isPremium>
@@ -36,7 +36,7 @@
 										<controlTitle>Site Redirection Management</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
-										<helpUrl>http://help.dotnetnuke.com/070100/default.htm#Documentation/Using the Control Panel/Admin Console/Site Redirection Management/About the Site Redirection Management Module.html</helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 									<moduleControl>
@@ -47,7 +47,7 @@
 										<controlTitle>Redirection Settings</controlTitle>
 										<controlType>Edit</controlType>
 										<iconFile />
-										<helpUrl></helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 									<moduleControl>
@@ -58,7 +58,7 @@
 										<controlTitle>Simple Settings</controlTitle>
 										<controlType>Edit</controlType>
 										<iconFile />
-										<helpUrl></helpUrl>
+                    <helpUrl>http://www.dnnsoftware.com/help</helpUrl>
 										<viewOrder>0</viewOrder>
 									</moduleControl>
 								</moduleControls>

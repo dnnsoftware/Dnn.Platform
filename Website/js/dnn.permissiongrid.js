@@ -40,6 +40,9 @@
 				}
             });
 
+	        var inputBoxId = inputBox.attr('id');
+	        $('label[for="' + inputBoxId + '"]').attr('for', 'token-input-' + inputBoxId);
+
             var roleId = $('#' + scopeId + '_roleField');
             var roleSelector = $('#' + scopeId + '_cboSelectRole');
             roleSelector.change(function () {
