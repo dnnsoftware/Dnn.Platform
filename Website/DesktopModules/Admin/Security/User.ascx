@@ -1,6 +1,6 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Users.User" CodeFile="User.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
+<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 
 
@@ -16,59 +16,66 @@
         <dnn:DnnFormTextBoxItem ID="email" runat="server" DataField="Email" Required="true" />
    </Items>
 </dnn:DnnFormEditor>
+
+<asp:Panel runat="server" ID="pnlRedirectToUser" Visible="False">
+ <dnn:label id="plRedirectToUser" runat="server" controlname="txtRedirectToUser" />
+ <asp:TextBox runat="server" ID="txtRedirectToUser"/>
+ <asp:HiddenField runat="server" ID="hidRedirectToUserId"/>
+</asp:Panel>
+
 <div class="dnnFormGroup dnnFormItem dnnFormShort" id="renameUserPortals" runat="server" Visible="False">
     <dnn:Label ID="numSites" runat="server"></dnn:Label>
     <dnn:DnnComboBox CheckBoxes="false" id="cboSites" runat="server" Width="100" DataMember="PortalName" Visible="False" ViewStateMode="Disabled"/>
 </div>
 
 <asp:panel id="pnlAddUser" runat="server" visible="False" CssClass="dnnForm dnnFormPassword">
-    <div id="AuthorizeNotify" runat="server" >
-        <div class="dnnFormItem">
-            <dnn:label id="plAuthorize" runat="server" controlname="chkAuthorize" />
+ <div id="AuthorizeNotify" runat="server">
+  <div class="dnnFormItem">
+   <dnn:label id="plAuthorize" runat="server" controlname="chkAuthorize" />
             <asp:checkbox id="chkAuthorize" runat="server" checked="True" />
-        </div>
-        <div class="dnnFormItem">
-            <dnn:label id="plNotify" runat="server" controlname="chkNotify" />
+  </div>
+  <div class="dnnFormItem">
+   <dnn:label id="plNotify" runat="server" controlname="chkNotify" />
             <asp:checkbox id="chkNotify" runat="server" checked="True" />
-        </div>
-    </div>
-    <div id="Password" runat="server" >
-        <div class="dnnFormItem">
-            <div class="dnnLabel">            
-            </div>
-            <p class="dnnLeft" style="margin-top: 15px; font-weight:bold">
+  </div>
+ </div>
+ <div id="Password" runat="server">
+  <div class="dnnFormItem">
+   <div class="dnnLabel">
+   </div>
+   <p class="dnnLeft" style="margin-top: 15px; font-weight: bold">
                 <asp:label id="lblPasswordHelp" runat="server" />
-            </p>
-        </div>
-        <div id="randomRow" runat="server" class="dnnFormItem">
-            <dnn:label id="plRandom" runat="server" controlname="chkRandom" />
+   </p>
+  </div>
+  <div id="randomRow" runat="server" class="dnnFormItem">
+   <dnn:label id="plRandom" runat="server" controlname="chkRandom" />
             <asp:checkbox id="chkRandom" runat="server" checked="True" />
-        </div>
-        <div class="dnnFormItem">
-            <dnn:label id="plPassword" runat="server" controlname="txtPassword" cssclass="dnnFormRequired"  />
-            <asp:Panel ID="passwordContainer" runat="server">
+  </div>
+  <div class="dnnFormItem">
+   <dnn:label id="plPassword" runat="server" controlname="txtPassword" cssclass="dnnFormRequired" />
+   <asp:Panel ID="passwordContainer" runat="server">
     			<asp:textbox id="txtPassword" runat="server" TextMode="Password" size="12" maxlength="20" AutoCompleteType="Disabled" />
-            </asp:Panel>
-        </div>
-        <div class="dnnFormItem">
-            <dnn:label id="plConfirm" runat="server" controlname="txtConfirm" text="Confirm Password:" cssclass="dnnFormRequired"  ></dnn:label>
+   </asp:Panel>
+  </div>
+  <div class="dnnFormItem">
+   <dnn:label id="plConfirm" runat="server" controlname="txtConfirm" text="Confirm Password:" cssclass="dnnFormRequired"></dnn:label>
 			<asp:textbox id="txtConfirm" runat="server" textmode="Password" size="12" maxlength="20" CssClass="password-confirm" />
-            <asp:CompareValidator ID="ComparePasswordsValidator" runat="server"
-                                  resourcekey = "ComparePasswordsValidator.ErrorMessage" 
-                                  CssClass="dnnFormMessage dnnFormError"    
-                                  Display="Dynamic"                               
-                                  ControlToValidate="txtPassword" 
-                                  ControlToCompare="txtConfirm"></asp:CompareValidator>
-        </div>
-        <div id="questionRow" runat="server"  class="dnnFormItem" visible="false">
-            <dnn:label id="plQuestion" runat="server" controlname="lblQuestion"  cssclass="dnnFormRequired" />
+   <asp:CompareValidator ID="ComparePasswordsValidator" runat="server"
+    resourcekey="ComparePasswordsValidator.ErrorMessage"
+    CssClass="dnnFormMessage dnnFormError"
+    Display="Dynamic"
+    ControlToValidate="txtPassword"
+    ControlToCompare="txtConfirm"></asp:CompareValidator>
+  </div>
+  <div id="questionRow" runat="server" class="dnnFormItem" visible="false">
+   <dnn:label id="plQuestion" runat="server" controlname="lblQuestion" cssclass="dnnFormRequired" />
 			<asp:textbox id="txtQuestion" runat="server" size="25" maxlength="256" />
-        </div>
-        <div id="answerRow" runat="server" class="dnnFormItem" visible="false">
-            <dnn:label id="plAnswer" runat="server" controlname="txtAnswer" cssclass="dnnFormRequired"  />
+  </div>
+  <div id="answerRow" runat="server" class="dnnFormItem" visible="false">
+   <dnn:label id="plAnswer" runat="server" controlname="txtAnswer" cssclass="dnnFormRequired" />
 			<asp:textbox id="txtAnswer" runat="server" size="25" maxlength="128" />
-        </div>
-    </div>
+  </div>
+ </div>
 </asp:panel>
 <ul id="actionsRow" runat="server" class="dnnActions dnnClear">
     <li><asp:LinkButton id="cmdUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdUpdate" /></li>
@@ -76,3 +83,52 @@
     <li><asp:LinkButton id="cmdRemove" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRemove" /></li>
     <li><asp:LinkButton id="cmdRestore" runat="server" CssClass="dnnSecondaryAction" resourcekey="cmdRestore" /></li>
 </ul>
+
+<script type="text/javascript">
+ (function ($, Sys) {
+  $(document).ready(function () {
+   $('#<%=txtRedirectToUser.ClientID%>').attr('data-text', $('#<%=txtRedirectToUser.ClientID%>').val());
+   $('#<%=txtRedirectToUser.ClientID%>').blur(function()
+   {
+    if ($(this).val() === '') {
+     $(this).attr('data-text', '');
+     $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', '-1');
+    }
+    $(this).val($(this).attr('data-text'));
+    $('#<%=hidRedirectToUserId.ClientID%>').val($('#<%=hidRedirectToUserId.ClientID%>').attr('data-val'));
+   });
+   $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', $('#<%=hidRedirectToUserId.ClientID%>').val());
+   $('#<%=txtRedirectToUser.ClientID%>').autocomplete({
+    minLength: 2,
+    source: function (request, response) {
+     $('#<%=hidRedirectToUserId.ClientID%>').val(-1);
+     $.ajax({
+      type: "GET",
+      url: $.dnnSF(<%=ModuleId%>).getServiceRoot('InternalServices') + 'Users/Search',
+      beforeSend: $.dnnSF(<%=ModuleId%>).setModuleHeaders,
+      data: { field: 'DisplayName', searchText: request.term }
+     }).done(function (data) {
+      response($.map(data, function (item) {
+       if (item.UserID != <%=User.UserID%>) {
+        return {
+         label: item.DisplayName,
+         id: item.UserID,
+         value: item.UserID,
+         name: item.DisplayName
+        }
+       }
+      }));
+     }).fail(function (xhr, status) {
+     });
+    },
+    select: function (event, ui) {
+     $('#<%=hidRedirectToUserId.ClientID%>').attr('data-val', ui.item.id);
+     $(this).attr('data-text', ui.item.label);
+     $(this).val($(this).attr('data-text'));
+     event.preventDefault();
+    }
+   });
+
+  });
+ }(jQuery, window.Sys));
+</script>

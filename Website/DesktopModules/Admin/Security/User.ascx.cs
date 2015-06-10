@@ -344,6 +344,20 @@ namespace DotNetNuke.Modules.Admin.Users
                         cmdDelete.Visible = true;
                     }
                 }
+                // Ability to shadow a user by another DNN-6878
+                if (IsAdmin)
+                {
+                    pnlRedirectToUser.Visible = true;
+                    if (User.RedirectToUserId != Null.NullInteger && !IsPostBack)
+                    {
+                        UserInfo redirectToUser = UserController.GetUserById(PortalId, User.RedirectToUserId);
+                        if (redirectToUser != null)
+                        {
+                            hidRedirectToUserId.Value = User.RedirectToUserId.ToString();
+                            txtRedirectToUser.Text = redirectToUser.DisplayName;
+                        }
+                    }
+                }
             }
 
             cmdUpdate.Text = Localization.GetString(IsUser ? "Register" : "CreateUser", LocalResourceFile);
@@ -646,6 +660,11 @@ namespace DotNetNuke.Modules.Admin.Users
                                 UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
+                        }
+
+                        if (IsAdmin && hidRedirectToUserId.Value != "")
+                        {
+                            User.RedirectToUserId = int.Parse(hidRedirectToUserId.Value);
                         }
 
                         UserController.UpdateUser(UserPortalID, User);

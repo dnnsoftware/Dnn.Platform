@@ -2328,7 +2328,7 @@ namespace DotNetNuke.Data
 		public virtual void UpdateUser(int userId, int portalID, string firstName, string lastName, bool isSuperUser,
 										string email, string displayName, string vanityUrl, bool updatePassword,
 										bool isApproved, bool refreshRoles, string lastIpAddress, Guid passwordResetToken,
-										DateTime passwordResetExpiration, bool isDeleted, int lastModifiedByUserID)
+                                        DateTime passwordResetExpiration, int redirectToUserId, bool isDeleted, int lastModifiedByUserID)
 		{
 			ExecuteNonQuery("UpdateUser",
 									  userId,
@@ -2345,7 +2345,8 @@ namespace DotNetNuke.Data
 									  lastIpAddress,
 									  passwordResetToken,
 									  GetNull(passwordResetExpiration),
-									  isDeleted,
+                                      redirectToUserId,
+                                      isDeleted,
 									  lastModifiedByUserID);
 		}
 

@@ -175,6 +175,7 @@
     <Compile Include="InternalServices\MessagingServiceController.cs" />
     <Compile Include="InternalServices\ServiceRouteMapper.cs" />
     <Compile Include="InternalServices\NewUserNotificationServiceController.cs" />
+    <Compile Include="InternalServices\UsersController.cs" />
     <Compile Include="InternalServices\UserFileController.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedDetailView.cs" />
     <Compile Include="InternalServices\Views\Search\GroupedBasicView.cs" />

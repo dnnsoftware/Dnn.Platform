@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -56,6 +57,7 @@ namespace DotNetNuke.Entities.Users
     /// </history>
     /// -----------------------------------------------------------------------------
     [Serializable]
+    [DataContract]
     public class UserInfo : BaseEntityInfo, IPropertyAccess
     {
         #region Private Members
@@ -78,6 +80,7 @@ namespace DotNetNuke.Entities.Users
             PortalID = Null.NullInteger;
             IsSuperUser = Null.NullBoolean;
             AffiliateID = Null.NullInteger;
+            RedirectToUserId = Null.NullInteger;
         }
 
         #endregion
@@ -104,6 +107,7 @@ namespace DotNetNuke.Entities.Users
         /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(3), Required(true), MaxLength(128)]
+        [DataMember]
         public string DisplayName { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -115,6 +119,7 @@ namespace DotNetNuke.Entities.Users
         /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(4), MaxLength(256), Required(true), RegularExpressionValidator(Globals.glbEmailRegEx)]
+        [DataMember]
         public string Email { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -126,6 +131,7 @@ namespace DotNetNuke.Entities.Users
         /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(1), MaxLength(50)]
+        [DataMember]
         public string FirstName
         {
             get { return Profile.FirstName; }
@@ -174,6 +180,7 @@ namespace DotNetNuke.Entities.Users
         /// </history>
         /// -----------------------------------------------------------------------------
         [SortOrder(2), MaxLength(50)]
+        [DataMember]
         public string LastName
         {
             get { return Profile.LastName; }
@@ -317,7 +324,17 @@ namespace DotNetNuke.Entities.Users
         /// </history>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
+        [DataMember]
         public int UserID { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the User Id which is the preferred account to use for this user
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        [DataMember]
+        public int RedirectToUserId { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
