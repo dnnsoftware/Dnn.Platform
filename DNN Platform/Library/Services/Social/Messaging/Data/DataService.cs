@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The id of the reply created</returns>
         public int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string fromName, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId,body, senderUserId, from, createUpdateUserId);
+            return _provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId, body, senderUserId, fromName, createUpdateUserId);
         }
 
         /// <summary>
