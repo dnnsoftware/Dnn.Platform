@@ -465,6 +465,8 @@ namespace DotNetNuke.Modules.Admin.Portals
                         }
                         catch (Exception ex)
                         {
+                            Logger.Error(ex);
+
                             intPortalId = Null.NullInteger;
                             message = ex.Message;
                         }
