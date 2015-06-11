@@ -705,6 +705,12 @@
   <data name="plMsgAllowAttachments.Help" xml:space="preserve">
     <value>Select if attachments are allowed or not.</value>
   </data>
+  <data name="plIncludeAttachments.Text" xml:space="preserve">
+    <value>Include Attachments:</value>
+  </data>
+  <data name="plIncludeAttachments.Help" xml:space="preserve">
+    <value>Select if attachments are to be included with outgoing email.</value>
+  </data>
   <data name="MsgAllowAttachmentsYes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
