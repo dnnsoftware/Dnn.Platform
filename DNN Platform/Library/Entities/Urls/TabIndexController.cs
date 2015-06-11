@@ -421,6 +421,16 @@ namespace DotNetNuke.Entities.Urls
                             false,
                             false);
             AddToTabDict(tabIndex,
+                dupCheck,
+                httpAlias,
+                "logoff",
+                portalRewritePath + "&ctl=Logoff" + cultureRewritePath,
+                -1,
+                UrlEnums.TabKeyPreference.TabDeleted,
+                ref tabDepth,
+                false,
+                false);
+            AddToTabDict(tabIndex,
                             dupCheck,
                             httpAlias,
                             "terms",
