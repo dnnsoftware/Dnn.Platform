@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -57,13 +56,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                 success = true,
                                 data = new
                                         {
-                                            contentType = new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser)
+                                            contentType = new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser, true)
                                         }
                             };
 
             return Request.CreateResponse(response);
         }
-
 
         /// <summary>
         /// GetContentTypes retrieves a page of ContentTypes that satisfy the searchTerm
@@ -136,6 +134,5 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             return Request.CreateResponse(response);
         }
-
     }
 }

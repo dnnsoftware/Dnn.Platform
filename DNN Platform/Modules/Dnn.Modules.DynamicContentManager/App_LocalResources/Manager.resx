@@ -249,4 +249,13 @@
   <data name="SaveContentTypeMessage.Text" xml:space="preserve">
     <value>The Content Type - {0} - was successfully saved.</value>
   </data>
+  <data name="AddContentField.Text" xml:space="preserve">
+    <value>Add Field</value>
+  </data>
+  <data name="ContentFields.Text" xml:space="preserve">
+    <value>Content Fields</value>
+  </data>
+  <data name="Label.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
 </root>

@@ -78,6 +78,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             CREATE TABLE ContentTypes_FieldDefinitions(
 	            FieldDefinitionID int IDENTITY(1,1) NOT NULL,
                 ContentTypeID int NOT NULL,
+                PortalID int NOT NULL,
                 DataTypeID int NOT NULL,
 	            Name nvarchar(100) NOT NULL,
 	            Label nvarchar(100) NOT NULL,
@@ -92,8 +93,8 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                                             VALUES ('{0}', '{1}')";
 
         private const string InsertFieldDefinitionSql = @"INSERT INTO ContentTypes_FieldDefinitions 
-                                                            (ContentTypeID, DataTypeID, Name, Label, Description) 
-                                                            VALUES ({0}, {1}, '{2}', '{3}', '{4}')";
+                                                            (ContentTypeID, PortalID, DataTypeID, Name, Label, Description) 
+                                                            VALUES ({0}, {1}, {2}, '{3}', '{4}', '{5}')";
 
         private const string InsertContentTypeSql = @"INSERT INTO ContentTypes 
                                                             (ContentType, PortalID, IsDynamic, CreatedByUserID, LastModifiedByUserID) 
@@ -173,7 +174,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             for (int i = 0; i < count; i++)
             {
-                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i)));
+                DataUtil.ExecuteNonQuery(DatabaseName, string.Format(InsertFieldDefinitionSql, i, PortalId, i, string.Format("Name_{0}", i), string.Format("Label_{0}", i), String.Format("Description_{0}", i)));
             }
         }
 

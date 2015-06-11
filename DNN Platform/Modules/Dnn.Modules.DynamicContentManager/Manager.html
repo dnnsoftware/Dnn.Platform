@@ -59,7 +59,7 @@
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                    <tr">
+                    <tr>
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: name"></span>
                         </td>
@@ -113,8 +113,36 @@
                         <a class="primarybtn" data-bind="click: saveContentType">[Resx:{key:"Save"}]</a>
                     </div>
 
-                    <div class="dccFieldsPanel" data-bind="visible: !isAddMode()">
-                        Content Fields
+                    <div class="dccSubSubPanel">
+                        <div class="dccSubHeading">
+                            <span data-bind="text: contentFieldsHeading"></span>
+                            <a class="dccButton right">[Resx:{key:"AddContentField"}]</a>
+                        </div>
+                        <table class="dccTable">
+                            <thead>
+                            <tr>
+                                <th>[Resx:{key:"Name"}]</th>
+                                <th>[Resx:{key:"Label"}]</th>
+                                <th>[Resx:{key:"DataType"}]</th>
+                                <th width="100px">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: contentFields()">
+                            <tr>
+                                <td>
+                                    <span data-bind="text: name"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="text: label"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="text: dataType"></span>
+                                </td>
+                                <td width="100px">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -255,6 +283,7 @@
             contentTypes: '[Resx:{key:"ContentTypes"}]',
             contentTypes_NoPagerFormat: '[Resx:{key:"ContentTypes_NoPagerFormat"}]',
             contentTypes_PagerFormat: '[Resx:{key:"ContentTypes_PagerFormat"}]',
+            contentFields: '[Resx:{key:"ContentFields"}]',
             dataTypes: '[Resx:{key:"DataTypes"}]',
             dataTypes_NoPagerFormat: '[Resx:{key:"DataTypes_NoPagerFormat"}]',
             dataTypes_PagerFormat: '[Resx:{key:"DataTypes_PagerFormat"}]',

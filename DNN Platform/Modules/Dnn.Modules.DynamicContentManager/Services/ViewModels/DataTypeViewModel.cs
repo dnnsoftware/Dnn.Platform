@@ -24,6 +24,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a DataTypeViewModel from a DataType object
         /// </summary>
         /// <param name="dataType">The DataType object</param>
+        /// <param name="isSuperUser">A flag that indicates the user is a Superuser</param>
         public DataTypeViewModel(DataType dataType, bool isSuperUser)
         {
             BaseType = dataType.UnderlyingDataType;

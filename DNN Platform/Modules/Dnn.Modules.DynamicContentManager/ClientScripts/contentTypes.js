@@ -157,6 +157,9 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     self.isSystem = ko.observable(false);
     self.selected = ko.observable(false);
 
+    self.contentFieldsHeading = resx.contentFields;
+    self.contentFields = ko.observableArray([]);
+
     self.isAddMode = ko.computed(function() {
         return self.contentTypeId() == -1;
     });
@@ -201,6 +204,17 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.description(data.description);
         self.name(data.name);
         self.isSystem(data.isSystem);
+
+        if(data.contentFields != null) {
+            self.contentFields.removeAll();
+
+            for(var i=0; i < data.contentFields.length; i++){
+                var result = data.contentFields[i];
+                var contentField = new dcc.contentFieldViewModel(self, config);
+                contentField.load(result);
+                self.contentFields.push(contentField);
+            }
+        }
     };
 
     self.saveContentType = function(data, e) {
@@ -235,4 +249,19 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     self.toggleSelected = function() {
         self.selected(!self.selected());
     };
+}
+
+dcc.contentFieldViewModel = function(parentViewModel, config) {
+    var self = this;
+
+    self.parentViewModel = parentViewModel;
+    self.name = ko.observable('');
+    self.label = ko.observable('');
+    self.dataType = ko.observable('');
+
+    self.load = function(data) {
+        self.name(data.name);
+        self.label(data.label);
+        self.dataType(data.dataType);
+    }
 }

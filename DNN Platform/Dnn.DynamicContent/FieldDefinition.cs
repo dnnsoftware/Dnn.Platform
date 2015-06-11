@@ -21,7 +21,9 @@ namespace Dnn.DynamicContent
         private DataType _dataType;
         private IList<ValidationRule> _validationRules;
 
-        public FieldDefinition()
+        public FieldDefinition() : this(-1) { }
+
+        public FieldDefinition(int portalId)
         {
             FieldDefinitionId = -1;
             ContentTypeId = -1;
@@ -29,6 +31,7 @@ namespace Dnn.DynamicContent
             Name = String.Empty;
             Label = String.Empty;
             Description = String.Empty;
+            PortalId = portalId;
         }
 
         public int ContentTypeId { get; set; }
@@ -40,8 +43,11 @@ namespace Dnn.DynamicContent
         {
             get
             {
-                //TODO - figure out how to get PortalId for the GetDataTypes call
-                return _dataType ?? (_dataType = DataTypeManager.Instance.GetDataTypes(-1).SingleOrDefault(dt => dt.DataTypeId == DataTypeId));
+                if (_dataType == null)
+                {
+                    _dataType = DataTypeManager.Instance.GetDataTypes(PortalId, true).SingleOrDefault(dt => dt.DataTypeId == DataTypeId);
+                }
+                return _dataType;
             }
         }
 
@@ -52,6 +58,8 @@ namespace Dnn.DynamicContent
         public string Label { get; set; }
 
         public string Name { get; set; }
+
+        public int PortalId { get; set; }
 
         [IgnoreColumn]
         public IList<ValidationRule> ValidationRules
