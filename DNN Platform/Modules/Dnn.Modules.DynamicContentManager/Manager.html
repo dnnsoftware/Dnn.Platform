@@ -113,7 +113,9 @@
                         <a class="primarybtn" data-bind="click: saveContentType">[Resx:{key:"Save"}]</a>
                     </div>
 
-                    <div class="dccSubSubPanel" data-bind="with: fields">
+                    <div class="dccSubSubPanel" data-bind="visible: !isAddMode()">
+                        <!-- ko with:fields -->
+
                         <div class="dccSubHeading">
                             <span data-bind="text: contentFieldsHeading"></span>
                             <a class="dccButton right">[Resx:{key:"AddContentField"}]</a>
@@ -157,6 +159,7 @@
                             </tr>
                             </tfoot>
                         </table>
+                        <!-- /ko -->
                     </div>
                 </div>
             </div>

@@ -225,6 +225,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 if(self.isAddMode()){
                     util.alert(resx.saveContentTypeMessage.replace("{0}", params.name), resx.ok, function() {
                         self.contentTypeId(data.data.contentTypeId)
+                        self.fields().clear();
                     });
                 }
                 else{
@@ -236,8 +237,6 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 //Failure
             }
         )
-
-
     };
 
     self.toggleSelected = function() {
@@ -260,6 +259,12 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentFields_PagerFormat;
     self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
+
+    self.clear = function() {
+        self.contentFields.removeAll();
+        self.pageIndex(0);
+        self.pageSize = settings.pageSize;
+    };
 
     self.init = function() {
         dcc.pager().init(self);
