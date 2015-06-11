@@ -49,7 +49,6 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.HttpModules")]
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.MemberDirectory")]
 [assembly: InternalsVisibleTo("DotNetNuke.Provider.AspNetProvider")]
-[assembly: InternalsVisibleTo("Evoq.Content.Library")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Content")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web")]
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Urls")]
