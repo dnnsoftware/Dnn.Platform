@@ -258,4 +258,10 @@
   <data name="Label.Text" xml:space="preserve">
     <value>Label</value>
   </data>
+  <data name="ContentFields_NoPagerFormat.Text" xml:space="preserve">
+    <value>Showing {0} Content Fields</value>
+  </data>
+  <data name="ContentFields_PagerFormat.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} Content Fields</value>
+  </data>
 </root>

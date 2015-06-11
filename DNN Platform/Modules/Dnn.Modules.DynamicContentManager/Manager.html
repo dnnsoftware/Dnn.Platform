@@ -113,7 +113,7 @@
                         <a class="primarybtn" data-bind="click: saveContentType">[Resx:{key:"Save"}]</a>
                     </div>
 
-                    <div class="dccSubSubPanel">
+                    <div class="dccSubSubPanel" data-bind="with: fields">
                         <div class="dccSubHeading">
                             <span data-bind="text: contentFieldsHeading"></span>
                             <a class="dccButton right">[Resx:{key:"AddContentField"}]</a>
@@ -142,6 +142,20 @@
                                 </td>
                             </tr>
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div>
+                                        <div class="left" data-bind="html: pagerItemsDescription"></div>
+                                        <ul class="right pager" data-bind="visible: pagerVisible">
+                                            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                        </ul>
+                                        <div class="right" data-bind="html: pagerDescription"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -284,6 +298,8 @@
             contentTypes_NoPagerFormat: '[Resx:{key:"ContentTypes_NoPagerFormat"}]',
             contentTypes_PagerFormat: '[Resx:{key:"ContentTypes_PagerFormat"}]',
             contentFields: '[Resx:{key:"ContentFields"}]',
+            contentFields_NoPagerFormat: '[Resx:{key:"ContentFields_NoPagerFormat"}]',
+            contentFields_PagerFormat: '[Resx:{key:"ContentFields_PagerFormat"}]',
             dataTypes: '[Resx:{key:"DataTypes"}]',
             dataTypes_NoPagerFormat: '[Resx:{key:"DataTypes_NoPagerFormat"}]',
             dataTypes_PagerFormat: '[Resx:{key:"DataTypes_PagerFormat"}]',

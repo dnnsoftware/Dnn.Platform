@@ -131,6 +131,7 @@ dcc.contentTypesViewModel = function(config){
         for(var i=0; i < data.results.length; i++){
             var result = data.results[i];
             var contentType = new dcc.contentTypeViewModel(self, config);
+            contentType.init();
             contentType.load(result);
             self.results.push(contentType);
         }
@@ -140,7 +141,7 @@ dcc.contentTypesViewModel = function(config){
     self.refresh = function() {
         self.getContentTypes();
     }
-}
+};
 
 dcc.contentTypeViewModel = function(parentViewModel, config){
     var self = this;
@@ -157,8 +158,8 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     self.isSystem = ko.observable(false);
     self.selected = ko.observable(false);
 
-    self.contentFieldsHeading = resx.contentFields;
-    self.contentFields = ko.observableArray([]);
+    self.fields = ko.observable(new dcc.contentFieldsViewModel(self, config));
+    self.fields().init();
 
     self.isAddMode = ko.computed(function() {
         return self.contentTypeId() == -1;
@@ -206,14 +207,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.isSystem(data.isSystem);
 
         if(data.contentFields != null) {
-            self.contentFields.removeAll();
-
-            for(var i=0; i < data.contentFields.length; i++){
-                var result = data.contentFields[i];
-                var contentField = new dcc.contentFieldViewModel(self, config);
-                contentField.load(result);
-                self.contentFields.push(contentField);
-            }
+            self.fields().load(data.contentFields)
         }
     };
 
@@ -251,6 +245,62 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     };
 }
 
+dcc.contentFieldsViewModel = function(parentViewModel, config) {
+    var self = this;
+    var resx = config.resx;
+    var settings = config.settings;
+    var util = config.util;
+
+    self.parentViewModel = parentViewModel;
+
+    self.contentFieldsHeading = resx.contentFields;
+    self.contentFields = ko.observableArray([]);
+    self.totalResults = ko.observable(0);
+    self.pageSize = settings.pageSize;
+    self.pager_PageDesc = resx.pager_PageDesc;
+    self.pager_PagerFormat = resx.contentFields_PagerFormat;
+    self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
+
+    self.init = function() {
+        dcc.pager().init(self);
+    };
+
+    self.load = function(data) {
+        self.contentFields.removeAll();
+
+        for(var i=0; i < data.fields.length; i++){
+            var result = data.fields[i];
+            var contentField = new dcc.contentFieldViewModel(self, config);
+            contentField.load(result);
+            self.contentFields.push(contentField);
+        }
+        self.totalResults(data.totalResults)
+    };
+
+    self.refresh = function() {
+        var params = {
+            contentTypeId: parentViewModel.contentTypeId,
+            pageIndex: self.pageIndex,
+            pageSize: self.pageSize
+        };
+
+        util.contentTypeService().get("GetContentFields", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.load(data.data.contentFields);
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+    };
+}
+
 dcc.contentFieldViewModel = function(parentViewModel, config) {
     var self = this;
 
@@ -258,6 +308,10 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.name = ko.observable('');
     self.label = ko.observable('');
     self.dataType = ko.observable('');
+
+    self.init = function() {
+        dcc.pager().init(self);
+    };
 
     self.load = function(data) {
         self.name(data.name);

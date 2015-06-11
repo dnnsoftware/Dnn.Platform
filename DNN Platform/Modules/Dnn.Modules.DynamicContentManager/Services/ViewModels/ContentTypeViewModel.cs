@@ -41,11 +41,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
 
             if (includeChildren)
             {
-                ContentFields = new List<ContentFieldViewModel>();
-                foreach (FieldDefinition definition in contentType.FieldDefinitions)
-                {
-                    ContentFields.Add(new ContentFieldViewModel(definition));
-                }
+                ContentFields = new ContentFieldsViewModel(contentType.FieldDefinitions);
             }
         }
 
@@ -59,7 +55,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// A collection of content fields
         /// </summary>
         [JsonProperty("contentFields")]
-        public IList<ContentFieldViewModel> ContentFields { get; set; }
+        public ContentFieldsViewModel ContentFields { get; set; }
 
         /// <summary>
         /// The Id of the Content Type

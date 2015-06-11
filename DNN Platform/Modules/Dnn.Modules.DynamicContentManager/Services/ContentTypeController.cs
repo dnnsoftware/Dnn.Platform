@@ -42,6 +42,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
         }
 
         /// <summary>
+        /// GetContentFields retrieves a page of Content Fields
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <param name="pageIndex">The page to fetch</param>
+        /// <param name="pageSize">The size of page to fetch</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex, int pageSize)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var response = new
+            {
+                success = true,
+                data = new
+                        {
+                            contentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, pageIndex, pageSize)
+                        }
+            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// GetContentType retrieves a single ContentType
         /// </summary>
         /// <param name="contentTypeId">The id of the ContentType</param>
