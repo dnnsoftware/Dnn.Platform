@@ -76,6 +76,13 @@ IF  EXISTS (SELECT * FROM sys.columns WHERE object_ID  = OBJECT_ID(N'{databaseOw
 	EXEC sp_rename '{databaseOwner}[{objectQualifier}ContentWorkflows].[PortalID ]', 'PortalID', 'COLUMN';
 GO
 
+/* DNN-6980 */
+/************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}CoreMessaging_DeleteUserNotifications
+GO
+
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_DeleteUserNotifications]
 	@UserId INT,
 	@PortalId INT
