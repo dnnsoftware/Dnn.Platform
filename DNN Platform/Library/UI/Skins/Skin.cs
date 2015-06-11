@@ -143,7 +143,9 @@ namespace DotNetNuke.UI.Skins
                 return _communicator;
             }
         }
+        #endregion
 
+        #region Public Properties
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Dictionary of Panes.
@@ -154,17 +156,13 @@ namespace DotNetNuke.UI.Skins
         /// 	[cnurse]	12/04/2007  created
         /// </history>
         /// -----------------------------------------------------------------------------
-        internal Dictionary<string, Pane> Panes
+        public Dictionary<string, Pane> Panes
         {
             get
             {
                 return _panes ?? (_panes = new Dictionary<string, Pane>());
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
