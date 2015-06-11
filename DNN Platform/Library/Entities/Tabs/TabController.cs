@@ -2886,7 +2886,7 @@ namespace DotNetNuke.Entities.Tabs
 
             //Serialize TabUrls
             var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
-            foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, portal.PortalID))
+			foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
             {
                 var tabUrlXml = new XmlDocument();
                 XmlNode tabUrlNode = tabUrlXml.CreateElement("tabUrl");
