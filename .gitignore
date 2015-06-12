@@ -16,6 +16,9 @@
 *.sln.ide/
 .vs/
 
+## Ignore Webstorm artifacts
+*.idea/
+
 # Build results
 [Rr]elease
 *_i.c

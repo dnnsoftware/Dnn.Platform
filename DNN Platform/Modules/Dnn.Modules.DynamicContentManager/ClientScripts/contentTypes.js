@@ -313,6 +313,7 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.name = ko.observable('');
     self.label = ko.observable('');
     self.dataType = ko.observable('');
+    self.selected = ko.observable(false);
 
     self.init = function() {
         dcc.pager().init(self);
@@ -323,4 +324,8 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         self.label(data.label);
         self.dataType(data.dataType);
     }
+
+    self.toggleSelected = function() {
+        self.selected(!self.selected());
+    };
 }

@@ -452,6 +452,8 @@
 
 .dccContainer .dccSubHeading span {
     font-size: 18px;
+    padding-top: 10px;
+    display: inline-block;
 }
 
 .dccContainer .dccSubSubPanel .dccTable {
