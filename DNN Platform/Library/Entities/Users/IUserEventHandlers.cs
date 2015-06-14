@@ -31,6 +31,6 @@ namespace DotNetNuke.Entities.Users
 
         void UserRemoved(object sender, UserEventArgs args);
 
-        void UserApproved(object sender, UserEventArgs args);
+        void UserApproved(object sender, UserApprovedEventArgs args);
     }
 }
