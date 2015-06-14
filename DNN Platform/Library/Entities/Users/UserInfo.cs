@@ -21,11 +21,10 @@
 #region Usings
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -33,7 +32,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.SystemDateTime;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.WebControls;
 
@@ -64,8 +62,7 @@ namespace DotNetNuke.Entities.Users
         private string _fullName;
         private UserMembership _membership;
         private UserProfile _profile;
-        //private IDictionary<int, UserSocial> _social;
-        private readonly SharedDictionary<int, UserSocial> _social = new SharedDictionary<int, UserSocial>();
+        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
 
         #endregion
 
@@ -284,27 +281,7 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                UserSocial userSocial;
-                var exists = false;
-                using (_social.GetReadLock())
-                {
-                    exists = _social.TryGetValue(PortalID, out userSocial);
-                }
-
-                if (!exists)
-                {
-                    using (_social.GetWriteLock())
-                    {
-						exists = _social.TryGetValue(PortalID, out userSocial);
-	                    if (!exists)
-	                    {
-							userSocial = new UserSocial(this);
-							_social.Add(PortalID, userSocial);
-						}
-                    }
-                }
-
-                return userSocial;
+                return _social.GetOrAdd(PortalID, i => new UserSocial(this));
             }
         }
 
