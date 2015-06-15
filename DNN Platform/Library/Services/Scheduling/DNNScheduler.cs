@@ -52,25 +52,6 @@ namespace DotNetNuke.Services.Scheduling
 
         #endregion
 
-        #region Private Methods
-
-        private bool CanRunOnThisServer(string servers)
-        {
-            string lwrServers = "";
-            if (servers != null)
-            {
-                lwrServers = servers.ToLower();
-            }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
         #region Public Methods
 
         public override int AddSchedule(ScheduleItem scheduleItem)
@@ -223,7 +204,7 @@ namespace DotNetNuke.Services.Scheduling
             if (scheduleHistoryItem.TimeLapse != Null.NullInteger
                 && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString
                 && scheduleHistoryItem.Enabled
-                && CanRunOnThisServer(scheduleItem.Servers))
+                && SchedulingController.CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
                 Scheduler.CoreScheduler.AddToScheduleQueue(scheduleHistoryItem);
