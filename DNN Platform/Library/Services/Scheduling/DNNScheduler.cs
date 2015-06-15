@@ -54,19 +54,13 @@ namespace DotNetNuke.Services.Scheduling
 
         #region Private Methods
 
-        private bool CanRunOnThisServer(string servers)
+        private static bool CanRunOnThisServer(string servers)
         {
-            string lwrServers = "";
-            if (servers != null)
-            {
-                lwrServers = servers.ToLower();
-            }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
-            {
-                return true;
-            }
-
-            return false;
+            return
+                // Scheduler should run on every server
+                string.IsNullOrWhiteSpace(servers)
+                // Check if scheduler should run on this server
+                || servers.Split(',').Contains(Globals.ServerName, StringComparer.InvariantCultureIgnoreCase);
         }
 
         #endregion
