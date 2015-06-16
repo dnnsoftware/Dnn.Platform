@@ -1,8 +1,8 @@
 ﻿#region Copyright
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// DotNetNuke® - http://www.dnnsoftware.com
+// Copyright (c) 2002-2015
+// by DNN Corp.
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -42,7 +42,7 @@ namespace Dnn.Modules.Newsletters.Components
             {
                 switch (version)
                 {
-                    case "07.05.00":
+                    case "08.00.00":
                         ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Newsletters");
                         if (moduleDefinition != null)
                         {
