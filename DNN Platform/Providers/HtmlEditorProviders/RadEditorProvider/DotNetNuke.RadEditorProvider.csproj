@@ -160,6 +160,9 @@
     <Content Include="Dialogs\DocumentManager.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="Dialogs\TemplateManager.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="images\attachment.png" />
     <Content Include="images\Black.gif" />
     <Content Include="images\CommandSprites.gif" />
@@ -215,12 +218,16 @@
     <Content Include="ConfigFile\default.ConfigFile.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="DialogHandler.aspx" />
+    <Content Include="DialogHandler.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ToolsFile\ToolsFile.xml.Original.xml" />
     <Content Include="ToolsFile\default.ToolsFile.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Dialogs\RenderTemplate.aspx" />
+    <Content Include="Dialogs\RenderTemplate.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Dialogs\SaveTemplate.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
