@@ -96,6 +96,14 @@ BEGIN
 	SELECT @@ROWCOUNT
 END
 GO
+
+/***** DNN-5788: rename the column name. *****/
+IF EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}ContentWorkflows' AND  COLUMN_NAME = 'PortalID ')
+   BEGIN
+        EXECUTE sp_rename N'{databaseOwner}{objectQualifier}ContentWorkflows.[PortalID ]', N'PortalID', 'COLUMN'
+    END 
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
