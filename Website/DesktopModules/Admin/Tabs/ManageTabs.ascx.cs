@@ -930,7 +930,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
 
                 //Create Localized versions
-                if (PortalSettings.ContentLocalizationEnabled && cultureTypeList.SelectedValue == "Localized")
+                if (PortalSettings.ContentLocalizationEnabled && cultureTypeList.SelectedValue == "Localized" && Tab.PortalID != -1)
                 {
                     TabController.Instance.CreateLocalizedCopies(Tab);
                     //Refresh tab
@@ -1545,8 +1545,21 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
 
                 CheckLocalizationVisibility();
-
-                BindLocalization(false);
+                //DNN-5882 if parent page is a superTab - hide localization options
+                if (PortalSettings.ActiveTab.IsSuperTab && PortalSettings.ActiveTab.ParentId != -1)
+                {
+                    localizationTab.Visible = false;
+                    cmdUpdateLocalization.Visible = false;
+                    MakeTranslatable.Visible = false;
+                    MakeNeutral.Visible = false;
+                    AddMissing.Visible = false;
+                    readyForTranslationButton.Visible = false;
+                }
+                else
+                {
+                    BindLocalization(false);
+                }
+                
 
                 cancelHyperLink.NavigateUrl = Globals.NavigateURL();
 
