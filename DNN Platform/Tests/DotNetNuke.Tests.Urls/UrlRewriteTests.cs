@@ -565,7 +565,7 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_PrimaryPortalAliasTestCases")]
-        public void AdvancedUrlRewriter_PrimaryPortalAlias(Dictionary<string, string> testFields)
+        public void AdvancedUrlRewriter_0_PrimaryPortalAlias(Dictionary<string, string> testFields)
         {
             string defaultAlias = testFields["DefaultAlias"];
 
