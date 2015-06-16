@@ -72,9 +72,9 @@ namespace DotNetNuke.Entities.Users
             return strDataType;
         }
 
-        private bool CheckAccessLevel(ProfilePropertyDefinition property, UserInfo accessingUser)
+        internal static bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
-            var isAdminUser = IsAdminUser(accessingUser);
+			var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
 
             //Use properties visible property but admins and hosts can always see the property
             var isVisible = property.Visible || isAdminUser;
@@ -84,16 +84,17 @@ namespace DotNetNuke.Entities.Users
                 switch (property.ProfileVisibility.VisibilityMode)
                 {
                     case UserVisibilityMode.FriendsAndGroups:
-                        isVisible = IsUser(accessingUser);
+						isVisible = IsUser(accessingUser, targetUser);
                         if(!isVisible)
                         {
                             //Relationships
                             foreach (Relationship relationship in property.ProfileVisibility.RelationshipVisibilities)
                             {
-                                if (user.Social.UserRelationships.Any(userRelationship =>
+								if (targetUser.Social.UserRelationships.Any(userRelationship =>
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
                                                                               && userRelationship.Status == RelationshipStatus.Accepted
-                                                                              && (accessingUser.UserID == userRelationship.RelatedUserId || user.UserID==userRelationship.RelatedUserId))
+																			  && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
+																					|| (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))
                                                                       ))
                                 {
                                     isVisible = true;
@@ -116,7 +117,7 @@ namespace DotNetNuke.Entities.Users
                         break;
                     case UserVisibilityMode.AdminOnly:
                         //accessing user not admin user so property is hidden (unless it is the user him/herself)
-                        isVisible = IsUser(accessingUser);
+						isVisible = IsUser(accessingUser, targetUser);
                         break;
                 }               
             }
@@ -124,7 +125,7 @@ namespace DotNetNuke.Entities.Users
             return isVisible;
         }
 
-        private bool IsAdminUser(UserInfo accessingUser)
+		private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
         {
             bool isAdmin = false;
 
@@ -133,14 +134,12 @@ namespace DotNetNuke.Entities.Users
                 //Is Super User?
                 isAdmin = accessingUser.IsSuperUser;
 
-                if (!isAdmin && user.PortalID != -1)
+				if (!isAdmin && targetUser.PortalID != -1)
                 {
                     //Is Administrator
-                    if (String.IsNullOrEmpty(administratorRoleName))
-                    {
-                        PortalInfo ps = PortalController.Instance.GetPortal(user.PortalID);
-                        administratorRoleName = ps.AdministratorRoleName;
-                    }
+	                var administratorRoleName = portalSettings != null
+		                ? portalSettings.AdministratorRoleName
+		                : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
 
                     isAdmin = accessingUser.IsInRole(administratorRoleName);
                 }
@@ -149,14 +148,14 @@ namespace DotNetNuke.Entities.Users
             return isAdmin;
         }
 
-        private bool IsMember(UserInfo accessingUser)
+		private static bool IsMember(UserInfo accessingUser)
         {
             return (accessingUser != null && accessingUser.UserID != -1);
         }
 
-        private bool IsUser(UserInfo accessingUser)
+		private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
         {
-            return (accessingUser != null && accessingUser.UserID == user.UserID);
+			return (accessingUser != null && accessingUser.UserID == targetUser.UserID);
         }
 
         #endregion
@@ -173,7 +172,8 @@ namespace DotNetNuke.Entities.Users
 
                 if(property != null)
                 {
-                    if (CheckAccessLevel(property, accessingUser))
+					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+					if (CheckAccessLevel(portalSettings, property, accessingUser, user))
                     {
                         switch (property.PropertyName.ToLower())
                         {
@@ -190,7 +190,8 @@ namespace DotNetNuke.Entities.Users
                 }
 
                 propertyNotFound = true;
-                return PropertyAccess.ContentLocked;
+                return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
+					? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
             }
             propertyNotFound = true;
             return string.Empty;
