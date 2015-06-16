@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Scheduling
                 // Scheduler should run on every server
                 string.IsNullOrWhiteSpace(servers)
                 // Check if scheduler should run on this server
-                || servers.Split(',').Contains(Globals.ServerName, StringComparer.InvariantCultureIgnoreCase);
+                || servers.Split(',').Select(e => e.Trim()).Contains(Globals.ServerName.Trim(), StringComparer.OrdinalIgnoreCase);
         }
 
         #endregion
