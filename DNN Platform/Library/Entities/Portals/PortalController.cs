@@ -84,6 +84,8 @@ namespace DotNetNuke.Entities.Portals
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
+        protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
+
         private event EventHandler<PortalCreatedEventArgs> PortalCreated;
 
         protected override Func<IPortalController> GetFactory()
@@ -1109,24 +1111,11 @@ namespace DotNetNuke.Entities.Portals
 
             if (string.IsNullOrEmpty(cultureCode) && portalId > -1)
             {
-                //Lookup culturecode but cache it in the HttpContext for performance
-                var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
-                if (httpContext != null)
-                {
-                    cultureCode = (string)httpContext.Items[activeLanguageKey];
-                }
-                if (string.IsNullOrEmpty(cultureCode))
-                {
-                    cultureCode = GetActivePortalLanguage(portalId);
-                    if (httpContext != null)
-                    {
-                        httpContext.Items[activeLanguageKey] = cultureCode;
-                    }
-                }
+                cultureCode = GetActivePortalLanguageFromHttpContext(httpContext, portalId);
             }
 
             //Get PortalSettings from Context or from cache
-            var dictionaryKey = String.Format("PortalSettingsDictionary{0}{1}", portalId, cultureCode);
+            var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalId, cultureCode);
             Dictionary<string, string> dictionary = null;
             if (httpContext != null)
             {
@@ -1146,6 +1135,28 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return dictionary;
+        }
+
+        private static string GetActivePortalLanguageFromHttpContext(HttpContext httpContext, int portalId)
+        {
+            var cultureCode = string.Empty;
+
+            //Lookup culturecode but cache it in the HttpContext for performance
+            var activeLanguageKey = String.Format("ActivePortalLanguage{0}", portalId);
+            if (httpContext != null)
+            {
+                cultureCode = (string)httpContext.Items[activeLanguageKey];
+            }
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetActivePortalLanguage(portalId);
+                if (httpContext != null)
+                {
+                    httpContext.Items[activeLanguageKey] = cultureCode;
+                }
+            }
+
+            return cultureCode;
         }
 
         private string GetTemplateName(string languageFileName)
@@ -2074,6 +2085,14 @@ namespace DotNetNuke.Entities.Portals
                 {
                     DataCache.ClearPortalCache(portalID, false);
                     DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+
+                    var httpContext = HttpContext.Current;
+                    if (httpContext != null)
+                    {
+                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
+                        var dictionaryKey = String.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
+                        httpContext.Items[dictionaryKey] = null;
+                    }
                 }
             }
         }
