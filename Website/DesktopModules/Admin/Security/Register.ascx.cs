@@ -29,6 +29,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 
@@ -103,6 +104,58 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 		}
 
+		protected string RedirectURL
+		{
+			get
+			{
+				string redirectUrl = "";
+
+				if (PortalSettings.Registration.RedirectAfterRegistration > 0) //redirect to after registration page
+				{
+					redirectUrl = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
+				}
+				else
+				{
+
+					if (PortalSettings.Registration.RedirectAfterRegistration <= 0)
+					{
+						if (Request.QueryString["returnurl"] != null)
+						{
+							//return to the url passed to register
+							redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+							//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
+							if (redirectUrl.Contains("://") &&
+								!Regex.Replace(redirectUrl, @"^https*://", "", RegexOptions.IgnoreCase).StartsWith(PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase))
+							{
+								redirectUrl = "";
+							}
+							if (redirectUrl.Contains("?returnurl"))
+							{
+								string baseURL = redirectUrl.Substring(0,
+									redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
+								string returnURL =
+									redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+								redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+							}
+						}
+						if (String.IsNullOrEmpty(redirectUrl))
+						{
+							//redirect to current page 
+							redirectUrl = Globals.NavigateURL();
+						}
+					}
+					else //redirect to after registration page
+					{
+						redirectUrl = Globals.NavigateURL(PortalSettings.Registration.RedirectAfterRegistration);
+					}
+				}
+
+				return redirectUrl;
+			}
+
+		}
+
 		protected string UserToken
 		{
 			get
@@ -117,256 +170,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		#endregion
 
-		#region Event Handlers
-
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-
-			jQuery.RequestDnnPluginsRegistration();
-
-			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
-
-			if (PortalSettings.Registration.RegistrationFormType == 0)
-			{
-				//UserName
-				if (!PortalSettings.Registration.UseEmailAsUserName)
-				{
-
-					AddField("Username", String.Empty, true,
-							String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator) ? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
-							TextBoxMode.SingleLine);
-				}
-
-				//Password
-				if (!PortalSettings.Registration.RandomPassword)
-				{
-					AddPasswordStrengthField("Password", "Membership", true);
-
-					if (PortalSettings.Registration.RequirePasswordConfirm)
-					{
-						AddPasswordConfirmField("PasswordConfirm", "Membership", true);
-					}
-				}
-
-				//Password Q&A
-				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
-				{
-					AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
-					AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
-				}
-
-				//DisplayName
-				if (String.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
-				{
-					AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-				}
-				else
-				{
-					AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-					AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-				}
-
-				//Email
-				AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
-
-				if (PortalSettings.Registration.RequireValidProfile)
-				{
-					foreach (ProfilePropertyDefinition property in User.Profile.ProfileProperties)
-					{
-						if (property.Required)
-						{
-							AddProperty(property);
-						}
-					}
-				}
-			}
-			else
-			{
-				var fields = PortalSettings.Registration.RegistrationFields.Split(',').ToList();
-				//append question/answer field when RequiresQuestionAndAnswer is enabled in config.
-				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
-				{
-					if (!fields.Contains("PasswordQuestion"))
-					{
-						fields.Add("PasswordQuestion");
-					}
-					if (!fields.Contains("PasswordAnswer"))
-					{
-						fields.Add("PasswordAnswer");
-					}
-				}
-
-				foreach (string field in fields)
-				{
-					var trimmedField = field.Trim();
-					switch (trimmedField)
-					{
-						case "Username":
-							AddField("Username", String.Empty, true, String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator)
-																		? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
-																		TextBoxMode.SingleLine);
-							break;
-						case "Email":
-							AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
-							break;
-						case "Password":
-							AddPasswordStrengthField(trimmedField, "Membership", true);
-							break;
-						case "PasswordConfirm":
-							AddPasswordConfirmField(trimmedField, "Membership", true);
-							break;
-						case "PasswordQuestion":
-						case "PasswordAnswer":
-							AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
-							break;
-						case "DisplayName":
-							AddField(trimmedField, String.Empty, true, ExcludeTerms, TextBoxMode.SingleLine);
-							break;
-						default:
-							ProfilePropertyDefinition property = User.Profile.GetProperty(trimmedField);
-							if (property != null)
-							{
-								AddProperty(property);
-							}
-							break;
-					}
-				}
-			}
-
-			//Verify that the current user has access to this page
-			if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
-			{
-				Response.Redirect(Globals.NavigateURL("Access Denied"), false);
-				Context.ApplicationInstance.CompleteRequest();
-			}
-
-			cancelLink.NavigateUrl = GetRedirectUrl(false);
-			registerButton.Click += registerButton_Click;
-
-			if (PortalSettings.Registration.UseAuthProviders)
-			{
-				List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
-				foreach (AuthenticationInfo authSystem in authSystems)
-				{
-					try
-					{
-						var authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authSystem.LoginControlSrc);
-						if (authSystem.AuthenticationType != "DNN")
-						{
-							BindLoginControl(authLoginControl, authSystem);
-							//Check if AuthSystem is Enabled
-							if (authLoginControl.Enabled && authLoginControl.SupportsRegistration)
-							{
-								authLoginControl.Mode = AuthMode.Register;
-
-								//Add Login Control to List
-								_loginControls.Add(authLoginControl);
-							}
-						}
-					}
-					catch (Exception ex)
-					{
-						Exceptions.LogException(ex);
-					}
-				}
-			}
-		}
-
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			if (Request.IsAuthenticated)
-			{
-				//if a Login Page has not been specified for the portal
-				if (Globals.IsAdminControl())
-				{
-					//redirect to current page 
-					Response.Redirect(Globals.NavigateURL(), true);
-				}
-				else //make module container invisible if user is not a page admin
-				{
-					if (!TabPermissionController.CanAdminPage())
-					{
-						ContainerControl.Visible = false;
-					}
-				}
-			}
-
-			if (PortalSettings.Registration.UseCaptcha)
-			{
-				captchaRow.Visible = true;
-				ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", LocalResourceFile);
-				ctlCaptcha.Text = Localization.GetString("CaptchaText", LocalResourceFile);
-			}
-
-			if (PortalSettings.Registration.UseAuthProviders && String.IsNullOrEmpty(AuthenticationType))
-			{
-				foreach (AuthenticationLoginBase authLoginControl in _loginControls)
-				{
-					socialLoginControls.Controls.Add(authLoginControl);
-				}
-			}
-
-			//Display relevant message
-			userHelpLabel.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
-			switch (PortalSettings.UserRegistration)
-			{
-				case (int)Globals.PortalRegistrationType.PrivateRegistration:
-					userHelpLabel.Text += Localization.GetString("PrivateMembership", Localization.SharedResourceFile);
-					break;
-				case (int)Globals.PortalRegistrationType.PublicRegistration:
-					userHelpLabel.Text += Localization.GetString("PublicMembership", Localization.SharedResourceFile);
-					break;
-				case (int)Globals.PortalRegistrationType.VerifiedRegistration:
-					userHelpLabel.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
-					break;
-			}
-			userHelpLabel.Text += Localization.GetString("Required", LocalResourceFile);
-			userHelpLabel.Text += Localization.GetString("RegisterWarning", LocalResourceFile);
-
-			userForm.DataSource = User;
-			if (!Page.IsPostBack)
-			{
-				userForm.DataBind();
-			}
-		}
-
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-
-			var confirmPasswordOptions = new DnnConfirmPasswordOptions()
-			{
-				FirstElementSelector = "." + PasswordStrengthTextBoxCssClass,
-				SecondElementSelector = "." + ConfirmPasswordTextBoxCssClass,
-				ContainerSelector = ".dnnRegistrationForm",
-				UnmatchedCssClass = "unmatched",
-				MatchedCssClass = "matched"
-			};
-
-			var optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-			var script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
-
-			if (ScriptManager.GetCurrent(Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(Page, GetType(), "ConfirmPassword", script, true);
-			}
-			else
-			{
-				Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", script, true);
-			}
-
-		}
-
-		#endregion
-
-		#region Private Methods
-
 		private void AddField(string dataField, string dataMember, bool required, string regexValidator, TextBoxMode textMode)
 		{
 			if (userForm.Items.Any(i => i.ID == dataField))
@@ -375,14 +178,14 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 
 			var formItem = new DnnFormTextBoxItem
-			{
-				ID = dataField,
-				DataField = dataField,
-				DataMember = dataMember,
-				Visible = true,
-				Required = required,
-				TextMode = textMode
-			};
+							   {
+								   ID = dataField,
+								   DataField = dataField,
+								   DataMember = dataMember,
+								   Visible = true,
+								   Required = required,
+								   TextMode = textMode
+							   };
 			if (!String.IsNullOrEmpty(regexValidator))
 			{
 				formItem.ValidationExpression = regexValidator;
@@ -433,7 +236,6 @@ namespace DotNetNuke.Modules.Admin.Users
 				Required = required,
 				TextMode = TextBoxMode.Password,
 				TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
-				ClearContentInPasswordMode = true
 			};
 			userForm.Items.Add(formItem);
 
@@ -451,17 +253,17 @@ namespace DotNetNuke.Modules.Admin.Users
 			if (property.DataType != imageType.EntryID)
 			{
 				DnnFormEditControlItem formItem = new DnnFormEditControlItem
-				{
-					ID = property.PropertyName,
-					ResourceKey = String.Format("ProfileProperties_{0}", property.PropertyName),
-					LocalResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx.resx",
-					ValidationMessageSuffix = ".Validation",
-					ControlType = EditorInfo.GetEditor(property.DataType),
-					DataMember = "Profile",
-					DataField = property.PropertyName,
-					Visible = property.Visible,
-					Required = property.Required
-				};
+														{
+															ID = property.PropertyName,
+															ResourceKey = String.Format("ProfileProperties_{0}", property.PropertyName),
+															LocalResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx.resx",
+															ValidationMessageSuffix = ".Validation",
+															ControlType = EditorInfo.GetEditor(property.DataType),
+															DataMember = "Profile",
+															DataField = property.PropertyName,
+															Visible = property.Visible,
+															Required = property.Required
+														};
 				//To check if the property has a deafult value
 				if (!String.IsNullOrEmpty(property.DefaultValue))
 				{
@@ -484,7 +286,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			authLoginControl.ID = Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc) + "_" + authSystem.AuthenticationType;
 			authLoginControl.LocalResourceFile = authLoginControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
 												 Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc);
-			authLoginControl.RedirectURL = GetRedirectUrl();
+			authLoginControl.RedirectURL = RedirectURL;
 			authLoginControl.ModuleConfiguration = ModuleConfiguration;
 
 			authLoginControl.UserAuthenticated += UserAuthenticated;
@@ -518,14 +320,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 					if ((string.IsNullOrEmpty(strMessage)))
 					{
-						Response.Redirect(GetRedirectUrl(), true);
-					}
-					else
-					{
-						RegistrationForm.Visible = false;
-						registerButton.Visible = false;
-						cancelLink.Attributes["resourcekey"] = "Close";
-						RegistrationForm.Parent.Controls.Add(cancelLink);
+						Response.Redirect(RedirectURL, true);
 					}
 				}
 				else
@@ -539,22 +334,29 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 		}
 
+		//private string GetSettingValue(string key)
+		//{
+		//	var value = String.Empty;
+		//	var setting = GetSetting(UserPortalID, key);
+		//	if ((setting != null) && (!String.IsNullOrEmpty(Convert.ToString(setting))))
+		//	{
+		//		value = Convert.ToString(setting);
+		//	}
+		//	return value;
+
+		//}
+
 		private void UpdateDisplayName()
-		{
-			//Update DisplayName to conform to Format
+        {
+            //Update DisplayName to conform to Format
 			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
-			{
+            {
 				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
-			}
-		}
+            }
+        }
 
 		private bool Validate()
 		{
-		    if (!string.IsNullOrEmpty(gotcha.Value))
-		    {
-		        return false;
-		    }
-
 			CreateStatus = UserCreateStatus.AddUser;
 			var portalSecurity = new PortalSecurity();
 
@@ -726,45 +528,253 @@ namespace DotNetNuke.Modules.Admin.Users
 			return _IsValid;
 		}
 
-		private string GetRedirectUrl(bool checkSetting = true)
+		protected override void OnInit(EventArgs e)
 		{
-			var redirectUrl = "";
-			var redirectAfterRegistration = PortalSettings.Registration.RedirectAfterRegistration;
-			if (checkSetting && redirectAfterRegistration > 0) //redirect to after registration page
+			base.OnInit(e);
+
+			jQuery.RequestDnnPluginsRegistration();
+
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+
+			if (PortalSettings.Registration.RegistrationFormType == 0)
 			{
-				redirectUrl = Globals.NavigateURL(redirectAfterRegistration);
+				//UserName
+				if (!PortalSettings.Registration.UseEmailAsUserName)
+				{
+
+					AddField("Username", String.Empty, true,
+							String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator) ? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
+							TextBoxMode.SingleLine);
+				}
+
+				//Password
+				if (!PortalSettings.Registration.RandomPassword)
+				{
+					AddPasswordStrengthField("Password", "Membership", true);
+
+					if (PortalSettings.Registration.RequirePasswordConfirm)
+					{
+						AddPasswordConfirmField("PasswordConfirm", "Membership", true);
+					}
+				}
+
+				//Password Q&A
+				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+				{
+					AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
+					AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
+				}
+
+				//DisplayName
+				if (String.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+				{
+					AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+				}
+				else
+				{
+					AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+					AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+				}
+
+				//Email
+				AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+
+				if (PortalSettings.Registration.RequireValidProfile)
+				{
+					foreach (ProfilePropertyDefinition property in User.Profile.ProfileProperties)
+					{
+						if (property.Required)
+						{
+							AddProperty(property);
+						}
+					}
+				}
 			}
 			else
 			{
-				if (Request.QueryString["returnurl"] != null)
+				var fields = PortalSettings.Registration.RegistrationFields.Split(',').ToList();
+				//append question/answer field when RequiresQuestionAndAnswer is enabled in config.
+				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
 				{
-					//return to the url passed to register
-					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
-					//redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
-					if (redirectUrl.Contains("://") &&
-						!redirectUrl.StartsWith(Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias),
-							StringComparison.InvariantCultureIgnoreCase))
+					if (!fields.Contains("PasswordQuestion"))
 					{
-						redirectUrl = "";
+						fields.Add("PasswordQuestion");
 					}
-					if (redirectUrl.Contains("?returnurl"))
+					if (!fields.Contains("PasswordAnswer"))
 					{
-						string baseURL = redirectUrl.Substring(0,
-							redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
-						string returnURL =
-							redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
-
-						redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+						fields.Add("PasswordAnswer");
 					}
 				}
-				if (String.IsNullOrEmpty(redirectUrl))
+
+				foreach (string field in fields)
 				{
-					//redirect to current page 
-					redirectUrl = Globals.NavigateURL();
+					var trimmedField = field.Trim();
+					switch (trimmedField)
+					{
+						case "Username":
+							AddField("Username", String.Empty, true, String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator)
+																		? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
+																		TextBoxMode.SingleLine);
+							break;
+						case "Email":
+							AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+							break;
+						case "Password":
+							AddPasswordStrengthField(trimmedField, "Membership", true);
+							break;
+						case "PasswordConfirm":
+							AddPasswordConfirmField(trimmedField, "Membership", true);
+							break;
+						case "PasswordQuestion":
+						case "PasswordAnswer":
+							AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
+							break;
+						case "DisplayName":
+							AddField(trimmedField, String.Empty, true, ExcludeTerms, TextBoxMode.SingleLine);
+							break;
+						default:
+							ProfilePropertyDefinition property = User.Profile.GetProperty(trimmedField);
+							if (property != null)
+							{
+								AddProperty(property);
+							}
+							break;
+					}
 				}
 			}
 
-			return redirectUrl;
+			//Verify that the current user has access to this page
+			if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
+			{
+				Response.Redirect(Globals.NavigateURL("Access Denied"), false);
+				Context.ApplicationInstance.CompleteRequest();
+			}
+
+			cancelButton.Click += cancelButton_Click;
+			registerButton.Click += registerButton_Click;
+
+			if (PortalSettings.Registration.UseAuthProviders)
+			{
+				List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+				foreach (AuthenticationInfo authSystem in authSystems)
+				{
+					try
+					{
+						var authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authSystem.LoginControlSrc);
+						if (authSystem.AuthenticationType != "DNN")
+						{
+							BindLoginControl(authLoginControl, authSystem);
+							//Check if AuthSystem is Enabled
+							if (authLoginControl.Enabled && authLoginControl.SupportsRegistration)
+							{
+								authLoginControl.Mode = AuthMode.Register;
+
+								//Add Login Control to List
+								_loginControls.Add(authLoginControl);
+							}
+						}
+					}
+					catch (Exception ex)
+					{
+						Exceptions.LogException(ex);
+					}
+				}
+			}
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			if (Request.IsAuthenticated)
+			{
+				//if a Login Page has not been specified for the portal
+				if (Globals.IsAdminControl())
+				{
+					//redirect to current page 
+					Response.Redirect(Globals.NavigateURL(), true);
+				}
+				else //make module container invisible if user is not a page admin
+				{
+					if (!TabPermissionController.CanAdminPage())
+					{
+						ContainerControl.Visible = false;
+					}
+				}
+			}
+
+			if (PortalSettings.Registration.UseCaptcha)
+			{
+				captchaRow.Visible = true;
+				ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", LocalResourceFile);
+				ctlCaptcha.Text = Localization.GetString("CaptchaText", LocalResourceFile);
+			}
+
+			if (PortalSettings.Registration.UseAuthProviders && String.IsNullOrEmpty(AuthenticationType))
+			{
+				foreach (AuthenticationLoginBase authLoginControl in _loginControls)
+				{
+					socialLoginControls.Controls.Add(authLoginControl);
+				}
+			}
+
+			//Display relevant message
+			userHelpLabel.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
+			switch (PortalSettings.UserRegistration)
+			{
+				case (int)Globals.PortalRegistrationType.PrivateRegistration:
+					userHelpLabel.Text += Localization.GetString("PrivateMembership", Localization.SharedResourceFile);
+					break;
+				case (int)Globals.PortalRegistrationType.PublicRegistration:
+					userHelpLabel.Text += Localization.GetString("PublicMembership", Localization.SharedResourceFile);
+					break;
+				case (int)Globals.PortalRegistrationType.VerifiedRegistration:
+					userHelpLabel.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
+					break;
+			}
+			userHelpLabel.Text += Localization.GetString("Required", LocalResourceFile);
+			userHelpLabel.Text += Localization.GetString("RegisterWarning", LocalResourceFile);
+
+			userForm.DataSource = User;
+			if (!Page.IsPostBack)
+			{
+				userForm.DataBind();
+			}
+		}
+
+		protected override void OnPreRender(EventArgs e)
+		{
+			base.OnPreRender(e);
+
+			var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+			{
+				FirstElementSelector = "." + PasswordStrengthTextBoxCssClass,
+				SecondElementSelector = "." + ConfirmPasswordTextBoxCssClass,
+				ContainerSelector = ".dnnRegistrationForm",
+				UnmatchedCssClass = "unmatched",
+				MatchedCssClass = "matched"
+			};
+
+			var optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+			var script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
+
+			if (ScriptManager.GetCurrent(Page) != null)
+			{
+				// respect MS AJAX
+				ScriptManager.RegisterStartupScript(Page, GetType(), "ConfirmPassword", script, true);
+			}
+			else
+			{
+				Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", script, true);
+			}
+
+		}
+
+		private void cancelButton_Click(object sender, EventArgs e)
+		{
+			Response.Redirect(RedirectURL, true);
 		}
 
 		private void registerButton_Click(object sender, EventArgs e)
@@ -832,7 +842,5 @@ namespace DotNetNuke.Modules.Admin.Users
 				userForm.DataBind();
 			}
 		}
-
-		#endregion
 	}
 }
