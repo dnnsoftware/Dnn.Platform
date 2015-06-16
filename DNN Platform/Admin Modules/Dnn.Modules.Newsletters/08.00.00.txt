@@ -1,1 +1,9 @@
-﻿DesktopModules/Admin/Newsletters/Nesletter.ascx.cs
+﻿' Remove the original files from the old installation
+DesktopModules/Admin/Newsletters/Newsletter.ascx
+DesktopModules/Admin/Newsletters/Newsletter.ascx.cs
+DesktopModules/Admin/Newsletters/module.css
+DesktopModules/Admin/Newsletters/App_LocalResources/Newsletter.ascx.resx
+
+' Remove folders
+DesktopModules/Admin/Newsletters/App_LocalResources
+DesktopModules/Admin/Newsletters
