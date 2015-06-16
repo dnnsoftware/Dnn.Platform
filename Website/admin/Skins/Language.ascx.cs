@@ -332,19 +332,27 @@ namespace DotNetNuke.UI.Skins.Controls
 
             try
             {
-                if (ShowLinks)
+                var locales = new Dictionary<string, Locale>();
+                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, CurrentCulture, "", false);
+                foreach (Locale loc in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
                 {
-                    var locales = new Dictionary<string, Locale>();
-                    foreach (Locale loc in LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values)
+                    string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), PortalSettings.PortalId, "Administrators");
+                    if (!PortalSettings.ContentLocalizationEnabled ||
+                        (LocaleIsAvailable(loc) &&
+                            (PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleName) || loc.IsPublished || PortalSecurity.IsInRoles(defaultRoles))))
                     {
-                        string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), PortalSettings.PortalId, "Administrators");
-                        if (!PortalSettings.ContentLocalizationEnabled ||
-							(LocaleIsAvailable(loc) &&
-								(PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleName) || loc.IsPublished || PortalSecurity.IsInRoles(defaultRoles))))
+                        locales.Add(loc.Code, loc);
+                        foreach (var cultureItem in cultureListItems)
                         {
-                            locales.Add(loc.Code, loc);
+                            if (cultureItem.Value == loc.Code)
+                            {
+                                selectCulture.Items.Add(cultureItem);
+                            }
                         }
                     }
+                }
+                if (ShowLinks)
+                {
                     if (locales.Count > 1)
                     {
                         rptLanguages.DataSource = locales.Values;
@@ -355,7 +363,6 @@ namespace DotNetNuke.UI.Skins.Controls
                         rptLanguages.Visible = false;
                     }
                 }
-                
                 if (ShowMenu)
                 {
                     if (!String.IsNullOrEmpty(CssClass))
@@ -364,7 +371,16 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     if (!IsPostBack)
                     {
-                        Localization.LoadCultureDropDownList(selectCulture, CultureDropDownTypes.NativeName, CurrentCulture);
+                        //select the default item
+                        if (CurrentCulture != null)
+                        {
+                            ListItem item = selectCulture.Items.FindByValue(CurrentCulture);
+                            if (item != null)
+                            {
+                                selectCulture.SelectedIndex = -1;
+                                item.Selected = true;
+                            }
+                        }
                     }
                     //only show language selector if more than one language
                     if (selectCulture.Items.Count <= 1)
