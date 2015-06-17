@@ -87,6 +87,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_FieldDefinitions](
 			[FieldDefinitionID] [int] IDENTITY(1,1) NOT NULL,
 			[ContentTypeID] [int] NOT NULL,
+			[PortalID] [int] NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[Label] [nvarchar](100) NOT NULL,
 			[Description] [nvarchar](2000) NULL,

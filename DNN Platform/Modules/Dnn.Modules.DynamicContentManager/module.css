@@ -348,6 +348,7 @@
     text-decoration: none;
     font-size: 13px;
     border: 1px solid #aaa;
+    text-align: center;
 }
 
 .dccContainer div.dccEditForm > div > a.primarybtn, .dccContainer div.dccEditForm > div > a.secondarybtn {
@@ -435,7 +436,7 @@
     cursor: pointer;
 }
 
-.dccContainer .dccFieldsPanel {
+.dccContainer .dccSubSubPanel {
     width: 750px;
     margin-top:10px;
     margin-bottom: 10px;
@@ -443,4 +444,18 @@
     border: solid 1px #aaaaaa;
     border-radius: 5px;
     height: 340px;
+}
+
+.dccContainer .dccSubHeading {
+    min-height: 50px;
+}
+
+.dccContainer .dccSubHeading span {
+    font-size: 18px;
+    padding-top: 10px;
+    display: inline-block;
+}
+
+.dccContainer .dccSubSubPanel .dccTable {
+    border: solid 1px #aaa;
 }

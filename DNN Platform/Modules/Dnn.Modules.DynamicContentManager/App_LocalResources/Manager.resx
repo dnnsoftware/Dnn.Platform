@@ -249,4 +249,19 @@
   <data name="SaveContentTypeMessage.Text" xml:space="preserve">
     <value>The Content Type - {0} - was successfully saved.</value>
   </data>
+  <data name="AddContentField.Text" xml:space="preserve">
+    <value>Add Field</value>
+  </data>
+  <data name="ContentFields.Text" xml:space="preserve">
+    <value>Content Fields</value>
+  </data>
+  <data name="Label.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="ContentFields_NoPagerFormat.Text" xml:space="preserve">
+    <value>Showing {0} Content Fields</value>
+  </data>
+  <data name="ContentFields_PagerFormat.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} Content Fields</value>
+  </data>
 </root>

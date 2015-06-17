@@ -32,6 +32,26 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             Assert.AreEqual(-1, field.FieldDefinitionId);
             Assert.AreEqual(-1, field.ContentTypeId);
             Assert.AreEqual(-1, field.DataTypeId);
+            Assert.AreEqual(-1, field.PortalId);
+            Assert.AreEqual(String.Empty, field.Name);
+            Assert.AreEqual(String.Empty, field.Label);
+            Assert.AreEqual(String.Empty, field.Description);
+        }
+
+        [Test]
+        public void Constructor_Overload_Sets_Default_Properties()
+        {
+            //Arrange
+            var portalId = Constants.CONTENT_ValidPortalId;
+
+            //Act
+            var field = new FieldDefinition(portalId);
+
+            //Assert
+            Assert.AreEqual(-1, field.FieldDefinitionId);
+            Assert.AreEqual(-1, field.ContentTypeId);
+            Assert.AreEqual(-1, field.DataTypeId);
+            Assert.AreEqual(Constants.CONTENT_ValidPortalId, field.PortalId);
             Assert.AreEqual(String.Empty, field.Name);
             Assert.AreEqual(String.Empty, field.Label);
             Assert.AreEqual(String.Empty, field.Description);
@@ -48,12 +68,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             //Assert
             Assert.AreEqual(0, field.ValidationRules.Count);
         }
+
         [Test]
-        //TODO - update when FieldDefinition Todo is completed
         public void DataType_Property_Calls_DataTypeController_Get()
         {
             //Arrange
-            var field = new FieldDefinition();
+            var portalId = Constants.CONTENT_ValidPortalId;
+            var field = new FieldDefinition(portalId);
             var mockDataTypeController = new Mock<IDataTypeManager>();
             DataTypeManager.SetTestableInstance(mockDataTypeController.Object);
 
@@ -62,7 +83,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             var dataType = field.DataType;
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.Once);
+            mockDataTypeController.Verify(c => c.GetDataTypes(Constants.CONTENT_ValidPortalId, It.IsAny<bool>()), Times.Once);
         }
 
         [Test]
@@ -70,10 +91,11 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         public void DataType_Property_Calls_DataTypeController_Get_Once_Only()
         {
             //Arrange
+            var portalId = Constants.CONTENT_ValidPortalId;
             var datatTypeId = 2;
-            var field = new FieldDefinition() {DataTypeId = datatTypeId};
+            var field = new FieldDefinition(portalId) {DataTypeId = datatTypeId};
             var mockDataTypeController = new Mock<IDataTypeManager>();
-            mockDataTypeController.Setup(dt => dt.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()))
+            mockDataTypeController.Setup(dt => dt.GetDataTypes(Constants.CONTENT_ValidPortalId, It.IsAny<bool>()))
                 .Returns(new List<DataType>() {new DataType() { DataTypeId = datatTypeId } }.AsQueryable());
             DataTypeManager.SetTestableInstance(mockDataTypeController.Object);
 
@@ -85,7 +107,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             // ReSharper restore UnusedVariable
 
             //Assert
-            mockDataTypeController.Verify(c => c.GetDataTypes(It.IsAny<int>(), It.IsAny<bool>()), Times.AtMostOnce);
+            mockDataTypeController.Verify(c => c.GetDataTypes(Constants.CONTENT_ValidPortalId, It.IsAny<bool>()), Times.AtMostOnce);
         }
 
         [Test]

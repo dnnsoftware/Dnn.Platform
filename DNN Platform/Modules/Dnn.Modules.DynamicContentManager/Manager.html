@@ -59,7 +59,7 @@
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
-                    <tr">
+                    <tr>
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
                             <span data-bind="text: name"></span>
                         </td>
@@ -68,8 +68,9 @@
                         </td>
                         <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="fa fa-check" data-bind="visible: isSystem"></i></td>
                         <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                            <a class="dccIcon" data-bind="visible: selected() && (!isSystem() || parentViewModel.isSystemUser), click: $parent.editContentType"><i class="fa fa-pencil"></i></a>
-                            <a class="dccIcon" data-bind="visible: selected() && (!isSystem() || parentViewModel.isSystemUser), click: deleteContentType"><i class="fa fa-trash-o"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editContentType"><i class="fa fa-search"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editContentType"><i class="fa fa-pencil"></i></a>
+                            <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteContentType"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                     </tbody>
@@ -94,7 +95,8 @@
                     <div class="dccEditRow">
                         <div>
                             <label>[Resx:{key:"Name"}]</label>
-                            <input type="text" data-bind="value: name, enable: !isSystem() || parentViewModel.isSystemUser" />
+                            <div></div>
+                            <input type="text" data-bind="value: name, enable: canEdit" />
                         </div>
                         <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
                             <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
@@ -104,17 +106,64 @@
                     <div class="dccEditRow">
                         <div>
                             <label>[Resx:{key:"Description"}]</label>
-                            <textarea class="dccTextArea" type="text" data-bind="value: description, enable: !isSystem() || parentViewModel.isSystemUser"></textarea>
+                            <textarea class="dccTextArea" type="text" data-bind="value: description, enable: canEdit"></textarea>
                         </div>
                     </div>
 
                     <div class="buttons">
-                        <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
-                        <a class="primarybtn" data-bind="click: saveContentType">[Resx:{key:"Save"}]</a>
+                        <a class="secondarybtn" data-bind="visible: canEdit, click: cancel">[Resx:{key:"Cancel"}]</a>
+                        <a class="primarybtn" data-bind="visible: canEdit, click: saveContentType">[Resx:{key:"Save"}]</a>
                     </div>
 
-                    <div class="dccFieldsPanel" data-bind="visible: !isAddMode()">
-                        Content Fields
+                    <div class="dccSubSubPanel" data-bind="visible: !isAddMode()">
+                        <!-- ko with:fields -->
+                        <div class="dccSubHeading">
+                            <span data-bind="text: contentFieldsHeading"></span>
+                            <a class="dccButton right" data-bind="visible: parentViewModel.canEdit()">[Resx:{key:"AddContentField"}]</a>
+                        </div>
+                        <table class="dccTable">
+                            <thead>
+                            <tr>
+                                <th>[Resx:{key:"Name"}]</th>
+                                <th>[Resx:{key:"Label"}]</th>
+                                <th>[Resx:{key:"DataType"}]</th>
+                                <th width="100px">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: contentFields()">
+                            <tr>
+                                <td>
+                                    <span data-bind="text: name"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="text: label"></span>
+                                </td>
+                                <td>
+                                    <span data-bind="text: dataType"></span>
+                                </td>
+                                <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-pencil"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-trash-o"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-arrows"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div>
+                                        <div class="left" data-bind="html: pagerItemsDescription"></div>
+                                        <ul class="right pager" data-bind="visible: pagerVisible">
+                                            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                        </ul>
+                                        <div class="right" data-bind="html: pagerDescription"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <!-- /ko -->
                     </div>
                 </div>
             </div>
@@ -255,6 +304,9 @@
             contentTypes: '[Resx:{key:"ContentTypes"}]',
             contentTypes_NoPagerFormat: '[Resx:{key:"ContentTypes_NoPagerFormat"}]',
             contentTypes_PagerFormat: '[Resx:{key:"ContentTypes_PagerFormat"}]',
+            contentFields: '[Resx:{key:"ContentFields"}]',
+            contentFields_NoPagerFormat: '[Resx:{key:"ContentFields_NoPagerFormat"}]',
+            contentFields_PagerFormat: '[Resx:{key:"ContentFields_PagerFormat"}]',
             dataTypes: '[Resx:{key:"DataTypes"}]',
             dataTypes_NoPagerFormat: '[Resx:{key:"DataTypes_NoPagerFormat"}]',
             dataTypes_PagerFormat: '[Resx:{key:"DataTypes_PagerFormat"}]',

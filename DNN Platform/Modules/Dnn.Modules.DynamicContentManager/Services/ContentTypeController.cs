@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -43,6 +42,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
         }
 
         /// <summary>
+        /// GetContentFields retrieves a page of Content Fields
+        /// </summary>
+        /// <param name="contentTypeId">The id of the ContentType</param>
+        /// <param name="pageIndex">The page to fetch</param>
+        /// <param name="pageSize">The size of page to fetch</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex, int pageSize)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+
+            var response = new
+            {
+                success = true,
+                data = new
+                        {
+                            contentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, pageIndex, pageSize)
+                        }
+            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// GetContentType retrieves a single ContentType
         /// </summary>
         /// <param name="contentTypeId">The id of the ContentType</param>
@@ -57,13 +80,12 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                 success = true,
                                 data = new
                                         {
-                                            contentType = new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser)
+                                            contentType = new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser, true)
                                         }
                             };
 
             return Request.CreateResponse(response);
         }
-
 
         /// <summary>
         /// GetContentTypes retrieves a page of ContentTypes that satisfy the searchTerm
@@ -136,6 +158,5 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             return Request.CreateResponse(response);
         }
-
     }
 }
