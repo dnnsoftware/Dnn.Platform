@@ -393,6 +393,30 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
         parentViewModel.refresh();
     };
 
+    self.deleteContentField = function (data, e) {
+        util.confirm(resx.deleteContentFieldConfirmMessage, resx.yes, resx.no, function() {
+            var params = {
+                contentFieldId: data.contentFieldId(),
+                contentTypeId: data.contentTypeId(),
+                name: data.name(),
+                label: data.label(),
+                description: data.description(),
+                dataTypeId: data.dataTypeId()
+            };
+
+            util.contentTypeService().post("DeleteContentField", params,
+                function(data){
+                    //Success
+                    parentViewModel.refresh();
+                },
+
+                function(data){
+                    //Failure
+                }
+            );
+        });
+    };
+
     self.init = function() {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());

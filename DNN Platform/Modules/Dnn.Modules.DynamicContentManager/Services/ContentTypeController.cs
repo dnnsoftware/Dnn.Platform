@@ -19,6 +19,29 @@ namespace Dnn.Modules.DynamicContentManager.Services
     public class ContentTypeController : DnnApiController
     {
         /// <summary>
+        /// DeleteContentField deletes a single ContentField
+        /// </summary>
+        /// <param name="viewModel">The ContentField to delete</param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage DeleteContentField(ContentFieldViewModel viewModel)
+        {
+            var contentField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
+
+            if (contentField != null)
+            {
+                FieldDefinitionManager.Instance.DeleteFieldDefinition(contentField);
+            }
+
+            var response = new
+                            {
+                                success = true
+                            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// DeleteContentType deletes a single ContentType
         /// </summary>
         /// <param name="viewModel">The ContentType to delete</param>
