@@ -55,7 +55,10 @@ namespace Dnn.DynamicContent
         {
             var contentType = DynamicContentTypeManager.Instance.GetContentType(field.ContentTypeId, field.PortalId, true);
 
-            contentType.ClearFieldDefinitions();
+            if (contentType != null)
+            {
+                contentType.ClearFieldDefinitions();
+            }
         }
 
         /// <summary>

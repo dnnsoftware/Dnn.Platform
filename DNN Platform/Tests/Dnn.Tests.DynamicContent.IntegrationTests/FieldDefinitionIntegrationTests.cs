@@ -9,6 +9,7 @@ using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
 using DotNetNuke.Tests.Utilities;
+using Moq;
 using NUnit.Framework;
 
 // ReSharper disable UseStringInterpolation
@@ -19,18 +20,23 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
     public class FieldDefinitionIntegrationTests : IntegrationTestBase
     {
         private readonly string _cacheKey = CachingProvider.GetCacheKey(FieldDefinitionManager.FieldDefinitionCacheKey);
+        private Mock<IDynamicContentTypeManager> _mockContentTypeController;
 
         [SetUp]
         public void SetUp()
         {
             SetUpInternal();
             SetUpValidationRules(RecordCount);
+
+            _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
             TearDownInternal();
+            DynamicContentTypeManager.ClearInstance();
         }
 
         [Test]
@@ -64,12 +70,12 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
-            {
-                ContentTypeId = contentTypeId,
-                DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
-                Name = "New_Type",
-                Label = "Label"
-            };
+                                    {
+                                        ContentTypeId = contentTypeId,
+                                        DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId,
+                                        Name = "New_Type",
+                                        Label = "Label"
+                                    };
 
             //Act
             fieldDefinitionController.AddFieldDefinition(definition);
@@ -86,9 +92,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
-            {
-                FieldDefinitionId = definitionId
-            };
+                                    {
+                                        FieldDefinitionId = definitionId
+                                    };
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
@@ -107,9 +113,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
-            {
-                FieldDefinitionId = definitionId
-            };
+                                    {
+                                        FieldDefinitionId = definitionId
+                                    };
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
@@ -127,10 +133,10 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpFieldDefinitions(RecordCount);
             var fieldDefinitionController = new FieldDefinitionManager();
             var definition = new FieldDefinition
-            {
-                FieldDefinitionId = definitionId,
-                ContentTypeId = contentTypeId,
-            };
+                                    {
+                                        FieldDefinitionId = definitionId,
+                                        ContentTypeId = contentTypeId,
+                                    };
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);

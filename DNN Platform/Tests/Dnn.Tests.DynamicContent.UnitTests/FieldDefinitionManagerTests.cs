@@ -23,6 +23,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<FieldDefinition>> _mockFieldDefinitionRepository;
         private Mock<IValidationRuleManager>  _mockValidationRuleController;
+        private Mock<IDynamicContentTypeManager> _mockContentTypeController;
         // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
 
@@ -43,6 +44,8 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(new List<ValidationRule>().AsQueryable());
             ValidationRuleManager.SetTestableInstance(_mockValidationRuleController.Object);
 
+            _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
         }
 
         [TearDown]
@@ -50,6 +53,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             MockComponentProvider.ResetContainer();
             ValidationRuleManager.ClearInstance();
+            DynamicContentTypeManager.ClearInstance();
         }
 
         [Test]
