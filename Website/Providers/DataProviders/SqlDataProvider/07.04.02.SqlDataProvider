@@ -105,10 +105,10 @@ IF EXISTS( SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQ
 GO
 
 * DNN-7097 */
-/* -------- */
+/*---------*/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetSchedule]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-  DROP PROCEDURE {databaseOwner}{objectQualifier}GetSchedule
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetSchedule]
@@ -117,8 +117,8 @@ AS
 BEGIN
 SELECT
 	S.*,
-	(SELECT min(S1.NextStart) FROM dbo.ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID AND S1.NextStart >= GETDATE()) as NextStart
-	FROM dbo.Schedule S
+	(SELECT min(S1.NextStart) FROM {databaseOwner}{objectQualifier}ScheduleHistory S1 WHERE S1.ScheduleID = S.ScheduleID AND S1.NextStart >= GETDATE()) as NextStart
+	FROM {databaseOwner}{objectQualifier}Schedule S
 WHERE
 	(@Server IS NULL OR S.Servers LIKE '%,' + @Server + ',%' OR S.Servers IS NULL)
 	ORDER BY FriendlyName ASC
