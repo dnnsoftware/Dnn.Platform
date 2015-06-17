@@ -42,7 +42,7 @@
         <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes">
             <div class="dccHeading">
                 <span  data-bind="text: heading()"></span>
-                <a class="dccIcon" data-bind="visible: mode != 'listTypes', click: closeEdit"><i class="fa fa-home"></i></a>
+                <a class="dccIcon" data-bind="visible: mode() != 'listTypes', click: closeEdit"><i class="fa fa-home"></i></a>
             </div>
             <div id="contentTypes-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTypes'">
                 <div class="dccSearchPanel">
@@ -142,7 +142,7 @@
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="fa fa-pencil"></i></a>
-                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-trash-o"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: deleteContentField"><i class="fa fa-trash-o"></i></a>
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-arrows"></i></a>
                                 </td>
                             </tr>
@@ -359,6 +359,7 @@
             alert: '[Resx:{key:"Alert"}]',
             confirm: '[Resx:{key:"Confirm"}]',
             deleteContentTypeConfirmMessage: '[Resx:{key:"DeleteContentTypeConfirmMessage"}]',
+            deleteContentFieldConfirmMessage: '[Resx:{key:"DeleteContentFieldConfirmMessage"}]',
             deleteDataTypeConfirmMessage: '[Resx:{key:"DeleteDataTypeConfirmMessage"}]',
             saveContentTypeMessage: '[Resx:{key:"SaveContentTypeMessage"}]',
             no: '[Resx:{key:"No"}]',
