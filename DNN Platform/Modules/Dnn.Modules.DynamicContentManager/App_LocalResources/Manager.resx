@@ -270,4 +270,10 @@
   <data name="DeleteContentFieldConfirmMessage.Text" xml:space="preserve">
     <value>Are you sure you want to delete this Content Field?</value>
   </data>
+  <data name="Templates_NoPagerFormat.Text" xml:space="preserve">
+    <value>Showing {0} Templates</value>
+  </data>
+  <data name="Templates_PagerFormat.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} Templates</value>
+  </data>
 </root>

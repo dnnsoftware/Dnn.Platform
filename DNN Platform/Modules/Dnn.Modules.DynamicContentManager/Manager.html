@@ -274,12 +274,15 @@
                 </table>
             </div>
         </div>
-        <div class="dccPanel" id="content-templates-panel" style="left: -850px">
-            <div class="dccHeading" ></div>
-            <div class="dccSubPanel">
+        <div class="dccPanel" id="content-templates-panel" style="left: -850px" data-bind="with: templates">
+            <div class="dccHeading">
+                <span  data-bind="text: heading()"></span>
+                <a class="dccIcon" data-bind="visible: mode() != 'listTemplates', click: closeEdit"><i class="fa fa-home"></i></a>
+            </div>
+            <div id="templates-listView" class="dccSubPanel">
                 <div class="dccSearchPanel">
-                    <input type="text" class="dccSearchBox" placeholder='[Resx:{key:"FindTemplate"}]' />
-                    <a class="dccButton dccRight">[Resx:{key:"AddTemplate"}]</a>
+                    <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findTemplate}" />
+                    <a class="dccButton right" data-bind="click: addTemplate">[Resx:{key:"AddTemplate"}]</a>
                 </div>
                 <table class="dccTable">
                     <thead>
@@ -287,18 +290,44 @@
                             <th>[Resx:{key:"Template"}]</th>
                             <th>[Resx:{key:"ContentType"}]</th>
                             <th>[Resx:{key:"System"}]</th>
-                            <th>&nbsp;;</th>
+                            <th width="100px">&nbsp;</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody data-bind="foreach: results">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
+                                <span data-bind="text: name"></span>
+                            </td>
+                            <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected}">
+                                <span data-bind="text: contentType"></span>
+                            </td>
+                            <td data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }"><i class="fa fa-check" data-bind="visible: isSystem"></i></td>
+                            <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
+                                <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="fa fa-search"></i></a>
+                                <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="fa fa-pencil"></i></a>
+                                <a class="dccIcon" data-bind="visible: selected() && canEdit()"><i class="fa fa-trash-o"></i></a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div id="templates-editView" class="dccSubPanel" data-bind="visible: mode() == 'editTemplate', with: selectedTemplate">
+                <div class="dccEditForm">
+                    <div class="dccEditRow">
+
+                    </div>
+                    <div class="dccEditRow">
+
+                    </div>
+                    <div class="dccEditRow">
+
+                    </div>
+
+                    <div class="buttons">
+                        <a class="secondarybtn" data-bind="visible: canEdit, click: cancel">[Resx:{key:"Cancel"}]</a>
+                        <a class="primarybtn" data-bind="visible: canEdit">[Resx:{key:"Save"}]</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="dccPanel" id="settings-panel" style="left: -850px">
@@ -342,10 +371,13 @@
             dataTypes: '[Resx:{key:"DataTypes"}]',
             dataTypes_NoPagerFormat: '[Resx:{key:"DataTypes_NoPagerFormat"}]',
             dataTypes_PagerFormat: '[Resx:{key:"DataTypes_PagerFormat"}]',
+            templates: '[Resx:{key:"Templates"}]',
+            templates_NoPagerFormat: '[Resx:{key:"Templates_NoPagerFormat"}]',
+            templates_PagerFormat: '[Resx:{key:"Templates_PagerFormat"}]',
             findContentType: '[Resx:{key:"FindContentType"}]',
             findDataType: '[Resx:{key:"FindDataType"}]',
+            findTemplate: '[Resx:{key:"FindTemplate"}]',
             pager_PageDesc: '[Resx:{key:"Pager_PageDesc"}]',
-            templates: '[Resx:{key:"Templates"}]',
             settings: '[Resx:{key:"Settings"}]',
             string: '[Resx:{key:"String"}]',
             bool: '[Resx:{key:"Boolean"}]',

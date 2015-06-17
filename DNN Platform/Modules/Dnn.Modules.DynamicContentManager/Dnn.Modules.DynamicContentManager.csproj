@@ -88,10 +88,12 @@
     <Compile Include="Services\ContentTypeController.cs" />
     <Compile Include="Services\DataTypeController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="Services\TemplateController.cs" />
     <Compile Include="Services\ViewModels\ContentFieldsViewModel.cs" />
     <Compile Include="Services\ViewModels\ContentFieldViewModel.cs" />
     <Compile Include="Services\ViewModels\ContentTypeViewModel.cs" />
     <Compile Include="Services\ViewModels\DataTypeViewModel.cs" />
+    <Compile Include="Services\ViewModels\TemplateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientScripts\contentTypes.js" />
