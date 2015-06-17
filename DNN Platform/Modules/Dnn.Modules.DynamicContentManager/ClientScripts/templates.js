@@ -2,10 +2,11 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.templates = (function(ko, resx, settings){
-    var serviceFramework = settings.servicesFramework;
-    var baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager') + 'Template/';
-    var pageSize = settings.pageSize;
+dcc.templatesViewModel = (function(config){
+    var self = this;
+    var resx = config.resx;
+    var settings = config.settings;
+    var util = config.util;
 
     var templates = ko.observableArray([]);
     var heading = ko.observable(resx.templates);

@@ -90,7 +90,7 @@
         viewModel.dataTypes = new dcc.dataTypesViewModel(config);
         viewModel.dataTypes.init();
 
-        viewModel.templates = dcc.templates(ko, resx, settings);
+        viewModel.templates = dcc.templatesViewModel(config);
 
         viewModel.settings = dcc.settings(ko, resx, settings);
 
