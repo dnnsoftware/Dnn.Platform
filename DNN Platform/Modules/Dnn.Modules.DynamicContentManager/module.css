@@ -88,9 +88,16 @@
 .dccContainer .dccPanels .dccPanel .dccSubPanel{
     position: absolute;
     width: 800px;
-    margin: 25px;
+    margin-left: 25px;
+    margin-top: 10px;
+    margin-right: 25px;
+    margin-bottom: 25px;
     border: solid 1px #aaa;
     border-radius: 5px;
+}
+
+.dccContainer .dccPanels .dccPanel > .dccSubPanel{
+    margin-top: 25px;
 }
 
 .dccContainer #contentTypes-editView {
@@ -234,6 +241,7 @@
 
 .dccContainer div.dccEditRow > div {
     float: left;
+    margin-right: 25px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div {
@@ -446,11 +454,11 @@
     height: 340px;
 }
 
-.dccContainer .dccSubHeading {
+.dccContainer .dccSubSubPanel .dccSubHeading {
     min-height: 50px;
 }
 
-.dccContainer .dccSubHeading span {
+.dccContainer .dccSubSubPanel .dccSubHeading span {
     font-size: 18px;
     padding-top: 10px;
     display: inline-block;
@@ -458,4 +466,14 @@
 
 .dccContainer .dccSubSubPanel .dccTable {
     border: solid 1px #aaa;
+}
+
+.dccContainer .dccSubHeading {
+    margin-left: 25px;
+}
+
+.dccContainer .dccSubHeading span {
+    font-size: 18px;
+    padding-top: 10px;
+    display: inline-block;
 }

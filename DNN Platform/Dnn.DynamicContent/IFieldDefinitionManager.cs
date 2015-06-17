@@ -25,6 +25,14 @@ namespace Dnn.DynamicContent
         void DeleteFieldDefinition(FieldDefinition field);
 
         /// <summary>
+        /// Gets a field definition.
+        /// </summary>
+        /// <param name="fieldDefinitionId">The ID of the field definition</param>
+        /// <param name="contentTypeId">The Id of the parent Content Type</param>
+        /// <returns>field definition collection.</returns>
+        FieldDefinition GetFieldDefinition(int fieldDefinitionId, int contentTypeId);
+
+        /// <summary>
         /// Gets the field definitions.
         /// </summary>
         /// <param name="contentTypeId">The Id of the parent Content Type</param>

@@ -42,9 +42,9 @@
         <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes">
             <div class="dccHeading">
                 <span  data-bind="text: heading()"></span>
-                <a class="dccIcon" data-bind="visible: isEditMode, click: closeEdit"><i class="fa fa-home"></i></a>
+                <a class="dccIcon" data-bind="visible: mode != 'listTypes', click: closeEdit"><i class="fa fa-home"></i></a>
             </div>
-            <div id="contentTypes-listView" class="dccSubPanel">
+            <div id="contentTypes-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTypes'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findContentType}"/>
                     <a class="dccButton right" data-bind="click: addContentType">[Resx:{key:"AddContentType"}]</a>
@@ -90,12 +90,11 @@
                     </tfoot>
                 </table>
             </div>
-            <div id="contentTypes-editView" class="dccSubPanel" data-bind="with: selectedContentType">
+            <div id="contentTypes-editView" class="dccSubPanel" data-bind="visible: mode() == 'editType', with: selectedContentType">
                 <div class="dccEditForm">
                     <div class="dccEditRow">
                         <div>
                             <label>[Resx:{key:"Name"}]</label>
-                            <div></div>
                             <input type="text" data-bind="value: name, enable: canEdit" />
                         </div>
                         <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
@@ -119,7 +118,7 @@
                         <!-- ko with:fields -->
                         <div class="dccSubHeading">
                             <span data-bind="text: contentFieldsHeading"></span>
-                            <a class="dccButton right" data-bind="visible: parentViewModel.canEdit()">[Resx:{key:"AddContentField"}]</a>
+                            <a class="dccButton right" data-bind="visible: parentViewModel.canEdit(), click: addContentField">[Resx:{key:"AddContentField"}]</a>
                         </div>
                         <table class="dccTable">
                             <thead>
@@ -142,7 +141,7 @@
                                     <span data-bind="text: dataType"></span>
                                 </td>
                                 <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
-                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-pencil"></i></a>
+                                    <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit(), click: $parent.editContentField"><i class="fa fa-pencil"></i></a>
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-trash-o"></i></a>
                                     <a class="dccIcon" data-bind="visible: selected() && $parent.parentViewModel.canEdit()"><i class="fa fa-arrows"></i></a>
                                 </td>
@@ -164,6 +163,40 @@
                             </tfoot>
                         </table>
                         <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+            <div id="contentFields-editView" data-bind="visible: mode() == 'editField', with: selectedContentType.fields().selectedContentField">
+                <div class="dccSubHeading">
+                    <span data-bind="text: heading()"></span>
+                </div>
+                <div class="dccSubPanel">
+                    <div class="dccEditForm">
+                        <div class="dccEditRow">
+                            <div>
+                                <label>[Resx:{key:"Name"}]</label>
+                                <input type="text" data-bind="value: name">
+                            </div>
+                            <div>
+                                <label>[Resx:{key:"Label"}]</label>
+                                <input type="text" data-bind="value: label">
+                            </div>
+                            <div>
+                                <label>[Resx:{key:"DataType"}]</label>
+                                <select data-bind="value: dataTypeId, valueAllowUnset: false, options: dataTypes, optionsText: 'name', optionsValue: 'dataTypeId'"></select>
+                            </div>
+                        </div>
+                        <div class="dccEditRow">
+                            <div>
+                                <label>[Resx:{key:"Description"}]</label>
+                                <textarea  class="dccTextArea" type="text" data-bind="value: description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="buttons">
+                            <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
+                            <a class="primarybtn" data-bind="click: saveContentField">[Resx:{key:"Save"}]</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -284,13 +317,11 @@
                 <a id="cancelbtn" class="dnnSecondaryAction"></a>
             </div>
         </div>
-
     </div>
 
     <div id="loadingbar" style="display: none;">
         <div></div>
     </div>
-
 </div>
 
 <script language="javascript" type="text/javascript">
@@ -304,6 +335,7 @@
             contentTypes: '[Resx:{key:"ContentTypes"}]',
             contentTypes_NoPagerFormat: '[Resx:{key:"ContentTypes_NoPagerFormat"}]',
             contentTypes_PagerFormat: '[Resx:{key:"ContentTypes_PagerFormat"}]',
+            contentField: '[Resx:{key:"ContentField"}]',
             contentFields: '[Resx:{key:"ContentFields"}]',
             contentFields_NoPagerFormat: '[Resx:{key:"ContentFields_NoPagerFormat"}]',
             contentFields_PagerFormat: '[Resx:{key:"ContentFields_PagerFormat"}]',

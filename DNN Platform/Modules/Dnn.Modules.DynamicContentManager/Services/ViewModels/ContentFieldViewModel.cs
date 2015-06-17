@@ -13,21 +13,58 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     public class ContentFieldViewModel
     {
         /// <summary>
+        /// Constructs a ContentFieldViewModel
+        /// </summary>
+        public ContentFieldViewModel()
+        {
+
+        }
+
+
+        /// <summary>
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
         /// <param name="definition">The field Definition to use</param>
         public ContentFieldViewModel(FieldDefinition definition)
         {
+            ContentFieldId = definition.FieldDefinitionId;
+            ContentTypeId = definition.ContentTypeId;
+            DataTypeId = definition.DataTypeId;
             DataType = definition.DataType.Name;
+            Description = definition.Description;
             Label = definition.Label;
             Name = definition.Name;
         }
+
+        /// <summary>
+        /// The id of the Content Field
+        /// </summary>
+        [JsonProperty("contentFieldId")]
+        public int ContentFieldId { get; set; }
+
+        /// <summary>
+        /// The id of the parent Content Type
+        /// </summary>
+        [JsonProperty("contentTypeId")]
+        public int ContentTypeId { get; set; }
 
         /// <summary>
         /// The data type of the Content Field
         /// </summary>
         [JsonProperty("dataType")]
         public string DataType { get; set; }
+
+        /// <summary>
+        /// The id of the data type of the Content Field
+        /// </summary>
+        [JsonProperty("dataTypeId")]
+        public int DataTypeId { get; set; }
+
+        /// <summary>
+        /// The description of the Content Field
+        /// </summary>
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
         /// The label of the Content Field

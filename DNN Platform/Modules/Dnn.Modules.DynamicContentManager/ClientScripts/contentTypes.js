@@ -9,14 +9,8 @@ dcc.contentTypesViewModel = function(config){
     var util = config.util;
     var $rootElement = config.$rootElement;
 
-    util.contentTypeService = function(){
-        util.sf.serviceController = "ContentType";
-        return util.sf;
-    };
-
-    self.isEditMode = ko.observable(false);
+    self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
-    self.heading = ko.observable(resx.contentTypes);
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
@@ -28,7 +22,7 @@ dcc.contentTypesViewModel = function(config){
 
     self.heading = ko.computed(function() {
         var heading = resx.contentTypes;
-        if(self.isEditMode()){
+        if(self.mode() != "listTypes"){
             heading = resx.contentType + " - " + self.selectedContentType.name()
         }
         return heading;
@@ -39,26 +33,13 @@ dcc.contentTypesViewModel = function(config){
         self.getContentTypes();
     };
 
-    var toggleView = function() {
-        if(self.isEditMode()){
-            $rootElement.find("#contentTypes-listView").show();
-            $rootElement.find("#contentTypes-editView").hide();
-            self.isEditMode(false);
-        }
-        else {
-            $rootElement.find("#contentTypes-listView").hide();
-            $rootElement.find("#contentTypes-editView").show();
-            self.isEditMode(true);
-        }
-    };
-
     self.addContentType = function(){
-        toggleView();
+        self.mode("editType");
         self.selectedContentType.init();
     };
 
     self.closeEdit = function() {
-        toggleView();
+        self.mode("listTypes");
         self.refresh();
     }
 
@@ -68,7 +49,7 @@ dcc.contentTypesViewModel = function(config){
                 self.getContentType(data.contentTypeId(), cb1);
             }
         ], function() {
-            toggleView();
+            self.mode("editType");
         });
     };
 
@@ -252,6 +233,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
 
     self.parentViewModel = parentViewModel;
 
+    self.mode = config.mode;
     self.contentFieldsHeading = resx.contentFields;
     self.contentFields = ko.observableArray([]);
     self.totalResults = ko.observable(0);
@@ -259,11 +241,51 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     self.pager_PageDesc = resx.pager_PageDesc;
     self.pager_PagerFormat = resx.contentFields_PagerFormat;
     self.pager_NoPagerFormat = resx.contentFields_NoPagerFormat;
+    self.selectedContentField = new dcc.contentFieldViewModel(self, config);
+
+    self.addContentField = function() {
+        self.mode("editField");
+        self.selectedContentField.init();
+    }
+
+    self.editContentField = function(data, e) {
+        util.asyncParallel([
+            function(cb1){
+                self.getContentField(self.parentViewModel.contentTypeId, data.contentFieldId(), cb1);
+            }
+        ], function() {
+            self.mode("editField");
+        });
+    };
 
     self.clear = function() {
         self.contentFields.removeAll();
         self.pageIndex(0);
         self.pageSize = settings.pageSize;
+    };
+
+    self.getContentField = function (contentTypeId, contentFieldId, cb) {
+        var params = {
+            contentTypeId: contentTypeId,
+            contentFieldId: contentFieldId
+        };
+
+        util.contentTypeService().get("GetContentField", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.selectedContentField.load(data.data.contentField);
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+
+        if(typeof cb === 'function') cb();
     };
 
     self.init = function() {
@@ -308,22 +330,110 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
 
 dcc.contentFieldViewModel = function(parentViewModel, config) {
     var self = this;
+    var resx = config.resx;
+    var util = config.util;
 
     self.parentViewModel = parentViewModel;
+    self.mode = config.mode;
+    self.contentTypeId = ko.observable(-1);
+    self.contentFieldId = ko.observable(-1);
     self.name = ko.observable('');
     self.label = ko.observable('');
+    self.description = ko.observable('');
     self.dataType = ko.observable('');
+    self.dataTypeId = ko.observable(-1);
     self.selected = ko.observable(false);
 
+    self.dataTypes = ko.observableArray([]);
+
+    self.isAddMode = ko.computed(function() {
+        return self.contentFieldId() == -1;
+    });
+
+    self.heading = ko.computed(function() {
+        var heading = resx.contentField;
+        if (!self.isAddMode()) {
+            heading = heading + " - " + self.name();
+        }
+        return heading;
+    });
+
+    var getDataTypes = function() {
+        var params = {
+            searchTerm: '',
+            pageIndex: 0,
+            pageSize: 1000
+        };
+
+        util.dataTypeService().get("GetDataTypes", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.dataTypes.removeAll();
+                    for(var i = 0; i < data.data.results.length; i++){
+                        var result = data.data.results[i];
+                        self.dataTypes.push({
+                            dataTypeId: result.dataTypeId,
+                            name: result.name
+                        });
+                    }
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+    };
+
+    self.cancel = function(){
+        self.mode("editType");
+        parentViewModel.refresh();
+    };
+
     self.init = function() {
-        dcc.pager().init(self);
+        self.contentFieldId(-1);
+        self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
+        self.name('');
+        self.label('');
+        self.description('');
+        self.dataTypeId(-1);
+        getDataTypes();
     };
 
     self.load = function(data) {
+        self.contentFieldId(data.contentFieldId);
+        self.contentTypeId(data.contentTypeId);
         self.name(data.name);
         self.label(data.label);
+        self.description(data.description);
         self.dataType(data.dataType);
+        self.dataTypeId(data.dataTypeId);
     }
+
+    self.saveContentField = function(data, e) {
+        var params = {
+            contentFieldId: data.contentFieldId(),
+            contentTypeId: data.contentTypeId(),
+            name: data.name(),
+            label: data.label(),
+            description: data.description(),
+            dataTypeId: data.dataTypeId()
+        };
+
+        util.contentTypeService().post("SaveContentField", params,
+            function (data) {
+                //Success
+                self.cancel();
+            },
+
+            function (data) {
+                //Failure
+            }
+        )
+    };
 
     self.toggleSelected = function() {
         self.selected(!self.selected());

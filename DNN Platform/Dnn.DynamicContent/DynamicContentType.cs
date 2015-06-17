@@ -102,5 +102,10 @@ namespace Dnn.DynamicContent
                 return _templates;
             }
         }
+
+        internal void ClearFieldDefinitions()
+        {
+            _fieldDefitions = null;
+        }
     }
 }
