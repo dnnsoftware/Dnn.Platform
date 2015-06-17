@@ -279,7 +279,7 @@
                 <span  data-bind="text: heading()"></span>
                 <a class="dccIcon" data-bind="visible: mode() != 'listTemplates', click: closeEdit"><i class="fa fa-home"></i></a>
             </div>
-            <div id="templates-listView" class="dccSubPanel">
+            <div id="templates-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTemplates'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findTemplate}" />
                     <a class="dccButton right" data-bind="click: addTemplate">[Resx:{key:"AddTemplate"}]</a>
@@ -372,6 +372,7 @@
             dataTypes_NoPagerFormat: '[Resx:{key:"DataTypes_NoPagerFormat"}]',
             dataTypes_PagerFormat: '[Resx:{key:"DataTypes_PagerFormat"}]',
             templates: '[Resx:{key:"Templates"}]',
+            template: '[Resx:{key:"Template"}]',
             templates_NoPagerFormat: '[Resx:{key:"Templates_NoPagerFormat"}]',
             templates_PagerFormat: '[Resx:{key:"Templates_PagerFormat"}]',
             findContentType: '[Resx:{key:"FindContentType"}]',

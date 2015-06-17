@@ -62,6 +62,20 @@ namespace Dnn.DynamicContent
         }
 
         /// <summary>
+        /// GetContentTemplate overloads retrieves a singe content template
+        /// </summary>
+        /// <param name="templateId">The Id of the template</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System Templates (ie. Templates that are available for all portals)
+        /// should be searched. Defaults to false</param>
+        /// <returns>content template</returns>
+        //TODO add Unit Tests for this method
+        public ContentTemplate GetContentTemplate(int templateId, int portalId, bool includeSystem = false)
+        {
+            return GetContentTemplates(portalId, includeSystem).SingleOrDefault((t) => t.TemplateId == templateId);
+        }
+
+        /// <summary>
         /// This GetContentTemplates overloads retrieves all the content templates for a portal, optionally including system types
         /// </summary>
         /// <param name="portalId">The Id of the portal</param>
@@ -77,7 +91,6 @@ namespace Dnn.DynamicContent
             }
             return templates.AsQueryable();
         }
-
 
         /// <summary>
         /// Gets the content templates for a content Type

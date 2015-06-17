@@ -33,15 +33,47 @@ dcc.templatesViewModel = function(config){
     };
 
     self.addTemplate = function(){
-
+        self.mode("editTemplate");
+        self.selectedTemplate.init();
     };
 
     self.closeEdit = function() {
-
+        self.mode("listTemplates");
+        self.refresh();
     }
 
     self.editTemplate = function(data, e) {
+        util.asyncParallel([
+            function(cb1){
+                self.getTemplate(data.templateId(), cb1);
+            }
+        ], function() {
+            self.mode("editTemplate");
+        });
 
+    };
+
+    self.getTemplate = function (templateId, cb) {
+        var params = {
+            templateId: templateId
+        };
+
+        util.templateService().get("GetTemplate", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.selectedTemplate.load(data.data.template);
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+
+        if(typeof cb === 'function') cb();
     };
 
     self.getTemplates = function () {
@@ -86,6 +118,10 @@ dcc.templatesViewModel = function(config){
         }
         self.totalResults(data.totalResults)
     };
+
+    self.refresh = function(){
+        self.getTemplates();
+    };
 };
 
 dcc.templateViewModel = function(parentViewModel, config){
@@ -103,8 +139,8 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.isSystem = ko.observable(false);
     self.selected = ko.observable(false);
 
-    self.cancel = function() {
-
+    self.cancel = function(){
+        parentViewModel.closeEdit();
     };
 
     self.init = function(){
@@ -129,4 +165,3 @@ dcc.templateViewModel = function(parentViewModel, config){
         self.selected(!self.selected());
     };
 }
-

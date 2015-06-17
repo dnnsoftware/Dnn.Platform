@@ -19,6 +19,28 @@ namespace Dnn.Modules.DynamicContentManager.Services
     public class TemplateController : DnnApiController
     {
         /// <summary>
+        /// GetTemplate retrieves a single Template
+        /// </summary>
+        /// <param name="templateId">The id of the Template</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetTemplate(int templateId)
+        {
+            var template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
+
+            var response = new
+                            {
+                                success = true,
+                                data = new
+                                        {
+                                            template = new TemplateViewModel(template, PortalSettings.UserInfo.IsSuperUser)
+                                        }
+                            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// GetTemplates retrieves a page of Templates that satisfy the searchTerm
         /// </summary>
         /// <param name="searchTerm">The text to use to search for Templates</param>
