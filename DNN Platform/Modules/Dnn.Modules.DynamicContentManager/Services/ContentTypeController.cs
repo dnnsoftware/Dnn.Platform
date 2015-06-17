@@ -42,6 +42,29 @@ namespace Dnn.Modules.DynamicContentManager.Services
         }
 
         /// <summary>
+        /// GetContentField retrieves a single Content Field
+        /// </summary>
+        /// <param name="contentTypeId">The id of the Content Type</param>
+        /// <param name="contentFieldId">The id of the Content Field</param>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetContentField(int contentTypeId, int contentFieldId)
+        {
+            var contentField = FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId);
+
+            var response = new
+                            {
+                                success = true,
+                                data = new
+                                        {
+                                            contentField = new ContentFieldViewModel(contentField)
+                                        }
+                            };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
         /// GetContentFields retrieves a page of Content Fields
         /// </summary>
         /// <param name="contentTypeId">The id of the ContentType</param>
@@ -111,6 +134,57 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                     totalResults = contentTypeList.TotalCount
                                 }
                             };
+
+            return Request.CreateResponse(response);
+        }
+
+        /// <summary>
+        /// SaveContentField saves the content field
+        /// </summary>
+        /// <param name="viewModel">The ViewModel for the Content Field to save</param>
+        /// <returns></returns>
+        [HttpPost]
+        public HttpResponseMessage SaveContentField(ContentFieldViewModel viewModel)
+        {
+            DynamicContentType contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
+
+            FieldDefinition contentField;
+
+            if (viewModel.ContentFieldId == -1)
+            {
+                contentField = new FieldDefinition()
+                                                {
+                                                    ContentTypeId = contentType.ContentTypeId,
+                                                    DataTypeId = viewModel.DataTypeId,
+                                                    Label = viewModel.Label,
+                                                    Name = viewModel.Name,
+                                                    Description = viewModel.Description,
+                                                    PortalId = contentType.PortalId
+                                                };
+                FieldDefinitionManager.Instance.AddFieldDefinition(contentField);
+            }
+            else
+            {
+                //Update
+                contentField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
+
+                if (contentField != null)
+                {
+                    contentField.Name = viewModel.Name;
+                    contentField.Description = viewModel.Description;
+                    contentField.Label = viewModel.Label;
+                    contentField.DataTypeId = viewModel.DataTypeId;
+                    FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
+                }
+            }
+            var response = new
+            {
+                success = true,
+                data = new
+                        {
+                            contentFieldId = contentField.FieldDefinitionId
+                        }
+            };
 
             return Request.CreateResponse(response);
         }

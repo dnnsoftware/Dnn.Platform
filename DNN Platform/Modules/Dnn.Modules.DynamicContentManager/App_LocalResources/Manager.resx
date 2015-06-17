@@ -264,4 +264,7 @@
   <data name="ContentFields_PagerFormat.Text" xml:space="preserve">
     <value>Showing {0}-{1} of {2} Content Fields</value>
   </data>
+  <data name="ContentField.Text" xml:space="preserve">
+    <value>Content Field</value>
+  </data>
 </root>

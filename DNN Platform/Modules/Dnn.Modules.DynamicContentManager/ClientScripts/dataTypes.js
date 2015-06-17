@@ -9,11 +9,6 @@ dcc.dataTypesViewModel = function(config) {
     var util = config.util;
     var $rootElement = config.$rootElement;
 
-    util.dataTypeService = function(){
-        util.sf.serviceController = "DataType";
-        return util.sf;
-    };
-
     self.isSystemUser = settings.isSystemUser;
     self.heading = ko.observable(resx.dataTypes);
     self.searchText = ko.observable("");

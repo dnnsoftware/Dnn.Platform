@@ -39,6 +39,8 @@ namespace Dnn.DynamicContent
 
             Add(field);
 
+            ClearContentTypeCache(field);
+
             //Add any new ValidationRules
             foreach (var validationRule in field.ValidationRules)
             {
@@ -47,6 +49,13 @@ namespace Dnn.DynamicContent
             }
 
             return field.FieldDefinitionId;
+        }
+
+        private void ClearContentTypeCache(FieldDefinition field)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(field.ContentTypeId, field.PortalId, true);
+
+            contentType.ClearFieldDefinitions();
         }
 
         /// <summary>
@@ -59,11 +68,25 @@ namespace Dnn.DynamicContent
         {
             Delete(field);
 
+            ClearContentTypeCache(field);
+
             //Delete any ValidationRules
             foreach (var validationRule in field.ValidationRules)
             {
                 ValidationRuleManager.Instance.DeleteValidationRule(validationRule);
             }
+        }
+
+        /// <summary>
+        /// Gets a field definition.
+        /// </summary>
+        /// <param name="fieldDefinitionId">The ID of the field definition</param>
+        /// <param name="contentTypeId">The Id of the parent Content Type</param>
+        /// <returns>field definition collection.</returns>
+        //TODO add Unit Tests for this method
+        public FieldDefinition GetFieldDefinition(int fieldDefinitionId, int contentTypeId)
+        {
+            return Get(contentTypeId).SingleOrDefault((f) => f.FieldDefinitionId == fieldDefinitionId);
         }
 
         /// <summary>
@@ -92,6 +115,8 @@ namespace Dnn.DynamicContent
             Requires.PropertyNotNullOrEmpty(field, "Label");
 
             Update(field);
+
+            ClearContentTypeCache(field);
 
             //Upsert any ValidationRules
             foreach (var validationRule in field.ValidationRules)

@@ -59,11 +59,24 @@
 
         activePanel = settings.initialPanel;
 
+        var util = dcc.utility(settings, resx);
+
+        util.contentTypeService = function(){
+            util.sf.serviceController = "ContentType";
+            return util.sf;
+        };
+
+        util.dataTypeService = function(){
+            util.sf.serviceController = "DataType";
+            return util.sf;
+        };
+
         var config = {
             settings: settings,
             resx: resx,
-            util: dcc.utility(settings, resx),
-            $rootElement: $rootElement
+            util: util,
+            $rootElement: $rootElement,
+            mode: ko.observable("listTypes"),
         };
 
         //Build the ViewModel
