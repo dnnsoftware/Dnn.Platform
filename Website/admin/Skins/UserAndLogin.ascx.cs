@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
 				if (UsePopUp)
 				{
-					return "return " + UrlUtils.PopUpUrl(LoginUrl, this, PortalSettings, true, false, 300, 650);
+					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, PortalSettings, true, false, 300, 650);
 				}
 
 				return string.Empty;
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.Skins.Controls
 			{
 				if (UsePopUp)
 				{
-					return "return " + UrlUtils.PopUpUrl(RegisterUrl, this, PortalSettings, true, false, 600, 950);
+					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(RegisterUrl), this, PortalSettings, true, false, 600, 950);
 				}
 
 				return string.Empty;
