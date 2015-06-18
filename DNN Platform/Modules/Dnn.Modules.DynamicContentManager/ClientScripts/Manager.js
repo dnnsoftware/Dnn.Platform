@@ -48,6 +48,10 @@
 
     var selectTemplates = function (data, e) {
         menuClick(e.target, settings.contentTemplatesPanel);
+        viewModel.templates.pageIndex(0);
+        viewModel.templates.searchText('');
+        viewModel.templates.getTemplates();
+        viewModel.templates.mode("listTemplates");
     };
 
     var selectSettings = function (data, e) {
@@ -71,6 +75,11 @@
             return util.sf;
         };
 
+        util.templateService = function(){
+            util.sf.serviceController = "Template";
+            return util.sf;
+        };
+
         var config = {
             settings: settings,
             resx: resx,
@@ -90,7 +99,8 @@
         viewModel.dataTypes = new dcc.dataTypesViewModel(config);
         viewModel.dataTypes.init();
 
-        viewModel.templates = dcc.templates(ko, resx, settings);
+        viewModel.templates = new dcc.templatesViewModel(config);
+        viewModel.templates.init();
 
         viewModel.settings = dcc.settings(ko, resx, settings);
 

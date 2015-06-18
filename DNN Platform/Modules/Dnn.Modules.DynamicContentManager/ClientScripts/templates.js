@@ -2,53 +2,131 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.templates = (function(ko, resx, settings){
-    var serviceFramework = settings.servicesFramework;
-    var baseServicepath = serviceFramework.getServiceRoot('Dnn/DynamicContentManager') + 'Template/';
-    var pageSize = settings.pageSize;
+dcc.templatesViewModel = function(config){
+    var self = this;
+    var resx = config.resx;
+    var settings = config.settings;
+    var util = config.util;
+    var $rootElement = config.$rootElement;
 
-    var templates = ko.observableArray([]);
-    var heading = ko.observable(resx.templates);
-    var searchText = ko.observable("");
+    self.mode = config.mode;
+    self.searchText = ko.observable("");
+    self.results = ko.observableArray([]);
+    self.totalResults = ko.observable(0);
+    self.pageSize = settings.pageSize;
+    self.pager_PageDesc = resx.pager_PageDesc;
+    self.pager_PagerFormat = resx.templates_PagerFormat;
+    self.pager_NoPagerFormat = resx.templates_NoPagerFormat;
+    self.selectedTemplate = new dcc.templateViewModel(self, config);
+
+    self.heading = ko.computed(function() {
+        var heading = resx.templates;
+        if(self.mode() != "listTemplates"){
+            heading = resx.template + " - " + self.selectedTemplate.name()
+        }
+        return heading;
+    });
 
     var findTemplates =  function() {
-        getTemplates(searchText(), 0);
+        self.pageIndex(0);
+        self.getTemplates();
     };
 
-    var getTemplates = function (searchTerm, pageIndex) {
-        var self = this;
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: baseServicepath + "GetTemplates",
-            beforeSend: serviceFramework.setModuleHeaders,
-            data: {
-                searchTerm: searchTerm,
-                pageIndex: pageIndex,
-                pageSize: pageSize
-            }
-        }).done(function (data) {
-            if (typeof data !== "undefined" && data != null && data.success === true) {
-                //Success
-                load(data.data);
-            } else {
-                //Error
-            }
-        }).fail(function (xhr, status) {
-            //Fail
-        });
+    self.addTemplate = function(){
+
     };
 
-    var load = function(data) {
-        templates(data.templates);
-    };
+    self.closeEdit = function() {
 
-    return {
-        templates: templates,
-        heading: heading,
-        searchText: searchText,
-        findTemplates: findTemplates,
-        getTemplates: getTemplates,
-        load: load
     }
-})
+
+    self.editTemplate = function(data, e) {
+
+    };
+
+    self.getTemplates = function () {
+        var params = {
+            searchTerm: self.searchText(),
+            pageIndex: self.pageIndex(),
+            pageSize: self.pageSize
+        };
+
+        util.templateService().get("GetTemplates", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.load(data.data);
+                } else {
+                    //Error
+                }
+            },
+            function(){
+                //Failure
+            }
+        );
+    };
+
+    self.init = function() {
+        dcc.pager().init(self);
+        self.searchText.subscribe(function () {
+            findTemplates();
+        });
+
+        $rootElement.find("#templates-editView").css("display", "none")
+    };
+
+    self.load =function(data) {
+        self.results.removeAll();
+        for(var i=0; i < data.results.length; i++){
+            var result = data.results[i];
+            var template = new dcc.templateViewModel(self, config);
+            template.init();
+            template.load(result);
+            self.results.push(template);
+        }
+        self.totalResults(data.totalResults)
+    };
+};
+
+dcc.templateViewModel = function(parentViewModel, config){
+    var self = this;
+    var util = config.util;
+    var resx = config.resx;
+    var $rootElement = config.$rootElement;
+
+    self.parentViewModel = parentViewModel;
+    self.canEdit = ko.observable(false);
+    self.templateId = ko.observable(-1);
+    self.name = ko.observable('');
+    self.contentType = ko.observable('');
+    self.contentTypeId = ko.observable(-1);
+    self.isSystem = ko.observable(false);
+    self.selected = ko.observable(false);
+
+    self.cancel = function() {
+
+    };
+
+    self.init = function(){
+        self.canEdit(true);
+        self.templateId(-1);
+        self.name("");
+        self.contentType("");
+        self.contentTypeId(-1);
+        self.isSystem(self.parentViewModel.isSystemUser);
+    };
+
+    self.load = function(data) {
+        self.canEdit(data.canEdit);
+        self.templateId(data.templateId);
+        self.name(data.name);
+        self.contentType(data.contentType);
+        self.contentTypeId(data.contentTypeId);
+        self.isSystem(data.isSystem);
+    };
+
+    self.toggleSelected = function() {
+        self.selected(!self.selected());
+    };
+}
+

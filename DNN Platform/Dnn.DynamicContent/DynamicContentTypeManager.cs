@@ -111,8 +111,11 @@ namespace Dnn.DynamicContent
         /// <returns>content type collection.</returns>
         public IQueryable<DynamicContentType> GetContentTypes(int portalId, bool includeSystem = false)
         {
-            List<DynamicContentType> contentTypes = Get(portalId).ToList();
-            if (includeSystem)
+            var contentTypes = portalId > -1 
+                                ? Get(portalId).ToList() 
+                                : Get(portalId).Where(t => t.IsDynamic).ToList();
+
+            if (includeSystem && portalId > -1)
             {
                 contentTypes.AddRange(Get(-1).Where(t => t.IsDynamic));
             }
