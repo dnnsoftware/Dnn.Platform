@@ -141,7 +141,7 @@ DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
 								GROUP BY PortalID, CultureCode, SettingName)
 
 -- recreate Index
-CREATE UNIQUEE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
+CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseOwner}[{objectQualifier}PortalSettings]
     (  PortalID,
        CultureCode,
        SettingName
