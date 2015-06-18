@@ -146,7 +146,6 @@ CREATE UNIQUE CLUSTERED INDEX [IX_{objectQualifier}PortalSettings] ON {databaseO
        CultureCode,
        SettingName
     )
-	INCLUDE (SettingValue)
 GO
 
 -- prevent duplicates when adding/updating portal setting:
