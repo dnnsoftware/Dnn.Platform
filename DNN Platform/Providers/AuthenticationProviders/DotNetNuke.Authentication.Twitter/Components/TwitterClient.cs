@@ -46,6 +46,10 @@ namespace DotNetNuke.Authentication.Twitter.Components
             AuthTokenName = "TwitterUserToken";
 
             OAuthVersion = "1.0";
+			
+			OAuthHeaderCode = "";
+
+            AccessToken = "access_token";
 
             LoadTokenCookie(String.Empty);
         }

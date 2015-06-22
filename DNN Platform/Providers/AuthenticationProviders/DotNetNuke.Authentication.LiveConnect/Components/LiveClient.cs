@@ -53,6 +53,10 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
             AuthTokenName = "LiveUserToken";
 
             OAuthVersion = "2.0";
+			
+			OAuthHeaderCode = "";
+
+            AccessToken = "access_token";
 
             LoadTokenCookie(String.Empty);
         }
