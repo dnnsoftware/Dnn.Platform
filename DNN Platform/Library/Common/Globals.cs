@@ -1149,6 +1149,18 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Updates the database version.
+        /// </summary>
+        /// <param name="version">The version.</param>
+        /// <param name="increment">The increment.</param>
+       public static void UpdateDataBaseVersionIncrement(Version version,int increment)
+        {
+            //update the version and increment
+            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+            _dataBaseVersion = version;
+        }
+
+        /// <summary>
         /// Adds the port.
         /// </summary>
         /// <param name="httpAlias">The HTTP alias.</param>

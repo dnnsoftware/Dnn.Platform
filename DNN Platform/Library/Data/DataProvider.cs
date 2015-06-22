@@ -426,6 +426,11 @@ namespace DotNetNuke.Data
 			}
 		}
 
+        public virtual void UpdateDatabaseVersionIncrement(int Major, int Minor, int Build, int Increment, string Name)
+        {
+            ExecuteNonQuery("UpdateDatabaseVersionIncrement", Major, Minor, Build, Increment, Name);
+        }
+
 		#endregion
 
 		#region Host Settings Methods
