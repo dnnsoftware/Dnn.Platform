@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,35 +24,40 @@
 #region Usings
 
 using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Facebook.Components
+namespace DotNetNuke.Authentication.LinkedIn.Components
 {
-    public class FacebookClient : OAuthClientBase
+    public class LinkedInClient : OAuthClientBase
     {
         #region Constructors
 
-        public FacebookClient(int portalId, AuthMode mode) 
-            : base(portalId, mode, "Facebook")
+        public LinkedInClient(int portalId, AuthMode mode) : base(portalId, mode, "LinkedIn")
         {
-            TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");
-            TokenMethod = HttpMethod.GET;
-            AuthorizationEndpoint = new Uri("https://graph.facebook.com/oauth/authorize");
-            MeGraphEndpoint = new Uri("https://graph.facebook.com/me");
+            RequestTokenEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/accessToken");
+            RequestTokenMethod = HttpMethod.POST;
+            TokenEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/accessToken");
+            TokenMethod = HttpMethod.POST;
+            AuthorizationEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/authorization");
+            MeGraphEndpoint = new Uri("https://api.linkedin.com/v1/people/~:(firstName,lastName,emailAddress,pictureUrl,location:(name))/");
 
-            Scope = "email";
+            Scope = "r_basicprofile r_emailaddress";
 
-            AuthTokenName = "FacebookUserToken";
+            AuthTokenName = "LinkedInUserToken";
 
             OAuthVersion = "2.0";
-			
-			OAuthHeaderCode = "";
 
-            AccessToken = "access_token";
+            OAuthHeaderCode = "";
+
+            AccessToken = "format=json&oauth2_access_token";
 
             LoadTokenCookie(String.Empty);
         }
@@ -61,34 +66,18 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
         protected override TimeSpan GetExpiry(string responseText)
         {
-            TimeSpan expiry = TimeSpan.MinValue;
-            if (!String.IsNullOrEmpty(responseText))
-            {
-                foreach (string token in responseText.Split('&'))
-                {
-                    if (token.StartsWith("expires"))
-                    {
-                        expiry = new TimeSpan(0, 0, Convert.ToInt32(token.Replace("expires=", "")));
-                    }
-                }
-            }
-            return expiry;
+            var jsonSerializer = new JavaScriptSerializer();
+            var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
+
+            return new TimeSpan(0, 0, Convert.ToInt32(tokenDictionary["expires_in"]));
         }
 
         protected override string GetToken(string responseText)
         {
-            string authToken = String.Empty;
-            if (!String.IsNullOrEmpty(responseText))
-            {
-                foreach (string token in responseText.Split('&'))
-                {
-                    if (token.StartsWith("access_token"))
-                    {
-                        authToken = token.Replace("access_token=", "");
-                    }
-                }
-            }
-            return authToken;
+            var jsonSerializer = new JavaScriptSerializer();
+            var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
+            return Convert.ToString(tokenDictionary["access_token"]);
+            
         }
     }
 }

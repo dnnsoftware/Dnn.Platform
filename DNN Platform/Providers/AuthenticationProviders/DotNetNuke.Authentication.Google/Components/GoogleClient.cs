@@ -52,6 +52,10 @@ namespace DotNetNuke.Authentication.Google.Components
             AuthTokenName = "GoogleUserToken";
 
             OAuthVersion = "2.0";
+			            
+			OAuthHeaderCode = "";
+
+            AccessToken = "access_token";
 
             LoadTokenCookie(String.Empty);
         }

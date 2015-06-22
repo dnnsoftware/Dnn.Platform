@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,33 +25,47 @@
 
 using System;
 
+using DotNetNuke.Authentication.Fiware.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Twitter.Components
+namespace DotNetNuke.Authentication.Fiware
 {
-    public class TwitterClient : OAuthClientBase
+    public partial class Login : OAuthLoginBase
     {
-        public TwitterClient(int portalId, AuthMode mode)
-            : base(portalId, mode, "Twitter")
+        protected override string AuthSystemApplicationName
         {
-            AuthorizationEndpoint = new Uri("https://api.twitter.com/oauth/authorize");
-            RequestTokenEndpoint = new Uri("https://api.twitter.com/oauth/request_token");
-            RequestTokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://api.twitter.com/oauth/access_token");
-            MeGraphEndpoint = new Uri("https://api.twitter.com/1.1/account/verify_credentials.json");
+            get { return "Fiware"; }
+        }
 
-            AuthTokenName = "TwitterUserToken";
+        public override bool SupportsRegistration
+        {
+            get { return true; }
+        }
 
-            OAuthVersion = "1.0";
-			
-			OAuthHeaderCode = "";
+        protected override UserData GetCurrentUser()
+        {
+            return OAuthClient.GetCurrentUser<FiwareUserData>();
+        }
 
-            AccessToken = "access_token";
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
 
-            LoadTokenCookie(String.Empty);
+            loginButton.Click += loginButton_Click;
+            registerButton.Click += loginButton_Click;
+
+            OAuthClient = new FiwareClient(PortalId, Mode);
+
+            loginItem.Visible = (Mode == AuthMode.Login);
+            registerItem.Visible = (Mode == AuthMode.Register);
+        }
+
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            OAuthClient.Authorize();
         }
     }
 }
