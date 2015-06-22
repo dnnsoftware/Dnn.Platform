@@ -150,6 +150,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
         }
 
+		//DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
+		protected string APIResource { get; set; }
+		
         #endregion
 
         #region Public Properties
