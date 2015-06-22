@@ -432,8 +432,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, includeHiddenTabs, false, false, true, false)
+                tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, false, true, false)
                                  .Where(tab => searchFunc(tab) 
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
@@ -511,11 +510,9 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
 
                 tabs = TabController.Instance.GetTabsByPortal(portalId).Where(tab =>
                                         (includeActive || tab.Value.TabID != PortalSettings.ActiveTab.TabID)
-                                        && (includeHiddenTabs || tab.Value.IsVisible)
                                         && (includeDisabled || !tab.Value.DisableLink) 
                                         && (includeAllTypes || tab.Value.TabType == TabType.Normal) 
                                         && searchFunc(tab.Value)
@@ -580,8 +577,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                var includeHiddenTabs = PortalSettings.UserInfo.IsSuperUser || PortalSettings.UserInfo.IsInRole("Administrators");
-				tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, includeHiddenTabs, false, includeAllTypes, true, false)
+      		tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
 					.Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 

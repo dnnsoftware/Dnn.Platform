@@ -66,33 +66,25 @@ namespace DotNetNuke.HttpModules.Analytics
 
         #endregion
 
-        private void OnPreRequestHandlerExecute(object sender, EventArgs e)
+        private static void OnPreRequestHandlerExecute(object sender, EventArgs e)
         {
             try
             {
                 //First check if we are upgrading/installing or if it is a non-page request
                 var app = (HttpApplication) sender;
-                HttpRequest request = app.Request;
+                var request = app.Request;
 
-                if (!Initialize.ProcessHttpModule(request, false, false))
-                {
-                    return;
-                }
+                if (!Initialize.ProcessHttpModule(request, false, false)) return;
 
-                if (HttpContext.Current != null)
-                {
-                    HttpContext context = HttpContext.Current;
-                    if ((context == null))
-                    {
-                        return;
-                    }
-                    var page = context.Handler as CDefault;
-                    if ((page == null))
-                    {
-                        return;
-                    }
-                    page.Init += OnPageInit;
-                }
+                if (HttpContext.Current == null) return;
+                var context = HttpContext.Current;
+                
+                if (context == null) return;
+                
+                var page = context.Handler as CDefault;
+                if (page == null) return;
+                
+                page.Load += OnPageLoad;
             }
             catch (Exception ex)
             {
@@ -105,69 +97,59 @@ namespace DotNetNuke.HttpModules.Analytics
             }
         }
 
-        private void OnPageInit(object sender, EventArgs e)
+        private static void OnPageLoad(object sender, EventArgs e)
         {
             try
             {
-                AnalyticsEngineCollection analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
-                if (analyticsEngines == null || analyticsEngines.Count == 0)
-                {
-                    return;
-                }
+                var  analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
+                if (analyticsEngines == null || analyticsEngines.Count == 0) return;
+                
                 var page = (Page) sender;
-                if ((page == null))
-                {
-                    return;
-                }
+                if (page == null) return;
+                
                 foreach (AnalyticsEngine engine in analyticsEngines)
                 {
-                    if ((!String.IsNullOrEmpty(engine.ElementId)))
+                    if ((string.IsNullOrEmpty(engine.ElementId))) continue;
+                    
+                    AnalyticsEngineBase objEngine;
+                    if ((!string.IsNullOrEmpty(engine.EngineType)))
                     {
-                        AnalyticsEngineBase objEngine = null;
-                        if ((!String.IsNullOrEmpty(engine.EngineType)))
-                        {
-                            Type engineType = Type.GetType(engine.EngineType);
-                            if (engineType == null) 
-                                objEngine = new GenericAnalyticsEngine();
-                            else
-                                objEngine = (AnalyticsEngineBase) Activator.CreateInstance(engineType);
-                        }
-                        else
-                        {
+                        var engineType = Type.GetType(engine.EngineType);
+                        if (engineType == null) 
                             objEngine = new GenericAnalyticsEngine();
-                        }
-                        if (objEngine != null)
-                        {
-                            string script = engine.ScriptTemplate;
-                            if ((!String.IsNullOrEmpty(script)))
-                            {
-                                script = objEngine.RenderScript(script);
-                                if ((!String.IsNullOrEmpty(script)))
-                                {
-                                    var element = (HtmlContainerControl) page.FindControl(engine.ElementId);
-                                    if (element != null)
-                                    {
-                                        var scriptControl = new LiteralControl();
-                                        scriptControl.Text = script;
-                                        if (engine.InjectTop)
-                                        {
-                                            element.Controls.AddAt(0, scriptControl);
-                                        }
-                                        else
-                                        {
-                                            element.Controls.Add(scriptControl);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        else
+                            objEngine = (AnalyticsEngineBase) Activator.CreateInstance(engineType);
+                    }
+                    else
+                    {
+                        objEngine = new GenericAnalyticsEngine();
+                    }
+                    if (objEngine == null) continue;
+                        
+                    var script = engine.ScriptTemplate;
+                    if ((string.IsNullOrEmpty(script))) continue;
+                            
+                    script = objEngine.RenderScript(script);
+                    if ((string.IsNullOrEmpty(script))) continue;
+
+                    var element = (HtmlContainerControl) page.FindControl(engine.ElementId);
+                    if (element == null) continue;
+
+                    var scriptControl = new LiteralControl {Text = script};
+                    if (engine.InjectTop)
+                    {
+                        element.Controls.AddAt(0, scriptControl);
+                    }
+                    else
+                    {
+                        element.Controls.Add(scriptControl);
                     }
                 }
             }
             catch (Exception ex)
             {
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-                log.AddProperty("Analytics.AnalyticsModule", "OnPageInit");
+                log.AddProperty("Analytics.AnalyticsModule", "OnPageLoad");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);

@@ -247,6 +247,7 @@ namespace DesktopModules.Admin.Portals
 
             optMsgAllowAttachments.Select(PortalController.GetPortalSetting("MessagingAllowAttachments", portal.PortalID, "NO"), false);
             optMsgProfanityFilters.Select(PortalController.GetPortalSetting("MessagingProfanityFilters", portal.PortalID, "NO"), false);
+            this.optMsgIncludeAttachments.Select(PortalController.GetPortalSetting("MessagingIncludeAttachments", portal.PortalID, "NO"), false);
             optMsgSendEmail.Select(PortalController.GetPortalSetting("MessagingSendEmail", portal.PortalID, "YES"), false);
 
 	        chkDisablePrivateMessage.Checked = PortalSettings.DisablePrivateMessage;
@@ -1426,6 +1427,8 @@ namespace DesktopModules.Admin.Portals
                     PortalController.UpdatePortalSetting(_portalId, "MessagingThrottlingInterval", cboMsgThrottlingInterval.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingRecipientLimit", cboMsgRecipientLimit.SelectedItem.Value, false);
                     PortalController.UpdatePortalSetting(_portalId, "MessagingAllowAttachments", optMsgAllowAttachments.SelectedItem.Value, false);
+                    PortalController.UpdatePortalSetting(_portalId, "MessagingIncludeAttachments", this.optMsgIncludeAttachments.SelectedItem.Value, false);
+                    
                     PortalController.UpdatePortalSetting(_portalId, "MessagingProfanityFilters", optMsgProfanityFilters.SelectedItem.Value, false);
 					PortalController.UpdatePortalSetting(_portalId, "MessagingSendEmail", optMsgSendEmail.SelectedItem.Value, false);
 					PortalController.UpdatePortalSetting(_portalId, "DisablePrivateMessage", chkDisablePrivateMessage.Checked ? "Y" : "N", false);

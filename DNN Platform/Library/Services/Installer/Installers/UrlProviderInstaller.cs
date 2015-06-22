@@ -61,12 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                //Attempt to get the Desktop Module
-                //Attempt to get the Desktop Module
-                DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(Package.PackageID);
-
-                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger)
-                                            .SingleOrDefault(p => p.DesktopModuleId == desktopModule.DesktopModuleID);
+				ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == _extensionUrlProvider.ProviderName && p.ProviderType == _extensionUrlProvider.ProviderType).FirstOrDefault();
                 if (tempUrlProvider != null)
                 {
                     ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
