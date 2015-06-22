@@ -358,7 +358,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 //request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 				
-				if (!OAuthHeaderCode.IsNullOrEmpty())
+				if (!String.IsNullOrEmpty(OAuthHeaderCode))
 				{ 
 					byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret); 
 					string Api64Encoded = System.Convert.ToBase64String(API64); 
