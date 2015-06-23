@@ -49,6 +49,8 @@ namespace DotNetNuke.Authentication.Facebook.Components
             AuthTokenName = "FacebookUserToken";
 
             OAuthVersion = "2.0";
+			
+			OAuthHeaderCode = "";
 
             LoadTokenCookie(String.Empty);
         }

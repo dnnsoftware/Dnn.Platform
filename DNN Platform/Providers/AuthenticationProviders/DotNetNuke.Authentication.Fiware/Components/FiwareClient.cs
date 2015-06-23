@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,27 +33,28 @@ using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Google.Components
+namespace DotNetNuke.Authentication.Fiware.Components
 {
-    public class GoogleClient : OAuthClientBase
+    public class FiwareClient : OAuthClientBase
     {
         #region Constructors
 
-        public GoogleClient(int portalId, AuthMode mode) 
-            : base(portalId, mode, "Google")
+        public FiwareClient(int portalId, AuthMode mode) : base(portalId, mode, "Fiware")
         {
-            TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
+            RequestTokenEndpoint = new Uri("https://account.lab.fiware.org/oauth2/token");
+            RequestTokenMethod = HttpMethod.POST;
+            TokenEndpoint = new Uri("https://account.lab.fiware.org/oauth2/token");
             TokenMethod = HttpMethod.POST;
-            AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
-            MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
+            AuthorizationEndpoint = new Uri("https://account.lab.fiware.org/oauth2/authorize");
+            MeGraphEndpoint = new Uri("https://account.lab.fiware.org/user");
 
-            Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+            Scope = "all_info";
 
-            AuthTokenName = "GoogleUserToken";
+            AuthTokenName = "FiwareUserToken";
 
             OAuthVersion = "2.0";
-			
-			OAuthHeaderCode = "";
+
+            OAuthHeaderCode = "Basic";
 
             LoadTokenCookie(String.Empty);
         }

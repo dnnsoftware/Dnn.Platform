@@ -138,6 +138,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected TimeSpan AuthTokenExpiry { get; set; }
         protected Uri MeGraphEndpoint { get; set; }
         protected Uri TokenEndpoint { get; set; }
+		protected string OAuthHeaderCode { get; set; }
 
         //oAuth 2
         protected string AuthTokenName { get; set; }        
@@ -358,6 +359,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 //request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 
+				if (!String.IsNullOrEmpty(OAuthHeaderCode))
+				{ 
+					byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret); 
+					string Api64Encoded = System.Convert.ToBase64String(API64); 
+					//Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
+					request.Headers.Add("Authorization: " + OAuthHeaderCode + " " + Api64Encoded); 
+				}
+				
                 if (!String.IsNullOrEmpty(parameters))
                 {
                     Stream dataStream = request.GetRequestStream();

@@ -1,8 +1,7 @@
 ﻿#region Copyright
-
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,38 +17,36 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-
 #endregion
 
 #region Usings
 
 using System;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
 
-using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Twitter.Components
+namespace DotNetNuke.Authentication.Fiware.Components
 {
-    public class TwitterClient : OAuthClientBase
+    [DataContract]
+    public class FiwareUserData : UserData
     {
-        public TwitterClient(int portalId, AuthMode mode)
-            : base(portalId, mode, "Twitter")
+        #region Overrides
+
+        public override string FirstName
         {
-            AuthorizationEndpoint = new Uri("https://api.twitter.com/oauth/authorize");
-            RequestTokenEndpoint = new Uri("https://api.twitter.com/oauth/request_token");
-            RequestTokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://api.twitter.com/oauth/access_token");
-            MeGraphEndpoint = new Uri("https://api.twitter.com/1.1/account/verify_credentials.json");
-
-            AuthTokenName = "TwitterUserToken";
-
-            OAuthVersion = "1.0";
-			
-			OAuthHeaderCode = "";
-
-            LoadTokenCookie(String.Empty);
+            get { return GivenName; }
+            set { }
         }
+
+        #endregion
+
+        [DataMember(Name = "displayName")]
+        public string GivenName { get; set; }
     }
+
+
 }
