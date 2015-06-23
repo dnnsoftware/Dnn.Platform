@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.FileSystem;
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace Dnn.DynamicContent
 {
@@ -20,6 +22,7 @@ namespace Dnn.DynamicContent
     public class ContentTemplate : BaseEntity
     {
         private DynamicContentType _contentType;
+        private IFileInfo _templateFile;
 
         public ContentTemplate() : this(-1) { }
 
@@ -56,7 +59,17 @@ namespace Dnn.DynamicContent
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The Id of the portal
+        /// </summary>
         public int PortalId { get; set; }
+
+        //TODO - add Unit Tests for this
+        [IgnoreColumn]
+        public IFileInfo TemplateFile
+        {
+            get { return _templateFile ?? (_templateFile = FileManager.Instance.GetFile(TemplateFileId)); }
+        }
 
         /// <summary>
         /// The id of the File which contains the HTML for this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>
@@ -66,7 +79,6 @@ namespace Dnn.DynamicContent
         /// <summary>
         /// The Id of this <see cref="T:Dnn.DynamicContent.ContentTemplate"/>
         /// </summary>
-
         public int TemplateId { get; set; }
     }
 }

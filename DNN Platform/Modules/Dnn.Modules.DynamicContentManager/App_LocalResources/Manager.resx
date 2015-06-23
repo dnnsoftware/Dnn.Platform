@@ -276,4 +276,19 @@
   <data name="Templates_PagerFormat.Text" xml:space="preserve">
     <value>Showing {0}-{1} of {2} Templates</value>
   </data>
+  <data name="SystemTemplate.Text" xml:space="preserve">
+    <value>System Temp</value>
+  </data>
+  <data name="TemplateFile.Text" xml:space="preserve">
+    <value>Template File</value>
+  </data>
+  <data name="FolderNotFound.Text" xml:space="preserve">
+    <value>The selected folder could not be found</value>
+  </data>
+  <data name="FileCreateError.Text" xml:space="preserve">
+    <value>There was an error creating the template file.</value>
+  </data>
+  <data name="DeleteTemplateConfirmMessage.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this Template?</value>
+  </data>
 </root>

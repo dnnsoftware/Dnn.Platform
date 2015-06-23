@@ -265,9 +265,22 @@
     margin-bottom: 10px;
 }
 
+.dccContainer div.dccEditRow > div > input{
+    width: 220px;
+}
+
+.dccContainer div.dccEditRow > div > input.dccWide{
+    width: 500px;
+}
+
+.dccContainer div.dccEditRow > div > textarea.dccCode{
+    width:750px;
+    height:350px
+}
 .dccContainer div.dccEditRow > div.toggle {
     float: right;
     padding-right: 25px;
+    padding-top: 25px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div.toggle {
@@ -476,4 +489,10 @@
     font-size: 18px;
     padding-top: 10px;
     display: inline-block;
+}
+
+.dccContainer div.CodeMirror {
+    width: 775px;
+    border: solid 1px #aaa;
+    margin-top: 20px;
 }

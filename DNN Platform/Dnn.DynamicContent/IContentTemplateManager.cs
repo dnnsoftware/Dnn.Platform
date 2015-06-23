@@ -21,6 +21,16 @@ namespace Dnn.DynamicContent
         void DeleteContentTemplate(ContentTemplate contentTemplate);
 
         /// <summary>
+        /// GetContentTemplate overloads retrieves a singe content template
+        /// </summary>
+        /// <param name="templateId">The Id of the template</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System Templates (ie. Templates that are available for all portals)
+        /// should be searched. Defaults to false</param>
+        /// <returns>content template</returns>
+        ContentTemplate GetContentTemplate(int templateId, int portalId, bool includeSystem = false);
+
+        /// <summary>
         /// This GetContentTemplates overloads retrieves all the content templates for a portal, optionally including system types
         /// </summary>
         /// <param name="portalId">The Id of the portal</param>

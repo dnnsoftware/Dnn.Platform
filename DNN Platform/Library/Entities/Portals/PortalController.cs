@@ -817,7 +817,7 @@ namespace DotNetNuke.Entities.Portals
             return dicSettings;
         }
 
-        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo objFolder)
+        private static void ParseFiles(XmlNodeList nodeFiles, int portalId, FolderInfo folder)
         {
             var fileManager = FileManager.Instance;
 
@@ -826,39 +826,41 @@ namespace DotNetNuke.Entities.Portals
                 var fileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "filename");
 
                 //First check if the file exists
-                var objInfo = fileManager.GetFile(objFolder, fileName);
+                var file = fileManager.GetFile(folder, fileName);
 
-                if (objInfo != null) continue;
+                if (file != null) continue;
 
-                objInfo = new FileInfo
-                {
-                    PortalId = portalId,
-                    FileName = fileName,
-                    Extension = XmlUtils.GetNodeValue(node.CreateNavigator(), "extension"),
-                    Size = XmlUtils.GetNodeValueInt(node, "size"),
-                    Width = XmlUtils.GetNodeValueInt(node, "width"),
-                    Height = XmlUtils.GetNodeValueInt(node, "height"),
-                    ContentType = XmlUtils.GetNodeValue(node.CreateNavigator(), "contenttype"),
-                    SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
-                    FolderId = objFolder.FolderID,
-                    Folder = objFolder.FolderPath,
-                    Title = "",
-                    StartDate = DateTime.Now,
-                    EndDate = Null.NullDate,
-                    EnablePublishPeriod = false,
-                    ContentItemID = Null.NullInteger
-                };
+                file = new FileInfo
+                                {
+                                    PortalId = portalId,
+                                    FileName = fileName,
+                                    Extension = XmlUtils.GetNodeValue(node.CreateNavigator(), "extension"),
+                                    Size = XmlUtils.GetNodeValueInt(node, "size"),
+                                    Width = XmlUtils.GetNodeValueInt(node, "width"),
+                                    Height = XmlUtils.GetNodeValueInt(node, "height"),
+                                    ContentType = XmlUtils.GetNodeValue(node.CreateNavigator(), "contenttype"),
+                                    SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
+                                    FolderId = folder.FolderID,
+                                    Folder = folder.FolderPath,
+                                    Title = "",
+                                    StartDate = DateTime.Now,
+                                    EndDate = Null.NullDate,
+                                    EnablePublishPeriod = false,
+                                    ContentItemID = Null.NullInteger
+                                };
 
                 //Save new File
 	            try
 	            {
                     //Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
-                    using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(objInfo))
-					{
-						objInfo.FileId = fileManager.AddFile(objFolder, fileName, fileContent, false).FileId;
+                    using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
+                    {
+                        var contentType = fileManager.GetContentType(Path.GetExtension(fileName));
+                        var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+                        file.FileId = fileManager.AddFile(folder, fileName, fileContent, false, false, true, contentType, userId).FileId;
 					}
 
-					fileManager.UpdateFile(objInfo);
+					fileManager.UpdateFile(file);
 	            }
 				catch (InvalidFileExtensionException ex) //when the file is not allowed, we should not break parse process, but just log the error.
 	            {
@@ -962,6 +964,7 @@ namespace DotNetNuke.Entities.Portals
                 ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new CoreCryptographyProvider());
             }
         }
+
         private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
             where TAbstract : class            
         {
@@ -1146,9 +1149,9 @@ namespace DotNetNuke.Entities.Portals
             return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
-        private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int PortalId)
+        private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
         {
-            var defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalId);
+            var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalId);
             var returnCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
             var clearCache = false;
             foreach (XmlNode node in nodeEnabledLocales.SelectNodes("//locale"))
@@ -1175,40 +1178,35 @@ namespace DotNetNuke.Entities.Portals
             return returnCollection;
         }
 
-        private void ParseFolders(XmlNode nodeFolders, int PortalId)
+        private void ParseFolders(XmlNode nodeFolders, int portalId)
         {
-            IFolderInfo objInfo;
-            string folderPath;
-            bool isProtected = false;
             var folderManager = FolderManager.Instance;
             var folderMappingController = FolderMappingController.Instance;
-            FolderMappingInfo folderMapping = null;
-            var folderMappingsConfigController = new FolderMappingsConfigController();
-            //DNN-2949 set ignorewhitelist to true to allow files with not allowed extensions to be added during portal creation
-            HostController.Instance.Update("IgnoreWhiteList", "Y", true);
-            try
-            {
-                foreach (XmlNode node in nodeFolders.SelectNodes("//folder"))
+            var xmlNodeList = nodeFolders.SelectNodes("//folder");
+            if (xmlNodeList != null)
+            { 
+                foreach (XmlNode node in xmlNodeList)
                 {
                     HtmlUtils.WriteKeepAlive();
-                    folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
+                    var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
 
                     //First check if the folder exists
-                    objInfo = folderManager.GetFolder(PortalId, folderPath);
+                    var objInfo = folderManager.GetFolder(portalId, folderPath);
 
                     if (objInfo == null)
                     {
+                        FolderMappingInfo folderMapping = null;
                         try
                         {
-                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(PortalId, folderPath) ??
-                                            GetFolderMappingFromStorageLocation(PortalId, node);
+                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath) 
+                                            ?? GetFolderMappingFromStorageLocation(portalId, node);
                         }
                         catch (Exception ex)
                         {
                             Logger.Error(ex);
-                            folderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
+                            folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                         }
-                        isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+                        var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
 
                         try
                         {
@@ -1219,7 +1217,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             Logger.Error(ex);
                             //Retry with default folderMapping
-                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(PortalId);
+                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                             if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
                             {
                                 objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
@@ -1235,28 +1233,16 @@ namespace DotNetNuke.Entities.Portals
                     }
 
                     var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
-                    ParseFolderPermissions(nodeFolderPermissions, PortalId, (FolderInfo)objInfo);
+                    ParseFolderPermissions(nodeFolderPermissions, portalId, (FolderInfo) objInfo);
 
                     var nodeFiles = node.SelectNodes("files/file");
 
-                    if (!String.IsNullOrEmpty(folderPath))
-                    {
-                        folderPath += "/";
-                    }
-
-                    ParseFiles(nodeFiles, PortalId, (FolderInfo)objInfo);
+                    ParseFiles(nodeFiles, portalId, (FolderInfo) objInfo);
                 }
-                //DNN-2949 set ignorewhitelist to false right away after ParseFiles was executed on all folders in template nodes
-                HostController.Instance.Update("IgnoreWhiteList", "N", true);
-            }
-            catch (Exception)
-            {
-                //DNN-2949 ensure ignorewhitelist is set back to false in case of any exceptions during files parsing/adding
-                HostController.Instance.Update("IgnoreWhiteList", "N", true);
             }
         }
 
-        private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int PortalId)
+        private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
         {
             var listController = new ListController();
             Dictionary<string, ListEntryInfo> colDataTypes = listController.GetListEntryInfoDictionary("DataType");
@@ -1272,7 +1258,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
-                objProfileDefinition = new ProfilePropertyDefinition(PortalId);
+                objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
                 objProfileDefinition.DefaultValue = "";
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
@@ -1305,7 +1291,7 @@ namespace DotNetNuke.Entities.Portals
             }
 
             //6.0 requires the old TimeZone property to be marked as Deleted
-            ProfilePropertyDefinition pdf = ProfileController.GetPropertyDefinitionByName(PortalId, "TimeZone");
+            ProfilePropertyDefinition pdf = ProfileController.GetPropertyDefinitionByName(portalId, "TimeZone");
             if (pdf != null)
             {
                 ProfileController.DeletePropertyDefinition(pdf);
@@ -1323,7 +1309,7 @@ namespace DotNetNuke.Entities.Portals
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
 
-                objProfileDefinition = new ProfilePropertyDefinition(PortalId);
+                objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
                 objProfileDefinition.DefaultValue = "";
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
@@ -1386,12 +1372,12 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void ParsePortalSettings(XmlNode nodeSettings, int PortalId)
+        private void ParsePortalSettings(XmlNode nodeSettings, int portalId)
         {
             PortalInfo objPortal;
-			String currentCulture = GetActivePortalLanguage(PortalId);
-			objPortal = GetPortal(PortalId);
-            objPortal.LogoFile = Globals.ImportFile(PortalId, XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "logofile"));
+			String currentCulture = GetActivePortalLanguage(portalId);
+			objPortal = GetPortal(portalId);
+            objPortal.LogoFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "logofile"));
             objPortal.FooterText = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "footertext");
             if (nodeSettings.SelectSingleNode("expirydate") != null)
             {
@@ -1430,36 +1416,36 @@ namespace DotNetNuke.Entities.Portals
 
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""), currentCulture);
+				UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""), currentCulture);
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""), currentCulture);
+				UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""), currentCulture);
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""), currentCulture);
+				UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""), currentCulture);
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", "")))
             {
-				UpdatePortalSetting(PortalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""), currentCulture);
+				UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""), currentCulture);
             }
 
             //Enable Skin Widgets Setting
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", "")))
             {
-                UpdatePortalSetting(PortalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
+                UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
             }
 
             //Enable AutoSAve feature
             //Enable Skin Widgets Setting
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
             {
-                UpdatePortalSetting(PortalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
+                UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
                 //Time to autosave, only if enableautosave exists
                 if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", "")))
                 {
-                    UpdatePortalSetting(PortalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", ""));
+                    UpdatePortalSetting(portalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", ""));
                 }
             }
 
@@ -1467,59 +1453,59 @@ namespace DotNetNuke.Entities.Portals
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL")))
             {
-                UpdatePortalSetting(PortalId, "PortalAliasMapping", XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL").ToUpperInvariant());
+                UpdatePortalSetting(portalId, "PortalAliasMapping", XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL").ToUpperInvariant());
             }
             //Set Time Zone maping
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone)))
             {
-                UpdatePortalSetting(PortalId, "TimeZone", XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone));
+                UpdatePortalSetting(portalId, "TimeZone", XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled")))
             {
-                UpdatePortalSetting(PortalId, "ContentLocalizationEnabled", XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled"));
+                UpdatePortalSetting(portalId, "ContentLocalizationEnabled", XmlUtils.GetNodeValue(nodeSettings, "contentlocalizationenabled"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled")))
             {
-                UpdatePortalSetting(PortalId, "InlineEditorEnabled", XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled"));
+                UpdatePortalSetting(portalId, "InlineEditorEnabled", XmlUtils.GetNodeValue(nodeSettings, "inlineeditorenabled"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablepopups")))
             {
-                UpdatePortalSetting(PortalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
+                UpdatePortalSetting(portalId, "EnablePopUps", XmlUtils.GetNodeValue(nodeSettings, "enablepopups"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled")))
             {
-                UpdatePortalSetting(PortalId, "HideFoldersEnabled", XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled"));
+                UpdatePortalSetting(portalId, "HideFoldersEnabled", XmlUtils.GetNodeValue(nodeSettings, "hidefoldersenabled"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "controlpanelmode")))
             {
-                UpdatePortalSetting(PortalId, "ControlPanelMode", XmlUtils.GetNodeValue(nodeSettings, "controlpanelmode"));
+                UpdatePortalSetting(portalId, "ControlPanelMode", XmlUtils.GetNodeValue(nodeSettings, "controlpanelmode"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "controlpanelsecurity")))
             {
-                UpdatePortalSetting(PortalId, "ControlPanelSecurity", XmlUtils.GetNodeValue(nodeSettings, "controlpanelsecurity"));
+                UpdatePortalSetting(portalId, "ControlPanelSecurity", XmlUtils.GetNodeValue(nodeSettings, "controlpanelsecurity"));
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility")))
             {
-                UpdatePortalSetting(PortalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
+                UpdatePortalSetting(portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", "")))
             {
-                UpdatePortalSetting(PortalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", ""));
+                UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", ""));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", "")))
             {
-                UpdatePortalSetting(PortalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", ""));
+                UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", ""));
             }
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", "")))
             {
-                UpdatePortalSetting(PortalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
+                UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
             }
         }
 
@@ -1638,11 +1624,11 @@ namespace DotNetNuke.Entities.Portals
                               GetActivePortalLanguage(portalID));
         }
 
-        private void ParseTab(XmlNode nodeTab, int PortalId, bool IsAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
+        private void ParseTab(XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
-            var portal = GetPortal(PortalId);
+            var portal = GetPortal(portalId);
             if (!String.IsNullOrEmpty(strName))
             {
                 if (!isNewPortal)  //running from wizard: try to find the tab by path
@@ -1654,12 +1640,12 @@ namespace DotNetNuke.Entities.Portals
                     }
                     if (hTabs[parenttabname + strName] != null)
                     {
-                        tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), PortalId, false);
+                        tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), portalId, false);
                     }
                 }
                 if (tab == null || isNewPortal)
                 {
-                    tab = TabController.DeserializeTab(nodeTab, null, hTabs, PortalId, IsAdminTemplate, mergeTabs, hModules);
+                    tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs, hModules);
                 }
 
                 //when processing the template we should try and identify the Admin tab
@@ -1692,7 +1678,7 @@ namespace DotNetNuke.Entities.Portals
                         logType = "SearchTab";
                         break;
                     case "gettingStartedTab":                        
-                        UpdatePortalSetting(PortalId, "GettingStartedTabId", tab.TabID.ToString());
+                        UpdatePortalSetting(portalId, "GettingStartedTabId", tab.TabID.ToString());
                         logType = "GettingStartedTabId";
                         break;
                     case "404Tab":
@@ -1704,7 +1690,7 @@ namespace DotNetNuke.Entities.Portals
                         logType = "Custom500Tab";
                         break;
                 }
-                UpdatePortalSetup(PortalId,
+                UpdatePortalSetup(portalId,
                                   portal.AdministratorId,
                                   portal.AdministratorRoleId,
                                   portal.RegisteredRoleId,
@@ -1717,7 +1703,7 @@ namespace DotNetNuke.Entities.Portals
                                   portal.Custom404TabId,
                                   portal.Custom500TabId,
                                   portal.AdminTabId,
-                                  GetActivePortalLanguage(PortalId));
+                                  GetActivePortalLanguage(portalId));
                 EventLogController.Instance.AddLog(logType,
                                    tab.TabID.ToString(),
                                    GetCurrentPortalSettingsInternal(),
@@ -1726,7 +1712,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private void ParseTabs(XmlNode nodeTabs, int PortalId, bool IsAdminTemplate, PortalTemplateModuleAction mergeTabs, bool IsNewPortal)
+        private void ParseTabs(XmlNode nodeTabs, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             //used to control if modules are true modules or instances
             //will hold module ID from template / new module ID so new instances can reference right moduleid
@@ -1738,10 +1724,10 @@ namespace DotNetNuke.Entities.Portals
             //if running from wizard we need to pre populate htabs with existing tabs so ParseTab 
             //can find all existing ones
             string tabname;
-            if (!IsNewPortal)
+            if (!isNewPortal)
             {
                 Hashtable hTabNames = new Hashtable();
-                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(PortalId))
+                foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
                 {
                     TabInfo objTab = tabPair.Value;
                     if (!objTab.IsDeleted)
@@ -1768,7 +1754,7 @@ namespace DotNetNuke.Entities.Portals
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                ParseTab(nodeTab, PortalId, IsAdminTemplate, mergeTabs, ref hModules, ref hTabs, IsNewPortal);
+                ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
             //Process tabs that are linked to tabs
@@ -1779,8 +1765,8 @@ namespace DotNetNuke.Entities.Portals
                 string tabPath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
                 {
-                    TabInfo objTab = TabController.Instance.GetTab(tabId, PortalId, false);
-                    objTab.Url = TabController.GetTabByTabPath(PortalId, tabPath, Null.NullString).ToString();
+                    TabInfo objTab = TabController.Instance.GetTab(tabId, portalId, false);
+                    objTab.Url = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString).ToString();
                     TabController.Instance.UpdateTab(objTab);
                 }
             }
@@ -1794,12 +1780,12 @@ namespace DotNetNuke.Entities.Portals
                 var filePath = XmlUtils.GetNodeValue(nodeTab, "url", Null.NullString);
                 if (tabId > Null.NullInteger)
                 {
-                    var objTab = TabController.Instance.GetTab(tabId, PortalId, false);
+                    var objTab = TabController.Instance.GetTab(tabId, portalId, false);
 
                     var fileName = Path.GetFileName(filePath);
 
                     var folderPath = filePath.Substring(0, filePath.LastIndexOf(fileName));
-                    var folder = folderManager.GetFolder(PortalId, folderPath);
+                    var folder = folderManager.GetFolder(portalId, folderPath);
 
                     var file = fileManager.GetFile(folder, fileName);
 

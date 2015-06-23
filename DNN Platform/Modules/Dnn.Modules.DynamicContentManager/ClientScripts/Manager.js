@@ -1,4 +1,4 @@
-﻿function Manager($, ko, settings, resx){
+﻿function Manager($, ko, codeEditor, settings, resx){
     var $rootElement;
     var activePanel;
 
@@ -37,6 +37,7 @@
         viewModel.contentTypes.pageIndex(0);
         viewModel.contentTypes.searchText('');
         viewModel.contentTypes.getContentTypes();
+        viewModel.templates.mode("listTypes");
     };
 
     var selectDataTypes = function (data, e) {
@@ -86,6 +87,7 @@
             util: util,
             $rootElement: $rootElement,
             mode: ko.observable("listTypes"),
+            codeEditor: codeEditor
         };
 
         //Build the ViewModel

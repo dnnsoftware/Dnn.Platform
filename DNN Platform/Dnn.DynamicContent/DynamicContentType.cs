@@ -19,7 +19,7 @@ namespace Dnn.DynamicContent
     [Scope("PortalId")]
     public class DynamicContentType : BaseEntity
     {
-        private IList<FieldDefinition> _fieldDefitions;
+        private IList<FieldDefinition> _fieldDefinitions;
         private IList<ContentTemplate> _templates;
 
         public DynamicContentType() : this(-1) { }
@@ -52,13 +52,13 @@ namespace Dnn.DynamicContent
             get
             {
                 // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
-                if (_fieldDefitions == null)
+                if (_fieldDefinitions == null)
                 {
-                    _fieldDefitions = (ContentTypeId == -1)
+                    _fieldDefinitions = (ContentTypeId == -1)
                                         ? new List<FieldDefinition>()
                                         : FieldDefinitionManager.Instance.GetFieldDefinitions(ContentTypeId).ToList();
                 }
-                return _fieldDefitions;
+                return _fieldDefinitions;
             }
         }
 
@@ -105,7 +105,12 @@ namespace Dnn.DynamicContent
 
         internal void ClearFieldDefinitions()
         {
-            _fieldDefitions = null;
+            _fieldDefinitions = null;
+        }
+
+        internal void ClearTemplates()
+        {
+            _templates = null;
         }
     }
 }
