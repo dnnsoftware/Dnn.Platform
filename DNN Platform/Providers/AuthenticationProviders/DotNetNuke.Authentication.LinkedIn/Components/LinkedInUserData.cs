@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,33 +23,65 @@
 
 #region Usings
 
-using System;
+using System.Runtime.Serialization;
 
-using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Twitter.Components
+namespace DotNetNuke.Authentication.LinkedIn.Components
 {
-    public class TwitterClient : OAuthClientBase
+    [DataContract]
+    public class LinkedInUserData : UserData
     {
-        public TwitterClient(int portalId, AuthMode mode)
-            : base(portalId, mode, "Twitter")
+        #region Overrides
+
+        public override string FirstName
         {
-            AuthorizationEndpoint = new Uri("https://api.twitter.com/oauth/authorize");
-            RequestTokenEndpoint = new Uri("https://api.twitter.com/oauth/request_token");
-            RequestTokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://api.twitter.com/oauth/access_token");
-            MeGraphEndpoint = new Uri("https://api.twitter.com/1.1/account/verify_credentials.json");
-
-            AuthTokenName = "TwitterUserToken";
-
-            OAuthVersion = "1.0";
-			
-            AccessToken = "access_token";
-
-            LoadTokenCookie(String.Empty);
+            get { return GivenName; }
+            set { }
         }
+
+        public override string LastName
+        {
+            get { return FamilyName; }
+            set { }
+        }
+
+        public override string Email
+        {
+            get { return Email1; }
+            set { }
+        }
+
+        public override string ProfileImage 
+        {
+            get { return imagenPerfil; } 
+            set {}
+        }
+
+        public override string Locale
+        {
+            get { return localidad; }
+            set { }
+        }
+
+        #endregion
+
+        [DataMember(Name = "firstName")]
+        public string GivenName { get; set; }
+
+        [DataMember(Name = "lastName")]
+        public string FamilyName { get; set; }
+
+        [DataMember(Name = "emailAddress")]
+        public string Email1 { get; set; }
+
+        [DataMember(Name = "pictureUrl")]
+        public string imagenPerfil { get; set; }
+
+        [DataMember(Name = "location:(name)")]
+        public string localidad { get; set; }
+
     }
 }

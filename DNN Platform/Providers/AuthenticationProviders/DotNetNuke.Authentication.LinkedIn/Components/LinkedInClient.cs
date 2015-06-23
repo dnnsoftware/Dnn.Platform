@@ -2,7 +2,7 @@
 
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2013
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,33 +27,35 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
 
-namespace DotNetNuke.Authentication.Google.Components
+namespace DotNetNuke.Authentication.LinkedIn.Components
 {
-    public class GoogleClient : OAuthClientBase
+    public class LinkedInClient : OAuthClientBase
     {
         #region Constructors
 
-        public GoogleClient(int portalId, AuthMode mode) 
-            : base(portalId, mode, "Google")
+        public LinkedInClient(int portalId, AuthMode mode) : base(portalId, mode, "LinkedIn")
         {
-            TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
+            RequestTokenEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/accessToken");
+            RequestTokenMethod = HttpMethod.POST;
+            TokenEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/accessToken");
             TokenMethod = HttpMethod.POST;
-            AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
-            MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
+            AuthorizationEndpoint = new Uri("https://www.linkedin.com/uas/oauth2/authorization");
+            MeGraphEndpoint = new Uri("https://api.linkedin.com/v1/people/~:(firstName,lastName,emailAddress,pictureUrl,location:(name))/");
 
-            Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+            Scope = "r_basicprofile r_emailaddress";
 
-            AuthTokenName = "GoogleUserToken";
+            AuthTokenName = "LinkedInUserToken";
 
             OAuthVersion = "2.0";
-			
-            AccessToken = "access_token";
+
+            AccessToken = "format=json&oauth2_access_token";
 
             LoadTokenCookie(String.Empty);
         }
@@ -73,6 +75,7 @@ namespace DotNetNuke.Authentication.Google.Components
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             return Convert.ToString(tokenDictionary["access_token"]);
+            
         }
     }
 }

@@ -142,6 +142,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         //oAuth 2
         protected string AuthTokenName { get; set; }        
         protected string Scope { get; set; }
+		protected string AccessToken { get; set; }
         protected string VerificationCode
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
@@ -731,7 +732,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             string responseText = (OAuthVersion == "1.0")
                 ? ExecuteAuthorizedRequest(HttpMethod.GET, MeGraphEndpoint) 
-                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + "access_token=" + AuthToken), null, String.Empty);
+                : ExecuteWebRequest(HttpMethod.GET, new Uri(MeGraphEndpoint + "?" + AccessToken + "=" + AuthToken), null, String.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }
