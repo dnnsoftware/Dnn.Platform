@@ -142,6 +142,22 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
+	    protected bool UsernameDisabled
+	    {
+		    get
+		    {
+				return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
+		    }
+	    }
+
+	    private bool ShowEmailField
+	    {
+		    get
+		    {
+			    return MembershipProviderConfig.RequiresUniqueEmail || UsernameDisabled;
+		    }
+	    }
+
         #endregion
 
         #region Private Methods
@@ -149,7 +165,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-            if (MembershipProviderConfig.RequiresUniqueEmail && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
+			if (MembershipProviderConfig.RequiresUniqueEmail && !String.IsNullOrEmpty(txtEmail.Text.Trim()) && (String.IsNullOrEmpty(txtUsername.Text.Trim()) || divUsername.Visible == false))
             {
                 arrUsers = UserController.GetUsersByEmail(PortalSettings.PortalId, txtEmail.Text, 0, Int32.MaxValue, ref _userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
@@ -226,9 +242,9 @@ namespace DotNetNuke.Modules.Admin.Security
                 _ipAddress = Request.UserHostAddress;
             }
 
-            bool usernameDisabled = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false);
-            divEmail.Visible = MembershipProviderConfig.RequiresUniqueEmail || usernameDisabled;
-            divUsername.Visible = !usernameDisabled;
+
+			divEmail.Visible = ShowEmailField;
+			divUsername.Visible = !UsernameDisabled;
             divCaptcha.Visible = UseCaptcha;
 
             if (UseCaptcha)
@@ -269,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (String.IsNullOrEmpty(txtUsername.Text.Trim()))
                 {
                     //No UserName provided
-                    if (MembershipProviderConfig.RequiresUniqueEmail)
+                    if (ShowEmailField)
                     {
                         if (String.IsNullOrEmpty(txtEmail.Text.Trim()))
                         {
