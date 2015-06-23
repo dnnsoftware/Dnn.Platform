@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,6 @@ using DotNetNuke.Entities.Tabs.TabVersions;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
@@ -247,13 +247,13 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private static Control FindControlRecursive(Control rootControl, string controlID)
+        private static Control FindControlRecursive(Control rootControl, string controlId)
         {
-            if (rootControl.ID == controlID) return rootControl;
+            if (rootControl.ID == controlId) return rootControl;
 
             foreach (Control controlToSearch in rootControl.Controls)
             {
-                Control controlToReturn = FindControlRecursive(controlToSearch, controlID);
+                Control controlToReturn = FindControlRecursive(controlToSearch, controlId);
                 if (controlToReturn != null) return controlToReturn;
             }
             return null;
@@ -433,9 +433,11 @@ namespace DotNetNuke.UI.Skins
 
         private bool ProcessModule(ModuleInfo module)
         {
-            bool success = true;
+            var success = true;
             if (ModuleInjectionManager.CanInjectModule(module, PortalSettings))
             {
+                EnsureContentItemForModule(module);
+
                 Pane pane = GetPane(module);
 
                 if (pane != null)
@@ -457,6 +459,7 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                EnsureContentItemForTab(PortalSettings.ActiveTab);
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
@@ -498,7 +501,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     AddPageMessage(this,
                                    "",
-                                   string.Format(Localization.GetString("ContractExpired.Error"), PortalSettings.PortalName, Globals.GetMediumDate(PortalSettings.ExpiryDate.ToString()), PortalSettings.Email),
+                                   string.Format(Localization.GetString("ContractExpired.Error"), PortalSettings.PortalName, Globals.GetMediumDate(PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), PortalSettings.Email),
                                    ModuleMessage.ModuleMessageType.RedError);
                 }
             }
@@ -516,6 +519,24 @@ namespace DotNetNuke.UI.Skins
 				Response.Redirect(redirectUrl, true);
             }
             return success;
+        }
+
+        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);    
+            }
+        }
+
+        private void EnsureContentItemForModule(ModuleInfo module)
+        {
+            if (module.ContentItemId == Null.NullInteger && module.TabID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
         }
 
         private void ProcessPanes()
