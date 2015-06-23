@@ -292,7 +292,8 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+	            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
+				var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
 
                 if (extract && extension.ToLower() == "zip")
                 {
@@ -469,7 +470,7 @@ namespace DotNetNuke.Web.InternalServices
                 else
                 {
                     file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false,
-                                                        FileManager.Instance.GetContentType(Path.GetExtension(fileName)),
+                                                        FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)),
                                                         userInfo.UserID);
                     if (extract && extension.ToLower() == "zip")
                     {
