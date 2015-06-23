@@ -8,7 +8,14 @@
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/pager.js"}]
 [JavaScript:{ path: "~/DesktopModules/Dnn/DynamicContentManager/ClientScripts/util.js"}]
 [JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/lib/codemirror.js", priority: 50}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/mode/javascript/javascript.js", priority: 55}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/mode/css/css.js", priority: 55}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/mode/xml/xml.js", priority: 55}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/mode/htmlmixed/htmlmixed.js", priority: 60}]
+[JavaScript:{ path: "~/Resources/Shared/components/CodeEditor/mode/htmlembedded/htmlembedded.js", priority: 65}]
 [Css:{ path: "//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"}]
+[Css:{ path: "~/Resources/Shared/components/CodeEditor/lib/codemirror.css"}]
 
 <div id="DCCmanager-[ModuleContext:ModuleId]" class="dccContainer">
     <div class="dccNavBar">
@@ -305,7 +312,7 @@
                             <td width="100px" data-bind="event: { mouseover: toggleSelected, mouseout: toggleSelected }">
                                 <a class="dccIcon" data-bind="visible: selected() && !canEdit(), click: $parent.editTemplate"><i class="fa fa-search"></i></a>
                                 <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: $parent.editTemplate"><i class="fa fa-pencil"></i></a>
-                                <a class="dccIcon" data-bind="visible: selected() && canEdit()"><i class="fa fa-trash-o"></i></a>
+                                <a class="dccIcon" data-bind="visible: selected() && canEdit(), click: deleteTemplate""><i class="fa fa-trash-o"></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -314,18 +321,34 @@
             <div id="templates-editView" class="dccSubPanel" data-bind="visible: mode() == 'editTemplate', with: selectedTemplate">
                 <div class="dccEditForm">
                     <div class="dccEditRow">
-
+                        <div>
+                            <label>[Resx:{key:"Name"}]</label>
+                            <input type="text" data-bind="value: name, enable: canEdit" />
+                        </div>
+                        <div>
+                            <label>[Resx:{key:"ContentType"}]</label>
+                            <select data-bind="enable: canEdit, value: contentTypeId, valueAllowUnset: false, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
+                        </div>
+                        <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
+                            <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
+                            <span class="label">[Resx:{key:"SystemTemplate"}]</span>
+                        </div>
                     </div>
                     <div class="dccEditRow">
-
+                        <div>
+                            <label>[Resx:{key:"TemplateFile"}]</label>
+                            <input class="dccWide" type="text" data-bind="textInput: filePath, enable: canEdit">
+                        </div>
                     </div>
                     <div class="dccEditRow">
-
+                        <div>
+                            <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
+                        </div>
                     </div>
 
                     <div class="buttons">
-                        <a class="secondarybtn" data-bind="visible: canEdit, click: cancel">[Resx:{key:"Cancel"}]</a>
-                        <a class="primarybtn" data-bind="visible: canEdit">[Resx:{key:"Save"}]</a>
+                        <a class="secondarybtn" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
+                        <a class="primarybtn" data-bind="visible: canEdit, click: saveTemplate">[Resx:{key:"Save"}]</a>
                     </div>
                 </div>
             </div>
@@ -393,6 +416,7 @@
             confirm: '[Resx:{key:"Confirm"}]',
             deleteContentTypeConfirmMessage: '[Resx:{key:"DeleteContentTypeConfirmMessage"}]',
             deleteContentFieldConfirmMessage: '[Resx:{key:"DeleteContentFieldConfirmMessage"}]',
+            deleteTemplateConfirmMessage: '[Resx:{key:"DeleteTemplateConfirmMessage"}]',
             deleteDataTypeConfirmMessage: '[Resx:{key:"DeleteDataTypeConfirmMessage"}]',
             saveContentTypeMessage: '[Resx:{key:"SaveContentTypeMessage"}]',
             no: '[Resx:{key:"No"}]',
@@ -408,11 +432,20 @@
             contentTemplatesPanel: '#content-templates-panel',
             settingsPanel: '#settings-panel',
             loadingBarId: '#loadingbar',
+            codeEditorArea: '#template-codeEditor',
             pageSize: 5,
             servicesFramework: $.ServicesFramework(moduleId)
         }
 
-        var manager = new Manager($, ko, settings, localizedSettings);
+        var codeEditor = CodeMirror.fromTextArea($("#DCCmanager-" + moduleId + " #template-codeEditor")[0], {
+            lineNumbers: true,
+            matchingBrackets: true,
+            lineWrapping: true,
+            indentWithTabs: true,
+            mode: 'htmlembedded'
+        });
+
+        var manager = new Manager($, ko, codeEditor, settings, localizedSettings);
 
         manager.init("#DCCmanager-" + moduleId);
     });

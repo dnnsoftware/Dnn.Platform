@@ -25,6 +25,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The Data Type to delete</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteDataType(DataTypeViewModel viewModel)
         {
             var dataType = DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true);
@@ -99,6 +100,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The ViewModel for the DataType to save</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveDataType(DataTypeViewModel viewModel)
         {
             if (viewModel.DataTypeId == -1)

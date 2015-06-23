@@ -46,8 +46,21 @@ namespace Dnn.DynamicContent
 
             Add(contentTemplate);
 
+            ClearContentTypeCache(contentTemplate);
+
             return contentTemplate.TemplateId;
         }
+
+        private void ClearContentTypeCache(ContentTemplate contentTemplate)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTemplate.ContentTypeId, contentTemplate.PortalId, true);
+
+            if (contentType != null)
+            {
+                contentType.ClearTemplates();
+            }
+        }
+
 
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
@@ -59,6 +72,8 @@ namespace Dnn.DynamicContent
         public void DeleteContentTemplate(ContentTemplate contentTemplate)
         {
             Delete(contentTemplate);
+
+            ClearContentTypeCache(contentTemplate);
         }
 
         /// <summary>
@@ -127,7 +142,6 @@ namespace Dnn.DynamicContent
             return new PagedList<ContentTemplate>(templates, pageIndex, pageSize);
         }
 
-
         /// <summary>
         /// Updates the content template.
         /// </summary>
@@ -146,6 +160,8 @@ namespace Dnn.DynamicContent
             contentTemplate.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Update(contentTemplate);
+
+            ClearContentTypeCache(contentTemplate);
         }
     }
 }

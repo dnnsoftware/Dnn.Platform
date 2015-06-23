@@ -108,11 +108,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private bool IgnoreWhiteList
-        {
-            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
-        }
-
         #endregion
 
         #region Constants
@@ -314,7 +309,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
 
-            return AddFile(folder, fileName, fileContent, true);
+            return AddFile(folder, fileName, fileContent, true, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
         }
 
         /// <summary>
@@ -327,7 +322,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, false, GetContentType(Path.GetExtension(fileName)));
+            return AddFile(folder, fileName, fileContent, overwrite, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
         }
 
         /// <summary>
@@ -347,7 +342,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType, GetCurrentUserID());
+            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, GetCurrentUserID());
         }
 
         /// <summary>
@@ -368,6 +363,28 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID)
         {
+            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, createdByUserID);
+        }
+
+        /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
+        /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.NoSpaceAvailableException">Thrown when the portal has no space available to store the specified file.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.PermissionsNotMetException">Thrown when permissions are not met.</exception>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, bool ignoreWhiteList, string contentType, int createdByUserID)
+        {
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
@@ -376,15 +393,15 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !IgnoreWhiteList))
+            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !ignoreWhiteList))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
-            //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && UserController.Instance.GetCurrentUserInfo().IsSuperUser && IgnoreWhiteList)
+            //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
+            if (!IsAllowedExtension(fileName) && ignoreWhiteList)
              {
                  var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-                 log.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
                  LogController.Instance.AddLog(log);
              }
 
