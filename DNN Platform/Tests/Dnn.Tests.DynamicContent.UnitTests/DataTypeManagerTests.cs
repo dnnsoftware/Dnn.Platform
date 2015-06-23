@@ -218,6 +218,96 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         }
 
         [Test]
+        public void GetDataType_Calls_Repository_Get_With_PortalId()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataType(dataTypeId, portalId);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(portalId));
+        }
+
+        [Test]
+        public void GetDataType_Calls_Repository_Get_With_Host_PortalId_If_IncludeSystem_True_And_Not_Found_In_Portal()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataType(dataTypeId, portalId, true);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetDataType_Does_Not_Call_Repository_Get_With_Host_PortalId_If_IncludeSystem_False_And_Not_Found_In_Portal()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataType(dataTypeId, portalId, false);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId), Times.Never);
+        }
+
+        [Test]
+        public void GetDataType_Does_Not_Call_Repository_Get_With_Host_PortalId_If_Found_In_Portal()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            _mockDataTypeRepository.Setup(r => r.Get(portalId))
+                .Returns(new List<DataType> {new DataType(portalId) {DataTypeId = dataTypeId}});
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataType(dataTypeId, portalId, true);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId), Times.Never);
+        }
+
+        [Test]
+        public void GetDataType_Returns_DataType_If_Found_In_Portal()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            _mockDataTypeRepository.Setup(r => r.Get(portalId))
+                .Returns(new List<DataType> { new DataType(portalId) { DataTypeId = dataTypeId } });
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataType = dataTypeController.GetDataType(dataTypeId, portalId, true);
+
+            //Assert
+            Assert.IsInstanceOf<DataType>(dataType);
+            Assert.AreEqual(dataTypeId, dataType.DataTypeId);
+        }
+
+        [Test]
         public void GetDataTypes_Calls_Repository_Get_With_PortalId()
         {
             //Arrange
@@ -246,6 +336,22 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetDataTypes_Does_Not_Call_Repository_Get_With_Host_PortalId_If_IncludeSystem_False()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes(portalId, false);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId), Times.Never);
         }
 
         [Test]
@@ -314,6 +420,24 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             //Assert
             _mockDataTypeRepository.Verify(r => r.Get(hostPortalId));
+        }
+
+        [Test]
+        public void GetDataTypes_Overload_Does_Not_Call_Repository_Get_With_Host_PortalId_If_IncludeSystem_False()
+        {
+            //Arrange
+            var portalId = Constants.PORTAL_ValidPortalId;
+            var pageIndex = 0;
+            var pageSize = 5;
+            var hostPortalId = -1;
+            var dataTypeController = new DataTypeManager(_mockDataContext.Object);
+
+            //Act
+            // ReSharper disable once UnusedVariable
+            var dataTypes = dataTypeController.GetDataTypes("Search", portalId, pageIndex, pageSize, false);
+
+            //Assert
+            _mockDataTypeRepository.Verify(r => r.Get(hostPortalId), Times.Never);
         }
 
         [Test]

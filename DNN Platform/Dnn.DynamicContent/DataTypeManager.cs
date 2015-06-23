@@ -91,7 +91,6 @@ namespace Dnn.DynamicContent
         /// <param name="includeSystem">A flag to determine if System Data Types (ie. Data Types that are available for all portals)
         /// should be returned. Defaults to false</param>
         /// <returns>data type</returns>
-        //TODO add Unit Tests for this method
         public DataType GetDataType(int dataTypeId, int portalId, bool includeSystem = false)
         {
             DataType dataType = Get(portalId).SingleOrDefault(dt => dt.DataTypeId == dataTypeId);
