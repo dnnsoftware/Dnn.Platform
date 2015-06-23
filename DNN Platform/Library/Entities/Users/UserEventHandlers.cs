@@ -51,6 +51,7 @@ namespace DotNetNuke.Entities.Users
 
         public void UserApproved(object sender, UserEventArgs args)
         {
+            if (!args.SendNotification) return;
             Mail.SendMail(args.User, MessageType.UserRegistrationPublic, PortalSettings.Current);
             DeleteAllNotifications(args.User.UserID);
         }

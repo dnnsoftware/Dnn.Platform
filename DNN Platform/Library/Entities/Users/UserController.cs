@@ -1819,6 +1819,21 @@ namespace DotNetNuke.Entities.Users
             UpdateUser(portalId, user, loggedAction, true);
         }
 
+         /// -----------------------------------------------------------------------------
+         /// <summary>
+         ///   updates a user
+         /// </summary>
+         /// <param name = "portalId">the portalid of the user</param>
+         /// <param name = "user">the user object</param>
+         /// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+         /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
+         /// <remarks>
+         /// </remarks>
+         public static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification)
+         {
+             UpdateUser(portalId, user, loggedAction, sendNotification, true);
+         }
+
 		/// -----------------------------------------------------------------------------
 		/// <summary>
 		///   updates a user
@@ -1826,11 +1841,12 @@ namespace DotNetNuke.Entities.Users
 		/// <param name = "portalId">the portalid of the user</param>
 		/// <param name = "user">the user object</param>
 		/// <param name = "loggedAction">whether or not the update calls the eventlog - the eventlogtype must still be enabled for logging to occur</param>
+        /// <param name="sendNotification">Whether to send notification to the user about the update (i.e. a notification if the user was approved).</param>
 		/// <param name="clearCache">Whether clear cache after update user.</param>
 		/// <remarks>
 		/// This method is used internal because it should be use carefully, or it will caught cache doesn't clear correctly.
 		/// </remarks>
-		internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool clearCache)
+         internal static void UpdateUser(int portalId, UserInfo user, bool loggedAction, bool sendNotification, bool clearCache)
 		{
 		    var originalPortalId = user.PortalID;
 			portalId = GetEffectivePortalId(portalId);
@@ -1863,14 +1879,12 @@ namespace DotNetNuke.Entities.Users
 				DataCache.ClearUserCache(portalId, user.Username);
 			}
 
-            if (user.Membership.Approving)
-            {
-                user.Membership.ConfirmApproved();
-                if (UserApproved != null)
-                {
-                    UserApproved(null, new UserEventArgs { User = user });
-                }                    
-            }
+		    if (!user.Membership.Approving) return;
+		    user.Membership.ConfirmApproved();
+		    if (UserApproved != null)
+		    {
+		        UserApproved(null, new UserEventArgs { User = user, SendNotification = sendNotification });
+		    }
 		}
 
         /// -----------------------------------------------------------------------------
