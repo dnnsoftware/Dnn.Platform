@@ -1,7 +1,10 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.IO;
+using System.Text;
 using Dnn.DynamicContent;
+using DotNetNuke.Services.FileSystem;
 using Newtonsoft.Json;
 
 namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
@@ -33,6 +36,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
             IsSystem = template.IsSystem;
             Name = template.Name;
             CanEdit = !(IsSystem) || isSuperUser;
+            FilePath = template.TemplateFile.RelativePath;
+
+            using (var sw = new StreamReader(FileManager.Instance.GetFileContent(template.TemplateFile)))
+            {
+                Content = sw.ReadToEnd();
+            }
         }
 
         /// <summary>
@@ -40,6 +49,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("canEdit")]
         public bool CanEdit { get; set; }
+
+        /// <summary>
+        /// The Content of the template
+        /// </summary>
+        [JsonProperty("content")]
+        public string Content { get; set; }
 
         /// <summary>
         /// The Content Type
@@ -70,5 +85,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// </summary>
         [JsonProperty("templateId")]
         public int TemplateId { get; set; }
+
+        /// <summary>
+        /// The path of the Template File
+        /// </summary>
+        [JsonProperty("filePath")]
+        public string FilePath { get; set; }
+
     }
 }

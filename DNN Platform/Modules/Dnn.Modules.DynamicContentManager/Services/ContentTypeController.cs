@@ -24,6 +24,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The ContentField to delete</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentField(ContentFieldViewModel viewModel)
         {
             var contentField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
@@ -47,6 +48,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The ContentType to delete</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentType(ContentTypeViewModel viewModel)
         {
             var contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
@@ -167,6 +169,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The ViewModel for the Content Field to save</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveContentField(ContentFieldViewModel viewModel)
         {
             DynamicContentType contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
@@ -218,6 +221,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="viewModel">The ViewModel for the DataType to save</param>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveContentType(ContentTypeViewModel viewModel)
         {
             DynamicContentType contentType;

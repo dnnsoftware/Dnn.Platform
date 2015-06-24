@@ -1882,13 +1882,6 @@ namespace DotNetNuke.Entities.Host
 				return timeout;
 			}
 		}
-        /// <summary>
-        /// Get the IgnoreWhiteList value, used during portal template import.
-        /// </summary>
-        static bool IgnoreWhiteList
-        {
-            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
-        }
 
         #endregion
 

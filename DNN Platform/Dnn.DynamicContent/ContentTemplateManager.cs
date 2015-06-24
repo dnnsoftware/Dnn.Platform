@@ -46,8 +46,21 @@ namespace Dnn.DynamicContent
 
             Add(contentTemplate);
 
+            ClearContentTypeCache(contentTemplate);
+
             return contentTemplate.TemplateId;
         }
+
+        private void ClearContentTypeCache(ContentTemplate contentTemplate)
+        {
+            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTemplate.ContentTypeId, contentTemplate.PortalId, true);
+
+            if (contentType != null)
+            {
+                contentType.ClearTemplates();
+            }
+        }
+
 
         /// <summary>
         /// Deletes the content template for use with Structured(Dynamic) Content Types.
@@ -59,6 +72,22 @@ namespace Dnn.DynamicContent
         public void DeleteContentTemplate(ContentTemplate contentTemplate)
         {
             Delete(contentTemplate);
+
+            ClearContentTypeCache(contentTemplate);
+        }
+
+        /// <summary>
+        /// GetContentTemplate overloads retrieves a singe content template
+        /// </summary>
+        /// <param name="templateId">The Id of the template</param>
+        /// <param name="portalId">The Id of the portal</param>
+        /// <param name="includeSystem">A flag to determine if System Templates (ie. Templates that are available for all portals)
+        /// should be searched. Defaults to false</param>
+        /// <returns>content template</returns>
+        //TODO add Unit Tests for this method
+        public ContentTemplate GetContentTemplate(int templateId, int portalId, bool includeSystem = false)
+        {
+            return GetContentTemplates(portalId, includeSystem).SingleOrDefault((t) => t.TemplateId == templateId);
         }
 
         /// <summary>
@@ -77,7 +106,6 @@ namespace Dnn.DynamicContent
             }
             return templates.AsQueryable();
         }
-
 
         /// <summary>
         /// Gets the content templates for a content Type
@@ -114,7 +142,6 @@ namespace Dnn.DynamicContent
             return new PagedList<ContentTemplate>(templates, pageIndex, pageSize);
         }
 
-
         /// <summary>
         /// Updates the content template.
         /// </summary>
@@ -133,6 +160,8 @@ namespace Dnn.DynamicContent
             contentTemplate.LastModifiedOnDate = DateUtilitiesManager.Instance.GetDatabaseTime();
 
             Update(contentTemplate);
+
+            ClearContentTypeCache(contentTemplate);
         }
     }
 }
