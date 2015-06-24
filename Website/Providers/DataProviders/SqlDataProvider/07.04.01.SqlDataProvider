@@ -203,10 +203,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE PROCEDURE {databaseOwner}{objectQualifier}SearchProfilePropertyValues
  @PortalId INT,
  @PropertyName NVARCHAR(50),
@@ -253,7 +249,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
 	@PreferredScriptLocation int,
 	@CDNPath NVARCHAR(250)
 AS
-
+BEGIN
 	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
 		BEGIN
 			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
@@ -289,7 +285,8 @@ AS
 			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
 		END
 
-	SELECT @JavaScriptLibraryID
+	SELECT @JavaScriptLibraryID;
+END;
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
@@ -297,35 +294,43 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
 GO
 
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
-	@PackageDependencyID INT,
-	@PackageID INT,
-	@PackageName NVARCHAR(128),
-	@Version NVARCHAR(50)
+	@PackageDependencyID INT,           -- if Null|-1: insert
+	@PackageID           INT,           -- Not Null, valid packageID
+	@PackageName         NVARCHAR(128), -- Not Null Or empty
+	@Version             NVARCHAR(50)   -- Not Null Or empty
 AS
-	IF EXISTS (SELECT PackageDependencyID FROM {objectQualifier}PackageDependencies WHERE PackageID = @PackageID AND PackageName = @PackageName AND Version = @Version)
-		BEGIN
+BEGIN
+	IF IsNull(@PackageDependencyID, -1) != -1 AND EXISTS (SELECT * FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID != @PackageDependencyID)
+		UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+		 SET   [PackageID]   = @PackageID,
+		       [PackageName] = @PackageName,
+		       [Version]     = @Version
+		 WHERE PackageDependencyID = @PackageDependencyID
+	ELSE BEGIN
+		-- prevent duplicates:
+		SELECT @PackageDependencyID = PackageDependencyID
+		 FROM {databaseOwner}[{objectQualifier}PackageDependencies]
+		 WHERE [PackageID]   = @PackageID 
+		   AND [PackageName] = @PackageName;
+		IF ISNull(@PackageDependencyID, -1) > -1 
 			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
-			   SET [PackageID] = @PackageID,
-					[PackageName] = @PackageName,
-					[Version] = @Version
-			 WHERE PackageDependencyID = @PackageDependencyID
-		END
-	ELSE
-		BEGIN
-			INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] (
-				[PackageID],
+			 SET   [Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID;
+	 	ELSE BEGIN
+		 	INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] 
+			(	[PackageID],
 				[PackageName],
 				[Version]
-			)
-			VALUES (
-				@PackageID,
+			) VALUES 
+			(	@PackageID,
 				@PackageName,
 				@Version
-			)
-			SET @PackageDependencyID = (SELECT @@IDENTITY)
-		END
-
-	SELECT @PackageDependencyID
+			);
+			SET @PackageDependencyID = (SELECT @@IDENTITY);
+		END;
+	END;
+	SELECT @PackageDependencyID;
+END;
 GO
 
 /***** DNN-6099: always remove user roles in current portal. *****/
