@@ -431,6 +431,11 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateDatabaseVersionIncrement", Major, Minor, Build, Increment, Name);
         }
 
+        public virtual string GetUnappliedIterations(string version)
+        {
+            ExecuteReader("GetUnappliedIterations", version);
+        }
+
 		#endregion
 
 		#region Host Settings Methods

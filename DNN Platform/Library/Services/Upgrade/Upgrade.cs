@@ -4440,10 +4440,10 @@ namespace DotNetNuke.Services.Upgrade
 
             foreach (string file in files)
             {
-                // script file name must conform to ##.##.##.DefaultProviderName
+                // script file name must conform to ##.##.##.DefaultProviderName or else ##.##.##.#.DefaultProviderName (to support increments)
                 if (file != null)
                 {
-                    if (GetFileName(file).Length == 9 + DefaultProvider.Length)
+                    if (GetFileName(file).Length == 9 + DefaultProvider.Length || GetFileName(file).Length == 11 + DefaultProvider.Length)
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
                         // check if script file is relevant for upgrade
@@ -5285,6 +5285,9 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.5.0":
                         UpgradeToVersion750();
                         break;
+                    case "8.0.0":
+                        UpgradeToVersion800();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -5323,6 +5326,20 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+        private static void UpgradeToVersion800()
+        {
+            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0")
+            //{
+            //    switch (iteration)
+            //    {
+            //        case "1":
+            //            UpgradeToVersion800Iteration1();
+            //            break;
+                    
+            //    }
+            //}
+        }
+
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
@@ -5330,22 +5347,29 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Files: {0}", Globals.FormatVersion(version)));
             }
-            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + ".config", version, "Core Upgrade");
-            if (string.IsNullOrEmpty(strExceptions))
+            string strAllExceptions = "";
+            foreach (var iteration in DataProvider.Instance().GetUnappliedIterations(GetStringVersion(version)))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
-            }
-            else
-            {
-                DnnInstallLogger.InstallLogError(strExceptions);
+                string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + iteration + ".config", version, "Core Upgrade");
+                //string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + ".config", version, "Core Upgrade");
+                if (string.IsNullOrEmpty(strExceptions))
+                {
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+                }
+                else
+                {
+                    DnnInstallLogger.InstallLogError(strExceptions);
+                }
+
+                if (writeFeedback)
+                {
+                    HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
+                }
+                strAllExceptions = strAllExceptions + strExceptions;
             }
 
-            if (writeFeedback)
-            {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
-            }
 
-            return strExceptions;
+            return strAllExceptions;
         }
 
         public static string UpdateConfig(string configFile, Version version, string reason)

@@ -625,6 +625,12 @@ namespace DotNetNuke.Common
                             //Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
+                        else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
+                                 version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
+                        {
+                            //Upgrade Required (Build Version Upgrade)
+                            tempStatus = UpgradeStatus.Upgrade;
+                        }
                     }
 
                     _status = tempStatus;
@@ -635,6 +641,22 @@ namespace DotNetNuke.Common
                 return _status;
             }
 
+        }
+
+        private static bool IncrementalVersionExists(Version version)
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+            //If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    return Directory.GetFiles(providerpath, version.Major +"." + version.Minor + "." + version.Build +"." + version.Revision +"*.sqldataprovider").Length > 1;
+                }
+            }
+            return false;
         }
 
 
