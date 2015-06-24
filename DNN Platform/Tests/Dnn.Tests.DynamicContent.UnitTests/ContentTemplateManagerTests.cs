@@ -26,6 +26,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
     {
         private Mock<IDataContext> _mockDataContext;
         private Mock<IRepository<ContentTemplate>> _mockContentTemplateRepository;
+        private Mock<IDynamicContentTypeManager> _mockContentTypeController;
         // ReSharper disable once NotAccessedField.Local
         private Mock<CachingProvider> _mockCache;
 
@@ -40,6 +41,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
 
             _mockContentTemplateRepository = new Mock<IRepository<ContentTemplate>>();
             _mockDataContext.Setup(dc => dc.GetRepository<ContentTemplate>()).Returns(_mockContentTemplateRepository.Object);
+
+            _mockContentTypeController = new Mock<IDynamicContentTypeManager>();
+            DynamicContentTypeManager.SetTestableInstance(_mockContentTypeController.Object);
         }
 
         [TearDown]
@@ -47,6 +51,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             MockComponentProvider.ResetContainer();
             ContentController.ClearInstance();
+            DynamicContentTypeManager.ClearInstance();
         }
 
         [Test]
