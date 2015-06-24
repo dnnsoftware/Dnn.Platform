@@ -520,6 +520,104 @@ AS
 	WHERE f.WorkflowID IS NULL
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SaveJavaScriptLibrary]
+	@JavaScriptLibraryID INT,
+	@PackageID INT,
+	@LibraryName NVARCHAR(200),
+	@Version NVARCHAR(50),
+	@FileName NVARCHAR(100),
+	@ObjectName NVARCHAR(100),
+	@PreferredScriptLocation int,
+	@CDNPath NVARCHAR(250)
+AS
+BEGIN
+	IF EXISTS (SELECT JavaScriptLibraryID FROM {objectQualifier}JavaScriptLibraries WHERE JavaScriptLibraryID = @JavaScriptLibraryID)
+		BEGIN
+			UPDATE {databaseOwner}[{objectQualifier}JavaScriptLibraries]
+			   SET [PackageID] = @PackageID,
+					[LibraryName] = @LibraryName,
+					[Version] = @Version,
+					[FileName] = @FileName,
+					[ObjectName] = @ObjectName,
+					[PreferredScriptLocation] = @PreferredScriptLocation,
+					[CDNPath] = @CDNPath
+			 WHERE JavaScriptLibraryID = @JavaScriptLibraryID
+	 	END
+	ELSE
+		BEGIN
+			INSERT INTO {databaseOwner}[{objectQualifier}JavaScriptLibraries] (
+				[PackageID],
+				[LibraryName],
+				[Version],
+				[FileName],
+				[ObjectName],
+				[PreferredScriptLocation],
+				[CDNPath]
+			)
+			VALUES (
+				@PackageID,
+				@LibraryName,
+				@Version,
+				@FileName,
+				@ObjectName,
+				@PreferredScriptLocation,
+				@CDNPath
+			)
+			SET @JavaScriptLibraryID = (SELECT @@IDENTITY)
+		END
+
+	SELECT @JavaScriptLibraryID;
+END;
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}SavePackageDependency]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}SavePackageDependency]
+	@PackageDependencyID INT,           -- if Null|-1: insert
+	@PackageID           INT,           -- Not Null, valid packageID
+	@PackageName         NVARCHAR(128), -- Not Null Or empty
+	@Version             NVARCHAR(50)   -- Not Null Or empty
+AS
+BEGIN
+	IF IsNull(@PackageDependencyID, -1) != -1 AND EXISTS (SELECT * FROM {objectQualifier}PackageDependencies WHERE PackageDependencyID != @PackageDependencyID)
+		UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+		 SET   [PackageID]   = @PackageID,
+		       [PackageName] = @PackageName,
+		       [Version]     = @Version
+		 WHERE PackageDependencyID = @PackageDependencyID
+	ELSE BEGIN
+		-- prevent duplicates:
+		SELECT @PackageDependencyID = PackageDependencyID
+		 FROM {databaseOwner}[{objectQualifier}PackageDependencies]
+		 WHERE [PackageID]   = @PackageID 
+		   AND [PackageName] = @PackageName;
+		IF ISNull(@PackageDependencyID, -1) > -1 
+			UPDATE {databaseOwner}[{objectQualifier}PackageDependencies]
+			 SET   [Version] = @Version
+			 WHERE PackageDependencyID = @PackageDependencyID;
+	 	ELSE BEGIN
+		 	INSERT INTO {databaseOwner}[{objectQualifier}PackageDependencies] 
+			(	[PackageID],
+				[PackageName],
+				[Version]
+			) VALUES 
+			(	@PackageID,
+				@PackageName,
+				@Version
+			);
+			SET @PackageDependencyID = (SELECT @@IDENTITY);
+		END;
+	END;
+	SELECT @PackageDependencyID;
+END;
+GO
+
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
