@@ -467,9 +467,9 @@ AS
 			ON ci.ContentTypeID = ct.ContentTypeID
 		INNER JOIN {databaseOwner}[{objectQualifier}ContentWorkflowStates] ws 
 			ON ci.StateID = ws.StateID
-		LEFT JOIN {databaseOwner}[ContentItems_MetaData] cm
+		LEFT JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] cm
 			ON ci.ContentItemID = cm.ContentItemID 
-				AND cm.MetaDataID = (SELECT MetaDataID FROM {databaseOwner}[MetaData] WHERE MetaDataName = 'Title')
+				AND cm.MetaDataID = (SELECT MetaDataID FROM {databaseOwner}[{objectQualifier}MetaData] WHERE MetaDataName = 'Title')
 	WHERE ct.ContentType != 'Tab' -- Tabs will be managed specifically
 		AND ct.ContentType != 'File' -- Exclude Files
 	UNION ALL
