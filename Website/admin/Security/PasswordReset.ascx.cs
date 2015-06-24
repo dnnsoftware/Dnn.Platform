@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (UserController.ValidatePassword(txtPassword.Text)==false)
             {
                 resetMessages.Visible = true;
-                var failed = Localization.GetString("PasswordResetFailed");
+                var failed = Localization.GetString("PasswordInadequate");
                 LogFailure(failed);
                 lblHelp.Text = failed;
                 return;    
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (m.FoundBannedPassword(txtPassword.Text) || txtUsername.Text == txtPassword.Text)
                 {
                     resetMessages.Visible = true;
-                    var failed = Localization.GetString("PasswordResetFailed");
+                    var failed = Localization.GetString("PasswordBanned");
                     LogFailure(failed);
                     lblHelp.Text = failed;
                     return;  
