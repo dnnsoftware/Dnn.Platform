@@ -22,6 +22,10 @@ namespace Dnn.DynamicContent.Localization
             return () => new ContentTypeLocalizationManager();
         }
 
+        public ContentTypeLocalizationManager() : this(DotNetNuke.Data.DataContext.Instance()) { }
+
+        public ContentTypeLocalizationManager(IDataContext dataContext) : base(dataContext) { }
+
         public int AddLocalization(ContentTypeLocalization item)
         {
             Requires.PropertyNotNegative(item, "KeyId");
@@ -62,7 +66,7 @@ namespace Dnn.DynamicContent.Localization
         public string GetLocalizedValue(string key, string cultureCode, int portalId)
         {
             var localizedDictionary = GetLocalizedDictionary(portalId, cultureCode);
-            string localizedValue = String.Empty;
+            var localizedValue = String.Empty;
             if (localizedDictionary.ContainsKey(key))
             {
                 localizedValue = localizedDictionary[key];

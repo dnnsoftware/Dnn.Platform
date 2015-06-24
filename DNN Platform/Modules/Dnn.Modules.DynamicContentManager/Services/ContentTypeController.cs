@@ -7,6 +7,7 @@ using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Security;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -162,6 +163,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
 
             return Request.CreateResponse(response);
         }
+
+
 
         /// <summary>
         /// SaveContentField saves the content field

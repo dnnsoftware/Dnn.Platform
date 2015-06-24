@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
     public class DataTypeInUseException : InvalidOperationException
     {
         public DataTypeInUseException(DataType dataType)
-            :base(String.Format(Localization.GetString("DataTypeInUse", Localization.ExceptionsResourceFile), dataType.DataTypeId))
+            :base(String.Format(DotNetNuke.Services.Localization.Localization.GetString("DataTypeInUse", DotNetNuke.Services.Localization.Localization.ExceptionsResourceFile), dataType.DataTypeId))
         {
         }
     }

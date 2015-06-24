@@ -87,6 +87,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ContentTypeController.cs" />
     <Compile Include="Services\DataTypeController.cs" />
+    <Compile Include="Services\LanguageController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Services\TemplateController.cs" />
     <Compile Include="Services\ViewModels\ContentFieldsViewModel.cs" />

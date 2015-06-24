@@ -4,11 +4,12 @@
 using System;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Data;
 
 namespace Dnn.DynamicContent.Localization
 {
     [Serializable]
-    [TableName("ContentTypes_Localization")]
+    [TableName("ContentTypes_Localizations")]
     [PrimaryKey("LocalizationID", "LocalizationId")]
     [Cacheable(ContentTypeLocalizationManager.CacheKey, CacheItemPriority.Normal, 20)]
     [Scope(ContentTypeLocalizationManager.Scope)]

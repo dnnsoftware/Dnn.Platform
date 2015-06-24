@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent.Exceptions
 {
     public class CreateValidatorException : InvalidOperationException
     {
         public CreateValidatorException(ValidatorType validatorType)
-            : base(Localization.GetExceptionMessage("CreateValidatorException", String.Format("Could not instantiate Validator - {0}.", validatorType.ValidatorClassName)))
+            : base(DotNetNuke.Services.Localization.Localization.GetExceptionMessage("CreateValidatorException", String.Format("Could not instantiate Validator - {0}.", validatorType.ValidatorClassName)))
         {
                 
         }

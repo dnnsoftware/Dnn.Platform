@@ -66,6 +66,11 @@
 
         var util = dcc.utility(settings, resx);
 
+        util.languageService = function(){
+            util.sf.serviceController = "Language";
+            return util.sf;
+        };
+
         util.contentTypeService = function(){
             util.sf.serviceController = "ContentType";
             return util.sf;
@@ -92,6 +97,28 @@
 
         //Build the ViewModel
         viewModel.resx = resx;
+
+        viewModel.languages = [];
+
+        util.languageService().get("GetEnabledLanguages", {},
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    for (var i = 0; i < data.data.results.length; i++) {
+                        var result = data.data.results[i];
+                        var language = { code: result.code, language: result.language };
+                        viewModel.languages.push(language);
+                    }
+                    viewModel.isLocalized = viewModel.languages.length > 0;
+                }
+                else {
+                    //Error
+                }
+            },
+            function(){
+                //Failure
+            }
+        );
 
         //Wire up contentTypes subModel
         viewModel.contentTypes = new dcc.contentTypesViewModel(config);
@@ -124,4 +151,9 @@
     return {
         init: init
     }
+}
+
+dcc.languageViewModel = function(){
+    var self = this;
+
 }
