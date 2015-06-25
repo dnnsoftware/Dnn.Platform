@@ -615,11 +615,15 @@ namespace DotNetNuke.Framework
             var objModuleControl = control as IModuleControl;
             if (objModuleControl == null)
             {
+                //Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
-                if (pi != null && pi.GetValue(control, null) != null)
+                if (pi != null) 
                 {
-                    //If controls has a LocalResourceFile property use this
-                    IterateControls(control.Controls, affectedControls, pi.GetValue(control, null).ToString());
+                    //Attempt to get property value
+                    var pv = pi.GetValue(control, null);
+
+                    //If controls has a LocalResourceFile property use this, otherwise pass the resource file root
+                    IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
                 }
                 else
                 {
