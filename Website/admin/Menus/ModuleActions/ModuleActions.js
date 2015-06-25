@@ -137,9 +137,25 @@
                     }
 
                     var htmlString = "<li>";
-                    if (action.CommandName === "DeleteModule.Action") {
-                        htmlString = "<li id=\"moduleActions-" + moduleId + "-Delete\">";
+
+                    switch(action.CommandName) {
+                        case "DeleteModule.Action":
+                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Delete\">";
+                            break;
+                        case "ModuleSettings.Action":
+                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Settings\">";
+                            break;
+                        case "ImportModule.Action":
+                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Import\">";
+                            break;
+                        case "ExportModule.Action":
+                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Export\">";
+                            break;
+                        case "ModuleHelp.Action":
+                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Help\">";
+                            break;
                     }
+
                     if (isEnabled(action)) {
                         htmlString += "<a href=\"" + action.Url + "\"><img src=\"" + action.Icon + "\"><span>" + action.Title + "</span></a>";
                     } else {

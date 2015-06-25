@@ -630,7 +630,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
-                                     "",
+                                     ModuleActionType.ExportModule,
                                      "",
                                      "action_export.gif",
                                      NavigateUrl(PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
@@ -645,7 +645,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         _moduleGenericActions.Actions.Add(GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
-                                     "",
+                                     ModuleActionType.ImportModule,
                                      "",
                                      "action_import.gif",
                                      NavigateUrl(PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + ModuleId, "ReturnURL=" + FilterUrl(request)),
