@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.Components.Controllers
         private string EnsureBookmarkValue(int portalId, string bookmarkValue)
         {
             var bookmarkCategoryModules = GetCategoryDesktopModules(portalId, GetBookmarkCategory(portalId));            
-            var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => bookmarkCategoryModules.All(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) != desktopModuleId)).ToList();
+			var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => bookmarkCategoryModules.All(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) != desktopModuleId)).ToList();
             return String.Join(",", ensuredModules.Distinct());
         }
 

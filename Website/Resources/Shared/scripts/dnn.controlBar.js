@@ -121,7 +121,7 @@ dnn.controlBar.init = function (settings) {
         return items.join(',');
     };
 
-    dnn.controlBar.saveBookmarkModules = function (title, bookmarkModules, $bookmarkLink, removedBookmarkModuleId) {
+    dnn.controlBar.saveBookmarkModules = function (title, bookmarkModules, $bookmarkLink, removedBookmarkDesktopModuleId) {
         var service = dnn.controlBar.getService();
         var serviceUrl = dnn.controlBar.getServiceUrl(service);
         $.ajax({
@@ -132,7 +132,7 @@ dnn.controlBar.init = function (settings) {
             success: function () {
                 $bookmarkLink.addClass("hideBookmark");
                 if (dnn.controlBar.isBookmarkModuleCategorySelected()) {
-                    var $moduleItem = $("#ControlBar_Module_AddNewModule ul.ControlBar_ModuleList .ControlBar_ModuleDiv[data-module=" + removedBookmarkModuleId + "]");
+                    var $moduleItem = $("#ControlBar_Module_AddNewModule ul.ControlBar_ModuleList .ControlBar_ModuleDiv[data-desktopmodule=" + removedBookmarkDesktopModuleId + "]");
                     if ($moduleItem) {
                         $moduleItem.parent().hide();
                     }
@@ -671,15 +671,17 @@ dnn.controlBar.init = function (settings) {
         }
     };
     
-    dnn.controlBar.addBookmarkModule = function(moduleId) {
-        if (dnn.controlBar.bookmarkedModuleKeys.indexOf(moduleId) < 0) {
-            dnn.controlBar.bookmarkedModuleKeys.push(moduleId);
+    dnn.controlBar.addBookmarkModule = function(desktopModuleId) {
+        if (dnn.controlBar.bookmarkedModuleKeys.indexOf(desktopModuleId) < 0)
+        {
+            dnn.controlBar.bookmarkedModuleKeys.push(desktopModuleId);
         }
         return dnn.controlBar.bookmarkedModuleKeys.join(',');
     };
 
-    dnn.controlBar.removeBookmarkModule = function (moduleId) {
-        var index = dnn.controlBar.bookmarkedModuleKeys.indexOf(moduleId);
+    dnn.controlBar.removeBookmarkModule = function (desktopModuleId)
+    {
+        var index = dnn.controlBar.bookmarkedModuleKeys.indexOf(desktopModuleId);
         if (index >= 0) {
             dnn.controlBar.bookmarkedModuleKeys.splice(index,1);
         }
@@ -717,7 +719,7 @@ dnn.controlBar.init = function (settings) {
         for (var i = 0; i < moduleList.length; i++) {
             var bookmarkClass = dnn.controlBar.getBookmarkClass(moduleList[i].Bookmarked, moduleList[i].ExistsInBookmarkCategory);
             var bookmarkTooltip = dnn.controlBar.getBookmarkTooltip(bookmarkClass);
-            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
+            ul.append('<li><div class="ControlBar_ModuleDiv" data-module=' + moduleList[i].ModuleID + ' data-desktopmodule=' + moduleList[i].DesktopModuleID + '><div class="ModuleLocator_Menu"></div><a href="javascript:void(0)" class="' + bookmarkClass + '" title="' + bookmarkTooltip + '"/><img src="' + moduleList[i].ModuleImage + '" alt="" /><span>' + moduleList[i].ModuleName + '</span></div></li>');
         }
     };
 
@@ -821,9 +823,9 @@ dnn.controlBar.init = function (settings) {
             });
             
             $('#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.bookmark').on('click', function () {
-                var moduleId = $(this).parent().attr('data-module');
+                var desktopModuleId = $(this).parent().attr('data-desktopmodule');
                 var bookmarTitle = "module";
-                var bookmarkModules = dnn.controlBar.addBookmarkModule(moduleId);
+                var bookmarkModules = dnn.controlBar.addBookmarkModule(desktopModuleId);
                 dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this));
             }).hover(function () {
                 if ($(this).attr("class").indexOf("hideBookmark") > 0) {
@@ -845,10 +847,10 @@ dnn.controlBar.init = function (settings) {
 
 
             $('#ControlBar_Module_AddNewModule .ControlBar_ModuleDiv a.removeBookmark').on('click', function () {
-                var moduleId = $(this).parent().attr('data-module');
+                var desktopModuleId = $(this).parent().attr('data-desktopmodule');
                 var bookmarTitle = "module";
-                var bookmarkModules = dnn.controlBar.removeBookmarkModule(moduleId);
-                dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this), moduleId);
+                var bookmarkModules = dnn.controlBar.removeBookmarkModule(desktopModuleId);
+                dnn.controlBar.saveBookmarkModules(bookmarTitle, bookmarkModules, $(this), desktopModuleId);
             }).hover(function () {
                 if ($(this).attr("class").indexOf("hideBookmark") > 0) {
                     return; // The button is hidden
