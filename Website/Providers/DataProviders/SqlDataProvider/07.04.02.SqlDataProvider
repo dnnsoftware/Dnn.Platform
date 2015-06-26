@@ -241,6 +241,7 @@ AS
 GO
 
 /*** Fix bug DNN-4496: SProc GetUsersAdvancedSearch missing the {databaseOwner} placeholder several times calling a database. ***/
+/*** Fix bug DNN-7178: {databaseOwner} incorrectly applied in DNN-4496 which broke the Friends functionality. ***/
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
   DROP PROCEDURE {databaseOwner}[{objectQualifier}GetUsersAdvancedSearch]
 GO
@@ -272,7 +273,7 @@ AS
 
     -- Get User specific columns
     DECLARE @UserColumns TABLE(ColumnName NVARCHAR(100))
-    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{databaseOwner}{objectQualifier}vw_Users'
+    INSERT INTO @UserColumns SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{objectQualifier}vw_Users' AND TABLE_SCHEMA = REPLACE('{databaseOwner}', '.', '')
 
     -- Lists Filters names and values into tables
     DECLARE @PropertyNamesTable TABLE (RowNumber INT, RowValue nvarchar(MAX))
