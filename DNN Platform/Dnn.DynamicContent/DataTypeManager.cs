@@ -7,12 +7,15 @@ using System.Linq;
 using System.Web.UI;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
 
 namespace Dnn.DynamicContent
 {
@@ -21,6 +24,7 @@ namespace Dnn.DynamicContent
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
         internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
         internal const string PortalScope = "PortalId";
+        public const string DataTypeNameKey = "DataType_{0}_Name";
 
         protected override Func<IDataTypeManager> GetFactory()
         {
@@ -81,6 +85,9 @@ namespace Dnn.DynamicContent
                     throw new DataTypeInUseException(dataType);
                 }
             }
+
+            //Delete Localizations
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(dataType.PortalId, String.Format(DataTypeNameKey, dataType.DataTypeId));
         }
 
         /// <summary>

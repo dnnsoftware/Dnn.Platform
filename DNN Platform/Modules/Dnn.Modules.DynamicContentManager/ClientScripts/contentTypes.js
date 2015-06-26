@@ -2,12 +2,14 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.contentTypesViewModel = function(config){
+dcc.contentTypesViewModel = function(config, rootViewModel){
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+
+    self.rootViewModel = rootViewModel;
 
     self.mode = config.mode;
     self.isSystemUser = settings.isSystemUser;
@@ -20,14 +22,6 @@ dcc.contentTypesViewModel = function(config){
     self.pager_NoPagerFormat = resx.contentTypes_NoPagerFormat;
     self.selectedContentType = new dcc.contentTypeViewModel(self, config);
 
-    self.heading = ko.computed(function() {
-        var heading = resx.contentTypes;
-        if(self.mode() != "listTypes"){
-            heading = resx.contentType + " - " + self.selectedContentType.name()
-        }
-        return heading;
-    });
-
     var findContentTypes =  function() {
         self.pageIndex(0);
         self.getContentTypes();
@@ -37,11 +31,6 @@ dcc.contentTypesViewModel = function(config){
         self.mode("editType");
         self.selectedContentType.init();
     };
-
-    self.closeEdit = function() {
-        self.mode("listTypes");
-        self.refresh();
-    }
 
     self.editContentType = function(data, e) {
         util.asyncParallel([
@@ -58,20 +47,7 @@ dcc.contentTypesViewModel = function(config){
             contentTypeId: contentTypeId
         };
 
-        util.contentTypeService().get("GetContentType", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.selectedContentType.load(data.data.contentType);
-                } else {
-                    //Error
-                }
-            },
-
-            function(){
-                //Failure
-            }
-        );
+        util.contentTypeService().getEntity(params, "GetContentType", self.selectedContentType);
 
         if(typeof cb === 'function') cb();
     };
@@ -83,18 +59,13 @@ dcc.contentTypesViewModel = function(config){
             pageSize: self.pageSize
         };
 
-        util.contentTypeService().get("GetContentTypes", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.load(data.data);
-                } else {
-                    //Error
-                }
+        util.contentTypeService().getEntities(params,
+            "GetContentTypes",
+            self.results,
+            function() {
+                return new dcc.contentTypeViewModel(self, config);
             },
-            function(){
-                //Failure
-            }
+            self.totalResults
         );
     };
 
@@ -105,18 +76,6 @@ dcc.contentTypesViewModel = function(config){
         });
 
         $rootElement.find("#contentTypes-editView").css("display", "none")
-    };
-
-    self.load =function(data) {
-        self.results.removeAll();
-        for(var i=0; i < data.results.length; i++){
-            var result = data.results[i];
-            var contentType = new dcc.contentTypeViewModel(self, config);
-            contentType.init();
-            contentType.load(result);
-            self.results.push(contentType);
-        }
-        self.totalResults(data.totalResults)
     };
 
     self.refresh = function() {
@@ -131,23 +90,44 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     var $rootElement = config.$rootElement;
 
     self.parentViewModel = parentViewModel;
+    self.rootViewModel = parentViewModel.rootViewModel;
+
     self.canEdit = ko.observable(false);
     self.created = ko.observable('');
     self.contentTypeId = ko.observable(-1);
-    self.description = ko.observable('');
-    self.name = ko.observable('');
     self.isSystem = ko.observable(false);
     self.selected = ko.observable(false);
 
+    self.localizedNames = ko.observableArray([]);
+    self.localizedDescriptions = ko.observableArray([]);
+
     self.fields = ko.observable(new dcc.contentFieldsViewModel(self, config));
     self.fields().init();
+
+    self.description = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedDescriptions());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedDescriptions(), value);
+        }
+    });
 
     self.isAddMode = ko.computed(function() {
         return self.contentTypeId() == -1;
     });
 
+    self.name = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
+        }
+    });
+
     self.cancel = function(){
-        parentViewModel.closeEdit();
+        self.rootViewModel.closeEdit();
     };
 
     self.deleteContentType = function (data, e) {
@@ -175,8 +155,10 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.canEdit(true);
         self.contentTypeId(-1);
         self.description("");
-        self.name("");
         self.isSystem(self.parentViewModel.isSystemUser);
+
+        util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
+        util.initializeLocalizedValues(self.localizedDescriptions, self.rootViewModel.languages());
     };
 
     self.load = function(data) {
@@ -184,8 +166,10 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.created(data.created);
         self.contentTypeId(data.contentTypeId);
         self.description(data.description);
-        self.name(data.name);
         self.isSystem(data.isSystem);
+
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames);
+        util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
 
         if(data.contentFields != null) {
             self.fields().load(data.contentFields)
@@ -193,11 +177,12 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     };
 
     self.saveContentType = function(data, e) {
+        var jsObject = ko.toJS(data);
         var params = {
-            contentTypeId: data.contentTypeId(),
-            description: data.description(),
-            name: data.name(),
-            isSystem: data.isSystem()
+            contentTypeId: jsObject.contentTypeId,
+            localizedDescriptions: jsObject.localizedDescriptions,
+            localizedNames: jsObject.localizedNames,
+            isSystem: jsObject.isSystem
         };
 
         util.contentTypeService().post("SaveContentType", params,

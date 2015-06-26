@@ -1,12 +1,9 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Dnn.DynamicContent;
-using Dnn.DynamicContent.Localization;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
 
 namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
@@ -15,7 +12,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     /// DataTypeViewModel represents a Data Type object within the DataType Web Service API
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class DataTypeViewModel
+    public class DataTypeViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructs a DataTypeViewModel
@@ -36,15 +33,9 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
             Created = dataType.CreatedOnDate.ToShortDateString();
             DataTypeId = dataType.DataTypeId;
             IsSystem = dataType.IsSystem;
-            Name = dataType.Name;
             CanEdit = !(IsSystem) || portalSettings.UserInfo.IsSuperUser;
 
-            LocalizedNames = new Dictionary<string, string>();
-            foreach (var language in LocaleController.Instance.GetLocales(portalSettings.PortalId).Values)
-            {
-                var key = String.Format("DataType_{0}_Name", dataType.DataTypeId);
-                LocalizedNames[language.Code] = ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, language.Code, dataType.PortalId);
-            }
+            LocalizedNames = GetLocalizedValues(dataType.Name, DataTypeManager.DataTypeNameKey, DataTypeId, dataType.PortalId, portalSettings);
         }
 
         /// <summary>
@@ -78,15 +69,9 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         public bool IsSystem { get; set; }
 
         /// <summary>
-        /// The name of the Data Type
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// A Dictionary of localized values for the Name property
+        /// A List of localized values for the Name property
         /// </summary>
         [JsonProperty("localizedNames")]
-        public Dictionary<string, string> LocalizedNames { get; set; }
+        public List<dynamic> LocalizedNames { get; set; }
     }
 }

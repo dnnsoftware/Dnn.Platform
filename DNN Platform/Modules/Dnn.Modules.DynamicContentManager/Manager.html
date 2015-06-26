@@ -46,11 +46,15 @@
     </div>
 
     <div class="dccPanels">
-        <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes">
-            <div class="dccHeading">
-                <span  data-bind="text: heading()"></span>
-                <a class="dccIcon" data-bind="visible: mode() != 'listTypes', click: closeEdit"><i class="fa fa-home"></i></a>
-            </div>
+        <div class="dccHeading">
+            <span  data-bind="text: $root.heading()"></span>
+            <a class="dccIcon" data-bind="visible: $root.showCloseIcon(), click: closeEdit"><i class="fa fa-home"></i></a>
+        </div>
+        <div class="dccLanguageSelector" data-bind="visible: $root.isLocalized">
+            <span  data-bind="text: $root.resx.language"></span>
+            <select data-bind="value: $root.selectedLanguage, options: $root.languages, optionsText: 'language', optionsValue: 'code'"></select>
+        </div>
+        <div class="dccPanel" id="content-types-panel" data-bind="with: contentTypes, css: { dccExtraMargin: $root.isLocalized() }">
             <div id="contentTypes-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTypes'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findContentType}"/>
@@ -208,8 +212,7 @@
                 </div>
             </div>
         </div>
-        <div class="dccPanel" id="data-types-panel" style="left: -850px" data-bind="with: dataTypes">
-            <div class="dccHeading" data-bind="text: heading()"></div>
+        <div class="dccPanel" id="data-types-panel" style="left: -850px" data-bind="with: dataTypes, css: { dccExtraMargin: $root.isLocalized() }">
             <div class="dccSubPanel">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findDataType}"/>
@@ -281,11 +284,7 @@
                 </table>
             </div>
         </div>
-        <div class="dccPanel" id="content-templates-panel" style="left: -850px" data-bind="with: templates">
-            <div class="dccHeading">
-                <span  data-bind="text: heading()"></span>
-                <a class="dccIcon" data-bind="visible: mode() != 'listTemplates', click: closeEdit"><i class="fa fa-home"></i></a>
-            </div>
+        <div class="dccPanel" id="content-templates-panel" style="left: -850px" data-bind="with: templates, css: { dccExtraMargin: $root.isLocalized() }">
             <div id="templates-listView" class="dccSubPanel" data-bind="visible: mode() == 'listTemplates'">
                 <div class="dccSearchPanel">
                     <input type="text" class="dccSearchBox" data-bind="value: searchText, valueUpdate: 'afterkeydown', attr: { 'placeholder': $root.resx.findTemplate}" />
@@ -403,6 +402,7 @@
             findTemplate: '[Resx:{key:"FindTemplate"}]',
             pager_PageDesc: '[Resx:{key:"Pager_PageDesc"}]',
             settings: '[Resx:{key:"Settings"}]',
+            language: '[Resx:{key:"Language"}]',
             string: '[Resx:{key:"String"}]',
             bool: '[Resx:{key:"Boolean"}]',
             integer: '[Resx:{key:"Integer"}]',

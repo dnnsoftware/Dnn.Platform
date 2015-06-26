@@ -35,6 +35,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                 data = new
                                         {
                                             results = languages,
+                                            defaultLanguage = PortalSettings.DefaultLanguage
                                         }
                             };
 

@@ -11,6 +11,8 @@ namespace Dnn.DynamicContent.Localization
 
         void DeleteLocalization(ContentTypeLocalization item);
 
+        void DeleteLocalizations(int portalId, string key);
+
         string GetLocalizedValue(string key, string cultureCode, int portalId);
 
         IQueryable<ContentTypeLocalization> GetLocalizations(int portalId);

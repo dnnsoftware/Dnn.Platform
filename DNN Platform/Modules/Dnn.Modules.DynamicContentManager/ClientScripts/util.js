@@ -62,6 +62,43 @@ dcc.utility = function(settings, resx){
         alertConfirm(text, confirmBtnText, cancelBtnText, confirmHandler, cancelHandler)
     };
 
+    var initializeLocalizedValues = function(localizedValues, languages){
+        localizedValues.removeAll();
+        for(var i = 0; i < languages.length; i++) {
+            var language = languages[i];
+            var localizedValue = { code: ko.observable(language.code), value: ko.observable('')};
+            localizedValues.push(localizedValue);
+        }
+    }
+
+    var getLocalizedValue = function(selectedLanguage, localizedValues) {
+        var value = "";
+        for (var i = 0; i < localizedValues.length; i++) {
+            if (selectedLanguage == localizedValues[i].code()) {
+                value = localizedValues[i].value();
+                break;
+            }
+        }
+        return value;
+    }
+
+    var loadLocalizedValues = function(localizedValues, data) {
+        localizedValues.removeAll();
+        for(var i = 0; i < data.length; i++) {
+            var result = data[i];
+            var localizedValue = { code: ko.observable(result.code), value: ko.observable(result.value)};
+            localizedValues.push(localizedValue);
+        }
+    }
+
+    var setlocalizedValue = function(selectedLanguage, localizedValues, value){
+        for (var i = 0; i < localizedValues.length; i++) {
+            if (selectedLanguage == localizedValues[i].code()) {
+                localizedValues[i].value(value);
+            }
+        }
+    }
+
     var sf = dcc.sf();
     sf.init(settings);
 
@@ -69,6 +106,10 @@ dcc.utility = function(settings, resx){
         alert: alert,
         asyncParallel: asyncParallel,
         confirm: confirm,
+        getLocalizedValue: getLocalizedValue,
+        initializeLocalizedValues: initializeLocalizedValues,
+        loadLocalizedValues: loadLocalizedValues,
+        setlocalizedValue: setlocalizedValue,
         sf: sf
     }
 };
@@ -136,6 +177,60 @@ dcc.sf = function(){
         return call('GET', url, params, success, failure, loading, false, false);
     };
 
+    var getEntities = function(params, method, array, createEntity, total, onSuccess, onError, onFailure) {
+        var self = this;
+        var url = baseServicepath + self.serviceController + '/' + method;
+        call('GET', url, params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    array.removeAll();
+                    var results = data.data.results;
+                    for(var i=0; i < results.length; i++){
+                        var result = results[i];
+                        var entity = createEntity();
+                        entity.load(result);
+                        array.push(entity);
+                    }
+
+                    total(data.totalResults);
+
+                    if(typeof onSuccess === 'function') onSuccess();
+                } else {
+                    //Error
+                    if(typeof onError === 'function') onError();
+                }
+            },
+
+            function(){
+                //Failure
+                if(typeof onFailure === 'function') onFailure();
+            }
+        );
+    };
+
+    var getEntity = function(params, method, entity, onSuccess, onError, onFailure) {
+        var self = this;
+        var url = baseServicepath + self.serviceController + '/' + method;
+        call('GET', url, params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    entity.load(data.data.result);
+                    if(typeof onSuccess === 'function') onSuccess();
+                } else {
+                    //Error
+                    if(typeof onError === 'function') onError();
+                }
+            },
+
+            function(){
+                //Failure
+                if(typeof onFailure === 'function') onFailure();
+            }
+        );
+    };
+
     var init = function(settings){
         loadingBarId = settings.loadingBarId;
         serviceFramework = settings.servicesFramework;
@@ -184,6 +279,8 @@ dcc.sf = function(){
 
     return {
         get: get,
+        getEntities: getEntities,
+        getEntity: getEntity,
         init: init,
         post: post,
         serviceController: serviceController

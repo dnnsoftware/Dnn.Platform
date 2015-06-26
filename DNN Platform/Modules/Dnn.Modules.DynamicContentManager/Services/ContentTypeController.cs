@@ -1,13 +1,14 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
 namespace Dnn.Modules.DynamicContentManager.Services
@@ -17,7 +18,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
-    public class ContentTypeController : DnnApiController
+    public class ContentTypeController : BaseController
     {
         /// <summary>
         /// DeleteContentField deletes a single ContentField
@@ -28,19 +29,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentField(ContentFieldViewModel viewModel)
         {
-            var contentField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
-
-            if (contentField != null)
-            {
-                FieldDefinitionManager.Instance.DeleteFieldDefinition(contentField);
-            }
-
-            var response = new
-                            {
-                                success = true
-                            };
-
-            return Request.CreateResponse(response);
+            return DeleteEntity(() => FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId),
+                                contentField => FieldDefinitionManager.Instance.DeleteFieldDefinition(contentField));
         }
 
         /// <summary>
@@ -52,19 +42,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteContentType(ContentTypeViewModel viewModel)
         {
-            var contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
-
-            if (contentType != null)
-            {
-                DynamicContentTypeManager.Instance.DeleteContentType(contentType);
-            }
-
-            var response = new
-                            {
-                                success = true
-                            };
-
-            return Request.CreateResponse(response);
+            return DeleteEntity(() => DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true),
+                                contentType => DynamicContentTypeManager.Instance.DeleteContentType(contentType));
         }
 
         /// <summary>
@@ -76,18 +55,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentField(int contentTypeId, int contentFieldId)
         {
-            var contentField = FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId);
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            contentField = new ContentFieldViewModel(contentField)
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId),
+                           contentField => new ContentFieldViewModel(contentField));
         }
 
         /// <summary>
@@ -103,13 +72,13 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
 
             var response = new
-            {
-                success = true,
-                data = new
-                        {
-                            contentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, pageIndex, pageSize)
-                        }
-            };
+                            {
+                                success = true,
+                                data = new
+                                        {
+                                            contentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, pageIndex, pageSize)
+                                        }
+                            };
 
             return Request.CreateResponse(response);
         }
@@ -122,18 +91,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentType(int contentTypeId)
         {
-            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            contentType = new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser, true)
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetEntity(() => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
+                           contentType => new ContentTypeViewModel(contentType, PortalSettings, true));
         }
 
         /// <summary>
@@ -146,25 +105,10 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentTypes(string searchTerm, int pageIndex, int pageSize)
         {
-            var contentTypeList = DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true);
-            var contentTypes = contentTypeList
-                                .Select(contentType => new ContentTypeViewModel(contentType, PortalSettings.UserInfo.IsSuperUser))
-                                .ToList();
+            return GetPage(() => DynamicContentTypeManager.Instance.GetContentTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
+                            contentType => new ContentTypeViewModel(contentType, PortalSettings));
 
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                {
-                                    results = contentTypes,
-                                    totalResults = contentTypeList.TotalCount
-                                }
-                            };
-
-            return Request.CreateResponse(response);
         }
-
-
 
         /// <summary>
         /// SaveContentField saves the content field
@@ -227,40 +171,38 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveContentType(ContentTypeViewModel viewModel)
         {
-            DynamicContentType contentType;
+            var contentTypeId = viewModel.ContentTypeId;
+            var portalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId;
 
-            if (viewModel.ContentTypeId == -1)
-            {
-                contentType = new DynamicContentType()
+            var localizedNames = new List<ContentTypeLocalization>();
+            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
+
+            var localizedDescriptions = new List<ContentTypeLocalization>();
+            string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
+
+            return SaveEntity(contentTypeId, () => new DynamicContentType
+                                                        {
+                                                            Name = defaultName,
+                                                            Description = defaultDescription,
+                                                            PortalId = portalId
+                                                        },
+
+                                contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
+
+                                () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
+
+                                contentType =>
                                         {
-                                            Name = viewModel.Name,
-                                            Description = viewModel.Description,
-                                            PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId
-                                        };
-                DynamicContentTypeManager.Instance.AddContentType(contentType);
-            }
-            else
-            {
-                //Update
-                contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
+                                            contentType.Name = defaultName;
+                                            contentType.Description = defaultDescription;
+                                            DynamicContentTypeManager.Instance.UpdateContentType(contentType);
+                                        },
 
-                if (contentType != null)
-                {
-                    contentType.Name = viewModel.Name;
-                    contentType.Description = viewModel.Description;
-                    DynamicContentTypeManager.Instance.UpdateContentType(contentType);
-                }
-            }
-            var response = new
-                            {
-                                success = true,
-                                data = new
+                                () =>
                                         {
-                                            contentTypeId = contentType.ContentTypeId
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+                                            SaveContentLocalizations(localizedNames, DynamicContentTypeManager.ContentTypeNameKey, contentTypeId, portalId);
+                                            SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.ContentTypeDescriptionKey, contentTypeId, portalId);
+                                        });
         }
     }
 }

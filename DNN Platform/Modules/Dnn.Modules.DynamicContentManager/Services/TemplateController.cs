@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
 using DotNetNuke.Security;
 using DotNetNuke.Services.FileSystem;
@@ -22,10 +22,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
-    public class TemplateController : DnnApiController
+    public class TemplateController : BaseController
     {
-        private string LocalResourceFile = "~/DesktopModules/Dnn/DynamicContentManager/App_LocalResources/Manager.resx";
-
         /// <summary>
         /// DeleteTemplate deletes a single Template
         /// </summary>
@@ -35,19 +33,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteTemplate(TemplateViewModel viewModel)
         {
-            var template = ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true);
-
-            if (template != null)
-            {
-                ContentTemplateManager.Instance.DeleteContentTemplate(template);
-            }
-
-            var response = new
-            {
-                success = true
-            };
-
-            return Request.CreateResponse(response);
+            return DeleteEntity(() => ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true),
+                                template => ContentTemplateManager.Instance.DeleteContentTemplate(template));
         }
 
         /// <summary>
@@ -58,18 +45,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetTemplate(int templateId)
         {
-            var template = ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true);
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            template = new TemplateViewModel(template, PortalSettings.UserInfo.IsSuperUser)
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetEntity(() => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+                           template => new TemplateViewModel(template, PortalSettings));
         }
 
         /// <summary>
@@ -82,23 +59,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetTemplates(string searchTerm, int pageIndex, int pageSize)
         {
-            var templateList = ContentTemplateManager.Instance.GetContentTemplates(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true);
-
-            var templates = templateList
-                                .Select(template => new TemplateViewModel(template, PortalSettings.UserInfo.IsSuperUser))
-                                .ToList();
-
-            var response = new
-            {
-                success = true,
-                data = new
-                        {
-                            results = templates,
-                            totalResults = templateList.TotalCount
-                        }
-            };
-
-            return Request.CreateResponse(response);
+            return GetPage(() => ContentTemplateManager.Instance.GetContentTemplates(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
+                           template => new TemplateViewModel(template, PortalSettings));
         }
 
         /// <summary>
@@ -110,8 +72,6 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveTemplate(TemplateViewModel viewModel)
         {
-            ContentTemplate template;
-
             var templateStream = new MemoryStream(Encoding.UTF8.GetBytes(viewModel.Content ?? ""));
             var folderPath = viewModel.FilePath.Substring(0, viewModel.FilePath.LastIndexOf("/", StringComparison.Ordinal));
             var fileName = Path.GetFileName(viewModel.FilePath);
@@ -131,38 +91,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 return Request.CreateResponse(new { success = false, message = Localization.GetString("FileCreateError", LocalResourceFile) });
             }
 
-            if (viewModel.TemplateId == -1)
-            {
-                template = new ContentTemplate()
-                                    {
-                                        ContentTypeId = viewModel.ContentTypeId,
-                                        Name = viewModel.Name,
-                                        TemplateFileId = file.FileId,
-                                        PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId
-                                    };
-                ContentTemplateManager.Instance.AddContentTemplate(template);
-            }
-            else
-            {
-                //Update
-                template = ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true);
+            var templateId = viewModel.TemplateId;
+            var localizedNames = new List<ContentTypeLocalization>();
+            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-                if (template != null)
-                {
-                    template.Name = viewModel.Name;
-                    ContentTemplateManager.Instance.UpdateContentTemplate(template);
-                }
-            }
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                            {
-                                                templateId = template.TemplateId
-                                            }
-                            };
+            return SaveEntity(templateId, () => new ContentTemplate
+                                                        {
+                                                            ContentTypeId = viewModel.ContentTypeId,
+                                                            Name = defaultName,
+                                                            TemplateFileId = file.FileId,
+                                                            PortalId = portalId
 
-            return Request.CreateResponse(response);
+                                                        },
+
+                                            template => ContentTemplateManager.Instance.AddContentTemplate(template),
+
+                                            () => ContentTemplateManager.Instance.GetContentTemplate(templateId, PortalSettings.PortalId, true),
+
+                                            template =>
+                                                        {
+                                                            template.Name = defaultName;
+                                                            ContentTemplateManager.Instance.UpdateContentTemplate(template);
+                                                        },
+
+                                            () => SaveContentLocalizations(localizedNames, ContentTemplateManager.TemplateNameKey, templateId, portalId));
         }
     }
 }

@@ -291,4 +291,7 @@
   <data name="DeleteTemplateConfirmMessage.Text" xml:space="preserve">
     <value>Are you sure you want to delete this Template?</value>
   </data>
+  <data name="Language.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>

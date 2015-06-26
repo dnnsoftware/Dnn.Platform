@@ -18,6 +18,7 @@ namespace Dnn.DynamicContent
     {
         internal const string ContentTemplateCacheKey = "ContentTypes_Templates";
         internal const string PortalScope = "PortalId";
+        public const string TemplateNameKey = "Template_{0}_Name";
 
         protected override Func<IContentTemplateManager> GetFactory()
         {

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Dnn.DynamicContent;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.FileSystem;
 using Newtonsoft.Json;
 
@@ -13,7 +14,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     /// TemplateViewModel represents a Content Template object within the ContentType Web Service API
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class TemplateViewModel
+    public class TemplateViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructs a TemplateViewModel
@@ -27,21 +28,22 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a TemplateViewModel from a ContentTemplate object
         /// </summary>
         /// <param name="template">The ContentTemplate object</param>
-        /// <param name="isSuperUser">A flag that indicates whether the current user is a super user</param>
-        public TemplateViewModel(ContentTemplate template, bool isSuperUser)
+        /// <param name="portalSettings">The portal Settings for the current portal</param>
+        public TemplateViewModel(ContentTemplate template, PortalSettings portalSettings)
         {
             TemplateId = template.TemplateId;
             ContentTypeId = template.ContentTypeId;
             ContentType = template.ContentType.Name;
             IsSystem = template.IsSystem;
-            Name = template.Name;
-            CanEdit = !(IsSystem) || isSuperUser;
+            CanEdit = !(IsSystem) || portalSettings.UserInfo.IsSuperUser;
             FilePath = template.TemplateFile.RelativePath;
 
             using (var sw = new StreamReader(FileManager.Instance.GetFileContent(template.TemplateFile)))
             {
                 Content = sw.ReadToEnd();
             }
+
+            LocalizedNames = GetLocalizedValues(template.Name, ContentTemplateManager.TemplateNameKey, TemplateId, template.PortalId, portalSettings);
         }
 
         /// <summary>
@@ -69,28 +71,27 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         public int ContentTypeId { get; set; }
 
         /// <summary>
+        /// The path of the Template File
+        /// </summary>
+        [JsonProperty("filePath")]
+        public string FilePath { get; set; }
+
+        /// <summary>
         /// A flag indicating if the template is a system template
         /// </summary>
         [JsonProperty("isSystem")]
         public bool IsSystem { get; set; }
 
         /// <summary>
-        /// The name of the Template
+        /// A List of localized values for the Name property
         /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("localizedNames")]
+        public List<dynamic> LocalizedNames { get; set; }
 
         /// <summary>
         /// The Id of the Template
         /// </summary>
         [JsonProperty("templateId")]
         public int TemplateId { get; set; }
-
-        /// <summary>
-        /// The path of the Template File
-        /// </summary>
-        [JsonProperty("filePath")]
-        public string FilePath { get; set; }
-
     }
 }

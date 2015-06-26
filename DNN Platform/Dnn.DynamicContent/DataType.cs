@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Caching;
 using Dnn.DynamicContent.Localization;
 using DotNetNuke.ComponentModel.DataAnnotations;
@@ -34,6 +35,18 @@ namespace Dnn.DynamicContent
         public bool IsSystem { get { return (PortalId == -1); } }
 
         public string Name { get; set; }
+
+        [IgnoreColumn]
+        public string LocalizedName
+        {
+            get
+            {
+                var key = String.Format(DataTypeManager.DataTypeNameKey, DataTypeId);
+                var code = Thread.CurrentThread.CurrentUICulture.ToString();
+                var localizedName = ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, code, PortalId);
+                return  (String.IsNullOrEmpty(LocalizedName)) ? Name : localizedName;
+            }
+        }
 
         public int PortalId { get; set; }
 

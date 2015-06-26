@@ -45,6 +45,7 @@
         viewModel.dataTypes.pageIndex(0);
         viewModel.dataTypes.searchText('');
         viewModel.dataTypes.getDataTypes();
+        viewModel.templates.mode("dataTypes");
     };
 
     var selectTemplates = function (data, e) {
@@ -98,7 +99,87 @@
         //Build the ViewModel
         viewModel.resx = resx;
 
-        viewModel.languages = [];
+        viewModel.languages = ko.observableArray([]);
+        viewModel.selectedLanguage = ko.observable('');
+        viewModel.isLocalized = ko.observable(false);
+
+        viewModel.mode = config.mode;
+
+        //Wire up contentTypes subModel
+        viewModel.contentTypes = new dcc.contentTypesViewModel(config, viewModel);
+        viewModel.contentTypes.init();
+
+        //Wire up dataTypes subModel
+        viewModel.dataTypes = new dcc.dataTypesViewModel(config, viewModel);
+        viewModel.dataTypes.init();
+
+        viewModel.templates = new dcc.templatesViewModel(config, viewModel);
+        viewModel.templates.init();
+
+        viewModel.settings = dcc.settings(ko, resx, settings);
+
+        viewModel.selectContentTypes = selectContentTypes;
+        viewModel.selectDataTypes = selectDataTypes;
+        viewModel.selectTemplates = selectTemplates;
+        viewModel.selectSettings = selectSettings;
+
+        viewModel.showCloseIcon = ko.computed(function() {
+            var showIcon = false;
+            switch(viewModel.mode()){
+                case "editField":
+                case "editType":
+                case "editTemplate":
+                    showIcon = true;
+                    break;
+            }
+            return showIcon;
+        });
+
+        viewModel.heading = ko.computed(function() {
+            var heading = resx.dataTypes;
+            switch(viewModel.mode()){
+                case "listTypes":
+                    heading = resx.contentTypes;
+                    break;
+                case "editField":
+                case "editType":
+                    heading = resx.contentType + " - " + viewModel.contentTypes.selectedContentType.name()
+                    break;
+                case "dataTypes":
+                    heading = resx.dataTypes;
+                    break;
+                case "listTemplates":
+                    heading = resx.templates;
+                    break;
+                case "editTemplate":
+                    heading = resx.template + " - " + viewModel.templates.selectedTemplate.name()
+                    break;
+            }
+            return heading;
+        });
+
+        viewModel.closeEdit = function() {
+            switch(viewModel.mode()){
+                case "editField":
+                case "editType":
+                    viewModel.mode("listTypes");
+                    viewModel.contentTypes.refresh();
+                    break;
+                case "editTemplate":
+                    viewModel.mode("listTemplates");
+                    viewModel.templates.refresh();
+                    break;
+            }
+        };
+
+        ko.applyBindings(viewModel, $rootElement[0]);
+
+        viewModel.contentTypes.pageIndex(0);
+        viewModel.contentTypes.searchText('');
+        viewModel.contentTypes.getContentTypes();
+        $rootElement.find("#contentTypes-menu").addClass("selected");
+
+        $rootElement.find('input[type="checkbox"]').dnnCheckbox();
 
         util.languageService().get("GetEnabledLanguages", {},
             function(data) {
@@ -109,7 +190,8 @@
                         var language = { code: result.code, language: result.language };
                         viewModel.languages.push(language);
                     }
-                    viewModel.isLocalized = viewModel.languages.length > 0;
+                    viewModel.isLocalized(viewModel.languages().length > 0);
+                    viewModel.selectedLanguage(data.data.defaultLanguage);
                 }
                 else {
                     //Error
@@ -119,41 +201,9 @@
                 //Failure
             }
         );
-
-        //Wire up contentTypes subModel
-        viewModel.contentTypes = new dcc.contentTypesViewModel(config);
-        viewModel.contentTypes.init();
-
-        //Wire up dataTypes subModel
-        viewModel.dataTypes = new dcc.dataTypesViewModel(config);
-        viewModel.dataTypes.init();
-
-        viewModel.templates = new dcc.templatesViewModel(config);
-        viewModel.templates.init();
-
-        viewModel.settings = dcc.settings(ko, resx, settings);
-
-        viewModel.selectContentTypes = selectContentTypes;
-        viewModel.selectDataTypes = selectDataTypes;
-        viewModel.selectTemplates = selectTemplates;
-        viewModel.selectSettings = selectSettings;
-
-        ko.applyBindings(viewModel, $rootElement[0]);
-
-        viewModel.contentTypes.pageIndex(0);
-        viewModel.contentTypes.searchText('');
-        viewModel.contentTypes.getContentTypes();
-        $rootElement.find("#contentTypes-menu").addClass("selected");
-
-        $rootElement.find('input[type="checkbox"]').dnnCheckbox();
     }
 
     return {
         init: init
     }
-}
-
-dcc.languageViewModel = function(){
-    var self = this;
-
 }

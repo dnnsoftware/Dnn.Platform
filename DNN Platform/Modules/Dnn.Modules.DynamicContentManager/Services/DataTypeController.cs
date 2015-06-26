@@ -1,12 +1,12 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -17,7 +17,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
     /// </summary>
     [SupportedModules("Dnn.DynamicContentManager")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
-    public class DataTypeController : DnnApiController
+    public class DataTypeController : BaseController
     {
         /// <summary>
         /// DeleteDataType deletes a single DataType
@@ -28,20 +28,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteDataType(DataTypeViewModel viewModel)
         {
-            var dataType = DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true);
-
-            if (dataType != null)
-            {
-                DataTypeManager.Instance.DeleteDataType(dataType);
-            }
-
-            var response = new
-                            {
-                                success = true
-                            };
-
-            return Request.CreateResponse(response);
-
+             return DeleteEntity(() => DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true),
+                                 dataType =>DataTypeManager.Instance.DeleteDataType(dataType));
         }
 
         /// <summary>
@@ -52,18 +40,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetDataType(int dataTypeId)
         {
-            var dataType = DataTypeManager.Instance.GetDataType(dataTypeId, PortalSettings.PortalId, true);
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                            {
-                                                dataType = new DataTypeViewModel(dataType, PortalSettings)
-                                }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetEntity(() => DataTypeManager.Instance.GetDataType(dataTypeId, PortalSettings.PortalId, true),
+                           dataType => new DataTypeViewModel(dataType, PortalSettings));
         }
 
         /// <summary>
@@ -76,22 +54,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetDataTypes(string searchTerm, int pageIndex, int pageSize)
         {
-            var dataTypeList = DataTypeManager.Instance.GetDataTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true);
-            var dataTypes = dataTypeList
-                            .Select(dataType => new DataTypeViewModel(dataType, PortalSettings))
-                            .ToList();
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            results = dataTypes,
-                                            totalResults = dataTypeList.TotalCount
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetPage(() => DataTypeManager.Instance.GetDataTypes(searchTerm, PortalSettings.PortalId, pageIndex, pageSize, true),
+                           dataType => new DataTypeViewModel(dataType, PortalSettings));
         }
 
         /// <summary>
@@ -103,34 +67,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SaveDataType(DataTypeViewModel viewModel)
         {
-            if (viewModel.DataTypeId == -1)
-            {
-                var dataType = new DataType
-                {
-                    Name = viewModel.Name,
-                    UnderlyingDataType = viewModel.BaseType,
-                    PortalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId
-                };
-                DataTypeManager.Instance.AddDataType(dataType);
-            }
-            else
-            {
-                //Update
-                var dataType = DataTypeManager.Instance.GetDataType(viewModel.DataTypeId, PortalSettings.PortalId, true);
+            var dataTypeId = viewModel.DataTypeId;
+            var portalId = viewModel.IsSystem ? -1 : PortalSettings.PortalId;
+            var localizedNames = new List<ContentTypeLocalization>();
+            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-                if (dataType != null)
-                {
-                    dataType.Name = viewModel.Name;
-                    dataType.UnderlyingDataType = viewModel.BaseType;
-                    DataTypeManager.Instance.UpdateDataType(dataType);
-                }
-            }
-            var response = new
-                            {
-                                success = true
-                            };
+            return SaveEntity(dataTypeId, () => new DataType
+                                                        {
+                                                            Name = defaultName,
+                                                            UnderlyingDataType = viewModel.BaseType,
+                                                            PortalId = portalId
+                                                        },
 
-            return Request.CreateResponse(response);
+                                            dataType => DataTypeManager.Instance.AddDataType(dataType),
+
+                                            () => DataTypeManager.Instance.GetDataType(dataTypeId, PortalSettings.PortalId, true),
+
+                                            dataType =>
+                                                            {
+                                                                dataType.Name = defaultName;
+                                                                dataType.UnderlyingDataType = viewModel.BaseType;
+                                                                DataTypeManager.Instance.UpdateDataType(dataType);
+                                                            },
+
+                                            () => SaveContentLocalizations(localizedNames, DataTypeManager.DataTypeNameKey, dataTypeId, portalId));
         }
     }
 }

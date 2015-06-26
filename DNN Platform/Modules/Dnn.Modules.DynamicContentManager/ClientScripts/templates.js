@@ -2,12 +2,14 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.templatesViewModel = function(config){
+dcc.templatesViewModel = function(config, rootViewModel){
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
+
+    self.rootViewModel = rootViewModel;
 
     self.mode = config.mode;
     self.searchText = ko.observable("");
@@ -19,14 +21,6 @@ dcc.templatesViewModel = function(config){
     self.pager_NoPagerFormat = resx.templates_NoPagerFormat;
     self.selectedTemplate = new dcc.templateViewModel(self, config);
 
-    self.heading = ko.computed(function() {
-        var heading = resx.templates;
-        if(self.mode() != "listTemplates"){
-            heading = resx.template + " - " + self.selectedTemplate.name()
-        }
-        return heading;
-    });
-
     var findTemplates =  function() {
         self.pageIndex(0);
         self.getTemplates();
@@ -37,11 +31,6 @@ dcc.templatesViewModel = function(config){
         self.selectedTemplate.init();
         self.selectedTemplate.bindCodeEditor();
     };
-
-    self.closeEdit = function() {
-        self.mode("listTemplates");
-        self.refresh();
-    }
 
     self.editTemplate = function(data, e) {
         self.selectedTemplate.init();
@@ -58,20 +47,9 @@ dcc.templatesViewModel = function(config){
         var params = {
             templateId: templateId
         };
-
-        util.templateService().get("GetTemplate", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.selectedTemplate.load(data.data.template);
-                    self.selectedTemplate.bindCodeEditor();
-                } else {
-                    //Error
-                }
-            },
-
+        util.templateService().getEntity(params, "GetTemplate", self.selectedTemplate,
             function(){
-                //Failure
+                self.selectedTemplate.bindCodeEditor();
             }
         );
 
@@ -85,18 +63,13 @@ dcc.templatesViewModel = function(config){
             pageSize: self.pageSize
         };
 
-        util.templateService().get("GetTemplates", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.load(data.data);
-                } else {
-                    //Error
-                }
+        util.templateService().getEntities(params,
+            "GetTemplates",
+            self.results,
+            function() {
+                return new dcc.templateViewModel(self, config);
             },
-            function(){
-                //Failure
-            }
+            self.totalResults
         );
     };
 
@@ -109,18 +82,6 @@ dcc.templatesViewModel = function(config){
         $rootElement.find("#templates-editView").css("display", "none")
     };
 
-    self.load =function(data) {
-        self.results.removeAll();
-        for(var i=0; i < data.results.length; i++){
-            var result = data.results[i];
-            var template = new dcc.templateViewModel(self, config);
-            template.init();
-            template.load(result);
-            self.results.push(template);
-        }
-        self.totalResults(data.totalResults)
-    };
-
     self.refresh = function(){
         self.getTemplates();
     };
@@ -131,13 +92,14 @@ dcc.templateViewModel = function(parentViewModel, config){
     var util = config.util;
     var resx = config.resx;
     var settings = config.settings;
-    var $rootElement = config.$rootElement;
     var codeEditor = config.codeEditor;
 
     self.parentViewModel = parentViewModel;
+    self.rootViewModel = parentViewModel.rootViewModel;
+
     self.canEdit = ko.observable(false);
     self.templateId = ko.observable(-1);
-    self.name = ko.observable('');
+    self.localizedNames = ko.observableArray([]);
     self.contentType = ko.observable('');
     self.contentTypeId = ko.observable(-1);
     self.filePath = ko.observable('');
@@ -145,6 +107,15 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.content = ko.observable('');
     self.selected = ko.observable(false);
     self.contentTypes = ko.observableArray([]);
+
+    self.name = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
+        }
+    });
 
     self.name.subscribe(function(newValue) {
         if(self.filePath() === ""){
@@ -187,7 +158,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     };
 
     self.cancel = function(){
-        parentViewModel.closeEdit();
+        self.rootViewModel.closeEdit();
     };
 
     self.deleteTemplate = function (data, e) {
@@ -217,12 +188,13 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.init = function(){
         self.canEdit(true);
         self.templateId(-1);
-        self.name("");
         self.contentType("");
         self.contentTypeId(-1);
         self.filePath('');
         self.isSystem(self.parentViewModel.isSystemUser);
         self.content('');
+
+        util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
 
         getContentTypes();
     };
@@ -230,21 +202,23 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.load = function(data) {
         self.canEdit(data.canEdit);
         self.templateId(data.templateId);
-        self.name(data.name);
         self.contentType(data.contentType);
         self.contentTypeId(data.contentTypeId);
         self.isSystem(data.isSystem);
         self.filePath(data.filePath);
         self.content(data.content);
+
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames)
    };
 
     self.saveTemplate = function(data, e) {
+        var jsObject = ko.toJS(data);
         var params = {
-            templateId: data.templateId(),
-            name: data.name(),
-            contentTypeId: data.contentTypeId(),
-            isSystem: data.isSystem(),
-            filePath: data.filePath(),
+            templateId: jsObject.templateId,
+            localizedNames: jsObject.localizedNames,
+            contentTypeId: jsObject.contentTypeId,
+            isSystem: jsObject.isSystem,
+            filePath: jsObject.filePath,
             content: codeEditor.getValue()
         };
 
