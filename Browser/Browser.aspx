@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="language" content="en" />
-    <title id="title" runat="server">WatchersNET.FileBrowser</title>
+    <title id="title" runat="server">DNNConnect.CKEditorProvider.FileBrowser</title>
     <link rel="stylesheet" type="text/css" href="Browser.comb.min.css" />
     <asp:Placeholder id="favicon" runat="server"></asp:Placeholder>
     <script src="js/Browser.js" type="text/javascript"></script>

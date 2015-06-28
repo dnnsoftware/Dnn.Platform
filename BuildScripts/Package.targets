@@ -28,10 +28,13 @@
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
     </ItemGroup>
     <ItemGroup>
-      <CssFiles Include="css\*.css" />
+      <CssFiles Include="css\*.css;Browser\*.css" />
     </ItemGroup>
     <ItemGroup>
-      <JsFiles Include="js\*.js" />
+      <JsFiles Include="js\*.js;Browser\js\*.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <ImagesFiles Include="Browser\images\**\*.*" />
     </ItemGroup>
     <ItemGroup>
       <ResourceFiles Include="App_LocalResources\*.resx" />
@@ -40,7 +43,7 @@
       <CKEditor Include="CKEditor\**\*.*" />
     </ItemGroup>
     <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);" />
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);" />
     </ItemGroup>
     <ItemGroup>
       <CleanupFiles Include="*.Cleanup.txt" />
