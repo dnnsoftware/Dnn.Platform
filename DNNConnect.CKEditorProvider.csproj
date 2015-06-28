@@ -64,16 +64,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
-      <HintPath>References\DotNetNuke.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>References\DotNetNuke.Web.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>References\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>References\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
@@ -276,6 +279,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
