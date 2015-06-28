@@ -64,19 +64,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
-      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web">
-      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.Web.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web.Client">
-      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility">
-      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>packages\Dnn.Platform.7.2.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <HintPath>packages\Dnn.Platform.7.4.0\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="mscorlib" />
