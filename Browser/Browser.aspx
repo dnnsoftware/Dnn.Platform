@@ -30,7 +30,7 @@
             </td>
             <td>
               <div id="TabsBox">
-                <dnn:DnnTreeView ID="dnntreeTabs" runat="server" ExpandDepth="1" Width="683" Image="Images/folder.gif" />
+                <asp:TreeView ID="dnntreeTabs" runat="server" ExpandDepth="1" Width="683" Image="Images/folder.gif" />
               </div>
             </td>
           </tr>
@@ -238,7 +238,7 @@
                 <h3><asp:Label id="NewFolderTitle" runat="server" Text="Create New Folder" /></h3>
               </div>
               <div><asp:Label id="lblNewFoldName" runat="server" Text="New Folder Name"></asp:Label></div>
-              <dnn:DnnTextBox id="tbFolderName" runat="server" Width="100%" />
+              <asp:TextBox id="tbFolderName" runat="server" Width="100%" />
               <hr />
               <div class="ModalFooter">
                 <asp:Button ID="cmdCreateFolder" CssClass="DefaultButton ui-state-focus" Text="Create Now" runat="server" />
@@ -285,7 +285,7 @@
           <td style="padding-top:9px">
             <asp:Label id="lblSubDirs" runat="server" Text="Subdirectories:"></asp:Label><br />
             <div id="FoldersBox">
-             <dnn:DnnTreeView ID="FoldersTree" runat="server" ExpandDepth="1" Image="Images/folder.gif"/>
+             <asp:TreeView ID="FoldersTree" runat="server" ExpandDepth="1" Image="Images/folder.gif"/>
             </div>
             <asp:Label runat="server" ID="FileSpaceUsedLabel" CssClass="fileSpaceUsedLabel"></asp:Label>
           </td>

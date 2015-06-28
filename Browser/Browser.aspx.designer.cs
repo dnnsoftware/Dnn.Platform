@@ -91,7 +91,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTreeView dnntreeTabs;
+        protected global::System.Web.UI.WebControls.TreeView dnntreeTabs;
         
         /// <summary>
         /// ExtraTabOptions control.
@@ -568,7 +568,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTextBox tbFolderName;
+        protected global::System.Web.UI.WebControls.TextBox tbFolderName;
         
         /// <summary>
         /// cmdCreateFolder control.
@@ -658,7 +658,7 @@ namespace DNNConnect.CKEditorProvider.Browser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnTreeView FoldersTree;
+        protected global::System.Web.UI.WebControls.TreeView FoldersTree;
         
         /// <summary>
         /// FileSpaceUsedLabel control.
