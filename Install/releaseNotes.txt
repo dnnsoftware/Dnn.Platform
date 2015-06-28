@@ -7,7 +7,7 @@
 </style>
 <div class="container">
     <div class="page-header">
-        <h1>DNN-Connect CKEditor Provider 1.00.00 <small>For DNN® 07.02.01 (or higher)</small></h1>
+        <h1>DNN-Connect CKEditor Provider 1.00.00 <small>For DNN® 07.04.00 (or higher)</small></h1>
     </div>
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -18,6 +18,7 @@
 				<li>Forked from Ingo Herbote's <a href="http://dnnckeditor.codeplex.com/">CKEditor Provider for DNN</a></li>
                 <li>Updated Editor Options to follow DNN standards</li>
 				<li>Integrated with the HTML Editor Manager</li>
+				<li>Replaced Rad controls with Asp.net</li>
             </ul>
         </div>
     </div>
