@@ -138,7 +138,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 string fileRoot = string.Format(
                     "{0}/{1}/{2}.resx",
-                    this.TemplateSourceDirectory,
+                    this.TemplateSourceDirectory.Replace("/DNNConnect.CKE/Browser", "/DNNConnect.CKE"),
                     Localization.LocalResourceDirectory,
                     page[page.GetUpperBound(0)]);
 
