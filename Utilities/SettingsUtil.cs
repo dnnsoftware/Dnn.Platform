@@ -93,10 +93,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
             EditorProviderSettings currentSettings,
             List<EditorHostSetting> editorHostSettings,
             string key,
-            ArrayList portalRoles)
+            IList<RoleInfo> portalRoles)
         {
-            var roleController = new RoleController();
-
             var roles = new ArrayList();
 
             // Import all Editor config settings
@@ -377,7 +375,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
+                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                             if (roleInfo != null)
                             {
@@ -769,11 +767,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the filled Module Settings
         /// </returns>
-        internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, ArrayList portalRoles)
+        internal static EditorProviderSettings LoadModuleSettings(PortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
             var hshModSet = new ModuleController().GetModuleSettings(moduleId);
-
-            var roleController = new RoleController();
 
             var roles = new ArrayList();
 
@@ -985,7 +981,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 {
                     if (Utility.IsNumeric(sRoleName))
                     {
-                        RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
+                        RoleInfo roleInfo = RoleController.Instance.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                         if (roleInfo != null)
                         {
@@ -1199,11 +1195,9 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Default Provider Settings
         /// </returns>
-        internal static EditorProviderSettings GetDefaultSettings(PortalSettings portalSettings, string homeDirPath, string alternateSubFolder, ArrayList portalRoles)
+        internal static EditorProviderSettings GetDefaultSettings(PortalSettings portalSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
         {
             var roles = new ArrayList();
-
-            var roleController = new RoleController();
 
             if (!string.IsNullOrEmpty(alternateSubFolder))
             {
@@ -1270,7 +1264,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
+                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                             if (roleInfo != null)
                             {
@@ -1505,8 +1499,6 @@ namespace DNNConnect.CKEditorProvider.Utilities
         {
             var uploadFileLimitForPortal = Convert.ToInt32(Utility.GetMaxUploadSize());
 
-            var roleController = new RoleController();
-
             if (settings.ToolBarRoles.Count <= 0)
             {
                 return uploadFileLimitForPortal;
@@ -1527,7 +1519,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
 
                 // Role
-                var role = roleController.GetRoleById(roleUploadSize.RoleId, portalSettings.PortalId);
+                var role = RoleController.Instance.GetRoleById(roleUploadSize.RoleId, portalSettings.PortalId);
 
                 if (role == null)
                 {

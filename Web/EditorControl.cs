@@ -1045,7 +1045,7 @@ namespace DNNConnect.CKEditorProvider.Web
         private void LoadAllSettings()
         {
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(_portalSettings.PortalId);
+            var portalRoles = RoleController.Instance.GetRoles(_portalSettings.PortalId);
 
             // Load Default Settings
             currentSettings = SettingsUtil.GetDefaultSettings(
@@ -1224,8 +1224,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
             var listUserToolbarSets = new List<ToolbarSet>();
 
-            var roleController = new RoleController();
-
             if (currentSettings.ToolBarRoles.Count <= 0)
             {
                 return toolbarName;
@@ -1244,7 +1242,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Role
-                var role = roleController.GetRoleById(roleToolbar.RoleId, _portalSettings.PortalId);
+                var role = RoleController.Instance.GetRoleById(roleToolbar.RoleId, _portalSettings.PortalId);
 
                 if (role == null)
                 {

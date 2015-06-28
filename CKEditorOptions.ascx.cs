@@ -53,11 +53,6 @@ namespace DNNConnect.CKEditorProvider
         private const string ProviderType = "htmlEditor";
 
         /// <summary>
-        ///   The role controller.
-        /// </summary>
-        private readonly RoleController objRoleController = new RoleController();
-
-        /// <summary>
         ///   The provider config.
         /// </summary>
         private readonly ProviderConfiguration provConfig = ProviderConfiguration.GetProviderConfiguration(ProviderType);
@@ -896,7 +891,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleById(objToolbRoles.RoleId, this._portalSettings.PortalId);
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(objToolbRoles.RoleId, this._portalSettings.PortalId);
 
                     if (objRole == null)
                     {
@@ -949,7 +944,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleById(uploadSizeRole.RoleId, this._portalSettings.PortalId);
+                    RoleInfo objRole = RoleController.Instance.GetRoleById(uploadSizeRole.RoleId, this._portalSettings.PortalId);
 
                     if (objRole == null)
                     {
@@ -1048,7 +1043,7 @@ namespace DNNConnect.CKEditorProvider
             var lic = new ListItemCollection();
 
             foreach (var roleItem in
-                from RoleInfo objRole in this.objRoleController.GetPortalRoles(this._portalSettings.PortalId)
+                from RoleInfo objRole in RoleController.Instance.GetRoles(this._portalSettings.PortalId)
                 select new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() })
             {
                 lic.Add(roleItem);
@@ -1142,7 +1137,7 @@ namespace DNNConnect.CKEditorProvider
             moduleController.DeleteModuleSetting(
                 this.ModuleId, string.Format("{0}{1}", moduleKey, SettingConstants.RESIZEWIDTH));
 
-            foreach (RoleInfo objRole in this.objRoleController.GetPortalRoles(this._portalSettings.PortalId))
+            foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this._portalSettings.PortalId))
             {
                 moduleController.DeleteModuleSetting(
                     this.ModuleId, string.Format("{0}{2}#{1}", moduleKey, objRole.RoleID, SettingConstants.TOOLB));
@@ -1241,7 +1236,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.chblBrowsGr.Items.Clear();
 
-            foreach (RoleInfo objRole in this.objRoleController.GetPortalRoles(this._portalSettings.PortalId))
+            foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this._portalSettings.PortalId))
             {
                 ListItem roleItem = new ListItem { Text = objRole.RoleName, Value = objRole.RoleID.ToString() };
 
@@ -1937,7 +1932,7 @@ namespace DNNConnect.CKEditorProvider
             this.LoadDefaultSettings();
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
+            var portalRoles = RoleController.Instance.GetRoles(this._portalSettings.PortalId);
 
             var portalKey = string.Format("DNNCKP#{0}#", this._portalSettings.PortalId);
             var pageKey = string.Format("DNNCKT#{0}#", this.CurrentOrSelectedTabId);
@@ -2588,7 +2583,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     moduleController.UpdateModuleSetting(
                         this.ModuleId,
@@ -2618,7 +2613,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     moduleController.UpdateModuleSetting(
                         this.ModuleId,
@@ -2901,7 +2896,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}toolb#{1}", key, objRole.RoleID),
@@ -2929,7 +2924,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     EditorController.AddOrUpdateEditorHostSetting(
                         string.Format("{0}{2}#{1}", key, objRole.RoleID, SettingConstants.UPLOADFILELIMITS),
@@ -3566,7 +3561,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     listToolbarRoles.Add(new ToolbarRoles { RoleId = objRole.RoleID, Toolbar = ddLToolB.SelectedValue });
                 }
@@ -3595,7 +3590,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRoleByName(this._portalSettings.PortalId, label.Text);
+                    RoleInfo objRole = RoleController.Instance.GetRoleByName(this._portalSettings.PortalId, label.Text);
 
                     listUploadSizeRoles.Add(
                         new UploadSizeRoles

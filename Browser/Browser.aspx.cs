@@ -866,7 +866,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
+            
+            var portalRoles = RoleController.Instance.GetRoles(this._portalSettings.PortalId);
 
             switch (this.currentSettings.SettingMode)
             {
