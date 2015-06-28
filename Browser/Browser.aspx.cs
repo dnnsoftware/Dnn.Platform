@@ -940,7 +940,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             this.GetAcceptedFileTypes();
 
-                            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+                            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
                             this.AnchorList.Visible = this.currentSettings.UseAnchorSelector;
                             this.LabelAnchor.Visible = this.currentSettings.UseAnchorSelector;
@@ -980,7 +980,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                             "Browser-Modus: {0}",
                                             string.Format("Page {0}", this.browserModus));
                                         this.title.InnerText = string.Format(
-                                            "{0} - WatchersNET.FileBrowser",
+                                            "{0} - DNNConnect.CKEditorProvider.FileBrowser",
                                             this.lblModus.Text);
 
                                         this.RenderTabs();
@@ -1228,7 +1228,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.BrowserMode.Visible = false;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblResizeHeader.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             // Hide all Unwanted Elements from the Image Editor
             this.cmdClose.Visible = false;
@@ -2876,7 +2876,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.BrowserMode.Visible = true;
             }
 
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             // Add new file to database
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(this.lblCurrentDir.Text, this._portalSettings);
@@ -2907,7 +2907,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             if (this.browserModus.Equals("Link"))
             {
@@ -3046,7 +3046,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             if (this.browserModus.Equals("Link"))
             {
@@ -3082,7 +3082,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdResize2.Visible = true;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader2.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblResizeHeader.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             string sFilePath = Path.Combine(this.lblCurrentDir.Text, this.lblFileName.Text);
 
@@ -3416,7 +3416,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
             }
 
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             this.SetDefaultLinkTypeText();
         }

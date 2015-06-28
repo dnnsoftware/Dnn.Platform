@@ -2980,7 +2980,7 @@ namespace DNNConnect.CKEditorProvider
         {
             this.lblHeader.Text = Localization.GetString("lblHeader.Text", this.ResXFile, this.LangCode);
 
-            this.ProviderVersion.Text = "<strong>WatchersNET CKEditor™ Provider</strong> ";
+            this.ProviderVersion.Text = "<strong>DNN Connect CKEditor™ Provider</strong> ";
 
             this.lblPortal.Text = string.Format(
                 "<strong>{0}</strong> ", Localization.GetString("lblPortal.Text", this.ResXFile, this.LangCode));
