@@ -32,7 +32,7 @@ using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Controls;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Globals = DotNetNuke.Common.Globals;
 using Image = System.Drawing.Image;
@@ -849,6 +849,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+
             this.SortAscending.CssClass = this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
             this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
 
