@@ -1757,7 +1757,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
 
-                PortalAliasInfo objPortalAliasInfo = PortalAliasController.GetPortalAliasInfo(sPortalAlias);
+                PortalAliasInfo objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(sPortalAlias);
 
                 portalSettings = new PortalSettings(iTabId, objPortalAliasInfo);
             }
@@ -1856,7 +1856,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Create user folder based on the user id
             userFolderPath = Path.Combine(
                 userFolderPath,
-                string.Format("{0}\\", UserController.GetCurrentUserInfo().UserID));
+                string.Format("{0}\\", UserController.Instance.GetCurrentUserInfo().UserID));
 
             if (!Directory.Exists(userFolderPath))
             {
@@ -1870,14 +1870,14 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 this.SetFolderPermission(userFolderInfo);
 
-                this.SetUserFolderPermission(userFolderInfo, UserController.GetCurrentUserInfo());
+                this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
             }
             else
             {
                 userFolderInfo = Utility.ConvertFilePathToFolderInfo(userFolderPath, this._portalSettings);
 
                 // make sure the user has the correct permissions set
-                this.SetUserFolderPermission(userFolderInfo, UserController.GetCurrentUserInfo());
+                this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
             }
 
             return userFolderInfo;

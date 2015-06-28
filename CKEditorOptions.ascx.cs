@@ -896,8 +896,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRole(
-                        objToolbRoles.RoleId, this._portalSettings.PortalId);
+                    RoleInfo objRole = this.objRoleController.GetRoleById(objToolbRoles.RoleId, this._portalSettings.PortalId);
 
                     if (objRole == null)
                     {
@@ -950,8 +949,7 @@ namespace DNNConnect.CKEditorProvider
                 }
                 else
                 {
-                    RoleInfo objRole = this.objRoleController.GetRole(
-                        uploadSizeRole.RoleId, this._portalSettings.PortalId);
+                    RoleInfo objRole = this.objRoleController.GetRoleById(uploadSizeRole.RoleId, this._portalSettings.PortalId);
 
                     if (objRole == null)
                     {
@@ -1367,8 +1365,7 @@ namespace DNNConnect.CKEditorProvider
 
                 var portalAlias = PortalAliasController.GetPortalAliasByPortal(this.CurrentOrSelectedPortalId, domainName);
 
-                portalSettings = new PortalSettings(
-                    this.CurrentOrSelectedTabId, PortalAliasController.GetPortalAliasInfo(portalAlias));
+                portalSettings = new PortalSettings(this.CurrentOrSelectedTabId, PortalAliasController.Instance.GetPortalAlias(portalAlias));
             }
             catch (Exception)
             {

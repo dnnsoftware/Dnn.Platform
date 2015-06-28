@@ -241,7 +241,7 @@ namespace DNNConnect.CKEditorProvider
 
                 string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
 
-                PortalAliasInfo objPortalAliasInfo = PortalAliasController.GetPortalAliasInfo(sPortalAlias);
+                PortalAliasInfo objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(sPortalAlias);
 
                 portalSettings = new PortalSettings(iTabId, objPortalAliasInfo);
             }

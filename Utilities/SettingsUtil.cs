@@ -377,7 +377,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = roleController.GetRole(int.Parse(sRoleName), portalSettings.PortalId);
+                            RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                             if (roleInfo != null)
                             {
@@ -985,8 +985,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 {
                     if (Utility.IsNumeric(sRoleName))
                     {
-                        RoleInfo roleInfo = roleController.GetRole(
-                            int.Parse(sRoleName), portalSettings.PortalId);
+                        RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                         if (roleInfo != null)
                         {
@@ -1271,7 +1270,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = roleController.GetRole(int.Parse(sRoleName), portalSettings.PortalId);
+                            RoleInfo roleInfo = roleController.GetRoleById(int.Parse(sRoleName), portalSettings.PortalId);
 
                             if (roleInfo != null)
                             {
@@ -1528,7 +1527,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
 
                 // Role
-                var role = roleController.GetRole(roleUploadSize.RoleId, portalSettings.PortalId);
+                var role = roleController.GetRoleById(roleUploadSize.RoleId, portalSettings.PortalId);
 
                 if (role == null)
                 {
