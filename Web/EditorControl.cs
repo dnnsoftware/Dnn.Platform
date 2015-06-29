@@ -887,10 +887,6 @@ namespace DNNConnect.CKEditorProvider.Web
             outWriter.Write("</noscript>");
             outWriter.Write("</div>");
 
-            outWriter.Write(
-                "<input type=\"hidden\" name=\"CKDNNporid\" id=\"CKDNNporid\" value=\"{0}\">",
-                _portalSettings.PortalId);
-
             outWriter.Write(outWriter.NewLine);
 
             var styleWidth = !string.IsNullOrEmpty(currentSettings.Config.Width)
