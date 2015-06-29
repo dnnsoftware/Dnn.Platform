@@ -1403,8 +1403,8 @@ namespace DNNConnect.CKEditorProvider.Web
                 editorFixedId);
 
             // Render EditorConfig
-            var test = new StringBuilder();
-            test.AppendFormat("var editorConfig{0} = {{", editorVar);
+            var editorConfigScript = new StringBuilder();
+            editorConfigScript.AppendFormat("var editorConfig{0} = {{", editorVar);
 
             var keysCount = Settings.Keys.Count;
             var currentCount = 0;
@@ -1430,9 +1430,9 @@ namespace DNNConnect.CKEditorProvider.Web
                         value = "false";
                     }
 
-                    test.AppendFormat("{0}:{1}", key, value);
+                    editorConfigScript.AppendFormat("{0}:{1}", key, value);
 
-                    test.Append(currentCount == keysCount ? "};" : ",");
+                    editorConfigScript.Append(currentCount == keysCount ? "};" : ",");
                 }
                 else
                 {
@@ -1441,13 +1441,12 @@ namespace DNNConnect.CKEditorProvider.Web
                         continue;
                     }
 
-                    test.AppendFormat("{0}:\'{1}\'", key, value);
+                    editorConfigScript.AppendFormat("{0}:\'{1}\'", key, value);
 
-                    test.Append(currentCount == keysCount ? "};" : ",");
+                    editorConfigScript.Append(currentCount == keysCount ? "};" : ",");
                 }
             }
 
-            //editorScript.Append(test);
             editorScript.AppendFormat(
                 "if (CKEDITOR.instances.{0}){{return;}}",
                 editorFixedId);
@@ -1480,7 +1479,7 @@ namespace DNNConnect.CKEditorProvider.Web
             // End of LoadScript
             editorScript.Append("}");
 
-            RegisterScript(string.Format(@"{0}_CKE_Config", editorFixedId), test.ToString(), true);
+            RegisterScript(string.Format(@"{0}_CKE_Config", editorFixedId), editorConfigScript.ToString(), true);
             RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
         }
 
