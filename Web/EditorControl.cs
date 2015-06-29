@@ -887,10 +887,6 @@ namespace DNNConnect.CKEditorProvider.Web
             outWriter.Write("</noscript>");
             outWriter.Write("</div>");
 
-            outWriter.Write(
-                "<input type=\"hidden\" name=\"CKDNNporid\" id=\"CKDNNporid\" value=\"{0}\">",
-                _portalSettings.PortalId);
-
             outWriter.Write(outWriter.NewLine);
 
             var styleWidth = !string.IsNullOrEmpty(currentSettings.Config.Width)
@@ -956,6 +952,7 @@ namespace DNNConnect.CKEditorProvider.Web
                     Localization.GetString("Options.Text", SResXFile));
             }
 
+            outWriter.Write("</p>");
             /////////////////
         }
 
@@ -1098,39 +1095,42 @@ namespace DNNConnect.CKEditorProvider.Web
         }
 
         /// <summary>
-        /// Format the Url from FileID to File Path Url
+        /// Format the URL from FileID to File Path URL
         /// </summary>
-        /// <param name="sInputUrl">
-        /// The s Input Url.
+        /// <param name="inputUrl">
+        /// The Input URL.
         /// </param>
         /// <returns>
-        /// The format url.
+        /// The formatted URL.
         /// </returns>
-        private string FormatUrl(string sInputUrl)
+        private string FormatUrl(string inputUrl)
         {
-            string sImageUrl = string.Empty;
+            var formattedUrl = string.Empty;
 
-            if (sInputUrl.Equals(string.Empty))
+            if (string.IsNullOrEmpty(inputUrl))
             {
-                return sImageUrl;
+                return formattedUrl;
             }
 
-            if (sInputUrl.StartsWith("http://"))
+            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//"))
             {
-                sImageUrl = sInputUrl;
+                formattedUrl = inputUrl;
             }
-            else if (sInputUrl.StartsWith("FileID="))
+            else if (inputUrl.StartsWith("FileID="))
             {
-                int iFileId = int.Parse(sInputUrl.Substring(7));
+                var fileId = int.Parse(inputUrl.Substring(7));
 
-                // FileController objFileController = new FileController();
-                var objFileInfo = FileManager.Instance.GetFile(iFileId);
+                var objFileInfo = FileManager.Instance.GetFile(fileId);
 
-                // FileInfo objFileInfo = objFileController.GetFileById(iFileId, this._portalSettings.PortalId);
-                sImageUrl = _portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
+                formattedUrl = this._portalSettings.HomeDirectory + objFileInfo.Folder + objFileInfo.FileName;
+            }
+            else
+            {
+                formattedUrl = this._portalSettings.HomeDirectory + inputUrl;
             }
 
-            return sImageUrl;
+
+            return formattedUrl;
         }
 
         /// <summary>
@@ -1185,6 +1185,18 @@ namespace DNNConnect.CKEditorProvider.Web
             else
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), key, script, true);
+            }
+        }
+
+        private void RegisterScript(string key, string script, bool addScriptTags)
+        {
+            if (HasMsAjax)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), key, script, addScriptTags);
+            }
+            else
+            {
+                Page.ClientScript.RegisterClientScriptBlock(GetType(), key, script, true);
             }
         }
 
@@ -1390,8 +1402,8 @@ namespace DNNConnect.CKEditorProvider.Web
                 editorFixedId);
 
             // Render EditorConfig
-            var test = new StringBuilder();
-            test.AppendFormat("var editorConfig{0} = {{", editorVar);
+            var editorConfigScript = new StringBuilder();
+            editorConfigScript.AppendFormat("var editorConfig{0} = {{", editorVar);
 
             var keysCount = Settings.Keys.Count;
             var currentCount = 0;
@@ -1417,9 +1429,9 @@ namespace DNNConnect.CKEditorProvider.Web
                         value = "false";
                     }
 
-                    test.AppendFormat("{0}:{1}", key, value);
+                    editorConfigScript.AppendFormat("{0}:{1}", key, value);
 
-                    test.Append(currentCount == keysCount ? "};" : ",");
+                    editorConfigScript.Append(currentCount == keysCount ? "};" : ",");
                 }
                 else
                 {
@@ -1428,13 +1440,12 @@ namespace DNNConnect.CKEditorProvider.Web
                         continue;
                     }
 
-                    test.AppendFormat("{0}:\'{1}\'", key, value);
+                    editorConfigScript.AppendFormat("{0}:\'{1}\'", key, value);
 
-                    test.Append(currentCount == keysCount ? "};" : ",");
+                    editorConfigScript.Append(currentCount == keysCount ? "};" : ",");
                 }
             }
 
-            editorScript.Append(test);
             editorScript.AppendFormat(
                 "if (CKEDITOR.instances.{0}){{return;}}",
                 editorFixedId);
@@ -1467,6 +1478,7 @@ namespace DNNConnect.CKEditorProvider.Web
             // End of LoadScript
             editorScript.Append("}");
 
+            RegisterScript(string.Format(@"{0}_CKE_Config", editorFixedId), editorConfigScript.ToString(), true);
             RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
         }
 
