@@ -31,6 +31,7 @@ using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Extensions;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
+using DotNetNuke.Framework.JavaScriptLibraries;
 
 
 namespace DNNConnect.CKEditorProvider.Web
@@ -1044,7 +1045,7 @@ namespace DNNConnect.CKEditorProvider.Web
         private void LoadAllSettings()
         {
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(_portalSettings.PortalId);
+            var portalRoles = RoleController.Instance.GetRoles(_portalSettings.PortalId);
 
             // Load Default Settings
             currentSettings = SettingsUtil.GetDefaultSettings(
@@ -1223,8 +1224,6 @@ namespace DNNConnect.CKEditorProvider.Web
 
             var listUserToolbarSets = new List<ToolbarSet>();
 
-            var roleController = new RoleController();
-
             if (currentSettings.ToolBarRoles.Count <= 0)
             {
                 return toolbarName;
@@ -1243,7 +1242,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
 
                 // Role
-                var role = roleController.GetRole(roleToolbar.RoleId, _portalSettings.PortalId);
+                var role = RoleController.Instance.GetRoleById(roleToolbar.RoleId, _portalSettings.PortalId);
 
                 if (role == null)
                 {
@@ -1302,8 +1301,7 @@ namespace DNNConnect.CKEditorProvider.Web
             const string CsAdaptName = "CKAdaptScript";
             const string CsFindName = "CKFindScript";
 
-            jQuery.RequestRegistration();
-
+            JavaScript.RequestRegistration(CommonJs.jQuery);
 
             // Inject jQuery if editor is loaded in a RadWindow
             if (HttpContext.Current.Request.QueryString["rwndrnd"] != null)

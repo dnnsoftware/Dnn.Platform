@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>DNNConnect.CKEditorProvider</DNNFileName>
     <PackageName>DNNConnect.CKEditorProvider</PackageName>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\BuildScripts</BuildScriptsPath>
@@ -11,7 +11,7 @@
   <PropertyGroup>
     <DotNetNukeMSBuildTasksLib>$(BuildScriptsPath)\DotNetNuke.MSBuild.Tasks.dll</DotNetNukeMSBuildTasksLib>
   </PropertyGroup>
-  <Import Project="MSBuild.Community.Tasks.Targets" />
+  <Import Project="$(BuildScriptsPath)\MSBuild.Community.Tasks.Targets" />
   <UsingTask AssemblyFile="$(DotNetNukeMSBuildTasksLib)" TaskName="DotNetNuke.MSBuild.Tasks.ExtensionPackager" />
 
   <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;Package">
@@ -28,10 +28,13 @@
       <Views Include="**\*.ashx;**\*.aspx;**\*.ascx" />
     </ItemGroup>
     <ItemGroup>
-      <CssFiles Include="css\*.css" />
+      <CssFiles Include="css\*.css;Browser\*.css" />
     </ItemGroup>
     <ItemGroup>
-      <JsFiles Include="js\*.js" />
+      <JsFiles Include="js\*.js;Browser\js\*.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <ImagesFiles Include="Browser\images\**\*.*" />
     </ItemGroup>
     <ItemGroup>
       <ResourceFiles Include="App_LocalResources\*.resx" />
@@ -40,7 +43,7 @@
       <CKEditor Include="CKEditor\**\*.*" />
     </ItemGroup>
     <ItemGroup>
-      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);" />
+      <Resources Include="@(ResourceFiles);@(TextFiles);@(CKEditor);@(Views);@(CssFiles);@(JsFiles);@(ImagesFiles);" />
     </ItemGroup>
     <ItemGroup>
       <CleanupFiles Include="*.Cleanup.txt" />
