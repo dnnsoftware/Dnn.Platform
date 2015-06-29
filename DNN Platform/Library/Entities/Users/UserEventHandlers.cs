@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Users
 
         public void UserRemoved(object sender, UserEventArgs args)
         {
-            DeleteAllNotifications(args.User.UserID);
+            DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
         public void UserDeleted(object sender, UserEventArgs args)
@@ -51,12 +51,11 @@ namespace DotNetNuke.Entities.Users
 
         public void UserApproved(object sender, UserEventArgs args)
         {
-            if (!args.SendNotification) return;
-            Mail.SendMail(args.User, MessageType.UserRegistrationPublic, PortalSettings.Current);
-            DeleteAllNotifications(args.User.UserID);
+            if (args.SendNotification) Mail.SendMail(args.User, MessageType.UserRegistrationPublic, PortalSettings.Current);
+            DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 
-        private void DeleteAllNotifications(int userId)
+        private static void DeleteAllNewUnauthorizedUserRegistrationNotifications(int userId)
         {
             var nt = NotificationsController.Instance.GetNotificationType("NewUnauthorizedUserRegistration");
             var notifications = NotificationsController.Instance.GetNotificationByContext(nt.NotificationTypeId, userId.ToString(CultureInfo.InvariantCulture));
