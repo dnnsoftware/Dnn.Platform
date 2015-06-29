@@ -4370,6 +4370,50 @@ namespace DotNetNuke.Data
 
 		#endregion
 
+		#region OutputCache Methods
+
+		public virtual void AddOutputCacheItem(int itemId, string cacheKey, string output, DateTime expiration)
+		{
+			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCacheAddItem", itemId, cacheKey, output, expiration);
+		}
+
+		public virtual IDataReader GetOutputCacheItem(string cacheKey)
+		{
+			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetItem", cacheKey));
+		}
+
+		public virtual int GetOutputCacheItemCount(int itemId)
+		{
+			return DotNetNuke.Data.DataProvider.Instance().ExecuteScalar<int>("OutputCacheGetItemCount", itemId);
+		}
+
+		public virtual IDataReader GetOutputCacheKeys()
+		{
+			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetKeys", DBNull.Value));
+		}
+
+		public virtual IDataReader GetOutputCacheKeys(int itemId)
+		{
+			return (DotNetNuke.Data.DataProvider.Instance().ExecuteReader("OutputCacheGetKeys", itemId));
+		}
+
+		public virtual void PurgeExpiredOutputCacheItems()
+		{
+			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCachePurgeExpiredItems", DateTime.UtcNow);
+		}
+
+		public virtual void PurgeOutputCache()
+		{
+			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCachePurgeCache");
+		}
+
+		public virtual void RemoveOutputCacheItem(int itemId)
+		{
+			DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("OutputCacheRemoveItem", itemId);
+		}
+
+		#endregion
+
 		#endregion
 
 		#region Obsolete Methods
