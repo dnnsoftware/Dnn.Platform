@@ -384,36 +384,43 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             var isInRoles = objUserInfo.IsSuperUser;
 
-            if (!isInRoles)
+            if (isInRoles)
             {
-                if (roles != null)
+                // super user
+                return true;
+            }
+
+            var context = HttpContext.Current;
+
+            foreach (var role in roles.Split(';').Where(role => !string.IsNullOrEmpty(role)))
+            {
+                if (role.StartsWith("!"))
                 {
-                    var context = HttpContext.Current;
+                    var denyRole = role.Replace("!", string.Empty);
 
-                    foreach (string role in roles.Split(new[] { ';' }).Where(role => !string.IsNullOrEmpty(role)))
+                    if ((!context.Request.IsAuthenticated && denyRole.Equals(Globals.glbRoleUnauthUserName)) || denyRole.Equals(Globals.glbRoleAllUsersName) ||
+                        objUserInfo.IsInRole(denyRole))
                     {
-                        if (role.StartsWith("!"))
-                        {
-                            if (!(settings.PortalId == objUserInfo.PortalID && settings.AdministratorId == objUserInfo.UserID))
-                            {
-                                string denyRole = role.Replace("!", string.Empty);
-
-                                if ((!context.Request.IsAuthenticated && denyRole.Equals(Globals.glbRoleUnauthUserName)) || denyRole.Equals(Globals.glbRoleAllUsersName) ||
-                                     objUserInfo.IsInRole(denyRole))
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if ((!context.Request.IsAuthenticated && role.Equals(Globals.glbRoleUnauthUserName)) || role.Equals(Globals.glbRoleAllUsersName) || objUserInfo.IsInRole(role))
-                            {
-                                isInRoles = true;
-                                break;
-                            }
-                        }
+                        break;
                     }
+                }
+                else
+                {
+                    if (settings.PortalId == objUserInfo.PortalID
+                        && settings.AdministratorId == objUserInfo.UserID)
+                    {
+                        isInRoles = true;
+                        break;
+                    }
+
+                    if ((context.Request.IsAuthenticated || !role.Equals(Globals.glbRoleUnauthUserName))
+                        && !role.Equals(Globals.glbRoleAllUsersName) && !objUserInfo.IsInRole(role))
+                    {
+                        continue;
+                    }
+
+                    isInRoles = true;
+                    break;
                 }
             }
 
