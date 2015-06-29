@@ -35,7 +35,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
             IsSystem = dataType.IsSystem;
             CanEdit = !(IsSystem) || portalSettings.UserInfo.IsSuperUser;
 
-            LocalizedNames = GetLocalizedValues(dataType.Name, DataTypeManager.DataTypeNameKey, DataTypeId, dataType.PortalId, portalSettings);
+            LocalizedNames = GetLocalizedValues(dataType.Name, DataTypeManager.NameKey, DataTypeId, dataType.PortalId, portalSettings);
         }
 
         /// <summary>

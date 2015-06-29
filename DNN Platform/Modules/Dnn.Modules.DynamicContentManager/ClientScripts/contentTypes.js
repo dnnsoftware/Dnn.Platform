@@ -154,7 +154,6 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
     self.init = function(){
         self.canEdit(true);
         self.contentTypeId(-1);
-        self.description("");
         self.isSystem(self.parentViewModel.isSystemUser);
 
         util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
@@ -165,7 +164,6 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
         self.canEdit(data.canEdit);
         self.created(data.created);
         self.contentTypeId(data.contentTypeId);
-        self.description(data.description);
         self.isSystem(data.isSystem);
 
         util.loadLocalizedValues(self.localizedNames, data.localizedNames);
@@ -217,6 +215,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
     var util = config.util;
 
     self.parentViewModel = parentViewModel;
+    self.rootViewModel = parentViewModel.rootViewModel;
 
     self.mode = config.mode;
     self.contentFieldsHeading = resx.contentFields;
@@ -254,21 +253,7 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             contentTypeId: contentTypeId,
             contentFieldId: contentFieldId
         };
-
-        util.contentTypeService().get("GetContentField", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.selectedContentField.load(data.data.contentField);
-                } else {
-                    //Error
-                }
-            },
-
-            function(){
-                //Failure
-            }
-        );
+        util.contentTypeService().getEntity(params, "GetContentField", self.selectedContentField);
 
         if(typeof cb === 'function') cb();
     };
@@ -296,19 +281,13 @@ dcc.contentFieldsViewModel = function(parentViewModel, config) {
             pageSize: self.pageSize
         };
 
-        util.contentTypeService().get("GetContentFields", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.load(data.data.contentFields);
-                } else {
-                    //Error
-                }
+        util.contentTypeService().getEntities(params,
+            "GetContentFields",
+            self.contentFields,
+            function() {
+                return new dcc.contentFieldViewModel(self, config);
             },
-
-            function(){
-                //Failure
-            }
+            self.totalResults
         );
     };
 }
@@ -319,20 +298,31 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     var util = config.util;
 
     self.parentViewModel = parentViewModel;
+    self.rootViewModel = parentViewModel.rootViewModel;
+
     self.mode = config.mode;
     self.contentTypeId = ko.observable(-1);
     self.contentFieldId = ko.observable(-1);
-    self.name = ko.observable('');
-    self.label = ko.observable('');
-    self.description = ko.observable('');
     self.dataType = ko.observable('');
     self.dataTypeId = ko.observable(-1);
     self.selected = ko.observable(false);
 
     self.dataTypes = ko.observableArray([]);
+    self.localizedDescriptions = ko.observableArray([]);
+    self.localizedLabels = ko.observableArray([]);
+    self.localizedNames = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
         return self.contentFieldId() == -1;
+    });
+
+    self.description = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedDescriptions());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedDescriptions(), value);
+        }
     });
 
     self.heading = ko.computed(function() {
@@ -341,6 +331,24 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
             heading = heading + " - " + self.name();
         }
         return heading;
+    });
+
+    self.label = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedLabels());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedLabels(), value);
+        }
+    });
+
+    self.name = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
+        }
     });
 
     var getDataTypes = function() {
@@ -355,11 +363,14 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
                 if (typeof data !== "undefined" && data != null && data.success === true) {
                     //Success
                     self.dataTypes.removeAll();
+
                     for(var i = 0; i < data.data.results.length; i++){
                         var result = data.data.results[i];
+                        var localizedValues = ko.observableArray([]);
+                        util.loadLocalizedValues(localizedValues, result.localizedNames);
                         self.dataTypes.push({
                             dataTypeId: result.dataTypeId,
-                            name: result.name
+                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
                         });
                     }
                 } else {
@@ -405,31 +416,35 @@ dcc.contentFieldViewModel = function(parentViewModel, config) {
     self.init = function() {
         self.contentFieldId(-1);
         self.contentTypeId(self.parentViewModel.parentViewModel.contentTypeId());
-        self.name('');
-        self.label('');
-        self.description('');
         self.dataTypeId(-1);
+
+        util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
+        util.initializeLocalizedValues(self.localizedLabels, self.rootViewModel.languages());
+        util.initializeLocalizedValues(self.localizedDescriptions, self.rootViewModel.languages());
+
         getDataTypes();
     };
 
     self.load = function(data) {
         self.contentFieldId(data.contentFieldId);
         self.contentTypeId(data.contentTypeId);
-        self.name(data.name);
-        self.label(data.label);
-        self.description(data.description);
         self.dataType(data.dataType);
         self.dataTypeId(data.dataTypeId);
+
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames);
+        util.loadLocalizedValues(self.localizedLabels, data.localizedLabels);
+        util.loadLocalizedValues(self.localizedDescriptions, data.localizedDescriptions);
     }
 
     self.saveContentField = function(data, e) {
+        var jsObject = ko.toJS(data);
         var params = {
-            contentFieldId: data.contentFieldId(),
-            contentTypeId: data.contentTypeId(),
-            name: data.name(),
-            label: data.label(),
-            description: data.description(),
-            dataTypeId: data.dataTypeId()
+            contentFieldId: jsObject.contentFieldId,
+            contentTypeId: jsObject.contentTypeId,
+            localizedDescriptions: jsObject.localizedDescriptions,
+            localizedNames: jsObject.localizedNames,
+            localizedLabels: jsObject.localizedLabels,
+            dataTypeId: jsObject.dataTypeId
         };
 
         util.contentTypeService().post("SaveContentField", params,

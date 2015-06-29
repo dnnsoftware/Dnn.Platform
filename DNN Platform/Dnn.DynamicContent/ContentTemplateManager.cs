@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -18,7 +19,7 @@ namespace Dnn.DynamicContent
     {
         internal const string ContentTemplateCacheKey = "ContentTypes_Templates";
         internal const string PortalScope = "PortalId";
-        public const string TemplateNameKey = "Template_{0}_Name";
+        public const string NameKey = "Template_{0}_Name";
 
         protected override Func<IContentTemplateManager> GetFactory()
         {
@@ -75,6 +76,8 @@ namespace Dnn.DynamicContent
             Delete(contentTemplate);
 
             ClearContentTypeCache(contentTemplate);
+
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentTemplate.PortalId, String.Format(NameKey, contentTemplate.TemplateId));
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ using System.Web.Http;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
+using DotNetNuke.Collections;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -56,7 +57,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         public HttpResponseMessage GetContentField(int contentTypeId, int contentFieldId)
         {
             return GetEntity(() => FieldDefinitionManager.Instance.GetFieldDefinitions(contentTypeId).SingleOrDefault((c) => c.FieldDefinitionId == contentFieldId),
-                           contentField => new ContentFieldViewModel(contentField));
+                           contentField => new ContentFieldViewModel(contentField, PortalSettings));
         }
 
         /// <summary>
@@ -69,18 +70,13 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [HttpGet]
         public HttpResponseMessage GetContentFields(int contentTypeId, int pageIndex, int pageSize)
         {
-            var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
-
-            var response = new
-                            {
-                                success = true,
-                                data = new
-                                        {
-                                            contentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, pageIndex, pageSize)
-                                        }
-                            };
-
-            return Request.CreateResponse(response);
+            return GetPage<FieldDefinition, ContentFieldViewModel>(
+                                () =>
+                                    {
+                                        var contentType = DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true);
+                                        return new PagedList<FieldDefinition>(contentType.FieldDefinitions, pageIndex, pageSize);
+                                    },
+                                contentField => new ContentFieldViewModel(contentField, PortalSettings));
         }
 
         /// <summary>
@@ -120,47 +116,49 @@ namespace Dnn.Modules.DynamicContentManager.Services
         public HttpResponseMessage SaveContentField(ContentFieldViewModel viewModel)
         {
             DynamicContentType contentType = DynamicContentTypeManager.Instance.GetContentType(viewModel.ContentTypeId, PortalSettings.PortalId, true);
+            var portalId = contentType.PortalId;
+            var contentFieldId = viewModel.ContentFieldId;
 
-            FieldDefinition contentField;
+            var localizedNames = new List<ContentTypeLocalization>();
+            string defaultName = ParseLocalizations(viewModel.LocalizedNames, localizedNames, portalId);
 
-            if (viewModel.ContentFieldId == -1)
-            {
-                contentField = new FieldDefinition()
+            var localizedLabels = new List<ContentTypeLocalization>();
+            string defaultLabel = ParseLocalizations(viewModel.LocalizedLabels, localizedLabels, portalId);
+
+            var localizedDescriptions = new List<ContentTypeLocalization>();
+            string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
+
+            return SaveEntity(contentFieldId, 
+                                () => new FieldDefinition
                                                 {
                                                     ContentTypeId = contentType.ContentTypeId,
                                                     DataTypeId = viewModel.DataTypeId,
-                                                    Label = viewModel.Label,
-                                                    Name = viewModel.Name,
-                                                    Description = viewModel.Description,
-                                                    PortalId = contentType.PortalId
-                                                };
-                FieldDefinitionManager.Instance.AddFieldDefinition(contentField);
-            }
-            else
-            {
-                //Update
-                contentField = FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId);
+                                                    Label = defaultLabel,
+                                                    Name = defaultName,
+                                                    Description = defaultDescription,
+                                                    PortalId = portalId
+                                                },
 
-                if (contentField != null)
-                {
-                    contentField.Name = viewModel.Name;
-                    contentField.Description = viewModel.Description;
-                    contentField.Label = viewModel.Label;
-                    contentField.DataTypeId = viewModel.DataTypeId;
-                    FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
+                                contentField => FieldDefinitionManager.Instance.AddFieldDefinition(contentField),
+
+                                () => FieldDefinitionManager.Instance.GetFieldDefinition(viewModel.ContentFieldId, viewModel.ContentTypeId),
+
+                                contentField =>
+                                                {
+                                                    contentField.Name = defaultName;
+                                                    contentField.Description = defaultDescription;
+                                                    contentField.Label = defaultLabel;
+                                                    contentField.DataTypeId = viewModel.DataTypeId;
+                                                    FieldDefinitionManager.Instance.UpdateFieldDefinition(contentField);
+                                                },
+
+                                (id) =>
+                                                {
+                                                    SaveContentLocalizations(localizedNames, FieldDefinitionManager.NameKey, id, portalId);
+                                                    SaveContentLocalizations(localizedLabels, FieldDefinitionManager.LabelKey, id, portalId);
+                                                    SaveContentLocalizations(localizedDescriptions, FieldDefinitionManager.DescriptionKey, id, portalId);
+                                                });
                 }
-            }
-            var response = new
-            {
-                success = true,
-                data = new
-                        {
-                            contentFieldId = contentField.FieldDefinitionId
-                        }
-            };
-
-            return Request.CreateResponse(response);
-        }
 
         /// <summary>
         /// SaveContentType saves the content type
@@ -180,29 +178,30 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var localizedDescriptions = new List<ContentTypeLocalization>();
             string defaultDescription = ParseLocalizations(viewModel.LocalizedDescriptions, localizedDescriptions, portalId);
 
-            return SaveEntity(contentTypeId, () => new DynamicContentType
-                                                        {
-                                                            Name = defaultName,
-                                                            Description = defaultDescription,
-                                                            PortalId = portalId
-                                                        },
+            return SaveEntity(contentTypeId, 
+                                () => new DynamicContentType
+                                                {
+                                                    Name = defaultName,
+                                                    Description = defaultDescription,
+                                                    PortalId = portalId
+                                                },
 
                                 contentType => DynamicContentTypeManager.Instance.AddContentType(contentType),
 
                                 () => DynamicContentTypeManager.Instance.GetContentType(contentTypeId, PortalSettings.PortalId, true),
 
                                 contentType =>
-                                        {
-                                            contentType.Name = defaultName;
-                                            contentType.Description = defaultDescription;
-                                            DynamicContentTypeManager.Instance.UpdateContentType(contentType);
-                                        },
+                                                {
+                                                    contentType.Name = defaultName;
+                                                    contentType.Description = defaultDescription;
+                                                    DynamicContentTypeManager.Instance.UpdateContentType(contentType);
+                                                },
 
-                                () =>
-                                        {
-                                            SaveContentLocalizations(localizedNames, DynamicContentTypeManager.ContentTypeNameKey, contentTypeId, portalId);
-                                            SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.ContentTypeDescriptionKey, contentTypeId, portalId);
-                                        });
+                                (id) =>
+                                                {
+                                                    SaveContentLocalizations(localizedNames, DynamicContentTypeManager.NameKey, id, portalId);
+                                                    SaveContentLocalizations(localizedDescriptions, DynamicContentTypeManager.DescriptionKey, id, portalId);
+                                                });
         }
     }
 }

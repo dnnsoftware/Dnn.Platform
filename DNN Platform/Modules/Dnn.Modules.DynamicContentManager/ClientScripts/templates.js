@@ -137,9 +137,11 @@ dcc.templateViewModel = function(parentViewModel, config){
                     self.contentTypes.removeAll();
                     for(var i = 0; i < data.data.results.length; i++){
                         var result = data.data.results[i];
+                        var localizedValues = ko.observableArray([]);
+                        util.loadLocalizedValues(localizedValues, result.localizedNames);
                         self.contentTypes.push({
                             contentTypeId: result.contentTypeId,
-                            name: result.name
+                            name: util.getLocalizedValue(self.rootViewModel.selectedLanguage(), localizedValues())
                         });
                     }
                 } else {

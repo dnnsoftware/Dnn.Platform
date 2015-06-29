@@ -193,7 +193,7 @@ dcc.sf = function(){
                         array.push(entity);
                     }
 
-                    total(data.totalResults);
+                    total(data.data.totalResults);
 
                     if(typeof onSuccess === 'function') onSuccess();
                 } else {

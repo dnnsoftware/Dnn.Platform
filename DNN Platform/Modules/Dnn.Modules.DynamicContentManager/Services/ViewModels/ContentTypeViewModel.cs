@@ -1,10 +1,7 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Dnn.DynamicContent;
 using DotNetNuke.Entities.Portals;
 using Newtonsoft.Json;
@@ -40,11 +37,11 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
 
             if (includeChildren)
             {
-                ContentFields = new ContentFieldsViewModel(contentType.FieldDefinitions);
+                ContentFields = new ContentFieldsViewModel(contentType.FieldDefinitions, portalSettings);
             }
 
-            LocalizedDescriptions = GetLocalizedValues(contentType.Description, DataTypeManager.DataTypeNameKey, ContentTypeId, contentType.PortalId, portalSettings);
-            LocalizedNames = GetLocalizedValues(contentType.Name, DataTypeManager.DataTypeNameKey, ContentTypeId, contentType.PortalId, portalSettings);
+            LocalizedDescriptions = GetLocalizedValues(contentType.Description, DynamicContentTypeManager.DescriptionKey, ContentTypeId, contentType.PortalId, portalSettings);
+            LocalizedNames = GetLocalizedValues(contentType.Name, DynamicContentTypeManager.NameKey, ContentTypeId, contentType.PortalId, portalSettings);
         }
 
         /// <summary>

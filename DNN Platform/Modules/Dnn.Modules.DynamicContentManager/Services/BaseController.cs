@@ -166,7 +166,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
         /// <param name="saveLocalizations"></param>
         /// <typeparam name="TEntity"></typeparam>
         /// <returns></returns>
-        protected HttpResponseMessage SaveEntity<TEntity>(int id, Func<TEntity> createEntity, Func<TEntity, int> addEntity, Func<TEntity> getEntity, Action<TEntity> updateEntity, Action saveLocalizations)
+        protected HttpResponseMessage SaveEntity<TEntity>(int id, Func<TEntity> createEntity, Func<TEntity, int> addEntity, Func<TEntity> getEntity, Action<TEntity> updateEntity, Action<int> saveLocalizations)
         {
             if (id == -1)
             {
@@ -183,7 +183,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                 }
             }
 
-            saveLocalizations();
+            saveLocalizations(id);
 
             var response = new
                             {

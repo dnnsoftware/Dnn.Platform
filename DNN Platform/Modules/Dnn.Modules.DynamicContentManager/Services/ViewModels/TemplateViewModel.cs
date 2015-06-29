@@ -43,7 +43,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
                 Content = sw.ReadToEnd();
             }
 
-            LocalizedNames = GetLocalizedValues(template.Name, ContentTemplateManager.TemplateNameKey, TemplateId, template.PortalId, portalSettings);
+            LocalizedNames = GetLocalizedValues(template.Name, ContentTemplateManager.NameKey, TemplateId, template.PortalId, portalSettings);
         }
 
         /// <summary>

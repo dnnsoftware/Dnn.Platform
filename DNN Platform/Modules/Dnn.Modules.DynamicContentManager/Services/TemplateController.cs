@@ -114,7 +114,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                                             ContentTemplateManager.Instance.UpdateContentTemplate(template);
                                                         },
 
-                                            () => SaveContentLocalizations(localizedNames, ContentTemplateManager.TemplateNameKey, templateId, portalId));
+                                            (id) => SaveContentLocalizations(localizedNames, ContentTemplateManager.NameKey, id, portalId));
         }
     }
 }

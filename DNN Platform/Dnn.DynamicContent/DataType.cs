@@ -41,7 +41,7 @@ namespace Dnn.DynamicContent
         {
             get
             {
-                var key = String.Format(DataTypeManager.DataTypeNameKey, DataTypeId);
+                var key = String.Format(DataTypeManager.NameKey, DataTypeId);
                 var code = Thread.CurrentThread.CurrentUICulture.ToString();
                 var localizedName = ContentTypeLocalizationManager.Instance.GetLocalizedValue(key, code, PortalId);
                 return  (String.IsNullOrEmpty(LocalizedName)) ? Name : localizedName;

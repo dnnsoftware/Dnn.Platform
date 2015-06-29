@@ -90,7 +90,7 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                                                 DataTypeManager.Instance.UpdateDataType(dataType);
                                                             },
 
-                                            () => SaveContentLocalizations(localizedNames, DataTypeManager.DataTypeNameKey, dataTypeId, portalId));
+                                            (id) => SaveContentLocalizations(localizedNames, DataTypeManager.NameKey, id, portalId));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Dnn.DynamicContent
         internal const string FindWhereDataTypeSql = "WHERE DataTypeId = @0";
         internal const string DataTypeCacheKey = "ContentTypes_DataTypes";
         internal const string PortalScope = "PortalId";
-        public const string DataTypeNameKey = "DataType_{0}_Name";
+        public const string NameKey = "DataType_{0}_Name";
 
         protected override Func<IDataTypeManager> GetFactory()
         {
@@ -87,7 +87,7 @@ namespace Dnn.DynamicContent
             }
 
             //Delete Localizations
-            ContentTypeLocalizationManager.Instance.DeleteLocalizations(dataType.PortalId, String.Format(DataTypeNameKey, dataType.DataTypeId));
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(dataType.PortalId, String.Format(NameKey, dataType.DataTypeId));
         }
 
         /// <summary>
