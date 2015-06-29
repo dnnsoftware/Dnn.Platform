@@ -956,6 +956,7 @@ namespace DNNConnect.CKEditorProvider.Web
                     Localization.GetString("Options.Text", SResXFile));
             }
 
+            outWriter.Write("</p>");
             /////////////////
         }
 
@@ -1185,6 +1186,18 @@ namespace DNNConnect.CKEditorProvider.Web
             else
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), key, script, true);
+            }
+        }
+
+        private void RegisterScript(string key, string script, bool addScriptTags)
+        {
+            if (HasMsAjax)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, GetType(), key, script, addScriptTags);
+            }
+            else
+            {
+                Page.ClientScript.RegisterClientScriptBlock(GetType(), key, script, true);
             }
         }
 
@@ -1434,7 +1447,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 }
             }
 
-            editorScript.Append(test);
+            //editorScript.Append(test);
             editorScript.AppendFormat(
                 "if (CKEDITOR.instances.{0}){{return;}}",
                 editorFixedId);
@@ -1467,6 +1480,7 @@ namespace DNNConnect.CKEditorProvider.Web
             // End of LoadScript
             editorScript.Append("}");
 
+            RegisterScript(string.Format(@"{0}_CKE_Config", editorFixedId), test.ToString(), true);
             RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
         }
 
