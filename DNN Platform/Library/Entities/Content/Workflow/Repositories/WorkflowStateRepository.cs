@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<WorkflowState>();
-                return rep.Find("WHERE WorkflowId = @0 ORDER BY [Order] ASC", workflowId);
+                return rep.Find("WHERE WorkflowID = @0 ORDER BY [Order] ASC", workflowId);
             }
         }
 
