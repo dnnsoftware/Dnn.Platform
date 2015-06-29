@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
+	    private const string ToastsCacheKey = "GetToasts_{0}";
 
         #endregion
 
@@ -374,6 +375,7 @@ namespace DotNetNuke.Services.Social.Notifications
         public void MarkReadyForToast(Notification notification, int userId)
         {
             _dataService.MarkReadyForToast(notification.NotificationID, userId);
+			DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
         }
 
 		public void MarkToastSent(int notificationId, int userId)
@@ -383,11 +385,17 @@ namespace DotNetNuke.Services.Social.Notifications
 
 		public IList<Notification> GetToasts(UserInfo userInfo)
 		{
-			var toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
-
-			foreach (var message in toasts)
+			var cacheKey = string.Format(ToastsCacheKey, userInfo.UserID);
+			var toasts = DataCache.GetCache<IList<Notification>>(cacheKey);
+			if (toasts == null)
 			{
-				_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+				toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+				foreach (var message in toasts)
+				{
+					_dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+				}
+
+				DataCache.SetCache(cacheKey, toasts);
 			}
 
 			return toasts;
