@@ -184,6 +184,22 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 	END
 GO
 
+
+/* DNN-7094 Provide Multi-language Support  */
+/********************************************/
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentTypes_Localizations]') AND type in (N'U'))
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}ContentTypes_Localizations](
+			[LocalizationID] [int] IDENTITY(1,1) NOT NULL,
+			[PortalID] [int] NOT NULL,
+			[CultureCode] [nvarchar](10) NOT NULL,
+			[Key] [nvarchar](256) NOT NULL,
+			[Value] [nvarchar](max) NOT NULL,
+			CONSTRAINT [PK_{objectQualifier}ContentTypes_Localizations] PRIMARY KEY CLUSTERED ([LocalizationID] ASC)
+	END
+GO
+
 /* Add Columns to Users Table */
 /******************************/
 
