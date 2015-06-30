@@ -2546,7 +2546,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion624()
         {
-            UninstallPackage("DotNetNuke.MarketPlace");
+            UninstallPackage("DotNetNuke.MarketPlace", "Module");
         }
 
         private static void UpgradeToVersion700()
@@ -2659,7 +2659,7 @@ namespace DotNetNuke.Services.Upgrade
             };
             LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
 
-            UninstallPackage("DotNetNuke.SearchInput");
+            UninstallPackage("DotNetNuke.SearchInput", "Module");
 
             //enable password strength meter for new installs only
             HostController.Instance.Update("EnableStrengthMeter", Globals.Status == Globals.UpgradeStatus.Install ? "Y" : "N");
@@ -2769,8 +2769,8 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             //ensure old codeplex module is uninstalled - need to check for both variants of package name
-            UninstallPackage("DotNetNuke.Module Creator");
-            UninstallPackage("DNNCorp.ModuleCreator");
+            UninstallPackage("DotNetNuke.Module Creator", "Module");
+            UninstallPackage("DNNCorp.ModuleCreator", "Module");
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
@@ -2863,7 +2863,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpgradeToVersion722()
         {
-            UninstallPackage("DotNetNuke.Messaging");
+            UninstallPackage("DotNetNuke.Messaging", "Module");
 
             //add event log type:POTENTIAL_PAYPAL_PAYMENT_FRAUD
             if (!DoesLogTypeExists(EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()))
@@ -3039,6 +3039,21 @@ namespace DotNetNuke.Services.Upgrade
 
             RemoveContentListModuleFromSearchResultsPage();
             ReIndexUserSearch();
+        }
+
+        private static void UpgradeToVersion742()
+        {
+            var containerFolder = string.Format("{0}Containers\\DarkKnightMobile", Globals.HostMapPath);  
+            var skinFolder = string.Format("{0}Skins\\DarkKnightMobile", Globals.HostMapPath);  
+            if (!Directory.Exists(skinFolder))  
+    		{  
+                UninstallPackage("DarkKnightMobile", "Skin"); //Skin  
+        	}
+
+            if (!Directory.Exists(containerFolder))
+            {
+                UninstallPackage("DarkKnightMobile", "Container"); //Container  
+            }
         }
 
         private static void ReIndexUserSearch()
@@ -3237,9 +3252,9 @@ namespace DotNetNuke.Services.Upgrade
         }
 
 
-        private static void UninstallPackage(string packageName)
+        private static void UninstallPackage(string packageName, string packageType)
         {
-            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName);
+            var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == packageName && p.PackageType == packageType);
             if (searchInput != null)
             {
                 var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
@@ -5251,6 +5266,9 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.4.0":
                         UpgradeToVersion740();
                         break;
+					case "7.4.2":  
+ 						UpgradeToVersion742();  
+                        break;  
                 }
             }
             catch (Exception ex)
