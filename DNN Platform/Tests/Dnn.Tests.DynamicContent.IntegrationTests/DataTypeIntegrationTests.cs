@@ -7,6 +7,7 @@ using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Common;
 using Dnn.DynamicContent.Exceptions;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Services.Cache;
@@ -37,6 +38,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             TearDownInternal();
             ContentController.ClearInstance();
             DateUtilitiesManager.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -111,6 +113,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             dataTypeController.DeleteDataType(dataType);
 
@@ -128,6 +133,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act, Assert
             Assert.Throws<DataTypeInUseException>(() => dataTypeController.DeleteDataType(dataType));
         }
@@ -142,6 +150,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             dataTypeController.DeleteDataType(dataType);

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Entities.Content;
@@ -32,6 +33,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         public void TearDown()
         {
             TearDownInternal();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -85,6 +87,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             contentTypeController.DeleteContentType(contentType);
 
@@ -103,6 +108,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "Type_2" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             contentTypeController.DeleteContentType(contentType);
 
@@ -118,6 +126,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             SetUpContentTypes(RecordCount);
             var contentTypeController = new DynamicContentTypeManager();
             var contentType = new DynamicContentType() { ContentTypeId = typeId, Name = "New_Type", PortalId = PortalId };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             contentTypeController.DeleteContentType(contentType);

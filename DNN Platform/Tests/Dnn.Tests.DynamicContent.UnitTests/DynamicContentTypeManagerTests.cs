@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -59,6 +60,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             MockComponentProvider.ResetContainer();
             UserController.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -303,12 +305,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
-
             var contentType = new DynamicContentType
                                         {
                                             Name = Constants.CONTENTTYPE_ValidContentType,
                                             ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
                                         };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             contentTypeController.DeleteContentType(contentType);
@@ -322,12 +326,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
-
             var contentType = new DynamicContentType
                                     {
                                         Name = Constants.CONTENTTYPE_ValidContentType,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
                                     };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             var fieldDefinitionCount = 5;
             for (int i = 0; i < fieldDefinitionCount; i++)
@@ -348,12 +354,14 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTypeController = new DynamicContentTypeManager(_mockDataContext.Object);
-
             var contentType = new DynamicContentType
                                     {
                                         Name = Constants.CONTENTTYPE_ValidContentType,
                                         ContentTypeId = Constants.CONTENTTYPE_ValidContentTypeId
                                     };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             var contentTemplateCount = 5;
             for (int i = 0; i < contentTemplateCount; i++)

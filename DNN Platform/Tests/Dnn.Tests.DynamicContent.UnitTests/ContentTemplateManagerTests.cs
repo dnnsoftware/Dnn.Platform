@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -52,6 +53,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             MockComponentProvider.ResetContainer();
             ContentController.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -219,8 +221,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var contentTemplateController = new ContentTemplateManager(_mockDataContext.Object);
-
             var contentTemplate = new ContentTemplate { TemplateId = Constants.CONTENTTYPE_ValidContentTemplateId };
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             contentTemplateController.DeleteContentTemplate(contentTemplate);

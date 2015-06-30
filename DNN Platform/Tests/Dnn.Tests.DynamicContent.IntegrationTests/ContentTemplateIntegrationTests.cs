@@ -13,6 +13,7 @@ using DotNetNuke.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Localization;
 
 // ReSharper disable UseStringInterpolation
 // ReSharper disable BuiltInTypeReferenceStyle
@@ -36,6 +37,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             TearDownInternal();
             ContentController.ClearInstance();
             DateUtilitiesManager.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -97,6 +99,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { TemplateId = templateId, Name = "New_Type" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             contentTemplateController.DeleteContentTemplate(contentTemplate);
 
@@ -117,6 +122,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
 
             var contentTemplateController = new ContentTemplateManager();
             var contentTemplate = new ContentTemplate() { PortalId = portalId, ContentTypeId = contentTypeId, TemplateId = templateId, Name = "New_Type" };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             contentTemplateController.DeleteContentTemplate(contentTemplate);

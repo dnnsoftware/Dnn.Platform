@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Cache;
@@ -54,6 +55,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             MockComponentProvider.ResetContainer();
             ValidationRuleManager.ClearInstance();
             DynamicContentTypeManager.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -299,11 +301,13 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
             var definition = new FieldDefinition
             {
                 FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId
             };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
@@ -317,7 +321,6 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var fieldDefinitionController = new FieldDefinitionManager(_mockDataContext.Object);
-
             var definition = new FieldDefinition
                                     {
                                         FieldDefinitionId = Constants.CONTENTTYPE_ValidFieldDefinitionId
@@ -327,6 +330,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             {
                 definition.ValidationRules.Add(new ValidationRule());
             }
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);

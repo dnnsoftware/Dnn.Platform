@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Exceptions;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -52,6 +53,7 @@ namespace Dnn.Tests.DynamicContent.UnitTests
             MockComponentProvider.ResetContainer();
             ContentController.ClearInstance();
             UserController.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -176,8 +178,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
         {
             //Arrange
             var dataTypeController = new DataTypeManager(_mockDataContext.Object);
-
             var dataType = new DataType { DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId };
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             dataTypeController.DeleteDataType(dataType);
@@ -195,6 +198,9 @@ namespace Dnn.Tests.DynamicContent.UnitTests
                 .Returns(new List<FieldDefinition>());
 
             var dataType = new DataType {DataTypeId = Constants.CONTENTTYPE_ValidDataTypeId};
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             dataTypeController.DeleteDataType(dataType);

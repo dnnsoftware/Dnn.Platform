@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Data;
@@ -37,6 +38,7 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         {
             TearDownInternal();
             DynamicContentTypeManager.ClearInstance();
+            ContentTypeLocalizationManager.ClearInstance();
         }
 
         [Test]
@@ -96,6 +98,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                         FieldDefinitionId = definitionId
                                     };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
 
@@ -117,6 +122,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                         FieldDefinitionId = definitionId
                                     };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);
 
@@ -137,6 +145,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
                                         FieldDefinitionId = definitionId,
                                         ContentTypeId = contentTypeId,
                                     };
+
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
 
             //Act
             fieldDefinitionController.DeleteFieldDefinition(definition);

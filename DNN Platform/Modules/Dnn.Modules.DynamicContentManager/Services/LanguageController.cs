@@ -3,6 +3,7 @@
 
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
@@ -35,7 +36,8 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                 data = new
                                         {
                                             results = languages,
-                                            defaultLanguage = PortalSettings.DefaultLanguage
+                                            defaultLanguage = PortalSettings.DefaultLanguage,
+                                            userLanguage = Thread.CurrentThread.CurrentUICulture.ToString()
                                         }
                             };
 
