@@ -3041,13 +3041,7 @@ namespace DotNetNuke.Services.Upgrade
             ReIndexUserSearch();
         }
 
-	    private static void UpgradeToVersion742()
-	    {
-			UninstallPackage("DarkKnightMobile"); //Container
-			UninstallPackage("DarkKnightMobile"); //Skin
-	    }
-
-	    private static void ReIndexUserSearch()
+        private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
@@ -5257,9 +5251,6 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.4.0":
                         UpgradeToVersion740();
                         break;
-					case "7.4.2":
-		                UpgradeToVersion742();
-		                break;
                 }
             }
             catch (Exception ex)
