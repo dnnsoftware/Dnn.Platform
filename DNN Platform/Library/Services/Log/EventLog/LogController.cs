@@ -180,7 +180,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             if (Globals.Status == Globals.UpgradeStatus.Install)
             {
-                //AddLogToFile(logInfo);
                 Logger.Info(logInfo);
             }
             else
@@ -208,6 +207,36 @@ namespace DotNetNuke.Services.Log.EventLog
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
                         logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
+                    }
+
+                    //Check if Log Type exists
+                    if (!GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
+                    {
+                        //Add new Log Type
+                        var logType = new LogTypeInfo()
+                                            {
+                                                LogTypeKey = logInfo.LogTypeKey,
+                                                LogTypeFriendlyName = logInfo.LogTypeKey,
+                                                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                                                LogTypeCSSClass = "GeneralAdminOperation"
+
+                                            };
+                        AddLogType(logType);
+
+                        var logTypeConfigInfo = new LogTypeConfigInfo()
+                                            {
+                                                LogTypeKey =  logInfo.LogTypeKey,
+                                                LogTypePortalID = logInfo.LogPortalID.ToString(),
+                                                LoggingIsActive = false,
+                                                KeepMostRecent = "-1",
+                                                EmailNotificationIsActive = false,
+                                                NotificationThreshold = 0,
+                                                NotificationThresholdTime = 0,
+                                                NotificationThresholdTimeType = 0,
+                                                MailFromAddress = String.Empty,
+                                                MailToAddress = String.Empty
+                                            };
+                        AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
 	                if (LoggingProvider.Instance() != null)
