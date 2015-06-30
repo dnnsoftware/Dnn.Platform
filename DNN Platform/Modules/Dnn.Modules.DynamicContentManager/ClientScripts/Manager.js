@@ -190,7 +190,7 @@
                         var language = { code: result.code, language: result.language };
                         viewModel.languages.push(language);
                     }
-                    viewModel.isLocalized(viewModel.languages().length > 0);
+                    viewModel.isLocalized(viewModel.languages().length > 1);
                     viewModel.selectedLanguage(data.data.defaultLanguage);
                 }
                 else {
