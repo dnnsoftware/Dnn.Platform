@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Dnn.DynamicContent;
 using DotNetNuke.Collections;
+using DotNetNuke.Entities.Portals;
 using Newtonsoft.Json;
 
 namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
@@ -21,12 +22,12 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// <param name="fieldDefinitions"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        public ContentFieldsViewModel(IList<FieldDefinition> fieldDefinitions, int pageIndex = 0, int pageSize = 5)
+        public ContentFieldsViewModel(IList<FieldDefinition> fieldDefinitions, PortalSettings settings, int pageIndex = 0, int pageSize = 5)
         {
             Fields = new List<ContentFieldViewModel>();
             foreach (var definition in new PagedList<FieldDefinition>(fieldDefinitions, pageIndex, pageSize))
             {
-                Fields.Add(new ContentFieldViewModel(definition));
+                Fields.Add(new ContentFieldViewModel(definition, settings));
             }
 
             TotalResults = fieldDefinitions.Count;

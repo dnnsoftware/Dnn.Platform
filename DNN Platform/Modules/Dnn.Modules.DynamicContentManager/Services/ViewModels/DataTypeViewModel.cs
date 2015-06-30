@@ -1,7 +1,9 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using Dnn.DynamicContent;
+using DotNetNuke.Entities.Portals;
 using Newtonsoft.Json;
 
 namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
@@ -10,7 +12,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     /// DataTypeViewModel represents a Data Type object within the DataType Web Service API
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class DataTypeViewModel
+    public class DataTypeViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructs a DataTypeViewModel
@@ -24,15 +26,16 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a DataTypeViewModel from a DataType object
         /// </summary>
         /// <param name="dataType">The DataType object</param>
-        /// <param name="isSuperUser">A flag that indicates the user is a Superuser</param>
-        public DataTypeViewModel(DataType dataType, bool isSuperUser)
+        /// <param name="portalSettings">The portal Settings for the current portal</param>
+        public DataTypeViewModel(DataType dataType, PortalSettings portalSettings)
         {
             BaseType = dataType.UnderlyingDataType;
             Created = dataType.CreatedOnDate.ToShortDateString();
             DataTypeId = dataType.DataTypeId;
             IsSystem = dataType.IsSystem;
-            Name = dataType.Name;
-            CanEdit = !(IsSystem) || isSuperUser;
+            CanEdit = !(IsSystem) || portalSettings.UserInfo.IsSuperUser;
+
+            LocalizedNames = GetLocalizedValues(dataType.Name, DataTypeManager.NameKey, DataTypeId, dataType.PortalId, portalSettings);
         }
 
         /// <summary>
@@ -66,9 +69,9 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         public bool IsSystem { get; set; }
 
         /// <summary>
-        /// The name of the Data Type
+        /// A List of localized values for the Name property
         /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("localizedNames")]
+        public List<dynamic> LocalizedNames { get; set; }
     }
 }

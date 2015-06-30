@@ -9,7 +9,7 @@ namespace Dnn.DynamicContent.Exceptions
     public class JsonInvalidFieldException : InvalidOperationException
     {
         public JsonInvalidFieldException(string fieldName)
-            : base(Localization.GetExceptionMessage("JsonInvalidField", String.Format("The content type does not specify the field - {0}.", fieldName)))
+            : base(DotNetNuke.Services.Localization.Localization.GetExceptionMessage("JsonInvalidField", String.Format("The content type does not specify the field - {0}.", fieldName)))
         {
 
         }

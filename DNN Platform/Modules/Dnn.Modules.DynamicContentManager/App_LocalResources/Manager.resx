@@ -151,7 +151,7 @@
     <value>Find Data Type</value>
   </data>
   <data name="System.Text" xml:space="preserve">
-    <value>System</value>
+    <value>Global</value>
   </data>
   <data name="AddContentType.Text" xml:space="preserve">
     <value>Add Content Type</value>
@@ -193,7 +193,7 @@
     <value>Name</value>
   </data>
   <data name="SystemType.Text" xml:space="preserve">
-    <value>System Type</value>
+    <value>Global Type</value>
   </data>
   <data name="Boolean.Text" xml:space="preserve">
     <value>Boolean</value>
@@ -277,7 +277,7 @@
     <value>Showing {0}-{1} of {2} Templates</value>
   </data>
   <data name="SystemTemplate.Text" xml:space="preserve">
-    <value>System Temp</value>
+    <value>GlobalTemplate</value>
   </data>
   <data name="TemplateFile.Text" xml:space="preserve">
     <value>Template File</value>
@@ -290,5 +290,8 @@
   </data>
   <data name="DeleteTemplateConfirmMessage.Text" xml:space="preserve">
     <value>Are you sure you want to delete this Template?</value>
+  </data>
+  <data name="Language.Text" xml:space="preserve">
+    <value>Language</value>
   </data>
 </root>

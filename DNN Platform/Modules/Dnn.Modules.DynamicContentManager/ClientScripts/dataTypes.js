@@ -2,15 +2,16 @@ if (typeof dcc === 'undefined' || dcc === null) {
     dcc = {};
 };
 
-dcc.dataTypesViewModel = function(config) {
+dcc.dataTypesViewModel = function(config, rootViewModel) {
     var self = this;
     var resx = config.resx;
     var settings = config.settings;
     var util = config.util;
     var $rootElement = config.$rootElement;
 
+    self.rootViewModel = rootViewModel;
+
     self.isSystemUser = settings.isSystemUser;
-    self.heading = ko.observable(resx.dataTypes);
     self.searchText = ko.observable("");
     self.results = ko.observableArray([]);
     self.totalResults = ko.observable(0);
@@ -41,13 +42,7 @@ dcc.dataTypesViewModel = function(config) {
 
         util.asyncParallel([
             function(cb1){
-                self.selectedDataType.load( {
-                    canEdit: false,
-                    baseType: 0,
-                    dataTypeId: -1,
-                    isSystem: false,
-                    name: ""
-                });
+                self.selectedDataType.init();
                 cb1();
             }            ,
             function(cb2){
@@ -99,21 +94,7 @@ dcc.dataTypesViewModel = function(config) {
         var params = {
             dataTypeId: dataTypeId
         };
-
-        util.dataTypeService().get("GetDataType", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.selectedDataType.load(data.data.dataType);
-                } else {
-                    //Error
-                }
-            },
-
-            function(){
-                //Failure
-            }
-        );
+        util.dataTypeService().getEntity(params, "GetDataType", self.selectedDataType);
 
         if(typeof cb === 'function') cb();
     };
@@ -124,20 +105,13 @@ dcc.dataTypesViewModel = function(config) {
             pageIndex: self.pageIndex(),
             pageSize: self.pageSize
         };
-
-        util.dataTypeService().get("GetDataTypes", params,
-            function(data) {
-                if (typeof data !== "undefined" && data != null && data.success === true) {
-                    //Success
-                    self.load(data.data);
-                } else {
-                    //Error
-                }
+        util.dataTypeService().getEntities(params,
+            "GetDataTypes",
+            self.results,
+            function() {
+                return new dcc.dataTypeViewModel(self, config);
             },
-
-            function(){
-                //Failure
-            }
+            self.totalResults
         );
     };
 
@@ -148,17 +122,6 @@ dcc.dataTypesViewModel = function(config) {
         self.searchText.subscribe(function () {
             findDataTypes();
         });
-    };
-
-    self.load = function(data) {
-        self.results.removeAll();
-        for(var i=0; i < data.results.length; i++){
-            var result = data.results[i];
-            var dataType = new dcc.dataTypeViewModel(self, config);
-            dataType.load(result);
-            self.results.push(dataType);
-        }
-        self.totalResults(data.totalResults)
     };
 
     self.refresh = function() {
@@ -173,15 +136,26 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
     var $rootElement = config.$rootElement;
 
     self.parentViewModel = parentViewModel;
+    self.rootViewModel = parentViewModel.rootViewModel;
+
     self.canEdit = ko.observable(false);
     self.created = ko.observable('');
     self.dataTypeId = ko.observable(-1);
     self.baseType = ko.observable(0);
-    self.name = ko.observable('');
     self.isSystem = ko.observable(false);
+    self.localizedNames = ko.observableArray([]);
 
     self.isAddMode = ko.computed(function() {
         return self.dataTypeId() == -1;
+    });
+
+    self.name = ko.computed({
+        read: function () {
+            return util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames());
+        },
+        write: function(value) {
+            util.setlocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames(), value);
+        }
     });
 
     var collapseDetailRow = function(cb) {
@@ -218,21 +192,32 @@ dcc.dataTypeViewModel = function(parentViewModel, config){
         });
     };
 
+    self.init = function() {
+        self.dataTypeId(-1);
+        self.canEdit(false);
+        self.baseType(0);
+        self.isSystem(false);
+
+        util.initializeLocalizedValues(self.localizedNames, self.rootViewModel.languages());
+    };
+
     self.load = function(data) {
         self.canEdit(data.canEdit);
         self.created(data.created);
         self.dataTypeId(data.dataTypeId);
         self.baseType(data.baseType);
-        self.name(data.name);
         self.isSystem(data.isSystem);
+
+        util.loadLocalizedValues(self.localizedNames, data.localizedNames)
     };
 
     self.saveDataType = function(data, e) {
+        var jsObject = ko.toJS(data);
         var params = {
-            dataTypeId: data.dataTypeId(),
-            baseType: data.baseType(),
-            name: data.name(),
-            isSystem: data.isSystem()
+            dataTypeId: jsObject.dataTypeId,
+            baseType: jsObject.baseType,
+            localizedNames: jsObject.localizedNames,
+            isSystem: jsObject.isSystem
         };
 
         util.dataTypeService().post("SaveDataType", params,

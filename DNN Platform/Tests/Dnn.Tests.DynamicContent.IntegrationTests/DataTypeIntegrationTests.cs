@@ -151,6 +151,42 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
         }
 
         [Test]
+        public void GetDataType_Fetches_Record_If_Id_Valid()
+        {
+            //Arrange
+            var dataTypeId = Constants.CONTENTTYPE_ValidDataTypeId;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(null);
+            SetUpDataTypes(RecordCount, portalId);
+
+            var dataTypeController = new DataTypeManager();
+
+            //Act
+            var dataType = dataTypeController.GetDataType(dataTypeId, portalId);
+
+            //Assert
+            Assert.NotNull(dataType);
+        }
+
+        [Test]
+        public void GetDataType_Returns_Null_If_Id_InValid()
+        {
+            //Arrange
+            var dataTypeId = 999;
+            var portalId = Constants.PORTAL_ValidPortalId;
+            MockCache.Setup(c => c.GetItem(String.Format(_cacheKey, portalId))).Returns(null);
+            SetUpDataTypes(RecordCount, portalId);
+
+            var dataTypeController = new DataTypeManager();
+
+            //Act
+            var dataType = dataTypeController.GetDataType(dataTypeId, portalId);
+
+            //Assert
+            Assert.Null(dataType);
+        }
+
+        [Test]
         public void GetDataTypes_Fetches_Records_From_Database_If_Cache_Is_Null()
         {
             //Arrange

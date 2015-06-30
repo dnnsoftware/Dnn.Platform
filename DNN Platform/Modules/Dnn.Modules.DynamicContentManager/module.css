@@ -72,7 +72,11 @@
     width: 850px;
 }
 
-.dccContainer .dccPanels .dccPanel .dccHeading{
+.dccContainer .dccExtraMargin {
+    margin-top: 25px;
+}
+
+.dccContainer .dccHeading{
     font-size: 28px;
     padding-top: 25px;
     padding-bottom: 10px;
@@ -81,8 +85,25 @@
     border-bottom: solid 2px #092836;
 }
 
-.dccContainer .dccPanels .dccPanel .dccHeading a{
+.dccContainer .dccHeading a{
     float: right;
+}
+
+.dccContainer div.dccLanguageSelector{
+    float: right;
+    display: inline-block;
+    padding-top: 15px;
+    padding-right: 25px;
+}
+
+.dccContainer div.dccLanguageSelector span{
+    font-size: 16px;
+}
+
+.dccContainer div.dccLanguageSelector select{
+    margin-bottom: 0px;
+    padding: 2px 5px 5px 5px;
+    font-size:15px;
 }
 
 .dccContainer .dccPanels .dccPanel .dccSubPanel{

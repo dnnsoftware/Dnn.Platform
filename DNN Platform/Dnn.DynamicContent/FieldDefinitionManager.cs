@@ -3,6 +3,7 @@
 
 using System;
 using System.Linq;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 
@@ -12,6 +13,9 @@ namespace Dnn.DynamicContent
     {
         internal const string FieldDefinitionCacheKey = "ContentTypes_FieldDefinitions";
         internal const string FieldDefinitionScope = "ContentTypeId";
+        public const string DescriptionKey = "ContentField_{0}_Description";
+        public const string LabelKey = "ContentField_{0}_Label";
+        public const string NameKey = "ContentField_{0}_Name";
 
         protected override Func<IFieldDefinitionManager> GetFactory()
         {
@@ -78,6 +82,11 @@ namespace Dnn.DynamicContent
             {
                 ValidationRuleManager.Instance.DeleteValidationRule(validationRule);
             }
+
+            //Delete Localizations
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(NameKey, field.FieldDefinitionId));
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(LabelKey, field.FieldDefinitionId));
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(field.PortalId, String.Format(DescriptionKey, field.FieldDefinitionId));
         }
 
         /// <summary>

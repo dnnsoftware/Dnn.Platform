@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dnn.DynamicContent.Common;
+using Dnn.DynamicContent.Localization;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
@@ -15,6 +16,8 @@ namespace Dnn.DynamicContent
     public class DynamicContentTypeManager : ControllerBase<DynamicContentType, IDynamicContentTypeManager, DynamicContentTypeManager>, IDynamicContentTypeManager
     {
         internal const string StructuredWhereClause = "WHERE PortalID = @0 AND IsStructured = 1";
+        public const string NameKey = "ContentType_{0}_Name";
+        public const string DescriptionKey = "ContentType_{0}_Description";
 
         protected override Func<IDynamicContentTypeManager> GetFactory()
         {
@@ -80,6 +83,10 @@ namespace Dnn.DynamicContent
             {
                 ContentTemplateManager.Instance.DeleteContentTemplate(template);
             }
+
+            //Delete Localizations
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(NameKey, contentType.ContentTypeId));
+            ContentTypeLocalizationManager.Instance.DeleteLocalizations(contentType.PortalId, String.Format(DescriptionKey, contentType.ContentTypeId));
         }
 
         /// <summary>

@@ -1,7 +1,9 @@
 ﻿// Copyright (c) DNN Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using Dnn.DynamicContent;
+using DotNetNuke.Entities.Portals;
 using Newtonsoft.Json;
 
 namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
@@ -10,7 +12,7 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
     /// ContentFieldViewModel represents a Content Field object within the ContentType Web Service API
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class ContentFieldViewModel
+    public class ContentFieldViewModel : BaseViewModel
     {
         /// <summary>
         /// Constructs a ContentFieldViewModel
@@ -25,15 +27,16 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         /// Constructs a ContentFieldViewModel from a FieldDefinition object
         /// </summary>
         /// <param name="definition">The field Definition to use</param>
-        public ContentFieldViewModel(FieldDefinition definition)
+        public ContentFieldViewModel(FieldDefinition definition, PortalSettings portalSettings)
         {
             ContentFieldId = definition.FieldDefinitionId;
             ContentTypeId = definition.ContentTypeId;
             DataTypeId = definition.DataTypeId;
             DataType = definition.DataType.Name;
-            Description = definition.Description;
-            Label = definition.Label;
-            Name = definition.Name;
+
+            LocalizedDescriptions = GetLocalizedValues(definition.Description, FieldDefinitionManager.DescriptionKey, ContentFieldId, definition.PortalId, portalSettings);
+            LocalizedLabels = GetLocalizedValues(definition.Label, FieldDefinitionManager.LabelKey, ContentFieldId, definition.PortalId, portalSettings);
+            LocalizedNames = GetLocalizedValues(definition.Name, FieldDefinitionManager.NameKey, ContentFieldId, definition.PortalId, portalSettings);
         }
 
         /// <summary>
@@ -61,21 +64,21 @@ namespace Dnn.Modules.DynamicContentManager.Services.ViewModels
         public int DataTypeId { get; set; }
 
         /// <summary>
-        /// The description of the Content Field
+        /// A List of localized values for the Description property
         /// </summary>
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [JsonProperty("localizedDescriptions")]
+        public List<dynamic> LocalizedDescriptions { get; set; }
 
         /// <summary>
-        /// The label of the Content Field
+        /// A List of localized values for the Label property
         /// </summary>
-        [JsonProperty("label")]
-        public string Label { get; set; }
+        [JsonProperty("localizedLabels")]
+        public List<dynamic> LocalizedLabels { get; set; }
 
         /// <summary>
-        /// The name of the Content Field
+        /// A List of localized values for the Name property
         /// </summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("localizedNames")]
+        public List<dynamic> LocalizedNames { get; set; }
     }
 }
