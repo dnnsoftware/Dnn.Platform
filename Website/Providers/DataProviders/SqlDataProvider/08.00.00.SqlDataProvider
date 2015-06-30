@@ -197,6 +197,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[Key] [nvarchar](256) NOT NULL,
 			[Value] [nvarchar](max) NOT NULL,
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_Localizations] PRIMARY KEY CLUSTERED ([LocalizationID] ASC)
+		)
 	END
 GO
 
