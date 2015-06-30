@@ -94,6 +94,9 @@ namespace Dnn.Tests.DynamicContent.IntegrationTests
             var dataTypeController = new DataTypeManager();
             var dataType = new DataType() { DataTypeId = dataTypeId, Name = "New_Type" };
 
+            var mockLocalization = new Mock<IContentTypeLocalizationManager>();
+            ContentTypeLocalizationManager.SetTestableInstance(mockLocalization.Object);
+
             //Act
             dataTypeController.DeleteDataType(dataType);
 
