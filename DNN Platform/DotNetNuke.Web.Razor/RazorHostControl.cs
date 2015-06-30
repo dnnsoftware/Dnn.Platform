@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
-		public Entities.Modules.Actions.ModuleActionCollection ModuleActions
+		public ModuleActionCollection ModuleActions
 		{
 			get
 			{

@@ -85,8 +85,8 @@ namespace DotNetNuke.Security
 
         private static void VerifyAesSettings(string passPhrase, string salt)
         {
-            Requires.NotNull("passPhrase", passPhrase);
-            Requires.NotNull("salt", salt);
+            Requires.PropertyNotNull("passPhrase", passPhrase);
+            Requires.PropertyNotNull("salt", salt);
             // Throw exception if the password or salt are too short  
             if (passPhrase.Length < 8)
                 throw new CryptographicException("Passphrase must be at least 8 characters long.");

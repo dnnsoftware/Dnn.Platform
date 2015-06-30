@@ -40,6 +40,13 @@ namespace DotNetNuke.Entities.Users
         UserInfo GetUserByDisplayname(int portalId, string displayName);
 
         /// <summary>
+        /// Get a user based on their HMAC AppId
+        /// </summary>
+        /// <param name="appId">HMAC AppId</param>
+        /// <returns>The User as a UserInfo object</returns>
+        UserInfo GetUserByHmacAppId(string appId);
+
+        /// <summary>
         /// GetUser retrieves a User from the DataStore
         /// </summary>
         /// <remarks>

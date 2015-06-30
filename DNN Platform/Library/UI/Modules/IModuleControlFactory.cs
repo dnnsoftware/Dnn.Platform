@@ -31,5 +31,7 @@ namespace DotNetNuke.UI.Modules
     public interface IModuleControlFactory
     {
         Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration);
+
+        Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc);
     }
 }

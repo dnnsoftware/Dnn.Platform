@@ -951,9 +951,7 @@ namespace DotNetNuke.Entities.Tabs
         public void CreateContentItem(TabInfo tab)
         {
             //First create ContentItem as we need the ContentItemID
-            var typeController = new ContentTypeController();
-            ContentType contentType =
-                (from t in typeController.GetContentTypes() where t.ContentType == "Tab" select t).SingleOrDefault();
+            ContentType contentType = ContentType.Tab;
 
             IContentController contentController = Util.GetContentController();
             tab.Content = String.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;

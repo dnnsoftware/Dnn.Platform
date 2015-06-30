@@ -72,27 +72,29 @@ namespace DotNetNuke.Services.Sitemap
             var currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
             if (LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished)
             {
-                foreach (TabInfo tab in TabController.Instance.GetTabsByPortal(portalId).Values.Where(t => !t.IsSystem && t.CultureCode.ToLowerInvariant() == currentLanguage.ToLowerInvariant()))
+                foreach (
+                    TabInfo tab in
+                        TabController.Instance.GetTabsByPortal(portalId)
 				{
 	                try
 	                {
 	                    if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
 	                        (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-	                        (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
-	                    {
-	                        if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
-	                        {
+                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
+                {
+                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+                    {
                         try
                         {
-                        pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
-                        urls.Add(pageUrl);
+                            pageUrl = GetPageUrl(tab, (ps.ContentLocalizationEnabled) ? tab.CultureCode : null);
+                            urls.Add(pageUrl);
                         }
                         catch (Exception ex)
                         {
                             Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
-                        }
+                }
 
-	                        }
+            }
 	                    }
 	                }
 	                catch (Exception ex)
