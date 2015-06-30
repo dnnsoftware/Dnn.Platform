@@ -40,6 +40,7 @@ using System.Web.UI.WebControls;
 using ClientDependency.Core;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Common.Utils;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Portals;
@@ -653,9 +654,12 @@ namespace DotNetNuke.Web.InternalServices
             if (VerifySafeUrl(dto.Url) == false)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+
             try
             {
-                var request = (HttpWebRequest) WebRequest.Create(dto.Url);
+                var request = (HttpWebRequest)WebRequest.Create(dto.Url);
                 request.Credentials = CredentialCache.DefaultCredentials;
                 response = request.GetResponse();
                 responseStream = response.GetResponseStream();
@@ -664,7 +668,7 @@ namespace DotNetNuke.Web.InternalServices
                     throw new Exception("No server response");
                 }
 
-                var fileName = new Uri(dto.Url).Segments.Last();                    
+                var fileName = new Uri(dto.Url).Segments.Last();
                 result = UploadFile(responseStream, PortalSettings, UserInfo, dto.Folder.TextOrEmpty(), dto.Filter.TextOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip);
 
@@ -706,9 +710,9 @@ namespace DotNetNuke.Web.InternalServices
         private bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
-            if (uri.Scheme == "http" ||uri.Scheme == "https")
+            if (uri.Scheme == "http" || uri.Scheme == "https")
             {
-                
+
                 if (!uri.Host.Contains("."))
                 {
                     return false;
@@ -717,7 +721,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     return false;
                 }
-                if (uri.PathAndQuery.Contains("#")  || uri.PathAndQuery.Contains(":"))
+                if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
                 {
                     return false;
                 }
@@ -733,7 +737,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-            return true;
+                return true;
             }
             return false;
         }
