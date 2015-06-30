@@ -3041,6 +3041,17 @@ namespace DotNetNuke.Services.Upgrade
             ReIndexUserSearch();
         }
 
+		private static void UpgradeToVersion742()
+		{
+			var containerFolder = string.Format("{0}Containers\\DarkKnightMobile", Globals.HostMapPath);
+			var skinFolder = string.Format("{0}Skins\\DarkKnightMobile", Globals.HostMapPath);
+			if (!Directory.Exists(skinFolder) && !Directory.Exists(containerFolder))
+			{
+				UninstallPackage("DarkKnightMobile"); //Container
+				UninstallPackage("DarkKnightMobile"); //Skin
+			}
+		}
+
         private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -5251,6 +5262,9 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.4.0":
                         UpgradeToVersion740();
                         break;
+					case "7.4.2":
+						UpgradeToVersion742();
+						break;
                 }
             }
             catch (Exception ex)
