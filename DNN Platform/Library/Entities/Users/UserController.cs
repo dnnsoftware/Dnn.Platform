@@ -1930,7 +1930,7 @@ namespace DotNetNuke.Entities.Users
 
             //Update User in Database with Last IP used
             user.LastIPAddress = ip;
-            UpdateUser(portalId, user, false);
+            DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
 
             //set the forms authentication cookie ( log the user in )
             var security = new PortalSecurity();
