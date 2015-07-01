@@ -29,8 +29,8 @@
           <files>
             <file>
               <path>App_Data</path>
-              <name>51Degrees-Lite.dat</name>
-              <sourceFileName>51Degrees-Lite.dat</sourceFileName>
+              <name>51Degrees.dat</name>
+              <sourceFileName>51Degrees.dat</sourceFileName>
             </file>
           </files>
         </component>
@@ -50,7 +50,6 @@
             <isPremium>true</isPremium>
             <businessControllerClass>DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.FeatureController, DotNetNuke.Providers.FiftyOneClientCapabilityProvider</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Searchable" />
               <supportedFeature type="DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Components.FeatureController, DotNetNuke.Providers.FiftyOneClientCapabilityProvider"></supportedFeature>
             </supportedFeatures>
             <moduleDefinitions>
@@ -107,7 +106,7 @@
                     <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation" />
                   </node>
                   <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
-                    <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation" preCondition="managedHandler"/>
+                    <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation"/>
                   </node>
                   <node path="/configuration/configSections/sectionGroup[@name='dotnetnuke']" action="update" key="name" collision="ignore">
                     <section name="clientcapability" requirePermission="false" type="DotNetNuke.Framework.Providers.ProviderConfigurationHandler, DotNetNuke" />
@@ -145,13 +144,18 @@
               <configuration>
                 <nodes>
                   <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="overwrite">
-                    <detection enabled="false" autoUpdate="true" binaryFilePath="~/App_Data/51Degrees-Lite.dat"
+                    <detection enabled="false" autoUpdate="false" binaryFilePath="~/App_Data/51Degrees.dat"
                         bandwidthMonitoringEnabled="false"
                         featureDetectionEnabled="false"
                         memoryMode="false"
-                        shareUsage="false"
-                    />
+                        shareUsage="false"/>
                   </node>
+                  <node path="/configuration/configSections/sectionGroup" targetpath="/configuration/configSections/sectionGroup/section" key="name" action="update" collision="overwrite">
+                    <section name="imageOptimisation" type="FiftyOne.Foundation.Mobile.Configuration.ImageOptimisationSection, FiftyOne.Foundation" requirePermission="false" allowDefinition="Everywhere" restartOnExternalChanges="false" allowExeDefinition="MachineToApplication" />
+                  </node>
+                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/imageOptimisation" action="update" collision="overwrite">
+                    <imageOptimisation enabled="false" maxWidth="1000" maxHeight="1000" factor="50" widthParam="w" heightParam="h"/>
+                  </node>                
                 </nodes>
               </configuration>
             </install>
@@ -162,7 +166,7 @@
             </uninstall>
           </config>
         </component>
-        <component type="Cleanup" version="07.03.00" fileName ="07.03.00.txt" />
+        <component type="Cleanup" version="07.03.00" fileName="07.03.00.txt" />
       </components>
     </package>
   </packages>

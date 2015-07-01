@@ -13,31 +13,292 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
     public partial class Administration {
         
         /// <summary>
-        /// cbDetectionEnabled control.
+        /// UploadError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbDetectionEnabled;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UploadError;
         
         /// <summary>
-        /// cbAutoUpdatesEnabled control.
+        /// UploadSuccess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAutoUpdatesEnabled;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UploadSuccess;
         
         /// <summary>
-        /// cbShareUsageEnabled control.
+        /// SettingsChangedSuccess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbShareUsageEnabled;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SettingsChangedSuccess;
+        
+        /// <summary>
+        /// SettingsChangedError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SettingsChangedError;
+        
+        /// <summary>
+        /// LabelDataSetName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetName;
+        
+        /// <summary>
+        /// LabelDataSetPublished control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetPublished;
+        
+        /// <summary>
+        /// LabelDataSetNextUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetNextUpdate;
+        
+        /// <summary>
+        /// LabelDataSetPropertyCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetPropertyCount;
+        
+        /// <summary>
+        /// LabelDataSetHardwareProfiles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetHardwareProfiles;
+        
+        /// <summary>
+        /// LabelDataSetDeviceCombinations control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetDeviceCombinations;
+        
+        /// <summary>
+        /// LabelDataSetVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelDataSetVersion;
+        
+        /// <summary>
+        /// LabelFactory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelFactory;
+        
+        /// <summary>
+        /// ButtonSettingsRefresh control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSettingsRefresh;
+        
+        /// <summary>
+        /// LabelEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelEnabled;
+        
+        /// <summary>
+        /// CheckBoxEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxEnabled;
+        
+        /// <summary>
+        /// LabelShareUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelShareUsage;
+        
+        /// <summary>
+        /// CheckBoxShareUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxShareUsage;
+        
+        /// <summary>
+        /// LabelAutoUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelAutoUpdate;
+        
+        /// <summary>
+        /// CheckBoxAutoUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxAutoUpdate;
+        
+        /// <summary>
+        /// LabelImageOptimiser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelImageOptimiser;
+        
+        /// <summary>
+        /// CheckBoxImageOptimiser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxImageOptimiser;
+        
+        /// <summary>
+        /// LabelFileMode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelFileMode;
+        
+        /// <summary>
+        /// CheckBoxFileMode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxFileMode;
+        
+        /// <summary>
+        /// Upload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::FiftyOne.Foundation.UI.Web.Upload Upload;
+        
+        /// <summary>
+        /// ButtonSettingsUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSettingsUpdate;
+        
+        /// <summary>
+        /// ButtonSettingsCancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonSettingsCancel;
+        
+        /// <summary>
+        /// DeviceBrowser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::FiftyOne.Foundation.UI.Web.DeviceExplorer DeviceBrowser;
+        
+        /// <summary>
+        /// DeviceBrowserUnavailableLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal DeviceBrowserUnavailableLiteral;
+        
+        /// <summary>
+        /// DeviceBrowserUnavailableButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink DeviceBrowserUnavailableButton;
+        
+        /// <summary>
+        /// TopDevices control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::FiftyOne.Foundation.UI.Web.TopDevices TopDevices;
+        
+        /// <summary>
+        /// Properties control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::FiftyOne.Foundation.UI.Web.PropertyDictionary Properties;
+        
+        /// <summary>
+        /// LiteralWhyDeviceDetectionActive control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal LiteralWhyDeviceDetectionActive;
         
         /// <summary>
         /// Activate control.
@@ -46,168 +307,15 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::FiftyOne.Foundation.UI.Web.Activate Activate;
+        protected global::FiftyOne.Foundation.UI.Web.Detection Activate;
         
         /// <summary>
-        /// LiteStats control.
+        /// LiteralWhyDeviceDetection control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::FiftyOne.Foundation.UI.Web.Stats LiteStats;
-        
-        /// <summary>
-        /// purchaseBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl purchaseBox;
-        
-        /// <summary>
-        /// cbDetectionEnabledPremium control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbDetectionEnabledPremium;
-        
-        /// <summary>
-        /// cbAutoUpdatesEnabledPremium control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbAutoUpdatesEnabledPremium;
-        
-        /// <summary>
-        /// cbShareUsageEnabledPremium control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbShareUsageEnabledPremium;
-        
-        /// <summary>
-        /// PremiumStats control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::FiftyOne.Foundation.UI.Web.Stats PremiumStats;
-        
-        /// <summary>
-        /// PremiumUploadError control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PremiumUploadError;
-        
-        /// <summary>
-        /// PremiumUploadSuccess control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PremiumUploadSuccess;
-        
-        /// <summary>
-        /// PremiumUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::FiftyOne.Foundation.UI.Web.Upload PremiumUpload;
-        
-        /// <summary>
-        /// NoResultsMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NoResultsMessage;
-        
-        /// <summary>
-        /// SearchTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SearchTextBox;
-        
-        /// <summary>
-        /// RequiredFieldValidator1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-        
-        /// <summary>
-        /// SearchButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SearchButton;
-        
-        /// <summary>
-        /// HardwareList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater HardwareList;
-        
-        /// <summary>
-        /// SoftwareList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater SoftwareList;
-        
-        /// <summary>
-        /// BrowserList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater BrowserList;
-        
-        /// <summary>
-        /// ContentList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater ContentList;
-        
-        /// <summary>
-        /// DeviceExplorer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Providers.FiftyOneClientCapabilityProvider.DnnDeviceExplorer DeviceExplorer;
+        protected global::System.Web.UI.WebControls.Literal LiteralWhyDeviceDetection;
     }
 }

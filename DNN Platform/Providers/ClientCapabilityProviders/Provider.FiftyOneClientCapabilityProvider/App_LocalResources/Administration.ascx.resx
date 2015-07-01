@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Activate.Text" xml:space="preserve">
-    <value>Activate</value>
+  <data name="Activate.Header" xml:space="preserve">
+    <value>Activate Enhanced Data</value>
   </data>
   <data name="ActivateButtonText.Text" xml:space="preserve">
     <value>Activate</value>
@@ -127,7 +127,7 @@
     <value>&lt;p class="{0}"&gt;Premium Data is active. Thank you.&lt;/p&gt;</value>
   </data>
   <data name="ActivateInstructionsHtml.Text" xml:space="preserve">
-    <value>&lt;p&gt;Paste your Premium Data license key into the textbox below. Select "Activate" to use the license key with this web site.&lt;/p&gt;</value>
+    <value>&lt;h3&gt;Activate All Features&lt;/h3&gt;&lt;p&gt;Step 1 - Obtain a 51Degrees on-premise license key.&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Step 2 - Paste your license key into the textbox below. Select "Activate" to use the license key with this web site.&lt;/p&gt;&lt;br/&gt;</value>
   </data>
   <data name="ActivationDataInvalidHtml.Text" xml:space="preserve">
     <value>&lt;div class="{0}"&gt;&lt;p&gt;The data source provided does not contain valid data.&lt;/p&gt;&lt;/div&gt;</value>
@@ -186,59 +186,14 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="GetLatestData.Text" xml:space="preserve">
     <value>Get Latest Data</value>
   </data>
-  <data name="Glossary.Header" xml:space="preserve">
-    <value>Help &gt;Glossary</value>
-  </data>
-  <data name="Glossary.Text" xml:space="preserve">
-    <value>* Property is included ONLY in the Premium data sets.</value>
-  </data>
   <data name="HardwareList.Header" xml:space="preserve">
     <value>Hardware</value>
-  </data>
-  <data name="Help.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="HelpLink.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="Introduction.Header" xml:space="preserve">
-    <value>Browse for Device</value>
-  </data>
-  <data name="Introduction.Text" xml:space="preserve">
-    <value>Below is a glossary of available properties broken out by category.</value>
-  </data>
-  <data name="Lite.Header" xml:space="preserve">
-    <value>Thank you for using Lite device data</value>
-  </data>
-  <data name="LiteSearchResults.Header" xml:space="preserve">
-    <value>Search Results</value>
-  </data>
-  <data name="LiteSearchResults.Text" xml:space="preserve">
-    <value>Select a hardware vendor to view the device models they produce.</value>
-  </data>
-  <data name="LiteUpgrade.Label" xml:space="preserve">
-    <value>Upgrade to Premium Data:</value>
   </data>
   <data name="NoResultsFound.Text" xml:space="preserve">
     <value>There were no results found matching your search.</value>
   </data>
-  <data name="Premium.Header" xml:space="preserve">
-    <value>Thank you for using {0} device data</value>
-  </data>
   <data name="PremiumIntro.Text" xml:space="preserve">
     <value>The {0} data contains thousands of devices, including games consoles, eBook readers, tablets, smart phones and feature phones. Each device is associated with a wide range of relevant properties, from screen size and input methods to operating system, browser and hardware.</value>
-  </data>
-  <data name="PurchaseInfo.Text" xml:space="preserve">
-    <value>To get the premium data, you can purchase your license from the </value>
-  </data>
-  <data name="PurchaseInfoEnd.Text" xml:space="preserve">
-    <value>, or upgrade to one of the &lt;a href="http://store.dotnetnuke.com/home/product-details/dotnetnuke-professional-and-enterprise-edition-subscriptions" target="_blank"&gt;Commercial Editions&lt;/a&gt;.</value>
-  </data>
-  <data name="PurchaseInfoLink.Href" xml:space="preserve">
-    <value>http://store.dotnetnuke.com/home/product-details/premium-mobile-device-data-51degreesmobi</value>
-  </data>
-  <data name="PurchaseInfoLink.Text" xml:space="preserve">
-    <value>DotNetNuke Store</value>
   </data>
   <data name="RefreshButtonText.Text" xml:space="preserve">
     <value>Refresh</value>
@@ -247,41 +202,11 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="SearchButton.Text" xml:space="preserve">
     <value>Find Device</value>
   </data>
-  <data name="SearchLite.Header" xml:space="preserve">
-    <value>User Agent Search</value>
-  </data>
-  <data name="SearchLite.Text" xml:space="preserve">
-    <value>Enter the user agent you would like to test and click Find Device.</value>
-  </data>
-  <data name="SearchPremium.Header" xml:space="preserve">
-    <value>Search for Device</value>
-  </data>
-  <data name="SearchPremium.Text" xml:space="preserve">
-    <value>Enter your search term and press the Find Device button to search. Hardware vendor, model, device name, browser and operating system information will be searched.</value>
-  </data>
-  <data name="SoftwareList.Header" xml:space="preserve">
-    <value>Software</value>
-  </data>
-  <data name="UpgradePoint1.Text" xml:space="preserve">
-    <value>Automatically redirect users to optimized web pages, enabling you to create separate sites for tablets, feature phones and smartphones.</value>
-  </data>
-  <data name="UpgradePoint2.Text" xml:space="preserve">
-    <value>Enhance the isMobile and Screen Size properties in Lite data with over 50 device properties including isTablet, screen size in millimeters, vendor, model, platform details, input methods and levels of JavaScript support.</value>
-  </data>
-  <data name="UpgradePoint3.Text" xml:space="preserve">
-    <value>Regular weekly updates of device data</value>
-  </data>
-  <data name="UpgradePoint4.Text" xml:space="preserve">
-    <value>An option to automatically install new updates.</value>
-  </data>
   <data name="UploadButtonText.Text" xml:space="preserve">
     <value>Upload</value>
   </data>
   <data name="UploadData.Text" xml:space="preserve">
     <value>Upload Data</value>
-  </data>
-  <data name="UploadInstructionsHtml.Text" xml:space="preserve">
-    <value>&lt;p&gt;Alternatively upload a Premium data file using the "Browse" and "Upload" buttons below.&lt;/p&gt;</value>
   </data>
   <data name="ValidationFileErrorText.Text" xml:space="preserve">
     <value>Use the Browse button to select a Premium data file to upload.</value>
@@ -289,35 +214,14 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="ValidationRequiredErrorText.Text" xml:space="preserve">
     <value>A license key must be entered.</value>
   </data>
-  <data name="ViewLicenseAgreement.Text" xml:space="preserve">
-    <value>View License Agreement</value>
-  </data>
-  <data name="WhyUpgrade.Text" xml:space="preserve">
-    <value>Why upgrade to premium data</value>
-  </data>
-  <data name="StatsHtml.Text" xml:space="preserve">
-    <value>&lt;div class="{0}"&gt;&lt;span&gt;Data Version: &lt;b&gt;{1}&lt;/b&gt;&lt;/span&gt; &lt;span&gt;Published: &lt;b&gt;{2:d}&lt;/b&gt;&lt;/span&gt; &lt;span&gt;Properties: &lt;b&gt;{3}&lt;/b&gt;&lt;/div&gt;</value>
-  </data>
   <data name="ValidationRegExErrorText.Text" xml:space="preserve">
     <value>The license key must only contain upper case alpha characters or numerics.</value>
   </data>
   <data name="BackButtonDevicesText.Text" xml:space="preserve">
     <value>Other Vendors</value>
   </data>
-  <data name="DeviceExplorerDeviceInstructionsHtml.Text" xml:space="preserve">
-    <value>&lt;p&gt;Use the help icons to find out more information about the property or value.&lt;/p&gt;</value>
-  </data>
-  <data name="DeviceExplorerModelsInstructionsHtml.Text" xml:space="preserve">
-    <value>&lt;p&gt;Select a model to view its capabilities along with the different browser and software combinations.&lt;/p&gt;</value>
-  </data>
-  <data name="DeviceExplorerVendorsHtml.Text" xml:space="preserve">
-    <value>&lt;p&gt;Select a hardware vendor to view the device models they produce.&lt;/p&gt;</value>
-  </data>
   <data name="DeviceSearchRequired.Text" xml:space="preserve">
     <value>Required</value>
-  </data>
-  <data name="StatsRefreshButton.Text" xml:space="preserve">
-    <value>Refresh</value>
   </data>
   <data name="BackButtonDeviceText.Text" xml:space="preserve">
     <value>Other {0} Devices</value>
@@ -328,37 +232,173 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="PremiumUploadSuccess.Text" xml:space="preserve">
     <value>Data has been uploaded successfully.</value>
   </data>
-  <data name="LicenseType_CMS.Text" xml:space="preserve">
-    <value>CMS</value>
-  </data>
-  <data name="LicenseType_Lite.Text" xml:space="preserve">
-    <value>Lite</value>
-  </data>
-  <data name="LicenseType_Premium.Text" xml:space="preserve">
-    <value>Premium</value>
-  </data>
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Device Detection</value>
   </data>
-  <data name="AutoUpdatesEnabled.Text" xml:space="preserve">
+  <data name="SettingsAutoUpdates.Text" xml:space="preserve">
     <value>Auto Updates Enabled?</value>
   </data>
-  <data name="DeviceDetectionEnabled.Text" xml:space="preserve">
+  <data name="SettingsEnabled.Text" xml:space="preserve">
     <value>Device Detection Enabled?</value>
   </data>
-  <data name="AutoUpdatesEnabled.Help" xml:space="preserve">
-    <value>Enable/disable update data file automatically.</value>
+  <data name="SettingsAutoUpdates.Help" xml:space="preserve">
+    <value>Enable/disable updating the device data file automatically. When enabled the web site will check 51Degrees for new versions of the device data file and automatically apply them without recycling the application domain. Enhanced data is needed to support this option.</value>
   </data>
-  <data name="DeviceDetectionEnabled.Help" xml:space="preserve">
+  <data name="SettingsEnabled.Help" xml:space="preserve">
     <value>Enable/disable device detection.</value>
   </data>
-  <data name="ManualUpdates.Text" xml:space="preserve">
-    <value>Manual Updates:</value>
-  </data>
-  <data name="ShareUsageEnabled.Help" xml:space="preserve">
+  <data name="SettingsShareUsage.Help" xml:space="preserve">
     <value>Enable/disable share usage data with 51Degrees.</value>
   </data>
-  <data name="ShareUsageEnabled.Text" xml:space="preserve">
+  <data name="SettingsShareUsage.Text" xml:space="preserve">
     <value>Share Usage Enabled?</value>
+  </data>
+  <data name="Cancel.Action" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeviceBrowserUnavailable.Html" xml:space="preserve">
+    <value>&lt;p&gt;The device data set being used for device detection does not include sufficient information about web enabled devices to support the device explorer tab.&lt;/p&gt;
+&lt;p&gt;Devices available in the enhanced versions of device detection can be explored on the 51Degrees web site.&lt;/p&gt;</value>
+  </data>
+  <data name="DeviceBrowserUnavailableButton.Action" xml:space="preserve">
+    <value>Explore Devices</value>
+  </data>
+  <data name="DeviceBrowserUnavailableButton.Url" xml:space="preserve">
+    <value>https://51degrees.com/resources/device-explorer</value>
+  </data>
+  <data name="Explorer.Header" xml:space="preserve">
+    <value>Explore Devices</value>
+  </data>
+  <data name="ManualUpdates.Help" xml:space="preserve">
+    <value>Upload new device data set files manually</value>
+  </data>
+  <data name="NewDevices.Header" xml:space="preserve">
+    <value>Top 5 New Devices</value>
+  </data>
+  <data name="Properties.Header" xml:space="preserve">
+    <value>Available Properties</value>
+  </data>
+  <data name="Refresh.Action" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Settings.Header" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsConfiguration.Header" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="SettingsDataSetDeviceCombinations.Help" xml:space="preserve">
+    <value>The number of combinations of device, operating system and web browsers this web site can detect.</value>
+  </data>
+  <data name="SettingsDataSetDeviceCombinations.Text" xml:space="preserve">
+    <value>Combinations</value>
+  </data>
+  <data name="SettingsDataSetHardwareProfiles.Help" xml:space="preserve">
+    <value>The number of different web enabled device models this web site can currently detect.</value>
+  </data>
+  <data name="SettingsDataSetHardwareProfiles.Text" xml:space="preserve">
+    <value>Devices</value>
+  </data>
+  <data name="SettingsDataSetName.Help" xml:space="preserve">
+    <value>Either Lite, Premium or Enterprise depending on the active 51Degrees data set. Lite is provided with DNN Platform and Premium data comes with Evoq. DNN Platform can be upgraded with a licence key.</value>
+  </data>
+  <data name="SettingsDataSetName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SettingsDataSetNextUpdate.Help" xml:space="preserve">
+    <value>When the next data set is expected to be available from 51Degrees.</value>
+  </data>
+  <data name="SettingsDataSetNextUpdate.Text" xml:space="preserve">
+    <value>Next Update</value>
+  </data>
+  <data name="SettingsDataSetPropertyCount.Help" xml:space="preserve">
+    <value>The number of properties available in the active data set.</value>
+  </data>
+  <data name="SettingsDataSetPropertyCount.Text" xml:space="preserve">
+    <value>Property Count</value>
+  </data>
+  <data name="SettingsDataSetPublished.Help" xml:space="preserve">
+    <value>Date the active data set was published by 51Degrees.</value>
+  </data>
+  <data name="SettingsDataSetPublished.Text" xml:space="preserve">
+    <value>Published</value>
+  </data>
+  <data name="SettingsDataSetVersion.Help" xml:space="preserve">
+    <value>The version format of the device data file.</value>
+  </data>
+  <data name="SettingsDataSetVersion.Text" xml:space="preserve">
+    <value>Data Format</value>
+  </data>
+  <data name="SettingsManualUpload.Header" xml:space="preserve">
+    <value>Upload Device Data</value>
+  </data>
+  <data name="SettingsRefresh.Help" xml:space="preserve">
+    <value>When device detection is used with Evoq or enhanced 51Degrees device data this option checks for a new version of device data at 51Degrees.</value>
+  </data>
+  <data name="SettingsRefresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SettingsStats.Header" xml:space="preserve">
+    <value>Device Data Information</value>
+  </data>
+  <data name="SettingsUpload.Help" xml:space="preserve">
+    <value>Upload a 51Degrees data file for use with device detection. New data files can be obtained directly from 51Degrees.</value>
+  </data>
+  <data name="SettingsUpload.Text" xml:space="preserve">
+    <value>Manual Upload</value>
+  </data>
+  <data name="Unavailable.Text" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="Update.Action" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="WhyDeviceDetection.Header" xml:space="preserve">
+    <value>What is Device Detection?</value>
+  </data>
+  <data name="WhyDeviceDetection.Html" xml:space="preserve">
+    <value>&lt;div style="margin: 1em 0;"&gt;
+&lt;p&gt;Device detection enables the power of the web server to be used to optimise web user experience across every type of device increasing web site return on investment.&lt;/p&gt;
+&lt;p&gt;Over 85% of blue chip companies, including eCommerce, Media, AdTech, Finance and Travel sectors use device detection to optimise for multi-screen.&lt;/p&gt;
+&lt;h3&gt;For Web Administrators&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Retain desktop optimised content such as Flash or big screen videos on the same page as smartphone and tablet content.&lt;/li&gt;
+&lt;li&gt;Use hover mega menus to optimise rapid navigation for mouse and keyboard whilst using a responsive menu for touch screens.&lt;/li&gt;
+&lt;li&gt;Redirect users to optimised pages for Smartphone and Tablets.&lt;/li&gt;
+&lt;li&gt;Optimise images automatically ensuring large images are never sent to small screens.&lt;/li&gt;
+&lt;li&gt;Enhance Google Analytics with information about screen size and input methods.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;For Developers&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Turn page content on and off based on server side rules. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;Request.Browser["IsTablet"]&lt;/span&gt; to understand if the requesting device is a tablet.&lt;/li&gt;
+&lt;li&gt;Access device capabilities from JavaScript with &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;http://HOSTNAME/51Degrees.features.js&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Add querystring parameters to image URLs to return precisely sized images for the screen. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;&amp;lt;img src="Empty.gif" data-src="/image.png?w=auto"/&amp;gt;&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a href="https://51degrees.com/dnn" title="Find out more about device detection with DNN" class="dnnPrimaryAction"&gt;Read More&lt;/a&gt;
+&lt;/div&gt;</value>
+  </data>
+  <data name="SettingsChangeError.Text" xml:space="preserve">
+    <value>The device detection settings could not be changed. Check the 51Degrees.mobi.config file for modify permissions and recycle the application domain.</value>
+  </data>
+  <data name="SettingsChangeSuccess.Text" xml:space="preserve">
+    <value>Device detection settings have been updated. Recycle the application domain for the changes to take effect.</value>
+  </data>
+  <data name="SettingsImageOptimiser.Help" xml:space="preserve">
+    <value>When image optimizer and device detection are enabled DNN will not send images to devices that are too large for their screens to display. Query string parameters can be added to image tags to automatically size images to improve performance.</value>
+  </data>
+  <data name="SettingsImageOptimiser.Text" xml:space="preserve">
+    <value>Device Image Optimization Enabled?</value>
+  </data>
+  <data name="SettingsFactory.Help" xml:space="preserve">
+    <value>The type of data management method in use. Stream uses less memory but is slower. Memory is faster but uses more memory.</value>
+  </data>
+  <data name="SettingsFactory.Text" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="SettingsFileMode.Help" xml:space="preserve">
+    <value>The bulk of the device data is retained on the file system. Small portions are loaded into memory when needed. Reduces memory consumption. When disabled memory mode is used where the device data file is loaded into memory. File mode uses the least amount of memory.</value>
+  </data>
+  <data name="SettingsFileMode.Text" xml:space="preserve">
+    <value>File Mode Enabled?</value>
   </data>
 </root>

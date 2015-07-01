@@ -94,14 +94,12 @@
     <Compile Include="Properties\RetailerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="07.03.00.txt" />
     <Content Include="Administration.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="51Degrees.mobi.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="51Degrees-Lite.dat" />
     <None Include="FiftyOneClientCapabilityProvider.dnn">
       <SubType>Designer</SubType>
     </None>

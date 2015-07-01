@@ -2,7 +2,7 @@
 ﻿#region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,15 +20,13 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using FiftyOne.Foundation.Mobile.Detection;
+using FiftyOne.Foundation.Mobile.Detection.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using FiftyOne.Foundation.Mobile.Detection;
-
 using System.Web;
-
-using FiftyOne.Foundation.UI;
+using System.Web.Configuration;
 
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
@@ -37,6 +35,14 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     /// </summary>
     public class FiftyOneClientCapability : Services.ClientCapability.ClientCapability
     {
+        #region Fields
+
+        private readonly Match _match;
+        private readonly Profile[] _profiles;
+        private readonly HttpBrowserCapabilities _caps;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -46,24 +52,31 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
-        public FiftyOneClientCapability(Device device)
+        /// <param name="caps">Reference to browser capabilities for .NET</param>
+        public FiftyOneClientCapability(HttpBrowserCapabilities caps)
         {
-            Initialise(device.GetPropertyValuesAsStrings().ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray()));
-            UserAgent = device.UserAgent;
-        }
+            _caps = caps;
 
-        /// <summary>
-        /// Constructs a new instance of ClientCapability.
-        /// See http://51degrees.mobi/Products/DeviceData/PropertyDictionary.aspx
-        /// for a full list of available properties.
-        /// All the properties used are non-lists and therefore the first
-        /// item contained in the values list contains the only available value.
-        /// </summary>
-        public FiftyOneClientCapability(HttpBrowserCapabilities browserCaps)
-        {
-            if (browserCaps != null)
+            // Set Lite properties
+            ID = _caps.Id;
+            IsMobile = caps.IsMobileDevice;
+            ScreenResolutionWidthInPixels = caps.ScreenPixelsWidth;
+            ScreenResolutionHeightInPixels = caps.ScreenPixelsHeight;
+
+            // Set Premium properties which are not available.
+            IsTablet = false;
+            IsTouchScreen = false;
+            BrowserName = _caps.Browser;
+
+            // The following properties are not provided by 51Degrees and
+            // are therefore set to default values.
+            SupportsFlash = false;
+            HtmlPreferedDTD = null;
+
+            // set IsMobile to false when IsTablet is true.
+            if (IsTablet)
             {
-                Initialise(browserCaps.Capabilities[Constants.FiftyOneDegreesProperties] as SortedList<string, string[]>);
+                IsMobile = false;
             }
         }
 
@@ -74,9 +87,32 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
-        public FiftyOneClientCapability(SortedList<string, string[]> properties)
+        /// <param name="profiles">Reference to a profile contained in the dataset</param>
+        public FiftyOneClientCapability(Profile[] profiles)
         {
-            Initialise(properties);
+            _profiles = profiles;
+
+            // Set Lite properties
+            ID = GetStringValue(_profiles, "Id");
+            IsMobile = GetBoolValue(_profiles, "IsMobile");
+            ScreenResolutionWidthInPixels = GetIntValue(_profiles, "ScreenPixelsWidth");
+            ScreenResolutionHeightInPixels = GetIntValue(_profiles, "ScreenPixelsHeight");
+
+            // Set Premium properties
+            IsTablet = GetBoolValue(_profiles, "IsTablet");
+            IsTouchScreen = GetBoolValue(_profiles, "HasTouchScreen");
+            BrowserName = GetStringValue(_profiles, "BrowserName");
+
+            // The following properties are not provided by 51Degrees and
+            // are therefore set to default values.
+            SupportsFlash = false;
+            HtmlPreferedDTD = null;
+
+            // set IsMobile to false when IsTablet is true.
+            if (IsTablet)
+            {
+                IsMobile = false;
+            }
         }
 
         /// <summary>
@@ -86,35 +122,32 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// All the properties used are non-lists and therefore the first
         /// item contained in the values list contains the only available value.
         /// </summary>
+        /// <param name="match">Reference to the capabilities returned by the detection</param>
         public FiftyOneClientCapability(Match match)
         {
-            Initialise(match.Results);
+            _match = match;
+
+            // Set Lite properties
             UserAgent = match.TargetUserAgent;
-        }
+            ID = GetStringValue(_match, "Id");
+            IsMobile = GetBoolValue(_match, "IsMobile");
+            ScreenResolutionWidthInPixels = GetIntValue(_match, "ScreenPixelsWidth");
+            ScreenResolutionHeightInPixels = GetIntValue(_match, "ScreenPixelsHeight");
+            
+            // Set Premium properties
+            IsTablet = GetBoolValue(_match, "IsTablet");
+            IsTouchScreen = GetBoolValue(_match, "HasTouchScreen");
+            BrowserName = GetStringValue(_match, "BrowserName");
 
-        private void Initialise(IDictionary<string, string[]> properties)
-        {
-            if (properties != null)
+            // The following properties are not provided by 51Degrees and
+            // are therefore set to default values.
+            SupportsFlash = false;
+            HtmlPreferedDTD = null;
+
+            // set IsMobile to false when IsTablet is true.
+            if (IsTablet)
             {
-                // Set Lite properties
-                ID = GetStringValue(properties, "Id");
-                IsMobile = GetBoolValue(properties, "IsMobile");
-                ScreenResolutionWidthInPixels = GetIntValue(properties, "ScreenPixelsWidth");
-                ScreenResolutionHeightInPixels = GetIntValue(properties, "ScreenPixelsHeight");
-                // Set Premium properties
-                IsTablet = GetBoolValue(properties, "IsTablet");
-                IsTouchScreen = GetBoolValue(properties, "HasTouchScreen");
-                BrowserName = GetStringValue(properties, "BrowserName");
-                Capabilities = GetCapabilities(properties);
-
-                // The following properties are not provided by 51Degrees.mobi and
-                // are therefore set to default values.
-                SupportsFlash = false;
-                HtmlPreferedDTD = null;
-
-                //set IsMobile to false when IsTablet is true.
-                if (IsTablet)
-                    IsMobile = false;
+                IsMobile = false;
             }
         }
 
@@ -123,30 +156,25 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         #region Private Methods
 
         /// <summary>
-        /// Returns a dictionary of capability names and values as strings based on the object
-        /// keys and values held in the browser capabilities provided. The value string may
-        /// contains pipe (|) seperated lists of values.
-        /// </summary>
-        /// <param name="properties">A collection of device related capabilities.</param>
-        /// <returns>Device related capabilities with property names and values converted to strings.</returns>
-        private static IDictionary<string, string> GetCapabilities(IDictionary<string, string[]> properties)
-        {
-            return properties.Keys.ToDictionary(key => key, key => String.Join(Constants.ValueSeperator, properties[key].ToArray()));
-        }
-
-        /// <summary>
         /// Returns the property of the HttpBrowserCapabilities collection 
         /// as an boolean.
         /// </summary>
-        /// <param name="properties">A collection of device related capabilities.</param>
-        /// <param name="property">The name of the property to return as a boolean.</param>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a boolean.</param>
         /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
-        private static bool GetBoolValue(IDictionary<string, string[]> properties, string property)
+        private static bool GetBoolValue(IEnumerable<Profile> profiles, string propertyName)
         {
-            bool value;
-            if (properties.ContainsKey(property) &&
-                bool.TryParse(properties[property][0], out value))
-                return value;
+            Values value;
+            var e = profiles.GetEnumerator();
+            while (e.MoveNext())
+            {
+                value = e.Current[propertyName];
+                if (value != null && value.Count > 0 &&
+                    value[0].Property.ValueType == typeof(bool))
+                {
+                    return value.ToBool();
+                }
+            }
             return false;
         }
 
@@ -154,15 +182,23 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// Returns the property of the HttpBrowserCapabilities collection 
         /// as an integer.
         /// </summary>
-        /// <param name="properties">A collection of device related capabilities.</param>
-        /// <param name="property">The name of the property to return as a integer.</param>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a integer.</param>
         /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
-        private static int GetIntValue(IDictionary<string, string[]> properties, string property)
+        private static int GetIntValue(IEnumerable<Profile> profiles, string propertyName)
         {
-            int value;
-            if (properties.ContainsKey(property) &&
-                int.TryParse(properties[property][0], out value))
-                return value;
+            Values value;
+            var e = profiles.GetEnumerator();
+            while (e.MoveNext())
+            {
+                value = e.Current[propertyName];
+                if (value != null && value.Count > 0 &&
+                    (value[0].Property.ValueType == typeof(int) ||
+                    value[0].Property.ValueType == typeof(double)))
+                {
+                    return (int)value.ToInt();
+                }
+            }
             return 0;
         }
 
@@ -170,14 +206,116 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// Returns the property of the HttpBrowserCapabilities collection 
         /// as a string.
         /// </summary>
-        /// <param name="properties">A collection of device related properties.</param>
+        /// <param name="profiles">Profiles from the data set either as a result of a match, or from quering profiles.</param>
+        /// <param name="propertyName">The name of the property to return as a string.</param>
+        /// <returns>The string value of the property, or null if the property is not found.</returns>
+        private static string GetStringValue(IEnumerable<Profile> profiles, string propertyName)
+        {
+            Values value;
+            var e = profiles.GetEnumerator();
+            while (e.MoveNext())
+            {
+                value = e.Current[propertyName];
+                if (value != null)
+                {
+                    return value.ToString();
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as an boolean.
+        /// </summary>
+        /// <param name="match">A collection of device related capabilities.</param>
+        /// <param name="property">The name of the property to return as a boolean.</param>
+        /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
+        private static bool GetBoolValue(Match match, string property)
+        {
+            var value = match[property];
+            if (value != null && value.Count > 0 && 
+                value[0].Property.ValueType == typeof(bool))
+            {
+                return value.ToBool();
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as an integer.
+        /// </summary>
+        /// <param name="match">A collection of device related capabilities.</param>
+        /// <param name="property">The name of the property to return as a integer.</param>
+        /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
+        private static int GetIntValue(Match match, string property)
+        {
+            var value = match[property];
+            if (value != null && value.Count > 0 &&
+                (value[0].Property.ValueType == typeof(int) ||
+                value[0].Property.ValueType == typeof(double)))
+            {
+                return (int)value.ToInt();
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as a string.
+        /// </summary>
+        /// <param name="match">A collection of device related properties.</param>
         /// <param name="property">The name of the property to return as a string.</param>
         /// <returns>The string value of the property, or null if the property is not found.</returns>
-        private static string GetStringValue(IDictionary<string, string[]> properties, string property)
+        private static string GetStringValue(Match match, string property)
         {
-            if (properties.ContainsKey(property))
-                return properties[property][0];
+            var value = match[property];
+            if (value != null)
+            {
+                return value.ToString();
+            }
             return null;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as an boolean.
+        /// </summary>
+        /// <param name="caps">A collection of device related properties.</param>
+        /// <param name="property">The name of the property to return as a boolean.</param>
+        /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
+        private static bool GetBoolValue(HttpBrowserCapabilities caps, string property)
+        {
+            bool value = false;
+            bool.TryParse(caps[property], out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as an integer.
+        /// </summary>
+        /// <param name="caps">A collection of device related properties.</param>
+        /// <param name="property">The name of the property to return as a integer.</param>
+        /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
+        private static int GetIntValue(HttpBrowserCapabilities caps, string property)
+        {
+            int value;
+            int.TryParse(caps[property], out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the property of the HttpBrowserCapabilities collection 
+        /// as a string.
+        /// </summary>
+        /// <param name="caps">A collection of device related properties.</param>
+        /// <param name="property">The name of the property to return as a string.</param>
+        /// <returns>The string value of the property, or null if the property is not found.</returns>
+        private static string GetStringValue(HttpBrowserCapabilities caps, string property)
+        {
+            return caps[property];
         }
 
         #endregion

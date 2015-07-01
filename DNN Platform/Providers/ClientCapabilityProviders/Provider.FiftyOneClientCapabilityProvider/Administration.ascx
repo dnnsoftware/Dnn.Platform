@@ -1,229 +1,196 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Providers.FiftyOneClientCapabilityProvider.Administration, DotNetNuke.Providers.FiftyOneClientCapabilityProvider" AutoEventWireup="true" CodeBehind="Administration.ascx.cs" %>
 <%@ Register Assembly="FiftyOne.Foundation" Namespace="FiftyOne.Foundation.UI.Web" TagPrefix="fiftyOne" %>
+<%@ Register Assembly="FiftyOne.Foundation" Namespace="FiftyOne.Foundation.Mobile.Detection" TagPrefix="fiftyOne" %>
 <%@ Register Assembly="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" Namespace="DotNetNuke.Providers.FiftyOneClientCapabilityProvider" tagPrefix="dnn" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/labelcontrol.ascx" %>
 
-<div class="DnnModule DnnModule-Device-Detection" id="fiftyOneDegrees">
+<script runat="server">
+   
+    void Page_Load(Object sender, EventArgs e) 
+    {
+        var enabled = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled && WebProvider.ActiveProvider != null;
+        LabelDataSetName.Text = enabled ? WebProvider.ActiveProvider.DataSet.Name : LocalizeString("Unavailable.Text");
+        LabelDataSetPublished.Text = enabled ? WebProvider.ActiveProvider.DataSet.Published.ToString("d") : LocalizeString("Unavailable.Text");
+        LabelDataSetNextUpdate.Text = enabled ? WebProvider.ActiveProvider.DataSet.NextUpdate.ToString("d") : LocalizeString("Unavailable.Text");
+        LabelDataSetPropertyCount.Text = enabled ? WebProvider.ActiveProvider.DataSet.Properties.Count.ToString() : LocalizeString("Unavailable.Text");
+        LabelDataSetVersion.Text = enabled ? WebProvider.ActiveProvider.DataSet.Version.ToString() : LocalizeString("Unavailable.Text");
+        LabelDataSetHardwareProfiles.Text = enabled ? WebProvider.ActiveProvider.DataSet.Hardware.Profiles.Count().ToString("n0") : LocalizeString("Unavailable.Text");
+        LabelDataSetDeviceCombinations.Text = enabled ? WebProvider.ActiveProvider.DataSet.DeviceCombinations.ToString("n0") : LocalizeString("Unavailable.Text");
+        CheckBoxAutoUpdate.Enabled = this.IsPremium;
+        ButtonSettingsRefresh.Enabled = enabled;
+        LabelFactory.Text = enabled ? WebProvider.ActiveProvider.DataSet.Mode.ToString() : LocalizeString("Unavailable.Text");
+        
+        LiteralWhyDeviceDetectionActive.Text = LocalizeString("WhyDeviceDetection.Html");
+        LiteralWhyDeviceDetection.Text = LocalizeString("WhyDeviceDetection.Html");
+        DeviceBrowserUnavailableLiteral.Text = LocalizeString("DeviceBrowserUnavailable.Html");
+        DeviceBrowserUnavailableButton.NavigateUrl = LocalizeString("DeviceBrowserUnavailableButton.Url");
 
-    <div class="dnnForm ui-tabs ui-widget ui-widget-content ui-corner-all">    
-        <div class="header"></div>
-        <div class="content">
-            <div class="deviceMsg">
-                <% if (!this.IsPremium) { %>
-                    <p class="bold"><dnn:label runat="server" resourcekey="DeviceDetectionEnabled" ControlName="cbDetectionEnabled" />
-                        <asp:CheckBox runat="server" ID="cbDetectionEnabled" AutoPostBack="True" /></p>
-                    <p class="bold"><dnn:label runat="server" resourcekey="AutoUpdatesEnabled" ControlName="cbAutoUpdatesEnabled" />
-                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabled" AutoPostBack="True" /></p>
-                    <p class="bold"><dnn:label runat="server" resourcekey="ShareUsageEnabled" ControlName="cbShareUsageEnabled" />
-                        <asp:CheckBox runat="server" ID="cbShareUsageEnabled" AutoPostBack="True" /></p>
-                    <h2><%= LocalizeString("Lite.Header")%></h2>
-                    <fieldset class="upgradePremium">
-                        <h5><%= LocalizeString("LiteUpgrade.Label")%></h5>
-                        <fiftyOne:Activate runat="server" ID="Activate" LogoEnabled="False" 
-                            ErrorCssClass="dnnFormMessage dnnFormValidationSummary" 
-                            SuccessCssClass="dnnFormMessage dnnFormSuccess" FooterEnabled="False"
-                            ButtonCssClass="dnnSecondaryAction" ShowShareUsage="False"
-                            CheckBoxCssClass="dnnInvisible" />
-                        <fiftyOne:Stats runat="server" ID="LiteStats" ButtonVisible="False" ButtonCssClass="dnnSecondaryAction" />
-                        <p class="footer purchaseBox" id="purchaseBox" runat="server"><em><%= LocalizeString("PurchaseInfo.Text")%><a href="<%=LocalizeString("PurchaseInfoLink.Href") %>" target="_blank"><%= LocalizeString("PurchaseInfoLink.Text")%></a><%= LocalizeString("PurchaseInfoEnd.Text")%></em></p>
-                    </fieldset>
-                    
-                    <fieldset class="upgradeInfo">
-                        <h5><%= LocalizeString("WhyUpgrade.Text")%></h5>
-                        <ul class="upgradePoints">
-                            <li><%= LocalizeString("UpgradePoint1.Text")%></li>
-                            <li><%= LocalizeString("UpgradePoint2.Text")%></li>
-                            <li><%= LocalizeString("UpgradePoint3.Text")%></li>
-                            <li><%= LocalizeString("UpgradePoint4.Text")%></li>
-                        </ul>
-                    </fieldset>
-                <% } else { %>
-                    <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="DeviceDetectionEnabled" ControlName="cbDetectionEnabledPremium" />
-                        <asp:CheckBox runat="server" ID="cbDetectionEnabledPremium" AutoPostBack="True" />
-                    </div>
-                    <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="AutoUpdatesEnabled" ControlName="cbAutoUpdatesEnabledPremium" />
-                        <asp:CheckBox runat="server" ID="cbAutoUpdatesEnabledPremium" AutoPostBack="True" />
-                    </div>
-                    <div class="bold dnnFormItem">
-                        <dnn:label runat="server" resourcekey="ShareUsageEnabled" ControlName="cbShareUsageEnabledPremium" />
-                        <asp:CheckBox runat="server" ID="cbShareUsageEnabledPremium" AutoPostBack="True" />
-                    </div>
-
-                    <h2><%= GetLicenseFormatString("Premium.Header") %></h2>
-                    <fieldset>
-                        <p><%= GetLicenseFormatString("PremiumIntro.Text") %></p>
-                        <fiftyOne:Stats runat="server" ID="PremiumStats" ButtonCssClass="dnnSecondaryAction" />
-                        <p id="PremiumUploadError" runat="server" class="dnnFormMessage dnnFormValidationSummary"><%=GetLicenseFormatString("PremiumUploadError.Text")%></p>
-                        <p id="PremiumUploadSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("PremiumUploadSuccess.Text")%></p>
-                        <dnn:label runat="server" resourcekey="ManualUpdates" /><fiftyOne:Upload runat="server" ID="PremiumUpload" FooterEnabled="False" 
-                            LogoEnabled="False" ButtonCssClass="dnnSecondaryAction" CssClass="dnnUploadActions" />
-                    </fieldset>
-                <% } %>
-            </div>
-            <% if (this.IsPremium) { %>
-            <div class="deviceColGroup">
-                <div class="deviceCol-left">
-                    <h4><%= LocalizeString("SearchPremium.Header") %></h4>
-                    <p><%= LocalizeString("SearchPremium.Text")%></p>
-                    <p id="NoResultsMessage" runat="server" class="dnnFormMessage dnnFormWarning"><%=LocalizeString("NoResultsFound.Text")%></p>
-                    <div class="dnnFormItem">
-                        <asp:TextBox runat="server" ID="SearchTextBox" MaxLength="800" ValidationGroup="DeviceSearch" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="SearchTextBox" ValidationGroup="DeviceSearch" ResourceKey="DeviceSearchRequired" CssClass="dnnFormMessage dnnFormError" Display="Dynamic"></asp:RequiredFieldValidator>
-                        <asp:LinkButton runat="server" ID="SearchButton" ResourceKey="SearchButton" CssClass="dnnPrimaryAction" CausesValidation="True" ValidationGroup="DeviceSearch" />
-                    </div>
-                    <p></p>
-                </div>
-                <div class="deviceCol-right dnnScroll">
-                   
-                    <div class="glossary" style="display:none;">
-                        <div class="contents-header">
-                            <h4><%= LocalizeString("Introduction.Header") %></h4>
-                            <p><%= LocalizeString("Introduction.Text") %></p>
-                            <div class="contents-back">
-                                <a class="back" href="#"><%= LocalizeString("BackToExplorer.Text") %></a>
-                            </div>
-                        </div>
-                        <div class="body">
-                            <h2><%= LocalizeString("Glossary.Header") %></h2>
-                            <p class="help-key"><%= LocalizeString("Glossary.Text") %></p>
-                        </div>
-                        <asp:Repeater runat="server" ID="HardwareList">
-                            <HeaderTemplate>
-                                    <table>
-                                    <thead>
-                                        <tr>
-                                            <td colspan="2"><%= LocalizeString("HardwareList.Header") %></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                        <tr>
-                                            <td>
-                                                <%# DataBinder.Eval(Container.DataItem, "Name") %>
-                                                <span class="premium" id="Premium" runat="server">*</span>
-                                            </td>
-                                            <td>
-                                                <p><%# DataBinder.Eval(Container.DataItem, "Description") %></p>
-                                                <p class="values" id="Values" runat="server"></p>
-                                            </td>
-                                        </tr>
-                            </ItemTemplate>
-                            <FooterTemplate>
-                                    </tbody>
-                                </table>
-                            </FooterTemplate>
-                        </asp:Repeater>
-                        <asp:Repeater runat="server" ID="SoftwareList">
-                            <HeaderTemplate>
-                                    <table>
-                                    <thead>
-                                        <tr>
-                                            <td colspan="2"><%= LocalizeString("SoftwareList.Header") %></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                        <tr>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Name") %></td>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Description") %></td>
-                                        </tr>
-                            </ItemTemplate>
-                            <FooterTemplate>
-                                    </tbody>
-                                </table>
-                            </FooterTemplate>
-                        </asp:Repeater>
-                        <asp:Repeater runat="server" ID="BrowserList">
-                            <HeaderTemplate>
-                                    <table>
-                                    <thead>
-                                        <tr>
-                                            <td colspan="2"><%= LocalizeString("BrowserList.Header") %></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                        <tr>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Name") %></td>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Description") %></td>
-                                        </tr>
-                            </ItemTemplate>
-                            <FooterTemplate>
-                                    </tbody>
-                                </table>
-                            </FooterTemplate>
-                        </asp:Repeater>
-                        <asp:Repeater runat="server" ID="ContentList">
-                            <HeaderTemplate>
-                                    <table>
-                                    <thead>
-                                        <tr>
-                                            <td colspan="2"><%= LocalizeString("ContentList.Header") %></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                        <tr>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Name") %></td>
-                                            <td><%# DataBinder.Eval(Container.DataItem, "Description") %></td>
-                                        </tr>
-                            </ItemTemplate>
-                            <FooterTemplate>
-                                    </tbody>
-                                </table>
-                            </FooterTemplate>
-                        </asp:Repeater>
-                    </div>
-                    <div class="explorer dnnFormItem">
-                        <div class="contents-header">
-                        <% if (FiftyOne.Foundation.UI.DataProvider.IsPremium) { %>
-                            <h4><%=LocalizeString("DeviceExplorer.Header") %></h4>
-                        <% } else {%>
-                            <h4><%=LocalizeString("LiteSearchResults.Header") %></h4>
-                            <p><%=LocalizeString("LiteSearchResults.Text") %></p>
-                        <% } %>
-                        </div>
-                        <a href="#" class="contents-help"><strong><%=LocalizeString("Help.Text") %></strong></a>
-                        <dnn:DnnDeviceExplorer runat="server" ID="DeviceExplorer" FooterEnabled="False" LogoEnabled="False" BackButtonCssClass="dnnTertiaryAction" ImagesEnabled="True"/>
-                    </div>
-                  
-                </div>
-            </div>
-            <% } %>
-        </div>
-    </div>
+        TopDevices.DeviceUrl = TabController.CurrentPage.FullUrl;
+    }
     
+</script>
+
+<div class="DnnModule DnnModule-Device-Detection">
+    <div id="fiftyOneDegrees" class="dnnForm ui-tabs ui-widget ui-widget-content ui-corner-all">
+               
+        <%--List of available tabs for configuration--%>
+        <ul class="dnnAdminTabNav">
+            <li><a href="#panels-settings"><%= LocalizeString("Settings.Header")%></a></li>
+            <li><a href="#panels-explorer"><%= LocalizeString("Explorer.Header")%></a></li>
+            <% if (this.IsPremium) { %>
+            <li><a href="#panels-topdevices"><%= LocalizeString("NewDevices.Header")%></a></li>
+            <% } %>
+            <li><a href="#panels-properties"><%= LocalizeString("Properties.Header")%></a></li>
+            <% if (!this.IsPremium) { %>
+            <li><a href="#panels-activate"><%= LocalizeString("Activate.Header")%></a></li>
+            <% } else { %>
+            <li><a href="#panels-why"><%= LocalizeString("WhyDeviceDetection.Header")%></a></li>
+            <% } %>
+        </ul>
+
+        <%--Main settings available with every version of the data set--%>
+        <div id="panels-settings" class="dnnClear">
+        <div class="dnnFormExpandContent"><a href="#">Expand All</a></div>
+        <p id="UploadError" runat="server" class="dnnFormMessage dnnFormValidationSummary"><%=GetLicenseFormatString("PremiumUploadError.Text")%></p>
+	    <p id="UploadSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("PremiumUploadSuccess.Text")%></p>
+        <p id="SettingsChangedSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("SettingsChangeSuccess.Text")%></p>
+        <p id="SettingsChangedError" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("SettingsChangeError.Text")%></p>
+        <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsStats.Header")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetName" resourcekey="SettingsDataSetName" />
+                <asp:Label runat="server" ID="LabelDataSetName" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetPublished" resourcekey="SettingsDataSetPublished" />
+                <asp:Label runat="server" ID="LabelDataSetPublished" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetNextUpdate" resourcekey="SettingsDataSetNextUpdate" />
+                <asp:Label runat="server" ID="LabelDataSetNextUpdate" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetPropertyCount" resourcekey="SettingsDataSetPropertyCount" />
+                <asp:Label runat="server" ID="LabelDataSetPropertyCount" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetHardwareProfiles" resourcekey="SettingsDataSetHardwareProfiles" />
+                <asp:Label runat="server" ID="LabelDataSetHardwareProfiles" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetDeviceCombinations" resourcekey="SettingsDataSetDeviceCombinations" />
+                <asp:Label runat="server" ID="LabelDataSetDeviceCombinations" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelDataSetVersion" resourcekey="SettingsDataSetVersion" />
+                <asp:Label runat="server" ID="LabelDataSetVersion" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="LabelFactory" resourcekey="SettingsFactory" />
+                <asp:Label runat="server" ID="LabelFactory" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="refresh" resourcekey="SettingsRefresh" />
+                <asp:LinkButton ID="ButtonSettingsRefresh" runat="server" ControlKey="Refresh" CssClass="dnnSecondaryAction" resourcekey="Refresh.Action" />
+            </div>
+        </fieldset>        
+        <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsConfiguration.Header")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelEnabled" ControlName="CheckBoxEnabled" resourcekey="SettingsEnabled" />
+                <asp:CheckBox ID="CheckBoxEnabled" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelShareUsage" ControlName="CheckBoxShareUsage" resourcekey="SettingsShareUsage" />
+                <asp:CheckBox ID="CheckBoxShareUsage" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelAutoUpdate" ControlName="CheckBoxAutoUpdates" resourcekey="SettingsAutoUpdates" />
+                <asp:CheckBox ID="CheckBoxAutoUpdate" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelImageOptimiser" ControlName="CheckBoxImageOptimiser" resourcekey="SettingsImageOptimiser" />
+                <asp:CheckBox ID="CheckBoxImageOptimiser" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelFileMode" ControlName="CheckBoxFileMode" resourcekey="SettingsFileMode" />
+                <asp:CheckBox ID="CheckBoxFileMode" runat="server" />
+            </div>
+        </fieldset>
+        <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsManualUpload.Header")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ControlName="Upload" resourcekey="SettingsUpload" />
+                <fiftyOne:Upload runat="server" ID="Upload" FooterEnabled="False" LogoEnabled="False" ButtonCssClass="dnnSecondaryAction" CssClass="dnnUploadActions" />
+            </div>
+        </fieldset>
+        <ul class="dnnActions dnnClear">
+	        <li><asp:LinkButton id="ButtonSettingsUpdate" runat="server" CssClass="dnnPrimaryAction" resourcekey="Update.Action" OnClientClick="form.submit();" /></li>
+		    <li><asp:LinkButton id="ButtonSettingsCancel" runat="server" CssClass="dnnSecondaryAction" resourcekey="Cancel.Action" OnClientClick="window.history.back();" /></li>
+	    </ul>
+        </div>
+
+        <div id="panels-explorer" class="dnnClear">
+		<% if (this.IsPremium) { %>
+			<fiftyOne:DeviceExplorer runat="server" ID="DeviceBrowser" FooterEnabled="False" LogoEnabled="False" CssClass="deviceExplorerVendors" SearchButtonCssClass="dnnSecondaryAction" BackButtonCssClass="dnnSecondaryAction" />
+		<% } else { %>
+            <asp:Literal runat="server" ID="DeviceBrowserUnavailableLiteral" />
+            <ul class="dnnActions dnnClear">
+                <li><asp:HyperLink id="DeviceBrowserUnavailableButton" runat="server" CssClass="dnnPrimaryAction" resourcekey="DeviceBrowserUnavailableButton.Action" /></li>
+            </ul>
+        <% } %>
+        </div>
+        
+		<% if (this.IsPremium) { %>
+        <div id="panels-topdevices" class="dnnClear">
+			<fiftyOne:TopDevices runat="server" ID="TopDevices" FooterEnabled="False" LogoEnabled="False" CssClass="topDevices" />
+        </div>
+        <% } %>
+
+        <div id="panels-properties" class="dnnClear">
+			<fiftyOne:PropertyDictionary runat="server" ID="Properties" FooterEnabled="False" LogoEnabled="False" CssClass="propertyDictionary" />
+        </div>
+
+        <% if (!this.IsPremium) { %>
+        <div id="panels-activate" class="dnnClear">
+            <asp:Literal runat="server" ID="LiteralWhyDeviceDetectionActive" />
+            <fiftyOne:Detection runat="server" ID="Activate" LogoEnabled="False" CssClass="upgradePremium"
+							ErrorCssClass="dnnFormMessage dnnFormValidationSummary" 
+							SuccessCssClass="dnnFormMessage dnnFormSuccess" FooterEnabled="False"
+							ButtonCssClass="dnnSecondaryAction" ShowShareUsage="False"
+							CheckBoxCssClass="dnnInvisible" TextBoxCssClass="licenceKey"
+                            ShowUpload="False" InstructionsEnabled="True" />
+        </div>
+        <% } else { %>
+        <div id="panels-why" class="dnnClear">
+            <asp:Literal runat="server" ID="LiteralWhyDeviceDetection" />
+        </div>
+        <% } %>
+
+    </div>
 </div>
 
 <script type="text/javascript">
-    //$('.dnnTooltip').dnnTooltip();
+    jQuery(function ($) {
+        $('#fiftyOneDegrees').dnnTabs();
+    });
+</script>   
 
-    $('.contents-help').click(function (e) {
-        e.preventDefault();
-        $('.explorer').slideToggle(function () {
-            $('.glossary').slideToggle();
+<script type="text/javascript">
+    jQuery(function ($) {
+        var setupModule = function () {
+            $('#panels-settings').dnnPanels();
+            $('#panels-settings .dnnFormExpandContent a').dnnExpandAll({
+                targetArea: '#panels-settings'
+            });
+        };
+        setupModule();
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            // note that this will fire when _any_ UpdatePanel is triggered,
+            // which may or may not cause an issue
+            setupModule();
         });
     });
-
-    $('.contents-back').click(function (e) {
-        e.preventDefault();
-        $('.glossary').slideToggle(function () {
-            $('.explorer').slideToggle();
-        });
-    });
-
-    $("#<%= SearchTextBox.ClientID %>").keyup(function (event) {
-        if (event.keyCode == 13) {
-            $("<%= SearchButton.ClientID %>").click();
-        }
-    });
-
-    $('.DnnModule-Device-Detection .deviceMsg .footer + input[type="submit"]').addClass('dnnSecondaryAction');
-    $('.dnnInvisible').hide();
 </script>

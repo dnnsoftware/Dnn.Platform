@@ -1,7 +1,7 @@
 #region Copyright
 // 
 // DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
+// Copyright (c) 2002-2015
 // by DotNetNuke Corporation
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -19,34 +19,45 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System.Configuration;
-using System.Diagnostics;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using FiftyOne.Foundation.Mobile.Configuration;
-using FiftyOne.Foundation.Mobile.Detection.Entities;
-
 namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 {
     using System;
-    using System.Linq;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
     using FiftyOne.Foundation.Mobile.Detection;
-    using FiftyOne.Foundation.UI;
     using FiftyOne.Foundation.UI.Web;
-    using System.Xml;
-/// <summary>
+    using System.Collections.Generic;
+
+    /// <summary>
     /// Administration control is used as the main control off the hosts
-    /// page to activate 51Degrees.mobi.
+    /// page to activate 51Degrees.
     /// </summary>
-    partial class Administration : PortalModuleBase
+    partial class Administration : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         /// <summary>
-        ///  Records if premium data is in use when the control is first loaded.
+        /// Returns true if the data set being used for detection is a premium version.
         /// </summary>
-        protected bool IsPremium = DataProvider.IsPremium || DataProvider.IsCms;
+        protected bool IsPremium
+        {
+            get
+            {
+                return FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled &&
+                    WebProvider.ActiveProvider != null &&
+                    "Lite".Equals(WebProvider.ActiveProvider.DataSet.Name) == false;
+            }
+        }
+
+        /// <summary>
+        /// Used to create a new DNN URL for a get request from the device explorer.
+        /// </summary>
+        /// <param name="parameters">List of parameters to include in the URL</param>
+        /// <returns></returns>
+        private string CreateUrl(List<string> parameters)
+        {
+            return DotNetNuke.Common.Globals.NavigateURL(
+                base.TabId,
+                "",
+                parameters.ToArray());
+        }
 
         /// <summary>
         /// Executes the page initialization event.
@@ -56,43 +67,20 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             base.OnInit(e);
 
-            SearchButton.Click += SearchButtonClick;
-            HardwareList.ItemDataBound += ListItemDataBound;
-            PremiumUpload.UploadComplete += UploadComplete;
-            cbDetectionEnabled.CheckedChanged += DetectionEnabledChanged;
-            cbAutoUpdatesEnabled.CheckedChanged += AutoUpdatesEnabledChanged;
-            cbShareUsageEnabled.CheckedChanged += ShareUsageEnabledChanged;
-            cbDetectionEnabledPremium.CheckedChanged += DetectionEnabledChanged;
-            cbAutoUpdatesEnabledPremium.CheckedChanged += AutoUpdatesEnabledChanged;
-            cbShareUsageEnabledPremium.CheckedChanged += ShareUsageEnabledChanged;
-            
-            NoResultsMessage.Visible = false;
-            PremiumUploadSuccess.Visible = false;
-            PremiumUploadError.Visible = false;
+            Upload.UploadButtonText = LocalizeString("UploadData.Text");
+            Upload.UploadComplete += UploadComplete;
+            UploadSuccess.Visible = false;
+            UploadError.Visible = false;
+            SettingsChangedError.Visible = false;
+            SettingsChangedSuccess.Visible = false;
 
-            jQuery.RequestDnnPluginsRegistration();
-
-            HardwareList.DataSource = DataProvider.HardwareProperties;
-            SoftwareList.DataSource = DataProvider.SoftwareProperties;
-            BrowserList.DataSource = DataProvider.BrowserProperties;
-            ContentList.DataSource = DataProvider.ContentProperties;
-
-            HardwareList.DataBind();
-            SoftwareList.DataBind();
-            BrowserList.DataBind();
-            ContentList.DataBind();
-
-            var refreshButtonText = LocalizeString("StatsRefreshButton.Text");
-            var statsHtml = LocalizeString("StatsHtml.Text");
-            PremiumStats.RefreshButtonText = refreshButtonText;
-            PremiumStats.Html = statsHtml;
-            PremiumUpload.UploadButtonText = LocalizeString("UploadData.Text");
-            LiteStats.RefreshButtonText = refreshButtonText;
-            LiteStats.Html = statsHtml;
+            ButtonSettingsRefresh.Command += ButtonSettingsRefresh_Command;
+            ButtonSettingsRefresh.Enabled = IsPremium;
 
             if (!IsPremium)
             {
-                // lite
+                // Lite data is being used so we offer an option to upgrade to premium.
+                DeviceBrowser.Visible = false;
                 Activate.ActivateButtonText = LocalizeString("ActivateButtonText.Text");
                 Activate.ActivatedMessageHtml = LocalizeString("ActivatedMessageHtml.Text");
                 Activate.ActivateInstructionsHtml = LocalizeString("ActivateInstructionsHtml.Text");
@@ -109,176 +97,90 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                 Activate.ValidationRequiredErrorText = LocalizeString("ValidationRequiredErrorText.Text");
                 Activate.ValidationRegExErrorText = LocalizeString("ValidationRegExErrorText.Text");
                 Activate.RefreshButtonText = LocalizeString("RefreshButtonText.Text");
-                Activate.UploadButtonText = LocalizeString("UploadButtonText.Text");
-                Activate.UploadInstructionsHtml = LocalizeString("UploadInstructionsHtml.Text");
             }
             else
             {
-                // premium
-                DeviceExplorer.BackButtonDeviceText = LocalizeString("BackButtonDeviceText.Text");
-                DeviceExplorer.BackButtonDevicesText = LocalizeString("BackButtonDevicesText.Text");
-                DeviceExplorer.DeviceExplorerDeviceHtml = LocalizeString("DeviceExplorerDeviceInstructionsHtml.Text");
-                DeviceExplorer.DeviceExplorerModelsHtml = LocalizeString("DeviceExplorerModelsInstructionsHtml.Text");
-                DeviceExplorer.DeviceExplorerVendorsHtml = LocalizeString("DeviceExplorerVendorsHtml.Text");
+                // Premium data is being used so we'll configure the device browser.
+                DeviceBrowser.Visible = true;
+                DeviceBrowser.BackButtonDeviceText = LocalizeString("BackButtonDeviceText.Text");
+                DeviceBrowser.BackButtonDevicesText = LocalizeString("BackButtonDevicesText.Text");
+                DeviceBrowser.DeviceExplorerDeviceHtml = LocalizeString("DeviceExplorerDeviceInstructionsHtml.Text");
+                DeviceBrowser.DeviceExplorerModelsHtml = LocalizeString("DeviceExplorerModelsInstructionsHtml.Text");
+                DeviceBrowser.DeviceExplorerVendorsHtml = LocalizeString("DeviceExplorerVendorsHtml.Text");
+                DeviceBrowser.SearchButtonText = LocalizeString("SearchButton.Text");
+                DeviceBrowser.CreateUrl += CreateUrl;
             }
 
             if (IsPostBack)
                 return;
-
-            var vendor = Request.QueryString["Vendor"];
-            var model = Request.QueryString["Model"];
-            var deviceId = Request.QueryString["DeviceID"];
-            var searchQuery = Request.QueryString["Query"];
-
-            var hasVendor = !string.IsNullOrEmpty(vendor);
-            var hasModel = !string.IsNullOrEmpty(model);
-            var hasDeviceId = !string.IsNullOrEmpty(deviceId);
-            var hasSearchQuery = !string.IsNullOrEmpty(searchQuery);
-
-            if (hasVendor)
-                DeviceExplorer.Vendor = vendor;
-
-            if (hasModel)
-                DeviceExplorer.Model = model;
-            
-            if (hasDeviceId)
-                DeviceExplorer.DeviceID = deviceId;
-            
-            if (hasSearchQuery)
-                SearchTextBox.Text = Server.UrlDecode(searchQuery);
-
-            NoResultsMessage.Visible = hasSearchQuery && !hasDeviceId && !hasModel && !hasVendor;
         }
 
-    protected override void OnLoad(EventArgs e)
-    {
-        base.OnLoad(e);
-
-        if (!IsPostBack)
+        /// <summary>
+        /// Clears the current active provider and forces the device data to be
+        /// reloaded from source.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ButtonSettingsRefresh_Command(object sender, CommandEventArgs e)
         {
-            cbDetectionEnabled.Checked = cbDetectionEnabledPremium.Checked = GetDetectionConfig("enabled", true);
-            cbAutoUpdatesEnabled.Checked = cbAutoUpdatesEnabledPremium.Checked = GetDetectionConfig("autoUpdate", true);
-            cbShareUsageEnabled.Checked = cbShareUsageEnabledPremium.Checked = GetDetectionConfig("shareUsage", true);
-
+            if (WebProvider.ActiveProvider != null)
+            {
+                WebProvider.Download();
+            }
         }
-    }
 
-    protected override void OnPreRender(EventArgs e)
+        /// <summary>
+        /// Updates the 51Degrees configuration file if the configuration settings have been changed.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnLoad(EventArgs e)
         {
-            base.OnPreRender(e);
-            PremiumUpload.Visible = DataProvider.IsPremium;
-            purchaseBox.Visible = !DataProvider.IsPremium;
+            base.OnLoad(e);
+            if (IsPostBack)
+            {
+                try
+                {
+                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled = CheckBoxEnabled.Checked;
+                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate = CheckBoxAutoUpdate.Checked;
+                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage = CheckBoxShareUsage.Checked;
+                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled = CheckBoxImageOptimiser.Checked;
+                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode = CheckBoxFileMode.Checked == false;
+                    SettingsChangedSuccess.Visible = true;
+                }
+                catch
+                {
+                    SettingsChangedError.Visible = true;
+                }
+            }
+            CheckBoxEnabled.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled;
+            CheckBoxAutoUpdate.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate;
+            CheckBoxShareUsage.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage;
+            CheckBoxImageOptimiser.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled;
+            CheckBoxFileMode.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode == false;
         }
 
         private void UploadComplete(object sender, ActivityResult e)
         {
-            PremiumUploadError.Visible = !e.Success;
-            PremiumUploadSuccess.Visible = e.Success;
-        }
+            UploadError.Visible = !e.Success;
+            UploadSuccess.Visible = e.Success;
 
-        private static void ListItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.DataItem == null || !(e.Item.DataItem is Property))
-                return;
-
-            var property = (Property)e.Item.DataItem;
-            var premiumLabel = e.Item.FindControl("Premium") as HtmlGenericControl;
-            if (premiumLabel != null)
+            // Enable all the device detection options if not already set if it worked.
+            if (e.Success)
             {
-                premiumLabel.Visible = DataProvider.GetIsPremium(property);
-            }
-
-            var values = e.Item.FindControl("Values") as HtmlGenericControl;
-            if (values == null)
-                return;
-
-            values.Visible = property.ShowValues;
-
-            if (property.ShowValues)
-            {
-                values.InnerText = string.Join(", ", property.Values.Select(item => item.Name).ToArray());
+                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled = true;
+                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate = true;
+                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage = true;
+                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled = true;
+                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode = false;
             }
         }
 
-        private void SearchButtonClick(object sender, EventArgs e)
+        protected string GetLicenseFormatString(string key)
         {
-
-            string additionalParams = string.Empty;
-            if (DataProvider.IsPremium)
-            {
-                var deviceList = DataProvider.FindDevices(this.SearchTextBox.Text);
-                if (deviceList != null && deviceList.Count > 0)
-                {
-                    additionalParams = "DeviceID=" + deviceList.First().DeviceID;
-                }
-            }
-            else
-            {
-                var deviceId = DataProvider.GetDeviceID(this.SearchTextBox.Text);
-                if (deviceId != null)
-                {
-                    additionalParams = "DeviceID=" + deviceId;
-                }
-            }
-            
-            var url = EditUrl(TabId, string.Empty, false, "Query=" + Server.UrlEncode(SearchTextBox.Text), additionalParams);
-            Response.Redirect(url);
-        }
-
-		protected string GetLicenseFormatString(string key)
-		{
-			var content = LocalizeString(key);
-			var licenseType = DataProvider.IsPremium ? LocalizeString("LicenseType_Premium.Text") 
-				: (DataProvider.IsCms ? LocalizeString("LicenseType_CMS.Text") : LocalizeString("LicenseType_Lite.Text"));
-			return string.Format(content, licenseType);
-		}
-
-        private void DetectionEnabledChanged(object sender, EventArgs e)
-        {
-            UpdateDetectionConfig("enabled", (sender as CheckBox).Checked);
-        }
-
-        private void AutoUpdatesEnabledChanged(object sender, EventArgs e)
-        {
-            UpdateDetectionConfig("autoUpdate", (sender as CheckBox).Checked);
-        }
-
-        private void ShareUsageEnabledChanged(object sender, EventArgs e)
-        {
-            UpdateDetectionConfig("shareUsage", (sender as CheckBox).Checked);
-        }
-
-        private void UpdateDetectionConfig(string attrName, bool enabled)
-        {
-            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
-            if (section != null)
-            {
-                var document = new XmlDocument();
-                document.LoadXml(section.SectionInformation.GetRawXml());
-                document.DocumentElement.SetAttribute(attrName, enabled.ToString().ToLowerInvariant());
-
-                section.SectionInformation.SetRawXml(document.InnerXml);
-
-                section.CurrentConfiguration.Save(ConfigurationSaveMode.Modified);
-
-                Config.Touch();
-                Response.Redirect(Request.RawUrl);
-            }
-        }
-
-        private bool GetDetectionConfig(string attrName, bool defaultValue)
-        {
-            var section = Support.GetWebApplicationSection("fiftyOne/detection", false);
-            if (section != null)
-            {
-                var property = section.ElementInformation.Properties[attrName];
-                if (property != null)
-                {
-                    return bool.Parse(property.Value.ToString());
-                }
-            }
-
-            return defaultValue;
+            var content = LocalizeString(key);
+            var dataSetName = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled && 
+                WebProvider.ActiveProvider != null ? WebProvider.ActiveProvider.DataSet.Name : LocalizeString("LicenseType_Lite.Text");
+            return string.Format(content, dataSetName);
         }
     }
 }
