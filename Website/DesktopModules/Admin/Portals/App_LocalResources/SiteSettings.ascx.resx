@@ -426,12 +426,6 @@
   <data name="plHostSpace.Help" xml:space="preserve">
     <value>The amount of Disk Space in MB allowed for this site (enter 0 for unlimited space).</value>
   </data>
-  <data name="plSiteLogHistory.Text" xml:space="preserve">
-    <value>Site Log History (Days):</value>
-  </data>
-  <data name="plSiteLogHistory.Help" xml:space="preserve">
-    <value>The number of days of site activity that is kept for this site.</value>
-  </data>
   <data name="plDesktopModules.Text" xml:space="preserve">
     <value>Available modules:</value>
   </data>

@@ -251,9 +251,6 @@ namespace DotNetNuke.Services.Installer.Writers
                                         break;
                                 }
                                 break;
-                            case "log":
-                                filePath = "DesktopModules\\Admin\\SiteLog\\App_LocalResources";
-                                break;
                             case "logging":
                                 filePath = "DesktopModules\\Admin\\LogViewer\\App_LocalResources";
                                 break;

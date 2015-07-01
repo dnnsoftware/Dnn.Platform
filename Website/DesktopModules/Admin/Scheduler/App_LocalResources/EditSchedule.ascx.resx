@@ -187,7 +187,7 @@
     <value>Object Dependencies:</value>
   </data>
   <data name="plObjectDependencies.Help" xml:space="preserve">
-    <value>Enter the tables or other objects that this event is dependent on. Example: "SiteLog,Users,UsersOnline"</value>
+    <value>Enter the tables or other objects that this event is dependent on. Example: "Users,UsersOnline"</value>
   </data>
   <data name="UpdateSuccess.Text" xml:space="preserve">
     <value>Your changes have been saved.</value>

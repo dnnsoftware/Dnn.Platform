@@ -560,25 +560,6 @@
                     <dnn:dnncombobox id="cboControlPanel" runat="server" />
                 </div>
                 <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogStorage" controlname="optSiteLogStorage" runat="server" />
-                    <asp:RadioButtonList ID="optSiteLogStorage" CssClass="dnnHSRadioButtons" runat="server"
-                        RepeatLayout="Flow">
-                        <asp:ListItem Value="D" resourcekey="Database" />
-                        <asp:ListItem Value="F" resourcekey="FileSystem" />
-                    </asp:RadioButtonList>
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogBuffer" controlname="txtSiteLogBuffer" runat="server" />
-                    <asp:TextBox ID="txtSiteLogBuffer" runat="server" MaxLength="4" />
-                    <asp:Label ID="lblSiteLogBuffer" runat="server" resourcekey="Items" />
-                    <asp:RangeValidator runat="server" id="valSiteLogBuffer" Type="Integer" controltovalidate="txtSiteLogBuffer" validationexpression="^\d*" MinimumValue="1" MaximumValue="999" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" resourcekey="SiteLogBufferValidation"  />
-                </div>
-                <div class="dnnFormItem">
-                    <dnn:label id="plSiteLogHistory" controlname="txtSiteLogHistory" runat="server" />
-                    <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                    <asp:Label ID="lblSiteLogHistory" runat="server" resourcekey="Days" />
-                </div>
-                <div class="dnnFormItem">
                     <dnn:label id="plUsersOnline" controlname="chkUsersOnline" runat="server" />
                     <asp:CheckBox ID="chkUsersOnline" runat="server" />
                 </div>

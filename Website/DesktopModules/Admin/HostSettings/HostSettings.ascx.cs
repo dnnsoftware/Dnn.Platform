@@ -353,25 +353,11 @@ namespace DotNetNuke.Modules.Admin.Host
                 }
             }
 
-            if (String.IsNullOrEmpty(Entities.Host.Host.SiteLogStorage))
-            {
-                optSiteLogStorage.Items.FindByValue("D").Selected = true;
-            }
-            else
-            {
-                optSiteLogStorage.Items.FindByValue(Entities.Host.Host.SiteLogStorage).Selected = true;
-            }
-            
-            txtSiteLogBuffer.Text = Entities.Host.Host.SiteLogBuffer.ToString();
-            txtSiteLogHistory.Text = Entities.Host.Host.SiteLogHistory.ToString();
-
             chkUsersOnline.Checked = Entities.Host.Host.EnableUsersOnline;
             txtUsersOnlineTime.Text = Entities.Host.Host.UsersOnlineTimeWindow.ToString();
             txtAutoAccountUnlock.Text = Entities.Host.Host.AutoAccountUnlockDuration.ToString();
 
             txtFileExtensions.Text = Entities.Host.Host.AllowedExtensionWhitelist.ToStorageString();
-
-            
 
             chkLogBuffer.Checked = Entities.Host.Host.EventLogBuffer;
             txtHelpURL.Text = Entities.Host.Host.HelpURL;
@@ -837,9 +823,6 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("HostSpace", txtHostSpace.Text, false);
                     HostController.Instance.Update("PageQuota", txtPageQuota.Text, false);
                     HostController.Instance.Update("UserQuota", txtUserQuota.Text, false);
-                    HostController.Instance.Update("SiteLogStorage", optSiteLogStorage.SelectedItem.Value, false);
-                    HostController.Instance.Update("SiteLogBuffer", txtSiteLogBuffer.Text, false);
-                    HostController.Instance.Update("SiteLogHistory", txtSiteLogHistory.Text, false);
                     HostController.Instance.Update("DemoPeriod", txtDemoPeriod.Text, false);
                     HostController.Instance.Update("DemoSignup", chkDemoSignup.Checked ? "Y" : "N", false);
                     HostController.Instance.Update("Copyright", chkCopyright.Checked ? "Y" : "N", false);

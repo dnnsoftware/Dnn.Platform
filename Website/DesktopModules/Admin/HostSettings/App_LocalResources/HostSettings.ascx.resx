@@ -234,12 +234,6 @@
   <data name="plDemoSignup.Text" xml:space="preserve">
     <value>Anonymous Demo Signup?</value>
   </data>
-  <data name="plSiteLogBuffer.Text" xml:space="preserve">
-    <value>Site Log Buffer :</value>
-  </data>
-  <data name="plSiteLogHistory.Text" xml:space="preserve">
-    <value>Site Log History:</value>
-  </data>
   <data name="plUsersOnline.Text" xml:space="preserve">
     <value>Enable Users Online?</value>
   </data>
@@ -474,12 +468,6 @@
   <data name="plWebRequestTimeout.Help" xml:space="preserve">
     <value>Enter a time out value for a Web Request</value>
   </data>
-  <data name="plSiteLogBuffer.Help" xml:space="preserve">
-    <value>Enter the number of Items in the Site Log Buffer</value>
-  </data>
-  <data name="plSiteLogHistory.Help" xml:space="preserve">
-    <value>Enter the number of Days of activity to keep in the Site Log</value>
-  </data>
   <data name="plUsersOnline.Help" xml:space="preserve">
     <value>You can optionally enable the Users Online feature</value>
   </data>
@@ -509,12 +497,6 @@
   </data>
   <data name="ContainerUpload.Text" xml:space="preserve">
     <value>Upload Container</value>
-  </data>
-  <data name="plSiteLogStorage.Text" xml:space="preserve">
-    <value>Site Log Storage:</value>
-  </data>
-  <data name="plSiteLogStorage.Help" xml:space="preserve">
-    <value>Select the storage location for the Site Log</value>
   </data>
   <data name="Database.Text" xml:space="preserve">
     <value>Database</value>
@@ -1234,8 +1216,5 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   </data>
   <data name="plUpgradeForceSSL.Text" xml:space="preserve">
     <value>Require SSL for Upgrade wizard</value>
-  </data>
-  <data name="SiteLogBufferValidation.Text" xml:space="preserve">
-    <value>Buffer size needs to be at least 1.</value>
   </data>
 </root>
