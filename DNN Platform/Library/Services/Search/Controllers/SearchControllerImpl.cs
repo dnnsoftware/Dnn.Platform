@@ -29,6 +29,7 @@ using System.Web.Caching;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Entities;
@@ -96,7 +97,8 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 try
                 {
-                    var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch);
+	                var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
+					var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
                     var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);
@@ -105,6 +107,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch,
                             fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
+						parserContent.AllowLeadingWildcard = allowLeadingWildcard;
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
                     }

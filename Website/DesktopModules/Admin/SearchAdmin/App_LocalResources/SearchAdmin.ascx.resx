@@ -201,4 +201,10 @@
   <data name="ControlTitle_.Text" xml:space="preserve">
     <value>Search Admin</value>
   </data>
+  <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
+    <value>Enable this setting to allow search with part of the keyword. For example: search "dnn" will match "dnn8" but not "powerfuldnn" in default, if you want to return "powerfuldnn" in search result, you need enable this setting. Note: this may cause performance issue, so make sure only enable this setting when really needed.</value>
+  </data>
+  <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
+    <value>Allow Leading Wildcard:</value>
+  </data>
 </root>
