@@ -26,6 +26,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
     using FiftyOne.Foundation.Mobile.Detection;
     using FiftyOne.Foundation.UI.Web;
     using System.Collections.Generic;
+    using FiftyOne.Foundation.Mobile.Detection.Configuration;
 
     /// <summary>
     /// Administration control is used as the main control off the hosts
@@ -40,7 +41,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         {
             get
             {
-                return FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled &&
+                return Manager.Enabled &&
                     WebProvider.ActiveProvider != null &&
                     "Lite".Equals(WebProvider.ActiveProvider.DataSet.Name) == false;
             }
@@ -69,10 +70,6 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
 
             Upload.UploadButtonText = LocalizeString("UploadData.Text");
             Upload.UploadComplete += UploadComplete;
-            UploadSuccess.Visible = false;
-            UploadError.Visible = false;
-            SettingsChangedError.Visible = false;
-            SettingsChangedSuccess.Visible = false;
 
             ButtonSettingsRefresh.Command += ButtonSettingsRefresh_Command;
             ButtonSettingsRefresh.Enabled = IsPremium;
@@ -136,27 +133,45 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            UploadError.Visible = false;
+            UploadSuccess.Visible = false;
+            SettingsChangedError.Visible = false;
+            SettingsChangedSuccess.Visible = false;
+
             if (IsPostBack)
             {
                 try
                 {
-                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled = CheckBoxEnabled.Checked;
-                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate = CheckBoxAutoUpdate.Checked;
-                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage = CheckBoxShareUsage.Checked;
-                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled = CheckBoxImageOptimiser.Checked;
-                    FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode = CheckBoxFileMode.Checked == false;
-                    SettingsChangedSuccess.Visible = true;
+                    // Work out if any of the settings have been changed?
+                    bool changed = Manager.Enabled != CheckBoxEnabled.Checked ||
+                                   Manager.AutoUpdate != CheckBoxAutoUpdate.Checked ||
+                                   Manager.ShareUsage != CheckBoxShareUsage.Checked ||
+                                   Manager.ImageOptimiserEnabled != CheckBoxImageOptimiser.Checked ||
+                                   Manager.MemoryMode != (CheckBoxFileMode.Checked == false);
+
+                    // If so then set the values in the configuration file and display
+                    // a message indicating values have been changed.
+                    if (changed)
+                    {
+                        Manager.Enabled = CheckBoxEnabled.Checked;
+                        Manager.AutoUpdate = CheckBoxAutoUpdate.Checked;
+                        Manager.ShareUsage = CheckBoxShareUsage.Checked;
+                        Manager.ImageOptimiserEnabled = CheckBoxImageOptimiser.Checked;
+                        Manager.MemoryMode = (CheckBoxFileMode.Checked == false);
+                        SettingsChangedSuccess.Visible = true;
+                    }
                 }
                 catch
                 {
                     SettingsChangedError.Visible = true;
                 }
             }
-            CheckBoxEnabled.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled;
-            CheckBoxAutoUpdate.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate;
-            CheckBoxShareUsage.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage;
-            CheckBoxImageOptimiser.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled;
-            CheckBoxFileMode.Checked = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode == false;
+            CheckBoxEnabled.Checked = Manager.Enabled;
+            CheckBoxAutoUpdate.Checked = Manager.AutoUpdate;
+            CheckBoxShareUsage.Checked = Manager.ShareUsage;
+            CheckBoxImageOptimiser.Checked = Manager.ImageOptimiserEnabled;
+            CheckBoxFileMode.Checked = Manager.MemoryMode == false;
         }
 
         private void UploadComplete(object sender, ActivityResult e)
@@ -167,18 +182,18 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             // Enable all the device detection options if not already set if it worked.
             if (e.Success)
             {
-                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled = true;
-                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.AutoUpdate = true;
-                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ShareUsage = true;
-                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.ImageOptimiserEnabled = true;
-                FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.MemoryMode = false;
+                Manager.Enabled = true;
+                Manager.AutoUpdate = true;
+                Manager.ShareUsage = true;
+                Manager.ImageOptimiserEnabled = true;
+                Manager.MemoryMode = false;
             }
         }
 
         protected string GetLicenseFormatString(string key)
         {
             var content = LocalizeString(key);
-            var dataSetName = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled && 
+            var dataSetName = Manager.Enabled && 
                 WebProvider.ActiveProvider != null ? WebProvider.ActiveProvider.DataSet.Name : LocalizeString("LicenseType_Lite.Text");
             return string.Format(content, dataSetName);
         }
