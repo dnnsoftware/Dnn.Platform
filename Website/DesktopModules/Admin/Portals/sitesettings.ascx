@@ -451,10 +451,6 @@
                             <dnn:label id="plUserQuota" runat="server" controlname="txtUserQuota" />
                             <asp:TextBox ID="txtUserQuota" runat="server" MaxLength="6" />
                         </div>
-                        <div class="dnnFormItem">
-                            <dnn:label id="plSiteLogHistory" runat="server" controlname="txtSiteLogHistory" />
-                            <asp:TextBox ID="txtSiteLogHistory" runat="server" MaxLength="3" />
-                        </div>
                         <div class="dnnFormItem ssasPremiumModule">
                             <dnn:label id="plDesktopModules" runat="server" controlname="ctlDesktopModules" />
                             <dnn:DnnComboBox CheckBoxes="True" id="ctlDesktopModules" runat="server" DataValueField="DesktopModuleID" DataTextField="FriendlyName" AutoPostBack="true" />

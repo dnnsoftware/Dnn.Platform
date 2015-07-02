@@ -245,9 +245,6 @@ namespace DotNetNuke.Entities.Portals
         /// txtHostSpace.Text = objPortal.HostSpace.ToString
         /// txtPageQuota.Text = objPortal.PageQuota.ToString
         /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
         /// </code></example></remarks>
         [XmlElement("expirydate")]
         public DateTime ExpiryDate { get; set; }
@@ -319,9 +316,6 @@ namespace DotNetNuke.Entities.Portals
         /// txtHostSpace.Text = objPortal.HostSpace.ToString
         /// txtPageQuota.Text = objPortal.PageQuota.ToString
         /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
         /// </code></example></remarks>
         [XmlElement("hostfee")]
         public float HostFee { get; set; }
@@ -340,9 +334,6 @@ namespace DotNetNuke.Entities.Portals
         /// txtHostSpace.Text = objPortal.HostSpace.ToString
         /// txtPageQuota.Text = objPortal.PageQuota.ToString
         /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
         /// </code></example></remarks>
         [XmlElement("hostspace")]
         public int HostSpace { get; set; }
@@ -398,9 +389,6 @@ namespace DotNetNuke.Entities.Portals
         /// txtHostSpace.Text = objPortal.HostSpace.ToString
         /// txtPageQuota.Text = objPortal.PageQuota.ToString
         /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
         /// </code></example></remarks>
         [XmlElement("pagequota")]
         public int PageQuota { get; set; }
@@ -551,20 +539,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <value># of days sitelog history</value>
         /// <returns># of days sitelog history</returns>
-        /// <remarks><example>This show the Portal <c>SiteLogHistory</c>usage
-        /// <code lang="vbnet">
-        /// If Not Null.IsNull(objPortal.ExpiryDate) Then
-        ///     txtExpiryDate.Text = objPortal.ExpiryDate.ToShortDateString
-        /// End If
-        /// txtHostFee.Text = objPortal.HostFee.ToString
-        /// txtHostSpace.Text = objPortal.HostSpace.ToString
-        /// txtPageQuota.Text = objPortal.PageQuota.ToString
-        /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
-        /// </code></example></remarks>
         [XmlElement("siteloghistory")]
+        [Obsolete("Deprecated in 8.0.0")]
         public int SiteLogHistory { get; set; }
 
         /// <summary>
@@ -599,9 +575,6 @@ namespace DotNetNuke.Entities.Portals
         /// txtHostSpace.Text = objPortal.HostSpace.ToString
         /// txtPageQuota.Text = objPortal.PageQuota.ToString
         /// txtUserQuota.Text = objPortal.UserQuota.ToString
-        /// If Not IsDBNull(objPortal.SiteLogHistory) Then
-        ///     txtSiteLogHistory.Text = objPortal.SiteLogHistory.ToString
-        /// End If
         /// </code></example></remarks>
         [XmlElement("userquota")]
         public int UserQuota { get; set; }
@@ -827,7 +800,6 @@ namespace DotNetNuke.Entities.Portals
             PaymentProcessor = Null.SetNullString(dr["PaymentProcessor"]);
             ProcessorUserId = Null.SetNullString(dr["ProcessorUserId"]);
             ProcessorPassword = Null.SetNullString(dr["ProcessorPassword"]);
-            SiteLogHistory = Null.SetNullInteger(dr["SiteLogHistory"]);
             SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
             HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
             LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);

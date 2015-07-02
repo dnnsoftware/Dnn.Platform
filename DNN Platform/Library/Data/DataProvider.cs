@@ -2601,43 +2601,6 @@ namespace DotNetNuke.Data
 
 		#endregion
 
-		#region SiteLog
-
-		public virtual void AddSiteLog(DateTime dateTime, int portalId, int userId, string referrer, string URL,
-										string userAgent, string userHostAddress, string userHostName, int tabId,
-										int affiliateId)
-		{
-			ExecuteNonQuery("AddSiteLog",
-									  dateTime,
-									  portalId,
-									  GetNull(userId),
-									  GetNull(referrer),
-									  GetNull(URL),
-									  GetNull(userAgent),
-									  GetNull(userHostAddress),
-									  GetNull(userHostName),
-									  GetNull(tabId),
-									  GetNull(affiliateId));
-		}
-
-		public virtual void DeleteSiteLog(DateTime dateTime, int portalId)
-		{
-			ExecuteNonQuery("DeleteSiteLog", dateTime, portalId);
-		}
-
-		public virtual IDataReader GetSiteLog(int portalId, string portalAlias, string reportName, DateTime startDate,
-											DateTime endDate)
-		{
-			return ExecuteReader(reportName, portalId, portalAlias, startDate, endDate);
-		}
-
-		public virtual IDataReader GetSiteLogReports()
-		{
-			return ExecuteReader("GetSiteLogReports");
-		}
-
-		#endregion
-
 		#region Vendors
 
 		public virtual int AddVendor(int PortalId, string VendorName, string Unit, string Street, string City,

@@ -1328,18 +1328,6 @@
     <Compile Include="Services\Log\EventLog\SendLogNotifications.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Log\SiteLog\BufferedSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\PurgeSiteLog.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Services\Log\SiteLog\SiteLogInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\Mail\Mail.cs" />
     <Compile Include="Services\Mail\MailFormat.cs" />
     <Compile Include="Services\Mail\MailPriority.cs" />

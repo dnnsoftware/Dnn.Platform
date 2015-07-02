@@ -62,9 +62,6 @@
     <ProxyServer></ProxyServer>
     <ProxyUsername Secure="True"></ProxyUsername>
     <SchedulerMode>1</SchedulerMode>
-    <SiteLogBuffer>1</SiteLogBuffer>
-    <SiteLogHistory>0</SiteLogHistory>
-    <SiteLogStorage>D</SiteLogStorage>
     <SkinUpload>G</SkinUpload>
     <SMTPAuthentication></SMTPAuthentication>
     <SMTPEnableSSL>N</SMTPEnableSSL>
