@@ -1008,6 +1008,9 @@
   <data name="PasswordResetFailed_PasswordInHistory.Text" xml:space="preserve">
     <value>Your new password was not accepted for security reasons. Please make sure to choose a password which does not match a previously used password.</value>
   </data>
+  <data name="PasswordResetFailed_WrongAnswer.Text" xml:space="preserve">
+    <value>Your new password was not accepted for security reasons. Please make sure you input correct username and answer.</value>
+  </data>
   <data name="InsecureAdmin.Text" xml:space="preserve">
     <value>Your admin account is still using a known default password. Please go to the Admin-&gt;User accounts menu and update the password. In addition, please ensure that you have updated the email address to a valid value.</value>
   </data>

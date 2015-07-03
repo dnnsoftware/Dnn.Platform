@@ -96,6 +96,8 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 lblInfo.Text = Localization.GetString("ForcedResetInfo", LocalResourceFile);
             }
+
+	        divQA.Visible = MembershipProviderConfig.RequiresQuestionAndAnswer;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -153,7 +155,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
-            if (UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, ResetToken, out errorMessage) == false)
+            if (!UserController.ChangePasswordByToken(PortalSettings.PortalId, username, txtPassword.Text, txtAnswer.Text, ResetToken, out errorMessage))
             {
                 resetMessages.Visible = true;
                 var failed = errorMessage;
