@@ -183,6 +183,12 @@
   <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
     <value>At least {0} characters</value>
   </data>
+  <data name="PasswordRulesHeadText.Text" xml:space="preserve">
+    <value>Password Rules:</value>
+  </data>
+  <data name="PasswordRulesBodyText.Text" xml:space="preserve">
+    <value>Contains at least {0} characters, 1 uppercase letter, 1 number and {1}.</value>
+  </data>
   <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
     <value>Password does not match</value>
   </data>

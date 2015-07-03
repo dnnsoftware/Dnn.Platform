@@ -1973,25 +1973,15 @@
             }
             if (settings.interactive) {
                 // placeholder stuff
-                var placeholderSupported = ('placeholder' in $(data.fake_input)[0]);
-                if (placeholderSupported)
-                    $(data.fake_input).attr('placeholder', $(data.fake_input).attr('data-default'));
-                else {
-                    $(data.fake_input).val($(data.fake_input).attr('data-default'));
-                    $(data.fake_input).css('color', settings.placeholderColor);
-                }
+                $(data.fake_input).dnnPlaceholder({
+	                color: [settings.normalColor, settings.placeholderColor]
+                });
 
                 $(data.fake_input).dnnResetAutosize(settings);
                 $(data.holder).bind('click', data, function (event) {
                     $(event.data.real_input).triggerHandler('focus');
                     $(event.data.fake_input).triggerHandler('focus');
                     return false;
-                });
-                $(data.fake_input).bind('focus', data, function (event) {
-                    if ($(event.data.fake_input).val() == $(event.data.fake_input).attr('data-default')) {
-                        $(event.data.fake_input).val('');
-                    }
-                    $(event.data.fake_input).css('color', settings.normalColor);
                 });
                 if (settings.autocomplete_url != undefined) {
                     if ($.dnnAutocompleter !== undefined) {
@@ -2047,10 +2037,8 @@
 									$(event.data.real_input).dnnAddTag(tags[i], { focus: true, unique: (settings.unique) });
 								}
 							}
-                        } else {
-                            $(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
-                            $(event.data.fake_input).css('color', settings.placeholderColor);
                         }
+
                         return false;
                     });
 
@@ -2137,6 +2125,60 @@
             f.call(obj, obj, tags[i]);
         }
     };
+
+    $.fn.dnnPlaceholder = function (options) {
+	    options = $.extend({}, {
+	    	cssClass: 'dnnPlaceholder',
+			color: []
+	    }, options);
+
+	    this.each(function () {
+		    var $this = $(this);
+			var instance = $this.data('dnnPlaceHolder');
+			if (instance) return true;
+			$this.data('dnnPlaceHolder', true);
+
+			var placeholderSupported = ('placeholder' in $this[0]);
+            if (placeholderSupported)
+                $this.attr('placeholder', $this.attr('data-default'));
+            else {
+            	var $fakeInput = $('<input type="text" />')
+					.attr('class', $this.attr('class'))
+					.attr('style', $this.attr('style'))
+					.val($this.attr('data-default'));
+
+            	$this.hide().after($fakeInput);
+				if (options.color.length === 2) {
+					$fakeInput.css('color', options.color[1]);
+					$this.css('color', options.color[0]);
+				} else {
+					$fakeInput.addClass(options.cssClass);
+				}
+
+
+	            $fakeInput.on('focus', function(event) {
+		            $fakeInput.hide();
+		            $this.show().focus();
+	            });
+
+				$this.on('blur', function (event) {
+					var d = $this.attr('data-default');
+					if ($this.val() === '') {
+						$this.hide();
+						$fakeInput.show();
+					}
+				});
+
+				var events = $._data(this, 'events')['blur'];
+				var first = events.pop();
+				events.splice(0, 0, first);
+            }
+
+		    return true;
+	    });
+
+		return this;
+	};
 })(jQuery);
 
 (function ($) {
@@ -4136,6 +4178,7 @@
             $('.dnnTooltip').dnnTooltip();
             $('.dnnForm input[type="text"], .dnnForm input[type="password"]').unbind('focus', inputFocusFix).bind('focus', inputFocusFix);
             $('.dnnForm :file').dnnFileInput();
+	        $('.dnnForm input[data-default]').dnnPlaceholder();
         }, 200);
         //change the window confirm style to DNN style
         $("*[onclick*='return confirm']").each(function () {
