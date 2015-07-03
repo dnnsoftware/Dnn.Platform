@@ -218,6 +218,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
+
             string answer = String.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {

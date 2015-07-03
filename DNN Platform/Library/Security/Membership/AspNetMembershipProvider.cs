@@ -1556,17 +1556,22 @@ namespace DotNetNuke.Security.Membership
         /// <param name="user"></param>
         public override bool ResetAndChangePassword(UserInfo user,string newPassword)
         {
-            if (RequiresQuestionAndAnswer)
-            {
-                return false;  
-            }
-
-            //Get AspNet MembershipUser
-            MembershipUser aspnetUser = GetMembershipUser(user);
-
-            string resetPassword = ResetPassword(user,String.Empty);
-            return aspnetUser.ChangePassword(resetPassword, newPassword);
+	        return ResetAndChangePassword(user, newPassword, string.Empty);
         }
+
+		public override bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
+		{
+			if (RequiresQuestionAndAnswer && string.IsNullOrEmpty(answer))
+			{
+				return false;
+			}
+
+			//Get AspNet MembershipUser
+			MembershipUser aspnetUser = GetMembershipUser(user);
+
+			string resetPassword = ResetPassword(user, answer);
+			return aspnetUser.ChangePassword(resetPassword, newPassword);
+		}
 
         public override bool RestoreUser(UserInfo user)
         {
