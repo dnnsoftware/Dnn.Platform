@@ -202,9 +202,9 @@
     <value>Search Admin</value>
   </data>
   <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
-    <value>Enable this setting to allow search with part of the keyword. For example: search "dnn" will match "dnn8" but not "powerfuldnn" in default, if you want to return "powerfuldnn" in search result, you need enable this setting. Note: this may cause performance issue, so make sure only enable this setting when really needed.</value>
+    <value>Enable this setting to allow search within words. For example: by default, searching "dnn" will match "dnn8" but not "powerfuldnn" - it only searches words that begin with the keyword. If you want to return "powerfuldnn" in search result, you need to enable this setting. Note: this may cause performance issues, so make sure to only enable this setting when really needed.</value>
   </data>
   <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
-    <value>Allow Leading Wildcard:</value>
+    <value>Enable partial-word search (slow):</value>
   </data>
 </root>
