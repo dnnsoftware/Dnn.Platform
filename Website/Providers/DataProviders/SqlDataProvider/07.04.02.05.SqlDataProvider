@@ -9,13 +9,13 @@
 /************************************************************/
 
 /* DNN-7198 */
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}GetUserRoles_CoveringIndex')
-DROP INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}Roles] WITH ( ONLINE = OFF )
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}GetUserRoles_CoveringIndex')
+DROP INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}UserRoles] WITH ( ONLINE = OFF )
 GO
 
 
 /****** Object:  Index [IX_GetUserRoles_CoveringIndex]    Script Date: 06/27/2015 06:47:48 ******/
-CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}Roles]
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}UserRoles]
 (
  [RoleID] ASC,
  [Status] ASC
