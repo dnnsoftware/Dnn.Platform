@@ -527,17 +527,6 @@ namespace DotNetNuke.Entities.Urls
             return code;
         }
 
-        private static string GetCultureOfSettings(PortalSettings portalSettings)
-        {
-            //note! should be replaced with compiled call to portalSettings.CultureCode property when base supported version is increased.
-            string cultureCode = "";
-            PropertyInfo cultureCodePi = portalSettings.GetType().GetProperty("CultureCode");
-            if (cultureCodePi != null)
-            {
-                cultureCode = (string)cultureCodePi.GetValue(portalSettings, null);
-            }
-            return cultureCode;
-        }
 
         private static string GetFriendlyAlias(string path,
                                                 ref string httpAlias,
@@ -567,7 +556,7 @@ namespace DotNetNuke.Entities.Urls
                     //this is because the calling module cannot be guaranteed to be supplying the right culture Code / portal alias combination.
                     if (string.IsNullOrEmpty(cultureCode))
                     {
-                        cultureCode = GetCultureOfSettings(portalSettings);
+                        cultureCode = portalSettings.CultureCode;
                         //lookup the culture code of the portal settings object
                     }
                     var primaryAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
