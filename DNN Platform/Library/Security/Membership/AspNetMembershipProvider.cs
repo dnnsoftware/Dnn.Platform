@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
@@ -649,7 +650,17 @@ namespace DotNetNuke.Security.Membership
             {
                 membershipUser.IsApproved = user.Membership.Approved;
             }
-            System.Web.Security.Membership.UpdateUser(membershipUser);
+
+	        try
+	        {
+		        System.Web.Security.Membership.UpdateUser(membershipUser);
+	        }
+	        catch (ProviderException ex)
+	        {
+		        throw new Exception("Asp.net membership update user failed. Possible Reason(s): " +
+										"you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.", ex);
+	        }
+            
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
