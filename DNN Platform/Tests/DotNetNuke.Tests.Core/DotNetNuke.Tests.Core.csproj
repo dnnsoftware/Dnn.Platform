@@ -152,6 +152,7 @@
     <Compile Include="Framework\JavaScriptLibraries\JavaScriptTests.cs" />
     <Compile Include="Providers\Builders\FolderInfoBuilder.cs" />
     <Compile Include="Providers\Builders\FileInfoBuilder.cs" />
+    <Compile Include="Providers\Folder\FileContentTypeManagerTests.cs" />
     <Compile Include="Providers\Folder\DatabaseFolderProviderTests.cs" />
     <Compile Include="Providers\Folder\FileDeletionControllerTests.cs" />
     <Compile Include="Providers\Folder\FileLockingControllerTests.cs" />

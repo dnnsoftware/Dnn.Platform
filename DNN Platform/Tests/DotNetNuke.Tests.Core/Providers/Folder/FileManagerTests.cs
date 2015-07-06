@@ -1105,21 +1105,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
 
-        #endregion
-
-        #region GetContentType
-
-        [Test]
-        public void GetContentType_Returns_Known_Value_When_Extension_Is_Not_Managed()
-        {
-            const string notManagedExtension = "asdf609vas21AS:F,l/&%/(%$";
-            _mockFileManager.Setup(mfm => mfm.ContentTypes).Returns(new Dictionary<string, string>());
-
-            var contentType = _fileManager.GetContentType(notManagedExtension);
-
-            Assert.AreEqual("application/octet-stream", contentType);
-        }
-
-        #endregion
+        #endregion        
     }
 }
