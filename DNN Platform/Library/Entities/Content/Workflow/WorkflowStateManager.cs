@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             using (var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<WorkflowState>();
-                rep.Update("SET [Order] = [Order] - 1 WHERE WorkflowId = @0 AND [Order] > @1", stateToDelete.WorkflowID, stateToDelete.Order);
+                rep.Update("SET [Order] = [Order] - 1 WHERE WorkflowID = @0 AND [Order] > @1", stateToDelete.WorkflowID, stateToDelete.Order);
             }
         }
 

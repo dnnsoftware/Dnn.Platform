@@ -369,10 +369,10 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
+		/// <param name="allowLeadingWildcard"></param>
         /// <returns>cleaned and pre-processed search phrase</returns>
-        public string RephraseSearchText(string searchPhrase, bool useWildCard)
+		public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
-
             searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
@@ -403,7 +403,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (!insideQuote && useWildCard)
                         {
                             // end of a word; we need to append a wild card to search when needed
-                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()) + " ");
+                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
                         break;
@@ -418,7 +418,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else if (useWildCard)
             {
-                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim()));
+                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
             }
             else
             {
@@ -442,7 +442,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         #region private methods
 
-        private string FixLastWord(string lastWord)
+		private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
                 return string.Empty;
@@ -477,8 +477,8 @@ namespace DotNetNuke.Services.Search.Internals
                 if (lastWord.Length > 0 && lastWord != "AND" && lastWord != "OR")
                 {
                     lastWord = (beginIsGroup && endIsGroup)
-                        ? string.Format("{0} OR {0}*", lastWord)
-                        : string.Format("({0} OR {0}*)", lastWord);
+						? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
+						: string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
                 if (beginIsGroup) lastWord = c1 + lastWord;

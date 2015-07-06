@@ -70,48 +70,10 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Properties
 
-        private IDictionary<string, string> _contentTypes;
-		private static readonly object _threadLocker = new object();
-
-        public virtual IDictionary<string, string> ContentTypes
-        {
-            get
-            {
-                if (_contentTypes == null)
-                {
-					lock (_threadLocker)
-	                {
-		                if (_contentTypes == null)
-		                {
-			                var listController = new ListController();
-			                var listEntries = listController.GetListEntryInfoItems("ContentTypes");
-			                if (listEntries == null || !listEntries.Any())
-			                {
-				                _contentTypes = GetDefaultContentTypes();
-			                }
-			                else
-			                {
-				                _contentTypes = new Dictionary<string, string>();
-								if (listEntries != null)
-								{
-									foreach (var contentTypeEntry in listEntries)
-									{
-										_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
-									}
-								}
-			                }
-		                }
-	                }
-                }
-
-                return _contentTypes;
-            }
-        }
-
-        private bool IgnoreWhiteList
-        {
-            get { return HostController.Instance.GetBoolean("IgnoreWhiteList", false); }
-        }
+		public virtual IDictionary<string, string> ContentTypes
+		{
+			get { return FileContentTypeManager.Instance.ContentTypes; }
+		}
 
         #endregion
 
@@ -129,48 +91,6 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region Private Methods
-
-        private Dictionary<string, string> GetDefaultContentTypes()
-        {
-            var contentTypes = new Dictionary<string, string>();
-            contentTypes.Add("txt", "text/plain");
-            contentTypes.Add("htm", "text/html");
-            contentTypes.Add("html", "text/html");
-            contentTypes.Add("rtf", "text/richtext");
-            contentTypes.Add("jpg", "image/jpeg");
-            contentTypes.Add("jpeg", "image/jpeg");
-            contentTypes.Add("gif", "image/gif");
-            contentTypes.Add("bmp", "image/bmp");
-            contentTypes.Add("png", "image/png");
-            contentTypes.Add("ico", "image/x-icon");
-            contentTypes.Add("svg", "image/svg+xml");
-            contentTypes.Add("ttf", "font/ttf");
-            contentTypes.Add("eot", "application/vnd.ms-fontobject");
-            contentTypes.Add("woff", "application/font-woff");
-            contentTypes.Add("mp3", "audio/mpeg");
-            contentTypes.Add("wma", "audio/x-ms-wma");
-            contentTypes.Add("mpg", "video/mpeg");
-            contentTypes.Add("mpeg", "video/mpeg");
-            contentTypes.Add("avi", "video/avi");
-            contentTypes.Add("mp4", "video/mp4");
-            contentTypes.Add("wmv", "video/x-ms-wmv");
-            contentTypes.Add("pdf", "application/pdf");
-            contentTypes.Add("doc", "application/msword");
-            contentTypes.Add("dot", "application/msword");
-            contentTypes.Add("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            contentTypes.Add("dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template");
-            contentTypes.Add("csv", "text/csv");
-            contentTypes.Add("xls", "application/x-msexcel");
-            contentTypes.Add("xlt", "application/x-msexcel");
-            contentTypes.Add("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            contentTypes.Add("xltx", "application/vnd.openxmlformats-officedocument.spreadsheetml.template");
-            contentTypes.Add("ppt", "application/vnd.ms-powerpoint");
-            contentTypes.Add("pps", "application/vnd.ms-powerpoint");
-            contentTypes.Add("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-            contentTypes.Add("ppsx", "application/vnd.openxmlformats-officedocument.presentationml.slideshow");
-
-            return contentTypes;
-        }
 
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
@@ -314,7 +234,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
 
-            return AddFile(folder, fileName, fileContent, true);
+            return AddFile(folder, fileName, fileContent, true, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
         }
 
         /// <summary>
@@ -327,7 +247,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, false, GetContentType(Path.GetExtension(fileName)));
+            return AddFile(folder, fileName, fileContent, overwrite, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
         }
 
         /// <summary>
@@ -347,7 +267,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType, GetCurrentUserID());
+            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, GetCurrentUserID());
         }
 
         /// <summary>
@@ -368,6 +288,28 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID)
         {
+            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, createdByUserID);
+        }
+
+        /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
+        /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.NoSpaceAvailableException">Thrown when the portal has no space available to store the specified file.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.PermissionsNotMetException">Thrown when permissions are not met.</exception>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, bool ignoreWhiteList, string contentType, int createdByUserID)
+        {
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
@@ -376,15 +318,15 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet", "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !IgnoreWhiteList))
+            if (!IsAllowedExtension(fileName) && (!UserController.Instance.GetCurrentUserInfo().IsSuperUser || !ignoreWhiteList))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
-            //DNN-2949 If it is host user and IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && UserController.Instance.GetCurrentUserInfo().IsSuperUser && IgnoreWhiteList)
+            //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
+            if (!IsAllowedExtension(fileName) && ignoreWhiteList)
              {
                  var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
-                 log.LogProperties.Add(new LogDetailInfo("Following file was imported during portal creation, but is not an authorized filetype: ", fileName));
+                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
                  LogController.Instance.AddLog(log);
              }
 
@@ -828,10 +770,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual string GetContentType(string extension)
         {
 
-            if (string.IsNullOrEmpty(extension)) return "application/octet-stream";
-
-            var key = extension.TrimStart('.').ToLowerInvariant();
-            return ContentTypes.ContainsKey(key) ? ContentTypes[key] : "application/octet-stream";
+	        return FileContentTypeManager.Instance.GetContentType(extension);
         }
 
         /// <summary>

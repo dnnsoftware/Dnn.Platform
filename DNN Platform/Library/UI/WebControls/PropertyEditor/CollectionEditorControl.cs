@@ -150,14 +150,14 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the value of the Field that is bound to the EditControl's 
-        /// Expression Validator
+        /// Expression DynamicContentValidator
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// <history>
         /// 	[cnurse]	02/13/2006	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Expression Validator.")]
+        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Expression DynamicContentValidator.")]
         public string ValidationExpressionDataField { get; set; }
 
         /// -----------------------------------------------------------------------------

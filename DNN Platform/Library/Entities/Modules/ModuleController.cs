@@ -1152,10 +1152,7 @@ namespace DotNetNuke.Entities.Modules
         /// </history>
         public void CreateContentItem(ModuleInfo module)
         {
-            IContentTypeController typeController = new ContentTypeController();
-            ContentType contentType = (from t in typeController.GetContentTypes()
-                                       where t.ContentType == "Module"
-                                       select t).SingleOrDefault();
+            ContentType contentType  = ContentType.Module;
             //This module does not have a valid ContentItem
             //create ContentItem
             IContentController contentController = Util.GetContentController();

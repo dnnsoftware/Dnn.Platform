@@ -38,7 +38,8 @@
             <h2 class="dnnForm dnnInstall dnnClear">
                 <asp:Label ID="lblDotNetNukeUpgrade" runat="server" ResourceKey="Title" />
                 <h5><asp:Label ID="currentVersionLabel" runat="server" /></h5>
-                <h5><asp:Label ID="versionLabel" runat="server" /></h5>                
+                <h5><asp:Label ID="versionLabel" runat="server" /></h5>   
+				<h5><asp:Label ID="versionsMatch" runat="server" /></h5>   				
             </h2>
             <br/>
             <div class="dnnForm dnnInstall dnnClear" id="dnnInstall" runat="server">

@@ -250,7 +250,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             Assert.AreEqual(portal.RegisteredRoleId, settings.RegisteredRoleId);
             Assert.AreEqual(portal.RegisteredRoleName, settings.RegisteredRoleName);
             Assert.AreEqual(portal.SearchTabId, settings.SearchTabId);
-            Assert.AreEqual(portal.SiteLogHistory, settings.SiteLogHistory);
             Assert.AreEqual(portal.SplashTabId, settings.SplashTabId);
             Assert.AreEqual(portal.SuperTabId, settings.SuperTabId);
             Assert.AreEqual(portal.UserQuota, settings.UserQuota);

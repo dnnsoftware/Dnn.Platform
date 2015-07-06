@@ -922,21 +922,6 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Sharepoint.Name.Text" xml:space="preserve">
     <value>SharePoint Connector</value>
   </data>
-  <data name="Tab.SiteLog.Content.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.ContentPane.Module.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Description.Text" xml:space="preserve">
-    <value>View statistical reports on site activity for the portal.</value>
-  </data>
-  <data name="Tab.SiteLog.Name.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
-  <data name="Tab.SiteLog.Title.Text" xml:space="preserve">
-    <value>Site Log</value>
-  </data>
   <data name="Tab.SiteMapSettings.Content.Text" xml:space="preserve">
     <value>Site Map Settings</value>
   </data>

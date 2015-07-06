@@ -18,7 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-#region Usings
 
 using System;
 using System.Globalization;
@@ -27,8 +26,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.Services.Tokens
 {
@@ -48,39 +45,40 @@ namespace DotNetNuke.Services.Tokens
             "|(?:(?<object>\\[)(?<property>[A-Z0-9._]+)(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])" + "|(?<text>\\[[^\\]\\[]+\\])" +
             "|(?<text>[^\\]\\[]+)";
 
+        private const string TokenReplaceCacheKeyDefault = "TokenReplaceRegEx_Default";
+        private const string TokenReplaceCacheKeyObjectless = "TokenReplaceRegEx_Objectless";
+
+
+        private CultureInfo _formatProvider;
+        private string _language;
+
         protected const string ObjectLessToken = "no_object";
-        private CultureInfo _FormatProvider;
-        private string _Language;
 
         protected bool UseObjectLessExpression { get; set; }
 
-        private string TokenReplaceCacheKey
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture
+        /// </summary>
+        /// <value>An CultureInfo</value>
+        protected CultureInfo FormatProvider
         {
-            get
-            {
-                if (UseObjectLessExpression)
-                {
-                    return "TokenReplaceRegEx_Objectless";
-                }
-                else
-                {
-                    return "TokenReplaceRegEx_Default";
-                }
-            }
+            get { return _formatProvider ?? (_formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
-        private string RegExpression
+        /// <summary>
+        /// Gets/sets the language to be used, e.g. for date format
+        /// </summary>
+        /// <value>A string, representing the locale</value>
+        public string Language
         {
             get
             {
-                if (UseObjectLessExpression)
-                {
-                    return ExpressionObjectLess;
-                }
-                else
-                {
-                    return ExpressionDefault;
-                }
+                return _language;
+            }
+            set
+            {
+                _language = value;
+                _formatProvider = new CultureInfo(_language);
             }
         }
 
@@ -92,83 +90,52 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                var tokenizer = (Regex) DataCache.GetCache(TokenReplaceCacheKey);
+                var cacheKey = (UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
+                var tokenizer = (Regex)DataCache.GetCache(cacheKey);
                 if (tokenizer == null)
                 {
-                    tokenizer = new Regex(RegExpression, RegexOptions.Compiled);
-                    DataCache.SetCache(TokenReplaceCacheKey, tokenizer);
+                    tokenizer = new Regex((UseObjectLessExpression) ? ExpressionObjectLess : ExpressionDefault, RegexOptions.Compiled);
+                    DataCache.SetCache(cacheKey, tokenizer);
                 }
                 return tokenizer;
             }
         }
 
-        /// <summary>
-        /// Gets/sets the language to be used, e.g. for date format
-        /// </summary>
-        /// <value>A string, representing the locale</value>
-        public string Language
-        {
-            get
-            {
-                return _Language;
-            }
-            set
-            {
-                _Language = value;
-                _FormatProvider = new CultureInfo(_Language);
-            }
-        }
+        // ReSharper disable once InconsistentNaming
+        protected abstract string replacedTokenValue(string objectName, string propertyName, string format);
 
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture
-        /// </summary>
-        /// <value>An CultureInfo</value>
-        protected CultureInfo FormatProvider
+        protected virtual string ReplaceTokens(string sourceText)
         {
-            get
-            {
-                if (_FormatProvider == null)
-                {
-                    _FormatProvider = Thread.CurrentThread.CurrentUICulture;
-                }
-                return _FormatProvider;
-            }
-        }
-
-        protected virtual string ReplaceTokens(string strSourceText)
-        {
-            if (strSourceText == null)
+            if (sourceText == null)
             {
                 return string.Empty;
             }
-            var Result = new StringBuilder();
-            foreach (Match currentMatch in TokenizerRegex.Matches(strSourceText))
+            var result = new StringBuilder();
+            foreach (Match currentMatch in TokenizerRegex.Matches(sourceText))
             {
-                string strObjectName = currentMatch.Result("${object}");
-                if (!String.IsNullOrEmpty(strObjectName))
+                string objectName = currentMatch.Result("${object}");
+                if (!String.IsNullOrEmpty(objectName))
                 {
-                    if (strObjectName == "[")
+                    if (objectName == "[")
                     {
-                        strObjectName = ObjectLessToken;
+                        objectName = ObjectLessToken;
                     }
-                    string strPropertyName = currentMatch.Result("${property}");
-                    string strFormat = currentMatch.Result("${format}");
-                    string strIfEmptyReplacment = currentMatch.Result("${ifEmpty}");
-                    string strConversion = replacedTokenValue(strObjectName, strPropertyName, strFormat);
-                    if (!String.IsNullOrEmpty(strIfEmptyReplacment) && String.IsNullOrEmpty(strConversion))
+                    string propertyName = currentMatch.Result("${property}");
+                    string format = currentMatch.Result("${format}");
+                    string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
+                    string conversion = replacedTokenValue(objectName, propertyName, format);
+                    if (!String.IsNullOrEmpty(ifEmptyReplacment) && String.IsNullOrEmpty(conversion))
                     {
-                        strConversion = strIfEmptyReplacment;
+                        conversion = ifEmptyReplacment;
                     }
-                    Result.Append(strConversion);
+                    result.Append(conversion);
                 }
                 else
                 {
-                    Result.Append(currentMatch.Result("${text}"));
+                    result.Append(currentMatch.Result("${text}"));
                 }
             }
-            return Result.ToString();
+            return result.ToString();
         }
-
-        protected abstract string replacedTokenValue(string strObjectName, string strPropertyName, string strFormat);
     }
 }

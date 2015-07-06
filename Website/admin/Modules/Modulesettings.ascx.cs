@@ -353,21 +353,11 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (moduleControlInfo != null)
                 {
-                    _control = ControlUtilities.LoadControl<Control>(Page, moduleControlInfo.ControlSrc);
+                    _control = ModuleControlFactory.LoadSettingsControl(Page, Module, moduleControlInfo.ControlSrc);
 
                     var settingsControl = _control as ISettingsControl;
                     if (settingsControl != null)
                     {
-                        //Set ID
-                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(moduleControlInfo.ControlSrc);
-                        if (fileNameWithoutExtension != null)
-                        {
-                            _control.ID = fileNameWithoutExtension.Replace('.', '-');
-                        }
-
-                        //add module settings
-                        settingsControl.ModuleContext.Configuration = Module;
-
                         hlSpecificSettings.Text = Localization.GetString("ControlTitle_settings", settingsControl.LocalResourceFile);
                         if (String.IsNullOrEmpty(hlSpecificSettings.Text))
                         {
