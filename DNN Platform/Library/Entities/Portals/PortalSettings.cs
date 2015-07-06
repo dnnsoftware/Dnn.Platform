@@ -228,7 +228,8 @@ namespace DotNetNuke.Entities.Portals
 
         public int SearchTabId { get; set; }
 
-		public int SiteLogHistory { get; set; }
+        [Obsolete("Deprecated in 8.0.0")]
+        public int SiteLogHistory { get; set; }
 
 		public int SplashTabId { get; set; }
 
@@ -787,11 +788,6 @@ namespace DotNetNuke.Entities.Portals
 				case "backgroundfile":
 					propertyNotFound = false;
 					result = PropertyAccess.FormatString(BackgroundFile, format);
-					break;
-				case "siteloghistory":
-					isPublic = false;
-					propertyNotFound = false;
-					result = SiteLogHistory.ToString(outputFormat, formatProvider);
 					break;
 				case "admintabid":
 					isPublic = false;

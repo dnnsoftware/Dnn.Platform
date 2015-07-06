@@ -200,9 +200,9 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public virtual void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
-            Requires.NotNull("folderPath", folderPath);
+            Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.NotNull("newFolderPath", newFolderPath);
+            Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             if (folderPath == newFolderPath) return;

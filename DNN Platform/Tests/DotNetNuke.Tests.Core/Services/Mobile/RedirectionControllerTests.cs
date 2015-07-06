@@ -240,7 +240,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		#region Get Redirections URL Tests
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void RedirectionController_GetRedirectionUrl_Throws_On_Null_UserAgent()
         {
 			_redirectionController.GetRedirectUrl(null, Portal0, 0);

@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        private int AddTabInternal(TabInfo tab, int afterTabId, int beforeTabId, bool includeAllTabsModules, bool startWorkflow = true)
+        private int AddTabInternal(TabInfo tab, int afterTabId, int beforeTabId, bool includeAllTabsModules)
         {
             ValidateTabPath(tab);
 
@@ -227,16 +227,6 @@ namespace DotNetNuke.Entities.Tabs
             if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID, tab.TabID))
             {
                 MarkAsPublished(tab);
-            }
-
-            // Workflow initialization.
-            if (startWorkflow && TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID, tab.TabID))
-            {
-                var defaultWorkflow = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(tab.PortalID);
-                if (defaultWorkflow != Null.NullInteger)
-                {
-                    WorkflowEngine.Instance.StartWorkflow(defaultWorkflow, tab.ContentItemId, UserController.Instance.GetCurrentUserInfo().UserID);                    
-                }
             }
 
             if (TabCreated != null)
@@ -951,9 +941,7 @@ namespace DotNetNuke.Entities.Tabs
         public void CreateContentItem(TabInfo tab)
         {
             //First create ContentItem as we need the ContentItemID
-            var typeController = new ContentTypeController();
-            ContentType contentType =
-                (from t in typeController.GetContentTypes() where t.ContentType == "Tab" select t).SingleOrDefault();
+            ContentType contentType = ContentType.Tab;
 
             IContentController contentController = Util.GetContentController();
             tab.Content = String.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
@@ -1045,7 +1033,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 //Save Tab
-                AddTabInternal(localizedCopy, -1, -1, false, false); //not include modules show on all page, it will handled in copy modules action.
+                AddTabInternal(localizedCopy, -1, -1, false); //not include modules show on all page, it will handled in copy modules action.
 
 				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
 				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))

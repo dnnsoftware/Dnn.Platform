@@ -60,7 +60,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The original string plus a backslash.</returns>
         public virtual string AddTrailingSlash(string source)
         {
-            Requires.NotNull("source", source);
+            Requires.PropertyNotNull("source", source);
 
             return source.EndsWith("\\") ? source : source + "\\";
         }
@@ -87,7 +87,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         public virtual string GetPhysicalPath(int portalID, string relativePath)
         {
-            Requires.NotNull("relativePath", relativePath);
+            Requires.PropertyNotNull("relativePath", relativePath);
 
             var path1 = GetRootFolderMapPath(portalID);
             var path2 = relativePath.Replace("/", "\\");
@@ -107,7 +107,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         public virtual string GetRelativePath(int portalID, string physicalPath)
         {
-            Requires.NotNull("physicalPath", physicalPath);
+            Requires.PropertyNotNull("physicalPath", physicalPath);
 
             if (!Directory.Exists(physicalPath))
             {
@@ -222,7 +222,7 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         public virtual string MapPath(string path)
         {
-            Requires.NotNull("path", path);
+            Requires.PropertyNotNull("path", path);
 
             var convertedPath = path;
 
@@ -278,7 +278,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The stripped path.</returns>
         public virtual string StripFolderPath(string originalPath)
         {
-            Requires.NotNull("originalPath", originalPath);
+            Requires.PropertyNotNull("originalPath", originalPath);
 
             if (originalPath.IndexOf("\\") != -1)
             {

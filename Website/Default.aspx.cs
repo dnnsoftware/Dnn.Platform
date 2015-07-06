@@ -43,7 +43,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.SiteLog;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Vendors;
 using DotNetNuke.UI;
@@ -487,11 +486,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// - manage affiliates
-        /// - log visit to site
         /// </remarks>
-        /// <history>
-        /// 	[sun1]	1/19/2004	Created
-        /// </history>
         /// -----------------------------------------------------------------------------
         private void ManageRequest()
         {
@@ -516,38 +511,6 @@ namespace DotNetNuke.Framework
                         Response.Cookies.Add(objCookie);
                     }
                 }
-            }
-
-            //site logging
-            if (PortalSettings.SiteLogHistory != 0)
-            {
-                //get User ID
-
-                //URL Referrer
-                string urlReferrer = "";
-                try
-                {
-                    if (Request.UrlReferrer != null)
-                    {
-                        urlReferrer = Request.UrlReferrer.ToString();
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-
-                }
-                string strSiteLogStorage = Host.SiteLogStorage;
-                int intSiteLogBuffer = Host.SiteLogBuffer;
-
-                //log visit
-                var objSiteLogs = new SiteLogController();
-
-                UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
-                objSiteLogs.AddSiteLog(PortalSettings.PortalId, objUserInfo.UserID, urlReferrer, Request.Url.ToString(),
-                                       Request.UserAgent, Request.UserHostAddress, Request.UserHostName,
-                                       PortalSettings.ActiveTab.TabID, affiliateId, intSiteLogBuffer,
-                                       strSiteLogStorage);
             }
         }
 

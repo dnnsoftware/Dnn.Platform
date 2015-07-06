@@ -1507,8 +1507,8 @@ namespace DotNetNuke.Services.Upgrade
             //Remove Module Definitions Module from Host Page (if present)
             RemoveCoreModule("Module Definitions", "Host", "Module Definitions", false);
 
-            //Remove old Module Definition Validator module
-            DesktopModuleController.DeleteDesktopModule("Module Definition Validator");
+            //Remove old Module Definition DynamicContentValidator module
+            DesktopModuleController.DeleteDesktopModule("Module Definition DynamicContentValidator");
 
             //Get Module Definitions
             TabInfo definitionsPage = TabController.Instance.GetTabByName("Module Definitions", Null.NullInteger);
@@ -3041,6 +3041,13 @@ namespace DotNetNuke.Services.Upgrade
             ReIndexUserSearch();
         }
 
+        private static void UpgradeToVersion750()
+        {
+            //Remove Admin Pages
+            RemoveAdminPages("//Admin//Newsletters");
+            RemoveAdminPages("//Admin//RecycleBin");
+        }
+
         private static void ReIndexUserSearch()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -4056,7 +4063,7 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   DeleteInstallerFiles - clean up install config
+        ///   DeleteInstallerFiles - clean up install config and installwizard files
         ///   If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file
         /// </summary>
         /// <remarks>
@@ -4067,6 +4074,8 @@ namespace DotNetNuke.Services.Upgrade
         public static void DeleteInstallerFiles()
         {
             FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config"));
+            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx"));
+            FileSystemUtils.DeleteFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "InstallWizard.aspx.cs"));
         }
 
         /// -----------------------------------------------------------------------------
@@ -4969,6 +4978,13 @@ namespace DotNetNuke.Services.Upgrade
                         isCurrent = true;
                     }
                     break;
+                case "4.5":
+                    //Try and instantiate a 4.5 Class
+                    if (Reflection.CreateType("System.Reflection.ReflectionContext", true) != null)
+                    {
+                        isCurrent = true;
+                    }
+                    break;
             }
             return isCurrent;
         }
@@ -5041,6 +5057,21 @@ namespace DotNetNuke.Services.Upgrade
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
+                                                  PortalController.Instance.GetCurrentPortalSettings(),
+                                                  UserController.Instance.GetCurrentUserInfo().UserID,
+                                                  EventLogController.EventLogType.HOST_ALERT);
+                    }
+                    break;
+                case "4.5":
+                    if (!IsNETFrameworkCurrent("4.5"))
+                    {
+                        //Upgrade to .NET 4.0
+                        string upgradeFile = string.Format("{0}\\Config\\Net45.config", Globals.InstallMapPath);
+                        string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.5 Upgrade");
+                        EventLogController.Instance.AddLog("UpgradeNet",
+                                                  string.IsNullOrEmpty(strMessage)
+                                                      ? "Upgraded Site to .NET 4.5"
+                                                      : string.Format("Upgrade to .NET 4.5 failed. Error reported during attempt to update:{0}", strMessage),
                                                   PortalController.Instance.GetCurrentPortalSettings(),
                                                   UserController.Instance.GetCurrentUserInfo().UserID,
                                                   EventLogController.EventLogType.HOST_ALERT);
@@ -5250,6 +5281,9 @@ namespace DotNetNuke.Services.Upgrade
                         break;
                     case "7.4.0":
                         UpgradeToVersion740();
+                        break;
+                    case "7.5.0":
+                        UpgradeToVersion750();
                         break;
                 }
             }

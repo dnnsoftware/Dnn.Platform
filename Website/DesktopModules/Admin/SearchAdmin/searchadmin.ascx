@@ -15,6 +15,10 @@
             <asp:Label runat="server" ID="stopWordsLink" resourcekey="StopWords"></asp:Label></a></li>
     </ul>
     <div class="dnnClear" id="saGeneral">
+	    <div class="dnnFormItem" runat="server" ID="allowLeadingWildcardSettingRow">
+		    <dnn:Label runat="server" ID="lblAllowLeadingWildcard" />
+			<asp:CheckBox runat="server" ID="chkAllowLeadingWildcard" AutoPostBack="True" />
+	    </div>
         <div class="dnnFormItem">
             <div class="dnnFormMessage dnnFormWarning">
                 <%= Localization.GetString("MessageReIndexWarning", LocalResourceFile) %>

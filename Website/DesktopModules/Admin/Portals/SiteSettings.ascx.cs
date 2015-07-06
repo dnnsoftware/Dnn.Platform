@@ -190,10 +190,6 @@ namespace DesktopModules.Admin.Portals
             txtHostSpace.Text = portal.HostSpace.ToString();
             txtPageQuota.Text = portal.PageQuota.ToString();
             txtUserQuota.Text = portal.UserQuota.ToString();
-            if (portal.SiteLogHistory != Null.NullInteger)
-            {
-                txtSiteLogHistory.Text = portal.SiteLogHistory.ToString();
-            }
         }
 
         private void BindMarketing(PortalInfo portal)
@@ -1319,12 +1315,6 @@ namespace DesktopModules.Admin.Portals
                         userQuota = int.Parse(txtUserQuota.Text);
                     }
 
-                    int siteLogHistory = existingPortal.SiteLogHistory;
-                    if (!String.IsNullOrEmpty(txtSiteLogHistory.Text))
-                    {
-                        siteLogHistory = int.Parse(txtSiteLogHistory.Text);
-                    }
-
                     DateTime expiryDate = existingPortal.ExpiryDate;
                     if (datepickerExpiryDate.SelectedDate.HasValue)
                     {
@@ -1380,7 +1370,6 @@ namespace DesktopModules.Admin.Portals
                                                 Description = txtDescription.Text,
                                                 KeyWords = txtKeyWords.Text,
                                                 BackgroundFile = background,
-                                                SiteLogHistory = siteLogHistory,
                                                 SplashTabId = intSplashTabId,
                                                 HomeTabId = intHomeTabId,
                                                 LoginTabId = intLoginTabId,

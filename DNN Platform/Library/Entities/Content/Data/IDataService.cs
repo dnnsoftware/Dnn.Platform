@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Content.Data
         IDataReader GetContentTypes();
 
         void UpdateContentType(ContentType contentType);
-
+        
         //ScopeType Methods
         int AddScopeType(ScopeType scopeType);
 

@@ -38,6 +38,11 @@ namespace DotNetNuke.Web.Razor
             return new RazorHostControl("~/" + moduleConfiguration.ModuleControl.ControlSrc);
         }
 
+        public Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }

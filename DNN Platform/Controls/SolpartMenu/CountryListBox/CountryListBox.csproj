@@ -9,7 +9,7 @@
     <AssemblyName>CountryListBox</AssemblyName>
     <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>

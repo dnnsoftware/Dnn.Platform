@@ -148,10 +148,10 @@ namespace DotNetNuke.Services.Sitemap
                         (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
-                        alternates.Add(new AlternateUrl() 
-                        { 
-                            Url = alternateUrl, 
-                            Language = localized.CultureCode 
+                        alternates.Add(new AlternateUrl()
+                        {
+                            Url = alternateUrl,
+                            Language = localized.CultureCode
                         });
                     }
                 }
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Sitemap
                         Url = alternateUrl,
                         Language = currentTab.CultureCode
                     });
-                    
+
                     pageUrl.AlternateUrls = alternates;
                 }
             }
