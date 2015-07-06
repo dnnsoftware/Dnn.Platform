@@ -85,6 +85,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the system defined content types
         /// </summary>
+		[Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes")]
         IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>
@@ -121,6 +122,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="extension">The file extension.</param>
         /// <returns>The Content Type for the specified extension.</returns>
+		[Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.GetContentType(string extension)")]
         string GetContentType(string extension);
 
         /// <summary>

@@ -632,6 +632,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\FileSystem\EventArgs\FileChangedEventArgs.cs" />
+    <Compile Include="Services\FileSystem\FileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\FileLinkClickController.cs" />
     <Compile Include="Services\FileSystem\FileSizeFormatProvider.cs" />
     <Compile Include="Services\FileSystem\FileUrlHelper.cs" />
@@ -642,6 +643,7 @@
     <Compile Include="Services\FileSystem\FolderMappings\FolderTypeSettingConfig.cs" />
     <Compile Include="Services\FileSystem\FolderMappings\IFolderMappingsConfigController.cs" />
     <Compile Include="Services\Assets\IAssetManager.cs" />
+    <Compile Include="Services\FileSystem\IFileContentTypeManager.cs" />
     <Compile Include="Services\FileSystem\IFileEventHandlers.cs" />
     <Compile Include="Services\FileSystem\IFileLincClickController.cs" />
     <Compile Include="Services\FileSystem\IFileVersionController.cs" />
