@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 try
                 {
-	                var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
+	                var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y" || searchQuery.AllowLeadingWildcard;
 					var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
                     var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
