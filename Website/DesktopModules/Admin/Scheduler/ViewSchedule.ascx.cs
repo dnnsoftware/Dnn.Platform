@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
             var lblNextStart = ((Label)(dataItem)["NextStart"].FindControl("lblNextStart"));
             lblNextStart.Text = nextStart.ToString();
             // hide next start if scheduler is not enabled or no next start could be calculated
-            lblNextStart.Visible = !Null.IsNull(nextStart) && enabledKey;
+            lblNextStart.Visible = enabledKey && !Null.IsNull(nextStart);
 
             var hlHistory = ((HyperLink)(dataItem)["ViewHistory"].FindControl("hlHistory"));
             hlHistory.NavigateUrl = EditUrl("ScheduleID", scheduleKey.ToString(), "History");
