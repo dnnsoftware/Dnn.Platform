@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             using(var context = DataContext.Instance())
             {
                 var rep = context.GetRepository<Entities.Workflow>();
-                workflow = rep.Find("WHERE WorkflowId = @0", workflowId).SingleOrDefault();
+                workflow = rep.Find("WHERE WorkflowID = @0", workflowId).SingleOrDefault();
             }
             
             if (workflow == null)
