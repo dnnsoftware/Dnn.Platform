@@ -497,6 +497,10 @@
                     <asp:CompareValidator ID="validatorIndexWordMaxLengthCompared" runat="server" ControlToCompare="txtIndexWordMinLength" ControlToValidate="txtIndexWordMaxLength" CssClass="dnnFormMessage dnnFormError"
                         Operator="GreaterThan" Type="Integer" Display="Dynamic" EnableClientScript="True" resourceKey="valIndexWordMaxLengthCompare.Error"></asp:CompareValidator>
                 </div>
+				<div class="dnnFormItem" runat="server" ID="allowLeadingWildcardSettingRow" ControlName="chkAllowLeadingWildcard">
+					<dnn:Label runat="server" ID="lblAllowLeadingWildcard" />
+					<asp:CheckBox runat="server" ID="chkAllowLeadingWildcard" />
+				</div>
                 <div class="dnnFormItem">
                     <dnn:Label ID="plCustomAnalyzer" runat="server" ResourceKey="lblCustomAnalyzer" ControlName="cbCustomAnalyzer" />
                     <dnn:dnncombobox ID="cbCustomAnalyzer" runat="server"></dnn:dnncombobox>

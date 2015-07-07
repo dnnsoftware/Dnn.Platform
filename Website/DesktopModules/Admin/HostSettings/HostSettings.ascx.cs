@@ -578,6 +578,7 @@ namespace DotNetNuke.Modules.Admin.Host
             var maxWordLength = HostController.Instance.GetInteger("Search_MaxKeyWordLength", 255);
             txtIndexWordMinLength.Text = minWordLength.ToString(CultureInfo.InvariantCulture);
             txtIndexWordMaxLength.Text = maxWordLength.ToString(CultureInfo.InvariantCulture);
+			chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
 
             var noneSpecified = "<" + Localization.GetString("None_Specified") + ">";
 
@@ -971,6 +972,8 @@ namespace DotNetNuke.Modules.Admin.Host
                     HostController.Instance.Update("Search_MaxKeyWordLength", txtIndexWordMaxLength.Text);
                 }
             }
+
+			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N");
 
             var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
             var newAnalyzer = cbCustomAnalyzer.SelectedValue.Trim();

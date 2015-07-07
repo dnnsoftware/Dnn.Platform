@@ -1217,4 +1217,10 @@ Both Compacting and Re-Indexing are done by Site Search Crawler scheduled job.
   <data name="plUpgradeForceSSL.Text" xml:space="preserve">
     <value>Require SSL for Upgrade wizard</value>
   </data>
+  <data name="lblAllowLeadingWildcard.Help" xml:space="preserve">
+    <value>Enable this setting to allow search within words. For example: by default, searching "dnn" will match "dnn8" but not "powerfuldnn" - it only searches words that begin with the keyword. If you want to return "powerfuldnn" in search result, you need to enable this setting. Note: this may cause performance issues, so make sure to only enable this setting when really needed.</value>
+  </data>
+  <data name="lblAllowLeadingWildcard.Text" xml:space="preserve">
+    <value>Enable partial-word search (slow):</value>
+  </data>
 </root>
