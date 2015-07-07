@@ -66,18 +66,10 @@ namespace DotNetNuke.Modules.Admin.Search
 
             rptSynonymsCultureList.ItemDataBound += RptLanguagesItemDataBound;
             rptSynonymsCultureList.ItemCommand += RptSynonymsLanguagesItemOnCommand;
-
-	        allowLeadingWildcardSettingRow.Visible = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
-			chkAllowLeadingWildcard.CheckedChanged += AllowLeadingWildcard_CheckedChanged;
             
             //set init value
             SynonymsSelectedPortalId = PortalSettings.Current.PortalId;
             StopWordsSeletedPortalId = PortalSettings.Current.PortalId;
-
-	        if (!Page.IsPostBack)
-	        {
-				chkAllowLeadingWildcard.Checked = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y";
-	        }
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -171,11 +163,5 @@ namespace DotNetNuke.Modules.Admin.Search
         {
             SearchHelper.Instance.SetSearchReindexRequestTime(PortalSettings.Current.PortalId);
         }
-
-
-		protected void AllowLeadingWildcard_CheckedChanged(object sender, EventArgs e)
-		{
-			HostController.Instance.Update("Search_AllowLeadingWildcard", chkAllowLeadingWildcard.Checked ? "Y" : "N", true);
-		}
     }
 }
