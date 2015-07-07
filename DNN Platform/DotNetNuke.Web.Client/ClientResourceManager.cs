@@ -20,21 +20,12 @@
 #endregion
 
 using System;
-using System.Configuration;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml;
-using System.Xml.XPath;
-
 using ClientDependency.Core.CompositeFiles.Providers;
-
-using DotNetNuke;
-
 using ClientDependency.Core.Config;
-
 using DotNetNuke.Instrumentation;
-
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
@@ -384,47 +375,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 {
                     loader.Controls.Add(include);
                 }
-            }
-        }
-
-        /// <summary>
-        /// This is a utility method that can be called to update the version of the composite files.
-        /// </summary>
-        public static void UpdateVersion()
-        {
-            //open the config file
-            var configPath = HostingEnvironment.MapPath("~/web.config");
-
-            if (!String.IsNullOrEmpty(configPath))
-            {
-                var xmlConfig = new XmlDocument();
-                xmlConfig.Load(configPath);
-
-                //test for namespace added by Web Admin Tool
-                if (!String.IsNullOrEmpty(xmlConfig.DocumentElement.GetAttribute("xmlns")))
-                {
-                    //remove namespace
-                    string strDoc = xmlConfig.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");
-                    xmlConfig.LoadXml(strDoc);
-                }
-
-                XmlNode xmlDependency = xmlConfig.SelectSingleNode("configuration/clientDependency");
-                if (xmlDependency == null)
-                {
-                    xmlDependency = xmlConfig.SelectSingleNode("configuration/location/clientDependency");
-                }
-                if ((xmlDependency != null))
-                {
-                    XmlAttribute attrib = xmlDependency.Attributes["version"];
-                    if (attrib != null)
-                    {
-                        int version = Int32.Parse(attrib.InnerText);
-                        version += 1;
-                        attrib.InnerText = version.ToString();
-                    }
-                }
-
-                xmlConfig.Save(configPath);
             }
         }
 
