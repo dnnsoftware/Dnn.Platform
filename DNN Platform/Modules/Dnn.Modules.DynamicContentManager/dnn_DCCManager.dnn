@@ -24,6 +24,7 @@
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
+                <definitionName>Dnn.DynamicContentManager</definitionName>
                 <friendlyName>Dynamic Content Manager</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
@@ -42,6 +43,15 @@
               </moduleDefinition>
             </moduleDefinitions>
           </desktopModule>
+        	<eventMessage>
+						<processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+						<processorCommand>UpgradeModule</processorCommand>
+						<attributes>
+							<businessControllerClass>Dnn.Modules.DynamicContentManager.Components.BusinessController, Dnn.Modules.DynamicContentManager</businessControllerClass>
+							<desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+							<upgradeVersionsList>08.00.00</upgradeVersionsList>
+						</attributes>
+					</eventMessage>
         </component>
         <component type="Assembly">
           <assemblies>
