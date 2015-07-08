@@ -65,6 +65,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Upgrade;
 using DotNetNuke.Services.Url.FriendlyUrl;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
@@ -653,7 +654,17 @@ namespace DotNetNuke.Common
                 providerpath = HttpContext.Current.Server.MapPath(providerpath);
                 if (Directory.Exists(providerpath))
                 {
-                    return Directory.GetFiles(providerpath, version.Major +"." + version.Minor + "." + version.Build +"." + version.Revision +"*.sqldataprovider").Length > 1;
+                    var incrementalcount = Directory.GetFiles(providerpath,
+                        version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision +
+                        "*.sqldataprovider").Length;
+                    if (
+                        incrementalcount == 1)
+                    {
+                        return false;}
+                    if (incrementalcount < DataProvider.Instance().GetLastAppliedIteration(Upgrade.GetStringVersion(version)))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

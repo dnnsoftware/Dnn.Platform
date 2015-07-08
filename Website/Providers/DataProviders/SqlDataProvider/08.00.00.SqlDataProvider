@@ -395,6 +395,22 @@ AS
 			@Name,
 			getdate()
 		)
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLastAppliedIteration]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetLastAppliedIteration 
+
+	@Major  int,
+	@Minor  int,
+	@Build  int	
+
+AS
+
+	SELECT ISNULL(MAX(Increment),0) from {databaseOwner}{objectQualifier}Version WHERE Major=@Major AND Minor=@Minor AND Build=@Build
+		
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/
