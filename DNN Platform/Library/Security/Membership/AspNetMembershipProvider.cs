@@ -49,6 +49,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 //DNN-4016
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -657,8 +658,7 @@ namespace DotNetNuke.Security.Membership
 	        }
 	        catch (ProviderException ex)
 	        {
-		        throw new Exception("Asp.net membership update user failed. Possible Reason(s): " +
-										"you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.", ex);
+				throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
 	        }
             
             DataCache.RemoveCache(GetCacheKey(user.Username));
