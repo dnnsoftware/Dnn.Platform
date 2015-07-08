@@ -63,7 +63,7 @@
             //Add Top/Up actions
             if (moduleIndex > 0) {
                 //htmlString = "<li id=\"" + id + "-top\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_top.gif\"><span>" + opts.topText + "</span></a>";
-                htmlString = "<li id=\"" + id + "-top\">" + opts.topText;
+                htmlString = "<li id=\"" + id + "-top\" class=\"common\">" + opts.topText;
                 parent.append(htmlString);
 
                 //Add click event handler to just added element
@@ -72,7 +72,7 @@
                 });
 
                 //htmlString = "<li id=\"" + id + "-up\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_up.gif\"><span>" + opts.upText + "</span></a>";
-                htmlString = "<li id=\"" + id + "-up\">" + opts.upText;
+                htmlString = "<li id=\"" + id + "-up\" class=\"common\">" + opts.upText;
                 parent.append(htmlString);
 
                 //Add click event handler to just added element
@@ -84,7 +84,7 @@
             //Add Bottom/Down actions
             if (moduleIndex < moduleCount - 1) {
                 //htmlString = "<li id=\"" + id + "-down\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_down.gif\"><span>" + opts.downText + "</span></a>";
-                htmlString = "<li id=\"" + id + "-down\">" + opts.downText;
+                htmlString = "<li id=\"" + id + "-down\" class=\"common\">" + opts.downText;
                 parent.append(htmlString);
 
                 //Add click event handler to just added element
@@ -93,7 +93,7 @@
                 });
 
                 //htmlString = "<li id=\"" + id + "-bottom\"><a href=\"#\"><img src=\"" + rootFolder + "images/action_bottom.gif\"><span>" + opts.bottomText + "</span></a>";
-                htmlString = "<li id=\"" + id + "-bottom\">" + opts.bottomText;
+                htmlString = "<li id=\"" + id + "-bottom\" class=\"common\">" + opts.bottomText;
                 parent.append(htmlString);
 
                 //Add click event handler to just added element
@@ -117,7 +117,7 @@
             if (htmlStringContainer) {
                 // loop is done, append the HTML and add moveToPane function on click event
                 parent.append(htmlStringContainer);
-                parent.find("li").click(function () {
+                parent.find("li").not('.common').click(function () {
                     moveToPane($(this).attr("id").replace(moduleId, ""));
                 });
             }
