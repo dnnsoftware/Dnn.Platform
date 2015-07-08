@@ -471,4 +471,7 @@
   <data name="InvalidValidatorException.Text" xml:space="preserve">
     <value>Could not create ValidatorType - - {0}.</value>
   </data>
+  <data name="UpdateUserMembershipFailed.Text" xml:space="preserve">
+    <value>Asp.net membership update user failed. Possible Reason(s): you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.</value>
+  </data>
 </root>

@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration.Provider;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
@@ -48,6 +49,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Log.EventLog;
 //DNN-4016
 using DotNetNuke.Services.Authentication;
+using DotNetNuke.Services.Localization;
 
 #endregion
 
@@ -649,7 +651,16 @@ namespace DotNetNuke.Security.Membership
             {
                 membershipUser.IsApproved = user.Membership.Approved;
             }
-            System.Web.Security.Membership.UpdateUser(membershipUser);
+
+	        try
+	        {
+		        System.Web.Security.Membership.UpdateUser(membershipUser);
+	        }
+	        catch (ProviderException ex)
+	        {
+				throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
+	        }
+            
             DataCache.RemoveCache(GetCacheKey(user.Username));
         }
 
