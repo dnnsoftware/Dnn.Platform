@@ -167,6 +167,11 @@ namespace DotNetNuke.Security.Membership
             throw new NotImplementedException();
         }
 
+		public virtual bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
+		{
+			throw new NotImplementedException();
+		}
+
 
         public virtual void ChangeUsername(int userId, string newUsername)
         {

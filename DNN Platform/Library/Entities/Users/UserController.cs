@@ -727,9 +727,9 @@ namespace DotNetNuke.Entities.Users
         /// errorMessage will define why reset failed
         /// </summary>
         /// <param name="newPassword">The new password.</param>
-        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
         {
             bool retValue;
             errorMessage = Null.NullString;
@@ -749,7 +749,7 @@ namespace DotNetNuke.Entities.Users
                 return false;
             }
             var m = new MembershipPasswordController();
-            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
+            if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
                 errorMessage = Localization.GetString("PasswordResetFailed_PasswordInHistory");
                 return false;
@@ -759,15 +759,33 @@ namespace DotNetNuke.Entities.Users
             //Validate the new Password
             if (ValidatePassword(newPassword))
             {
-                retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
+	            try
+	            {
+					retValue = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword, answer);
 
-                //update reset token values to ensure token is 1-time use
-                user.PasswordResetExpiration = DateTime.MinValue;
-                user.PasswordResetToken = Guid.NewGuid();
+		            if (retValue)
+		            {
+			            //update reset token values to ensure token is 1-time use
+			            user.PasswordResetExpiration = DateTime.MinValue;
+			            user.PasswordResetToken = Guid.NewGuid();
 
-                //Update User
-                user.Membership.UpdatePassword = false;
-                UpdateUser(user.PortalID, user);
+			            //Update User
+			            user.Membership.UpdatePassword = false;
+			            UpdateUser(user.PortalID, user);
+
+			            m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, true); //add the password into history.
+		            }
+		            else
+		            {
+						errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
+		            }
+	            }
+	            catch (Exception)
+	            {
+		            retValue = false;
+					errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
+	            }
+                
             }
             else
             {
