@@ -433,7 +433,7 @@ namespace DotNetNuke.Data
 
         public virtual string GetUnappliedIterations(string version)
         {
-            ExecuteReader("GetUnappliedIterations", version);
+            return ExecuteScalar<string>("GetUnappliedIterations", version);
         }
 
 		#endregion

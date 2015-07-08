@@ -5348,25 +5348,25 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Files: {0}", Globals.FormatVersion(version)));
             }
             string strAllExceptions = "";
-            foreach (var iteration in DataProvider.Instance().GetUnappliedIterations(GetStringVersion(version)))
-            {
-                string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + iteration + ".config", version, "Core Upgrade");
-                //string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + ".config", version, "Core Upgrade");
-                if (string.IsNullOrEmpty(strExceptions))
-                {
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
-                }
-                else
-                {
-                    DnnInstallLogger.InstallLogError(strExceptions);
-                }
+            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations(GetStringVersion(version)))
+            //{
+            //    string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + iteration + ".config", version, "Core Upgrade");
+            //    //string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + ".config", version, "Core Upgrade");
+            //    if (string.IsNullOrEmpty(strExceptions))
+            //    {
+            //        DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+            //    }
+            //    else
+            //    {
+            //        DnnInstallLogger.InstallLogError(strExceptions);
+            //    }
 
-                if (writeFeedback)
-                {
-                    HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
-                }
-                strAllExceptions = strAllExceptions + strExceptions;
-            }
+            //    if (writeFeedback)
+            //    {
+            //        HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
+            //    }
+            //    strAllExceptions = strAllExceptions + strExceptions;
+            //}
 
 
             return strAllExceptions;
