@@ -718,7 +718,7 @@ namespace DotNetNuke.Entities.Users
         /// errorMessage will define why reset failed
         /// </summary>
         /// <param name="newPassword">The new password.</param>
-        /// /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
         public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage)
         {
