@@ -447,4 +447,7 @@
   <data name="SitemapUrlGenerationError.Text" xml:space="preserve">
     <value>URL sitemap generation for page '{0} - {1}' caused an exception: {2}</value>
   </data>
+  <data name="UpdateUserMembershipFailed.Text" xml:space="preserve">
+    <value>Asp.net membership update user failed. Possible Reason(s): you enabled requiresUniqueEmail in membership config, but there have different user(s) used same email address with current user.</value>
+  </data>
 </root>
