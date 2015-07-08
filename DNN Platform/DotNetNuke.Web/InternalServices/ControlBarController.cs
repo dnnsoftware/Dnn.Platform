@@ -219,9 +219,9 @@ namespace DotNetNuke.Web.InternalServices
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
             var tabModules = ModuleController.Instance.GetTabModules(tabID);
 
-            var pageModules = isRemote 
-                                ? tabModules.Values.Where(m => ModuleSupportsSharing(m)).ToList() 
-                                : tabModules.Values.Where(m => ModulePermissionController.CanAdminModule(m) && m.IsDeleted == false).ToList();
+            var pageModules = isRemote
+								? tabModules.Values.Where(m => ModuleSupportsSharing(m) && !m.IsDeleted).ToList() 
+                                : tabModules.Values.Where(m => ModulePermissionController.CanAdminModule(m) && !m.IsDeleted).ToList();
 
             return pageModules;
 
