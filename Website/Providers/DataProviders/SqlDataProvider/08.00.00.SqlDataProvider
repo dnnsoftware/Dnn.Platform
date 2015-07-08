@@ -70,13 +70,23 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{database
 			[PortalID] [int] NOT NULL,
 			[Name] [nvarchar](100) NOT NULL,
 			[UnderlyingDataType] [int] NOT NULL,
-			[CreatedByUserID] [int] NOT NULL,
+			[CreatedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedByUserID] DEFAULT (-1),
 			[CreatedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_CreatedOnDate] DEFAULT (getdate()),
-			[LastModifiedByUserID] [int] NOT NULL,
+			[LastModifiedByUserID] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedByUserID] DEFAULT (-1),
 			[LastModifiedOnDate] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}ContentTypes_DataTypes_LastModifiedOnDate] DEFAULT (getdate()),
 			CONSTRAINT [PK_{objectQualifier}ContentTypes_DataTypes] PRIMARY KEY CLUSTERED ([DataTypeID] ASC)
 			)	
 	END
+GO
+
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Text', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Rich Text', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Markdown', 0)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Integer', 2)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Decimal', 3)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'True/False', 1)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Url', 6)
+INSERT INTO {databaseOwner}[{objectQualifier}ContentTypes_DataTypes] ([PortalID], [Name], [UnderlyingDataType]) VALUES(-1, 'Date', 7)
 GO
 
 /* DNN-6784 Allow developers to manage ContentFields */
