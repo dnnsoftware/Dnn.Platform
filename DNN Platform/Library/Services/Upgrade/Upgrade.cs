@@ -3726,9 +3726,12 @@ namespace DotNetNuke.Services.Upgrade
 						DisplayTitle = displayTitle
 					};
 
-					try
+				    moduleInfo.TabModuleSettings["hideadminborder"] = "True";
+
+                    try
 					{
 						moduleId = ModuleController.Instance.AddModule(moduleInfo);
+
 					}
 					catch (Exception exc)
 					{
