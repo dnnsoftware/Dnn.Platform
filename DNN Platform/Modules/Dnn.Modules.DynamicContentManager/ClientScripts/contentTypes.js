@@ -187,7 +187,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
             function(data){
                 //Success
                 if(self.isAddMode()){
-                    util.alert(resx.saveContentTypeMessage.replace("{0}", params.name), resx.ok, function() {
+                    util.alert(resx.saveContentTypeMessage.replace("{0}", util.getLocalizedValue(self.rootViewModel.selectedLanguage(), self.localizedNames())), resx.ok, function() {
                         self.contentTypeId(data.data.contentTypeId)
                         self.fields().clear();
                     });
