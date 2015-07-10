@@ -107,7 +107,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// <returns></returns>
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
-            if (!jsDependencies.Any())
+            var asArray = jsDependencies.ToArray();
+
+            if (!asArray.Any())
 				return string.Empty;
 
             var sb = new StringBuilder();   
@@ -116,7 +118,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
 			{
-				foreach (var dependency in jsDependencies)
+                foreach (var dependency in asArray)
 				{
                     strClientLoader.Append("CDLazyLoader");
                     strClientLoader.AppendFormat(".AddJs('{0}')", dependency.FilePath);
@@ -125,7 +127,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
 			}
 			else
 			{
-				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http, GetCompositeFileHandlerPath(http));
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Javascript, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     strClientLoader.Append("CDLazyLoader");
@@ -148,7 +155,9 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// <returns></returns>
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
-            if (!cssDependencies.Any())
+            var asArray = cssDependencies.ToArray();
+
+            if (!asArray.Any())
                 return string.Empty;
 
             var sb = new StringBuilder();
@@ -156,7 +165,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
             {
-                foreach (var dependency in cssDependencies)
+                foreach (var dependency in asArray)
                 {
                     strClientLoader.Append("CDLazyLoader");
                     strClientLoader.AppendFormat(".AddCss('{0}')", dependency.FilePath);
@@ -165,7 +174,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
             }
             else
             {
-				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http, GetCompositeFileHandlerPath(http));
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Css, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     strClientLoader.Append("CDLazyLoader");

@@ -8,6 +8,7 @@ using System.IO;
 using System.Web;
 using System.Net;
 using System.Configuration.Provider;
+using System.Web.Hosting;
 
 namespace ClientDependency.Core.CompositeFiles.Providers
 {
@@ -15,7 +16,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
     {
 
         private const string DefaultDependencyPath = "~/App_Data/ClientDependency";
-        
+
         /// <summary>
         /// Defines the UrlType default value, this can be set at startup
         /// </summary>
@@ -95,6 +96,34 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         public abstract byte[] CombineFiles(string[] filePaths, HttpContextBase context, ClientDependencyType type, out List<CompositeFileDefinition> fileDefs);
         public abstract byte[] CompressBytes(CompressionType type, byte[] fileBytes);
 
+        protected bool CanProcessLocally(HttpContextBase context, string filePath, out IVirtualFileWriter virtualFileWriter)
+        {
+            //First check if there's any virtual file providers that can handle this
+            var writer = FileWriters.GetVirtualWriterForFile(filePath);
+            if (writer == null)
+            {
+                var ext = Path.GetExtension(filePath);
+                writer = FileWriters.GetVirtualWriterForExtension(ext);                
+            }
+            if (writer != null)
+            {
+                virtualFileWriter = writer;
+                return writer.FileProvider.FileExists(filePath);
+            }
+
+            //can process if it exists locally
+            virtualFileWriter = null;
+            return File.Exists(context.Server.MapPath(filePath));
+        }
+
+        protected virtual VirtualFile GetVirtualFile(HttpContextBase context, string filePath)
+        {
+            var vf = HostingEnvironment.VirtualPathProvider.GetFile(filePath);
+            if (vf == null) return null;
+            if (vf.IsDirectory) return null;
+            return vf;
+        }
+
         /// <summary>
         /// Writes a given path to the stream
         /// </summary>
@@ -110,18 +139,36 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             {
                 try
                 {
-                    var fi = new FileInfo(context.Server.MapPath(path));
+                    //var fi = new FileInfo(context.Server.MapPath(path));
+
+                    var extension = Path.GetExtension(path);
 
                     //all config based extensions and all extensions registered by file writers
                     var fileBasedExtensions = ClientDependencySettings.Instance.FileBasedDependencyExtensionList
                                                                       .Union(FileWriters.GetRegisteredExtensions());
 
-                    if (fileBasedExtensions.Contains(fi.Extension.ToUpper()))
+                    if (fileBasedExtensions.Contains(extension.ToUpper()))
                     {
-                        //if the file doesn't exist, then we'll assume it is a URI external request
-                        def = !fi.Exists
-                            ? WriteFileToStream(sw, path, type, context) //external request
-                            : WriteFileToStream(sw, fi, type, path, context); //internal request
+                        IVirtualFileWriter virtualWriter;
+                        if (CanProcessLocally(context, path, out virtualWriter))
+                        {
+                            //internal request
+                            if (virtualWriter != null)
+                            {
+                                var vf = virtualWriter.FileProvider.GetFile(path);
+                                WriteVirtualFileToStream(sw, vf, virtualWriter, type, context);
+                            }
+                            else
+                            {
+                                var fi = new FileInfo(context.Server.MapPath(path));
+                                WriteFileToStream(sw, fi, type, path, context);
+                            }                            
+                        }
+                        else
+                        {
+                            //external request
+                            def = WriteFileToStream(sw, path, type, context);
+                        }
                     }
                     else
                     {
@@ -136,6 +183,27 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                         || ex is HttpException)
                     {
                         //could not parse the string into a fileinfo or couldn't mappath, so we assume it is a URI
+
+                        //before we try to load it by URI, we want to check if the URI is a local request, we'll try to detect if it is and
+                        // then try to load it from the file system, if the file isn't there then we'll continue trying to load it via the URI.
+                        Uri uri;
+                        if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uri) && uri.IsLocalUri(context))
+                        {
+                            var localPath = uri.PathAndQuery;
+                            var fi = new FileInfo(context.Server.MapPath(localPath));
+                            if (fi.Exists)
+                            {
+                                try
+                                {
+                                    WriteFileToStream(sw, fi, type, path, context); //internal request
+                                }
+                                catch (Exception ex1)
+                                {
+                                    ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", path, ex1.Message), ex1);
+                                }
+                            }
+                        }
+
                         def = WriteFileToStream(sw, path, type, context);
                     }
                     else
@@ -162,12 +230,12 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="type"></param>
         /// <param name="http"></param>
         protected virtual CompositeFileDefinition WriteFileToStream(StreamWriter sw, string url, ClientDependencyType type, HttpContextBase http)
-        {   
+        {
             string requestOutput;
             Uri resultUri;
             var rVal = RequestHelper.TryReadUri(url, http, BundleDomains, out requestOutput, out resultUri);
             if (!rVal) return null;
-          
+
             //write the contents of the external request.
             DefaultFileWriter.WriteContentToStream(this, sw, requestOutput, type, http, url);
             return new CompositeFileDefinition(url, false);
@@ -189,13 +257,30 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             if (writer is DefaultFileWriter)
             {
                 writer = FileWriters.GetWriterForExtension(fi.Extension);
+                if (writer == null) return null;
             }
-            return writer.WriteToStream(this, sw, fi, type, origUrl, http) 
-                ? new CompositeFileDefinition(origUrl, true) 
+            return writer.WriteToStream(this, sw, fi, type, origUrl, http)
+                ? new CompositeFileDefinition(origUrl, true)
                 : null;
         }
 
-        
+        /// <summary>
+        /// Writes the output of a local file to the stream
+        /// </summary>
+        /// <param name="sw"></param>
+        /// <param name="vf"></param>
+        /// <param name="virtualWriter"></param>
+        /// <param name="type"></param>
+        /// <param name="http"></param>
+        protected virtual CompositeFileDefinition WriteVirtualFileToStream(StreamWriter sw, IVirtualFile vf, IVirtualFileWriter virtualWriter, ClientDependencyType type, HttpContextBase http)
+        {
+            if (virtualWriter == null) throw new ArgumentNullException("virtualWriter");
+            if (vf == null) return null;
+
+            return virtualWriter.WriteToStream(this, sw, vf, type, vf.Path, http)
+                ? new CompositeFileDefinition(vf.Path, true)
+                : null;
+        }
 
         /// <summary>
         /// Returns a URL used to return a compbined/compressed/optimized version of all dependencies.
@@ -210,13 +295,13 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="http"></param>
         /// <returns>An array containing the list of composite file URLs. This will generally only contain 1 value unless
         /// the number of files registered exceeds the maximum length, then it will return more than one file.</returns>
-		public virtual string[] ProcessCompositeList(
-			IEnumerable<IClientDependencyFile> dependencies,
-			ClientDependencyType type,
-			HttpContextBase http)
-		{
-			return ProcessCompositeList(dependencies, type, http, null);
-		}
+        public virtual string[] ProcessCompositeList(
+            IEnumerable<IClientDependencyFile> dependencies,
+            ClientDependencyType type,
+            HttpContextBase http)
+        {
+            return ProcessCompositeList(dependencies, type, http, null);
+        }
 
         /// <summary>
         /// When the path type is one of the base64 paths, this will create the composite file urls for all of the dependencies. 
@@ -233,10 +318,10 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// If the string length exceeds it, then we need to creaet multiple paths all of which must be less length than the maximum provided.
         /// </remarks>
         internal IEnumerable<string> GetCompositeFileUrls(
-            ClientDependencyType type, 
-            IClientDependencyFile[] dependencies, 
-            string compositeFileHandlerPath, 
-            HttpContextBase http, 
+            ClientDependencyType type,
+            IClientDependencyFile[] dependencies,
+            string compositeFileHandlerPath,
+            HttpContextBase http,
             int maxLength,
             int version)
         {
@@ -327,24 +412,26 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         }
 
         public virtual string[] ProcessCompositeList(
-            IEnumerable<IClientDependencyFile> dependencies, 
-            ClientDependencyType type, 
+            IEnumerable<IClientDependencyFile> dependencies,
+            ClientDependencyType type,
             HttpContextBase http,
-			string compositeFileHandlerPath)
+            string compositeFileHandlerPath)
         {
-            if (!dependencies.Any())
+            var asArray = dependencies.ToArray();
+
+            if (!asArray.Any())
                 return new string[] { };
 
-			compositeFileHandlerPath = compositeFileHandlerPath ?? ClientDependencySettings.Instance.CompositeFileHandlerPath;
+            compositeFileHandlerPath = compositeFileHandlerPath ?? ClientDependencySettings.Instance.CompositeFileHandlerPath;
 
             switch (UrlType)
             {
                 case CompositeUrlType.MappedId:
-                    
+
                     //use the file mapper to create us a file key/id for the file set
                     var fileKey = ClientDependencySettings.Instance.DefaultFileMapProvider.CreateNewMap(
-                        http, 
-                        dependencies,
+                        http,
+                        asArray,
                         ClientDependencySettings.Instance.Version);
 
                     //create the url
@@ -357,17 +444,11 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                         ClientDependencySettings.Instance.Version) };
 
                 default:
-                    
+
                     //build the combined composite list urls          
 
-                    return GetCompositeFileUrls(type, dependencies.ToArray(), compositeFileHandlerPath, http, CompositeDependencyHandler.MaxHandlerUrlLength, ClientDependencySettings.Instance.Version).ToArray();
-            }            
-        }
-
-        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
-        public virtual int GetVersion()
-        {
-            return ClientDependencySettings.Instance.Version;
+                    return GetCompositeFileUrls(type, asArray, compositeFileHandlerPath, http, CompositeDependencyHandler.MaxHandlerUrlLength, ClientDependencySettings.Instance.Version).ToArray();
+            }
         }
 
         /// <summary>
@@ -381,11 +462,11 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="version"> </param>
         /// <returns></returns>
         public virtual string GetCompositeFileUrl(
-            string fileKey, 
-            ClientDependencyType type, 
-            HttpContextBase http, 
+            string fileKey,
+            ClientDependencyType type,
+            HttpContextBase http,
             CompositeUrlType urlType,
-			string compositeFileHandlerPath,
+            string compositeFileHandlerPath,
             int version)
         {
             var url = new StringBuilder();
@@ -405,7 +486,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                 default:
 
                     //Create a URL based on base64 paths instead of a query string
-                    
+
                     url.Append(compositeFileHandlerPath);
                     url.Append('/');
 
@@ -436,7 +517,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             }
             if (config["enableJsMinify"] != null)
             {
-                bool enableJsMinify = true; 
+                bool enableJsMinify = true;
                 if (bool.TryParse(config["enableJsMinify"], out enableJsMinify))
                     EnableJsMinify = enableJsMinify;
             }
@@ -447,7 +528,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                 if (bool.TryParse(config["persistFiles"], out persistFiles))
                     PersistCompositeFiles = persistFiles;
             }
-                        
+
             if (config["urlType"] != null)
             {
                 try
@@ -462,7 +543,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             if (config["pathUrlFormat"] != null)
             {
                 PathBasedUrlFormat = config["pathUrlFormat"];
-                PathBasedUrlFormatter.Validate(PathBasedUrlFormat);                
+                PathBasedUrlFormatter.Validate(PathBasedUrlFormat);
             }
 
             CompositeFilePathAsString = config["compositeFilePath"] ?? DefaultDependencyPath;

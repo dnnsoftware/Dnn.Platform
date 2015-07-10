@@ -26,22 +26,29 @@ namespace ClientDependency.Core.FileRegistration.Providers
         protected const string DependencyLoaderResourceName = "ClientDependency.Core.Resources.LazyLoader.js";
 
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
-		{
-			if (!jsDependencies.Any())
+        {
+            var asArray = jsDependencies.ToArray();
+
+            if (!asArray.Any())
 				return string.Empty;
 
             var sb = new StringBuilder();
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
 			{
-				foreach (var dependency in jsDependencies)
+                foreach (var dependency in asArray)
 				{
                     sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", dependency.FilePath, string.Empty), htmlAttributes));
 				}
 			}
 			else
 			{
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http, GetCompositeFileHandlerPath(http));
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Javascript, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleJsFile(string.Format("'{0}','{1}'", s, string.Empty), htmlAttributes));
@@ -63,22 +70,29 @@ namespace ClientDependency.Core.FileRegistration.Providers
 		}
 
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
-		{
-            if (!cssDependencies.Any())
+        {
+            var asArray = cssDependencies.ToArray();
+
+            if (!asArray.Any())
                 return string.Empty;
 
             var sb = new StringBuilder();
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
 			{
-				foreach (var dependency in cssDependencies)
+                foreach (var dependency in asArray)
 				{
                     sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
 				}
 			}
 			else
 			{
-				var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http, GetCompositeFileHandlerPath(http));
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Css, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleCssFile(s, htmlAttributes));

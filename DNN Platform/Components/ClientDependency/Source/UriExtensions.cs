@@ -11,6 +11,12 @@ namespace ClientDependency.Core
     public static class UriExtensions
     {
 
+        public static bool IsWebUri(this Uri uri)
+        {
+            return uri.Scheme.Equals("http", StringComparison.InvariantCultureIgnoreCase)
+                   || uri.Scheme.Equals("https", StringComparison.InvariantCultureIgnoreCase);
+        }
+
         internal static string ToAbsolutePath(this Uri originalUri, string path)
         {
             var hashSplit = path.Split(new[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
@@ -44,7 +50,7 @@ namespace ClientDependency.Core
         }
 
         /// <summary>
-        /// Determines if the uri is a locally based file
+        /// Determines if the uri is a locally based web file
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="http"></param>
@@ -58,12 +64,12 @@ namespace ClientDependency.Core
             if (http.Request.Url == null)
             {
                 throw new InvalidOperationException("The Url must be assigned to the Request");
-            }
+            }           
             if (!uri.IsAbsoluteUri)
             {
                 uri = uri.MakeAbsoluteUri(http);
             }
-            return string.Equals(http.Request.Url.Host, uri.Host, StringComparison.OrdinalIgnoreCase);
+            return uri.IsWebUri() && string.Equals(http.Request.Url.Host, uri.Host, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

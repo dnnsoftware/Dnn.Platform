@@ -33,6 +33,8 @@ namespace ClientDependency.Core.Config
             }
 
             ConfigSection = GetDefaultSection();
+            //default
+            CompositeFileHandlerPath = "~/DependencyHandler.axd";
 
             _loadProviders = () =>
                 LoadProviders(new HttpContextWrapper(HttpContext.Current));
@@ -255,20 +257,19 @@ namespace ClientDependency.Core.Config
                 ConfigSection = new ClientDependencySection();
             }
 
-            FileRegistrationProviderCollection = new FileRegistrationProviderCollection();
-            CompositeFileProcessingProviderCollection = new CompositeFileProcessingProviderCollection();
-            MvcRendererCollection = new RendererCollection();
-            FileMapProviderCollection = new FileMapProviderCollection();
-
+            //Load in the path first
             var rootPath = HttpRuntime.AppDomainAppVirtualPath ?? "/";
-            
-
             //need to check if it's an http path or a lambda path
             var path = ConfigSection.CompositeFileElement.CompositeFileHandlerPath;
             CompositeFileHandlerPath = path.StartsWith("~/")
                 ? VirtualPathUtility.ToAbsolute(ConfigSection.CompositeFileElement.CompositeFileHandlerPath, rootPath)
                 : ConfigSection.CompositeFileElement.CompositeFileHandlerPath;
 
+            FileRegistrationProviderCollection = new FileRegistrationProviderCollection();
+            CompositeFileProcessingProviderCollection = new CompositeFileProcessingProviderCollection();
+            MvcRendererCollection = new RendererCollection();
+            FileMapProviderCollection = new FileMapProviderCollection();
+            
             //load the providers from the config, if there isn't config sections then add default providers
             // and then load the defaults.
 

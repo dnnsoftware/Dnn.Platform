@@ -69,10 +69,10 @@
     <Compile Include="BundleManager.cs" />
     <Compile Include="BundleResult.cs" />
     <Compile Include="ClientDependencyResourceHandler.cs" />
-    <Compile Include="CompositeFileMap.cs" />
     <Compile Include="CompositeFiles\CSSMin.cs" />
-    <Compile Include="CompositeFiles\DefaultFileWriter.cs" />
-    <Compile Include="CompositeFiles\IFileWriter.cs" />
+    <Compile Include="CompositeFiles\IVirtualFile.cs" />
+    <Compile Include="CompositeFiles\IVirtualFileProvider.cs" />
+    <Compile Include="CompositeFiles\IVirtualFileWriter.cs" />
     <Compile Include="CompositeFiles\JSMin.cs" />
     <Compile Include="CompositeFiles\Providers\BaseCompositeFileProcessingProvider.cs" />
     <Compile Include="CompositeFiles\CompositeFileDefinition.cs" />
@@ -80,8 +80,9 @@
     <Compile Include="CompositeFiles\Providers\CompositeUrlType.cs" />
     <Compile Include="CompositeFiles\Providers\FileMapProviderCollection.cs" />
     <Compile Include="CompositeFiles\Providers\PathBasedUrlFormatter.cs" />
+    <Compile Include="CompositeFiles\DefaultFileWriter.cs" />
+    <Compile Include="CompositeFiles\IFileWriter.cs" />
     <Compile Include="CompressionType.cs" />
-    <Compile Include="Config\ConfigurationManagerExtensions.cs" />
     <Compile Include="Config\DnnConfiguration.cs" />
     <Compile Include="Config\MimeTypeCompressionCollection.cs" />
     <Compile Include="Config\MimeTypeCompressionElement.cs" />
@@ -112,7 +113,6 @@
     <Compile Include="HashCodeCombiner.cs" />
     <Compile Include="HtmlAttributesStringParser.cs" />
     <Compile Include="HttpContextBaseExtensions.cs" />
-    <Compile Include="HttpContextExtensions.cs" />
     <Compile Include="IClientDependencyFileExtensions.cs" />
     <Compile Include="IClientDependencyPathExtensions.cs" />
     <Compile Include="IFileReader.cs" />

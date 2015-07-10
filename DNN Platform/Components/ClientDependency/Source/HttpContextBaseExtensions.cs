@@ -13,6 +13,25 @@ namespace ClientDependency.Core
     public static class HttpContextBaseExtensions
     {
 
+        /// <summary>
+        /// We are not running .Net 4.5 which has a Request.Unvalidated property so that we don't have to deal with
+        /// HttpRequestValidationException but in our case we need to deal with it. Luckily we don't want to deal with 
+        /// invalidated RawUrl's so we'll just catch the exception and return null
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        internal static string GetRawUrlSafe(this HttpContextBase context)
+        {
+            try
+            {
+                return context.Request.RawUrl;
+            }
+            catch (HttpRequestValidationException)
+            {
+                return string.Empty;
+            }
+        }
+
         public static void AddCompressionResponseHeader(this HttpContextBase context, CompressionType cType)
         {
             if (cType == CompressionType.deflate)

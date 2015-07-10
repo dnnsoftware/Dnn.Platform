@@ -75,7 +75,7 @@ namespace ClientDependency.Core
                     if (url.StartsWith(http.Request.ApplicationPath.TrimEnd('/') + "/webresource.axd", StringComparison.InvariantCultureIgnoreCase))
                     {
                         bundleExternalUri = true;
-                    }                                       
+                    }
                 }
 
                 try
@@ -83,15 +83,10 @@ namespace ClientDependency.Core
                     //we've gotten this far, make the URI absolute and try to load it
                     uri = uri.MakeAbsoluteUri(http);
 
-                    //if this isn't a web resource, we need to check if its approved
-                    if (!bundleExternalUri)
+                    if (uri.IsWebUri())
                     {
-                        //first, we will just allow local requests
-                        if (uri.IsLocalUri(http))
-                        {
-                            bundleExternalUri = true;
-                        }
-                        else
+                        //if this isn't a web resource, we need to check if its approved
+                        if (!bundleExternalUri)
                         {
                             // get the domain to test, with starting dot and trailing port, then compare with
                             // declared (authorized) domains. the starting dot is here to allow for subdomain
@@ -104,23 +99,22 @@ namespace ClientDependency.Core
                                 bundleExternalUri = true;
                             }
                         }
-                    }
 
-                    if (bundleExternalUri)
-                    {
-                        requestContents = GetXmlResponse(uri);
-                        resultUri = uri;
-                        return true;
-                    }
+                        if (bundleExternalUri)
+                        {
+                            requestContents = GetXmlResponse(uri);
+                            resultUri = uri;
+                            return true;
+                        }
 
-                    ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. Domain is not white-listed.", url), null);
+                        ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. Domain is not white-listed.", url), null);
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
                     ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", url, ex.Message), ex);
-                }
-
-
+                }   
             }
             requestContents = "";
             resultUri = null;

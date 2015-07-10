@@ -8,7 +8,7 @@ namespace ClientDependency.Core
     public static class CssHelper
     {
         private static readonly Regex ImportCssRegex = new Regex(@"@import url\((.+?)\);?", RegexOptions.Compiled);
-        private static readonly Regex CssUrlRegex = new Regex(@"url\(((?![""']?data:).+?)\)", RegexOptions.Compiled);
+        private static readonly Regex CssUrlRegex = new Regex(@"url\(((?![""']?data:|[""']?#).+?)\)", RegexOptions.Compiled);
 
         /// <summary>
         /// Returns the paths for the import statements and the resultant original css without the import statements

@@ -280,10 +280,31 @@ namespace ClientDependency.Core.CompositeFiles
                             switch (get())
                             {
                                 case '*':
-                                    if (peek() == '/')
+                                    var currPeek = peek();
+                                    if (currPeek == '/')
                                     {
                                         get();
                                         c = ' ';
+
+                                        //In one very peculiar circumstance, if the JS value is like:
+                                        // val(1 /* Calendar */.toString());
+                                        // if we strip the comment out, JS will produce an error because
+                                        // 1.toString() is not valid, however 1..toString() is valid and 
+                                        // similarly keeping the comment is valid. So we can check if the next value
+                                        // is a '.' and if the current value is numeric and perform this operation.
+                                        // The reason why .. works is because the JS parser cannot do 1.toString() because it 
+                                        // sees the '.' as a decimal
+
+                                        if (char.IsDigit((char) theY))
+                                        {
+                                            currPeek = peek();
+                                            if (currPeek == '.')
+                                            {
+                                                //we actually want to write another '.'
+                                                return '.';
+                                            }
+                                        }
+                                       
                                     }
                                     break;
                                 case EOF:

@@ -13,7 +13,6 @@ namespace ClientDependency.Core.Controls
             Group = Constants.DefaultGroup;
 			PathNameAlias = "";
             HtmlAttributes = new Dictionary<string, string>();
-            AddTag = true;
 		}
 
         protected ClientDependencyInclude(IClientDependencyFile file)
@@ -24,7 +23,6 @@ namespace ClientDependency.Core.Controls
 			DependencyType = file.DependencyType;
             Group = file.Group;
             HtmlAttributes = new Dictionary<string, string>();
-            AddTag = true;
 		}
         
 		public ClientDependencyType DependencyType { get; internal set; }
@@ -33,7 +31,6 @@ namespace ClientDependency.Core.Controls
         public string PathNameAlias { get; set; }
         public int Priority { get; set; }
         public int Group { get; set; }
-        public bool AddTag { get; set; }
 
 		/// <summary>
 		/// This can be empty and will use default provider
@@ -68,16 +65,6 @@ namespace ClientDependency.Core.Controls
 			if (string.IsNullOrEmpty(FilePath))
 				throw new NullReferenceException("Both File and Type properties must be set");
 		}
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            if (AddTag || this.Context.IsDebuggingEnabled)
-            {
-                writer.Write("<!--CDF({0}|{1})-->", DependencyType, FilePath);
-            }
-
-            base.Render(writer);
-        }
 
         protected bool Equals(ClientDependencyInclude other)
         {

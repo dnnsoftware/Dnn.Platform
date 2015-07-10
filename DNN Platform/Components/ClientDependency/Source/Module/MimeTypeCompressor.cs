@@ -27,9 +27,14 @@ namespace ClientDependency.Core.Module
 
         public void AddCompression()
         {
+            if (Context == null) return;
+
             //if debug is on, then don't compress
             if (!Context.IsDebuggingEnabled)
             {
+                if (Context.Response == null) return;
+                if (Context.Response.Filter == null) return;
+
                 //if the current filter is not the default ASP.Net filter, then we will not continue.
                 var filterType = Context.Response.Filter.GetType();
                 //the default is normally: System.Web.HttpResponseStreamFilterSink
@@ -65,7 +70,11 @@ namespace ClientDependency.Core.Module
         protected MimeTypeCompressionElement GetSupportedPath()
         {
             //we're not supporting the ASP.Net AJAX calls for compression
-            var uRawUrl = Context.Request.RawUrl.ToUpper();
+            var rawUrl = Context.GetRawUrlSafe();
+
+            if (string.IsNullOrWhiteSpace(rawUrl)) return null;
+
+            var uRawUrl = rawUrl.ToUpper();
             if (uRawUrl.Contains("WEBRESOURCE.AXD") || uRawUrl.Contains("SCRIPTRESOURCE.AXD"))
                 return null;
 
@@ -73,7 +82,7 @@ namespace ClientDependency.Core.Module
             {
                 //if it is only "*" then convert it to proper regex
                 var reg = m.FilePath == "*" ? ".*" : m.FilePath;
-                var matched = Regex.IsMatch(Context.Request.RawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var matched = Regex.IsMatch(rawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 if (matched) return m;
             }
             return null;

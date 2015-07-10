@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Configuration.Provider;
 using System.Web;
@@ -23,6 +24,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         protected BaseFileRegistrationProvider()
         {
             EnableCompositeFiles = true;
+            EnableDebugVersionQueryString = true;
         }
 
         /// <summary>
@@ -31,11 +33,12 @@ namespace ClientDependency.Core.FileRegistration.Providers
         /// </summary>
         public virtual bool EnableCompositeFiles { get; set; }
 
-        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
-        public virtual int GetVersion()
-        {
-            return ClientDependencySettings.Instance.Version;
-        }
+        /// <summary>
+        /// By default this is true but can be disabled (in either config or code). When this
+        /// is enabled a query string like ?cdv=1235 of the current CDF version will be appended
+        /// to dependencies when debugging is enabled or when composite files are disabled
+        /// </summary>
+        public bool EnableDebugVersionQueryString { get; set; }
 
         #region Abstract methods/properties
 
@@ -81,6 +84,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
         private string _compositeFileHandlerPath = "~/DependencyHandler.axd";
         private volatile bool _compositeFileHandlerPathInitialized = false;
 
+        [Obsolete("The GetCompositeFileHandlerPath should be retrieved from the compositeFiles element in config: ClientDependencySettings.Instance.CompositeFileHandlerPath")]
 		protected internal string GetCompositeFileHandlerPath(HttpContextBase http)
 		{
 		    if (!_compositeFileHandlerPathInitialized)
@@ -89,11 +93,7 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 {
                     //double check
                     if (!_compositeFileHandlerPathInitialized)
-                    {
-                        if (string.IsNullOrWhiteSpace(_compositeFileHandlerPath))
-                        {
-                            throw new InvalidOperationException("The compositeFileHandlerPath cannot be empty");
-                        }
+                    {                        
                         //we may need to convert this to a real path
                         if (_compositeFileHandlerPath.StartsWith("~/"))
                         {
@@ -120,18 +120,10 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 EnableCompositeFiles = bool.Parse(config["enableCompositeFiles"]);
             }
 
-            //if (config != null && config["websiteBaseUrl"] != null && !string.IsNullOrEmpty(config["websiteBaseUrl"]))
-            //{
-            //    WebsiteBaseUrl = config["website"];
-            //    if (!string.IsNullOrEmpty(WebsiteBaseUrl))
-            //        WebsiteBaseUrl = WebsiteBaseUrl.TrimEnd('/');
-            //}
-
-            if (config != null && config["compositeFileHandlerPath"] != null)
+            if (config != null && config["enableDebugVersionQueryString"] != null && !string.IsNullOrEmpty(config["enableDebugVersionQueryString"]))
             {
-                _compositeFileHandlerPath = config["compositeFileHandlerPath"];
+                EnableDebugVersionQueryString = bool.Parse(config["enableDebugVersionQueryString"]);
             }
-            
 		}
 
         #endregion
@@ -202,11 +194,19 @@ namespace ClientDependency.Core.FileRegistration.Providers
                     stringExt = extension.ToUpper().Split(new[] {'?'}, StringSplitOptions.RemoveEmptyEntries)[0];
                 }
 
+                //if this is a protocol-relative/protocol-less uri, then we need to add the protocol for the remaining
+                // logic to work properly
+                if (f.FilePath.StartsWith("//"))
+                {
+                    f.FilePath = Regex.Replace(f.FilePath, @"^\/\/", http.Request.Url.GetLeftPart(UriPartial.Scheme));
+                }
+                
+
                 // if it is an external resource OR
                 // if it is a non-standard JS/CSS resource (i.e. a server request)
                 // then we need to break the sequence
                 // unless it has been explicitely required that the dependency be bundled
-                if (!http.IsAbsolutePath(f.FilePath) && !fileBasedExtensions.Contains(stringExt)
+                if ((!http.IsAbsolutePath(f.FilePath) && !fileBasedExtensions.Contains(stringExt))
                     //now check for external resources
                     || (http.IsAbsolutePath(f.FilePath)
                         //remote dependencies aren't local
@@ -273,7 +273,8 @@ namespace ClientDependency.Core.FileRegistration.Providers
                 }
 
                 //append query strings to each file if we are in debug mode
-                if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+                if (EnableDebugVersionQueryString &&
+                    (http.IsDebuggingEnabled || !EnableCompositeFiles))
                 {
                     dependency.FilePath = AppendVersion(dependency.FilePath, http);
                 }

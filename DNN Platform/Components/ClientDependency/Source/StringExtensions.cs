@@ -59,7 +59,7 @@ namespace ClientDependency.Core
 
         public static string EncodeTo64(this string toEncode)
         {
-            byte[] toEncodeAsBytes = Encoding.Default.GetBytes(toEncode);
+            byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(toEncode);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
@@ -79,7 +79,7 @@ namespace ClientDependency.Core
         public static string DecodeFrom64(this string toDecode)
         {
             byte[] toDecodeAsBytes = System.Convert.FromBase64String(toDecode);
-            return Encoding.Default.GetString(toDecodeAsBytes);
+            return Encoding.UTF8.GetString(toDecodeAsBytes);
         }
 
         /// <summary>
@@ -148,10 +148,5 @@ namespace ClientDependency.Core
             return isExt;
         }
 
-        [Obsolete("Deprecated, use the DNN ValueOrEmpty instead")]
-        public static string TextOrEmpty(this string text)
-        {
-            return text ?? string.Empty;
-        }
     }
 }

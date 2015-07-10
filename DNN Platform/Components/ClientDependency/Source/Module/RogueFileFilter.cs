@@ -92,6 +92,10 @@ namespace ClientDependency.Core.Module
 
         private RogueFileCompressionElement GetSupportedPath()
         {
+            var rawUrl = CurrentContext.GetRawUrlSafe();
+            if (string.IsNullOrWhiteSpace(rawUrl)) return null;
+
+
             var rogueFiles = ClientDependencySettings.Instance
                 .ConfigSection
                 .CompositeFileElement
@@ -99,9 +103,9 @@ namespace ClientDependency.Core.Module
 
             return (from m in rogueFiles.Cast<RogueFileCompressionElement>()
                     let reg = m.FilePath == "*" ? ".*" : m.FilePath
-                    let matched = Regex.IsMatch(CurrentContext.Request.RawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase)
+                    let matched = Regex.IsMatch(rawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase)
                     where matched
-                    let isGood = m.ExcludePaths.Cast<RogueFileCompressionExcludeElement>().Select(e => Regex.IsMatch(CurrentContext.Request.RawUrl, e.FilePath, RegexOptions.Compiled | RegexOptions.IgnoreCase)).All(excluded => !excluded)
+                    let isGood = m.ExcludePaths.Cast<RogueFileCompressionExcludeElement>().Select(e => Regex.IsMatch(rawUrl, e.FilePath, RegexOptions.Compiled | RegexOptions.IgnoreCase)).All(excluded => !excluded)
                     where isGood
                     select m).FirstOrDefault();
         }

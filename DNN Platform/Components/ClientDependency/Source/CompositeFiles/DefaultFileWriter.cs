@@ -38,7 +38,7 @@ namespace ClientDependency.Core.CompositeFiles
         /// <param name="type"></param>
         /// <param name="context"></param>
         /// <param name="originalUrl">The original Url that the content is related to</param>
-        internal static void WriteContentToStream(BaseCompositeFileProcessingProvider provider, StreamWriter sw, string content, ClientDependencyType type, HttpContextBase context, string originalUrl)
+        public static void WriteContentToStream(BaseCompositeFileProcessingProvider provider, StreamWriter sw, string content, ClientDependencyType type, HttpContextBase context, string originalUrl)
         {
             if (type == ClientDependencyType.Css)
             {
