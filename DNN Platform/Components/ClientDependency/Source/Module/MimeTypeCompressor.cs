@@ -27,33 +27,38 @@ namespace ClientDependency.Core.Module
 
         public void AddCompression()
         {
-            HttpRequestBase request = Context.Request;
-            HttpResponseBase response = Context.Response;
-
             //if debug is on, then don't compress
             if (!Context.IsDebuggingEnabled)
             {
-                //check if this request should be compressed based on the mime type and path
-                var m = GetSupportedPath(); 
-                if (IsSupportedMimeType() && m != null)
+                //if the current filter is not the default ASP.Net filter, then we will not continue.
+                var filterType = Context.Response.Filter.GetType();
+                //the default is normally: System.Web.HttpResponseStreamFilterSink
+                //however that is internal, we'll just assume that any filter that is in the namespace
+                // System.Web is the default and we can continue.
+                if (filterType.Namespace != null && filterType.Namespace.StartsWith("System.Web"))
                 {
-                    var cType = Context.GetClientCompression();
-                    Context.AddCompressionResponseHeader(cType);
-
-                    
-
-                    if (cType == CompressionType.deflate)
+                    //check if this request should be compressed based on the mime type and path
+                    var m = GetSupportedPath();
+                    if (IsSupportedMimeType() && m != null)
                     {
-                        response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
-                    }
-                    else if (cType == CompressionType.gzip)
-                    {
-                        response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
-                    }
-
-                    
-
+                        PerformCompression(Context);
+                    }    
                 }
+            }
+        }
+
+        internal static void PerformCompression(HttpContextBase context)
+        {
+            var cType = context.GetClientCompression();
+            context.AddCompressionResponseHeader(cType);
+
+            if (cType == CompressionType.deflate)
+            {
+                context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
+            }
+            else if (cType == CompressionType.gzip)
+            {
+                context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
             }
         }
 

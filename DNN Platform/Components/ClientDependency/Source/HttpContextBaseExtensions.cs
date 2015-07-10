@@ -26,6 +26,56 @@ namespace ClientDependency.Core
         }
 
         /// <summary>
+        /// This sets the caching response to the client including custom e-tag headers
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="etag">Specify the e-tag to use - this should be consistent with this file</param>
+        /// <param name="fromDays">default is 10</param>
+        /// <param name="varyByParams">A list of cache parameter names to vary-by</param>
+        public static void SetClientCachingResponse(
+            this HttpContextBase context,              
+            string etag, 
+            int fromDays = 10,
+            string[] varyByParams = null)
+        {
+            
+            var duration = TimeSpan.FromDays(fromDays);
+            var cache = context.Response.Cache;
+            cache.SetCacheability(HttpCacheability.Public);
+
+            cache.SetExpires(context.Timestamp.Add(duration));
+            cache.SetMaxAge(duration);
+            cache.SetProxyMaxAge(duration);                        
+            cache.SetValidUntilExpires(true);
+            cache.SetLastModified(context.Timestamp);
+
+            cache.SetETag("\"" + etag + "\"");
+
+            //var by any listed parameter names
+            if (varyByParams != null)
+            {
+                foreach (var p in varyByParams)
+                {
+                    cache.VaryByParams[p] = true;
+                }    
+            }
+            else
+            {
+                //if it's null we'll vary by an empty string
+                cache.VaryByParams["none"] = true;
+            }
+
+            //ensure the cache is different based on the encoding specified per browser
+            cache.VaryByContentEncodings["gzip"] = true;
+            cache.VaryByContentEncodings["deflate"] = true;
+
+            //don't allow varying by wildcard
+            cache.SetOmitVaryStar(true);
+            //ensure client browser maintains strict caching rules
+            cache.AppendCacheExtension("must-revalidate, proxy-revalidate");            
+        }
+
+        /// <summary>
         /// Check what kind of compression to use. Need to select the first available compression 
         /// from the header value as this is how .Net performs caching by compression so we need to follow
         /// this process.
@@ -64,8 +114,7 @@ namespace ClientDependency.Core
 
             return type;
         }
-
-
+        
         /// <summary>
         /// Checks for absolute path to root of the website.
         /// </summary>

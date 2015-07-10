@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using ClientDependency.Core.Config;
@@ -14,12 +15,16 @@ namespace ClientDependency.Core.CompositeFiles.Providers
     {
 
         private const string DefaultDependencyPath = "~/App_Data/ClientDependency";
-        private readonly string _byteOrderMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+        
+        /// <summary>
+        /// Defines the UrlType default value, this can be set at startup
+        /// </summary>
+        public static CompositeUrlType UrlTypeDefault = CompositeUrlType.MappedId;
 
         /// <summary>
         /// The path specified in the config
         /// </summary>
-        private string _compositeFilePath;
+        internal string CompositeFilePathAsString;
 
         /// <summary>
         /// constructor sets defaults
@@ -29,9 +34,9 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             PersistCompositeFiles = true;
             EnableCssMinify = true;
             EnableJsMinify = true;
-            UrlType = CompositeUrlType.MappedId;
-
-            _compositeFilePath = DefaultDependencyPath;
+            UrlType = UrlTypeDefault;
+            PathBasedUrlFormat = "{dependencyId}/{version}/{type}";
+            CompositeFilePathAsString = DefaultDependencyPath;
         }
 
         #region Public Properties
@@ -52,6 +57,19 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         public CompositeUrlType UrlType { get; protected set; }
 
         /// <summary>
+        /// The format of a path based URL (either a MappedId or a Base64Paths URL). The string format is a tokenized string such as:
+        /// {dependencyId}.{version}.{type} 
+        /// or
+        /// {dependencyId}/{version}/{type}
+        /// </summary>
+        /// <remarks>
+        /// By defaut this is just:
+        /// {dependencyId}.{version}.{type} 
+        /// but Cassini doesn't support '.' in the URL so some people may want to change this to use '/'
+        /// </remarks>
+        public string PathBasedUrlFormat { get; protected set; }
+
+        /// <summary>
         /// Returns the CompositeFilePath
         /// </summary>
         /// <returns></returns>
@@ -68,14 +86,116 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
         public void Initialize(HttpContextBase http)
         {
-            CompositeFilePath = new DirectoryInfo(http.Server.MapPath(_compositeFilePath));
+            CompositeFilePath = new DirectoryInfo(http.Server.MapPath(CompositeFilePathAsString));
         }
 
         #endregion
 
-        public abstract FileInfo SaveCompositeFile(byte[] fileContents, ClientDependencyType type, HttpServerUtilityBase server, int version);
+        public abstract FileInfo SaveCompositeFile(byte[] fileContents, ClientDependencyType type, HttpServerUtilityBase server);
         public abstract byte[] CombineFiles(string[] filePaths, HttpContextBase context, ClientDependencyType type, out List<CompositeFileDefinition> fileDefs);
         public abstract byte[] CompressBytes(CompressionType type, byte[] fileBytes);
+
+        /// <summary>
+        /// Writes a given path to the stream
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="path">The path could be a local url or an absolute url</param>
+        /// <param name="context"></param>
+        /// <param name="sw"></param>
+        /// <returns>If successful returns a CompositeFileDefinition, otherwise returns null</returns>
+        public CompositeFileDefinition WritePathToStream(ClientDependencyType type, string path, HttpContextBase context, StreamWriter sw)
+        {
+            CompositeFileDefinition def = null;
+            if (!string.IsNullOrEmpty(path))
+            {
+                try
+                {
+                    var fi = new FileInfo(context.Server.MapPath(path));
+
+                    //all config based extensions and all extensions registered by file writers
+                    var fileBasedExtensions = ClientDependencySettings.Instance.FileBasedDependencyExtensionList
+                                                                      .Union(FileWriters.GetRegisteredExtensions());
+
+                    if (fileBasedExtensions.Contains(fi.Extension.ToUpper()))
+                    {
+                        //if the file doesn't exist, then we'll assume it is a URI external request
+                        def = !fi.Exists
+                            ? WriteFileToStream(sw, path, type, context) //external request
+                            : WriteFileToStream(sw, fi, type, path, context); //internal request
+                    }
+                    else
+                    {
+                        //if it's not a file based dependency, try to get the request output.
+                        def = WriteFileToStream(sw, path, type, context);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is NotSupportedException
+                        || ex is ArgumentException
+                        || ex is HttpException)
+                    {
+                        //could not parse the string into a fileinfo or couldn't mappath, so we assume it is a URI
+                        def = WriteFileToStream(sw, path, type, context);
+                    }
+                    else
+                    {
+                        //if this fails, log the exception, but continue
+                        ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", path, ex.Message), ex);
+                    }
+                }
+            }
+
+            if (type == ClientDependencyType.Javascript)
+            {
+                sw.Write(";;;"); //write semicolons in case the js isn't formatted correctly. This also helps for debugging.
+            }
+
+            return def;
+        }
+
+        /// <summary>
+        /// Writes the output of an external request to the stream
+        /// </summary>
+        /// <param name="sw"></param>
+        /// <param name="url"></param>
+        /// <param name="type"></param>
+        /// <param name="http"></param>
+        protected virtual CompositeFileDefinition WriteFileToStream(StreamWriter sw, string url, ClientDependencyType type, HttpContextBase http)
+        {   
+            string requestOutput;
+            Uri resultUri;
+            var rVal = RequestHelper.TryReadUri(url, http, BundleDomains, out requestOutput, out resultUri);
+            if (!rVal) return null;
+          
+            //write the contents of the external request.
+            DefaultFileWriter.WriteContentToStream(this, sw, requestOutput, type, http, url);
+            return new CompositeFileDefinition(url, false);
+        }
+
+        /// <summary>
+        /// Writes the output of a local file to the stream
+        /// </summary>
+        /// <param name="sw"></param>
+        /// <param name="fi"></param>
+        /// <param name="type"></param>
+        /// <param name="origUrl"></param>
+        /// <param name="http"></param>
+        protected virtual CompositeFileDefinition WriteFileToStream(StreamWriter sw, FileInfo fi, ClientDependencyType type, string origUrl, HttpContextBase http)
+        {
+            //get a writer for the file, first check if there's a specific file writer
+            //then check for an extension writer.
+            var writer = FileWriters.GetWriterForFile(origUrl);
+            if (writer is DefaultFileWriter)
+            {
+                writer = FileWriters.GetWriterForExtension(fi.Extension);
+            }
+            return writer.WriteToStream(this, sw, fi, type, origUrl, http) 
+                ? new CompositeFileDefinition(origUrl, true) 
+                : null;
+        }
+
+        
 
         /// <summary>
         /// Returns a URL used to return a compbined/compressed/optimized version of all dependencies.
@@ -90,71 +210,161 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="http"></param>
         /// <returns>An array containing the list of composite file URLs. This will generally only contain 1 value unless
         /// the number of files registered exceeds the maximum length, then it will return more than one file.</returns>
+		public virtual string[] ProcessCompositeList(
+			IEnumerable<IClientDependencyFile> dependencies,
+			ClientDependencyType type,
+			HttpContextBase http)
+		{
+			return ProcessCompositeList(dependencies, type, http, null);
+		}
+
+        /// <summary>
+        /// When the path type is one of the base64 paths, this will create the composite file urls for all of the dependencies. 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="dependencies"></param>
+        /// <param name="compositeFileHandlerPath"></param>
+        /// <param name="http"></param>
+        /// <param name="maxLength">the max length each url can be</param>
+        /// <param name="version">the current cdf version</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Generally there will only be one path returned but his depends on how many dependencies there are and whether the base64 created path will exceed the max url length parameter.
+        /// If the string length exceeds it, then we need to creaet multiple paths all of which must be less length than the maximum provided.
+        /// </remarks>
+        internal IEnumerable<string> GetCompositeFileUrls(
+            ClientDependencyType type, 
+            IClientDependencyFile[] dependencies, 
+            string compositeFileHandlerPath, 
+            HttpContextBase http, 
+            int maxLength,
+            int version)
+        {
+            var files = new List<string>();
+            var currBuilder = new StringBuilder();
+            var base64Builder = new StringBuilder();
+            var builderCount = 1;
+            var stringType = type.ToString();
+
+            var remaining = new Queue<IClientDependencyFile>(dependencies);
+            while (remaining.Any())
+            {
+                var current = remaining.Peek();
+
+                //update the base64 output to get the length
+                base64Builder.Append(current.FilePath.EncodeTo64());
+
+                //test if the current base64 string exceeds the max length, if so we need to split
+                if ((base64Builder.Length
+                     + compositeFileHandlerPath.Length
+                     + stringType.Length
+                     + version.ToString(CultureInfo.InvariantCulture).Length
+                    //this number deals with the ampersands, etc...
+                     + 10)
+                    >= (maxLength))
+                {
+                    //we need to do a check here, this is the first one and it's already exceeded the max length we cannot continue
+                    if (currBuilder.Length == 0)
+                    {
+                        throw new InvalidOperationException("The path for the single dependency: '" + current.FilePath + "' exceeds the max length (" + maxLength + "), either reduce the single dependency's path length or increase the CompositeDependencyHandler.MaxHandlerUrlLength value");
+                    }
+
+                    //flush the current output to the array
+                    files.Add(currBuilder.ToString());
+                    //create some new output
+                    currBuilder = new StringBuilder();
+                    base64Builder = new StringBuilder();
+                    builderCount++;
+                }
+                else
+                {
+                    //update the normal builder
+                    currBuilder.Append(current.FilePath + ";");
+                    //remove from the queue
+                    remaining.Dequeue();
+                }
+            }
+
+            //foreach (var a in dependencies)
+            //{
+            //    //update the base64 output to get the length
+            //    base64Builder.Append(a.FilePath.EncodeTo64());
+
+            //    //test if the current base64 string exceeds the max length, if so we need to split
+            //    if ((base64Builder.Length
+            //        + compositeFileHandlerPath.Length
+            //        + stringType.Length
+            //        + version.Length
+            //        + 10)
+            //        >= (maxLength))
+            //    {
+            //        //add the current output to the array
+            //        files.Add(currBuilder.ToString());
+            //        //create some new output
+            //        currBuilder = new StringBuilder();
+            //        base64Builder = new StringBuilder();
+            //        builderCount++;
+            //    }
+
+            //    //update the normal builder
+            //    currBuilder.Append(a.FilePath + ";");
+            //}
+
+            if (builderCount > files.Count)
+            {
+                files.Add(currBuilder.ToString());
+            }
+
+            //now, compress each url
+            for (var i = 0; i < files.Count; i++)
+            {
+                //append our version to the combined url 
+                var encodedFile = files[i].EncodeTo64Url();
+                files[i] = GetCompositeFileUrl(encodedFile, type, http, UrlType, compositeFileHandlerPath, version);
+            }
+
+            return files.ToArray();
+        }
+
         public virtual string[] ProcessCompositeList(
             IEnumerable<IClientDependencyFile> dependencies, 
             ClientDependencyType type, 
-            HttpContextBase http)
+            HttpContextBase http,
+			string compositeFileHandlerPath)
         {
             if (!dependencies.Any())
                 return new string[] { };
+
+			compositeFileHandlerPath = compositeFileHandlerPath ?? ClientDependencySettings.Instance.CompositeFileHandlerPath;
 
             switch (UrlType)
             {
                 case CompositeUrlType.MappedId:
                     
                     //use the file mapper to create us a file key/id for the file set
-                    var fileKey = ClientDependencySettings.Instance.DefaultFileMapProvider.CreateNewMap(http, dependencies, GetVersion());
+                    var fileKey = ClientDependencySettings.Instance.DefaultFileMapProvider.CreateNewMap(
+                        http, 
+                        dependencies,
+                        ClientDependencySettings.Instance.Version);
 
                     //create the url
-                    return new[] { GetCompositeFileUrl(fileKey, type, http, CompositeUrlType.MappedId) };
+                    return new[] { GetCompositeFileUrl(
+                        fileKey, 
+                        type, 
+                        http, 
+                        CompositeUrlType.MappedId, 
+                        compositeFileHandlerPath,
+                        ClientDependencySettings.Instance.Version) };
 
                 default:
                     
                     //build the combined composite list urls          
-                    
-                    var files = new List<string>();
-                    var currBuilder = new StringBuilder();
-                    var base64Builder = new StringBuilder();
-                    var builderCount = 1;
-                    var stringType = type.ToString();
-                    foreach (var a in dependencies)
-                    {
-                        //update the base64 output to get the length
-                        base64Builder.Append(a.FilePath.EncodeTo64());
 
-                        //test if the current base64 string exceeds the max length, if so we need to split
-                        if ((base64Builder.Length + ClientDependencySettings.Instance.CompositeFileHandlerPath.Length + stringType.Length + 10) 
-                            >= (CompositeDependencyHandler.MaxHandlerUrlLength))
-                        {
-                            //add the current output to the array
-                            files.Add(currBuilder.ToString());
-                            //create some new output
-                            currBuilder = new StringBuilder();
-                            base64Builder = new StringBuilder();
-                            builderCount++;
-                        }
-
-                        //update the normal builder
-                        currBuilder.Append(a.FilePath + ";");
-                    }
-
-                    if (builderCount > files.Count)
-                    {
-                        files.Add(currBuilder.ToString());
-                    }
-
-                    //now, compress each url
-                    for (var i = 0; i < files.Count; i++)
-                    {
-                        //append our version to the combined url 
-                        var encodedFile = files[i].EncodeTo64Url();
-                        files[i] = GetCompositeFileUrl(encodedFile, type, http, UrlType);
-                    }
-
-                    return files.ToArray();
+                    return GetCompositeFileUrls(type, dependencies.ToArray(), compositeFileHandlerPath, http, CompositeDependencyHandler.MaxHandlerUrlLength, ClientDependencySettings.Instance.Version).ToArray();
             }            
         }
 
+        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
         public virtual int GetVersion()
         {
             return ClientDependencySettings.Instance.Version;
@@ -167,15 +377,18 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="type"></param>
         /// <param name="http"></param>
         /// <param name="urlType"></param>
+        /// <param name="compositeFileHandlerPath"> </param>
+        /// <param name="version"> </param>
         /// <returns></returns>
         public virtual string GetCompositeFileUrl(
             string fileKey, 
             ClientDependencyType type, 
             HttpContextBase http, 
-            CompositeUrlType urlType)
+            CompositeUrlType urlType,
+			string compositeFileHandlerPath,
+            int version)
         {
             var url = new StringBuilder();
-            int version = GetVersion();
             switch (urlType)
             {
                 case CompositeUrlType.Base64QueryStrings:
@@ -184,7 +397,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
                     const string handler = "{0}?s={1}&t={2}";
                     url.Append(string.Format(handler,
-                                             ClientDependencySettings.Instance.CompositeFileHandlerPath,
+                                             compositeFileHandlerPath,
                                              http.Server.UrlEncode(fileKey), type));
                     url.Append("&cdv=");
                     url.Append(version.ToString());
@@ -192,34 +405,16 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                 default:
 
                     //Create a URL based on base64 paths instead of a query string
+                    
+                    url.Append(compositeFileHandlerPath);
+                    url.Append('/');
 
+                    //create the path based on the path format...
+                    var pathUrl = PathBasedUrlFormatter.CreatePath(PathBasedUrlFormat, fileKey, type, version);
 
-                    //this used to be a "." but this causes problems with mvc and ignore routes for 
-                    //some very strange reason, so we'll just use normal paths.
-                    var versionDelimiter = ".";
+                    //append the path formatted
+                    url.Append(pathUrl);
 
-                    url.Append(ClientDependencySettings.Instance.CompositeFileHandlerPath);
-                    int pos = 0;
-                    while (fileKey.Length > pos)
-                    {
-                        url.Append("/");
-                        int len = Math.Min(fileKey.Length - pos, 240);
-                        url.Append(fileKey.Substring(pos, len));
-                        pos += 240;
-                    }
-                    url.Append(versionDelimiter);
-                    url.Append(version.ToString());
-                    switch (type)
-                    {
-                        case ClientDependencyType.Css:
-                            url.Append(versionDelimiter);
-                            url.Append("css");
-                            break;
-                        case ClientDependencyType.Javascript:
-                            url.Append(versionDelimiter);
-                            url.Append("js");
-                            break;
-                    }
                     break;
             }
 
@@ -235,13 +430,13 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
             if (config["enableCssMinify"] != null)
             {
-                bool enableCssMinify;
+                bool enableCssMinify = true;
                 if (bool.TryParse(config["enableCssMinify"], out enableCssMinify))
                     EnableCssMinify = enableCssMinify;
             }
             if (config["enableJsMinify"] != null)
             {
-                bool enableJsMinify;
+                bool enableJsMinify = true; 
                 if (bool.TryParse(config["enableJsMinify"], out enableJsMinify))
                     EnableJsMinify = enableJsMinify;
             }
@@ -264,8 +459,13 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                     //swallow exception, we've set the default
                 }
             }
+            if (config["pathUrlFormat"] != null)
+            {
+                PathBasedUrlFormat = config["pathUrlFormat"];
+                PathBasedUrlFormatter.Validate(PathBasedUrlFormat);                
+            }
 
-            _compositeFilePath = config["compositeFilePath"] ?? DefaultDependencyPath;
+            CompositeFilePathAsString = config["compositeFilePath"] ?? DefaultDependencyPath;
 
             string bundleDomains = config["bundleDomains"];
             if (bundleDomains != null)
@@ -296,12 +496,12 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <param name="fileContents"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        protected virtual string MinifyFile(string fileContents, ClientDependencyType type)
+        public virtual string MinifyFile(string fileContents, ClientDependencyType type)
         {
             switch (type)
             {
                 case ClientDependencyType.Css:
-                    return EnableCssMinify ? CssMin.CompressCSS(fileContents) : fileContents;
+                    return EnableCssMinify ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
                     return EnableJsMinify ? JSMin.CompressJS(fileContents) : fileContents;
                 default:
@@ -322,8 +522,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             //if it is a CSS file we need to parse the URLs
             if (type == ClientDependencyType.Css)
             {
-                var uri = new Uri(url, UriKind.RelativeOrAbsolute);
-                fileContents = CssFileUrlFormatter.TransformCssFile(fileContents, uri.MakeAbsoluteUri(http));
+                fileContents = CssHelper.ReplaceUrlsWithAbsolutePaths(fileContents, url, http);
             }
             return fileContents;
         }
@@ -340,111 +539,12 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// if the path is a relative local path, the we use Server.Execute to get the request output, otherwise
         /// if it is an absolute path, a WebClient request is made to fetch the contents.
         /// </remarks>
+        [Obsolete("This is no longer used in the codebase and will be removed in future versions")]
         protected bool TryReadUri(string url, out string requestContents, HttpContextBase http)
         {
             Uri uri;
-            if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
-            {
-                //flag of whether or not to make a request to get the external resource (used below)
-                bool bundleExternalUri = false;
-
-                //if its a relative path, then check if we should execute/retreive contents,
-                //otherwise change it to an absolute path and try to request it.
-                if (!uri.IsAbsoluteUri)
-                {
-                    //if this is an ASPX page, we should execute it instead of http getting it.
-                    if (uri.ToString().EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        var sw = new StringWriter();
-                        try
-                        {
-                            http.Server.Execute(url, sw);
-                            requestContents = sw.ToString();
-                            sw.Close();
-                            return true;
-                        }
-                        catch (Exception ex)
-                        {
-                            ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", url, ex.Message), ex);
-                            requestContents = "";
-                            return false;
-                        }
-                    }
-                    
-                    //if this is a call for a web resource, we should http get it
-                    if (url.StartsWith(http.Request.ApplicationPath.TrimEnd('/') + "/webresource.axd", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        bundleExternalUri = true;
-                    }
-                }
-
-                try
-                {
-                    //we've gotten this far, make the URI absolute and try to load it
-                    uri = uri.MakeAbsoluteUri(http);
-
-                    //if this isn't a web resource, we need to check if its approved
-                    if (!bundleExternalUri)
-                    {
-                        // get the domain to test, with starting dot and trailing port, then compare with
-                        // declared (authorized) domains. the starting dot is here to allow for subdomain
-                        // approval, eg '.maps.google.com:80' will be approved by rule '.google.com:80', yet
-                        // '.roguegoogle.com:80' will not.
-                        var domain = string.Format(".{0}:{1}", uri.Host, uri.Port);
-
-                        foreach (string bundleDomain in BundleDomains)
-                        {
-                            if (domain.EndsWith(bundleDomain))
-                            {
-                                bundleExternalUri = true;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (bundleExternalUri)
-                    {
-                        requestContents = GetXmlResponse(uri);
-                        return true;
-                    }
-                    else
-                    {
-                        ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. Domain is not white-listed.", url), null);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ClientDependencySettings.Instance.Logger.Error(string.Format("Could not load file contents from {0}. EXCEPTION: {1}", url, ex.Message), ex);
-                }
-
-
-            }
-            requestContents = "";
-            return false;
+            return RequestHelper.TryReadUri(url, http, BundleDomains, out requestContents, out uri);
         }
 
-        /// <summary>
-        /// Gets the web response and ensures that the BOM is not present not matter what encoding is specified.
-        /// </summary>
-        /// <param name="resource"></param>
-        /// <returns></returns>
-        private string GetXmlResponse(Uri resource)
-        {
-            string xml;
-
-            using (var client = new WebClient())
-            {
-                client.Credentials = CredentialCache.DefaultNetworkCredentials;
-                client.Encoding = Encoding.UTF8;
-                xml = client.DownloadString(resource);
-            }
-
-            if (xml.StartsWith(_byteOrderMarkUtf8))
-            {
-                xml = xml.Remove(0, _byteOrderMarkUtf8.Length - 1);
-            }
-
-            return xml;
-        }
     }
 }
