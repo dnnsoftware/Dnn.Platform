@@ -44,181 +44,6 @@ END
 
 GO
 
-
-
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mechanics_CreateBadge]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mechanics_CreateBadge]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mechanics_CreateBadge]
-    @PortalId int,
-    @Name nvarchar(256),
-    @TimeFrameInDays int,
-    @Tier int,
-    @ImageFileId int,
-    @ScoringActionDefinitionList varchar(1024), -- serialized list of BadgeSads
-    @UserId int = -1
-AS
-BEGIN
-    BEGIN TRANSACTION
-    
-    -- Create new Badge row that we can reference in the BadgeScoActDef rows.
-    DECLARE @BadgeId INT
-    INSERT INTO {databaseOwner}[{objectQualifier}Mechanics_Badge] (
-            [PortalId],
-            [BadgeName],
-            [TimeFrameInDays],
-            [Tier],
-            [ImageFileId],
-            [CreatedByUserID],
-            [CreatedOnDate],
-            [LastModifiedByUserID],
-            [LastModifiedOnDate])
-        VALUES
-            (@PortalId,
-             @Name,
-             @TimeFrameInDays,
-             @Tier,
-             @ImageFileId,
-             @UserId,
-             GETUTCDATE(),
-             @UserId,
-             GETUTCDATE())
-    SELECT @BadgeId = SCOPE_IDENTITY()
-        
-	INSERT INTO {databaseOwner}[{objectQualifier}Mechanics_BadgeScoActDef] (
-			[BadgeId],
-			[ScoringActionDefId],
-			[NumberOfTimes],
-			[CreatedOnDate])
-	select	@BadgeId
-			,Nullif(substring(item,1,CHARINDEX(' ',item,0)),'') ScoringActionDefId
-			,Nullif(substring(item,CHARINDEX(' ',item,0),LEN(item)-CHARINDEX(' ',item,0)+1),'')
-			,GETUTCDATE()
-	from SplitStrings_CTE(@ScoringActionDefinitionList,',')                
-
-    --Commit all our changes
-    COMMIT TRANSACTION	
-   	  
-    SELECT @BadgeId
-END
-GO
-
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Mechanics_UpdateBadge]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}Mechanics_UpdateBadge]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Mechanics_UpdateBadge]
-    @BadgeId int,
-    @Name nvarchar(256),
-    @TimeFrameInDays int,
-    @Tier int,
-    @ImageFileId int,
-    @ScoringActionDefinitionList varchar(1024), -- serialized list of BadgeSads
-    @UserId int = -1
-AS
-BEGIN
-    BEGIN TRANSACTION
-    
-    UPDATE {databaseOwner}[{objectQualifier}Mechanics_Badge]
-        SET
-            [BadgeName] = @Name,
-            [TimeFrameInDays] = @TimeFrameInDays,
-            [Tier] = @Tier,
-            [ImageFileId] = @ImageFileId,
-            [LastModifiedByUserID] = @UserId,
-            [LastModifiedOnDate] = getutcdate()
-        WHERE
-            [BadgeId] = @BadgeId
-
-    DELETE FROM {databaseOwner}[{objectQualifier}Mechanics_BadgeScoActDef] WHERE [BadgeId] = @BadgeId		
-
-    -- Convert Scoring Action Definition serialized list into table of intermediate values
-    INSERT INTO {databaseOwner}[{objectQualifier}Mechanics_BadgeScoActDef] (
-			[BadgeId],
-			[ScoringActionDefId],
-			[NumberOfTimes],
-			[CreatedOnDate])
-	select	@BadgeId
-			,Nullif(substring(item,1,CHARINDEX(' ',item,0)),'') ScoringActionDefId
-			,Nullif(substring(item,CHARINDEX(' ',item,0),LEN(item)-CHARINDEX(' ',item,0)+1),'')
-			,GETUTCDATE()
-	from SplitStrings_CTE(@ScoringActionDefinitionList,',')     
-
-    -- Commit all our changes
-    COMMIT TRANSACTION	
-        
-    SELECT 0
-END
-GO
-
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Publisher_SearchPosts]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}Publisher_SearchPosts]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}Publisher_SearchPosts]
- 	@ModuleId INT,
-	@GroupId INT,
-	@StartIndex INT,
-	@EndIndex INT,
-	@ExcludePostIds VARCHAR(MAX)
-AS
-BEGIN
-	DECLARE @TitleMetID AS INT 
-	DECLARE @ImagesMetID AS INT
-	
-	SELECT @ImagesMetID = case when MetaDataName = 'Images' 
-				then MetaDataID
-				else @ImagesMetID
-				end
-			,@TitleMetID = case when MetaDataName = 'Title' 
-				then MetaDataID
-				else @TitleMetID
-				end		
-		FROM {databaseOwner}[{objectQualifier}MetaData]
-		WHERE MetaDataName = 'Images'
-			or MetaDataName = 'Title'
-	
-	;WITH	PostSet
-	AS		(SELECT
-					P.PostId,
-					P.PortalId,
-					P.GroupId,
-					P.ContentItemId,
-					P.Published,
-					P.AuthorUserId,
-					P.AllowedComments,
-					P.Featured,
-					P.MetadataTitle,
-					P.MetadataDescription,
-					P.PublishedOnDate,
-					P.CreatedOnDate,
-					P.LastModifiedOnDate,
-					CI.Content AS [Body],
-					CI.TabId,
-					CI.ModuleId,
-					CI.LastModifiedByUserId AS [ModifiedByUserId],
-					CI.CreatedByUserID AS [CreatedByUserId],
-					CIMDT.MetaDataValue AS [Title],
-					REPLACE(REPLACE(CIMDI.MetaDataValue, '[', ''), ']', '') AS MainImageFileId,
-					ROW_NUMBER() OVER (ORDER BY P.PublishedOnDate DESC) AS RowNumber
-			
-			FROM	{databaseOwner}[{objectQualifier}Publisher_Posts] AS P
-					INNER JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI 
-						ON P.ContentItemId = CI.ContentItemID
-					LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] AS CIMDT 
-						ON CIMDT.ContentItemID = CI.ContentItemID AND CIMDT.MetaDataID = @TitleMetID
-					LEFT OUTER JOIN {databaseOwner}[{objectQualifier}ContentItems_MetaData] AS CIMDI
-						ON CIMDI.ContentItemID = CI.ContentItemID AND CIMDI.MetaDataID = @ImagesMetID
-			
-			WHERE	CI.ModuleId = @ModuleId
-					AND	(@GroupId is null OR P.GroupId = @GroupId)
-					AND	P.Published = 1
-					AND P.PostId NOT IN (SELECT * FROM dbo.CsvSplit(@ExcludePostIds, ','))
-			)
-
-	SELECT	*
-	FROM	PostSet
-	WHERE	RowNumber BETWEEN @StartIndex AND @EndIndex;
-END
-GO
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]', N'P') IS NOT NULL
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
 GO
@@ -228,7 +53,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRec
 	@CreateUpdateUserID INT -- create / update user id
 AS
 BEGIN    
-
     INSERT {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients](
 			[MessageID],
 			[UserID],
@@ -253,70 +77,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItemUrlProvider_AddSlug]', N'P') IS NOT NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}ContentItemUrlProvider_AddSlug]
-GO
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}ContentItemUrlProvider_AddSlug] (
-	@TabId INT,
-	@ContentItemId INT,
-	@Slug NVARCHAR(255),
-	@Separator NVARCHAR(1)
-) AS
-BEGIN
-	DECLARE @OrigSlug NVARCHAR(255) = @Slug
 
-	DECLARE @ReserverdWordList NVARCHAR(MAX)
-
-	SELECT @ReserverdWordList = s.SettingValue
-	FROM {databaseOwner}[{objectQualifier}ExtensionUrlProviders] p
-		JOIN {databaseOwner}[{objectQualifier}ExtensionUrlProviderSetting] s 
-			ON p.ExtensionUrlProviderID = s.ExtensionUrlProviderID
-	WHERE p.ProviderName = 'Evoq Content Item Url Extension Provider'
-		AND s.SettingName = 'ReservedWordList'
-
-	DECLARE @ReservedWords AS TABLE (Word NVARCHAR(MAX))
-	INSERT INTO @ReservedWords (Word) 
-	SELECT item FROM {databaseOwner}[{objectQualifier}SplitStrings_CTE](@ReserverdWordList, ',')
-		UNION SELECT 'module' 
-		UNION SELECT 'ctl' 
-		UNION SELECT 'moduleid' 
-		UNION SELECT 'tabid' 
-		UNION SELECT 'groupid' 
-		UNION SELECT 'skinSrc'
-
-	DECLARE @i INT = 1
-
-	WHILE EXISTS(
-	SELECT * FROM {databaseOwner}[{objectQualifier}ContentItem_Slug] WITH (NOLOCK)
-		WHERE TabId = @TabId
-		  AND ContentItemId <> @ContentItemId
-		  AND Slug = @Slug)
-		OR @Slug IN (SELECT Word FROM @ReservedWords)
-	BEGIN			     
-		SET @Slug = @OrigSlug + @Separator + CONVERT(NVARCHAR(5), @i)
-		SET @i = @i + 1
-	END
-
-	UPDATE {databaseOwner}[{objectQualifier}ContentItem_Slug]
-	SET HttpStatus = 301
-	WHERE TabId = @TabId AND ContentItemId = @ContentItemId 
-	  AND Slug <> @Slug 
-	  AND HttpStatus = 200
-
-	UPDATE {databaseOwner}[{objectQualifier}ContentItem_Slug]
-	SET HttpStatus = 200
-	WHERE TabId = @TabId AND ContentItemId = @ContentItemId 
-	  AND Slug = @Slug
-
-	IF @@ROWCOUNT = 0 
-	BEGIN
-		INSERT {databaseOwner}[{objectQualifier}ContentItem_Slug](TabId, ContentItemId, HttpStatus, Slug)
-		VALUES (@TabId, @ContentItemId, 200, @Slug)
-	END
-
-	SELECT @Slug
-END
-GO
 IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]', N'P') IS NOT NULL
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]
 GO
@@ -339,15 +100,6 @@ GO
 
 
 /* DNN-7162 - Content Items Indexes */
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItem_Slug]') AND name = N'IX_{objectQualifier}ContentItem_ContentItemId')
-DROP INDEX [IX_{objectQualifier}ContentItem_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentItem_Slug] WITH ( ONLINE = OFF )
-GO
-CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItem_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentItem_Slug]
-(
-	[ContentItemId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_ContentItemId')
 DROP INDEX [IX_{objectQualifier}ContentItems_MetaData_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentItems_MetaData] WITH ( ONLINE = OFF )
 GO
@@ -367,67 +119,6 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentWorkflowLogs_ContentItemId
 GO
 
 /* DNN-7164 */
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Modules]') AND name = N'IX_{objectQualifier}Modules_ModuleDefId')
-DROP INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules] WITH ( ONLINE = OFF )
-GO
-CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Modules_ModuleDefId] ON {databaseOwner}[{objectQualifier}Modules]
-(
-	[ModuleDefID] ASC,
-	[ModuleID] ASC
-)
-INCLUDE ( [AllTabs],
-[InheritViewPermissions],
-[StartDate],
-[EndDate],
-[PortalID],
-[CreatedByUserID],
-[CreatedOnDate],
-[LastModifiedByUserID],
-[LastModifiedOnDate],
-[LastContentModifiedOnDate],
-[IsShareable],
-[IsShareableViewOnly]) WITH (STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}TabModules]') AND name = N'IX_{objectQualifier}TabModules_ModuleID')
-DROP INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules] WITH ( ONLINE = OFF )
-GO
-CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {databaseOwner}[{objectQualifier}TabModules]
-(
-	[ModuleID] ASC,
-	[TabID] ASC
-)
-INCLUDE ( [IsDeleted],
-[CultureCode],
-[ModuleTitle],
-[Visibility],
-[ContainerSrc],
-[DisplayTitle],
-[DisplayPrint],
-[DisplaySyndicate],
-[IsWebSlice],
-[WebSliceTitle],
-[WebSliceExpiryDate],
-[WebSliceTTL],
-[Header],
-[Footer],
-[UniqueId],
-[VersionGuid],
-[DefaultLanguageGuid],
-[LocalizedVersionGuid],
-[TabModuleID],
-[PaneName],
-[ModuleOrder],
-[CacheTime],
-[Alignment],
-[Color],
-[Border],
-[IconFile],
-[CacheMethod]) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-GO
-
-
-
 ALTER VIEW {databaseOwner}[{objectQualifier}vw_Modules]
 AS
     SELECT
