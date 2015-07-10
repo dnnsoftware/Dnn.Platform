@@ -188,7 +188,7 @@ dcc.contentTypeViewModel = function(parentViewModel, config){
                 //Success
                 if(self.isAddMode()){
                     util.alert(resx.saveContentTypeMessage.replace("{0}", params.name), resx.ok, function() {
-                        self.contentTypeId(data.data.contentTypeId)
+                        self.contentTypeId(data.data.id)
                         self.fields().clear();
                     });
                 }
