@@ -7,24 +7,73 @@ namespace ClientDependency.Core
 {
     internal static class HtmlAttributesStringParser
     {
-
         internal static void ParseIntoDictionary(string attributes, IDictionary<string, string> destination)
         {
             if (string.IsNullOrEmpty(attributes))
                 return;
-            if (destination == null)
-                return;
 
-            foreach (var parts in attributes.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Split(new[] {':'}, StringSplitOptions.RemoveEmptyEntries)))
+            var key = "";
+            var val = "";
+            var isKey = true;
+            var isVal = false;
+            var isValDelimited = false;
+            for (var i = 0; i < attributes.Length; i++)
             {
-                if (parts.Length != 2)
+                var c = attributes.ToCharArray()[i];
+                if (isKey && c == ':')
                 {
-                    throw new ParseException("Could not parse html string attributes, the format must be key1:value1,key2:value2", parts.Length);
+                    isKey = false;
+                    isVal = true;
+                    continue;
                 }
 
-                if (!destination.ContainsKey(parts[0]))
-                    destination.Add(parts[0], parts[1]);
+                if (isKey)
+                {
+                    key += c;
+                }
+
+                if (isVal)
+                {
+                    if (c == '\'')
+                    {
+                        if (!isValDelimited)
+                        {
+                            isValDelimited = true;
+                            continue;
+                        }
+                        else
+                        {
+                            isValDelimited = false;
+                            if ((i == attributes.Length - 1))
+                            {
+                                //if it the end, add/replace the value
+                                destination[key] = val;                                
+                            }
+                            continue;
+                        }
+                    }
+                    
+                    if (c == ',' && !isValDelimited)
+                    {
+                        //we've reached a comma and the value is not longer delimited, this means we create a new key
+                        isKey = true;
+                        isVal = false;
+
+                        //now we can add/replace the current value to the dictionary
+                        destination[key] = val;
+                        continue;
+                    }
+                    
+                    val += c;
+
+                    if ((i == attributes.Length - 1))
+                    {
+                        //if it the end, add/replace the value
+                        destination[key] = val;
+                    }
+                }
             }
+
         }
     }
 }

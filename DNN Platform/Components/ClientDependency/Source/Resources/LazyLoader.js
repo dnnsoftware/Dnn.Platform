@@ -8,7 +8,7 @@ ClientDependency.Sys.LazyLoader = function() {
     this.addedDependencies = [];
     this.jsQueue = new Array();
     this.jsQueueWaiting = false;
-}
+};
 
 // ********************* Dependency Loader Methods *********************
 ClientDependency.Sys.LazyLoader.prototype.AddJs = function(filePath, callbackMethod) {
@@ -33,7 +33,7 @@ ClientDependency.Sys.LazyLoader.prototype.AddJs = function(filePath, callbackMet
     }
 
     return this;
-}
+};
 
 ClientDependency.Sys.LazyLoader.prototype.RegisterCallbackMethod = function(callbackMethod) {
     /// <summary>
@@ -48,7 +48,7 @@ ClientDependency.Sys.LazyLoader.prototype.RegisterCallbackMethod = function(call
     ClientDependency.Sys.onScriptAvailable(script);
 
     return this;
-}
+};
 
 function logthis(txt) {
 
@@ -57,7 +57,7 @@ function logthis(txt) {
 ClientDependency.Sys.LazyLoader.prototype.AddCss = function(filePath) {
     if (this.addedDependencies[filePath] == undefined) {
 
-        var tempCss = document.createElement("link")
+        var tempCss = document.createElement("link");
         tempCss.setAttribute("href", filePath);
         tempCss.setAttribute("rel", "stylesheet");
         tempCss.setAttribute("type", "text/css");
@@ -70,7 +70,7 @@ ClientDependency.Sys.LazyLoader.prototype.AddCss = function(filePath) {
         //Sys.Debug.trace("LazyLoader: Css file has already been added: '" + filePath + "'.");
     }
     return this;
-}
+};
 
 ClientDependency.Sys.LazyLoader.prototype.LoadNextJs = function() {
     if (this.jsQueue.length > 0) {
@@ -95,8 +95,14 @@ ClientDependency.Sys.LazyLoader.prototype.LoadNextJs = function() {
     else {
         //Sys.Debug.trace('LazyLoader: No scripts left.');
         this.jsQueueWaiting = false;
+        
+        // Trigger event on load compleated.
+        if (typeof jQuery == "undefined")
+            ClientDependency.Sys.triggerEvent(document, 'ClientDependencyDone');
+        else
+            $(document).trigger("ClientDependencyDone");
     }
-}
+};
 
 // Initialize
 var CDLazyLoader = new ClientDependency.Sys.LazyLoader();
@@ -110,7 +116,14 @@ ClientDependency.Sys.onScriptAvailable = function(script) {
         //Sys.Debug.trace("LazyLoader: Loaded '" + script.filePath + "'.");
         script.loaded = true;
     }
-    if (script.callbackMethod == '') {
+
+    // Trigger event on script loaded.
+    if (typeof jQuery == "undefined")
+        ClientDependency.Sys.triggerEvent(document, 'ClientDependencyLoaded');
+    else
+        $(document).trigger("ClientDependencyLoaded", script.filePath);
+
+    if (typeof script.callbackMethod == "undefined" || script.callbackMethod == '') {
         CDLazyLoader.LoadNextJs();
     }
     else {
@@ -137,5 +150,39 @@ ClientDependency.Sys.onScriptAvailable = function(script) {
                 ClientDependency.Sys.onScriptAvailable(script);
             }, 50);
         }
+    }
+}
+
+ClientDependency.Sys.triggerEvent = function(el, eventName) {
+    var event;
+    if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+    } else if (document.createEventObject) {// IE < 9
+        event = document.createEventObject();
+        event.eventType = eventName;
+    }
+    event.eventName = eventName;
+  
+    if (el.dispatchEvent) {
+        el.dispatchEvent(event);
+    } else if (el[eventName]) {
+        el[eventName]();
+    } else if (el['on' + eventName]) {
+        el['on' + eventName]();
+    }
+}
+ClientDependency.Sys.addEvent = function(el, type, handler) {
+    if (el.addEventListener) {
+        el.addEventListener(type, handler, false);
+    } else {
+        el['on' + type] = handler;
+    }
+}
+ClientDependency.Sys.removeEvent = function(el, type, handler) {
+    if (el.removeventListener) {
+        el.removeEventListener(type, handler, false);
+    } else {
+        el['on' + type] = null;
     }
 }

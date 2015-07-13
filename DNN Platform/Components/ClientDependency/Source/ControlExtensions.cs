@@ -11,23 +11,11 @@ namespace ClientDependency.Core
     public static class ControlExtensions
     {
 
-   
-
         public static IEnumerable<Control> FlattenChildren(this Control control)
         {
-            var children = control.Controls.Cast<Control>();
-            return children.SelectMany(c => FlattenChildren(c)).Concat(children);
+            var children = control.Controls.Cast<Control>().ToArray();
+            return children.SelectMany(FlattenChildren).Concat(children);
         }
-
-        public static IEnumerable<Control> FlattenChildren<T>(this Control control)
-        {
-            var children = control.Controls
-                .Cast<Control>()
-                .Where(x => x is T);
-            return children.SelectMany(c => FlattenChildren(c)).Concat(children);
-        }
-
-
 
     }
 }

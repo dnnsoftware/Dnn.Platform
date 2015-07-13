@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
@@ -10,11 +9,13 @@ using System.Web;
 
 namespace ClientDependency.Core.FileRegistration.Providers
 {
+    /// <summary>
+    /// Uses the LoaderControl to render the CSS and JS specified.
+    /// </summary>
     public class LoaderControlProvider : WebFormsFileRegistrationProvider
     {
 
         public const string DefaultName = "LoaderControlProvider";
-        
 
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
@@ -27,21 +28,28 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
-            if (!jsDependencies.Any())
+            var asArray = jsDependencies.ToArray();
+
+            if (!asArray.Any())
                 return string.Empty;
 
             var sb = new StringBuilder();
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
             {
-                foreach (var dependency in jsDependencies)
+                foreach (var dependency in asArray)
                 {
                     sb.Append(RenderSingleJsFile(dependency.FilePath, htmlAttributes));
                 }
             }
             else
             {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http);
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Javascript, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleJsFile(s, htmlAttributes));
@@ -53,21 +61,28 @@ namespace ClientDependency.Core.FileRegistration.Providers
 
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
-            if (!cssDependencies.Any())
+            var asArray = cssDependencies.ToArray();
+
+            if (!asArray.Any())
                 return string.Empty;
 
             var sb = new StringBuilder();
 
             if (http.IsDebuggingEnabled || !EnableCompositeFiles)
             {
-                foreach (var dependency in cssDependencies)
+                foreach (var dependency in asArray)
                 {
                     sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
                 }
             }
             else
             {
-                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http);
+                var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(
+                    asArray, 
+                    ClientDependencyType.Css, 
+                    http,
+                    ClientDependencySettings.Instance.CompositeFileHandlerPath);
+
                 foreach (var s in comp)
                 {
                     sb.Append(RenderSingleCssFile(s, htmlAttributes));
