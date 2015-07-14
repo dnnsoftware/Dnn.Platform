@@ -1,1 +1,1 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeFile="jQuery.ascx.cs" Inherits="DotNetNuke.UI.Skins.Controls.jQuery" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.jQuery" Codebehind="jQuery.ascx.cs" %>

@@ -28,7 +28,7 @@ using System.Net;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 }
                 if (RoleID == PortalSettings.AdministratorRoleId)
                 {
-                    strCurrency = Host.HostCurrency;
+                    strCurrency = DnnHost.HostCurrency;
                 }
                 else
                 {

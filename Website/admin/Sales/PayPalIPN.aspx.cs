@@ -29,7 +29,7 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     if (intRoleID == intAdministratorRoleId)
                     {
 						//admin portal renewal
-                        strProcessorID = Host.ProcessorUserId.ToLower();
+                        strProcessorID = DnnHost.ProcessorUserId.ToLower();
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLower()) == strProcessorID))
                         {

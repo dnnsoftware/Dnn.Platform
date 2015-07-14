@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls" TagPrefix="DNN" %>
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Vendors.BannerOptions" CodeFile="BannerOptions.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Vendors.BannerOptions" Codebehind="BannerOptions.ascx.cs" %>
 <div class="dnnForm dnnBannerOptions dnnClear">
     <div class="dnnFormItem">
         <dnn:label id="plSource" runat="server" controlname="optSource" suffix=":" />

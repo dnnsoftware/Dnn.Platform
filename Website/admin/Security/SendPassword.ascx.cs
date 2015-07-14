@@ -26,7 +26,7 @@ using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
 
-                if (string.IsNullOrEmpty(Host.SMTPServer))
+                if (string.IsNullOrEmpty(DnnHost.SMTPServer))
                 {
                     //SMTP Server is not configured
                     canSend = false;

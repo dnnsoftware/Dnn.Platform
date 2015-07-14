@@ -22,32 +22,25 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-
-using Telerik.Web.UI;
-
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
-using System.Web.UI.WebControls;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
@@ -482,7 +475,7 @@ namespace DotNetNuke.Modules.Admin.Users
             base.OnPreRender(e);
 
 
-			if (Host.EnableStrengthMeter)
+            if (DnnHost.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtPassword.CssClass = "password-strength";
@@ -640,10 +633,10 @@ namespace DotNetNuke.Modules.Admin.Users
                         //DNN-5874 Check if unique display name is required
                         if (PortalSettings.Registration.RequireUniqueDisplayName)
                         {
-                            var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
+                            var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
                             if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
                             {
-                                UI.Skins.Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                                Skin.AddModuleMessage(this, LocalizeString("DisplayNameNotUnique"), ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
                         }

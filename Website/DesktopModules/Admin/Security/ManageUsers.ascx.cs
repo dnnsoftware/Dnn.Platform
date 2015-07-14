@@ -40,6 +40,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
@@ -1036,7 +1037,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UserUpdateCompleted(object sender, EventArgs e)
         {
             Response.Redirect(Request.RawUrl, false);
-            ApplicationInstance.CompleteRequest();
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         /// -----------------------------------------------------------------------------

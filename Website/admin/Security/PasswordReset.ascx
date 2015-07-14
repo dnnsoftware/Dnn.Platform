@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Security.PasswordReset" AutoEventWireup="false" CodeFile="PasswordReset.ascx.cs" %>
+<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Security.PasswordReset" AutoEventWireup="false" Codebehind="PasswordReset.ascx.cs" %>
 <div class="dnnForm dnnPasswordReset dnnClear">
     <div class="dnnFormMessage dnnFormInfo" runat="server" Visible="False" id="resetMessages">
         <span><asp:Label ID="lblInfo" runat="Server" /></span>

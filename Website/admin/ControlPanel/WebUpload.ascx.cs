@@ -29,7 +29,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -372,7 +372,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                             catch (InvalidFileExtensionException exc)
                             {
                                 Logger.Warn(exc);
-                                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), strFileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+                                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), strFileName, DnnHost.AllowedExtensionWhitelist.ToDisplayString());
                             }
                             catch (Exception exc)
                             {

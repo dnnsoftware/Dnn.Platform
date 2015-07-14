@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Security.SendPassword" AutoEventWireup="false" CodeFile="SendPassword.ascx.cs" %>
+<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Security.SendPassword" AutoEventWireup="false" Codebehind="SendPassword.ascx.cs" %>
 <div class="dnnForm dnnSendPassword dnnClear">
 
 	<asp:panel id="pnlRecover" runat="server" >

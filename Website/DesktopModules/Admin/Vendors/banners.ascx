@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Vendors.Banners" CodeFile="Banners.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Vendors.Banners" Codebehind="Banners.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm dnnBanners dnnClear">
     <asp:datagrid id="grdBanners" runat="server" Width="100%" AutoGenerateColumns="false" EnableViewState="true" GridLines="None" CssClass="dnnBannersGrid">

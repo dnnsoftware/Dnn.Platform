@@ -46,7 +46,7 @@ using DotNetNuke.Services.Social.Notifications;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Users
+namespace DotNetNuke.Modules.Admin.ViewProfile
 {
 
 	/// <summary>

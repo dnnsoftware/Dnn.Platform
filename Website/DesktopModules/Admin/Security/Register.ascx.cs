@@ -35,7 +35,7 @@ using System.Web.UI;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Internal;
@@ -54,6 +54,7 @@ using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.UI.WebControls;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Users.Membership;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
@@ -394,7 +395,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			DnnFormItemBase formItem;
 
-			if (Host.EnableStrengthMeter)
+            if (DnnHost.EnableStrengthMeter)
 			{
 				formItem = new DnnFormPasswordItem
 				{

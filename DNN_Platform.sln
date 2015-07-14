@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support Projects", "Support Projects", "{1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}"
 EndProject
@@ -115,31 +115,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{6CD360CB-28EF-4727-90D3-06E2741EC568}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "Website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "Website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "Website\"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Taxonomy", "DNN Platform\Tests\DotNetNuke.Tests.Taxonomy\DotNetNuke.Tests.Taxonomy.csproj", "{86019DD5-96F3-4748-B47C-E51D0E81F219}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -226,6 +201,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Modules.HtmlEditorManager", "DNN Platform\Modules\HtmlEditorManager\DotNetNuke.Modules.HtmlEditorManager.csproj", "{000181C6-C95F-4302-9130-A66B693FFFD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Log4Net", "DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj", "{04F77171-0634-46E0-A95E-D7477C88712E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{0B388F8E-068E-4B18-9E47-85C1829DEE9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -497,10 +474,6 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|x86.ActiveCfg = Release|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -539,6 +512,14 @@ Global
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.ActiveCfg = Release|Any CPU
 		{04F77171-0634-46E0-A95E-D7477C88712E}.Release|x86.Build.0 = Release|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Debug|x86.Build.0 = Debug|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Release|x86.ActiveCfg = Release|Any CPU
+		{0B388F8E-068E-4B18-9E47-85C1829DEE9D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

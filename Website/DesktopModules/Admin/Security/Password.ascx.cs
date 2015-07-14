@@ -26,7 +26,7 @@ using System.Web.Security;
 using System.Web.UI;
 
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -42,6 +42,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
@@ -308,7 +309,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             base.OnPreRender(e);
 
-			if (Host.EnableStrengthMeter)
+            if (DnnHost.EnableStrengthMeter)
 			{
 				passwordContainer.CssClass = "password-strength-container";
 				txtNewPassword.CssClass = "password-strength";

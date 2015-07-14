@@ -68,6 +68,7 @@ using DotNetNuke.Web.Client;
 
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 

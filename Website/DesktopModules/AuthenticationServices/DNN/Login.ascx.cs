@@ -24,7 +24,7 @@ using System;
 using System.Linq;
 using System.Web;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -39,7 +39,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Authentication
+namespace DotNetNuke.Modules.Admin.Authentication.Dnn
 {
 
 	/// <summary>
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
 
             //see if the portal supports persistant cookies
-            chkCookie.Visible = Host.RememberCheckbox;
+            chkCookie.Visible = DnnHost.RememberCheckbox;
 
 
 
