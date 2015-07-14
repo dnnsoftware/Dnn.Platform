@@ -48,5 +48,5 @@ DELETE FROM {databaseOwner}[{objectQualifier}Schedule]
 WHERE TypeFullName = N'DotNetNuke.Services.Log.SiteLog.PurgeSiteLog, DOTNETNUKE'
 GO
 
-DELETE FROM HostSettings
+DELETE FROM {databaseOwner}[{objectQualifier}HostSettings]
 WHERE SettingName in (N'SiteLogBuffer', N'SiteLogHistory', N'SiteLogStorage')

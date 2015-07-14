@@ -426,6 +426,21 @@ namespace DotNetNuke.Data
 			}
 		}
 
+        public virtual void UpdateDatabaseVersionIncrement(int Major, int Minor, int Build, int Increment, string AppName)
+        {
+            ExecuteNonQuery("UpdateDatabaseVersionIncrement", Major, Minor, Build, Increment, AppName);
+        }
+
+        public virtual int GetLastAppliedIteration(int Major, int Minor, int Build)
+        {
+            return ExecuteScalar<int>("GetLastAppliedIteration", Major, Minor, Build);
+        }
+
+        public virtual string GetUnappliedIterations(string version)
+        {
+            return ExecuteScalar<string>("GetUnappliedIterations", version);
+        }
+
 		#endregion
 
 		#region Host Settings Methods

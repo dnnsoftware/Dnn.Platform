@@ -54,6 +54,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Dashboard.Components.Modules;
 using DotNetNuke.Security;
@@ -4458,28 +4459,48 @@ namespace DotNetNuke.Services.Upgrade
 
             foreach (string file in files)
             {
-                // script file name must conform to ##.##.##.DefaultProviderName
+                // script file name must conform to ##.##.##.DefaultProviderName 
                 if (file != null)
                 {
-                    if (GetFileName(file).Length == 9 + DefaultProvider.Length)
+                    if (GetFileName(file).Length == 9 + DefaultProvider.Length )
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
                         // check if script file is relevant for upgrade
-                        if (version > databaseVersion && version <= ApplicationVersion)
+                        if (version > databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
                             scriptFiles.Add(file);
+                            //check if any incrementals exist
+                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath,version);
+                            if (incrementalfiles != null)
+                            {
+                                scriptFiles.AddRange(incrementalfiles); 
+                            }
+                            
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
-                        else
-                        {
-                            Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
-                        }
+                      
+                        //else
+                        //{
+                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        //}
                     }
                 }
             }
-            scriptFiles.Sort();
+            
 
             return scriptFiles;
+        }
+
+        private static string[] AddAvailableIncrementalFiles(string providerPath, Version version)
+        {
+            if (version.Major < 8)
+            {
+                return null;
+            }
+           
+            return Directory.GetFiles(providerPath, GetStringVersion(version) + ".*." + DefaultProvider);
+            
+            
         }
 
         private static string GetFileName(string file)
@@ -5306,6 +5327,9 @@ namespace DotNetNuke.Services.Upgrade
                     case "7.5.0":
                         UpgradeToVersion750();
                         break;
+                    case "8.0.0":
+                        UpgradeToVersion800();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -5344,6 +5368,39 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+        private static void UpgradeToVersion800()
+        {
+            //foreach (var iteration in DataProvider.Instance().GetUnappliedIterations("8.0.0.0")
+            //{
+            //    switch (iteration)
+            //    {
+            //        case "1":
+            //            UpgradeToVersion800Iteration1();
+            //            break;
+                    
+            //    }
+            //}
+        }
+
+        private static int MaxIncremental(Version version)
+        {
+            Provider currentdataprovider = Config.GetDefaultProvider("data");
+            string providerpath = currentdataprovider.Attributes["providerPath"];
+            //If the provider path does not exist, then there can't be any log files
+            if (!string.IsNullOrEmpty(providerpath))
+            {
+                providerpath = HttpContext.Current.Server.MapPath(providerpath);
+                if (Directory.Exists(providerpath))
+                {
+                    return Directory.GetFiles(providerpath,
+                        version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision +
+                        "*.sqldataprovider").Length;
+                   
+                }
+            }
+            return 0;
+        }
+
         public static string UpdateConfig(string providerPath, Version version, bool writeFeedback)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
@@ -5368,6 +5425,32 @@ namespace DotNetNuke.Services.Upgrade
 
             return strExceptions;
         }
+
+        public static string UpdateConfigInterval(string providerPath, Version version,int interval, bool writeFeedback)
+        {
+            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version));
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, string.Format("Updating Config Interval Files: {0}", Globals.FormatVersion(version) + "." + interval.ToString("D2")));
+            }
+            string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + GetStringVersion(version) + "." + interval.ToString("D2") + ".config", version, "Core Upgrade");
+            if (string.IsNullOrEmpty(strExceptions))
+            {
+                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + Globals.FormatVersion(version) + "." + interval.ToString("D2"));
+            }
+            else
+            {
+                DnnInstallLogger.InstallLogError(strExceptions);
+            }
+
+            if (writeFeedback)
+            {
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
+            }
+
+            return strExceptions;
+        }
+       
 
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
@@ -5406,6 +5489,7 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
+       
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
@@ -5483,7 +5567,7 @@ namespace DotNetNuke.Services.Upgrade
                 versions.Add(new Version(GetFileNameWithoutExtension(scriptFile)));
                 UpgradeVersion(scriptFile, true);
             }
-
+            
             foreach (Version ver in versions)
             {
                 //' perform version specific application upgrades
@@ -5635,6 +5719,36 @@ namespace DotNetNuke.Services.Upgrade
                     log.AddProperty("No Warnings", "");
                 }
                 LogController.Instance.AddLog(log);
+            }
+
+            if (version.Revision > 0)
+            {
+                // execute script file (and version upgrades) for version
+                exceptions = ExecuteScript(scriptFile, writeFeedback);
+
+                //update any associated config files
+                string strProviderPath = DataProvider.Instance().GetProviderPath();
+                UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
+
+                // update the iteraction
+                Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
+
+                var log = new LogInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    BypassBuffering = true
+                };
+                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                if (exceptions.Length > 0)
+                {
+                    log.AddProperty("Warnings", exceptions);
+                }
+                else
+                {
+                    log.AddProperty("No Warnings", "");
+                }
+                LogController.Instance.AddLog(log);
+                
             }
             if (string.IsNullOrEmpty(exceptions))
             {
