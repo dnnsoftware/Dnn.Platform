@@ -644,7 +644,7 @@ namespace DotNetNuke.Common
 
         }
 
-        private static bool IncrementalVersionExists(Version version)
+        public static bool IncrementalVersionExists(Version version)
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
@@ -654,14 +654,12 @@ namespace DotNetNuke.Common
                 providerpath = HttpContext.Current.Server.MapPath(providerpath);
                 if (Directory.Exists(providerpath))
                 {
-                    var incrementalcount = Directory.GetFiles(providerpath,
-                        version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision +
-                        "*.sqldataprovider").Length;
+                    var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
                     if (
                         incrementalcount == 1)
                     {
                         return false;}
-                    if (incrementalcount < Globals.GetLastAppliedIteration(version))
+                    if (incrementalcount > Globals.GetLastAppliedIteration(version))
                     {
                         return true;
                     }

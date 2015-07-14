@@ -116,6 +116,10 @@ namespace DotNetNuke.Services.Install
                 versionLabel.Visible = false;
                 currentVersionLabel.Visible = false;
                 versionsMatch.Text = LocalizeString("VersionsMatch");
+                if (Globals.IncrementalVersionExists(CurrentVersion))
+                {
+                    versionsMatch.Text = LocalizeString("VersionsMatchButIncrementalExists");
+                }
             }
             else
             {
