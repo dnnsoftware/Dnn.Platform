@@ -1394,6 +1394,7 @@
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Install\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />
@@ -1710,10 +1711,6 @@
     <Content Include="admin\Tabs\import.ascx" />
     <Content Include="admin\Tabs\module.css" />
     <Content Include="admin\Users\ViewProfile.ascx" />
-    <Content Include="App_Data\ClientDependency\SURFACE-b38585d15a2a7ee5f447dde9a9f7cfcd-map.xml" />
-    <Content Include="App_Data\Database.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="App_Data\PlaceHolder.txt" />
     <Content Include="App_GlobalResources\TimeZones.xml" />
     <Content Include="Components\ResourceInstaller\template.dnn.txt" />
@@ -4344,52 +4341,6 @@
     <None Include="App_Browsers\OceanAppleWebKit.browser" />
     <None Include="App_Browsers\OceanSpiders.browser" />
     <None Include="App_Browsers\w3cvalidator.browser" />
-    <None Include="App_Data\51Degrees-Lite.dat" />
-    <None Include="App_Data\ClientDependency\15_142f861b0e9b48d1acfdd4517ce26ef2.cdJ" />
-    <None Include="App_Data\ClientDependency\15_14bdcb8aee28430984fdac893c6aa8df.cdJ" />
-    <None Include="App_Data\ClientDependency\15_1623a8b58f3748bc9c93ccc12c64c3ab.cdC" />
-    <None Include="App_Data\ClientDependency\15_1742dc08b2f043648b98d223fe84d738.cdC" />
-    <None Include="App_Data\ClientDependency\15_19ef8eb8ded84a848d122bf63a5c2eac.cdC" />
-    <None Include="App_Data\ClientDependency\15_1c8250120b614e2d9196993b4f521947.cdC" />
-    <None Include="App_Data\ClientDependency\15_25e2539eeadf44f0ac007a055a5d5c87.cdJ" />
-    <None Include="App_Data\ClientDependency\15_285ac18d3816460e8dc63b63b1934958.cdC" />
-    <None Include="App_Data\ClientDependency\15_45a30e3bf69f46e69b9bd87b57288943.cdC" />
-    <None Include="App_Data\ClientDependency\15_4c485f20af1c441ca81efcce19b8384f.cdJ" />
-    <None Include="App_Data\ClientDependency\15_531b97e936cd4682a0fb60560b03fc61.cdC" />
-    <None Include="App_Data\ClientDependency\15_6b4a1a38c653418ab068020b76370cd4.cdJ" />
-    <None Include="App_Data\ClientDependency\15_6ca7183e9e9b48fa9dd87cc44868c2e2.cdJ" />
-    <None Include="App_Data\ClientDependency\15_7031c2c3568846c78cabc11dec63dded.cdJ" />
-    <None Include="App_Data\ClientDependency\15_791a6cb10a9c4c3cbbe2e7d1f86ecfea.cdC" />
-    <None Include="App_Data\ClientDependency\15_7a66939dbd544202bda95c9173d38231.cdC" />
-    <None Include="App_Data\ClientDependency\15_7cbd193925e94c83aee599aca0a3e0bb.cdJ" />
-    <None Include="App_Data\ClientDependency\15_7f6d058f9e4e46f4856417764bab56cf.cdC" />
-    <None Include="App_Data\ClientDependency\15_83e406c2bbe54153aca7770222ec4ff2.cdC" />
-    <None Include="App_Data\ClientDependency\15_9e41b1888144499c8fa13954b60cf471.cdJ" />
-    <None Include="App_Data\ClientDependency\15_a87f32eb3113477386180b6f69cfa2a9.cdC" />
-    <None Include="App_Data\ClientDependency\15_aa80d8a700bf4dddb7b8ebbf8fb16648.cdJ" />
-    <None Include="App_Data\ClientDependency\15_bc88c366b8bb4559becf5c86007c4e3d.cdJ" />
-    <None Include="App_Data\ClientDependency\15_c4677cc261a5436d82a4e36743e54623.cdC" />
-    <None Include="App_Data\ClientDependency\15_c51322d11bc149e4a8b961a213fe0425.cdC" />
-    <None Include="App_Data\ClientDependency\15_d2cdad475e93439390b4e9cc266eec01.cdJ" />
-    <None Include="App_Data\ClientDependency\15_d773e22a03264ca4b5163d678fc49969.cdJ" />
-    <None Include="App_Data\ClientDependency\15_fe81874fbce94d14b92050805b04d118.cdC" />
-    <None Include="App_Data\RadSpell\en-US.tdf" />
-    <None Include="App_Data\Search\segments.gen" />
-    <None Include="App_Data\Search\segments_m" />
-    <None Include="App_Data\Search\_k.fdt" />
-    <None Include="App_Data\Search\_k.fdx" />
-    <None Include="App_Data\Search\_k.fnm" />
-    <None Include="App_Data\Search\_k.frq" />
-    <None Include="App_Data\Search\_k.nrm" />
-    <None Include="App_Data\Search\_k.prx" />
-    <None Include="App_Data\Search\_k.tii" />
-    <None Include="App_Data\Search\_k.tis" />
-    <None Include="App_Data\Search\_k.tvd" />
-    <None Include="App_Data\Search\_k.tvf" />
-    <None Include="App_Data\Search\_k.tvx" />
-    <None Include="App_Data\Search\_k_1.del" />
-    <None Include="App_Data\Search\_l.cfs" />
-    <None Include="App_Data\Search\_m.cfs" />
     <None Include="Components\ResourceInstaller\ModuleDef_V2.xsd">
       <SubType>Designer</SubType>
     </None>
