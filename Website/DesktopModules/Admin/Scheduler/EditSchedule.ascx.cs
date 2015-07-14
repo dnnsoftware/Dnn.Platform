@@ -214,15 +214,27 @@ namespace DotNetNuke.Modules.Admin.Scheduler
                     cmdCancel.NavigateUrl = Globals.NavigateURL();
                     BindData();
                 }
+
                 if (chkEnabled.Checked)
                 {
                     //if startdate is in the future Run Now will change NextStart value, to prevent this disable it if start date is in the future or present
-                    cmdRun.Visible = (startScheduleDatePicker.SelectedDate != null ? startScheduleDatePicker.SelectedDate.Value : Null.NullDate) < DateTime.Now;
+                    if ((startScheduleDatePicker.SelectedDate ?? Null.NullDate) >= DateTime.Now)
+                    {
+                        cmdRun.Visible = false;
+                    }
+                    else
+                    {
+                        // Hide "Run now" if scheduler should not run on this server
+                        if (!SchedulingController.CanRunOnThisServer(txtServers.Text))
+                        {
+                            cmdRun.Visible = false;
+                        }
+                    }
                 }
                 else
                 {
-                    cmdRun.Enabled = chkEnabled.Checked;
-                    cmdRun.Visible = chkEnabled.Checked;
+                    cmdRun.Enabled = false;
+                    cmdRun.Visible = false;
                 }
 
 
