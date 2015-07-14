@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.WizardUser" CodeFile="WizardUser.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.WizardUser" Codebehind="WizardUser.ascx.cs" %>
 <div class="dnnFormItem">
     <label for="<%=txtFirstName.ClientID%>"><asp:Label ID="lblFirstName" runat="server" /></label>
     <asp:TextBox ID="txtFirstName" runat="Server" />

@@ -511,8 +511,8 @@ namespace DotNetNuke.Modules.Admin.Users
             ctlMembership.MembershipUnLocked += MembershipUnLocked;
             ctlMembership.MembershipDemoteFromSuperuser += MembershipDemoteFromSuperuser;
             ctlMembership.MembershipPromoteToSuperuser += MembershipPromoteToSuperuser;
-            
-            jQuery.RequestDnnPluginsRegistration();
+
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             //Set the Membership Control Properties
             ctlMembership.ID = "Membership";
@@ -1036,7 +1036,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private void UserUpdateCompleted(object sender, EventArgs e)
         {
             Response.Redirect(Request.RawUrl, false);
-            ApplicationInstance.CompleteRequest();
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
         /// -----------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.UsageDetails" CodeFile="UsageDetails.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Admin.Extensions.UsageDetails" Codebehind="UsageDetails.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls"%>                
 <h2 class="dnnFormSectionHead"><asp:Literal ID="lblTitle" runat="server" /></h2>

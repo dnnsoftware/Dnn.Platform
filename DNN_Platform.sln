@@ -137,31 +137,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SolutionInfo.cs = SolutionInfo.cs
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DNN_Platform", "http://localhost/DNN_Platform", "{6CD360CB-28EF-4727-90D3-06E2741EC568}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
-		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Debug.AspNetCompiler.PhysicalPath = "Website\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/DNN_Platform"
-		Release.AspNetCompiler.PhysicalPath = "Website\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\DNN_Platform\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "Website\"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Taxonomy", "DNN Platform\Tests\DotNetNuke.Tests.Taxonomy\DotNetNuke.Tests.Taxonomy.csproj", "{86019DD5-96F3-4748-B47C-E51D0E81F219}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -299,6 +274,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.In
 	ProjectSection(ProjectDependencies) = postProject
 		{6B29ADED-7B56-4484-BEA5-C0E09079535B} = {6B29ADED-7B56-4484-BEA5-C0E09079535B}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -564,10 +541,6 @@ Global
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{705708E8-6AD9-4021-9B36-EFC83AD42EE7}.Release|x86.ActiveCfg = Release|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CD360CB-28EF-4727-90D3-06E2741EC568}.Release|x86.ActiveCfg = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86019DD5-96F3-4748-B47C-E51D0E81F219}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -682,6 +655,12 @@ Global
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|x86.ActiveCfg = Release|Any CPU
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05}.Release|x86.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

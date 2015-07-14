@@ -46,7 +46,7 @@ using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Modules
+namespace DotNetNuke.Modules.Admin.ModuleCreator
 {
     public partial class ViewSource : PortalModuleBase
     {

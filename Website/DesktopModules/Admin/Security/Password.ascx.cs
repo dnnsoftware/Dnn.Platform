@@ -47,6 +47,8 @@ using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Password UserModuleBase is used to manage Users Passwords
@@ -304,7 +306,7 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
             ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             base.OnPreRender(e);
 

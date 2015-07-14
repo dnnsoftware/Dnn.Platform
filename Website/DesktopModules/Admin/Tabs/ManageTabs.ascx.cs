@@ -1369,7 +1369,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Scripts/dnn.extensions.js", FileOrder.Js.DefaultPriority);
             ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 1);

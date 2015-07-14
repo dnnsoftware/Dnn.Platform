@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.UserAndLogin" CodeFile="UserAndLogin.ascx.cs" ViewStateMode="Disabled" %>
+<%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.Skins.Controls.UserAndLogin" ViewStateMode="Disabled" Codebehind="UserAndLogin.ascx.cs" %>
 <div class="userProperties">
     <ul>
         <%  if (!IsAuthenticated)

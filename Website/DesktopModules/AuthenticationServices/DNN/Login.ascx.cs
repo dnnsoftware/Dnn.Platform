@@ -39,8 +39,9 @@ using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
-namespace DotNetNuke.Modules.Admin.Authentication
+namespace DotNetNuke.Modules.Admin.Authentication.DNN
 {
+    using Host = DotNetNuke.Entities.Host.Host;
 
 	/// <summary>
 	/// The Login AuthenticationLoginBase is used to provide a login for a registered user
