@@ -379,22 +379,9 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}UpdateDatabaseVersionIncrement
 
 AS
 
-	INSERT INTO {databaseOwner}{objectQualifier}Version (
-		Major,
-		Minor,
-		Build,
-		Increment,
-		[Name],
-		CreatedDate
-	)
-		VALUES (
-			@Major,
-			@Minor,
-			@Build,
-			@Increment,
-			@Name,
-			getdate()
-		)
+	UPDATE {databaseOwner}{objectQualifier}Version
+	SET Increment=@Increment where Major=@Major AND Minor=@Minor AND Build=@Build AND Name=@Name
+		
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetLastAppliedIteration]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)

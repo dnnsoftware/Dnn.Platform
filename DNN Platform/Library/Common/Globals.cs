@@ -661,7 +661,7 @@ namespace DotNetNuke.Common
                         incrementalcount == 1)
                     {
                         return false;}
-                    if (incrementalcount < DataProvider.Instance().GetLastAppliedIteration(Upgrade.GetStringVersion(version)))
+                    if (incrementalcount < Globals.GetLastAppliedIteration(version))
                     {
                         return true;
                     }
@@ -1189,9 +1189,23 @@ namespace DotNetNuke.Common
        public static void UpdateDataBaseVersionIncrement(Version version,int increment)
         {
             //update the version and increment
-            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
+           DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
+
+       public static int GetLastAppliedIteration(Version version)
+       {
+           try
+           {
+               return DataProvider.Instance().GetLastAppliedIteration(version.Major, version.Minor, version.Build);           
+           }
+           catch (Exception)
+           {
+
+               return 0;
+           }
+           
+       }
 
         /// <summary>
         /// Adds the port.

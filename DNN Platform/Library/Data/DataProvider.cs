@@ -431,9 +431,9 @@ namespace DotNetNuke.Data
             ExecuteNonQuery("UpdateDatabaseVersionIncrement", Major, Minor, Build, Increment, AppName);
         }
 
-        public virtual int GetLastAppliedIteration(string version)
+        public virtual int GetLastAppliedIteration(int Major, int Minor, int Build)
         {
-            return ExecuteScalar<int>("GetLastAppliedIteration", version);
+            return ExecuteScalar<int>("GetLastAppliedIteration", Major, Minor, Build);
         }
 
         public virtual string GetUnappliedIterations(string version)
