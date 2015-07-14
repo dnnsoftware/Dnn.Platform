@@ -330,6 +330,13 @@
     <Compile Include="admin\Skins\CurrentDate.ascx.designer.cs">
       <DependentUpon>currentdate.ascx</DependentUpon>
     </Compile>
+    <Compile Include="admin\Skins\DnnLink.ascx.cs">
+      <DependentUpon>DnnLink.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\Skins\DnnLink.ascx.designer.cs">
+      <DependentUpon>DnnLink.ascx</DependentUpon>
+    </Compile>
     <Compile Include="admin\Skins\DotNetNuke.ascx.cs">
       <DependentUpon>dotnetnuke.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1651,6 +1658,8 @@
     <Content Include="admin\Skins\Copyright.xml" />
     <Content Include="admin\Skins\currentdate.ascx" />
     <Content Include="admin\Skins\Currentdate.xml" />
+    <Content Include="admin\Skins\DnnLink.ascx" />
+    <Content Include="admin\Skins\DnnLink.xml" />
     <Content Include="admin\Skins\dotnetnuke.ascx" />
     <Content Include="admin\Skins\Dotnetnuke.xml" />
     <Content Include="admin\Skins\help.ascx" />
