@@ -2,45 +2,11 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
-using ClientDependency.Core.Config;
 
 namespace ClientDependency.Core
 {
     public static class StringExtensions
     {
-        /// <summary>
-        /// Generally used for unit tests to get access to the settings
-        /// </summary>
-        internal static Func<ClientDependencySection> GetConfigSection;
-
-        internal static string ReplaceNonAlphanumericChars(this string input, char replacement)
-        {
-            //any character that is not alphanumeric, convert to a hyphen
-            var mName = input;
-            foreach (var c in mName.ToCharArray().Where(c => !char.IsLetterOrDigit(c)))
-            {
-                mName = mName.Replace(c, replacement);
-            }
-            return mName;
-        }
-
-        public static string ReverseString(this string s)
-        {
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
-        }
-
-        public static string ReplaceFirst(this string text, string search, string replace)
-        {
-            int pos = text.IndexOf(search);
-            if (pos < 0)
-            {
-                return text;
-            }
-            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
-        }
 
         public static string EncodeTo64Url(this string toEncode)
         {
@@ -59,7 +25,7 @@ namespace ClientDependency.Core
 
         public static string EncodeTo64(this string toEncode)
         {
-            byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(toEncode);
+            byte[] toEncodeAsBytes = Encoding.Default.GetBytes(toEncode);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
@@ -79,7 +45,7 @@ namespace ClientDependency.Core
         public static string DecodeFrom64(this string toDecode)
         {
             byte[] toDecodeAsBytes = System.Convert.FromBase64String(toDecode);
-            return Encoding.UTF8.GetString(toDecodeAsBytes);
+            return Encoding.Default.GetString(toDecodeAsBytes);
         }
 
         /// <summary>
@@ -90,7 +56,7 @@ namespace ClientDependency.Core
         public static string GenerateHash(this string str)
         {
             try
-            {                
+            {
                 return CryptoConfig.AllowOnlyFipsAlgorithms
                     ? str.GenerateSha256Hash()
                     : str.GenerateMd5();
@@ -120,10 +86,10 @@ namespace ClientDependency.Core
         /// </summary>
         public static string GenerateMd5(this string str)
         {
-            using(var hasher = new MD5CryptoServiceProvider())
+            using (var hasher = new MD5CryptoServiceProvider())
             {
                 var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(str));
-                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));    
+                return byteArray.Aggregate("", (current, b) => current + b.ToString("x2"));
             }
         }
 
@@ -146,6 +112,11 @@ namespace ClientDependency.Core
                 }
             }
             return isExt;
+        }
+
+        public static string TextOrEmpty(this string text)
+        {
+            return text ?? string.Empty;
         }
 
     }

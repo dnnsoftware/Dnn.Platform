@@ -13,25 +13,6 @@ namespace ClientDependency.Core
     public static class HttpContextBaseExtensions
     {
 
-        /// <summary>
-        /// We are not running .Net 4.5 which has a Request.Unvalidated property so that we don't have to deal with
-        /// HttpRequestValidationException but in our case we need to deal with it. Luckily we don't want to deal with 
-        /// invalidated RawUrl's so we'll just catch the exception and return null
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        internal static string GetRawUrlSafe(this HttpContextBase context)
-        {
-            try
-            {
-                return context.Request.RawUrl;
-            }
-            catch (HttpRequestValidationException)
-            {
-                return string.Empty;
-            }
-        }
-
         public static void AddCompressionResponseHeader(this HttpContextBase context, CompressionType cType)
         {
             if (cType == CompressionType.deflate)
@@ -42,56 +23,6 @@ namespace ClientDependency.Core
             {
                 context.Response.AddHeader("Content-encoding", "gzip");
             }            
-        }
-
-        /// <summary>
-        /// This sets the caching response to the client including custom e-tag headers
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="etag">Specify the e-tag to use - this should be consistent with this file</param>
-        /// <param name="fromDays">default is 10</param>
-        /// <param name="varyByParams">A list of cache parameter names to vary-by</param>
-        public static void SetClientCachingResponse(
-            this HttpContextBase context,              
-            string etag, 
-            int fromDays = 10,
-            string[] varyByParams = null)
-        {
-            
-            var duration = TimeSpan.FromDays(fromDays);
-            var cache = context.Response.Cache;
-            cache.SetCacheability(HttpCacheability.Public);
-
-            cache.SetExpires(context.Timestamp.Add(duration));
-            cache.SetMaxAge(duration);
-            cache.SetProxyMaxAge(duration);                        
-            cache.SetValidUntilExpires(true);
-            cache.SetLastModified(context.Timestamp);
-
-            cache.SetETag("\"" + etag + "\"");
-
-            //var by any listed parameter names
-            if (varyByParams != null)
-            {
-                foreach (var p in varyByParams)
-                {
-                    cache.VaryByParams[p] = true;
-                }    
-            }
-            else
-            {
-                //if it's null we'll vary by an empty string
-                cache.VaryByParams["none"] = true;
-            }
-
-            //ensure the cache is different based on the encoding specified per browser
-            cache.VaryByContentEncodings["gzip"] = true;
-            cache.VaryByContentEncodings["deflate"] = true;
-
-            //don't allow varying by wildcard
-            cache.SetOmitVaryStar(true);
-            //ensure client browser maintains strict caching rules
-            cache.AppendCacheExtension("must-revalidate, proxy-revalidate");            
         }
 
         /// <summary>
@@ -133,7 +64,8 @@ namespace ClientDependency.Core
 
             return type;
         }
-        
+
+
         /// <summary>
         /// Checks for absolute path to root of the website.
         /// </summary>

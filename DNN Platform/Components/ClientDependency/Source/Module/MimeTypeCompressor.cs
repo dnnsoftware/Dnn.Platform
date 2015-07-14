@@ -27,54 +27,40 @@ namespace ClientDependency.Core.Module
 
         public void AddCompression()
         {
-            if (Context == null) return;
+            HttpRequestBase request = Context.Request;
+            HttpResponseBase response = Context.Response;
 
             //if debug is on, then don't compress
             if (!Context.IsDebuggingEnabled)
             {
-                if (Context.Response == null) return;
-                if (Context.Response.Filter == null) return;
-
-                //if the current filter is not the default ASP.Net filter, then we will not continue.
-                var filterType = Context.Response.Filter.GetType();
-                //the default is normally: System.Web.HttpResponseStreamFilterSink
-                //however that is internal, we'll just assume that any filter that is in the namespace
-                // System.Web is the default and we can continue.
-                if (filterType.Namespace != null && filterType.Namespace.StartsWith("System.Web"))
+                //check if this request should be compressed based on the mime type and path
+                var m = GetSupportedPath(); 
+                if (IsSupportedMimeType() && m != null)
                 {
-                    //check if this request should be compressed based on the mime type and path
-                    var m = GetSupportedPath();
-                    if (IsSupportedMimeType() && m != null)
+                    var cType = Context.GetClientCompression();
+                    Context.AddCompressionResponseHeader(cType);
+
+                    
+
+                    if (cType == CompressionType.deflate)
                     {
-                        PerformCompression(Context);
-                    }    
+                        response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+                    }
+                    else if (cType == CompressionType.gzip)
+                    {
+                        response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+                    }
+
+                    
+
                 }
-            }
-        }
-
-        internal static void PerformCompression(HttpContextBase context)
-        {
-            var cType = context.GetClientCompression();
-            context.AddCompressionResponseHeader(cType);
-
-            if (cType == CompressionType.deflate)
-            {
-                context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
-            }
-            else if (cType == CompressionType.gzip)
-            {
-                context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
             }
         }
 
         protected MimeTypeCompressionElement GetSupportedPath()
         {
             //we're not supporting the ASP.Net AJAX calls for compression
-            var rawUrl = Context.GetRawUrlSafe();
-
-            if (string.IsNullOrWhiteSpace(rawUrl)) return null;
-
-            var uRawUrl = rawUrl.ToUpper();
+            var uRawUrl = Context.Request.RawUrl.ToUpper();
             if (uRawUrl.Contains("WEBRESOURCE.AXD") || uRawUrl.Contains("SCRIPTRESOURCE.AXD"))
                 return null;
 
@@ -82,7 +68,7 @@ namespace ClientDependency.Core.Module
             {
                 //if it is only "*" then convert it to proper regex
                 var reg = m.FilePath == "*" ? ".*" : m.FilePath;
-                var matched = Regex.IsMatch(rawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var matched = Regex.IsMatch(Context.Request.RawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase);
                 if (matched) return m;
             }
             return null;

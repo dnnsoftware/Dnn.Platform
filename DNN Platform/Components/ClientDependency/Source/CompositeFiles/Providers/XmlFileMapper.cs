@@ -29,22 +29,15 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
         private XDocument _doc;
         private FileInfo _xmlFile;
-        
-        private const string FileMapVirtualFolderDefault = "~/App_Data/ClientDependency";        
+        private DirectoryInfo _xmlMapFolder;
+        private string _fileMapVirtualFolder = "~/App_Data/ClientDependency";
         private static readonly object Locker = new object();
-
-        /// <summary>
-        /// Specifies the default folder to store the file map in, this allows for dynamically changing the folder on startup
-        /// </summary>
-        public static string FileMapVirtualFolder = FileMapVirtualFolderDefault;
-
-        private DirectoryInfo XmlMapFolder { get; set; }
 
         public override void Initialize(HttpContextBase http)
         {
             if (http == null) throw new ArgumentNullException("http");
 
-            XmlMapFolder = new DirectoryInfo(http.Server.MapPath(FileMapVirtualFolder));    
+            _xmlMapFolder = new DirectoryInfo(http.Server.MapPath(_fileMapVirtualFolder));
 
             //Name the map file according to the machine name
             _xmlFile = new FileInfo(GetXmlMapPath());
@@ -78,13 +71,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 
             if (config["mapPath"] != null)
             {
-                //use the config setting if it has not been dynamically set OR
-                //when the config section doesn't equal the default
-                if (FileMapVirtualFolder == FileMapVirtualFolderDefault
-                    || config["mapPath"] != FileMapVirtualFolderDefault)
-                {
-                    FileMapVirtualFolder = config["mapPath"];   
-                }                
+                _fileMapVirtualFolder = config["mapPath"];
             }
 
         }
@@ -256,8 +243,6 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                         CreateFileNode(dependentFiles)));
                 }
 
-                //ensure folder exists
-                Directory.CreateDirectory(_xmlFile.DirectoryName);
                 _doc.Save(_xmlFile.FullName);
             }
         }
@@ -322,9 +307,19 @@ namespace ClientDependency.Core.CompositeFiles.Providers
         /// <returns></returns>
         private string GetXmlMapPath()
         {
-            var folder = XmlMapFolder.FullName;
-            var folderHash = folder.GenerateHash();
-            return Path.Combine(folder, NetworkHelper.FileSafeMachineName + "-" + folderHash + "-" + MapFileName);
+            var folder = _xmlMapFolder.FullName;
+            var folderMd5 = folder.GenerateHash();
+            string machineName;
+            //catch usecase where user is running with EnvironmentPermission
+            try
+            {
+                machineName = Environment.MachineName;
+            }
+            catch (Exception)
+            {
+                machineName = HttpContext.Current.Server.MachineName;
+            }
+            return Path.Combine(folder, machineName.ToString() + "-" + folderMd5 + "-" + MapFileName);
         }
 
         private void CreateNewXmlFile()
@@ -338,13 +333,11 @@ namespace ClientDependency.Core.CompositeFiles.Providers
             {
                 _doc = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"),
                                                 new XElement("map"));
-                Directory.CreateDirectory(_xmlFile.DirectoryName);
                 _doc.Save(_xmlFile.FullName);    
             }
             else
             {
                 //if there's xml in memory, then the file has been deleted so write out the file
-                Directory.CreateDirectory(_xmlFile.DirectoryName);
                 _doc.Save(_xmlFile.FullName);
             }
             
@@ -359,8 +352,8 @@ namespace ClientDependency.Core.CompositeFiles.Providers
                     //double check
                     if (!File.Exists(_xmlFile.FullName))
                     {
-                        if (!XmlMapFolder.Exists)
-                            XmlMapFolder.Create();
+                        if (!_xmlMapFolder.Exists)
+                            _xmlMapFolder.Create();
                         CreateNewXmlFile();
                     }
                 }

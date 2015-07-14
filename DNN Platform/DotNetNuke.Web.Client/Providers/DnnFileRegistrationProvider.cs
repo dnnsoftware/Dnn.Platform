@@ -18,17 +18,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 #endregion
-
-using System;
-using ClientDependency.Core.Config;
-
 namespace DotNetNuke.Web.Client.Providers
 {
+    using System.Web;
     using ClientDependency.Core.FileRegistration.Providers;
 
     public abstract class DnnFileRegistrationProvider : WebFormsFileRegistrationProvider
     {
-        private readonly ClientResourceSettings dnnSettingsHelper = new ClientResourceSettings();
+        private int? _settingsVersion;
+        public override int GetVersion()
+        {
+            _settingsVersion = new ClientResourceSettings().GetVersion();
+            if (_settingsVersion.HasValue)
+            {
+                return _settingsVersion.Value;
+            }
+            _settingsVersion = base.GetVersion();
+            return _settingsVersion.Value;
+        }
 
         /// <summary>
         /// Checks if the composite files option is set for the current portal (DNN site settings).
@@ -38,6 +45,7 @@ namespace DotNetNuke.Web.Client.Providers
         {
             get
             {
+                var dnnSettingsHelper = new ClientResourceSettings();
                 var settingsVersion = dnnSettingsHelper.AreCompositeFilesEnabled();
                 return settingsVersion.HasValue ? settingsVersion.Value : base.EnableCompositeFiles;
             }

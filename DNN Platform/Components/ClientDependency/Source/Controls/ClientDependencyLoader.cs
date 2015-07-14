@@ -9,9 +9,6 @@ using ClientDependency.Core.FileRegistration.Providers;
 
 namespace ClientDependency.Core.Controls
 {
-    /// <summary>
-    /// This is the master control for loading in dependencies in web forms
-    /// </summary>
 	[ParseChildren(typeof(ClientDependencyPath), ChildrenAsProperties = true)]
 	public class ClientDependencyLoader : Control
 	{
@@ -62,7 +59,6 @@ namespace ClientDependency.Core.Controls
             else
                 throw new InvalidOperationException("ClientDependencyLoader requires an HttpContext");
         }
-
 
 		public const string ContextKey = "ClientDependencyLoader";
 
@@ -134,8 +130,7 @@ namespace ClientDependency.Core.Controls
 		{
 			base.OnPreRender(e);
 
-            _base.Paths.UnionWith(Paths);
-
+            _base.Paths.UnionWith(Paths.Cast<IClientDependencyPath>());
             RegisterClientDependencies((WebFormsFileRegistrationProvider)_base.Provider, Page, _base.Paths);
 			RenderDependencies();
 		}
@@ -195,56 +190,12 @@ namespace ClientDependency.Core.Controls
             return this;
         }
 
-		/// <summary>
-		/// Registers a file dependency
-		/// </summary>
-		public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, ClientDependencyType type)
-		{
-			_base.RegisterDependency(group, priority, filePath, type);
-			return this;
-		}
-		
-		/// <summary>
+        /// <summary>
         /// Registers a file dependency
         /// </summary>
         public ClientDependencyLoader RegisterDependency(int priority, string filePath, string pathNameAlias, ClientDependencyType type)
         {
             _base.RegisterDependency(priority, filePath, pathNameAlias, type);
-            return this;
-        }
-
-		/// <summary>
-		/// Registers a file dependency
-		/// </summary>
-		public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, string pathNameAlias, ClientDependencyType type)
-		{
-			_base.RegisterDependency(group, priority, filePath, pathNameAlias, type);
-			return this;
-		}
-
-		/// <summary>
-		/// Registers a file dependency
-		/// </summary>
-		public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, string pathNameAlias, ClientDependencyType type, string provider)
-		{
-			_base.RegisterDependency(group, priority, filePath, pathNameAlias, type, provider);
-			return this;
-		}
-
-        /// <summary>
-        /// Registers a file dependency
-        /// </summary>
-        /// <param name="group"></param>
-        /// <param name="priority"></param>
-        /// <param name="filePath"></param>
-        /// <param name="pathNameAlias"></param>
-        /// <param name="type"></param>
-        /// <param name="htmlAttributes"></param>
-        /// <param name="provider"></param>
-        /// <returns></returns>
-        public ClientDependencyLoader RegisterDependency(int group, int priority, string filePath, string pathNameAlias, ClientDependencyType type, object htmlAttributes, string provider)
-        {
-            _base.RegisterDependency(group, priority, filePath, pathNameAlias, type, htmlAttributes, provider);
             return this;
         }
 
@@ -259,7 +210,7 @@ namespace ClientDependency.Core.Controls
             _base.RegisterDependency(Constants.DefaultGroup, Constants.DefaultPriority, filePath, pathNameAlias, type);
 			return this;
 		}
-
+		
 		/// <summary>
 		/// Adds a path to the current loader
 		/// </summary>
@@ -325,7 +276,7 @@ namespace ClientDependency.Core.Controls
 		}
 
 		/// <summary>
-		/// Find all dependencies of this control and it's entire child control heirarchy.
+        /// Find all dependencies of this control and it's entire child control hierarchy.
 		/// </summary>
 		/// <param name="control"></param>
 		/// <returns></returns>
@@ -342,9 +293,9 @@ namespace ClientDependency.Core.Controls
                 // find dependencies
                 var controlType = ctl.GetType();
 
-			    dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
-                    .OfType<ClientDependencyAttribute>()
-                    .Cast<IClientDependencyFile>());
+                //dependencies.AddRange(Attribute.GetCustomAttributes(controlType)
+                //    .OfType<ClientDependencyAttribute>()
+                //    .Cast<IClientDependencyFile>());
 
 			    if (iClientDependency.IsAssignableFrom(ctl.GetType()))
                 {

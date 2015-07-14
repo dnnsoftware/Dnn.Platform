@@ -26,7 +26,6 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
-    // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
     public class ClientResourceSettings
     {
         // public keys used to identify the dictionaries stored in the application context
@@ -96,11 +95,11 @@ namespace DotNetNuke.Web.Client
 
         private bool? IsBooleanSettingEnabled(string settingKey)
         {
-            if (Status != UpgradeStatus.None)
+            if(Status != UpgradeStatus.None)
             {
                 return false;
             }
-
+            
             var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
             var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
 

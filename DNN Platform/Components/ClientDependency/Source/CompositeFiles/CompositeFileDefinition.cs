@@ -25,7 +25,7 @@ namespace ClientDependency.Core.CompositeFiles
 
 		public override bool Equals(object obj)
 		{
-			return (obj.GetType() == this.GetType()
+			return (obj.GetType().Equals(this.GetType())
 				&& ((CompositeFileDefinition)obj).IsLocalFile.Equals(IsLocalFile)
 				&& ((CompositeFileDefinition)obj).Uri.Equals(Uri));
 		}
@@ -35,8 +35,18 @@ namespace ClientDependency.Core.CompositeFiles
         /// </summary>
         /// <returns></returns>
 		public override int GetHashCode()
-		{
-            return (NetworkHelper.MachineName + Uri).GetHashCode();
+        {
+            string machineName;
+            //catch usecase where user is running with EnvironmentPermission
+            try
+            {
+                machineName=Environment.MachineName;
+            }
+            catch (Exception)
+            {
+                machineName = HttpContext.Current.Server.MachineName;
+            }
+            return (machineName.ToString() + Uri).GetHashCode();
 		}
 	}
 }

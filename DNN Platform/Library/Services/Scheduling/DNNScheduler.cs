@@ -52,6 +52,19 @@ namespace DotNetNuke.Services.Scheduling
 
         #endregion
 
+        #region Private Methods
+
+        private static bool CanRunOnThisServer(string servers)
+        {
+            return
+                // Scheduler should run on every server
+                string.IsNullOrWhiteSpace(servers)
+                // Check if scheduler should run on this server
+                || servers.Split(',').Select(e => e.Trim()).Contains(Globals.ServerName.Trim(), StringComparer.OrdinalIgnoreCase);
+        }
+
+        #endregion
+
         #region Public Methods
 
         public override int AddSchedule(ScheduleItem scheduleItem)
@@ -204,7 +217,7 @@ namespace DotNetNuke.Services.Scheduling
             if (scheduleHistoryItem.TimeLapse != Null.NullInteger
                 && scheduleHistoryItem.TimeLapseMeasurement != Null.NullString
                 && scheduleHistoryItem.Enabled
-                && SchedulingController.CanRunOnThisServer(scheduleItem.Servers))
+                && CanRunOnThisServer(scheduleItem.Servers))
             {
                 scheduleHistoryItem.ScheduleSource = ScheduleSource.STARTED_FROM_SCHEDULE_CHANGE;
                 Scheduler.CoreScheduler.AddToScheduleQueue(scheduleHistoryItem);

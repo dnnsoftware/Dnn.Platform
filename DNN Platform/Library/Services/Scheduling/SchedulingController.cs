@@ -33,7 +33,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
 using Microsoft.VisualBasic;
-using Globals = DotNetNuke.Common.Globals;
 
 #endregion
 
@@ -255,21 +254,5 @@ namespace DotNetNuke.Services.Scheduling
                                                           objScheduleHistoryItem.LogNotes,
                                                           objScheduleHistoryItem.NextStart);
         }
-
-        public static bool CanRunOnThisServer(string servers)
-        {
-            string lwrServers = "";
-            if (servers != null)
-            {
-                lwrServers = servers.ToLower();
-            }
-            if (String.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLower()))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
     }
 }

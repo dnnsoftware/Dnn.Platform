@@ -192,7 +192,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                                             </fileRegistration>
                                             <compositeFiles defaultFileProcessingProvider=""DnnCompositeFileProcessor"" compositeFileHandlerPath=""~/DependencyHandler.axd"">
                                               <fileProcessingProviders>
-                                                <!-- For webfarms update the urlType attribute to Base64QueryStrings, default setting is MappedId -->
+                                                <add name=""CompositeFileProcessor"" type=""ClientDependency.Core.CompositeFiles.Providers.CompositeFileProcessingProvider, ClientDependency.Core"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""MappedId"" />
+                                                <!-- For webfarms remove the above CompositeFileProcessor and uncomment this section
+                                                <add name=""CompositeFileProcessor"" type=""ClientDependency.Core.CompositeFiles.Providers.CompositeFileProcessingProvider, ClientDependency.Core"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""Base64QueryStrings"" />
+                                                -->
                                                 <add name=""DnnCompositeFileProcessor"" type=""DotNetNuke.Web.Client.Providers.DnnCompositeFileProcessingProvider, DotNetNuke.Web.Client"" enableCssMinify=""false"" enableJsMinify=""true"" persistFiles=""true"" compositeFilePath=""~/App_Data/ClientDependency"" bundleDomains="""" urlType=""MappedId"" />
                                               </fileProcessingProviders>
                                             </compositeFiles>
@@ -305,7 +308,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath};
+            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false };
             var loader = page.FindControl("ClientResourceIncludes");
             if (loader != null)
             {
@@ -374,7 +377,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             if (fileExists || FileExists(page, filePath))
             {
-                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath,};
+                var include = new DnnCssInclude {ForceProvider = provider, Priority = priority, FilePath = filePath, AddTag = false};
                 var loader = page.FindControl("ClientResourceIncludes");
 
                 if (loader != null)
