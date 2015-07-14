@@ -21,7 +21,6 @@
 #region Usings
 
 using System;
-using System.Collections;
 
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Scheduling;
@@ -64,18 +63,15 @@ namespace DotNetNuke.Services.Log.SiteLog
             }
         }
 
-        private void DoPurgeSiteLog()
+        private static void DoPurgeSiteLog()
         {
             var siteLogController = new SiteLogController();
             var portals = PortalController.Instance.GetPortals();
             for (var index = 0; index <= portals.Count - 1; index++)
             {
                 var portal = (PortalInfo) portals[index];
-                if (portal.SiteLogHistory > 0)
-                {
-                    var purgeDate = DateTime.Now.AddDays(-(portal.SiteLogHistory));
-                    siteLogController.DeleteSiteLog(purgeDate, portal.PortalID);
-                }
+                var purgeDate = DateTime.Now.AddDays(-(portal.SiteLogHistory));
+                siteLogController.DeleteSiteLog(purgeDate, portal.PortalID);
             }
         }
     }
