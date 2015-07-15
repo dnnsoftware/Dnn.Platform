@@ -4478,6 +4478,18 @@ namespace DotNetNuke.Services.Upgrade
                             
                             Logger.TraceFormat("GetUpgradedScripts including {0}", file);
                         }
+
+                        if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
+                        {
+                           
+                            var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
+                            if (incrementalfiles != null)
+                            {
+                                scriptFiles.AddRange(incrementalfiles);
+                            }
+
+                            Logger.TraceFormat("GetUpgradedScripts including {0}", file);
+                        }
                       
                         //else
                         //{
@@ -5392,10 +5404,7 @@ namespace DotNetNuke.Services.Upgrade
                 providerpath = HttpContext.Current.Server.MapPath(providerpath);
                 if (Directory.Exists(providerpath))
                 {
-                    return Directory.GetFiles(providerpath,
-                        version.Major + "." + version.Minor + "." + version.Build + "." + version.Revision +
-                        "*.sqldataprovider").Length;
-                   
+                    return Directory.GetFiles(providerpath, GetStringVersion(version) + ".*." + DefaultProvider).Length;                  
                 }
             }
             return 0;
@@ -5723,32 +5732,34 @@ namespace DotNetNuke.Services.Upgrade
 
             if (version.Revision > 0)
             {
-                // execute script file (and version upgrades) for version
-                exceptions = ExecuteScript(scriptFile, writeFeedback);
-
-                //update any associated config files
-                string strProviderPath = DataProvider.Instance().GetProviderPath();
-                UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
-
-                // update the iteraction
-                Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
-
-                var log = new LogInfo
+                if (version.Revision > Globals.GetLastAppliedIteration(version))
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-                    BypassBuffering = true
-                };
-                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
-                if (exceptions.Length > 0)
-                {
-                    log.AddProperty("Warnings", exceptions);
-                }
-                else
-                {
-                    log.AddProperty("No Warnings", "");
-                }
-                LogController.Instance.AddLog(log);
-                
+                    // execute script file (and version upgrades) for version
+                    exceptions = ExecuteScript(scriptFile, writeFeedback);
+
+                    //update any associated config files
+                    string strProviderPath = DataProvider.Instance().GetProviderPath();
+                    UpdateConfigInterval(strProviderPath, version, version.Revision, writeFeedback);
+
+                    // update the increment
+                    Globals.UpdateDataBaseVersionIncrement(version, version.Revision);
+
+                    var log = new LogInfo
+                    {
+                        LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                        BypassBuffering = true
+                    };
+                    log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                    if (exceptions.Length > 0)
+                    {
+                        log.AddProperty("Warnings", exceptions);
+                    }
+                    else
+                    {
+                        log.AddProperty("No Warnings", "");
+                    }
+                    LogController.Instance.AddLog(log);
+                }                
             }
             if (string.IsNullOrEmpty(exceptions))
             {
