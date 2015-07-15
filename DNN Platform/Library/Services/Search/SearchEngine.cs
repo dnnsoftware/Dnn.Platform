@@ -62,7 +62,14 @@ namespace DotNetNuke.Services.Search
 
         public int DeletedCount { get; private set; }
 
+        private readonly IList<int> _portalsToReindex;
+
         #endregion
+
+        public SearchEngine(DateTime lastIndexingTime)
+        {
+            _portalsToReindex = SearchHelper.Instance.GetPortalsToReindex(lastIndexingTime).ToList();
+        }
 
         #region internal
         /// -----------------------------------------------------------------------------
@@ -148,10 +155,9 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDate"></param>
         internal void DeleteOldDocsBeforeReindex(DateTime startDate)
         {
-            var portal2Reindex = SearchHelper.Instance.GetPortalsToReindex(startDate);
             var controller = InternalSearchController.Instance;
 
-            foreach (var portalId in portal2Reindex)
+            foreach (var portalId in _portalsToReindex)
             {
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId);
@@ -278,10 +284,10 @@ namespace DotNetNuke.Services.Search
         /// <param name="startDate"></param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        private static DateTime FixedIndexingStartDate(int portalId, DateTime startDate)
+        private DateTime FixedIndexingStartDate(int portalId, DateTime startDate)
         {
-            if (startDate < SqlDateTime.MinValue.Value ||
-                SearchHelper.Instance.IsReindexRequested(portalId, startDate))
+            if (startDate < SqlDateTime.MinValue.Value.AddDays(1) ||
+                _portalsToReindex.Contains(portalId))
             {
                 return SqlDateTime.MinValue.Value.AddDays(1);
             }
