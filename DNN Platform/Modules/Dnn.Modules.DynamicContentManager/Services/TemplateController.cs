@@ -33,8 +33,14 @@ namespace Dnn.Modules.DynamicContentManager.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteTemplate(TemplateViewModel viewModel)
         {
-            return DeleteEntity(() => ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true),
-                                template => ContentTemplateManager.Instance.DeleteContentTemplate(template));
+            var response = DeleteEntity(() => ContentTemplateManager.Instance.GetContentTemplate(viewModel.TemplateId, PortalSettings.PortalId, true),
+                                        (template) => {
+                                                            ContentTemplateManager.Instance.DeleteContentTemplate(template);
+                                                            var file = FileManager.Instance.GetFile(template.TemplateFileId);
+                                                            FileManager.Instance.DeleteFile(file);
+                                                        });
+
+            return response;
         }
 
         /// <summary>
