@@ -321,11 +321,14 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(lastValue))
             {
-                DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime);
-
-                if (lastSuccessfulDateTime <= SqlDateTime.MinValue.Value)
+                if (!DateTime.TryParseExact(lastValue, Constants.ReindexDateTimeFormat, null, DateTimeStyles.None, out lastSuccessfulDateTime))
+                {
                     lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
-                else if (lastSuccessfulDateTime >= SqlDateTime.MaxValue.Value)
+                }
+
+                if (lastSuccessfulDateTime < SqlDateTime.MinValue.Value.AddDays(1))
+                    lastSuccessfulDateTime = SqlDateTime.MinValue.Value.AddDays(1);
+                else if (lastSuccessfulDateTime > SqlDateTime.MaxValue.Value.AddDays(-1))
                     lastSuccessfulDateTime = SqlDateTime.MaxValue.Value.AddDays(-1);
             }
 
