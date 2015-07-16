@@ -77,13 +77,10 @@ namespace Dnn.Modules.DynamicContentManager.Services
             var fileName = Path.GetFileName(viewModel.FilePath);
             var portalId = (viewModel.IsSystem) ? -1 : PortalSettings.PortalId;
 
-            var folder = FolderManager.Instance.GetFolder(portalId, folderPath);
-            if (folder == null)
-            {
-                return Request.CreateResponse(new {success = false, message = Localization.GetString("FolderNotFound", LocalResourceFile)});
-            }
+            var folder = FolderManager.Instance.GetFolder(portalId, folderPath) ??
+                         FolderManager.Instance.AddFolder(portalId, folderPath);
 
-            var contentType = FileManager.Instance.GetContentType(Path.GetExtension(fileName));
+            var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
             var file = FileManager.Instance.AddFile(folder, fileName, templateStream, true, true, true, contentType, PortalSettings.UserId);
 
             if (file == null)
