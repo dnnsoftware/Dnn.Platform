@@ -336,7 +336,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             btnClear.Click += BtnClearClick;
             btnDelete.Click += BtnDeleteClick;

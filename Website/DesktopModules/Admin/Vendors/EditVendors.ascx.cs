@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
         {
             base.OnInit(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
         }
 

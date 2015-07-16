@@ -183,8 +183,8 @@ namespace DotNetNuke.Modules.Admin.Host
 
         private void BindJQuery()
         {
-            jQueryVersion.Text = jQuery.Version;
-            jQueryUIVersion.Text = jQuery.UIVersion;            
+            jQueryVersion.Text = Framework.jQuery.Version;
+            jQueryUIVersion.Text = Framework.jQuery.UIVersion;            
         }
 
 		private void BindCdnSettings()
@@ -511,7 +511,7 @@ namespace DotNetNuke.Modules.Admin.Host
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
             ddlLogs.SelectedIndexChanged += OnLogFileIndexChanged;
         }
 

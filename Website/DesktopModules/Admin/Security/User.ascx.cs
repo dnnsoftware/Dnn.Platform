@@ -35,8 +35,7 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Security;
+
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
@@ -53,6 +52,8 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The User UserModuleBase is used to manage the base parts of a User.

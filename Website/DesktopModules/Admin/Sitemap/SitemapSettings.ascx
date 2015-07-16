@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeFile="SitemapSettings.ascx.cs"
-    Inherits="DotNetNuke.Modules.Admin.Sitemap.SitemapSettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false"
+    Inherits="DotNetNuke.Modules.Admin.Sitemap.SitemapSettings" Codebehind="SitemapSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>

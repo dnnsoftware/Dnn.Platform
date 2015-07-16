@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="false" Explicit="True" CodeFile="TabLocalization.ascx.cs" Inherits="DotNetNuke.Modules.Admin.Tabs.TabLocalization" %>
+<%@ Control Language="C#" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Admin.Tabs.TabLocalization" Codebehind="TabLocalization.ascx.cs" %>
 <%@ Register TagPrefix="dnnweb" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <div class="dnnForm dnnTabLocalization dnnClear">
     <dnnweb:DnnGrid ID="localizedTabsGrid" runat="server" AutoGenerateColumns="false" AllowMultiRowSelection="true" Width="100%" 

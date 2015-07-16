@@ -1,5 +1,5 @@
 <%@ Control Inherits="DesktopModules.Admin.Portals.SiteSettings" Language="C#"
-    AutoEventWireup="false" EnableViewState="True" CodeFile="SiteSettings.ascx.cs" %>
+    AutoEventWireup="false" EnableViewState="True" Codebehind="SiteSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>

@@ -58,6 +58,7 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.Admin.Authentication
 {
+    using Host = DotNetNuke.Entities.Host.Host;
 
 	/// <summary>
 	/// The Signin UserModuleBase is used to provide a login for a registered user

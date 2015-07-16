@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.XmlMerge
             cmdUpload.Click += OnUploadClick;
             ddlConfig.SelectedIndexChanged += OnConfigFileIndexChanged;
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
         }
 
         protected override void OnLoad(EventArgs e)

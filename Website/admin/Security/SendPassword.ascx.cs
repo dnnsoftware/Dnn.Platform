@@ -44,6 +44,8 @@ using DotNetNuke.UI.Skins.Controls;
 namespace DotNetNuke.Modules.Admin.Security
 {
 
+    using Host = DotNetNuke.Entities.Host.Host;
+
     /// <summary>
     /// The SendPassword UserModuleBase is used to allow a user to retrieve their password
     /// </summary>

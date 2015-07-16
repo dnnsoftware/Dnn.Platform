@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			email.ValidationExpression = PortalSettings.Registration.EmailValidator;
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
             JavaScript.RequestRegistration(CommonJs.Knockout);
 
 

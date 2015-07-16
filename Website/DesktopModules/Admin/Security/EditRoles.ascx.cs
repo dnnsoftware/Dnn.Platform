@@ -44,6 +44,8 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Modules.Admin.Security
 {
+    using jQuery = DotNetNuke.Framework.jQuery;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditRoles PortalModuleBase is used to manage a Security Role

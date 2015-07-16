@@ -74,6 +74,7 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DesktopModules.Admin.Portals
 {
     using DotNetNuke.Services.Mail;
+    using jQuery = DotNetNuke.Framework.jQuery;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

@@ -51,6 +51,9 @@ using Telerik.Web.UI;
 namespace DotNetNuke.Modules.Admin.Languages
 // ReSharper restore CheckNamespace
 {
+    using Host = DotNetNuke.Entities.Host.Host;
+
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Manage languages for the portal

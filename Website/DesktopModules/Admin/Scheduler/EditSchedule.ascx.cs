@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.Scheduler
         {
             base.OnLoad(e);
 
-            jQuery.RequestDnnPluginsRegistration();
+            Framework.jQuery.RequestDnnPluginsRegistration();
 
             cmdDelete.Click += OnDeleteClick;
             cmdRun.Click += OnRunClick;
