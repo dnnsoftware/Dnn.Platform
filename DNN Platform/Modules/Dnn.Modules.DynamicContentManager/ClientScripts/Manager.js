@@ -6,6 +6,7 @@
 
     var menuClick = function (target, panel) {
         $rootElement.find(".dccMenu li").removeClass("selected");
+        $rootElement.find(".dccPanel").hide();
 
         var listItem = $(target);
 
@@ -19,15 +20,7 @@
             return;
         }
 
-        //slide panels in
-        var zIndex = $(panel).css("z-index");
-        $(panel).css("z-index", zIndex + 10);
-        $(activePanel).animate({ opacity: 0 }, 400, function () {
-            $(this).offset({ left: -850 });
-            $(this).css("opacity", 1);
-            $(panel).animate({ left: 0 }, 1500);
-            $(panel).css("z-index", zIndex);
-        });
+        $(panel).show();
 
         activePanel = panel;
     };
