@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Activate.Header" xml:space="preserve">
-    <value>Activate Enhanced Data</value>
+    <value>Get Started &amp; Activate Features</value>
   </data>
   <data name="ActivateButtonText.Text" xml:space="preserve">
     <value>Activate</value>
@@ -127,7 +127,7 @@
     <value>&lt;p class="{0}"&gt;Premium Data is active. Thank you.&lt;/p&gt;</value>
   </data>
   <data name="ActivateInstructionsHtml.Text" xml:space="preserve">
-    <value>&lt;h3&gt;Activate All Features&lt;/h3&gt;&lt;p&gt;Step 1 - Obtain a 51Degrees on-premise license key.&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Step 2 - Paste your license key into the textbox below. Select "Activate" to use the license key with this web site.&lt;/p&gt;&lt;br/&gt;</value>
+    <value>&lt;h3&gt;Activate All Features&lt;/h3&gt;&lt;p&gt;Step 1 - Obtain a 51Degrees on premise license key.&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Step 2 - Paste your license key into the textbox below. Select "Activate" to use the license key with this web site.&lt;/p&gt;&lt;br/&gt;</value>
   </data>
   <data name="ActivationDataInvalidHtml.Text" xml:space="preserve">
     <value>&lt;div class="{0}"&gt;&lt;p&gt;The data source provided does not contain valid data.&lt;/p&gt;&lt;/div&gt;</value>
@@ -353,29 +353,11 @@ The web servers firewall or another firewall is blocking access to the host or t
   <data name="Update.Action" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="WhyDeviceDetection.Header" xml:space="preserve">
-    <value>What is Device Detection?</value>
+  <data name="GetStarted.Header" xml:space="preserve">
+    <value>Get Started</value>
   </data>
-  <data name="WhyDeviceDetection.Html" xml:space="preserve">
-    <value>&lt;div style="margin: 1em 0;"&gt;
-&lt;p&gt;Device detection enables the power of the web server to be used to optimise web user experience across every type of device increasing web site return on investment.&lt;/p&gt;
-&lt;p&gt;Over 85% of blue chip companies, including eCommerce, Media, AdTech, Finance and Travel sectors use device detection to optimise for multi-screen.&lt;/p&gt;
-&lt;h3&gt;For Web Administrators&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Retain desktop optimised content such as Flash or big screen videos on the same page as smartphone and tablet content.&lt;/li&gt;
-&lt;li&gt;Use hover mega menus to optimise rapid navigation for mouse and keyboard whilst using a responsive menu for touch screens.&lt;/li&gt;
-&lt;li&gt;Redirect users to optimised pages for Smartphone and Tablets.&lt;/li&gt;
-&lt;li&gt;Optimise images automatically ensuring large images are never sent to small screens.&lt;/li&gt;
-&lt;li&gt;Enhance Google Analytics with information about screen size and input methods.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;For Developers&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Turn page content on and off based on server side rules. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;Request.Browser["IsTablet"]&lt;/span&gt; to understand if the requesting device is a tablet.&lt;/li&gt;
-&lt;li&gt;Access device capabilities from JavaScript with &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;http://HOSTNAME/51Degrees.features.js&lt;/span&gt;&lt;/li&gt;
-&lt;li&gt;Add querystring parameters to image URLs to return precisely sized images for the screen. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;&amp;lt;img src="Empty.gif" data-src="/image.png?w=auto"/&amp;gt;&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;a href="https://51degrees.com/dnn" title="Find out more about device detection with DNN" class="dnnPrimaryAction"&gt;Read More&lt;/a&gt;
-&lt;/div&gt;</value>
+  <data name="GetStartedIntro.Html" xml:space="preserve">
+    <value>&lt;p&gt;Client side responsive web design (RWD) involves sending all content to the browser and letting the browser resize and adjust for the device. The 51Degrees Client Capability Provider enables the option to control content server side including sending different images, navigation and content to different device types. This reduces page weight to mobile improving performance, presents an optimised user interface, ultimately enhancing the user's experience.&lt;/p&gt;&lt;p&gt;Over 85% of blue chip companies use device detection, including eCommerce, Media, AdTech, Finance and Travel sectors. Read more for case studies and ideas.&lt;/p&gt;&lt;a href="https://51degrees.com/dnn" title="Find out more about device detection with DNN" class="dnnPrimaryAction" target="_blank"&gt;Read More&lt;/a&gt;</value>
   </data>
   <data name="SettingsChangeError.Text" xml:space="preserve">
     <value>The device detection settings could not be changed. Check the 51Degrees.mobi.config file for modify permissions and recycle the application domain.</value>
@@ -384,7 +366,7 @@ The web servers firewall or another firewall is blocking access to the host or t
     <value>Device detection settings have been updated. Recycle the application domain for the changes to take effect.</value>
   </data>
   <data name="SettingsImageOptimiser.Help" xml:space="preserve">
-    <value>When image optimizer and device detection are enabled DNN will not send images to devices that are too large for their screens to display. Query string parameters can be added to image tags to automatically size images to improve performance.</value>
+    <value>When image optimizer AND device detection are enabled DNN will not send images to devices that are too large for their screens to display. Query string parameters can be added to image URLs to automatically size images to improve performance.</value>
   </data>
   <data name="SettingsImageOptimiser.Text" xml:space="preserve">
     <value>Device Image Optimization Enabled?</value>
@@ -400,5 +382,26 @@ The web servers firewall or another firewall is blocking access to the host or t
   </data>
   <data name="SettingsFileMode.Text" xml:space="preserve">
     <value>File Mode Enabled?</value>
+  </data>
+  <data name="GetStartedButton.Text" xml:space="preserve">
+    <value>Enable Features</value>
+  </data>
+  <data name="GetStartedDetail.Html" xml:space="preserve">
+    <value>&lt;h3&gt;Image Optimisation&lt;/h3&gt;
+&lt;p&gt;Ensure precisely sized images are sent to web pages by adding querystring parameters to image URLs to return precisely sized images for the screen. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;&amp;lt;img src="Empty.gif" data-src="/image.png?w=auto"/&amp;gt;&lt;/span&gt; or &lt;a style="font-family: 'Courier New', Courier, monospace; font-weight: bold;" href="/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/Optimization.png?w=300" target="_blank"&gt;/DesktopModules/Admin/FiftyOneClientCapabilityProvider/Images/Optimization.png?w=300&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Images larger than the device screen will automatically be shrunk before sending.&lt;/p&gt;
+&lt;h3&gt;Device Detection&lt;/h3&gt;
+&lt;h4&gt;For Web Administrators&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Retain desktop optimised content such as Flash or big screen videos on the same page as smartphone and tablet content.&lt;/li&gt;
+&lt;li&gt;Use hover mega menus to optimise rapid navigation for mouse and keyboard whilst using a responsive menu for touch screens.&lt;/li&gt;
+&lt;li&gt;Redirect users to optimised pages for Smartphone and Tablets.&lt;/li&gt;
+&lt;li&gt;Enhance Google Analytics with information about screen size and input methods.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;For Developers&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Turn page content on and off based on server side rules. For example; &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;Request.Browser["IsTablet"]&lt;/span&gt; to understand if the requesting device is a tablet.&lt;/li&gt;
+&lt;li&gt;Access device capabilities from JavaScript with &lt;span style="font-family: 'Courier New', Courier, monospace; font-weight: bold;"&gt;http://HOSTNAME/51Degrees.features.js&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;</value>
   </data>
 </root>

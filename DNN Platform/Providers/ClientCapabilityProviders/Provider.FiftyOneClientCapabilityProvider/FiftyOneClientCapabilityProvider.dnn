@@ -102,11 +102,11 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/system.web/httpModules" action="update" key="name" collision="overwrite">
-                    <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation" />
-                  </node>
-                  <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+                  <node path="/configuration/system.web/httpModules" action="update" key="name" collision="ignore">
                     <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation"/>
+                  </node>
+                  <node path="/configuration/system.webServer/modules" action="update" key="name" collision="ignore">
+                    <add name="Detector" type="FiftyOne.Foundation.Mobile.Detection.DetectorModule, FiftyOne.Foundation" preCondition="managedHandler"/>
                   </node>
                   <node path="/configuration/configSections/sectionGroup[@name='dotnetnuke']" action="update" key="name" collision="ignore">
                     <section name="clientcapability" requirePermission="false" type="DotNetNuke.Framework.Providers.ProviderConfigurationHandler, DotNetNuke" />

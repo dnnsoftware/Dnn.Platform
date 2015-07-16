@@ -71,8 +71,8 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
             Upload.UploadButtonText = LocalizeString("UploadData.Text");
             Upload.UploadComplete += UploadComplete;
 
+            ButtonGetStartedActivate.Command += ButtonActivate_Command;
             ButtonSettingsRefresh.Command += ButtonSettingsRefresh_Command;
-            ButtonSettingsRefresh.Enabled = IsPremium;
 
             if (!IsPremium)
             {
@@ -118,11 +118,33 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ButtonSettingsRefresh_Command(object sender, CommandEventArgs e)
+        protected void ButtonSettingsRefresh_Command(object sender, CommandEventArgs e)
         {
             if (WebProvider.ActiveProvider != null)
             {
                 WebProvider.Download();
+            }
+        }
+
+        /// <summary>
+        /// If the activate button is pressed then set the default values.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ButtonActivate_Command(object sender, CommandEventArgs e)
+        {
+            try
+            {
+                Manager.Enabled = true;
+                Manager.AutoUpdate = false;
+                Manager.ShareUsage = true;
+                Manager.ImageOptimiserEnabled = true;
+                Manager.MemoryMode = false;
+                SettingsChangedSuccess.Visible = true;
+            }
+            catch
+            {
+                SettingsChangedError.Visible = true;
             }
         }
 
@@ -154,7 +176,7 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider
                     // a message indicating values have been changed.
                     if (changed)
                     {
-                        Manager.Enabled = CheckBoxEnabled.Checked;
+                        Manager.Enabled = CheckBoxEnabled.Checked | CheckBoxImageOptimiser.Checked;
                         Manager.AutoUpdate = CheckBoxAutoUpdate.Checked;
                         Manager.ShareUsage = CheckBoxShareUsage.Checked;
                         Manager.ImageOptimiserEnabled = CheckBoxImageOptimiser.Checked;

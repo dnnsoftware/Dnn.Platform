@@ -49,6 +49,96 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl SettingsChangedError;
         
         /// <summary>
+        /// LabelImageOptimiser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelImageOptimiser;
+        
+        /// <summary>
+        /// CheckBoxImageOptimiser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxImageOptimiser;
+        
+        /// <summary>
+        /// LabelEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelEnabled;
+        
+        /// <summary>
+        /// CheckBoxEnabled control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxEnabled;
+        
+        /// <summary>
+        /// LabelShareUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelShareUsage;
+        
+        /// <summary>
+        /// CheckBoxShareUsage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxShareUsage;
+        
+        /// <summary>
+        /// LabelAutoUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelAutoUpdate;
+        
+        /// <summary>
+        /// CheckBoxAutoUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxAutoUpdate;
+        
+        /// <summary>
+        /// LabelFileMode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl LabelFileMode;
+        
+        /// <summary>
+        /// CheckBoxFileMode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBoxFileMode;
+        
+        /// <summary>
         /// LabelDataSetName control.
         /// </summary>
         /// <remarks>
@@ -130,96 +220,6 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         protected global::System.Web.UI.WebControls.LinkButton ButtonSettingsRefresh;
         
         /// <summary>
-        /// LabelEnabled control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl LabelEnabled;
-        
-        /// <summary>
-        /// CheckBoxEnabled control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBoxEnabled;
-        
-        /// <summary>
-        /// LabelShareUsage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl LabelShareUsage;
-        
-        /// <summary>
-        /// CheckBoxShareUsage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBoxShareUsage;
-        
-        /// <summary>
-        /// LabelAutoUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl LabelAutoUpdate;
-        
-        /// <summary>
-        /// CheckBoxAutoUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBoxAutoUpdate;
-        
-        /// <summary>
-        /// LabelImageOptimiser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl LabelImageOptimiser;
-        
-        /// <summary>
-        /// CheckBoxImageOptimiser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBoxImageOptimiser;
-        
-        /// <summary>
-        /// LabelFileMode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UserControl LabelFileMode;
-        
-        /// <summary>
-        /// CheckBoxFileMode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBoxFileMode;
-        
-        /// <summary>
         /// Upload control.
         /// </summary>
         /// <remarks>
@@ -292,13 +292,31 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         protected global::FiftyOne.Foundation.UI.Web.PropertyDictionary Properties;
         
         /// <summary>
-        /// LiteralWhyDeviceDetectionActive control.
+        /// LiteralGetStartedActivateIntro control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralWhyDeviceDetectionActive;
+        protected global::System.Web.UI.WebControls.Literal LiteralGetStartedActivateIntro;
+        
+        /// <summary>
+        /// ButtonGetStartedActivate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ButtonGetStartedActivate;
+        
+        /// <summary>
+        /// LiteralGetStartedActivateDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal LiteralGetStartedActivateDetail;
         
         /// <summary>
         /// Activate control.
@@ -310,12 +328,21 @@ namespace DotNetNuke.Providers.FiftyOneClientCapabilityProvider {
         protected global::FiftyOne.Foundation.UI.Web.Detection Activate;
         
         /// <summary>
-        /// LiteralWhyDeviceDetection control.
+        /// LiteralGetStartedIntro control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralWhyDeviceDetection;
+        protected global::System.Web.UI.WebControls.Literal LiteralGetStartedIntro;
+        
+        /// <summary>
+        /// LiteralGetStartedDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal LiteralGetStartedDetail;
     }
 }

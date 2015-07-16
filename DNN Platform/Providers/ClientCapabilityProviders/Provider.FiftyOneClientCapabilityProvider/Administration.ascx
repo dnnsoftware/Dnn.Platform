@@ -21,9 +21,14 @@
         CheckBoxAutoUpdate.Enabled = this.IsPremium;
         ButtonSettingsRefresh.Enabled = enabled;
         LabelFactory.Text = enabled ? WebProvider.ActiveProvider.DataSet.Mode.ToString() : LocalizeString("Unavailable.Text");
-        
-        LiteralWhyDeviceDetectionActive.Text = LocalizeString("WhyDeviceDetection.Html");
-        LiteralWhyDeviceDetection.Text = LocalizeString("WhyDeviceDetection.Html");
+
+        LiteralGetStartedActivateIntro.Text = LocalizeString("GetStartedIntro.Html");
+        LiteralGetStartedActivateDetail.Text = LocalizeString("GetStartedDetail.Html");
+        LiteralGetStartedIntro.Text = LocalizeString("GetStartedIntro.Html");
+        LiteralGetStartedDetail.Text = LocalizeString("GetStartedDetail.Html");
+		ButtonGetStartedActivate.Text = LocalizeString("GetStartedButton.Text");
+		ButtonGetStartedActivate.Visible = FiftyOne.Foundation.Mobile.Detection.Configuration.Manager.Enabled == false;
+
         DeviceBrowserUnavailableLiteral.Text = LocalizeString("DeviceBrowserUnavailable.Html");
         DeviceBrowserUnavailableButton.NavigateUrl = LocalizeString("DeviceBrowserUnavailableButton.Url");
 
@@ -43,20 +48,51 @@
             <li><a href="#panels-topdevices"><%= LocalizeString("NewDevices.Header")%></a></li>
             <% } %>
             <li><a href="#panels-properties"><%= LocalizeString("Properties.Header")%></a></li>
-            <% if (!this.IsPremium) { %>
-            <li><a href="#panels-activate"><%= LocalizeString("Activate.Header")%></a></li>
+            <% if (this.IsPremium == false) { %>
+            <% if (IsPostBack == false) { %>
+            <li aria-selected="true"><a href="#panels-activate"><%= LocalizeString("Activate.Header")%></a></li>
             <% } else { %>
-            <li><a href="#panels-why"><%= LocalizeString("WhyDeviceDetection.Header")%></a></li>
+            <li><a href="#panels-activate"><%= LocalizeString("Activate.Header")%></a></li>
+            <% } %>
+            <% } else { %>
+            <li><a href="#panels-get-started"><%= LocalizeString("GetStarted.Header")%></a></li>
             <% } %>
         </ul>
 
-        <%--Main settings available with every version of the data set--%>
-        <div id="panels-settings" class="dnnClear">
-        <div class="dnnFormExpandContent"><a href="#">Expand All</a></div>
+        <%--Setting change messages--%>
         <p id="UploadError" runat="server" class="dnnFormMessage dnnFormValidationSummary"><%=GetLicenseFormatString("PremiumUploadError.Text")%></p>
 	    <p id="UploadSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("PremiumUploadSuccess.Text")%></p>
         <p id="SettingsChangedSuccess" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("SettingsChangeSuccess.Text")%></p>
         <p id="SettingsChangedError" runat="server" class="dnnFormMessage dnnFormSuccess"><%=GetLicenseFormatString("SettingsChangeError.Text")%></p>
+
+        <%--Main settings available with every version of the data set--%>
+        <div id="panels-settings" class="dnnClear">
+        <div class="dnnFormExpandContent"><a href="#">Expand All</a></div>
+            
+        <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsConfiguration.Header")%></a></h2>
+        <fieldset>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelImageOptimiser" ControlName="CheckBoxImageOptimiser" resourcekey="SettingsImageOptimiser" />
+                <asp:CheckBox ID="CheckBoxImageOptimiser" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelEnabled" ControlName="CheckBoxEnabled" resourcekey="SettingsEnabled" />
+                <asp:CheckBox ID="CheckBoxEnabled" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelShareUsage" ControlName="CheckBoxShareUsage" resourcekey="SettingsShareUsage" />
+                <asp:CheckBox ID="CheckBoxShareUsage" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelAutoUpdate" ControlName="CheckBoxAutoUpdates" resourcekey="SettingsAutoUpdates" />
+                <asp:CheckBox ID="CheckBoxAutoUpdate" runat="server" />
+            </div>
+            <div class="dnnFormItem">
+                <dnn:label runat="server" ID="LabelFileMode" ControlName="CheckBoxFileMode" resourcekey="SettingsFileMode" />
+                <asp:CheckBox ID="CheckBoxFileMode" runat="server" />
+            </div>
+        </fieldset>
+
         <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsStats.Header")%></a></h2>
         <fieldset>
             <div class="dnnFormItem">
@@ -96,29 +132,7 @@
                 <asp:LinkButton ID="ButtonSettingsRefresh" runat="server" ControlKey="Refresh" CssClass="dnnSecondaryAction" resourcekey="Refresh.Action" />
             </div>
         </fieldset>        
-        <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsConfiguration.Header")%></a></h2>
-        <fieldset>
-            <div class="dnnFormItem">
-                <dnn:label runat="server" ID="LabelEnabled" ControlName="CheckBoxEnabled" resourcekey="SettingsEnabled" />
-                <asp:CheckBox ID="CheckBoxEnabled" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:label runat="server" ID="LabelShareUsage" ControlName="CheckBoxShareUsage" resourcekey="SettingsShareUsage" />
-                <asp:CheckBox ID="CheckBoxShareUsage" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:label runat="server" ID="LabelAutoUpdate" ControlName="CheckBoxAutoUpdates" resourcekey="SettingsAutoUpdates" />
-                <asp:CheckBox ID="CheckBoxAutoUpdate" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:label runat="server" ID="LabelImageOptimiser" ControlName="CheckBoxImageOptimiser" resourcekey="SettingsImageOptimiser" />
-                <asp:CheckBox ID="CheckBoxImageOptimiser" runat="server" />
-            </div>
-            <div class="dnnFormItem">
-                <dnn:label runat="server" ID="LabelFileMode" ControlName="CheckBoxFileMode" resourcekey="SettingsFileMode" />
-                <asp:CheckBox ID="CheckBoxFileMode" runat="server" />
-            </div>
-        </fieldset>
+
         <h2 class="dnnFormSectionHead"><a href="#"><%= LocalizeString("SettingsManualUpload.Header")%></a></h2>
         <fieldset>
             <div class="dnnFormItem">
@@ -153,9 +167,13 @@
 			<fiftyOne:PropertyDictionary runat="server" ID="Properties" FooterEnabled="False" LogoEnabled="False" CssClass="propertyDictionary" />
         </div>
 
-        <% if (!this.IsPremium) { %>
+        <% if (this.IsPremium == false) { %>
         <div id="panels-activate" class="dnnClear">
-            <asp:Literal runat="server" ID="LiteralWhyDeviceDetectionActive" />
+            <asp:Image runat="server" ImageUrl="Images/Optimization.png?w=300" title="Mobile Optimisation" style="float: right; margin: 0 0 1em 1em; width:300px;"/>
+            <asp:Literal runat="server" ID="LiteralGetStartedActivateIntro" />
+            <asp:LinkButton runat="server" ID="ButtonGetStartedActivate" CssClass="dnnSecondaryAction" />
+            <asp:Literal runat="server" ID="LiteralGetStartedActivateDetail" />
+			<br/>
             <fiftyOne:Detection runat="server" ID="Activate" LogoEnabled="False" CssClass="upgradePremium"
 							ErrorCssClass="dnnFormMessage dnnFormValidationSummary" 
 							SuccessCssClass="dnnFormMessage dnnFormSuccess" FooterEnabled="False"
@@ -164,8 +182,10 @@
                             ShowUpload="False" InstructionsEnabled="True" />
         </div>
         <% } else { %>
-        <div id="panels-why" class="dnnClear">
-            <asp:Literal runat="server" ID="LiteralWhyDeviceDetection" />
+        <div id="panels-get-started" class="dnnClear">
+            <asp:Image runat="server" ImageUrl="Images/Optimization.png?w=300" title="Mobile Optimisation" style="float: right; margin: 0 0 1em 1em; width:300px;"/>
+            <asp:Literal runat="server" ID="LiteralGetStartedIntro" />
+            <asp:Literal runat="server" ID="LiteralGetStartedDetail" />
         </div>
         <% } %>
 
