@@ -117,10 +117,6 @@
     <Content Include="Manager.html" />
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
-    <Content Include="testless.css" />
-    <Content Include="testless.min.css">
-      <DependentUpon>testless.css</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Dnn.DynamicContent\Dnn.DynamicContent.csproj">
