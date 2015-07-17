@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search.Internals
             return () => new SearchQueryStringParser();
         }
 
-        private static readonly Regex TagRegex = new Regex(@"\[(.*?)\]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TagRegex = new Regex(@"\[(.*?)\]", RegexOptions.Compiled);
 
         private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 

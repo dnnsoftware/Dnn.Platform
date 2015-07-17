@@ -49,6 +49,8 @@ namespace DotNetNuke.Web.InternalServices
     [AllowAnonymous]
     public class SearchServiceController : DnnApiController
     {
+        private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         public class SynonymsGroupDto
         {
             public int Id { get; set; }
@@ -335,7 +337,7 @@ namespace DotNetNuke.Web.InternalServices
                 //if the document type is user, then try to add user pic into preview's custom attributes.
                 if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
                 {
-                    var match = Regex.Match(preview.DocumentUrl, "userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase);
+                    var match = GroupedBasicViewRegex.Match(preview.DocumentUrl);
                     if (match.Success)
                     {
                         var userid = Convert.ToInt32(match.Groups[2].Value);

@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Install
             {
                 strErrorMessage = "ConfirmPassword";
             }
-            else if (!Regex.IsMatch(txtEmail.Text, Globals.glbEmailRegEx))
+            else if (!Globals.EmailValidatorRegex.IsMatch(txtEmail.Text))
             {
                 strErrorMessage = "InValidEmail";
             }

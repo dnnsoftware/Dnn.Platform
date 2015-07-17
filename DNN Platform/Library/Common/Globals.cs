@@ -86,6 +86,11 @@ namespace DotNetNuke.Common
     public sealed class Globals
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Globals));
+
+        public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
+        public static readonly Regex InvalidCharacters = new Regex("[^A-Za-z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        public static readonly Regex InvalidInitialCharacters = new Regex("^[^A-Za-z]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         #region PerformanceSettings enum
 
         /// <summary>
@@ -341,7 +346,8 @@ namespace DotNetNuke.Common
         private static string _installPath;
         private static Version _dataBaseVersion;
         private static UpgradeStatus _status = UpgradeStatus.Unknown;
-        private static string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the application path.
@@ -2482,16 +2488,14 @@ namespace DotNetNuke.Common
                         //Create Valid Class
                         // letters ([a-zA-Z]), digits ([0-9]), hyphens ("-") and underscores ("_") are valid in class values
                         // Remove all characters that aren't in the list
-                        var invalidCharacters = new Regex("[^A-Z0-9_-]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidCharacters.Replace(inputValue, string.Empty);
+                        returnValue = InvalidCharacters.Replace(inputValue, string.Empty);
 
                         // If we're asked to validate the first character...
                         if ((validateFirstChar))
                         {
                             // classes should begin with a letter ([A-Za-z])' 
                             // prepend a starting non-letter character with an A
-                            var invalidInitialCharacters = new Regex("^[^A-Z]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                            if ((invalidCharacters.IsMatch(returnValue)))
+                            if ((InvalidCharacters.IsMatch(returnValue)))
                             {
                                 returnValue = "A" + returnValue;
                             }
@@ -2541,13 +2545,11 @@ namespace DotNetNuke.Common
                         // '... letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".")' are valid identifiers
                         // We aren't allowing hyphens or periods, even though they're valid, since the previous version of this function didn't
                         // Replace all characters that aren't in the list with an underscore
-                        var invalidCharacters = new Regex("[^A-Z0-9_:]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidCharacters.Replace(inputValue, "_");
+                        returnValue = InvalidCharacters.Replace(inputValue, "_");
 
                         // identifiers '... must begin with a letter ([A-Za-z])' 
                         // replace a starting non-letter character with an A
-                        var invalidInitialCharacters = new Regex("^[^A-Z]", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                        returnValue = invalidInitialCharacters.Replace(returnValue, "A");
+                        returnValue = InvalidInitialCharacters.Replace(returnValue, "A");
 
                         //put in Dictionary
                         validIDLookupDictionary[inputValue] = returnValue;
@@ -3573,28 +3575,22 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static string GenerateTabPath(int parentId, string tabName)
         {
-            string strTabPath = "";
+            var strTabPath = Null.NullString;
 
             if (!Null.IsNull(parentId))
             {
-                string strTabName;
                 var objTab = TabController.Instance.GetTab(parentId, Null.NullInteger, false);
                 while (objTab != null)
                 {
-                    strTabName = Regex.Replace(objTab.TabName, _tabPathInvalidCharsEx, string.Empty);
+                    var strTabName = TabPathInvalidCharsRx.Replace(objTab.TabName, string.Empty);
                     strTabPath = "//" + strTabName + strTabPath;
-                    if (Null.IsNull(objTab.ParentId))
-                    {
-                        objTab = null;
-                    }
-                    else
-                    {
-                        objTab = TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
-                    }
+                    objTab = Null.IsNull(objTab.ParentId)
+                        ? null
+                        : TabController.Instance.GetTab(objTab.ParentId, objTab.PortalID, false);
                 }
             }
 
-            strTabPath = strTabPath + "//" + Regex.Replace(tabName, _tabPathInvalidCharsEx, string.Empty); ;
+            strTabPath = strTabPath + "//" + TabPathInvalidCharsRx.Replace(tabName, string.Empty);
             return strTabPath;
         }
 

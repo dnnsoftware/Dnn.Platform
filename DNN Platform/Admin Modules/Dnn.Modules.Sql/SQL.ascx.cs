@@ -62,6 +62,9 @@ namespace Dnn.Modules.Sql
     public partial class Sql : PortalModuleBase
     // ReSharper restore InconsistentNaming
     {
+        const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         #region Event Handlers
 
@@ -370,9 +373,7 @@ namespace Dnn.Modules.Sql
 
         private bool RunAsScript()
         {
-            string _scriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
-            Regex objRegex = new Regex(_scriptDelimiterRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            return objRegex.IsMatch(txtQuery.Text);
+            return SqlObjRegex.IsMatch(txtQuery.Text);
         }
 
         private void LoadPlugins()

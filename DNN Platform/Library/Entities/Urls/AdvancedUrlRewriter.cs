@@ -53,11 +53,15 @@ namespace DotNetNuke.Entities.Urls
 {
     public class AdvancedUrlRewriter : UrlRewriterBase
     {
+        private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex AumDebugRegex = new Regex(@"(&|\?)_aumdebug=[A-Z]+(?:&|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+
         #region Private Members
 
         private const string _productName = "AdvancedUrlRewriter";
         private FriendlyUrlSettings _settings;
-        internal static readonly Regex ServiceApi = new Regex(@"DesktopModules/.+/API", RegexOptions.Compiled);
 
         #endregion
 
@@ -667,7 +671,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 else
                                 {
-                                    if (!ServiceApi.IsMatch(context.Request.RawUrl))
+                                    if (!RewriterUtils.ServicesFrameworkRegex.IsMatch(context.Request.RawUrl))
                                     {
                                         //no physical path, intercept the request and hand out a 404 error
                                         result.Action = ActionType.Output404;
@@ -1539,7 +1543,7 @@ namespace DotNetNuke.Entities.Urls
                         if (result.TabId == homePageTabId)
                         {
                             //replace the /default.aspx in the Url if it was found
-                            url = Regex.Replace(url, @"(?<!(\?.+))/default.aspx", "/", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            url = DefaultPageRegex.Replace(url, "/");
                         }
                         result.FinalUrl = url;
                     }
@@ -2416,10 +2420,9 @@ namespace DotNetNuke.Entities.Urls
             // URL validation 
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server 
             // the application should always use the exact relative location of the resource it is requesting 
-            string strURL = request.Url.AbsolutePath;
-            string strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl));
-            if (Regex.Match(strURL, "[\\\\/]\\.\\.[\\\\/]").Success |
-                Regex.Match(strDoubleDecodeURL, "[\\\\/]\\.\\.[\\\\/]").Success)
+            var strURL = request.Url.AbsolutePath;
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? "";
+            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
             {
                 throw new HttpException(404, "Not Found");
             }
@@ -2608,7 +2611,7 @@ namespace DotNetNuke.Entities.Urls
                             //cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
                             cleanPath = cleanPath.Replace("&_aumdebug=true", ""); //remove debug parameter if it exists
 
-                            Match match = Regex.Match(rewritePathOnly, "(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            Match match = RewritePathRx.Match(rewritePathOnly ?? "");
                             if (match.Success)
                             {
                                 //when the pathOnly value ends with '=' it means there is a query string pair with a key and no value
@@ -2761,8 +2764,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string StripDebugParameter(string url)
         {
-            string result = Regex.Replace(url, @"(&|\?)_aumdebug=[a-zA-Z]+(?:&|$)", "");
-            return result;
+            return AumDebugRegex.Replace(url, "");
         }
 
         private static bool CheckFor301RedirectExclusion(int tabId, int portalId, bool checkBaseUrls, out TabInfo tab, FriendlyUrlSettings settings)

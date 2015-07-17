@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		public List<ClientOption> ClientOptions = new List<ClientOption>();
 		public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
 
-		private readonly Regex regexLinks =
+		private static readonly Regex RegexLinks =
 			new Regex(
 				"( (href|src)=['\"]?)(?!http:|ftp:|mailto:|file:|javascript:|/)([^'\">]+['\">])",
 				RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -366,7 +366,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			}
 
 			var headContent = String.IsNullOrEmpty(TemplateHeadPath) ? "" : Utilities.CachedFileContent(TemplateHeadPath);
-			var expandedHead = regexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
+			var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
 			page.Header.Controls.Add(new LiteralControl(expandedHead));
 		}
 

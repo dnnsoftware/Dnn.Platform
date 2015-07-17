@@ -76,6 +76,10 @@ namespace DotNetNuke.Framework
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DefaultPage));
+
+        private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
         #region Properties
 
         /// -----------------------------------------------------------------------------
@@ -93,10 +97,11 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                int pageScrollTop = Null.NullInteger;
-                if (ScrollTop != null && !String.IsNullOrEmpty(ScrollTop.Value) && Regex.IsMatch(ScrollTop.Value, "^\\d+$"))
+                int pageScrollTop;
+                var scrollValue = ScrollTop != null ? ScrollTop.Value : "";
+                if (!int.TryParse(scrollValue, out pageScrollTop) || pageScrollTop < 0)
                 {
-                    pageScrollTop = Convert.ToInt32(ScrollTop.Value);
+                    pageScrollTop = Null.NullInteger;
                 }
                 return pageScrollTop;
             }
@@ -392,10 +397,9 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
-            if (!UrlUtils.InPopUp() && 
-                !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline) &&
-                !Regex.IsMatch(PortalSettings.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline)
-                )
+            if (!UrlUtils.InPopUp() &&
+                !(HeaderTextRegex.IsMatch(PortalSettings.ActiveTab.PageHeadText) ||
+                  HeaderTextRegex.IsMatch(PortalSettings.PageHeadText)))
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
