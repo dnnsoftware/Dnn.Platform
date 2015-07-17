@@ -265,7 +265,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <returns></returns>
         private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
         {
-            if (Host.UseFriendlyUrls)
+            var returnValue = DnnHost.UseFriendlyUrls
                 ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
                 : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
@@ -816,7 +816,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			{
 				case UserValidStatus.VALID:
                     //check if the user is an admin/host and validate their IP
-                    if (Host.EnableIPChecking)
+                    if (DnnHost.EnableIPChecking)
                     {
                         bool isAdminUser = objUser.IsSuperUser || PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName); ;
                         if (isAdminUser) 
@@ -1175,9 +1175,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					}
 					break;
 				case UserLoginStatus.LOGIN_USERLOCKEDOUT:
-                    if (Host.AutoAccountUnlockDuration > 0)
+                    if (DnnHost.AutoAccountUnlockDuration > 0)
                     {
-                        AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", LocalResourceFile), Host.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
+                        AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", LocalResourceFile), DnnHost.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {

@@ -458,3 +458,879 @@ GO
 /************************************************************/
 /*****              SqlDataProvider                     *****/
 /************************************************************/
+
+
+/* DNN-7190 */
+/************/
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddEventLog]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}AddEventLog
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}AddEventLog
+	@LogGUID varchar(36),
+	@LogTypeKey nvarchar(35),
+	@LogUserID int,
+	@LogUserName nvarchar(50),
+	@LogPortalID int,
+	@LogPortalName nvarchar(100),
+	@LogCreateDate datetime,
+	@LogServerName nvarchar(50),
+	@LogProperties ntext,
+	@LogConfigID int,
+	@ExceptionHash varchar(100) = NULL,
+	@NotificationActive bit = 0
+AS
+BEGIN
+	DECLARE @LogEventID bigint
+
+	INSERT INTO  {databaseOwner}[{objectQualifier}EventLog]
+		(LogGUID,
+		LogTypeKey,
+		LogUserID,
+		LogUserName,
+		LogPortalID,
+		LogPortalName,
+		LogCreateDate,
+		LogServerName,
+		LogProperties,
+		LogConfigID,
+		ExceptionHash)
+	VALUES
+		(@LogGUID,
+		@LogTypeKey,
+		@LogUserID,
+		@LogUserName,
+		@LogPortalID,
+		@LogPortalName,
+		@LogCreateDate,
+		@LogServerName,
+		@LogProperties,
+		@LogConfigID,
+		@ExceptionHash)
+
+	SELECT @LogEventID = SCOPE_IDENTITY()
+
+	IF @NotificationActive=1
+	BEGIN
+
+		DECLARE @NotificationThreshold bit
+		DECLARE @ThresholdQueue int
+		DECLARE @NotificationThresholdTime int
+		DECLARE @NotificationThresholdTimeType int
+		DECLARE @MinDateTime smalldatetime
+		DECLARE @CurrentDateTime smalldatetime
+
+		SET @CurrentDateTime = getDate()
+
+		SELECT TOP 1 @NotificationThreshold = NotificationThreshold,
+			@NotificationThresholdTime = NotificationThresholdTime,
+			@NotificationThresholdTimeType = NotificationThresholdTimeType,
+			@MinDateTime = 
+				CASE
+					 --seconds
+					WHEN NotificationThresholdTimeType=1 THEN DateAdd(second, NotificationThresholdTime * -1, @CurrentDateTime)
+					--minutes
+					WHEN NotificationThresholdTimeType=2  THEN DateAdd(minute, NotificationThresholdTime * -1, @CurrentDateTime)
+					--hours
+					WHEN NotificationThresholdTimeType=3  THEN DateAdd(Hour, NotificationThresholdTime * -1, @CurrentDateTime)
+					--days
+					WHEN NotificationThresholdTimeType=4  THEN DateAdd(Day, NotificationThresholdTime * -1, @CurrentDateTime)
+				END
+		FROM  {databaseOwner}[{objectQualifier}EventLogConfig]
+		WHERE ID = @LogConfigID
+
+		SELECT @ThresholdQueue = COUNT(*)
+		FROM  {databaseOwner}[{objectQualifier}EventLog] el
+			INNER JOIN  {databaseOwner}[{objectQualifier}EventLogConfig] elc
+				ON  el.LogConfigID =  elc.ID
+		WHERE LogCreateDate > @MinDateTime
+
+		IF @ThresholdQueue >= @NotificationThreshold
+		BEGIN
+			UPDATE  {databaseOwner}[{objectQualifier}EventLog]
+			SET LogNotificationPending = 1 
+			WHERE LogConfigID = @LogConfigID
+				AND LogNotificationPending IS NULL		
+				AND LogCreateDate > @MinDateTime
+		END
+
+	END
+ 
+	SELECT @LogEventID
+END
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateUserLastIpAddress]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLastIpAddress]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateUserLastIpAddress] 
+	@UserID         int,
+	@LastIPAddress	nvarchar(50)
+AS
+	UPDATE {databaseOwner}[{objectQualifier}Users] 
+	SET	LastIPAddress = @LastIPAddress
+	WHERE  UserId = @UserID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetToasts] 
+ 	@UserId INT
+	,@PortalId INT
+AS
+BEGIN
+	SELECT DISTINCT m.*
+	FROM {databaseOwner}CoreMessaging_MessageRecipients mr
+		INNER JOIN {databaseOwner}CoreMessaging_Messages m 
+			ON (mr.MessageID = m.MessageID)
+	WHERE mr.UserID = @UserID
+		AND m.PortalID = @PortalID
+		--Added to allow a single index to cover both this and the other two messaging procs:
+		--{databaseOwner}[{objectQualifier}CoreMessaging_CountNotifications]
+		--CoreMessaging_CountNewThreads
+		AND mr.[Read] in (0,1)
+		AND mr.SendToast = 1
+END
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}CoreMessaging_MessageRecipients_UserID_MessageID_Read_SendToast' AND object_id = OBJECT_ID('{objectQualifier}CoreMessaging_MessageRecipients'))
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_MessageRecipients_UserID_MessageID_Read_SendToast] ON {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients]
+	(
+		[MessageID] ASC,
+		[UserID] ASC,
+		[Read] ASC,
+		[SendToast] ASC
+	)WITH (STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'IX_{objectQualifier}CoreMessaging_Messages_Send_MessageID_PortalID_NotificationTypeID_ExpirationDate' AND object_id = OBJECT_ID('{objectQualifier}CoreMessaging_Messages'))
+	CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}CoreMessaging_Messages_Send_MessageID_PortalID_NotificationTypeID_ExpirationDate] ON {databaseOwner}[{objectQualifier}CoreMessaging_Messages]
+	(
+		[MessageID] ASC,
+		[PortalID] ASC,
+		[NotificationTypeID] ASC,
+		[ExpirationDate] Desc
+	)
+	INCLUDE ( [To],
+			[From],
+			[Subject],
+			[Body],
+			[ConversationID],
+			[ReplyAllAllowed],
+			[SenderUserID],
+			[Context],
+			[IncludeDismissAction],
+			[CreatedByUserID],
+			[CreatedOnDate],
+			[LastModifiedByUserID],
+			[LastModifiedOnDate]
+		) WITH (STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_GetNotifications]
+	@UserID int,
+	@PortalID int,
+	@AfterNotificationID int,
+	@NumberOfRecords int
+AS
+BEGIN
+	--Get the top message for each conversation
+	SELECT TOP(@NumberOfRecords)
+			M.[MessageID],
+			M.[NotificationTypeId],
+			M.[To],
+			M.[From],
+			M.[Subject],
+			M.[Body],
+			M.[SenderUserID],
+			M.[ExpirationDate],
+            M.[IncludeDismissAction],
+			M.[CreatedByUserID],
+			M.[CreatedOnDate],
+			M.[LastModifiedByUserID],
+			M.[LastModifiedOnDate],
+            M.[Context],
+			ROW_NUMBER() OVER(ORDER BY M.MessageId asc) AS RowNumber
+		FROM {databaseOwner}[{objectQualifier}CoreMessaging_Messages] AS M
+			JOIN {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients] MR 
+				ON (M.MessageID = MR.MessageID)
+		WHERE [NotificationTypeId] IS NOT NULL
+			AND MR.UserID = @UserID
+			AND M.PortalID = @PortalID
+			AND (M.[ExpirationDate] IS NULL OR (M.[ExpirationDate] IS NOT NULL AND M.[ExpirationDate] > GETUTCDATE()))
+			AND (M.MessageID > @AfterNotificationID or @AfterNotificationID=-1)
+		ORDER BY RowNumber asc
+END
+GO
+
+/* DNN-7198 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Roles]') AND name = N'IX_{objectQualifier}GetUserRoles_CoveringIndex')
+DROP INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}Roles] WITH ( ONLINE = OFF )
+GO
+
+
+/****** Object:  Index [IX_GetUserRoles_CoveringIndex]    Script Date: 06/27/2015 06:47:48 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}GetUserRoles_CoveringIndex] ON {databaseOwner}[{objectQualifier}Roles]
+(
+ [RoleID] ASC,
+ [Status] ASC
+)
+INCLUDE ( [PortalID],
+[RoleName],
+[Description],
+[ServiceFee],
+[BillingFrequency],
+[TrialPeriod],
+[TrialFrequency],
+[BillingPeriod],
+[TrialFee],
+[IsPublic],
+[AutoAssignment],
+[RoleGroupID],
+[RSVPCode],
+[IconFile],
+[SecurityMode]) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UserRoles]') AND name = N'IX_{objectQualifier}UserRoles_RoleUser')
+DROP INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles] WITH ( ONLINE = OFF )
+GO
+
+
+/****** Object:  Index [IX_UserRoles_RoleUser]    Script Date: 06/27/2015 06:47:04 ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}UserRoles_RoleUser] ON {databaseOwner}[{objectQualifier}UserRoles]
+(
+ [RoleID] ASC,
+ [UserID] ASC
+)
+INCLUDE ( [UserRoleID],
+[ExpiryDate],
+[IsTrialUsed],
+[EffectiveDate],
+[CreatedByUserID],
+[CreatedOnDate],
+[LastModifiedByUserID],
+[LastModifiedOnDate],
+[Status],
+[IsOwner]) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Users]') AND name = N'IX_vw_{objectQualifier}USERS_CoveringIndex')
+DROP INDEX [IX_vw_{objectQualifier}USERS_CoveringIndex] ON {databaseOwner}[{objectQualifier}Users] WITH ( ONLINE = OFF )
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_vw_{objectQualifier}USERS_CoveringIndex] ON {databaseOwner}[{objectQualifier}Users]
+(
+	[Username] ASC,
+	[UserID] ASC
+)
+INCLUDE ( [FirstName],
+[LastName],
+[IsSuperUser],
+[AffiliateId],
+[Email],
+[DisplayName],
+[UpdatePassword],
+[LastIPAddress],
+[IsDeleted],
+[CreatedByUserID],
+[CreatedOnDate],
+[LastModifiedByUserID],
+[LastModifiedOnDate],
+[PasswordResetToken],
+[PasswordResetExpiration]) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+/* DNN-7141 PageOutputCache  */
+/*****************************/
+
+
+/* Add New OutputCache Table */
+/*****************************/
+
+IF  NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}{objectQualifier}OutputCache') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}{objectQualifier}OutputCache
+			(
+				[CacheKey] [varchar](36) NOT NULL,
+				[ItemId] [int] NOT NULL,
+				[Data] [ntext] NOT NULL,
+				[Expiration] [datetime] NOT NULL,
+				CONSTRAINT [PK_{objectQualifier}OutputCache] PRIMARY KEY CLUSTERED ( [CacheKey] ASC )
+			)
+	END
+GO
+
+/* Add New OutputCacheGetItem  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
+GO
+	
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItem
+	@CacheKey [varchar](36)
+AS
+    SELECT *
+    FROM {databaseOwner}{objectQualifier}OutputCache
+    WHERE CacheKey = @CacheKey
+GO
+
+/* Add New OutputCacheAddItem  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheAddItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheAddItem
+	@ItemId int,
+	@CacheKey [varchar](36),
+	@Data	ntext,
+	@Expiration	datetime
+AS
+    INSERT INTO {databaseOwner}{objectQualifier}OutputCache
+		(ItemId, 
+		CacheKey, 
+		Data, 
+		Expiration)
+    VALUES
+		(@ItemId, 
+		@CacheKey, 
+		@Data, 
+		@Expiration)
+GO
+
+/* Add New OutputCacheGetItemCount  */
+/************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetItemCount]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetItemCount
+	@ItemId int
+AS
+    SELECT COUNT(*)
+    FROM {databaseOwner}{objectQualifier}OutputCache
+    WHERE ItemId = @ItemId
+GO
+
+/* Add New OutputCachePurgeCache  */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeCache]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeCache
+AS
+    DELETE
+    FROM {databaseOwner}{objectQualifier}OutputCache
+GO
+
+/* Add New OutputCachePurgeExpiredItems  */
+/*****************************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCachePurgeExpiredItems]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCachePurgeExpiredItems
+	@CurrentUtcDateTime datetime
+AS
+    DELETE
+    FROM {databaseOwner}{objectQualifier}OutputCache
+    WHERE Expiration <= @CurrentUtcDateTime
+GO
+
+/* Add New OutputCacheRemoveItem  */
+/**********************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheRemoveItem]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheRemoveItem
+	@ItemId int
+AS
+    DELETE
+    FROM {databaseOwner}{objectQualifier}OutputCache
+    WHERE ItemId = @ItemId
+GO
+
+/* Add New OutputCacheGetKeys  */
+/*******************************/
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}OutputCacheGetKeys]') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+  DROP PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}OutputCacheGetKeys
+	@ItemId int
+AS
+    DELETE
+    FROM {databaseOwner}{objectQualifier}OutputCache
+    WHERE ItemId = @ItemId or @ItemId IS NULL
+GO
+
+/* Add PurgeOutputCache Schedule Job */
+/*************************************/
+IF NOT EXISTS(SELECT 1 FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke')
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule
+			   ([TypeFullName]
+			   ,[TimeLapse]
+			   ,[TimeLapseMeasurement]
+			   ,[RetryTimeLapse]
+			   ,[RetryTimeLapseMeasurement]
+			   ,[RetainHistoryNum]
+			   ,[AttachToEvent]
+			   ,[CatchUpEnabled]
+			   ,[Enabled]
+			   ,[ObjectDependencies]
+			   ,[Servers]
+			   ,[CreatedByUserID]
+			   ,[CreatedOnDate]
+			   ,[LastModifiedByUserID]
+			   ,[LastModifiedOnDate])
+		 VALUES
+			   ('DotNetNuke.Services.OutputCache.PurgeOutputCache, DotNetNuke'
+			   ,1
+			   ,'m'
+			   ,30
+			   ,'s'
+			   ,10
+			   ,''
+			   ,0
+			   ,0
+			   ,'OutputCache'
+			   ,NULL
+			   ,NULL
+			   ,NULL
+			   ,NULL
+			   ,NULL)
+END
+GO
+
+/* DNN-7161 String Split */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}SplitStrings_CTE]', N'TF') IS NOT NULL
+	DROP FUNCTION {databaseOwner}[{objectQualifier}SplitStrings_CTE]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}SplitStrings_CTE]
+(
+   @List       NVARCHAR(MAX),
+   @Delimiter  NVARCHAR(255)
+)
+RETURNS @Items TABLE (Item NVARCHAR(4000))
+WITH SCHEMABINDING
+AS
+BEGIN
+   DECLARE @StringLength INT = LEN(@List) + 1, @DelimiterLength INT = LEN(@Delimiter);
+ 
+   WITH a AS
+   (
+       SELECT
+           [start] = 1,
+           [end]   = COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, 1), 0), @StringLength),
+           [value] = SUBSTRING(@List, 1, 
+                     COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, 1), 0), @StringLength) - 1)
+       UNION ALL
+       SELECT
+           [start] = CONVERT(INT, [end]) + @DelimiterLength,
+           [end]   = COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, [end] + @DelimiterLength), 0), @StringLength),
+           [value] = SUBSTRING(@List, [end] + @DelimiterLength, 
+                     COALESCE(NULLIF(CHARINDEX(@Delimiter, 
+                       @List, [end] + @DelimiterLength), 0), @StringLength)-[end]-@DelimiterLength)
+       FROM a
+       WHERE [end] < @StringLength
+   )
+   INSERT @Items SELECT [value]
+   FROM a
+   WHERE LEN([value]) > 0
+   OPTION (MAXRECURSION 0);
+ 
+   RETURN;
+END
+
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}CoreMessaging_CreateMessageRecipientsForRole]
+    @MessageID int,         -- message id
+    @RoleIDs nvarchar(max), -- comma separated list of RoleIds
+	@CreateUpdateUserID INT -- create / update user id
+AS
+BEGIN    
+    INSERT {databaseOwner}[{objectQualifier}CoreMessaging_MessageRecipients](
+			[MessageID],
+			[UserID],
+			[Read],
+			[Archived],
+            [CreatedByUserID],
+            [CreatedOnDate],
+            [LastModifiedByUserID],
+            [LastModifiedOnDate]
+            )
+			SELECT distinct 
+			  @MessageID,
+			  UserID,
+			  0,
+			  0,
+              @CreateUpdateUserID , -- CreatedBy - int
+              GETDATE(), -- CreatedOn - datetime
+              @CreateUpdateUserID , -- LastModifiedBy - int
+              GETDATE() -- LastModifiedOn - datetime
+           FROM {databaseOwner}[{objectQualifier}vw_UserRoles] ur
+			INNER JOIN {databaseOwner}SplitStrings_CTE(@RoleIDs,',') m on ur.RoleID = m.Item
+END
+GO
+
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}GetDefaultLanguageByModule]
+(
+	@ModuleList varchar(1000)
+)
+AS
+BEGIN
+	SET NOCOUNT ON
+
+SELECT DISTINCT m.ModuleID, p.DefaultLanguage
+FROM            {databaseOwner}[{objectQualifier}Modules]  m
+INNER JOIN      {databaseOwner}[{objectQualifier}Portals] p ON p.PortalID = m.PortalID
+Inner Join		{databaseOwner}[{objectQualifier}SplitStrings_CTE](@ModuleList,',') ML ON M.ModuleID = ML.item
+ORDER BY        m.ModuleID	
+		
+END
+GO
+
+
+/* DNN-7162 - Content Items Indexes */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentItems_MetaData]') AND name = N'IX_{objectQualifier}ContentItems_MetaData_ContentItemId')
+DROP INDEX [IX_{objectQualifier}ContentItems_MetaData_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentItems_MetaData] WITH ( ONLINE = OFF )
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentItems_MetaData_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentItems_MetaData]
+(
+	[ContentItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ContentWorkflowLogs]') AND name = N'IX_{objectQualifier}ContentWorkflowLogs_ContentItemId')
+DROP INDEX [IX_{objectQualifier}ContentWorkflowLogs_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentWorkflowLogs] WITH ( ONLINE = OFF )
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}ContentWorkflowLogs_ContentItemId] ON {databaseOwner}[{objectQualifier}ContentWorkflowLogs] 
+(
+	[ContentItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+GO
+
+/* DNN-7164 */
+ALTER VIEW {databaseOwner}[{objectQualifier}vw_Modules]
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+        Case when tm.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(tm.IconFile, 8, 10) AS Int))
+			 else Coalesce(tm.IconFile,'')
+			 end as IconFile,
+        M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        M.CreatedByUserID,
+        M.CreatedOnDate,
+        M.LastModifiedByUserID,
+        M.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM        {databaseOwner}[{objectQualifier}ModuleDefinitions] AS MD
+     INNER JOIN {databaseOwner}[{objectQualifier}Modules]           AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls]    AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules]    AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems]      AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]       AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]              AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+ALTER VIEW {databaseOwner}[{objectQualifier}vw_Portals]
+AS
+    SELECT
+        P.PortalID,
+        P.PortalGroupID,
+        PL.PortalName,
+		 Case when PL.LogoFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(PL.LogoFile, 8, 10) AS Int))
+			 else Coalesce(PL.LogoFile,'')
+			 end as LogoFile,
+        PL.FooterText,
+        P.ExpiryDate,
+        P.UserRegistration,
+        P.BannerAdvertising,
+        P.AdministratorId,
+        P.Currency,
+        P.HostFee,
+        P.HostSpace,
+        P.PageQuota,
+        P.UserQuota,
+        P.AdministratorRoleId,
+        P.RegisteredRoleId,
+        PL.Description,
+        PL.KeyWords,
+         Case when PL.BackgroundFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(PL.BackgroundFile, 8, 10) AS Int))
+			 else Coalesce(PL.BackgroundFile,'')
+			 end as BackgroundFile
+		,
+        P.GUID,
+        P.PaymentProcessor,
+        P.ProcessorUserId,
+        P.ProcessorPassword,
+        P.SiteLogHistory,
+        U.Email,
+        P.DefaultLanguage,
+        P.TimezoneOffset,
+        PL.AdminTabId,
+        P.HomeDirectory,
+        PL.SplashTabId,
+        PL.HomeTabId,
+        PL.LoginTabId,
+        PL.RegisterTabId,
+        PL.UserTabId,
+        PL.SearchTabId,
+        PL.Custom404TabId,
+        PL.Custom500TabId,
+        {databaseOwner}{objectQualifier}SuperUserTabID() AS SuperTabId,
+        P.CreatedByUserID,
+        P.CreatedOnDate,
+        P.LastModifiedByUserID,
+        P.LastModifiedOnDate,
+        PL.CultureCode
+    FROM       {databaseOwner}[{objectQualifier}Portals]            AS P
+    INNER JOIN {databaseOwner}[{objectQualifier}PortalLocalization] AS PL ON P.PortalID = PL.PortalID
+    LEFT  JOIN {databaseOwner}[{objectQualifier}Users]              AS U  ON P.AdministratorId = U.UserID
+GO
+
+ALTER VIEW {databaseOwner}[{objectQualifier}vw_TabModules]
+AS
+    SELECT
+        M.PortalID AS [OwnerPortalID],
+        T.PortalID,
+        TM.TabID,
+        TM.TabModuleID,
+        M.ModuleID,
+        M.ModuleDefID,
+        TM.ModuleOrder,
+        TM.PaneName,
+        TM.ModuleTitle,
+        TM.CacheTime,
+        TM.CacheMethod,
+        TM.Alignment,
+        TM.Color,
+        TM.Border,
+         Case when tm.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(tm.IconFile, 8, 10) AS Int))
+			 else Coalesce(tm.IconFile,'')
+			 end as IconFile
+		,M.AllTabs,
+        TM.Visibility,
+        TM.IsDeleted,
+        TM.Header,
+        TM.Footer,
+        M.StartDate,
+        M.EndDate,
+        TM.ContainerSrc,
+        TM.DisplayTitle,
+        TM.DisplayPrint,
+        TM.DisplaySyndicate,
+        TM.IsWebSlice,
+        TM.WebSliceTitle,
+        TM.WebSliceExpiryDate,
+        TM.WebSliceTTL,
+        M.InheritViewPermissions,
+        M.IsShareable,
+        M.IsShareableViewOnly,
+        MD.DesktopModuleID,
+        MD.DefaultCacheTime,
+        MC.ModuleControlID,
+        DM.BusinessControllerClass,
+        DM.IsAdmin,
+        DM.SupportedFeatures,
+        CI.ContentItemID,
+        CI.Content,
+        CI.ContentTypeID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        TM.CreatedByUserID,
+        TM.CreatedOnDate,
+        TM.LastModifiedByUserID,
+        TM.LastModifiedOnDate,
+        M.LastContentModifiedOnDate,
+        TM.UniqueId,
+        TM.VersionGuid,
+        TM.DefaultLanguageGuid,
+        TM.LocalizedVersionGuid,
+        TM.CultureCode
+    FROM {databaseOwner}[{objectQualifier}ModuleDefinitions]     AS MD
+     INNER JOIN {databaseOwner}[{objectQualifier}Modules]        AS M  ON MD.ModuleDefID = M.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}ModuleControls] AS MC ON MD.ModuleDefID = MC.ModuleDefID
+     INNER JOIN {databaseOwner}[{objectQualifier}DesktopModules] AS DM ON MD.DesktopModuleID = DM.DesktopModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems]   AS CI ON M.ContentItemID = CI.ContentItemID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}TabModules]     AS TM ON M.ModuleID = TM.ModuleID
+     LEFT  JOIN {databaseOwner}[{objectQualifier}Tabs]           AS T  ON TM.TabID = T.TabID
+    WHERE (MC.ControlKey IS NULL)
+GO
+
+ALTER VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+		 Case when t.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFile, 8, 10) AS Int))
+			 else Coalesce(t.IconFile,'')
+			 end as IconFile
+		,
+         Case when t.IconFileLarge LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFileLarge, 8, 10) AS Int))
+			 else Coalesce(t.IconFileLarge,'')
+			 end as IconFileLarge
+		,T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate,
+		T.IsSystem
+    FROM       {databaseOwner}[{objectQualifier}Tabs]         AS T
+    LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+/* DNN-7163 */
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]', N'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Dashboard_GetInstalledModules]
+AS
+BEGIN
+	SELECT		
+		DM.DesktopModuleID, 
+		DM.ModuleName,
+		DM.FriendlyName,
+		DM.Version,
+		--Left Joined nulls will not add to the count
+		COUNT(MDEF.DesktopModuleID) as Instances
+	FROM {databaseOwner}[{objectQualifier}DesktopModules] AS DM
+	--Paren's Will enforce inner join first before left outer joining
+	left JOIN ({databaseOwner}[{objectQualifier}ModuleDefinitions] MDEF 
+				inner JOIN {databaseOwner}[{objectQualifier}Modules] MODS ON MDEF.ModuleDefID = MODS.ModuleDefID)
+	ON dm.DesktopModuleID = MDEF.DesktopModuleID 
+	WHERE (IsAdmin = 0)
+	group by DM.DesktopModuleID,DM.ModuleName,DM.FriendlyName,DM.Version
+	ORDER BY DM.[FriendlyName] ASC
+END
+GO
+
