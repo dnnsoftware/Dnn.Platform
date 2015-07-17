@@ -30,7 +30,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -392,7 +392,7 @@ namespace DotNetNuke.Modules.Admin.Languages
                 {
                     defaultLanguageLabel.Visible = false;
                     languagesComboBox.Visible = true;
-                    cmdEnableLocalizedContent.Visible = Host.EnableContentLocalization;
+                    cmdEnableLocalizedContent.Visible = DnnHost.EnableContentLocalization;
                     cmdDisableLocalization.Visible = false;
                     defaultPortalMessage.Text = LocalizeString("PortalDefaultEnabled.Text");
                     enabledPublishedPlaceHolder.Visible = false;

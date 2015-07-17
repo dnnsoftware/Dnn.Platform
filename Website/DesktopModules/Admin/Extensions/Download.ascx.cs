@@ -31,7 +31,7 @@ using System.Xml;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
@@ -401,15 +401,15 @@ namespace DotNetNuke.Modules.Admin.Extensions
             {
                 wreq.Method = "POST";
             }
-           
-            wreq.Timeout = Host.WebRequestTimeout;
-            
-            if (!string.IsNullOrEmpty(Host.ProxyServer))
+
+            wreq.Timeout = DnnHost.WebRequestTimeout;
+
+            if (!string.IsNullOrEmpty(DnnHost.ProxyServer))
             {
-                var proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
-                if (!string.IsNullOrEmpty(Host.ProxyUsername))
+                var proxy = new WebProxy(DnnHost.ProxyServer, DnnHost.ProxyPort);
+                if (!string.IsNullOrEmpty(DnnHost.ProxyUsername))
                 {
-                    var proxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+                    var proxyCredentials = new NetworkCredential(DnnHost.ProxyUsername, DnnHost.ProxyPassword);
                     proxy.Credentials = proxyCredentials;
                 }
                 wreq.Proxy = proxy;

@@ -50,6 +50,7 @@ using Telerik.Web.UI;
 
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 namespace DesktopModules.Admin.Tabs
 {

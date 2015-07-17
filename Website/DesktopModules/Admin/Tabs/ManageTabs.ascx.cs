@@ -55,6 +55,7 @@ using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
 using DataCache = DotNetNuke.Common.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
+using jQuery = DotNetNuke.Framework.jQuery;
 using Reflection = DotNetNuke.Framework.Reflection;
 
 #endregion

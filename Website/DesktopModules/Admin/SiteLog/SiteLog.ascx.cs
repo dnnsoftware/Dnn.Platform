@@ -28,7 +28,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -218,9 +218,9 @@ namespace DotNetNuke.Modules.Admin.SiteLog
                 if (Page.IsPostBack == false)
                 {
                     var strSiteLogStorage = "D";
-                    if (!string.IsNullOrEmpty(Host.SiteLogStorage))
+                    if (!string.IsNullOrEmpty(DnnHost.SiteLogStorage))
                     {
-                        strSiteLogStorage = Host.SiteLogStorage;
+                        strSiteLogStorage = DnnHost.SiteLogStorage;
                     }
                     if (strSiteLogStorage == "F")
                     {

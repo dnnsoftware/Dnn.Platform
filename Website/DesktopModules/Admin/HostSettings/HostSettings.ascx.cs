@@ -63,6 +63,7 @@ using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 

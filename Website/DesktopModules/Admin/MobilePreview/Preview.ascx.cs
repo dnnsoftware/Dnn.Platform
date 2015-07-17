@@ -33,7 +33,7 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Mobile;
@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Admin.MobilePreview
 				wreq.UserAgent = userAgent;
 				wreq.Referer = Request.Url.ToString();
 				wreq.Method = "GET";
-				wreq.Timeout = Host.WebRequestTimeout;
+                wreq.Timeout = DnnHost.WebRequestTimeout;
 				wreq.AllowAutoRedirect = false;
 				wreq.ContentType = "application/x-www-form-urlencoded";
 				SetCookies(wreq);

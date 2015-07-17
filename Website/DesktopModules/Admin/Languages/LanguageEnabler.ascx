@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Languages.LanguageEnabler" AutoEventWireup="false" Explicit="True" CodeFile="LanguageEnabler.ascx.cs" %>
+<%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Languages.LanguageEnabler" AutoEventWireup="false" Explicit="True" Codebehind="LanguageEnabler.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Src="~/DesktopModules/Admin/Languages/CLControl.ascx" TagName="CLControl" %>

@@ -21,18 +21,16 @@
 #region Usings
 
 using System;
-using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.UI.WebControls;
-
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.UI.WebControls;
@@ -348,7 +346,7 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                                                             && c.ModuleControlID != ModuleControlId);
                         if(keyExists)
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("DuplicateKey.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            Skin.AddModuleMessage(this, Localization.GetString("DuplicateKey.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
                         var moduleControl = new ModuleControlInfo
@@ -371,14 +369,14 @@ namespace DotNetNuke.Modules.Admin.ModuleDefinitions
                         }
                         catch
                         {
-                            UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AddControl.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            Skin.AddModuleMessage(this, Localization.GetString("AddControl.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
                         Response.Redirect(ReturnUrl, true);
                     }
                     else
                     {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("MissingSource.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                        Skin.AddModuleMessage(this, Localization.GetString("MissingSource.ErrorMessage", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     }
                 }
             }

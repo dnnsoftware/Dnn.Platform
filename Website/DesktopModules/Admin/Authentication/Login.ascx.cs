@@ -34,6 +34,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
@@ -264,7 +265,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <returns></returns>
         private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
         {
-            var returnValue = Host.UseFriendlyUrls
+            if (Host.UseFriendlyUrls)
                 ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
                 : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
             return returnValue;

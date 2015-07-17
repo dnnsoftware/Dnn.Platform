@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="SmtpServerSettings.ascx.cs" 
-    Inherits="DotNetNuke.Modules.Admin.AdvancedSettings.SmtpServerSettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" 
+    Inherits="DotNetNuke.Modules.Admin.AdvancedSettings.SmtpServerSettings" Codebehind="SmtpServerSettings.ascx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <script language="javascript" type="text/javascript">

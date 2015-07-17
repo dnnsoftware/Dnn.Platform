@@ -37,6 +37,7 @@ using DotNetNuke.UI;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 

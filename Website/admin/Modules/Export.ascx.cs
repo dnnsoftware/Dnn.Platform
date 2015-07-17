@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     //add file to Files table
 									using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
 									{
-										FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
+                                        Services.FileSystem.FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");
 									}
                                 }
                                 else

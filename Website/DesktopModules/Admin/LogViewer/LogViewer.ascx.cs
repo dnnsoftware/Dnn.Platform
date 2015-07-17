@@ -43,6 +43,7 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 

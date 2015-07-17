@@ -32,7 +32,7 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
+using DnnHost = DotNetNuke.Entities.Host.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -47,6 +47,7 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 
 using Telerik.Web.UI;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
@@ -94,7 +95,7 @@ namespace DotNetNuke.Modules.Admin.Portals
             try
             {
                 //ensure portal signup is allowed
-                if ((!IsHostMenu || UserInfo.IsSuperUser == false) && !Host.DemoSignup)
+                if ((!IsHostMenu || UserInfo.IsSuperUser == false) && !DnnHost.DemoSignup)
                 {
                     Response.Redirect(Globals.NavigateURL("Access Denied"), true);
                 }
@@ -130,7 +131,7 @@ namespace DotNetNuke.Modules.Admin.Portals
 						txtPortalAlias.Text = Globals.GetDomainName(Request) + @"/";
                         rowType.Visible = false;
                         string strMessage = string.Format(Localization.GetString("DemoMessage", LocalResourceFile),
-                                                          Host.DemoPeriod != Null.NullInteger ? " for " + Host.DemoPeriod + " days" : "",
+                                                          DnnHost.DemoPeriod != Null.NullInteger ? " for " + DnnHost.DemoPeriod + " days" : "",
                                                           Globals.GetDomainName(Request));
                         lblInstructions.Text = strMessage;
                         lblInstructions.Visible = true;
@@ -493,11 +494,11 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 if (!Globals.IsHostTab(PortalSettings.ActiveTab.TabID))
                                 {
                                     message = (String.IsNullOrEmpty(PortalSettings.Email) &&
-                                        String.IsNullOrEmpty(Host.HostEmail)) ?
+                                        String.IsNullOrEmpty(DnnHost.HostEmail)) ?
                                         string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr):
                                         Mail.SendMail(PortalSettings.Email,
                                                                txtEmail.Text,
-                                                               string.IsNullOrEmpty(PortalSettings.Email)? Host.HostEmail : string.IsNullOrEmpty(Host.HostEmail)? PortalSettings.Email : PortalSettings.Email  + ";" + Host.HostEmail,
+                                                               string.IsNullOrEmpty(PortalSettings.Email) ? DnnHost.HostEmail : string.IsNullOrEmpty(DnnHost.HostEmail) ? PortalSettings.Email : PortalSettings.Email + ";" + DnnHost.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
                                                                "",
@@ -510,11 +511,11 @@ namespace DotNetNuke.Modules.Admin.Portals
                                 }
                                 else
                                 {
-                                    message = String.IsNullOrEmpty(Host.HostEmail)?
+                                    message = String.IsNullOrEmpty(DnnHost.HostEmail) ?
                                         string.Format(Localization.GetString("UnknownEmailAddress.Error", LocalResourceFile), message, webUrl, closePopUpStr) :
-                                        Mail.SendMail(Host.HostEmail,
+                                        Mail.SendMail(DnnHost.HostEmail,
                                                                txtEmail.Text,
-                                                               Host.HostEmail,
+                                                               DnnHost.HostEmail,
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_SUBJECT", adminUser),
                                                                Localization.GetSystemMessage(newSettings, "EMAIL_PORTAL_SIGNUP_BODY", adminUser),
                                                                "",

@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         //add file to Files table
 						using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
 						{
-							FileManager.Instance.AddFile(folder, txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
+                            Services.FileSystem.FileManager.Instance.AddFile(folder, txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
 						}
 						
                     }

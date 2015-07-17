@@ -39,6 +39,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.UI.WebControls;
 using Telerik.Web.UI;
+using jQuery = DotNetNuke.Framework.jQuery;
 
 #endregion
 
