@@ -22,7 +22,7 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 	{
 
 	    public const string DefaultName = "CompositeFileProcessor";
-		private static Regex _importCssRegex = new Regex("@import url\\((.+?)\\);?", RegexOptions.Compiled);
+		private static readonly Regex ImportCssRegex = new Regex("@import url\\((.+?)\\);?", RegexOptions.Compiled);
 
 	    /// <summary>
 	    /// Saves the file's bytes to disk with a hash of the byte array
@@ -199,9 +199,9 @@ namespace ClientDependency.Core.CompositeFiles.Providers
 			//need to parse
 			if (type == ClientDependencyType.Css && ClientDependencySettings.Instance.DefaultFileRegistrationProvider.EnableCompositeFiles)
 			{
-				while(_importCssRegex.IsMatch(content))
+				while(ImportCssRegex.IsMatch(content))
 				{
-					var match = _importCssRegex.Match(content);
+					var match = ImportCssRegex.Match(content);
 					//write the previous content
 					sw.WriteLine(content.Substring(0, match.Index));
 					//write import css content

@@ -37,17 +37,13 @@ namespace ClientDependency.Core.Controls
             var srcAttributePattern = string.Format(AttributePattern, "href");
 
             var count = 0;
-            foreach (Match match in Regex.Matches(innerHtml, tagPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            foreach (Match match in Regex.Matches(innerHtml, tagPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
-                var typeMatch = Regex.Match(match.Value, typeAttributePattern,
-                                            RegexOptions.Compiled | RegexOptions.IgnoreCase |
-                                            RegexOptions.CultureInvariant);
+                var typeMatch = Regex.Match(match.Value, typeAttributePattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (typeMatch.Success && typeMatch.Groups["val"].Value == "text/css")
                 {
-                    var srcMatch = Regex.Match(match.Value, srcAttributePattern,
-                                            RegexOptions.Compiled | RegexOptions.IgnoreCase |
-                                            RegexOptions.CultureInvariant);
+                    var srcMatch = Regex.Match(match.Value, srcAttributePattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                     if (srcMatch.Success)
                     {
@@ -68,17 +64,13 @@ namespace ClientDependency.Core.Controls
             var srcAttributePattern = string.Format(AttributePattern, "src");
 
             var count = 0;
-            foreach (Match match in Regex.Matches(innerHtml, tagPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            foreach (Match match in Regex.Matches(innerHtml, tagPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
             {
-                var typeMatch = Regex.Match(match.Value, typeAttributePattern,
-                                            RegexOptions.Compiled | RegexOptions.IgnoreCase |
-                                            RegexOptions.CultureInvariant);
+                var typeMatch = Regex.Match(match.Value, typeAttributePattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                 if (typeMatch.Success && typeMatch.Groups["val"].Value == "text/javascript")
                 {
-                    var srcMatch = Regex.Match(match.Value, srcAttributePattern,
-                                            RegexOptions.Compiled | RegexOptions.IgnoreCase |
-                                            RegexOptions.CultureInvariant);
+                    var srcMatch = Regex.Match(match.Value, srcAttributePattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
                     if (srcMatch.Success)
                     {

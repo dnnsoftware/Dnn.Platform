@@ -69,6 +69,8 @@ namespace DesktopModules.Admin.Tabs
     /// </remarks>
     public partial class View : PortalModuleBase
     {
+        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
+
         #region Private Members
 
         private const string DefaultPageTemplate = "Default.page.template";
@@ -575,7 +577,7 @@ namespace DesktopModules.Admin.Tabs
             {
                 tabs.Add(new TabInfo
                             {
-                                TabName = Regex.Replace(strLine, ">*(.*)", "${1}"),
+                                TabName = TabNameRegex.Replace(strLine, "${1}"),
                                 Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1
                             });
             }

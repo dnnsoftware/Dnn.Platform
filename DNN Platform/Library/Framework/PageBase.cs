@@ -64,6 +64,9 @@ namespace DotNetNuke.Framework
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
 
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private readonly static Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private PageStatePersister _persister;
         #region Private Members
 
@@ -434,9 +437,7 @@ namespace DotNetNuke.Framework
             var linkButton = control as LinkButton;
             if (linkButton != null)
             {
-                var imgMatches = Regex.Matches(value,
-                    "<(a|link|img|script|input|form).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>",
-                    RegexOptions.IgnoreCase);
+                var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
                     if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))

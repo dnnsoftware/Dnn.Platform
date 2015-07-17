@@ -78,6 +78,10 @@ namespace DotNetNuke.Framework
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DefaultPage));
+
+        private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+
         #region Properties
 
         /// -----------------------------------------------------------------------------
@@ -95,10 +99,11 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                int pageScrollTop = Null.NullInteger;
-                if (ScrollTop != null && !String.IsNullOrEmpty(ScrollTop.Value) && Regex.IsMatch(ScrollTop.Value, "^\\d+$"))
+                int pageScrollTop;
+                var scrollValue = ScrollTop != null ? ScrollTop.Value : "";
+                if (!int.TryParse(scrollValue, out pageScrollTop) || pageScrollTop < 0)
                 {
-                    pageScrollTop = Convert.ToInt32(ScrollTop.Value);
+                    pageScrollTop = Null.NullInteger;
                 }
                 return pageScrollTop;
             }
@@ -395,10 +400,9 @@ namespace DotNetNuke.Framework
             }
 
             //META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
-            if (!UrlUtils.InPopUp() && 
-                !Regex.IsMatch(PortalSettings.ActiveTab.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline) &&
-                !Regex.IsMatch(PortalSettings.PageHeadText, "<meta([^>])+name=('|\")robots('|\")", RegexOptions.IgnoreCase | RegexOptions.Multiline)
-                )
+            if (!UrlUtils.InPopUp() &&
+                !(HeaderTextRegex.IsMatch(PortalSettings.ActiveTab.PageHeadText) ||
+                  HeaderTextRegex.IsMatch(PortalSettings.PageHeadText)))
             {
                 MetaRobots.Visible = true;
                 var allowIndex = true;
@@ -496,26 +500,28 @@ namespace DotNetNuke.Framework
         private void ManageRequest()
         {
             //affiliate processing
-            int affiliateId = -1;
-            if (Request.QueryString["AffiliateId"] != null)
+            int affiliateId;
+            var affiliatedStr = Request.QueryString["AffiliateId"];
+            if (!string.IsNullOrEmpty(affiliatedStr) && int.TryParse(affiliatedStr, out affiliateId))
             {
-                if (Regex.IsMatch(Request.QueryString["AffiliateId"], "^\\d+$"))
-                {
-                    affiliateId = Int32.Parse(Request.QueryString["AffiliateId"]);
-                    var objAffiliates = new AffiliateController();
-                    objAffiliates.UpdateAffiliateStats(affiliateId, 1, 0);
+                affiliateId = Int32.Parse(affiliatedStr);
+                var objAffiliates = new AffiliateController();
+                objAffiliates.UpdateAffiliateStats(affiliateId, 1, 0);
 
-                    //save the affiliateid for acquisitions
-                    if (Request.Cookies["AffiliateId"] == null) //do not overwrite
+                //save the affiliateid for acquisitions
+                if (Request.Cookies["AffiliateId"] == null) //do not overwrite
+                {
+                    var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
                     {
-                        var objCookie = new HttpCookie("AffiliateId", affiliateId.ToString("D"))
-                        {
-                            Expires = DateTime.Now.AddYears(1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
-                        };
-                        Response.Cookies.Add(objCookie);
-                    }
+                        Expires = DateTime.Now.AddYears(1),
+                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    };
+                    Response.Cookies.Add(objCookie);
                 }
+            }
+            else
+            {
+                affiliateId = -1;
             }
 
             //site logging

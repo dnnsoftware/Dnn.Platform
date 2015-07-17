@@ -71,6 +71,9 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
+        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region constructor
         public InternalSearchControllerImpl()
         {
@@ -516,7 +519,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Add Field to Doc when supplied fieldValue > 0
         /// </summary>
-        private void AddIntField(Document doc, int fieldValue, string fieldTag)
+        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
@@ -537,9 +540,9 @@ namespace DotNetNuke.Services.Search.Internals
             if (!String.IsNullOrEmpty(strippedString))
             {
                 // Remove all opening HTML Tags with no attributes
-                strippedString = Regex.Replace(strippedString, @"<\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
                 // Remove all closing HTML Tags
-                strippedString = Regex.Replace(strippedString, @"</\w*\s*>", emptySpace, RegexOptions.IgnoreCase);
+                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
             }
 
             if (!String.IsNullOrEmpty(strippedString))

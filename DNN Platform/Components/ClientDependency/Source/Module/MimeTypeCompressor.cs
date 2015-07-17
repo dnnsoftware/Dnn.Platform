@@ -68,7 +68,7 @@ namespace ClientDependency.Core.Module
             {
                 //if it is only "*" then convert it to proper regex
                 var reg = m.FilePath == "*" ? ".*" : m.FilePath;
-                var matched = Regex.IsMatch(Context.Request.RawUrl, reg, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                var matched = Regex.IsMatch(Context.Request.RawUrl, reg, RegexOptions.IgnoreCase);
                 if (matched) return m;
             }
             return null;

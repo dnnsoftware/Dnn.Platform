@@ -44,6 +44,9 @@ namespace DotNetNuke.Entities.Urls
         private readonly bool _includePageName;
         private readonly string _regexMatch;
 
+        private static readonly Regex FriendlyPathRx = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex DefaultPageRx = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
@@ -214,12 +217,12 @@ namespace DotNetNuke.Entities.Urls
         private string GetFriendlyQueryString(TabInfo tab, string path, string pageName)
         {
             string friendlyPath = path;
-            Match queryStringMatch = Regex.Match(friendlyPath, "(.[^\\\\?]*)\\\\?(.*)", RegexOptions.IgnoreCase);
+            Match queryStringMatch = FriendlyPathRx.Match(friendlyPath);
             string queryStringSpecialChars = "";
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
-                friendlyPath = Regex.Replace(friendlyPath, Globals.glbDefaultPage, "", RegexOptions.IgnoreCase);
+                friendlyPath = DefaultPageRx.Replace(friendlyPath, "");
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if ((queryString.StartsWith("?")))
                 {
@@ -415,8 +418,7 @@ namespace DotNetNuke.Entities.Urls
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                var regex = new Regex(@"^http://", RegexOptions.IgnoreCase);
-                friendlyPath = regex.Replace(friendlyPath, "https://");
+                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
                 var sslUrl = portalSettings.SSLURL;

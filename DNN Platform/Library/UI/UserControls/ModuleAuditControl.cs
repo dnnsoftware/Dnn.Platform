@@ -43,7 +43,9 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
 
-		[Serializable]
+        private readonly static Regex NumberMatchRegex = new Regex(@"^\d+$", RegexOptions.Compiled);
+
+        [Serializable]
 		private class EntityInfo
 		{
 			public int CreatedByUserID { get; set; }
@@ -109,7 +111,7 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 //check to see if updated check is redundant
-                var isCreatorAndUpdater = Regex.IsMatch(CreatedByUser, "^\\d+$") && Regex.IsMatch(LastModifiedByUser, "^\\d+$") && CreatedByUser == LastModifiedByUser;
+                var isCreatorAndUpdater = CreatedByUser == LastModifiedByUser && NumberMatchRegex.IsMatch(CreatedByUser) && NumberMatchRegex.IsMatch(LastModifiedByUser);
 
                 _systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
                 ShowCreatedString();

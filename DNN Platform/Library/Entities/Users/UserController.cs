@@ -1951,16 +1951,11 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ValidatePassword(string password)
         {
-            var isValid = true;
-
             //Valid Length
-            if (password.Length < MembershipProviderConfig.MinPasswordLength)
-            {
-                isValid = false;
-            }
+            var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
             //Validate NonAlphaChars
-            var rx = new Regex("[^0-9a-zA-Z]");
+            var rx = Globals.InvalidCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;
@@ -1968,8 +1963,7 @@ namespace DotNetNuke.Entities.Users
             //Validate Regex
             if (!String.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
-                rx = new Regex(MembershipProviderConfig.PasswordStrengthRegularExpression);
-                isValid = rx.IsMatch(password);
+                isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
             }
             return isValid;
         }
