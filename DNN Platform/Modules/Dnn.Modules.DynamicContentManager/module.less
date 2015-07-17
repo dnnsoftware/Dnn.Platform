@@ -4,6 +4,7 @@
 @tab_background_color: #eee;
 @selectedTab_background_color: #fff;
 @selectedTab_color:  #0087c6;
+@header_background_color: #fff;
 
 /*Units*/
 @width: 950px;
@@ -31,7 +32,9 @@
     width: @width;
     padding-top: 25px;
     padding-bottom: 10px;
-    border-bottom: solid 2px @border_color;
+    border-bottom: solid 1px @border_color;
+    background-color: @header_background_color;
+    box-shadow: 0px 2px 2px @border_color;
 }
 
 .dccContainer .dccHeading span{
@@ -52,14 +55,16 @@
     background-color: @panel_background_color;
     height: @panel_height;
     border: solid 1px @border_color;
+    border-radius: 4px;
 }
 
 .dccContainer .dccMenu ul {
     display: inline-block;
     margin-left: 0;
-    width: 100%;
+    width: @panel_width - 1;
     border-radius: 4px;
     background-color: @tab_background_color;
+    padding-left: 1px;
 }
 
 .dccContainer .dccMenu ul > li {
@@ -137,8 +142,6 @@
 .dccContainer .dccTable{
     width: 100%;
     border-collapse: collapse;
-    border-left: 1px solid @border_color;
-    border-right: 1px solid @border_color;
     border-bottom: 1px solid @border_color;
 }
 
@@ -472,10 +475,10 @@
 .dccContainer .dccSubSubPanel {
     margin-top:10px;
     margin-bottom: 10px;
-    padding:9px;
+    padding-top:9px;
+    padding-bottom: 9px;
     border: solid 1px @border_color;
     border-radius: 5px;
-    height: 340px;
 }
 
 .dccContainer .dccSubSubPanel .dccSubHeading {
@@ -489,11 +492,13 @@
 }
 
 .dccContainer .dccSubSubPanel .dccTable {
-    border: solid 1px @border_color;
+    border-top: solid 1px @border_color;
+    border-bottom: none;
 }
 
 .dccContainer .dccSubHeading {
     margin-left: 25px;
+    margin-right: 15px;
 }
 
 .dccContainer .dccSubHeading span {
