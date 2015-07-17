@@ -56,5 +56,27 @@ namespace ClientDependency.Core.Controls
 				return Parent.ResolveUrl(Path);
 			}
 		}
+
+        protected bool Equals(ClientDependencyPath other)
+        {
+            return string.Equals(_name, other._name, StringComparison.InvariantCultureIgnoreCase)
+                   && string.Equals(_path, other._path, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+	    public override bool Equals(object obj)
+	    {
+	        if (ReferenceEquals(null, obj)) return false;
+	        if (ReferenceEquals(this, obj)) return true;
+	        if (obj.GetType() != this.GetType()) return false;
+	        return Equals((ClientDependencyPath) obj);
+	    }
+
+	    public override int GetHashCode()
+	    {
+	        unchecked
+	        {
+	            return ((_name != null ? _name.GetHashCode() : 0)*397) ^ (_path != null ? _path.GetHashCode() : 0);
+	        }
+	    }
 	}
 }
