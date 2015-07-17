@@ -3,39 +3,32 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.Hosting;
 using ClientDependency.Core.Config;
 using System.IO;
 using System.Web;
-using System.Net;
-using System.IO.Compression;
-using System.Configuration.Provider;
-using ClientDependency.Core.CompositeFiles;
 
 namespace ClientDependency.Core.CompositeFiles.Providers
 {
 
-	/// <summary>
-	/// A provider for combining, minifying, compressing and saving composite scripts/css files
-	/// </summary>
-	public class CompositeFileProcessingProvider : BaseCompositeFileProcessingProvider
+    /// <summary>
+    /// A provider for combining, minifying, compressing and saving composite scripts/css files
+    /// </summary>
+    public class CompositeFileProcessingProvider : BaseCompositeFileProcessingProvider
 	{
 
 	    public const string DefaultName = "CompositeFileProcessor";
-		private static Regex _importCssRegex = new Regex("@import url\\((.+?)\\);?", RegexOptions.Compiled);
 
-	    /// <summary>
-	    /// Saves the file's bytes to disk with a hash of the byte array
-	    /// </summary>
-	    /// <param name="fileContents"></param>
-	    /// <param name="type"></param>
-	    /// <param name="server"></param>
-	    /// <returns>The new file path</returns>
-	    /// <remarks>
-	    /// the extension will be: .cdj for JavaScript and .cdc for CSS
-	    /// </remarks>
-	    public override FileInfo SaveCompositeFile(byte[] fileContents, ClientDependencyType type, HttpServerUtilityBase server)
+        /// <summary>
+        /// Saves the file's bytes to disk with a hash of the byte array
+        /// </summary>
+        /// <param name="fileContents"></param>
+        /// <param name="type"></param>
+        /// <param name="server"></param>
+        /// <returns>The new file path</returns>
+        /// <remarks>
+        /// the extension will be: .cdj for JavaScript and .cdc for CSS
+        /// </remarks>
+        public override FileInfo SaveCompositeFile(byte[] fileContents, ClientDependencyType type, HttpServerUtilityBase server)
 		{
             //don't save the file if composite files are disabled.
             if (!PersistCompositeFiles)
