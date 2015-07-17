@@ -25,6 +25,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 {
     internal class DigestAuthenticationRequest
     {
+        private static readonly Regex AuthHeaderRegex = new Regex("\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))", RegexOptions.Compiled);
+
         public DigestAuthenticationRequest(string authorizationHeader, string httpMethod)
         {
             //Authorization: Digest
@@ -38,9 +40,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             //response="6629fae49393a05397450978507c4ef1",
             //opaque="5ccc069c403ebaf9f0171e9517f40e41"
             RequestParams = new NameValueCollection();
-            foreach (
-                Match m in
-                    Regex.Matches(authorizationHeader, "\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))"))
+            foreach (Match m in AuthHeaderRegex.Matches(authorizationHeader))
             {
                 RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
             }

@@ -36,6 +36,8 @@ namespace DotNetNuke.Modules.Admin.Vendors
 {
     public partial class BannerClickThrough : PageBase
     {
+        private static readonly Regex NumberRegex = new Regex("^\\d+$", RegexOptions.Compiled);
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -50,19 +52,21 @@ namespace DotNetNuke.Modules.Admin.Vendors
                 if ((Request.QueryString["vendorid"] != null) && (Request.QueryString["bannerid"] != null))
                 {
                     int intVendorId = -1;
-                    if (Regex.IsMatch(Request.QueryString["vendorid"], "^\\d+$"))
+                    if (NumberRegex.IsMatch(Request.QueryString["vendorid"]))
                     {
                         intVendorId = int.Parse(Request.QueryString["vendorid"]);
                     }
+
                     int intBannerId = -1;
-                    if (Regex.IsMatch(Request.QueryString["bannerid"], "^\\d+$"))
+                    if (NumberRegex.IsMatch(Request.QueryString["bannerid"]))
                     {
                         intBannerId = int.Parse(Request.QueryString["bannerid"]);
                     }
+
                     int intPortalId = -1;
                     if ((Request.QueryString["portalid"] != null))
                     {
-                        if (Regex.IsMatch(Request.QueryString["portalid"], "^\\d+$"))
+                        if (NumberRegex.IsMatch(Request.QueryString["portalid"]))
                         {
                             intPortalId = int.Parse(Request.QueryString["portalid"]);
                         }
@@ -71,6 +75,7 @@ namespace DotNetNuke.Modules.Admin.Vendors
                     {
                         intPortalId = Globals.GetPortalSettings().PortalId;
                     }
+
                     if (intBannerId != -1 && intVendorId != -1 && intPortalId != -1)
                     {
                         string strURL = "~/" + Globals.glbDefaultPage;

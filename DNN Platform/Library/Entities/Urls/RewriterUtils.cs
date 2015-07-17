@@ -34,6 +34,8 @@ namespace DotNetNuke.Entities.Urls
 {
     public class RewriterUtils
     {
+        internal static readonly Regex ServicesFrameworkRegex = new Regex("DesktopModules/.+/API/", RegexOptions.Compiled);
+
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
         {
             //first strip the querystring, if any
@@ -108,8 +110,6 @@ namespace DotNetNuke.Entities.Urls
             }
             return appPath + url.Substring(1);
         }
-
-        private static readonly Regex ServicesFrameworkRegex = new Regex("DesktopModules/[^/]+/API/");
 
         static internal bool OmitFromRewriteProcessing(string localPath)
         {

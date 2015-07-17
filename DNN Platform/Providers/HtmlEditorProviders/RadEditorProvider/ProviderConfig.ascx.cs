@@ -52,6 +52,8 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
     public partial class ProviderConfig : Entities.Modules.PortalModuleBase, Entities.Modules.IActionable
     {
+        private static Regex RoleMatchRegex = new Regex("^RoleId\\.([-\\d]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region Private Members
 
 
@@ -1466,7 +1468,7 @@ namespace DotNetNuke.Providers.RadEditorProvider
 
                         if (strTargetGroup.Length > 0)
                         {
-                            var roleMatch = Regex.Match(strTargetGroup, "^RoleId\\.([-\\d]+)", RegexOptions.IgnoreCase);
+                            var roleMatch = RoleMatchRegex.Match(strTargetGroup);
                             if (roleMatch.Success)
                             {
                                 var roleId = roleMatch.Groups[1].Value;

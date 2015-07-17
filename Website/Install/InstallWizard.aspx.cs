@@ -966,7 +966,7 @@ namespace DotNetNuke.Services.Install
                         UpdateMachineKey();
                     }
 
-                    if (!Regex.IsMatch(Request.Url.Host, "^([a-zA-Z0-9.-]+)$", RegexOptions.IgnoreCase))
+                    if (!Regex.IsMatch(Request.Url.Host, "^([a-zA-Z0-9.-]+)$"))
                     {
                         lblError.Visible = true;
                         lblError.Text = Localization.Localization.GetString("HostWarning", LocalResourceFile);

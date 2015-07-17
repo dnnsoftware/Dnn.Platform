@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.Admin.Languages
     public partial class LanguageEditor : PortalModuleBase, IActionable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguageEditor));
+
         #region Private Enums
 
         /// -----------------------------------------------------------------------------
@@ -974,7 +975,7 @@ namespace DotNetNuke.Modules.Admin.Languages
             foreach (string file in Directory.GetFiles(path, "*.resx"))
             {
                 var fileInfo = new FileInfo(file);
-                var match = Regex.Match(fileInfo.Name, @"\.(\w\w\-\w\w)\.resx");
+                var match = FileInfoRegex.Match(fileInfo.Name);
 
                 if (match.Success && match.Groups[1].Value.ToLowerInvariant() != "en-us")
                 {

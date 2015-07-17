@@ -71,7 +71,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
 	{
 		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
 
-		#region Private Members
+        private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        #region Private Members
 
 		private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly  List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
@@ -252,7 +255,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			}
 		}
 
-
         /// <summary>
         /// Replaces the original language with user language
         /// </summary>
@@ -260,17 +262,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// <param name="originalLanguage"></param>
         /// <param name="newLanguage"></param>
         /// <returns></returns>
-        private string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
+        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
         {
-            string returnValue;
-            if (Host.UseFriendlyUrls)
-            {
-                returnValue = Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase);
-            }
-            else
-            {
-                returnValue = Regex.Replace(Url, "(.*)(&|\\?)(language=)([^&\\?]+)(.*)", "$1$2$3" + newLanguage + "$5", RegexOptions.IgnoreCase);
-            }
+            var returnValue = Host.UseFriendlyUrls
+                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
+                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
         }
 

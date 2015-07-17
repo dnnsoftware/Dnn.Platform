@@ -23,6 +23,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
@@ -351,11 +352,13 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         private class ControlParser
         {
-            private readonly Hashtable m_ControlList = new Hashtable();
-            private readonly string m_InitMessages = "";
+            private readonly Hashtable m_ControlList;
             private XmlDocument m_Attributes = new XmlDocument();
             private string m_ParseMessages = "";
             private ArrayList m_RegisterList = new ArrayList();
+
+            private static readonly Regex FindTokenInstance =
+                new Regex("\\[\\s*(?<token>\\w*)\\s*:?\\s*(?<instance>\\w*)\\s*]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -468,14 +471,13 @@ namespace DotNetNuke.UI.Skins
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source, XmlDocument Attributes)
             {
-                Messages = m_InitMessages;
+                Messages = string.Empty;
                 //set the token attributes
                 this.Attributes = Attributes;
                 //clear register list
                 RegisterList.Clear();
 
                 //define the regular expression to match tokens
-                var FindTokenInstance = new Regex("\\[\\s*(?<token>\\w*)\\s*:?\\s*(?<instance>\\w*)\\s*]", RegexOptions.IgnoreCase);
 
                 //parse the file
                 Source = FindTokenInstance.Replace(Source, Handler);
@@ -633,10 +635,15 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         private class ObjectParser
         {
-            private readonly Hashtable m_ControlList = new Hashtable();
-            private readonly string m_InitMessages = "";
+            private readonly Hashtable m_ControlList;
             private string m_ParseMessages = "";
             private ArrayList m_RegisterList = new ArrayList();
+
+            //define the regular expression to match objects
+            private static readonly Regex FindObjectInstance =
+                new Regex("\\<object(?<token>.*?)</object>", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+            private static readonly Regex MultiSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -734,13 +741,10 @@ namespace DotNetNuke.UI.Skins
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source)
             {
-                Messages = m_InitMessages;
+                Messages = string.Empty;
 
                 //clear register list
                 RegisterList.Clear();
-
-                //define the regular expression to match objects
-                var FindObjectInstance = new Regex("\\<object(?<token>.*?)</object>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
                 //parse the file
                 Source = FindObjectInstance.Replace(Source, Handler);
@@ -841,7 +845,7 @@ namespace DotNetNuke.UI.Skins
                         Parameters = Parameters.Replace("/>", "");
 
                         //convert multiple spaces and carriage returns into single spaces 
-                        Parameters = Regex.Replace(Parameters, "\\s+", " ");
+                        Parameters = MultiSpaceRegex.Replace(Parameters, " ");
 
                         if (ControlList.ContainsKey(Token))
                         {
@@ -928,6 +932,31 @@ namespace DotNetNuke.UI.Skins
             private string m_Messages = "";
             private string m_SkinPath = "";
 
+            private const RegexOptions PatternOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled;
+
+            //retrieve the patterns
+            private static readonly Regex[] HtmlArrayPattern =
+            {
+                new Regex("(?<tag><head[^>]*?\\sprofile\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><object[^>]*?\\s(?:codebase|data|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><img[^>]*?\\s(?:src|longdesc|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><input[^>]*?\\s(?:src|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><iframe[^>]*?\\s(?:src|longdesc)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><(?:td|th|table|body)[^>]*?\\sbackground\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><(?:script|bgsound|embed|xml|frame)[^>]*?\\ssrc\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><(?:base|link|a|area)[^>]*?\\shref\\s*=\\s*\")(?!https://|http://|\\\\|[~/]|javascript:|mailto:)(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><(?:blockquote|ins|del|q)[^>]*?\\scite\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><(?:param\\s+name\\s*=\\s*\"(?:movie|src|base)\")[^>]*?\\svalue\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
+                new Regex("(?<tag><embed[^>]*?\\s(?:src)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions)
+            };
+
+            //retrieve the patterns
+            private static readonly Regex[] CssArrayPattern =
+            {
+                new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions)
+            };
+
+
             /// -----------------------------------------------------------------------------
             /// <summary>
             ///     List of regular expressions for processing HTML syntax.
@@ -950,28 +979,8 @@ namespace DotNetNuke.UI.Skins
                     //if the arraylist in uninitialized
                     if (m_HTMLPatterns.Count == 0)
                     {
-                        //retrieve the patterns
-                        string[] arrPattern = {
-                                                  "(?<tag><head[^>]*?\\sprofile\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><object[^>]*?\\s(?:codebase|data|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><img[^>]*?\\s(?:src|longdesc|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><input[^>]*?\\s(?:src|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><iframe[^>]*?\\s(?:src|longdesc)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><(?:td|th|table|body)[^>]*?\\sbackground\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><(?:script|bgsound|embed|xml|frame)[^>]*?\\ssrc\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><(?:base|link|a|area)[^>]*?\\shref\\s*=\\s*\")(?!https://|http://|\\\\|[~/]|javascript:|mailto:)(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><(?:blockquote|ins|del|q)[^>]*?\\scite\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><(?:param\\s+name\\s*=\\s*\"(?:movie|src|base)\")[^>]*?\\svalue\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)",
-                                                  "(?<tag><embed[^>]*?\\s(?:src)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)"
-                                              };
-
                         //for each pattern, create a regex object
-                        for (int i = 0; i <= arrPattern.GetLength(0) - 1; i++)
-                        {
-                            var re = new Regex(arrPattern[i], RegexOptions.Multiline | RegexOptions.IgnoreCase);
-                            //add the Regex object to the pattern array list
-                            m_HTMLPatterns.Add(re);
-                        }
+                        m_HTMLPatterns.AddRange(HtmlArrayPattern);
 
                         //optimize the arraylist size since it will not change
                         m_HTMLPatterns.TrimToSize();
@@ -1002,17 +1011,8 @@ namespace DotNetNuke.UI.Skins
                     //if the arraylist in uninitialized
                     if (m_CSSPatterns.Count == 0)
                     {
-                        //retrieve the patterns
-                        string[] arrPattern = { "(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)" };
-
                         //for each pattern, create a regex object
-                        for (int i = 0; i <= arrPattern.GetLength(0) - 1; i++)
-                        {
-                            var re = new Regex(arrPattern[i], RegexOptions.Multiline | RegexOptions.IgnoreCase);
-
-                            //add the Regex object to the pattern array list
-                            m_CSSPatterns.Add(re);
-                        }
+                        m_CSSPatterns.AddRange(CssArrayPattern);
 
                         //optimize the arraylist size since it will not change
                         m_CSSPatterns.TrimToSize();
@@ -1163,6 +1163,12 @@ namespace DotNetNuke.UI.Skins
             private string FILE_FORMAT_DETAIL = Util.GetLocalizedString("FileFormat.Detail");
             private string m_Messages = "";
 
+            private static readonly Regex PaneCheck1Regex = new Regex("\\s*id\\s*=\\s*\"" + Globals.glbDefaultPane + "\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            private static readonly Regex PaneCheck2Regex = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+            const string StrPattern = "<\\s*body[^>]*>(?<skin>.*)<\\s*/\\s*body\\s*>";
+            private readonly static Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+
             /// -----------------------------------------------------------------------------
             /// <summary>
             ///     SkinFile class constructor.
@@ -1225,9 +1231,7 @@ namespace DotNetNuke.UI.Skins
                         m_WriteFileName = FileName.Replace(Path.GetExtension(FileName), ".ascx");
 
                         //capture warning if file does not contain a id="ContentPane" or [CONTENTPANE]
-                        var PaneCheck1 = new Regex("\\s*id\\s*=\\s*\"" + Globals.glbDefaultPane + "\"", RegexOptions.IgnoreCase);
-                        var PaneCheck2 = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase);
-                        if (PaneCheck1.IsMatch(Contents) == false && PaneCheck2.IsMatch(Contents) == false)
+                        if (!PaneCheck1Regex.IsMatch(Contents) && !PaneCheck2Regex.IsMatch(Contents))
                         {
                             m_Messages += SkinController.FormatMessage(FILE_FORMAT_ERROR, string.Format(FILE_FORMAT_ERROR, FileName), 2, true);
                         }
@@ -1353,14 +1357,11 @@ namespace DotNetNuke.UI.Skins
                 string Messages = "";
                 string Prefix = "";
 
-                //if the skin source is an HTML document, extract the content within the <body> tags
-                string strPattern = "<\\s*body[^>]*>(?<skin>.*)<\\s*/\\s*body\\s*>";
-
                 //format and save @Control directive
-                Match objMatch;
-                objMatch = Regex.Match(Contents, strPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                if (!String.IsNullOrEmpty(objMatch.Groups[1].Value))
+                Match objMatch = BodyExtractionRegex.Match(Contents);
+                if (objMatch.Success && !string.IsNullOrEmpty(objMatch.Groups[1].Value))
                 {
+                    //if the skin source is an HTML document, extract the content within the <body> tags
                     Contents = objMatch.Groups[1].Value;
                 }
                 if (SkinRoot == SkinController.RootSkin)

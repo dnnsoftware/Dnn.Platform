@@ -62,6 +62,8 @@ namespace DotNetNuke.Modules.Admin.Newsletters
     /// -----------------------------------------------------------------------------
     public partial class Newsletter : PortalModuleBase
     {
+        private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+        private readonly static Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region Private Methods
 
@@ -457,8 +459,7 @@ namespace DotNetNuke.Modules.Admin.Newsletters
 		private static string ConvertToAbsoluteUrls(string content)
 		{
 			//convert links to absolute
-			const string pattern = "<(a|link|img|script|object).[^>]*(href|src|action)=(\\\"|'|)(?<url>(.[^\\\"']*))(\\\"|'|)[^>]*>";
-			return Regex.Replace(content, pattern, FormatUrls);
+            return LinkItemMatchRegex.Replace(content, FormatUrls);
 		}
 
         #endregion

@@ -42,6 +42,8 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class UserResultController : BaseResultController
     {
+        private readonly static Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
+
         #region Private Properties
 
         private PortalSettings PortalSettings
@@ -153,15 +155,10 @@ namespace DotNetNuke.Services.Search.Controllers
             return isVisible;
         }
 
-        private int GetUserId(SearchResult searchResult)
+        private static int GetUserId(SearchDocumentToDelete searchResult)
         {
-            var match = Regex.Match(searchResult.UniqueKey, "^(\\d+)_");
-            if (!match.Success)
-            {
-                return Null.NullInteger;
-            }
-
-            return Convert.ToInt32(match.Groups[1].Value);
+            var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
         }
         #endregion
     }

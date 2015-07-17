@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.Admin.LogViewer
             }
 
             string returnMsg;
-            if (Regex.IsMatch(strFromEmailAddress, Globals.glbEmailRegEx))
+            if (Globals.EmailValidatorRegex.IsMatch(strFromEmailAddress))
             {
                 const string tempFileName = "errorlog.xml";
                 var filePath = PortalSettings.HomeDirectoryMapPath + tempFileName;

@@ -68,8 +68,8 @@ namespace DotNetNuke.Entities.Tabs
         private Hashtable _settings;
         private string _skinDoctype;
         private bool _superTabIdSet = Null.NullBoolean;
-        private readonly SharedDictionary<string, string> _localizedTabNameDictionary = new SharedDictionary<string, string>();
-        private readonly SharedDictionary<string, string> _fullUrlDictionary = new SharedDictionary<string, string>();
+        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
+        private readonly SharedDictionary<string, string> _fullUrlDictionary;
         private string _iconFile;
         private string _iconFileLarge;
 
@@ -789,8 +789,9 @@ namespace DotNetNuke.Entities.Tabs
 
         #region Private Methods
 
-        static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
-        static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
 
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
@@ -837,15 +838,16 @@ namespace DotNetNuke.Entities.Tabs
             var xmlSkinDocType = new XmlDocument();
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-            string skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
+            var skinFileName = HttpContext.Current.Server.MapPath(SkinSrc.Replace(".ascx", ".doctype.xml"));
             if (File.Exists(skinFileName)) {
                 xmlSkinDocType.Load(skinFileName);
                 return xmlSkinDocType;
             }
 
             // use the skin.doctype.xml file
-            string packageFileName = HttpContext.Current.Server.MapPath(Regex.Replace(SkinSrc, @"([^/]+$)", "skin.doctype.xml", RegexOptions.CultureInvariant));
-            if (File.Exists(packageFileName)) {
+            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(SkinSrc, "skin.doctype.xml"));
+            if (File.Exists(packageFileName))
+            {
                 xmlSkinDocType.Load(packageFileName);
                 return xmlSkinDocType;
             }

@@ -69,6 +69,10 @@ namespace DotNetNuke.UI.Modules
     public sealed class ModuleHost : Panel
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
+
+        private readonly static Regex CdfMatchRegex = new Regex(@"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         #region Private Members
 
         private readonly ModuleInfo _moduleConfiguration;
@@ -485,7 +489,7 @@ namespace DotNetNuke.UI.Modules
         private void RestoreCachedClientResourceRegistrations(string cachedContent)
         {
             // parse the registered CDF from content
-            var matches = Regex.Matches(cachedContent, @"<\!--CDF\((JAVASCRIPT|CSS|JS-LIBRARY)\|(.+?)\)-->", RegexOptions.IgnoreCase);
+            var matches = CdfMatchRegex.Matches(cachedContent);
             if (matches.Count == 0)
             {
                 return;
