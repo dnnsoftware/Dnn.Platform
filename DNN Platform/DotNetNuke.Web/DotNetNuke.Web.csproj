@@ -285,7 +285,6 @@
     <Compile Include="UI\WebControls\DnnFormTextBoxItem.cs" />
     <Compile Include="UI\WebControls\DnnFormRadioButtonListItem.cs" />
     <Compile Include="UI\WebControls\DnnFormListItemBase.cs" />
-    <Compile Include="UI\WebControls\DnnFormToggleButtonItem.cs" />
     <Compile Include="UI\WebControls\DnnTextButton.cs" />
     <Compile Include="UI\WebControls\DnnTextLink.cs" />
     <Compile Include="UI\WebControls\DnnTimeZoneComboBox.cs" />
