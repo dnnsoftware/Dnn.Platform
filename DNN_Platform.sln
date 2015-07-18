@@ -277,6 +277,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Tests.DynamicContent.In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Website", "Website\DotNetNuke.Website.csproj", "{7F680294-37DA-4901-A19B-AF09794F73D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Deprecated", "DNN Platform\DotNetNuke.Web.Deprecated\DotNetNuke.Web.Deprecated.csproj", "{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -661,6 +663,14 @@ Global
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F680294-37DA-4901-A19B-AF09794F73D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.ActiveCfg = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Debug|x86.Build.0 = Debug|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.ActiveCfg = Release|x86
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -745,5 +755,6 @@ Global
 		{53587796-3981-4E25-A8BA-29E62901C003} = {973A675B-1CF8-42E0-8566-09B4EFD3E83E}
 		{73FCC6DE-2B9D-4A7F-92E8-9A5D063062F3} = {53587796-3981-4E25-A8BA-29E62901C003}
 		{B69AF527-0D4B-410E-A3D0-8A65C99F2C05} = {53587796-3981-4E25-A8BA-29E62901C003}
+		{9BA59B3D-9FFB-4A9E-BD7D-8B58D08B3A33} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 	EndGlobalSection
 EndGlobal

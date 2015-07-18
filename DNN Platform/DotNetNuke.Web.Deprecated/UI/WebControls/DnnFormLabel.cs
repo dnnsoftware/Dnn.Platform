@@ -32,6 +32,8 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
+using Telerik.Web.UI;
+
 namespace DotNetNuke.Web.UI.WebControls
 {
 	public class DnnFormLabel : Panel

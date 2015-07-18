@@ -24,6 +24,8 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Telerik.Web.UI;
+
 #endregion
 
 namespace DotNetNuke.Web.UI.WebControls
