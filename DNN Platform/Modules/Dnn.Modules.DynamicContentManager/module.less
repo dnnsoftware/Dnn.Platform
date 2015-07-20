@@ -5,27 +5,37 @@
 @selectedTab_background_color: #fff;
 @selectedTab_color:  #0087c6;
 @header_background_color: #fff;
+@grid_alt_background_color: #eee;
+
+@primaryBtn_background_color: #0087c6;
+@primaryBtn_color: #fff;
+@secondaryBtn_background_color: #e4e4e4;
+@secondaryBtn_color: #333;
+@otherBtn_background_color: #fff;
+@otherBtn_color: #333;
 
 /*Units*/
 @width: 950px;
-@height: 750px;
-@panel_OuterMargin: 40px;
-@panel_TopMargin: 20px;
-@panel_InnerMargin: 0px;
+@panel_OuterMargin: 20px;
+@panel_InnerMargin: 15px;
 @panel_width: @width - 2 * @panel_OuterMargin;
-@panel_height: @height - 100;
+@textBox_padding: 9px;
+@panel_innerWidth: @panel_width - 2 * @panel_InnerMargin -  2 * @textBox_padding;
 
-@subPanel_width: @panel_width - 2 * @panel_InnerMargin;
+@border_radius: 4px;
 
 @tab_width: 100px;
 
 @heading_fontSize: 28px;
 @closeButton_fontSize: 28px;
 
+input[type="text"], select, textarea, input[type="email"], input[type="search"], input[type="password"] {
+    padding: @textBox_padding;
+}
+
 .dccContainer{
     border: solid 1px @border_color;
     width: @width;
-    height: @height;
 }
 
 .dccContainer .dccHeading{
@@ -39,45 +49,45 @@
 
 .dccContainer .dccHeading span{
     font-size: @heading_fontSize;
-    margin-left: 25px;
+    margin-left: @panel_OuterMargin;
 }
 
-.dccContainer .dccHeading a{
+.dccContainer .dccHeading a.dccIcon{
     float: right;
     font-size: @closeButton_fontSize;
+    margin-right: @panel_OuterMargin;
+    padding: 0px;
 }
 
 .dccContainer .dccBody {
-    margin-left: @panel_OuterMargin;
-    margin-right: @panel_OuterMargin;
-    margin-top: @panel_TopMargin;
+    margin: @panel_OuterMargin;
     width: @panel_width;
     background-color: @panel_background_color;
-    height: @panel_height;
     border: solid 1px @border_color;
     border-radius: 4px;
 }
 
 .dccContainer .dccMenu ul {
     display: inline-block;
-    margin-left: 0;
+    margin-left: 0px;
+    margin-bottom: 0px;
     width: @panel_width - 1;
-    border-radius: 4px;
+    border-top-left-radius: @border_radius;
+    border-top-right-radius: @border_radius;
     background-color: @tab_background_color;
     padding-left: 1px;
 }
 
 .dccContainer .dccMenu ul > li {
     float: left;
-    margin-right: 4px;
     list-style: none;
-    border-radius: 4px;
+    border-top-left-radius: @border_radius;
+    border-top-right-radius: @border_radius;
 }
 
 .dccContainer .dccMenu ul > li > div {
     width: @tab_width;
-    padding: 12px 9px 10px 9px;
-    text-align: center;
+    padding: 12px @panel_InnerMargin 10px @panel_InnerMargin;
     cursor: pointer;
 }
 
@@ -91,40 +101,12 @@
 }
 
 .dccContainer .dccPanel{
-    position: absolute;
     width: @panel_width;
 }
 
-.dccContainer .dccExtraMargin {
-    margin-top: 25px;
-}
-
-.dccContainer div.dccLanguageSelector{
-    float: right;
-    display: inline-block;
-    padding-top: 15px;
-    padding-right: 25px;
-}
-
-.dccContainer div.dccLanguageSelector span{
-    font-size: 16px;
-}
-
-.dccContainer div.dccLanguageSelector select{
-    margin-bottom: 0px;
-    padding: 2px 5px 5px 5px;
-    font-size:15px;
-}
-
-.dccContainer #contentTypes-editView {
-    height:600px;
-}
-
 .dccContainer .dccSearchPanel{
-    padding: 15px;
+    padding: @panel_InnerMargin;
     border-bottom: 1px solid @border_color;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
 }
 
 .dccContainer  .dccSearchPanel>.dccSearchBox{
@@ -146,24 +128,24 @@
 }
 
 .dccContainer .dccTable th{
-    padding: 6px 0 6px 0;
-    border-left: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-}
-
-.dccContainer .dccTable th:first-child, .dccContainer .dccTable td:first-child{
-    border-left: none;
-    text-align: left;
+    border-left: 1px solid @border_color;
+    border-bottom: 1px solid @border_color;
 }
 
 .dccContainer .dccTable th, .dccContainer .dccTable td {
-    padding: 8px 9px 7px 9px;
+    padding: 8px 5px 7px 5px;
     text-align: center;
     height: 20px;
 }
 
+.dccContainer .dccTable th:first-child, .dccContainer .dccTable td:first-child{
+    padding: 8px 5px 7px @panel_InnerMargin;
+    border-left: none;
+    text-align: left;
+}
+
 .dccContainer .dccTable tr:nth-child(2n) td {
-    background: #ddd;
+    background: @grid_alt_background_color;
 }
 
 .dccContainer .dccTable .fa{
@@ -171,7 +153,7 @@
 }
 
 .dccContainer .dccTable tfoot{
-    border-top: 1px solid #aaa;
+    border-top: 1px solid @border_color;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 5px;
 }
@@ -197,7 +179,7 @@
 .dccContainer ul.pager{
     display: block;
     list-style-type: none;
-    margin: 0 5px 0 8px;
+    margin: 0 10px 0 8px;
     padding: 0;
 }
 
@@ -220,7 +202,7 @@
     display: block;
     cursor: pointer;
     border-radius: 2px;
-    background-color: #fff;
+    background-color: @panel_background_color;
 }
 
 .dccContainer .dccTable td a.prev {
@@ -241,7 +223,7 @@
 }
 
 .dccContainer div.dccEditForm {
-    padding: 10px 9px 10px 9px;
+    padding: @panel_InnerMargin;
     min-height: 135px;
 }
 
@@ -273,7 +255,7 @@
 
 .dccContainer div.dccEditRow > div > textarea{
     height: 35px;
-    width: 750px;
+    width: @panel_innerWidth;
 }
 
 .dccContainer div.dccEditRow > div > input, .dccContainer div.dccEditRow > div > textarea, .dccContainer div.dccEditRow > div > select{
@@ -294,8 +276,9 @@
 }
 .dccContainer div.dccEditRow > div.toggle {
     float: right;
-    padding-right: 25px;
+    padding-right: 0px;
     padding-top: 25px;
+    margin-right: 0px;
 }
 
 .dccContainer .dccTable div.dccEditRow > div.toggle {
@@ -374,8 +357,8 @@
 }
 
 .dccContainer .dccButton {
-    background: #fff;
-    color: #666;
+    background: @otherBtn_background_color;
+    color: @otherBtn_color;
     display: inline-block;
     padding: 9px 9px;
     cursor: pointer;
@@ -392,8 +375,8 @@
 }
 
 .dccContainer a.primarybtn {
-    background: #0087c6;
-    color: #fff !important;
+    background: @primaryBtn_background_color;
+    color: @primaryBtn_color !important;
     display: inline-block;
     padding: 9px 9px;
     cursor: pointer;
@@ -405,8 +388,8 @@
 }
 
 .dccContainer a.secondarybtn {
-    background: #e4e4e4;
-    color: #0e181c !important;
+    background: @secondaryBtn_background_color;
+    color: @secondaryBtn_color !important;
     display: inline-block;
     padding: 9px 9px;
     cursor: pointer;
@@ -497,8 +480,8 @@
 }
 
 .dccContainer .dccSubHeading {
-    margin-left: 25px;
-    margin-right: 15px;
+    margin-left: @panel_InnerMargin;
+    margin-right: @panel_InnerMargin;
 }
 
 .dccContainer .dccSubHeading span {
@@ -508,7 +491,29 @@
 }
 
 .dccContainer div.CodeMirror {
-    width: 775px;
+    width: @panel_innerWidth;
     border: solid 1px @border_color;
     margin-top: 20px;
 }
+
+.dccContainer .dccExtraMargin {
+    margin-top: 25px;
+}
+
+.dccContainer div.dccLanguageSelector{
+    float: right;
+    display: inline-block;
+    padding-top: 15px;
+    padding-right: 25px;
+}
+
+.dccContainer div.dccLanguageSelector span{
+    font-size: 16px;
+}
+
+.dccContainer div.dccLanguageSelector select{
+    margin-bottom: 0px;
+    padding: 2px 5px 5px 5px;
+    font-size:15px;
+}
+

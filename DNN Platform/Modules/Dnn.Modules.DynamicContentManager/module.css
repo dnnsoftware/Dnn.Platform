@@ -1,9 +1,16 @@
 ﻿/*Colors*/
 /*Units*/
+input[type="text"],
+select,
+textarea,
+input[type="email"],
+input[type="search"],
+input[type="password"] {
+  padding: 9px;
+}
 .dccContainer {
   border: solid 1px #aaaaaa;
   width: 950px;
-  height: 750px;
 }
 .dccContainer .dccHeading {
   width: 950px;
@@ -15,40 +22,40 @@
 }
 .dccContainer .dccHeading span {
   font-size: 28px;
-  margin-left: 25px;
+  margin-left: 20px;
 }
-.dccContainer .dccHeading a {
+.dccContainer .dccHeading a.dccIcon {
   float: right;
   font-size: 28px;
+  margin-right: 20px;
+  padding: 0px;
 }
 .dccContainer .dccBody {
-  margin-left: 40px;
-  margin-right: 40px;
-  margin-top: 20px;
-  width: 870px;
+  margin: 20px;
+  width: 910px;
   background-color: white;
-  height: 650px;
   border: solid 1px #aaaaaa;
   border-radius: 4px;
 }
 .dccContainer .dccMenu ul {
   display: inline-block;
-  margin-left: 0;
-  width: 869px;
-  border-radius: 4px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  width: 909px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   background-color: #eeeeee;
   padding-left: 1px;
 }
 .dccContainer .dccMenu ul > li {
   float: left;
-  margin-right: 4px;
   list-style: none;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 .dccContainer .dccMenu ul > li > div {
   width: 100px;
-  padding: 12px 9px 10px 9px;
-  text-align: center;
+  padding: 12px 15px 10px 15px;
   cursor: pointer;
 }
 .dccContainer .dccMenu ul > li.selected {
@@ -59,34 +66,11 @@
   color: #0087c6;
 }
 .dccContainer .dccPanel {
-  position: absolute;
-  width: 870px;
-}
-.dccContainer .dccExtraMargin {
-  margin-top: 25px;
-}
-.dccContainer div.dccLanguageSelector {
-  float: right;
-  display: inline-block;
-  padding-top: 15px;
-  padding-right: 25px;
-}
-.dccContainer div.dccLanguageSelector span {
-  font-size: 16px;
-}
-.dccContainer div.dccLanguageSelector select {
-  margin-bottom: 0px;
-  padding: 2px 5px 5px 5px;
-  font-size: 15px;
-}
-.dccContainer #contentTypes-editView {
-  height: 600px;
+  width: 910px;
 }
 .dccContainer .dccSearchPanel {
   padding: 15px;
   border-bottom: 1px solid #aaaaaa;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
 }
 .dccContainer .dccSearchPanel > .dccSearchBox {
   padding: 8px;
@@ -105,23 +89,23 @@
   border-bottom: 1px solid #aaaaaa;
 }
 .dccContainer .dccTable th {
-  padding: 6px 0 6px 0;
   border-left: 1px solid #aaaaaa;
   border-bottom: 1px solid #aaaaaa;
 }
-.dccContainer .dccTable th:first-child,
-.dccContainer .dccTable td:first-child {
-  border-left: none;
-  text-align: left;
-}
 .dccContainer .dccTable th,
 .dccContainer .dccTable td {
-  padding: 8px 9px 7px 9px;
+  padding: 8px 5px 7px 5px;
   text-align: center;
   height: 20px;
 }
+.dccContainer .dccTable th:first-child,
+.dccContainer .dccTable td:first-child {
+  padding: 8px 5px 7px 15px;
+  border-left: none;
+  text-align: left;
+}
 .dccContainer .dccTable tr:nth-child(2n) td {
-  background: #dddddd;
+  background: #eeeeee;
 }
 .dccContainer .dccTable .fa {
   font-size: 18px;
@@ -150,7 +134,7 @@
 .dccContainer ul.pager {
   display: block;
   list-style-type: none;
-  margin: 0 5px 0 8px;
+  margin: 0 10px 0 8px;
   padding: 0;
 }
 .dccContainer ul.pager > li {
@@ -189,7 +173,7 @@
   padding: 0;
 }
 .dccContainer div.dccEditForm {
-  padding: 10px 9px 10px 9px;
+  padding: 15px;
   min-height: 135px;
 }
 .dccContainer .dccTable div.dccEditForm {
@@ -215,7 +199,7 @@
 }
 .dccContainer div.dccEditRow > div > textarea {
   height: 35px;
-  width: 750px;
+  width: 862px;
 }
 .dccContainer div.dccEditRow > div > input,
 .dccContainer div.dccEditRow > div > textarea,
@@ -234,8 +218,9 @@
 }
 .dccContainer div.dccEditRow > div.toggle {
   float: right;
-  padding-right: 25px;
+  padding-right: 0px;
   padding-top: 25px;
+  margin-right: 0px;
 }
 .dccContainer .dccTable div.dccEditRow > div.toggle {
   padding-top: 25px;
@@ -304,7 +289,7 @@
 }
 .dccContainer .dccButton {
   background: white;
-  color: #666666;
+  color: #333333;
   display: inline-block;
   padding: 9px 9px;
   cursor: pointer;
@@ -333,7 +318,7 @@
 }
 .dccContainer a.secondarybtn {
   background: #e4e4e4;
-  color: #0e181c !important;
+  color: #333333 !important;
   display: inline-block;
   padding: 9px 9px;
   cursor: pointer;
@@ -412,7 +397,7 @@
   border-bottom: none;
 }
 .dccContainer .dccSubHeading {
-  margin-left: 25px;
+  margin-left: 15px;
   margin-right: 15px;
 }
 .dccContainer .dccSubHeading span {
@@ -424,4 +409,21 @@
   width: 775px;
   border: solid 1px #aaaaaa;
   margin-top: 20px;
+}
+.dccContainer .dccExtraMargin {
+  margin-top: 25px;
+}
+.dccContainer div.dccLanguageSelector {
+  float: right;
+  display: inline-block;
+  padding-top: 15px;
+  padding-right: 25px;
+}
+.dccContainer div.dccLanguageSelector span {
+  font-size: 16px;
+}
+.dccContainer div.dccLanguageSelector select {
+  margin-bottom: 0px;
+  padding: 2px 5px 5px 5px;
+  font-size: 15px;
 }
