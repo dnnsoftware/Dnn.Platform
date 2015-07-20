@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{973A675B-1CF8-42E0-8566-09B4EFD3E83E}"
 EndProject
@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider = Website\Providers\DataProviders\SqlDataProvider\08.00.00.SqlDataProvider
 		DNN Platform\Tests\App.config = DNN Platform\Tests\App.config
+		DNN Platform\Website\Templates\Blank Website.template = DNN Platform\Website\Templates\Blank Website.template
+		DNN Platform\Website\Templates\Blank Website.template.en-US.resx = DNN Platform\Website\Templates\Blank Website.template.en-US.resx
+		DNN Platform\Website\Templates\Default Website.template = DNN Platform\Website\Templates\Default Website.template
+		DNN Platform\Website\Templates\Default Website.template.en-US.resx = DNN Platform\Website\Templates\Default Website.template.en-US.resx
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 	EndProjectSection
