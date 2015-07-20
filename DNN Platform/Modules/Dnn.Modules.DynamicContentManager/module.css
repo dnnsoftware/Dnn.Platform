@@ -88,6 +88,15 @@ input[type="password"] {
   border-collapse: collapse;
   border-bottom: 1px solid #aaaaaa;
 }
+.dccContainer .dccTable tr:nth-child(2n) {
+  background: #eeeeee;
+}
+.dccContainer .dccTable tbody tr {
+  transition: background 100ms linear;
+}
+.dccContainer .dccTable tbody tr:hover {
+  background: #d9ecfa;
+}
 .dccContainer .dccTable th {
   border-left: 1px solid #aaaaaa;
   border-bottom: 1px solid #aaaaaa;
@@ -104,9 +113,6 @@ input[type="password"] {
   border-left: none;
   text-align: left;
 }
-.dccContainer .dccTable tr:nth-child(2n) td {
-  background: #eeeeee;
-}
 .dccContainer .dccTable .fa {
   font-size: 18px;
 }
@@ -121,15 +127,36 @@ input[type="password"] {
 .dccContainer .dccTable tfoot td > div > div.left {
   margin-bottom: 6px;
 }
-.dccContainer .dccTable tr.in-edit-row td,
-.dccContainer .dccTable tr.in-edit-row:hover td {
+.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-down {
+  display: none;
+}
+.dccContainer #data-types-panel .dccTable tbody tr th i.fa-caret-down {
+  display: inherit;
+}
+.dccContainer #data-types-panel .dccTable tbody tr:hover td i.fa-caret-down {
+  display: inherit;
+}
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-up {
+  display: inherit;
+}
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td i.fa-caret-down {
+  display: none;
+}
+.dccContainer #data-types-panel .dccTable tbody tr td i.fa-caret-up {
+  display: none;
+}
+.dccContainer #data-types-panel .dccTable tbody tr:hover td:last-child {
+  background: #0087c6;
+}
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row td,
+.dccContainer #data-types-panel .dccTable tbody tr.in-edit-row:hover td {
   background: #0087c6;
   color: white;
   border-color: #0087c6;
 }
-.dccContainer .dccTable tr.edit-row td,
-.dccContainer .dccTable tr.edit-row:hover td {
-  background-color: transparent;
+.dccContainer #data-types-panel .dccTable tbody tr.edit-row td,
+.dccContainer #data-types-panel .dccTable tbody tr.edit-row:hover td:last-child {
+  background-color: white;
 }
 .dccContainer ul.pager {
   display: block;
@@ -406,7 +433,7 @@ input[type="password"] {
   display: inline-block;
 }
 .dccContainer div.CodeMirror {
-  width: 775px;
+  width: 862px;
   border: solid 1px #aaaaaa;
   margin-top: 20px;
 }
