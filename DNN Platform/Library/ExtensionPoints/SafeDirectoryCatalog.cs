@@ -36,60 +36,87 @@ namespace DotNetNuke.ExtensionPoints
         public SafeDirectoryCatalog(string directory)
         {
             _catalog = new AggregateCatalog();
+            var matchingAssemblyFiles = GetMatchingAssemblies(directory);
 
-            // ASP.NET will load all the DLL files under the bin folder; the first loop would be sufficient
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                                            .Where(asm => asm.GetName().CodeBase.StartsWith("file://"));
-
-            var processedFiles = new List<string>();
-            foreach (var assembly in loadedAssemblies)
+            foreach (var assembly in matchingAssemblyFiles.Select(f => f.Assembly))
             {
-                var fileUri = new Uri(assembly.GetName().CodeBase);
-                var fi = new FileInfo(fileUri.AbsolutePath);
-                if (fi.DirectoryName != null &&
-                    fi.DirectoryName.StartsWith(directory, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    try
-                    {
-                        processedFiles.Add(fi.FullName.ToUpper());
-                        var asmCatalog = new AssemblyCatalog(assembly);
-                        //Force MEF to load the plugin and figure out if there are any exports
-                        // good assemblies will not throw the RTLE exception and can be added to the catalog
-                        if (asmCatalog.Parts.ToList().Count > 0) _catalog.Catalogs.Add(asmCatalog);
-                    }
-                    catch (ReflectionTypeLoadException)
-                    {
-                    }
-                    catch (BadImageFormatException)
-                    {
-                    }
-                    catch (FileLoadException) //ignore when the assembly load failed.
-                    {
-                    }
-                }
+                TryAddCatalog(_catalog, assembly);
             }
 
-            // process whatever left in subfolders
-            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
-                                 .Select(f => f.ToUpper()).Except(processedFiles);
-            foreach (var file in files)
+            // process whatever left in folders - but the strange question is: why ASP.NET didn't load these? Are they loaded from the GAC?
+            var otherAssemblyFiles = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
+                                              .Except(matchingAssemblyFiles.Select(f => f.FullName), StringComparer.OrdinalIgnoreCase)
+                                              .ToList();
+
+            foreach (var assemblyPath in otherAssemblyFiles)
             {
-                try
+                TryAddCatalog(_catalog, assemblyPath);
+            }
+
+            //UNDONE: We can add another enhancement as follows:
+            //      - Enumerate the collected parts, select unique assemblies and flag them
+            //      - Add all the assemblies list into a persstent storage
+            //      - Use this list during the next startup time to minimize the time needed to go through all of these asseblies
+            //      - Look for changed/new assemblies on the disk and repeat the process for whatever not in the persisted list
+        }
+
+        private static IList<MatchingAssemblyInfo> GetMatchingAssemblies(string directory)
+        {
+            // ASP.NET will load all the DLL files under the bin folder
+            var matchingAssemblyFiles =
+                from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                let codeBase = assembly.GetName().CodeBase
+                where codeBase.StartsWith("file://")
+                let fileUri = new Uri(codeBase)
+                let fileInfo = new FileInfo(fileUri.AbsolutePath)
+                where fileInfo.DirectoryName != null &&
+                      fileInfo.DirectoryName.StartsWith(directory, StringComparison.OrdinalIgnoreCase)
+                select new MatchingAssemblyInfo
                 {
-                    var asmCatalog = new AssemblyCatalog(file);
-                    //Force MEF to load the plugin and figure out if there are any exports
-                    // good assemblies will not throw the RTLE exception and can be added to the catalog
-                    if (asmCatalog.Parts.ToList().Count > 0) _catalog.Catalogs.Add(asmCatalog);
-                }
-                catch (ReflectionTypeLoadException)
-                {
-                }
-                catch (BadImageFormatException)
-                {
-                }
-                catch (FileLoadException) //ignore when the assembly load failed.
-                {
-                }
+                    FullName = fileInfo.FullName,
+                    Assembly = assembly,
+                };
+
+            return matchingAssemblyFiles.ToList();
+        }
+
+        private static void TryAddCatalog(AggregateCatalog catalog, Assembly assembly)
+        {
+            try
+            {
+                var asmCatalog = new AssemblyCatalog(assembly);
+                //Force MEF to load the plugin and figure out if there are any exports
+                // good assemblies will not throw the RTLE exception and can be added to the catalog
+                if (asmCatalog.Parts.Any()) catalog.Catalogs.Add(asmCatalog);
+            }
+            catch (ReflectionTypeLoadException)
+            {
+            }
+            catch (BadImageFormatException)
+            {
+            }
+            catch (FileLoadException) //ignore when the assembly load failed.
+            {
+            }
+        }
+
+        private static void TryAddCatalog(AggregateCatalog catalog, string assemblyPath)
+        {
+            try
+            {
+                var asmCatalog = new AssemblyCatalog(assemblyPath);
+                //Force MEF to load the plugin and figure out if there are any exports
+                // good assemblies will not throw the RTLE exception and can be added to the catalog
+                if (asmCatalog.Parts.Any()) catalog.Catalogs.Add(asmCatalog);
+            }
+            catch (ReflectionTypeLoadException)
+            {
+            }
+            catch (BadImageFormatException)
+            {
+            }
+            catch (FileLoadException) //ignore when the assembly load failed.
+            {
             }
         }
 
@@ -99,6 +126,12 @@ namespace DotNetNuke.ExtensionPoints
             {
                 return _catalog.Parts;
             }
+        }
+
+        class MatchingAssemblyInfo
+        {
+            public string FullName;
+            public Assembly Assembly;
         }
     }
 }
