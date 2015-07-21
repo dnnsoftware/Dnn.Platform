@@ -217,18 +217,28 @@
                         <th>[Resx:{key:"DataType"}]</th>
                         <th>[Resx:{key:"Created"}]</th>
                         <th>[Resx:{key:"System"}]</th>
+                        <th width="20px">
+                            <i class="fa fa-caret-down"></i>
+                        </th>
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
                     <tr data-bind="click: $parent.editDataType">
                         <td data-bind="text: name"></td>
                         <td data-bind="text: created"></td>
-                        <td><i class="fa fa-check-square-o" data-bind="visible: isSystem"></i><i class="fa fa-square-o" data-bind="visible: !isSystem"></i></td>
+                        <td>
+                            <i class="fa fa-check-square-o" data-bind="visible: isSystem"></i>
+                            <i class="fa fa-square-o" data-bind="visible: !isSystem"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-caret-up"></i>
+                        </td>
                     </tr>
                     </tbody>
                     <tbody id='dataTypes-editbody' class="edit-body">
                     <tr class="edit-row" id="dataTypes-editrow">
-                        <td colspan="3" data-bind="with: selectedDataType">
+                        <td colspan="4" data-bind="with: selectedDataType">
                             <div class="dccEditForm">
                                 <div class="dccEditRow">
                                     <div>
@@ -258,7 +268,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             <div>
                                 <div class="left" data-bind="html: pagerItemsDescription"></div>
                                 <ul class="right pager" data-bind="visible: pagerVisible">
@@ -285,7 +295,7 @@
                         <th>[Resx:{key:"Template"}]</th>
                         <th>[Resx:{key:"ContentType"}]</th>
                         <th>[Resx:{key:"System"}]</th>
-                        <th width="100px">&nbsp;</th>
+                        <th width="100px">[Resx:{key:"Actions"}]</th>
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: results">
@@ -304,6 +314,20 @@
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            <div>
+                                <div class="left" data-bind="html: pagerItemsDescription"></div>
+                                <ul class="right pager" data-bind="visible: pagerVisible">
+                                    <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"></a></li>
+                                    <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"></a></li>
+                                </ul>
+                                <div class="right" data-bind="html: pagerDescription"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
             <div id="templates-editView" class="dccSubPanel" data-bind="visible: mode() == 'editTemplate', with: selectedTemplate">
