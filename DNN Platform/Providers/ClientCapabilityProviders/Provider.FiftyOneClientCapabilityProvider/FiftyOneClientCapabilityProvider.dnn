@@ -143,17 +143,17 @@
             <install>
               <configuration>
                 <nodes>
-                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="overwrite">
+                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/detection" action="update" collision="ignore">
                     <detection enabled="false" autoUpdate="false" binaryFilePath="~/App_Data/51Degrees.dat"
                         bandwidthMonitoringEnabled="false"
                         featureDetectionEnabled="false"
                         memoryMode="false"
                         shareUsage="false"/>
                   </node>
-                  <node path="/configuration/configSections/sectionGroup" targetpath="/configuration/configSections/sectionGroup/section" key="name" action="update" collision="overwrite">
+                  <node path="/configuration/configSections/sectionGroup" targetpath="/configuration/configSections/sectionGroup/section" key="name" action="update" collision="ignore">
                     <section name="imageOptimisation" type="FiftyOne.Foundation.Mobile.Configuration.ImageOptimisationSection, FiftyOne.Foundation" requirePermission="false" allowDefinition="Everywhere" restartOnExternalChanges="false" allowExeDefinition="MachineToApplication" />
                   </node>
-                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/imageOptimisation" action="update" collision="overwrite">
+                  <node path="/configuration/fiftyOne" targetpath="/configuration/fiftyOne/imageOptimisation" action="update" collision="ignore">
                     <imageOptimisation enabled="false" maxWidth="1000" maxHeight="1000" factor="50" widthParam="w" heightParam="h"/>
                   </node>                
                 </nodes>
