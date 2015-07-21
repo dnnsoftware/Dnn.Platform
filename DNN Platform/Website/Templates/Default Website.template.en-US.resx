@@ -1069,4 +1069,13 @@ Fax: (555) 555-4564</value>
   <data name="Tab.Home.Main.Wikis.SubLink.Text" xml:space="preserve">
     <value>Read the DNN Wiki</value>
   </data>
+  <data name="Tab.DCCManager.Description.Text" xml:space="preserve">
+    <value>Manage the Dynamic Content Types for your Site</value>
+  </data>
+  <data name="Tab.DCCmanager.Name.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
+  </data>
+  <data name="Tab.DCCManager.Title.Text" xml:space="preserve">
+    <value>Dynamic Content Type Manager</value>
+  </data>
 </root>

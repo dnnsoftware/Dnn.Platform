@@ -41,7 +41,7 @@ namespace Dnn.Modules.DynamicContentManager.Components
                                                       "~/images/icon_tag_32px.gif",
                                                       true,
                                                       moduleDefinition.ModuleDefID,
-                                                      "Dynamic Content Type Manager",
+                                                      String.Empty,
                                                       "~/images/icon_tag_32px.gif",
                                                       true);
                             }
