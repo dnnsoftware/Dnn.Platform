@@ -355,6 +355,32 @@
                     <div class="dccEditRow">
                         <div>
                             <textarea id="template-codeEditor" class="dccCode" data-bind="value: content"></textarea>
+                            <div id="templateEditorContextMenu" style="display:none">
+                                <ul>
+                                    <li>
+                                        <div>
+                                            <span>[Resx:{key:"InsertField"}]</span>
+                                            <i class="fa fa-caret-right"></i>
+                                        </div>
+                                        <ul data-bind="foreach: contentFields">
+                                            <li data-bind="click: $parent.insertField"><div data-bind="text:name"></div></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <span>[Resx:{key:"InsertHelper"}]</span>
+                                            <i class="fa fa-caret-right"></i>
+                                        </div>
+                                        <ul>
+                                            <li data-bind="click: insertHelper"><div>Insert Helper 1</div></li>
+                                            <li data-bind="click: insertHelper"><div>Insert Helper 2</div></li>
+                                            <li data-bind="click: insertHelper"><div>Insert Helper 3</div></li>
+                                            <li data-bind="click: insertHelper"><div>Insert Helper 4</div></li>
+                                            <li data-bind="click: insertHelper"><div>Insert Helper 5</div></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -366,7 +392,7 @@
             </div>
         </div>
         <div class="dccPanel" id="settings-panel" style="display:none;">
-        </div displa>
+        </div>
 
         <div id="mask"></div>
         <div id="confirmation-dialog" class="dnnFormPopup dnnClear"  style="display: none;">

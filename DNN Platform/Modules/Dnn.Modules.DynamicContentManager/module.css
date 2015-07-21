@@ -454,3 +454,42 @@ input[type="password"] {
   padding: 2px 5px 5px 5px;
   font-size: 15px;
 }
+.dccContainer #templateEditorContextMenu ul {
+  float: left;
+  position: relative;
+  z-index: 5;
+  list-style: none;
+  border: solid 1px #aaaaaa;
+  box-shadow: 5px 5px 5px #aaaaaa;
+  border-radius: 4px;
+  background-color: white;
+}
+.dccContainer #templateEditorContextMenu ul li {
+  position: relative;
+  margin-right: 10px;
+}
+.dccContainer #templateEditorContextMenu ul li:hover {
+  background: #d9ecfa;
+}
+.dccContainer #templateEditorContextMenu ul li div {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 100px;
+}
+.dccContainer #templateEditorContextMenu ul li div span {
+  padding-right: 5px;
+}
+.dccContainer #templateEditorContextMenu ul li div > i {
+  float: right;
+}
+.dccContainer #templateEditorContextMenu ul li ul {
+  list-style: none;
+  position: absolute;
+  left: -9999px;
+}
+.dccContainer #templateEditorContextMenu ul li:hover ul {
+  left: 100px;
+  top: 5px;
+}
