@@ -20,7 +20,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
@@ -35,51 +34,19 @@ namespace DotNetNuke.ExtensionPoints
 
         public SafeDirectoryCatalog(string directory)
         {
+            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
+
             _catalog = new AggregateCatalog();
 
-            // ASP.NET will load all the DLL files under the bin folder; the first loop would be sufficient
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                                            .Where(asm => asm.GetName().CodeBase.StartsWith("file://"));
-
-            var processedFiles = new List<string>();
-            foreach (var assembly in loadedAssemblies)
-            {
-                var fileUri = new Uri(assembly.GetName().CodeBase);
-                var fi = new FileInfo(fileUri.AbsolutePath);
-                if (fi.DirectoryName != null &&
-                    fi.DirectoryName.StartsWith(directory, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    try
-                    {
-                        processedFiles.Add(fi.FullName.ToUpper());
-                        var asmCatalog = new AssemblyCatalog(assembly);
-                        //Force MEF to load the plugin and figure out if there are any exports
-                        // good assemblies will not throw the RTLE exception and can be added to the catalog
-                        if (asmCatalog.Parts.ToList().Count > 0) _catalog.Catalogs.Add(asmCatalog);
-                    }
-                    catch (ReflectionTypeLoadException)
-                    {
-                    }
-                    catch (BadImageFormatException)
-                    {
-                    }
-                    catch (FileLoadException) //ignore when the assembly load failed.
-                    {
-                    }
-                }
-            }
-
-            // process whatever left in subfolders
-            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
-                                 .Select(f => f.ToUpper()).Except(processedFiles);
             foreach (var file in files)
             {
                 try
                 {
-                    var asmCatalog = new AssemblyCatalog(file);
-                    //Force MEF to load the plugin and figure out if there are any exports
-                    // good assemblies will not throw the RTLE exception and can be added to the catalog
-                    if (asmCatalog.Parts.ToList().Count > 0) _catalog.Catalogs.Add(asmCatalog);
+	                var asmCat = new AssemblyCatalog(file);
+
+	                //Force MEF to load the plugin and figure out if there are any exports
+	                // good assemblies will not throw the RTLE exception and can be added to the catalog
+	                if (asmCat.Parts.ToList().Count > 0) _catalog.Catalogs.Add(asmCat);
                 }
                 catch (ReflectionTypeLoadException)
                 {
@@ -89,6 +56,7 @@ namespace DotNetNuke.ExtensionPoints
                 }
                 catch (FileLoadException) //ignore when the assembly load failed.
                 {
+
                 }
             }
         }
