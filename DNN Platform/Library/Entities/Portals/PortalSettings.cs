@@ -142,9 +142,6 @@ namespace DotNetNuke.Entities.Portals
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
-#if true
-            ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
-#else
             var key = string.Join(":", "ActiveTab", portal.PortalID.ToString(), tabId.ToString());
 	        var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
 	        if (items != null && items.Contains(key))
@@ -159,7 +156,6 @@ namespace DotNetNuke.Entities.Portals
                     items[key] = ActiveTab;
                 }
             }
-#endif
         }
 
         #endregion
