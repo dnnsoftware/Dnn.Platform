@@ -436,6 +436,7 @@ namespace DotNetNuke.UI.Skins
             var success = true;
             if (ModuleInjectionManager.CanInjectModule(module, PortalSettings))
             {
+                //We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
                 EnsureContentItemForModule(module);
 
                 Pane pane = GetPane(module);
@@ -459,7 +460,9 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
+                //We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
                 EnsureContentItemForTab(PortalSettings.ActiveTab);
+
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
                 {
@@ -523,6 +526,7 @@ namespace DotNetNuke.UI.Skins
 
         private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
         {
+            //If tab exists but ContentItem not, then we create it
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tabInfo);
@@ -532,7 +536,8 @@ namespace DotNetNuke.UI.Skins
 
         private void EnsureContentItemForModule(ModuleInfo module)
         {
-            if (module.ContentItemId == Null.NullInteger && module.TabID != Null.NullInteger)
+            //If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
             {
                 ModuleController.Instance.CreateContentItem(module);
                 ModuleController.Instance.UpdateModule(module);
