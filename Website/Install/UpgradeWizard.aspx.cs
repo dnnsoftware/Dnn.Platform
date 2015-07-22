@@ -212,6 +212,10 @@ namespace DotNetNuke.Services.Install
             _upgradeRunning = true;
             _upgradeProgress = 0;
 
+            //Output the current time for the user
+            CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+                ":", DateTime.Now.ToString()));
+
             foreach (var step in _steps)
             {
                 _currentStep = step.Key;
