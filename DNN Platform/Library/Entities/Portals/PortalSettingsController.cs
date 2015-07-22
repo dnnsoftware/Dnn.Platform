@@ -101,14 +101,14 @@ namespace DotNetNuke.Entities.Portals
         protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
         {
             var breadCrumbs = new List<TabInfo>();
-            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
-            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-            GetBreadCrumbsRecursively(breadCrumbs, tabId, portalTabs, hostTabs);
+            GetBreadCrumbs(breadCrumbs, tabId, portalId);
             return breadCrumbs;
         }
 
-        private static void GetBreadCrumbsRecursively(IList<TabInfo> breadCrumbs, int tabId, TabCollection portalTabs, TabCollection hostTabs)
+        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
         {
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
             while (true)
             {
                 TabInfo tab;
