@@ -110,6 +110,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     self.content = ko.observable('');
     self.selected = ko.observable(false);
 
+    self.codeSnippets = ko.observableArray([]);
     self.contentTypes = ko.observableArray([]);
     self.contentFields = ko.observableArray([]);
 
@@ -127,6 +128,32 @@ dcc.templateViewModel = function(parentViewModel, config){
             self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
         }
     });
+
+    var getCodeSnippets = function() {
+        var params = { };
+
+        util.templateService().get("GetSnippets", params,
+            function(data) {
+                if (typeof data !== "undefined" && data != null && data.success === true) {
+                    //Success
+                    self.codeSnippets.removeAll();
+                    for(var i = 0; i < data.data.results.length; i++){
+                        var result = data.data.results[i];
+                        self.codeSnippets.push({
+                            name: result.name,
+                            snippet: result.snippet,
+                        });
+                    }
+                } else {
+                    //Error
+                }
+            },
+
+            function(){
+                //Failure
+            }
+        );
+    };
 
     var getContentFields = function() {
         if(self.contentTypeId() !== "undefined" && self.contentTypeId() > 0){
@@ -246,16 +273,19 @@ dcc.templateViewModel = function(parentViewModel, config){
             getContentFields();
         });
 
+        getCodeSnippets();
         getContentTypes();
     };
 
     self.insertField = function(data) {
         var doc = codeEditor.doc;
-        doc.replaceSelection("[ContentField: {name:'" + data.name + "', id:'" + data.contentFieldId +"'}]");
+        doc.replaceSelection("@Model.Fields[" + data.name + "].value");
         $contextMenu.hide();
     };
 
-    self.insertHelper = function(data) {
+    self.inserSnippet = function(data) {
+        var doc = codeEditor.doc;
+        doc.replaceSelection(data.snippet);
         $contextMenu.hide();
     };
 

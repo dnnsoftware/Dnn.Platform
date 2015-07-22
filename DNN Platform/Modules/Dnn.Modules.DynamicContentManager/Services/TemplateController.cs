@@ -4,12 +4,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using System.Xml.Linq;
 using Dnn.DynamicContent;
 using Dnn.DynamicContent.Localization;
 using Dnn.Modules.DynamicContentManager.Services.ViewModels;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Security;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
@@ -41,6 +46,66 @@ namespace Dnn.Modules.DynamicContentManager.Services
                                                         });
 
             return response;
+        }
+
+        /// <summary>
+        /// GetSnippets retrieves a collection of code snippets
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public HttpResponseMessage GetSnippets()
+        {
+            var snippets = new List<SnippetViewModel>();
+            LoadSnippets(Globals.HostMapPath, snippets);
+            LoadSnippets(PortalSettings.HomeDirectoryMapPath, snippets);
+
+            var response = new
+            {
+                success = true,
+                data = new
+                        {
+                            results = snippets,
+                            totalResults = snippets.Count
+                }
+            };
+
+            return Request.CreateResponse(response);
+        }
+
+        private void LoadSnippets(string path, List<SnippetViewModel> snippets)
+        {
+            var filePath = path + "Config/Snippets.config";
+            if (File.Exists(filePath))
+            {
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    var xmlDoc = XDocument.Load(stream);
+                    if (xmlDoc.Root != null)
+                    {
+                        var xmlSnippets = from el in xmlDoc.Root.Elements()
+                                          select el;
+
+                        foreach (var xmlSnippet in xmlSnippets)
+                        {
+                            var xmlTitle = (from el in xmlSnippet.Descendants()
+                                            where el.Name.LocalName == "Title"
+                                           select el).First();
+
+                            var xmlCode = (from el in xmlSnippet.Descendants()
+                                           where el.Name.LocalName == "Code"
+                                           select el).First();
+
+                            var viewModel = new SnippetViewModel
+                                                {
+                                                    Name = xmlTitle.Value,
+                                                    Snippet = xmlCode.Value
+                                                };
+                            snippets.Add(viewModel);
+                        }
+                    }
+
+                }
+            }
         }
 
         /// <summary>
