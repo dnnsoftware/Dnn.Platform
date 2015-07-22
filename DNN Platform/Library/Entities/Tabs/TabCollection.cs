@@ -275,8 +275,9 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 else
                 {
+                    cultureCode = cultureCode.ToLowerInvariant();
                     List<TabInfo> tabs;
-                    if (!_localizedTabs.TryGetValue(cultureCode.ToLowerInvariant(), out tabs))
+                    if (!_localizedTabs.TryGetValue(cultureCode, out tabs))
                     {
                         collection = new TabCollection(new List<TabInfo>());
                     }
@@ -284,7 +285,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         collection = !includeNeutral 
                                         ? new TabCollection(from t in tabs 
-                                                            where t.CultureCode.ToLowerInvariant() == cultureCode.ToLowerInvariant() 
+                                                            where t.CultureCode.ToLowerInvariant() == cultureCode 
                                                             select t) 
                                         : new TabCollection(tabs);
                     }

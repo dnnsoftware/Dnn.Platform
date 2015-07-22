@@ -619,10 +619,10 @@ namespace DotNetNuke.UI
             var intLastBreadCrumbId = 0;
 
             //--- cache breadcrumbs in hashtable so we can easily set flag on node denoting it as a breadcrumb node (without looping multiple times) ---
-            for (i = 0; i <= (objPortalSettings.ActiveTab.BreadCrumbs.Count - 1); i++)
+            foreach (TabInfo tabInfo in objPortalSettings.ActiveTab.BreadCrumbs)
             {
-                objBreadCrumbs.Add(((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID, 1);
-                intLastBreadCrumbId = ((TabInfo) objPortalSettings.ActiveTab.BreadCrumbs[i]).TabID;
+                objBreadCrumbs.Add(tabInfo.TabID, 1);
+                intLastBreadCrumbId = tabInfo.TabID;
             }
             var portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
             var hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
