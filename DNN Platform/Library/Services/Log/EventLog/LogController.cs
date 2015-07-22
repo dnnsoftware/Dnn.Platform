@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LogController));
         private const int WriterLockTimeout = 10000; //milliseconds
-        private static readonly ReaderWriterLock LockLog = new ReaderWriterLock();
+        private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 
         protected override Func<ILogController> GetFactory()
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Services.Log.EventLog
         private static void WriteLog(string filePath, string message)
         {
             FileStream fs = null;
+            if (!LockLog.TryEnterWriteLock(WriterLockTimeout)) return;
             try
             {
-                LockLog.AcquireWriterLock(WriterLockTimeout);
                 var intAttempts = 0;
                 while (fs == null && intAttempts < 100)
                 {
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     fs.Close();
                 }
-                LockLog.ReleaseWriterLock();
+                LockLog.ExitWriteLock();
             }
         }
 

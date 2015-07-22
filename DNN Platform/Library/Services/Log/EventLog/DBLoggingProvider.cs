@@ -48,8 +48,8 @@ namespace DotNetNuke.Services.Log.EventLog
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
-        private static readonly ReaderWriterLock LockNotif = new ReaderWriterLock();
-        private static readonly ReaderWriterLock LockQueueLog = new ReaderWriterLock();
+        private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
 
         public const string LogTypeCacheKey = "LogTypes";
         public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
@@ -221,18 +221,20 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
-                        LockNotif.AcquireWriterLock(ReaderLockTimeout);
-                        try
+                        if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
                         {
-                            if (logTypeConfigInfo.NotificationThreshold == 0)
+                            try
                             {
-                                string str = logQueueItem.LogInfo.Serialize();
-                                Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
+                                if (logTypeConfigInfo.NotificationThreshold == 0)
+                                {
+                                    string str = logQueueItem.LogInfo.Serialize();
+                                    Mail.Mail.SendEmail(logTypeConfigInfo.MailFromAddress, logTypeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(str)));
+                                }
                             }
-                        }
-                        finally
-                        {
-                            LockNotif.ReleaseWriterLock();
+                            finally
+                            {
+                                LockNotif.ExitWriteLock();
+                            }
                         }
                     }
                 }
@@ -431,7 +433,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void PurgeLogBuffer()
         {
-            LockQueueLog.AcquireWriterLock(WriterLockTimeout);
+            if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout)) return;
             try
             {
                 for (int i = LogQueue.Count - 1; i >= 0; i += -1)
@@ -448,7 +450,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             finally
             {
-                LockQueueLog.ReleaseWriterLock();
+                LockQueueLog.ExitWriteLock();
             }
             DataProvider.Instance().PurgeLog();
         }
