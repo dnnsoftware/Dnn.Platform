@@ -1,17 +1,17 @@
 ﻿using System.Runtime.InteropServices;
+using System.Reflection;
+
 /*
-* CKEditor Html Editor Provider for DotNetNuke
+* CKEditor Provider for DNN
 * ========
-* http://dnnckeditor.codeplex.com/
-* Copyright (C) Ingo Herbote
+* https://github.com/DNN-Connect/CKEditorProvider
+* Copyright (C) DNN Connect
 *
-* The software, this file and its contents are subject to the CKEditor Provider
+* The software, this file and its contents are subject to the CKEditorProvider
 * License. Please read the license.txt file before using, installing, copying,
 * modifying or distribute this file or part of its contents. The contents of
 * this file is part of the Source Code of the CKEditor Provider.
 */
-
-using System.Reflection;
 
 [assembly: AssemblyDescription("CKEditor HTML Editor Provider for DNN")]
 [assembly: AssemblyTitle("CKEditor HTML Editor Provider for DNN")]
