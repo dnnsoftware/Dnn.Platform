@@ -85,25 +85,15 @@ namespace Dnn.Modules.DynamicContentManager.Services
                         var xmlSnippets = from el in xmlDoc.Root.Elements()
                                           select el;
 
-                        foreach (var xmlSnippet in xmlSnippets)
-                        {
-                            var xmlTitle = (from el in xmlSnippet.Descendants()
-                                            where el.Name.LocalName == "Title"
-                                           select el).First();
-
-                            var xmlCode = (from el in xmlSnippet.Descendants()
-                                           where el.Name.LocalName == "Code"
-                                           select el).First();
-
-                            var viewModel = new SnippetViewModel
-                                                {
-                                                    Name = xmlTitle.Value,
-                                                    Snippet = xmlCode.Value
-                                                };
-                            snippets.Add(viewModel);
-                        }
+                        snippets.AddRange(from xmlSnippet in xmlSnippets
+                            let xmlTitle = (from el in xmlSnippet.Descendants() where el.Name.LocalName == "Title" select el).First()
+                            let xmlCode = (from el in xmlSnippet.Descendants() where el.Name.LocalName == "Code" select el).First()
+                            select new SnippetViewModel
+                                            {
+                                                Name = xmlTitle.Value,
+                                                Snippet = xmlCode.Value
+                                            });
                     }
-
                 }
             }
         }
