@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (portalId < 0)
             {
                 // host level setting
-                HostController.Instance.Update(Constants.SearchReindexSettingName, text);
+                HostController.Instance.Update(Constants.SearchReindexSettingName, text, true);
             }
             else
             {
@@ -263,12 +263,12 @@ namespace DotNetNuke.Services.Search.Internals
 
         public bool GetSearchCompactFlag()
         {
-            return "1" == HostController.Instance.GetString(Constants.SearchoptimizeFlagName, Null.NullString);
+            return "1" == HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString);
         }
 
         public void SetSearchReindexRequestTime(bool turnOn)
         {
-            HostController.Instance.Update(Constants.SearchoptimizeFlagName, turnOn ? "1" : "0");
+            HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
         /// <summary>
