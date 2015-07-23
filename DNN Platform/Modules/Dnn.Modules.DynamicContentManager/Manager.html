@@ -341,8 +341,8 @@
                             <label>[Resx:{key:"ContentType"}]</label>
                             <select data-bind="enable: canEdit, value: contentTypeId, valueAllowUnset: false, options: contentTypes, optionsText: 'name', optionsValue: 'contentTypeId'"></select>
                         </div>
-                        <div class="toggle" data-bind="css: { disabled: !(parentViewModel.isSystemUser && isAddMode()) }">
-                            <span><input type="checkbox" data-bind="checked: isSystem, enable: parentViewModel.isSystemUser && isAddMode()"></span>
+                        <div class="toggle" data-bind="css: { disabled: !canSelectGlobal() }">
+                            <span><input type="checkbox" data-bind="checked: isSystem, enable: canSelectGlobal()"></span>
                             <span class="label">[Resx:{key:"SystemTemplate"}]</span>
                         </div>
                     </div>
