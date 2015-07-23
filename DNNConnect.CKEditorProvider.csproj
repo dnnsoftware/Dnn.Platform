@@ -277,6 +277,7 @@
     </None>
     <Content Include="Tabs.ashx" />
     <Content Include="packages.config" />
+    <Content Include="readme.md" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
