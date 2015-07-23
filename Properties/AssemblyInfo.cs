@@ -18,4 +18,6 @@ using System.Reflection;
 [assembly: AssemblyVersion("1.0.1.*")]
 [assembly: AssemblyFileVersion("1.0.1")]
 [assembly: ComVisible(false)]
+[assembly: AssemblyCompany("DNN-Connect")]
+[assembly: AssemblyCopyright("2015 DNN-Connect")]
 
