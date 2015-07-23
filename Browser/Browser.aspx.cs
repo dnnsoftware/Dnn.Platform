@@ -28,13 +28,11 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
-using Telerik.Web.UI;
-
 using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Controls;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
-
+using DotNetNuke.Framework.JavaScriptLibraries;
 using Encoder = System.Drawing.Imaging.Encoder;
 using Globals = DotNetNuke.Common.Globals;
 using Image = System.Drawing.Image;
@@ -140,7 +138,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 string fileRoot = string.Format(
                     "{0}/{1}/{2}.resx",
-                    this.TemplateSourceDirectory,
+                    this.TemplateSourceDirectory.Replace("/DNNConnect.CKE/Browser", "/DNNConnect.CKE"),
                     Localization.LocalResourceDirectory,
                     page[page.GetUpperBound(0)]);
 
@@ -851,6 +849,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+
             this.SortAscending.CssClass = this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
             this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
 
@@ -866,7 +866,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             Provider objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
 
             var settingsDictionary = EditorController.GetEditorHostSettings();
-            var portalRoles = new RoleController().GetPortalRoles(this._portalSettings.PortalId);
+            
+            var portalRoles = RoleController.Instance.GetRoles(this._portalSettings.PortalId);
 
             switch (this.currentSettings.SettingMode)
             {
@@ -939,7 +940,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             this.GetAcceptedFileTypes();
 
-                            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+                            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
                             this.AnchorList.Visible = this.currentSettings.UseAnchorSelector;
                             this.LabelAnchor.Visible = this.currentSettings.UseAnchorSelector;
@@ -979,7 +980,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                             "Browser-Modus: {0}",
                                             string.Format("Page {0}", this.browserModus));
                                         this.title.InnerText = string.Format(
-                                            "{0} - WatchersNET.FileBrowser",
+                                            "{0} - DNNConnect.CKEditorProvider.FileBrowser",
                                             this.lblModus.Text);
 
                                         this.RenderTabs();
@@ -1227,7 +1228,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.BrowserMode.Visible = false;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblResizeHeader.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             // Hide all Unwanted Elements from the Image Editor
             this.cmdClose.Visible = false;
@@ -1663,12 +1664,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             DirectoryInfo dirInfo = new DirectoryInfo(currentFolderInfo.PhysicalPath);
 
-            RadTreeNode folderNode = new RadTreeNode
+            TreeNode folderNode = new TreeNode
             {
                 Text = dirInfo.Name,
                 Value = dirInfo.FullName,
                 ImageUrl = "Images/folder.gif",
-                ExpandedImageUrl = "Images/folderOpen.gif"
+                //ExpandedImageUrl = "Images/folderOpen.gif"
             };
 
             switch (this.GetStorageLocationType(currentFolderInfo.PhysicalPath))
@@ -1676,14 +1677,14 @@ namespace DNNConnect.CKEditorProvider.Browser
                 case FolderController.StorageLocationTypes.SecureFileSystem:
                     {
                         folderNode.ImageUrl = "Images/folderLocked.gif";
-                        folderNode.ExpandedImageUrl = "Images/folderOpenLocked.gif";
+                        //folderNode.ExpandedImageUrl = "Images/folderOpenLocked.gif";
                     }
 
                     break;
                 case FolderController.StorageLocationTypes.DatabaseSecure:
                     {
                         folderNode.ImageUrl = "Images/folderdb.gif";
-                        folderNode.ExpandedImageUrl = "Images/folderdb.gif";
+                        //folderNode.ExpandedImageUrl = "Images/folderdb.gif";
                     }
 
                     break;
@@ -1693,7 +1694,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             var folders = FolderManager.Instance.GetFolders(currentFolderInfo);
 
-            foreach (RadTreeNode node in
+            foreach (TreeNode node in
                 folders.Cast<FolderInfo>().Select(this.RenderFolder).Where(node => node != null))
             {
                 switch (this.GetStorageLocationType(Convert.ToInt32(node.ToolTip)))
@@ -1701,20 +1702,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                     case FolderController.StorageLocationTypes.SecureFileSystem:
                         {
                             node.ImageUrl = "Images/folderLocked.gif";
-                            node.ExpandedImageUrl = "Images/folderOpenLocked.gif";
+                            //node.ExpandedImageUrl = "Images/folderOpenLocked.gif";
                         }
 
                         break;
                     case FolderController.StorageLocationTypes.DatabaseSecure:
                         {
                             node.ImageUrl = "Images/folderdb.gif";
-                            node.ExpandedImageUrl = "Images/folderdb.gif";
+                            //node.ExpandedImageUrl = "Images/folderdb.gif";
                         }
 
                         break;
                 }
 
-                folderNode.Nodes.Add(node);
+                folderNode.ChildNodes.Add(node);
             }
         }
 
@@ -1759,7 +1760,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
 
-                PortalAliasInfo objPortalAliasInfo = PortalAliasController.GetPortalAliasInfo(sPortalAlias);
+                PortalAliasInfo objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(sPortalAlias);
 
                 portalSettings = new PortalSettings(iTabId, objPortalAliasInfo);
             }
@@ -1858,7 +1859,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Create user folder based on the user id
             userFolderPath = Path.Combine(
                 userFolderPath,
-                string.Format("{0}\\", UserController.GetCurrentUserInfo().UserID));
+                string.Format("{0}\\", UserController.Instance.GetCurrentUserInfo().UserID));
 
             if (!Directory.Exists(userFolderPath))
             {
@@ -1872,14 +1873,14 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 this.SetFolderPermission(userFolderInfo);
 
-                this.SetUserFolderPermission(userFolderInfo, UserController.GetCurrentUserInfo());
+                this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
             }
             else
             {
                 userFolderInfo = Utility.ConvertFilePathToFolderInfo(userFolderPath, this._portalSettings);
 
                 // make sure the user has the correct permissions set
-                this.SetUserFolderPermission(userFolderInfo, UserController.GetCurrentUserInfo());
+                this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
             }
 
             return userFolderInfo;
@@ -1908,11 +1909,11 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdCropNow.Click += this.CropNow_Click;
 
             this.BrowserMode.SelectedIndexChanged += this.BrowserMode_SelectedIndexChanged;
-            this.dnntreeTabs.NodeClick += this.TreeTabs_NodeClick;
+            this.dnntreeTabs.SelectedNodeChanged += this.TreeTabs_NodeClick;
             this.rblLinkType.SelectedIndexChanged += this.LinkType_SelectedIndexChanged;
 
             // this.FoldersTree.SelectedNodeChanged += new EventHandler(FoldersTree_SelectedNodeChanged);
-            this.FoldersTree.NodeClick += this.FoldersTree_NodeClick;
+            this.FoldersTree.SelectedNodeChanged += this.FoldersTree_NodeClick;
 
             this.FilesList.ItemCommand += this.FilesList_ItemCommand;
         }
@@ -1944,31 +1945,31 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <returns>
         /// TreeNode List
         /// </returns>
-        private RadTreeNode RenderFolder(FolderInfo folderInfo)
+        private TreeNode RenderFolder(FolderInfo folderInfo)
         {
             if (!FolderPermissionController.CanViewFolder(folderInfo))
             {
                 return null;
             }
 
-            RadTreeNode tnFolder = new RadTreeNode
+            TreeNode tnFolder = new TreeNode
             {
                 Text = folderInfo.FolderName,
                 Value = folderInfo.PhysicalPath,
                 ImageUrl = "Images/folder.gif",
-                ExpandedImageUrl = "Images/folderOpen.gif",
+                //ExpandedImageUrl = "Images/folderOpen.gif",
                 ToolTip = folderInfo.FolderID.ToString()
             };
 
             if (folderInfo.StorageLocation.Equals((int)FolderController.StorageLocationTypes.SecureFileSystem))
             {
                 tnFolder.ImageUrl = "Images/folderLocked.gif";
-                tnFolder.ExpandedImageUrl = "Images/folderOpenLocked.gif";
+                //tnFolder.ExpandedImageUrl = "Images/folderOpenLocked.gif";
             }
             else if (folderInfo.StorageLocation.Equals((int)FolderController.StorageLocationTypes.DatabaseSecure))
             {
                 tnFolder.ImageUrl = "Images/folderdb.gif";
-                tnFolder.ExpandedImageUrl = "Images/folderdb.gif";
+                //tnFolder.ExpandedImageUrl = "Images/folderdb.gif";
             }
 
             /*ArrayList folders = FileSystemUtils.GetFoldersByParentFolder(
@@ -1981,7 +1982,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return tnFolder;
             }
 
-            foreach (RadTreeNode node in
+            foreach (TreeNode node in
                 folders.Cast<FolderInfo>().Select(this.RenderFolder).Where(node => node != null))
             {
                 switch (this.GetStorageLocationType(Convert.ToInt32(node.ToolTip)))
@@ -1989,20 +1990,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                     case FolderController.StorageLocationTypes.SecureFileSystem:
                         {
                             node.ImageUrl = "Images/folderLocked.gif";
-                            node.ExpandedImageUrl = "Images/folderOpenLocked.gif";
+                            //node.ExpandedImageUrl = "Images/folderOpenLocked.gif";
                         }
 
                         break;
                     case FolderController.StorageLocationTypes.DatabaseSecure:
                         {
                             node.ImageUrl = "Images/folderdb.gif";
-                            node.ExpandedImageUrl = "Images/folderdb.gif";
+                            //node.ExpandedImageUrl = "Images/folderdb.gif";
                         }
 
                         break;
                 }
 
-                tnFolder.Nodes.Add(node);
+                tnFolder.ChildNodes.Add(node);
             }
 
             return tnFolder;
@@ -2017,7 +2018,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="iParentTabId">
         /// Parent Tab ID
         /// </param>
-        private void RenderTabLevels(RadTreeNode nodeParent, int iParentTabId)
+        private void RenderTabLevels(TreeNode nodeParent, int iParentTabId)
         {
             foreach (TabInfo objTab in
                 TabController.GetPortalTabs(
@@ -2028,11 +2029,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                     continue;
                 }
 
-                RadTreeNode nodeTab = new RadTreeNode();
+                TreeNode nodeTab = new TreeNode();
 
                 if (nodeParent != null)
                 {
-                    nodeParent.Nodes.Add(nodeTab);
+                    nodeParent.ChildNodes.Add(nodeTab);
                 }
                 else
                 {
@@ -2161,12 +2162,12 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             var newDir = this.lblCurrentDir.Text;
 
-            RadTreeNode tnNewFolder = this.FoldersTree.FindNodeByValue(newDir);
+            TreeNode tnNewFolder = this.FoldersTree.FindNode(newDir);
 
             if (tnNewFolder != null)
             {
                 tnNewFolder.Selected = true;
-                tnNewFolder.ExpandParentNodes();
+                tnNewFolder.Expand();
                 tnNewFolder.Expanded = true;
             }
 
@@ -2838,12 +2839,13 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                     this.ShowFilesIn(newDirPath);
 
-                    RadTreeNode tnNewFolder = this.FoldersTree.FindNodeByText(this.tbFolderName.Text);
+                    TreeNode tnNewFolder = this.FoldersTree.FindNode(this.tbFolderName.Text);
 
                     if (tnNewFolder != null)
                     {
                         tnNewFolder.Selected = true;
-                        tnNewFolder.ExpandParentNodes();
+                        tnNewFolder.Expand();
+                        tnNewFolder.Expanded = true;
                     }
                 }
             }
@@ -2874,7 +2876,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.BrowserMode.Visible = true;
             }
 
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             // Add new file to database
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(this.lblCurrentDir.Text, this._portalSettings);
@@ -2905,7 +2907,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             if (this.browserModus.Equals("Link"))
             {
@@ -3044,7 +3046,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.panLinkMode.Visible = true;
             this.cmdClose.Visible = true;
             this.panInfo.Visible = true;
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             if (this.browserModus.Equals("Link"))
             {
@@ -3080,7 +3082,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdResize2.Visible = true;
 
             this.lblResizeHeader.Text = Localization.GetString("lblResizeHeader2.Text", this.ResXFile, this.LanguageCode);
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblResizeHeader.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
 
             string sFilePath = Path.Combine(this.lblCurrentDir.Text, this.lblFileName.Text);
 
@@ -3202,7 +3204,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RadTreeNodeEventArgs"/> instance containing the event data.</param>
-        private void TreeTabs_NodeClick(object sender, RadTreeNodeEventArgs e)
+        private void TreeTabs_NodeClick(object sender, EventArgs eventArgs)
         {
             if (this.dnntreeTabs.SelectedNode == null)
             {
@@ -3414,7 +3416,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     break;
             }
 
-            this.title.InnerText = string.Format("{0} - WatchersNET.FileBrowser", this.lblModus.Text);
+            this.title.InnerText = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
 
             this.SetDefaultLinkTypeText();
         }
@@ -3445,7 +3447,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RadTreeNodeEventArgs" /> instance containing the event data.</param>
-        private void FoldersTree_NodeClick(object sender, RadTreeNodeEventArgs e)
+        private void FoldersTree_NodeClick(object sender, EventArgs eventArgs)
         {
             var newDir = this.FoldersTree.SelectedNode.Value;
 

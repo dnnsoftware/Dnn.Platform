@@ -32,9 +32,7 @@ namespace DNNConnect.CKEditorProvider
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
         public void ProcessRequest(HttpContext context)
         {
-            var portalId = context.Request.QueryString["PortalID"] != null
-                              ? int.Parse(context.Request.QueryString["PortalID"])
-                              : this.PortalSettings.PortalId;
+            var portalId = this.PortalSettings.PortalId;
 
             // Generate Pages Array
             var pagesArray = new StringBuilder();
