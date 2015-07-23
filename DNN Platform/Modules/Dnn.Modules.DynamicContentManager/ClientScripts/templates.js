@@ -118,7 +118,7 @@ dcc.templateViewModel = function(parentViewModel, config){
     });
 
     self.name.subscribe(function(newValue) {
-        if(self.filePath() === ""){
+        if (self.filePath() === "" && newValue !== "") {
             self.filePath("Content Templates/" + newValue.replace(" ", "") + ".cshtml");
         }
     });
